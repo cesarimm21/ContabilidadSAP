@@ -1,0 +1,30 @@
+{
+    "data": [
+        {
+            "intAccess_ID": "1",
+            "strName": "FI-Finanzas",
+            "strDescription": "finanzas",
+            "strLink": "/barmenu/finanzas",
+            "intLevel": "1",
+            "intLevel2": "0",
+            "strIndex": "1",
+            "intFather": "1",
+            "strClick_Name": "funcion",
+            "strIcon_Name": "fa fa-user",
+            "strUser_ID": "00000001"
+        },
+        {
+            "intAccess_ID": "2",
+            "strName": "FI-Administracion",
+            "strDescription": "administracion",
+            "strLink": "/barmenu/administracion",
+            "intLevel": "1",
+            "intLevel2": "0",
+            "strIndex": "1",
+            "intFather": "1",
+            "strClick_Name": "funcion",
+            "strIcon_Name": "fa fa-user",
+            "strUser_ID": "00000002"
+        },
+    ]
+}

@@ -49,10 +49,10 @@ export default class InicioComponent extends Vue {
 constructor (){
   super()
   this.msg='Bienvenido al sistema documentario';
-  this.loadingDataNewDocuments();
-  this.loadingDataPublishDocuments();
-  this.getEmail();
-  this.statisticsGraphic();
+  // this.loadingDataNewDocuments();
+  // this.loadingDataPublishDocuments();
+  // this.getEmail();
+  // this.statisticsGraphic();
 }
 loadingDataNewDocuments(){
   inicioService.loadingDataNewDocuments()

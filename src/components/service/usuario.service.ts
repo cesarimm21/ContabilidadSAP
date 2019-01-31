@@ -72,12 +72,18 @@ export default{
       })
     },
     GetUsuarioAccesos(strCargo){
-        return axios.get(CONFIG.API_URL+'usuario/get/accesos/'+strCargo,{headers: {'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
-        .then(response =>{
-          localStorage.setItem('usuario_accesos', JSON.stringify(response.data));
-          return JSON.parse(JSON.stringify(response.data));          
-        })
-      },
+      return axios.get('assets/data/accesodata.json')
+      .then(response=>{
+        return response.data;
+      })
+    },
+    // GetUsuarioAccesos(strCargo){
+    //     return axios.get(CONFIG.API_URL+'usuario/get/accesos/'+strCargo,{headers: {'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
+    //     .then(response =>{
+    //       localStorage.setItem('usuario_accesos', JSON.stringify(response.data));
+    //       return JSON.parse(JSON.stringify(response.data));          
+    //     })
+    //   },
       loginUsuarioRegistrer(FormLogin){
         return axios.post(CONFIG.API_URL+'usuario/post/login',FormLogin,{headers:  {'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
         .then(response=>{          

@@ -32,20 +32,20 @@ export default class BarmenuComponent extends Vue {
     super()    
     this.isActive=true;
     this.isCollapse=false;
-    this.getAccesos();
+    // this.getAccesos();
   }
   getAccesos(){
     var test=localStorage.getItem('User_Cargo');
     UsuarioService.GetUsuarioAccesos(test)
     .then(response => {      
       for (var j=0; j< response.Data.length; j++){
-        if(response.Data[j].intNivel == 1){
+        if(response.Data[j].intLevel == 1){
           this.accesosBarMenu.push({
-            strNombre: response.Data[j].strNombre,
-            intIndex:response.Data[j].intIndex,
-            strClickName:response.Data[j].strClickName,
-            strIconName:response.Data[j].strIconName,
-            strEnlace:response.Data[j].strEnlace
+            strNombre: response.Data[j].strName,
+            intIndex:response.Data[j].strIndex,
+            strClickName:response.Data[j].strClick_Name,
+            strIconName:response.Data[j].strIcon_Name,
+            strEnlace:response.Data[j].strLink
           });
         }
       }

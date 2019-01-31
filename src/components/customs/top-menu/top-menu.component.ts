@@ -33,9 +33,9 @@ export default class TopMenu extends Vue {
   constructor(){
     super();
    // this.ChechAccess();
-  this.nameuser=''+localStorage.getItem('User_Usuario');
-  this.namecomplete=''+localStorage.getItem('User_Nombre');
-  this.getAccesos();
+  // this.nameuser=''+localStorage.getItem('User_Usuario');
+  // this.namecomplete=''+localStorage.getItem('User_Nombre');
+  // this.getAccesos();
   // this.update();
   }
   getAccesos(){ 
@@ -91,7 +91,7 @@ export default class TopMenu extends Vue {
     router.push('/barmenu/'+comand)
   }
   linksLogin(){
-    router.push('/')
+    router.push('/inicio')
   }
   linkRoute(route){
     router.push(route)
@@ -110,62 +110,62 @@ export default class TopMenu extends Vue {
       return { verde: true, }
     }
   }
-  update(){
-      if (this.contador == 0) {
-          LoginService.getTokenTime()
-          .then(r => {
-            console.log(r);
-            this.contador= r*59;
-          }).catch(e =>{
-            console.log('Error: ',e);
-            this.openMessageError('Error al intentar conectar al servicio.');
-            window.sessionStorage.clear();
-            router.push('/')
-            window.location.reload();            
-          });
-        console.log(this.contador);        
-        this._10min = true;
-      }
-      else {  
-        this.contador = this.contador - 1;
-        this.minutos = Math.ceil(this.contador/60);
-        this.seconds = this.contador%60; 
+  // update(){
+  //     if (this.contador == 0) {
+  //         LoginService.getTokenTime()
+  //         .then(r => {
+  //           console.log(r);
+  //           this.contador= r*59;
+  //         }).catch(e =>{
+  //           console.log('Error: ',e);
+  //           this.openMessageError('Error al intentar conectar al servicio.');
+  //           window.sessionStorage.clear();
+  //           router.push('/')
+  //           window.location.reload();            
+  //         });
+  //       console.log(this.contador);        
+  //       this._10min = true;
+  //     }
+  //     else {  
+  //       this.contador = this.contador - 1;
+  //       this.minutos = Math.ceil(this.contador/60);
+  //       this.seconds = this.contador%60; 
         
-        this.calcular( this.contador);
-        if (this._10min && this.contador < 600) {
-          this._10min = false;
-          this.$alert('Oh no! Su tiempo se esta agotando,muy pronto se reiniciara el programa', 'Tiempo Expirado', {
-            confirmButtonText: 'OK',
-            type: 'warning',
-            callback: action => {
-              // this.$message({
-              //   type: 'info',
-              //   message: `action: ${ action }`
-              // });
-            }
-          });
+  //       this.calcular( this.contador);
+  //       if (this._10min && this.contador < 600) {
+  //         this._10min = false;
+  //         this.$alert('Oh no! Su tiempo se esta agotando,muy pronto se reiniciara el programa', 'Tiempo Expirado', {
+  //           confirmButtonText: 'OK',
+  //           type: 'warning',
+  //           callback: action => {
+  //             // this.$message({
+  //             //   type: 'info',
+  //             //   message: `action: ${ action }`
+  //             // });
+  //           }
+  //         });
   
-        }
-        if(this.contador === 0){
-          Notification.warning('Su tiempo de Sesión ha expirado, Vuelva a iniciar sesión')
-          window.sessionStorage.clear();
-          router.push('/')
-          window.location.reload();
-        }  
-      }
-      setTimeout(() => this.update(), 1000)
-  }
-  async get_Data() {
-    console.log("hola");
+  //       }
+  //       if(this.contador === 0){
+  //         Notification.warning('Su tiempo de Sesión ha expirado, Vuelva a iniciar sesión')
+  //         window.sessionStorage.clear();
+  //         router.push('/')
+  //         window.location.reload();
+  //       }  
+  //     }
+  //     setTimeout(() => this.update(), 1000)
+  // }
+  // async get_Data() {
+  //   console.log("hola");
     
-    //console.log(this.contador);
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      // this.getAccesos();
-      this.update();
-    }
-  }
+  //   //console.log(this.contador);
+  // }
+  // created() {
+  //   if(typeof window != 'undefined') {
+  //     // this.getAccesos();
+  //     this.update();
+  //   }
+  // }
   data(){
     return{
       dialogTableVisible: false,

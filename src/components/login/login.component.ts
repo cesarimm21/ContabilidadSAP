@@ -27,13 +27,13 @@ export default class LoginComponent extends Vue {
       this.$router.push('/barmenu/inicio');
   }
   loginUsuario(FormLogin){            
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Ingresando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );
+    // let loadingInstance = Loading.service({
+    //   fullscreen: true,
+    //   text: 'Ingresando...',
+    //   spinner: 'el-icon-loading',
+    //   background: 'rgba(0, 0, 0, 0.8)'
+    //   }
+    //   );
       this.$router.push('/barmenu/inicio');
     // axios.post(CONFIG.API_URL+'membership/login',FormLogin)
     // .then(response =>{
