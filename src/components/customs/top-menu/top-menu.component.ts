@@ -33,14 +33,14 @@ export default class TopMenu extends Vue {
   constructor(){
     super();
    // this.ChechAccess();
-  // this.nameuser=''+localStorage.getItem('User_Usuario');
-  // this.namecomplete=''+localStorage.getItem('User_Nombre');
+  this.nameuser='edwing';
+  this.namecomplete='gaona';
   // this.getAccesos();
   // this.update();
   }
   getAccesos(){ 
     var test=localStorage.getItem('User_Cargo');
-    UsuarioService.GetUsuarioAccesos(test)
+    UsuarioService.GetUsuarioAccesos()
     .then(response => {
       for (var i=0; i< response.Data.length; i++){
         if(response.Data[i].intNivel == 2){

@@ -14,7 +14,7 @@
             "strUser_ID": "00000001"
         },
         {
-            "intAccess_ID": "2",
+            "intAccess_ID": "1",
             "strName": "FI-Administracion",
             "strDescription": "administracion",
             "strLink": "/barmenu/administracion",
@@ -25,6 +25,6 @@
             "strClick_Name": "funcion",
             "strIcon_Name": "fa fa-user",
             "strUser_ID": "00000002"
-        },
+        }
     ]
 }
