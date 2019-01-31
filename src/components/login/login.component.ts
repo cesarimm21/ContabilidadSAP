@@ -34,50 +34,51 @@ export default class LoginComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
       );
-    axios.post(CONFIG.API_URL+'membership/login',FormLogin)
-    .then(response =>{
-        var encoded=btoa(JSON.stringify(response.data));     
-        var decode=JSON.parse(atob(encoded));      
-        if(decode.strUsuario==null || decode.strPassword==null){
-        this.openMessageError('Error en Ingresar Datos');
-        loadingInstance.close(); 
-        this.FormLogin.strUsuario='';
-        this.FormLogin.strPassword=''; 
-        return;     
-        }
-      loginService.Authentification(response.data)
-      .then(resp => {        
-        if(decode.strUsuario==null || decode.strPassword==null){
-          this.openMessageError('Error en Ingresar Datos');
-          loadingInstance.close(); 
-          this.FormLogin.strUsuario='';
-          this.FormLogin.strPassword=''; 
-          return;     
-          }
-        else{
-          this.openMessage('Bienvenido '+decode.Nombres);
-          localStorage.setItem('User_Usuario',decode.strUsuario);
-          localStorage.setItem('User_Nombre',decode.Nombres+', '+decode.ApellidoPaterno+' '+decode.ApellidoMaterno);
-          localStorage.setItem('User_CodPersona',decode.strCodPersona);
-          localStorage.setItem('User_CodUsuario',decode.intCodUsuario);
-          localStorage.setItem('User_Cargo',decode.strCargo);  
-          localStorage.setItem('User_Mail',decode.Email);   
-          debugger;        
-          this.user.authenticated = true;
-          loadingInstance.close();      
-          this.$router.push('/barmenu/inicio');
-          // window.location.reload();
-        }
-      }).catch()
-    })
-    .catch(e =>{
-      loadingInstance.close();
-      this.openMessageError('Usuario No reguistrado');
-      this.FormLogin.strUsuario='';
-      this.FormLogin.strPassword=''; 
-      this.$router.push('/'); 
-      console.log(e)
-    })
+      this.$router.push('/barmenu/inicio');
+    // axios.post(CONFIG.API_URL+'membership/login',FormLogin)
+    // .then(response =>{
+    //     var encoded=btoa(JSON.stringify(response.data));     
+    //     var decode=JSON.parse(atob(encoded));      
+    //     if(decode.strUsuario==null || decode.strPassword==null){
+    //     this.openMessageError('Error en Ingresar Datos');
+    //     loadingInstance.close(); 
+    //     this.FormLogin.strUsuario='';
+    //     this.FormLogin.strPassword=''; 
+    //     return;     
+    //     }
+    //   loginService.Authentification(response.data)
+    //   .then(resp => {        
+    //     if(decode.strUsuario==null || decode.strPassword==null){
+    //       this.openMessageError('Error en Ingresar Datos');
+    //       loadingInstance.close(); 
+    //       this.FormLogin.strUsuario='';
+    //       this.FormLogin.strPassword=''; 
+    //       return;     
+    //       }
+    //     else{
+    //       this.openMessage('Bienvenido '+decode.Nombres);
+    //       localStorage.setItem('User_Usuario',decode.strUsuario);
+    //       localStorage.setItem('User_Nombre',decode.Nombres+', '+decode.ApellidoPaterno+' '+decode.ApellidoMaterno);
+    //       localStorage.setItem('User_CodPersona',decode.strCodPersona);
+    //       localStorage.setItem('User_CodUsuario',decode.intCodUsuario);
+    //       localStorage.setItem('User_Cargo',decode.strCargo);  
+    //       localStorage.setItem('User_Mail',decode.Email);   
+    //       debugger;        
+    //       this.user.authenticated = true;
+    //       loadingInstance.close();      
+    //       this.$router.push('/barmenu/inicio');
+    //       // window.location.reload();
+    //     }
+    //   }).catch()
+    // })
+    // .catch(e =>{
+    //   loadingInstance.close();
+    //   this.openMessageError('Usuario No reguistrado');
+    //   this.FormLogin.strUsuario='';
+    //   this.FormLogin.strPassword=''; 
+    //   this.$router.push('/'); 
+    //   console.log(e)
+    // })
     
   }
 

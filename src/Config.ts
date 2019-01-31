@@ -1,6 +1,6 @@
 
-export const API_URL = 'http://pektyasrv814/PDPHSEC_SERVICE/api/';
-// export const API_URL = 'http://localhost:59154/api/'
+// export const API_URL = 'http://pektyasrv814/PDPHSEC_SERVICE/api/';
+export const API_URL = 'http://localhost:59154/api/'
 export const USUARIO_LOGED = 'vuetest';
 export const Local_PathImage='http://pektyasrv814/PDPHSEC_SERVICE/Imagenes/FileImage/';
 export const Local_PathPdf='http://pektyasrv814/PDPHSEC_SERVICE/Imagenes/Filepdf/';

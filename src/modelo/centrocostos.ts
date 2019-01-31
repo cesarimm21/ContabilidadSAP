@@ -1,0 +1,20 @@
+export class CentroCostos {
+    intIdCompania:number;
+    strCentroCosto:string;
+    intIdCentroCosto:number;
+    intIdGrupo:number;
+    intIdTipoTransac:number;
+    intIdClase:number;
+    strCodigo:string;
+    dtmVigenciaIni:Date;
+    dtmVigenciaFin:Date;
+    strNombre:string;
+    strdescripcion:string;
+    strArea1:string;
+    strArea2:string;
+    strCentro_Beneficio:string;
+    strCodCuentaContableDebe:string;
+    strCodCuentaContableHaber:string;
+    intIdGrupoArea:number;
+    intIdCategoriaCentroCosto:number;
+}
