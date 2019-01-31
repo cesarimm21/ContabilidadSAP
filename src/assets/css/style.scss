@@ -1,0 +1,34 @@
+[class^="el-icon-fa"], [class*=" el-icon-fa"] {
+  display: inline-block;
+  font-family: FontAwesome!important;
+  font-size: 18px;
+  font-style: normal;
+  /*font: normal normal normal 14px/1 FontAwesome!important;*/
+  //font-size: 1.5em;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+};
+
+$fa-css-prefix: el-icon-fa;
+@import 'node_modules/font-awesome/scss/font-awesome';
+.footer{
+  position: fixed;
+  width: 100%;
+  color: white;
+  text-align: center;
+  bottom: 0;
+  overflow: visible;
+  z-index: 99;
+  clear: both;
+  background-color: rgba(0,0,0,.6);
+}
+.footertext{
+  color: #fff;
+  font-size: 12px;
+  line-height: 28px;
+  white-space: nowrap;
+  display: inline-block;
+  margin-left: 8px;
+  margin-right: 8px;
+}

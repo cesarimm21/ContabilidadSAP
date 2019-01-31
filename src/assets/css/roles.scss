@@ -1,0 +1,17 @@
+.el-row {
+    margin-bottom: 0px;
+    &:last-child {
+        margin-bottom: 0px;
+    }
+}
+.el-col {
+    border-radius: 2px;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 20px;
+    min-width: 10px;
+}
+.el-transfer-panel__body{
+    height: 280px;
+}
