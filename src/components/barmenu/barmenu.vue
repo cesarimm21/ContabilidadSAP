@@ -7,13 +7,7 @@
     </el-row>
     <el-row class="main-container">
       <div class="side-container">
-        <div class="side-toolbar bg-purple2">
-          <el-tooltip class="item" effect="dark" content="Activar barmenu" placement="bottom">
-          <div class="hamb-container" v-bind:class="{ active: isActive }" @click="clickHamburger">
-            <div class="hamb-icon"></div>
-          </div>
-          </el-tooltip>
-        </div>
+       
         <div class="grid-content bg-purple">         
           <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
             <el-menu-item
@@ -23,11 +17,17 @@
               :key="item.strEnlace">
               <span slot="title" >{{item.strNombre}}</span>
               <i :class="item.strIconName"></i>              
-            </el-menu-item>         
+            </el-menu-item>  
+            
           </el-menu>
         </div>
       </div>
-      <div style="background:#f9fafc; width: 100%; padding: 1em;">
+      <div style="background:#f9fafc; width: 100%;">
+        
+        <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
+           <quickaccessmenu/>
+        </ol>
+
         <router-view></router-view>
       </div>
     </el-row>

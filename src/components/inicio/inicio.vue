@@ -1,7 +1,38 @@
 
 <template>
-  <div class="inicio">
+  <div class="inicio" >
     <h1>{{msg}}</h1>
+    <div class="principal" >
+      <el-card class="box-card" >
+        <div slot="header" class="headercard"  >
+          <span class="labelheadercard">Facturas disponibles</span>
+        </div>
+       <div class="row bodycard">
+          <div class="col-md-5">
+            <div class="form-group row">
+              <label class="el-form-item__label col-sm-2" >Proveedor:</label>
+              <div class="col-sm-4 grupolabel">
+                <div class="input-group mb-3" >
+                  <el-input size ="small"  v-model="FormSearch.Supplier" placeholder="*"></el-input>
+                  <div class="input-group-append buttongrupolabel">
+                    <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <el-tabs type="border-card">
+          <el-tab-pane>
+            <span slot="label"><i class="el-icon-date"></i> Route</span>
+            Route
+          </el-tab-pane>
+          <el-tab-pane label="Config">Config</el-tab-pane>
+          <el-tab-pane label="Role">Role</el-tab-pane>
+          <el-tab-pane label="Task">Task</el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -29,7 +60,8 @@ a {
   font-style: normal;
 }
 img{
-  width: 100%;
+  width: 100px;
+    height: 51px;
 }
 .imagens{
   width: 60%;

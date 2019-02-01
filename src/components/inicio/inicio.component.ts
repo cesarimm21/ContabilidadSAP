@@ -48,7 +48,7 @@ export default class InicioComponent extends Vue {
    codfiletitle:any;
 constructor (){
   super()
-  this.msg='Bienvenido al sistema documentario';
+  this.msg='';
   // this.loadingDataNewDocuments();
   // this.loadingDataPublishDocuments();
   // this.getEmail();

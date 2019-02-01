@@ -523,7 +523,8 @@ export default DocAprobadoComponent
     color: #1F2D3D;
   }
   img{
-  width: 100%;
+    width: 100px;
+    height: 51px;
 }
 .tabletaSearch {
     font-size: 12px;

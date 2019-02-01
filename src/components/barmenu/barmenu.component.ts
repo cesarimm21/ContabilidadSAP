@@ -14,12 +14,14 @@ import UsuarioService from '@/components/service/usuario.service';
 import '../../assets/css/barmenu.scss';
 import UsuarioComponent from '@/components/usuario/usuario.component';
 import InicioComponent from '@/components/inicio/inicio.component';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 @Component({
    name: 'barmenu',
    components:{
      'top-menu':TopMenu,
-     'inicio':InicioComponent
+     'inicio':InicioComponent,
+     'quickaccessmenu':QuickAccessMenuComponent
    }
 })
 export default class BarmenuComponent extends Vue {
@@ -35,6 +37,7 @@ export default class BarmenuComponent extends Vue {
     // this.getAccesos();
   }
   getAccesos(){
+
     var test=localStorage.getItem('User_Cargo');
     UsuarioService.GetUsuarioAccesos(test)
     .then(response => {      

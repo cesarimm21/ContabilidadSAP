@@ -41,7 +41,6 @@ body {
 
 .bg-purple2 {
   height: 30px;
-  background: #D3DCE6;
 }
 
 .grid-content {
@@ -73,12 +72,146 @@ body {
 }
 
 .hamb-container {
-  background-color: #C0CCDA;
-  width: 48px;
-  height: 48px;
+   width: 48px;
+  height: 36px;
   position: relative;
 }
+.v-separator {
+  content: "";
+  display: inline-block;
+  width: 0px;
+  height: 20px;
+  border-right: 1px solid #fafafa;
+  border-left: 1px solid #b4b4b4;
+  padding: 0;
+}
+.el-card__body {
+    text-align: center;
+    margin-bottom: 0.4% !important;
+}
+.el-tabs--border-card {
+    background: #fff;
+    border: 1px solid #d1dbe5;
+    margin-left: -10px !important;
+    margin-right: -10px !important;
+}
+.el-card {
+    cursor: initial !important;
+    position: relative;
+}
+.el-tabs__nav-scroll {
+    overflow: hidden;
+    height: 25px !important;
+    background: #c7d9e9;
+}
+.el-tabs__item {
+    padding: 0 16px;
+    height: 25px !important;
+    box-sizing: border-box;
+    line-height: 25px !important;
+    display: inline-block;
+    list-style: none;
+    font-size: 13px !important;
+    color: #8391a5;
+    position: relative;
+}
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+.el-form-item__label {
+    text-align: right;
+    height: 25px;
+    vertical-align: middle;
+    float: left;
+    font-size: 12px !important;
+    color: #48576a;
+    line-height: 1;
+    padding: 9px 17px 11px 0;
+    box-sizing: border-box;
+    border-bottom: 1px solid #a2b2bf;
+}
+.el-input--small .el-input__inner {
+    height: 22px;
+}
+.el-button--small {
+    padding: 3px 6px;
+    font-size: 14px;
+    border-radius: 3px;
+}
+.btn-outline-secondary:focus, .btn-outline-secondary.focus {
+    box-shadow: 0 0 1px 1px rgb(251, 229, 40);
+}
+.el-button:focus, .el-button:hover {
+    color: none;
+    border-color: none; 
+    background: #f78d1d;
+    background: #fff5c4;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+}
+.el-button--primary:focus, .el-button--primary:hover {
+    border-color: transparent;
+}
 
+.el-button--primary:focus, .el-button--primary:hover {
+  color: none;
+  border-color: none; 
+     background: #f78d1d;
+    background: #fff5c4;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+}
+.orange {
+    color: #4f3e2c;
+    color: #4f3e2c;
+    font-size: 12px;
+    border: solid 1px #e6e6e8e3;
+    background: #f78d1d;
+    background: #fff5c4;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+}
+.form-group {
+  margin-bottom: 0rem !important;
+  margin-left: -6px;
+}
+.box-card{
+  margin-left: 10px;background-color: rgb(246, 247, 249);
+}
+.principal{
+  margin-left: 10px;
+  margin-right: 17px;
+}
+.headercard{
+  height: 25px;margin-bottom: 0;background-color: #f9f9f9;background: -webkit-gradient(left top, left bottom, color-stop(0%, #d7dff2), color-stop(37%, #cadbed), color-stop(100%, #b5c9e2));background: linear-gradient(to bottom, #d7dff2 0%, #cadbed 37%, #b5c9e2 100%);
+}
+.labelheadercard{
+  font-size: 13px;margin-left: 10px;
+}
+.bodycard{
+  margin-top: -16px;
+}
+.grupolabel{
+  padding-left: 0px;margin-top: 3px;
+}
+.mb-3{
+  margin-top: 1px;
+}
+.buttongrupolabel{
+  height: 25px;margin-top: -2px;
+}
+.inicio{
+  margin-top: -0.2rem;
+}
+.el-tabs__nav {
+    position: relative;
+    transition: transform .3s;
+    float: left;
+    height: 25px !important;
+}
 .hamb-icon {
   position: absolute;
   background: #48576a;
