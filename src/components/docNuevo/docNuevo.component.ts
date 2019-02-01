@@ -69,12 +69,12 @@ export default class DocNuevoComponent extends Vue {
   modalVisualizar:boolean=false;
   constructor(){
     super();
-    this.ChechAccess();
+    // this.ChechAccess();
     this.isActive=true;
     this.isCollapse=false;
-    this.loadingData(); 
-    this.loadUnidad();   
-    this.loadTipoAprobacion();
+    // this.loadingData(); 
+    // this.loadUnidad();   
+    // this.loadTipoAprobacion();
     // this.getEmail();  
   }
   ChechAccess(){  

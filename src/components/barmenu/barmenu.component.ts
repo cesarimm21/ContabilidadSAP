@@ -99,8 +99,8 @@ export default class BarmenuComponent extends Vue {
     localStorage.clear();
     // router.push('/')
   }
-  linkRoute(route){
-    router.push(route)
+  linkRoute(){
+    router.push('/barmenu/docNuevo')
   }
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
