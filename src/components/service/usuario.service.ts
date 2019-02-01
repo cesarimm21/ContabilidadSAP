@@ -71,8 +71,8 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
       })
     },
-    GetUsuarioAccesos(strCargo){
-      return axios.get('assets/data/accesodata.json')
+    GetUsuarioAccesos(){
+      return axios.get('/assets/data/accesodata.json')
       .then(response=>{
         return response.data;
       })

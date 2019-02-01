@@ -402,12 +402,6 @@
           <el-button type="primary" icon="fa fa-close" @click="ViewHistorial=false">Cerrar</el-button>
         </footer>
       </b-modal>
-
-      <el-dialog class="viewpdf" :title="codfiletitle"
-            :visible.sync="modalVisualizar" hide-footer 
-            :close-on-click-modal="true">
-            <iframe :src="getPdfUrl()" class="pdfviewer"></iframe>
-          </el-dialog>
     </div> 
 </template>
 <script>
