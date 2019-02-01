@@ -70,8 +70,20 @@ body {
   margin: 0;
   padding: 0;
 }
-
+.el-carousel__mask {
     position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    opacity: .24;
+    transition: .2s;
+}
+.el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active, .router-link {
+    color: #000000 !important;
+    background-color: #a9c4d4 !important;
+}
 .hamb-container {
    width: 48px;
   height: 36px;
@@ -128,8 +140,16 @@ body {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
+.buttonfilter{
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    font: 0px/100% Arial, Helvetica, sans-serif;
+    margin-left: 0.3rem;
+    padding: 0px 0px;
+}
 .el-form-item__label {
-    text-align: right;
+    text-align: left;
     height: 25px;
     vertical-align: middle;
     float: left;
