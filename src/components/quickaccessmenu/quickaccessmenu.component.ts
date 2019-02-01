@@ -38,35 +38,7 @@ export default class QuickAccessMenuComponent extends Vue {
   // this.getAccesos();
   // this.update();
   }
-  getAccesos(){ 
-    var test=localStorage.getItem('User_Cargo');
-    UsuarioService.GetUsuarioAccesos(test)
-    .then(response => {
-      for (var i=0; i< response.Data.length; i++){
-        if(response.Data[i].intNivel == 2){
-          this.accesosUser.push({
-            strNombre: response.Data[i].strNombre,
-            intIndex:response.Data[i].intIndex,
-            strClickName:response.Data[i].strClickName,
-            strIconName:response.Data[i].strIconName,
-            strEnlace:response.Data[i].strEnlace
-          });          
-        }
-      }
-      if(this.accesosUser.length === 0){
-        this.ocultarConfig = false;
-      }
-    })
-    .catch(e =>{
-      console.log(e);
-      if(e.response.status === 401){ // token no valido
-        this.redirectLogin(e.response.statusText+', Vuelva a Iniciar Sesion');
-      }
-      else{
-        this.openMessageError('Error al cargar accesos');
-      }
-    })
-  }
+
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
