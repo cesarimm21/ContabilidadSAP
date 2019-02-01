@@ -146,7 +146,13 @@ body {
     cursor: pointer;
     font: 0px/100% Arial, Helvetica, sans-serif;
     margin-left: 0.3rem;
-    padding: 0px 0px;
+    padding: 0px 0px !important;
+}
+.imagenfilter{
+  width: 13px;
+  height: 13px;
+  margin-left: -11px;
+  margin-top: 0px;
 }
 .el-form-item__label {
     text-align: left;
