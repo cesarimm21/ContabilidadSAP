@@ -2,7 +2,10 @@
   <div id="app">
     <el-row style="box-shadow: rgb(53, 83, 105) 0px 1px 2px; z-index: 3;">
       <el-col :span="24">
-       <top-menu/>
+       <top-menu v-on:proveedorSeleccionado="proveedorSeleccionado()"/>
+        <!-- <el-dialog title="Búsqueda Proveedor"  :visible.sync="busquedaProveedorVista" @close="busquedaProveedorVista=false" size="small" >
+          <busquedaProveedor v-on:proveedorSeleccionado="proveedorSeleccionado($event)"></busquedaProveedor>
+        </el-dialog> -->
       </el-col>
     </el-row>
     <el-row class="main-container">

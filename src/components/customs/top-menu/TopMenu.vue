@@ -1,7 +1,7 @@
 <template>
   <div class="top-menu">
     <div class="logo" style="align-items: center;justify-content: center;" >
-        <img src="../../../images/logo.png"> 
+        <img src="../../../images/logo.png" style="width: 100px !important; height: 51px !important;"> 
     </div>
     <!-- <div class="brand" >
       <span style="font-size: 12px;    color: #ffc50c;">Tiempo Restante</span>
@@ -12,7 +12,7 @@
     <!-- <p>tiempo de token: {{hours}}:{{minutes}}:{{seconds}}</p> -->
     <div class="side-toolbar bg-purple2">
       <el-tooltip class="item" effect="dark" content="Activar barmenu" placement="bottom">
-      <div class="hamb-container" v-bind:class="{ active: isActive }" @click="clickHamburger">
+      <div class="hamb-container" v-bind:class="{ active: isActive }" @click="clickHamburger()" >
         <div class="hamb-icon"></div>
       </div>
       </el-tooltip>

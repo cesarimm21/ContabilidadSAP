@@ -1,6 +1,6 @@
 
 <template>
-  <div class="inicio" >
+  <!-- <div class="inicio" >
     <h1>{{msg}}</h1>
     <div class="principal" >
       <el-card class="box-card" >
@@ -33,7 +33,12 @@
         </el-tabs>
       </el-card>
     </div>
-  </div>
+  </div> -->
+  <el-carousel :interval="4000" style="margin-top: 7%;" type="card" height="400px" width="400px" >
+    <el-carousel-item v-for="item in 6" :key="item">
+      <img src="../../images/fondo3.jpg" style="height: 400px; width:100% !important;" />
+    </el-carousel-item>
+  </el-carousel>
 </template>
 
 <script>
@@ -41,6 +46,21 @@ import Inicio from '@/components/inicio/inicio.component'
 export default Inicio
 </script>
 <style>
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
 h1, h2 {
   font-weight: normal;
 }

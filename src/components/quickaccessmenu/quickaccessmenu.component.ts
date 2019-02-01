@@ -30,6 +30,9 @@ export default class QuickAccessMenuComponent extends Vue {
   nameuser:string;
   namecomplete:string;
   accesosUser:any=[];
+  ocultar:boolean=false;
+  dialogVisible:boolean=false;
+  SendDocument:boolean=false;
   constructor(){
     super();
    // this.ChechAccess();
@@ -38,7 +41,15 @@ export default class QuickAccessMenuComponent extends Vue {
   // this.getAccesos();
   // this.update();
   }
-
+  fnOcultar(){
+    this.ocultar=!this.ocultar;
+  }
+  guardar(){
+    //this.dialogVisible=true;
+    this.SendDocument=true;
+    //this.$refs.myModalRef.show();
+  }
+  
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
@@ -58,6 +69,10 @@ export default class QuickAccessMenuComponent extends Vue {
    window.sessionStorage.clear();
     //GLOBAL.limpiarDatosSession();
     router.push('/')
+  }
+  confirmaraceptar(){
+    //alert("Excelente");
+    this.SendDocument=false;
   }
   linksUser(comand){
     router.push('/barmenu/'+comand)
