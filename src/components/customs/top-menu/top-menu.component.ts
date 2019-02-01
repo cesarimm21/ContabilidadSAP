@@ -13,6 +13,7 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import '../../../assets/css/topmenu.scss';
 import { Notification } from 'element-ui';
+import GLOBAL from '../../../Global';
 @Component({
   name: 'top-menu',
   components: { contextMenu }
@@ -34,15 +35,13 @@ export default class TopMenu extends Vue {
   isCollapse:boolean=false;
   constructor(){
     super();
+    this.isActive=GLOBAL.isActive;
+    this.isCollapse=GLOBAL.isCollapse;
    // this.ChechAccess();
   this.nameuser='edwing';
   this.namecomplete='gaona';
   // this.getAccesos();
   // this.update();
-  }
-  clickHamburger () {
-    this.isActive = !this.isActive
-    this.isCollapse = !this.isCollapse
   }
   getAccesos(){ 
     var test=localStorage.getItem('User_Cargo');
@@ -172,6 +171,15 @@ export default class TopMenu extends Vue {
   //     this.update();
   //   }
   // }
+  
+  clickHamburger () {
+    debugger;    
+    this.isActive=!GLOBAL.getActive()
+    this.isCollapse=!GLOBAL.getCollapse()
+    GLOBAL.setActive(this.isActive);
+    GLOBAL.setCollapse(this.isCollapse);
+    this.$emit('proveedorSeleccionado');
+  }
   data(){
     return{
       dialogTableVisible: false,

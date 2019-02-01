@@ -17,6 +17,7 @@ import InicioComponent from '@/components/inicio/inicio.component';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import { AccesoModel } from  'src/modelo/login/acceso';
+import GLOBAL from '../../Global';
 @Component({
    name: 'barmenu',
    components:{
@@ -35,9 +36,17 @@ export default class BarmenuComponent extends Vue {
   tableData:any[];
   constructor(){
     super()    
-    this.isActive=true;
-    this.isCollapse=false;
+    this.isActive=GLOBAL.isActive;
+    this.isCollapse=GLOBAL.isCollapse;
     this.getAccesos(); 
+  }
+  proveedorSeleccionado(val){
+    debugger;
+    this.isActive=GLOBAL.getActive()
+    this.isCollapse=GLOBAL.getCollapse()
+    // this.FormSearch.SUPPLIER_NO = val.SUPPLIER_NO;
+    // //this.formularioBusqueda.proveedorSeleccionado=val.id_articulo;
+    // this.busquedaProveedorVista=false;
   }
 
   getAccesos(){
