@@ -71,6 +71,7 @@ body {
   padding: 0;
 }
 
+    position: absolute;
 .hamb-container {
    width: 48px;
   height: 36px;
