@@ -22,7 +22,8 @@
                 <el-menu-item index="1-1-2">FP02-Modificar Documento</el-menu-item>
                 <el-menu-item index="1-1-3">FP03-Visualizar Documento</el-menu-item>
                 <el-menu-item index="1-1-4">FP10-Reconciliación</el-menu-item>
-                <el-menu-item index="1-1-5">FP04-Pagos</el-menu-item>
+                <el-menu-item index="1-1-5"
+                @click="linkRouterunpagos()">FP04-Pagos</el-menu-item>
                 <el-submenu index="1-1-6">
                   <template slot="title">REPORTES</template>
                   <el-menu-item index="1-1-6-1">FP21-Documentos</el-menu-item>

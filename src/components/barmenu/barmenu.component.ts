@@ -104,6 +104,9 @@ export default class BarmenuComponent extends Vue {
   linkRoute(){
     router.push('/barmenu/docNuevo')
   }
+  linkRouterunpagos(){
+    router.push('/barmenu/runpagos')
+  }
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     }

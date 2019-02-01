@@ -30,6 +30,8 @@ export default class TopMenu extends Vue {
   nameuser:string;
   namecomplete:string;
   accesosUser:any=[];
+  isActive:boolean=false;
+  isCollapse:boolean=false;
   constructor(){
     super();
    // this.ChechAccess();
@@ -37,6 +39,10 @@ export default class TopMenu extends Vue {
   this.namecomplete='gaona';
   // this.getAccesos();
   // this.update();
+  }
+  clickHamburger () {
+    this.isActive = !this.isActive
+    this.isCollapse = !this.isCollapse
   }
   getAccesos(){ 
     var test=localStorage.getItem('User_Cargo');

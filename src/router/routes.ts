@@ -27,6 +27,7 @@ import Directorios from "@/components/directorios/directorios.vue"
 import Plantilla from "@/components/plantilla/plantilla.vue"
 import AccesoDocument from "@/components/accesoDocument/accesoDocument.vue"
 import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue"
+import Runpagos from '../components/views/configuracion/runpagos/runpagos.component.vue'
 export default [
  
   {
@@ -153,6 +154,11 @@ export default [
         path:'procesoEjecucion',
         component:procesoEjecucion,
         name:'procesoEjecucion'
+      },
+      {
+        path:'runpagos',
+        component:Runpagos,
+        name:'runpagos'
       }
     ]
 
