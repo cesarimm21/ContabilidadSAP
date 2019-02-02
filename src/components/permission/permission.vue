@@ -84,7 +84,7 @@
                  @click="handleEdit(scope.$index, scope.id,scope.row)">Permisos</el-button>
          </template>
         </el-table-column>
-    </el-table class="tableta">
+    </el-table>
 
     <el-dialog 
         title="Lista de usarios"

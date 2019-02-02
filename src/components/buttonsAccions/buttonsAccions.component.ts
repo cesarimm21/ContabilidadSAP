@@ -11,21 +11,33 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-import '../../../assets/css/topmenu.scss';
+
 import { Notification } from 'element-ui';
-import GLOBAL from '../../../../Global';
 @Component({
-  name: 'header-buttons',
+  name: 'buttons-accions',
   components: { contextMenu }
 })
-export default class HeaderTableButtons extends Vue {
-  
+export default class ButtonsAccionsComponent extends Vue {
+ 
   constructor(){
     super();
   } 
+  BuscarSome(){
+    this.$emit('handleClickInParent');
+  }
   data(){
     return{
-      dialogTableVisible: false
+      dialogTableVisible: false,
+      user: {
+        authenticated: false
+      },
+      data:{
+        Usuario:localStorage.getItem('User_Nombre'),
+      },
+      accesosUser: [],
+      hours: 0,
+      minutos:0,
+      seconds:0
     }
   }
   

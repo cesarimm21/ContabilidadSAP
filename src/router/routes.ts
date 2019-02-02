@@ -8,6 +8,7 @@ import JerarquiaComponent from '@/components/jerarquia/jerarquia.vue'
 import PopUpOpcionComponent from '@/components/popUpOpcion/popUpOpcion.vue'
 import ConfiguracionComponent from '@/components/configuracion/configuracion.vue'
 import TopMenu from '@/components/customs/top-menu/TopMenu.vue';
+import HeaderbuttosComponent from '@/components/views/reusables/headerbuttos/headerbuttos.vue';
 import RolesComponent from '@/components/roles/roles.vue'
 import UsuarioComponent from '@/components/usuario/usuario.vue'
 import LogComponent from '@/components/log/log.vue'
@@ -27,7 +28,7 @@ import Directorios from "@/components/directorios/directorios.vue"
 import Plantilla from "@/components/plantilla/plantilla.vue"
 import AccesoDocument from "@/components/accesoDocument/accesoDocument.vue"
 import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue"
-import Runpagos from '../components/views/configuracion/runpagos/runpagos.component.vue'
+import RunComponent from '../components/run/run.vue'
 export default [
  
   {
@@ -156,9 +157,9 @@ export default [
         name:'procesoEjecucion'
       },
       {
-        path:'runpagos',
-        component:Runpagos,
-        name:'runpagos'
+        path:'run',
+        component:RunComponent,
+        name:'run'
       }
     ]
 

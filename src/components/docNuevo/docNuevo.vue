@@ -3,6 +3,7 @@
         <p class="titleComponent" align="center">
             B&uacute;squeda de documentos nuevos
         </p>
+        <buttons-accions/>
         <el-card class="box-card">
             <i class="fa fa-filter"></i>
             <span>Filtros de b&uacute;squeda</span>

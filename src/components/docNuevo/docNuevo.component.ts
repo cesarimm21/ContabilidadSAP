@@ -25,11 +25,12 @@ import docNuevoService from '@/components/service/docNuevo.service';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
+import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 Vue.use(BootstrapVue);
 
 @Component({
    name: 'docNuevo',
-   components: { contextMenu,Pagination,Modal,trumbowyg }
+   components: { contextMenu,Pagination,Modal,trumbowyg,'buttons-accions':ButtonsAccionsComponent }
 })
 export default class DocNuevoComponent extends Vue {
   public griddinamicang:string ="row listadinamica nav nav-tabs";
