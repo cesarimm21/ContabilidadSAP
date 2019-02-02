@@ -120,34 +120,34 @@
                             <!-- <div class="card cardButtons"> -->
                                 <div class="table-title" >
                                   <div style="margin-top: 4px;">   
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/buscar.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/buscar.png" alt="" >
                                     </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/tacho.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <div class="v-separator"></div>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/ordenar_ascendente.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/ordenar_descendente.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/buscari.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/buscarimg.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/filtro.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/tacho.png" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/imprimir.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/ordenar_ascendente.png" alt="" >
                                     </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/informacion.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/ordenar_descendente.png" alt="" >
+                                    </el-button>
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/buscari.png" alt="" >
+                                    </el-button>
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/buscarimg.png" alt="" >
+                                    </el-button>
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/filtro.png" alt="" >
+                                    </el-button>
+                                    <div class="v-separator"></div>
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/imprimir.png" alt="" >
+                                    </el-button>
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/informacion.png" alt="" >
                                     </el-button>
 
                                   </div>
@@ -215,7 +215,7 @@
                                 </div>
                             </div>
                             <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                <img class="accionButtonsImage" src="../../../../images/collapse_derecha.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                <img class="imagenfilter" src="../../../../images/collapse_derecha.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
                             </el-button>
                         </div>
                         <div class="row bodycard" style="margin-top:0px;">
@@ -234,7 +234,7 @@
                                 </div>
                             </div>
                             <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                <img class="accionButtonsImage" src="../../../../images/collapse_derecha.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                <img class="imagenfilter" src="../../../../images/collapse_derecha.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
                             </el-button>
                         </div>
                         
@@ -269,13 +269,6 @@ export default Runpagos
 }
 .imageHover{
     border: 1px solid black; 
-}
-/* .cardButtons{
-    text-align: left;
-} */
-.buttonFirst{
-    background-image:url('../../../../images/collapse_left.png');
-    margin-top: 2px;
 }
 .ExcelTable2007 {
     border: 1px solid #B0CBEF;
