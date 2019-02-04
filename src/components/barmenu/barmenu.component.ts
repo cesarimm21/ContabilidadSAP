@@ -15,6 +15,8 @@ import '../../assets/css/barmenu.scss';
 import UsuarioComponent from '@/components/usuario/usuario.component';
 import InicioComponent from '@/components/inicio/inicio.component';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
+import HeaderbuttosComponent from '@/components/headerbuttos/headerbuttos.vue'
 import { Notification } from 'element-ui';
 import { AccesoModel } from  'src/modelo/login/acceso';
 import GLOBAL from '../../Global';
@@ -23,7 +25,8 @@ import GLOBAL from '../../Global';
    components:{
      'top-menu':TopMenu,
      'inicio':InicioComponent,
-     'quickaccessmenu':QuickAccessMenuComponent
+     'quickaccessmenu':QuickAccessMenuComponent,
+     'buttons-accions':ButtonsAccionsComponent
    }
 })
 export default class BarmenuComponent extends Vue {
@@ -114,7 +117,7 @@ export default class BarmenuComponent extends Vue {
     router.push('/barmenu/docNuevo')
   }
   linkRouterunpagos(){
-    router.push('/barmenu/runpagos')
+    router.push('/barmenu/run')
   }
     handleOpen (key, keyPath) {
       console.log(key, keyPath)

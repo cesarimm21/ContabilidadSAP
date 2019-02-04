@@ -241,6 +241,9 @@ body {
     font-size: 8px;
     line-height: 25px;
 }
+.headercard {
+    text-align: left;
+}
 .modal-title{
   color: white;
   font-style: normal;

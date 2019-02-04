@@ -1,5 +1,5 @@
 <template>
-    <div class="runpagos">
+  <div class="run-pagos">
         <el-card class="box-card">
             <div slot="header" class="headercard"  >
                 <span class="labelheadercard">Pagos automaticos</span>
@@ -114,48 +114,7 @@
                             </div>
                         </div>
                      </div>
-                    <!-- <div class="row bodycard"> -->
-                    <div class="headercard " style="height: 33px;" >
-                        <div class="col-md-12">
-                            <!-- <div class="card cardButtons"> -->
-                                <div class="table-title" >
-                                  <div style="margin-top: 4px;">   
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
-                                        <img class="imagenfilter" src="../../../../images/buscar.png" alt="" >
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/tacho.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <div class="v-separator"></div>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/ordenar_ascendente.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/ordenar_descendente.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/buscari.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/buscarimg.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/filtro.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <div class="v-separator"></div>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/imprimir.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/informacion.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                                    </el-button>
-
-                                  </div>
-                              </div>
-                            <!-- </div> -->
-                            
-                        </div>                        
-                    </div>
+                     <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                     <br>
                         <div class="table-responsive">
                             <table class="ExcelTable2007" style="
@@ -214,9 +173,9 @@
                                     <el-input size ="small" placeholder="999999999"></el-input>
                                 </div>
                             </div>
-                            <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                <img class="accionButtonsImage" src="../../../../images/collapse_derecha.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                            </el-button>
+                             <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top:2px;" >
+                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" >
+                                </el-button>
                         </div>
                         <div class="row bodycard" style="margin-top:0px;">
                             <label class="el-form-item__label col-sm-2" >Cliente:</label>
@@ -233,9 +192,9 @@
                                     <el-input size ="small" placeholder="999999999"></el-input>
                                 </div>
                             </div>
-                            <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                <img class="accionButtonsImage" src="../../../../images/collapse_derecha.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
-                            </el-button>
+                             <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top:2px;" >
+                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" >
+                                </el-button>
                         </div>
                         
                     </el-card>
@@ -245,12 +204,14 @@
         </el-tabs>
         </el-card>
     </div>
+  
 </template>
 <script>
-import Runpagos from '@/components/views/configuracion/runpagos/runpagos.component'
-export default Runpagos
+
+import RunComponent from '@/components/run/run.component'
+export default RunComponent
 </script>
-<style>
+<style scoped>
 .el-input--small .el-input__inner {
     height: 22px;
     font-size: 11px !important;
@@ -260,22 +221,12 @@ export default Runpagos
     margin-left: -6px;
     height: 25px;
 }
-.headercard {
-    text-align: left;
-}
 .statusClass{
     border-bottom: none;
     text-align: left;
 }
 .imageHover{
     border: 1px solid black; 
-}
-/* .cardButtons{
-    text-align: left;
-} */
-.buttonFirst{
-    background-image:url('../../../../images/collapse_left.png');
-    margin-top: 2px;
 }
 .ExcelTable2007 {
     border: 1px solid #B0CBEF;
@@ -301,4 +252,5 @@ export default Runpagos
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
 </style>
