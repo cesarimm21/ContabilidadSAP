@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import contextMenu from 'vue-context-menu';
-import VueLocalStorage from 'vue-localstorage';
+// import VueLocalStorage from 'vue-localstorage';
 import Login from '@/components/login/login.vue';
 import Roles from '@/components/roles/roles.vue';
 import UsuarioService from '@/components/service/usuario.service';
@@ -32,7 +32,7 @@ export default class ButtonsAccionsComponent extends Vue {
         authenticated: false
       },
       data:{
-        Usuario:localStorage.getItem('User_Nombre'),
+        // Usuario:localStorage.getItem('User_Nombre'),
       },
       accesosUser: [],
       hours: 0,

@@ -29,6 +29,7 @@ import Plantilla from "@/components/plantilla/plantilla.vue"
 import AccesoDocument from "@/components/accesoDocument/accesoDocument.vue"
 import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue"
 import RunComponent from '../components/run/run.vue'
+import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
 export default [
  
   {
@@ -36,6 +37,21 @@ export default [
     component: Barmenu,
     name: 'Barmenu',
     children:[{
+      path: 'FI-FINANZAS',
+      component:CrearProveedorComponent,
+      name:'finanzas',
+      children:[{
+        path:'proveedor',
+        component:CrearProveedorComponent,
+        children:[{
+          path:'crear-proveedor',
+          component:CrearProveedorComponent,
+          name:'crear-proveedor'
+        }]
+      }]
+      },
+      
+      {
         path: 'inicio',
         component: Inicio,
         name: 'Inicio',

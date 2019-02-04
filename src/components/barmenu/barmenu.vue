@@ -85,7 +85,14 @@
                   <el-menu-item index="1-5-3-8">MG22-Modificar Grupo Cuenta</el-menu-item>
                   <el-menu-item index="1-5-3-9">MG23-Visualizar Grupo Cuenta</el-menu-item>
                 </el-submenu>
+                 <el-submenu index="1-5-4">
+                  <template slot="title">MASTER PROVEEDOR</template>
+                  <el-menu-item index="1-5-4-1" @click="linkCrearProveedor()">MP01-Crear Proveedor</el-menu-item>
+                  <el-menu-item index="1-5-4-2">MP02-Modificar Proveedor</el-menu-item>
+                  <el-menu-item index="1-5-4-3">MP03-Visualizar Proveedor</el-menu-item>
+                </el-submenu>
               </el-submenu>
+             
               <el-submenu index="1-6">
                 <template slot="title">LIBROS Y BALANCES</template>
                 <el-submenu index="1-6-1">
@@ -282,7 +289,7 @@
             <el-submenu index="6">
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>XX-CONFIGURACIÓN</span>
+                <span>CO-CONFIGURACIÓN</span>
               </template>
               <el-submenu index="6-1">
                 <template slot="title">ENTIDAD</template>

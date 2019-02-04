@@ -19,9 +19,9 @@
     background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
     background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
                   </el-input>
-                  <div class="input-group-append buttongrupolabel">
+                  <!-- <div class="input-group-append buttongrupolabel">
                     <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>

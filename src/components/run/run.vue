@@ -10,7 +10,7 @@
                     <label class="el-form-item__label col-sm-3" >Fecha ejecución:</label>
                     <div class="col-sm-4 grupolabel">
                         <div class="input-group mb-3" >
-                        <el-input type="date"  size ="small"   placeholder="*"></el-input>
+                        <el-input type="date"  size ="small"  style="font-size:11px;" placeholder="*"></el-input>
                         </div>
                     </div>
                     </div>
@@ -23,15 +23,20 @@
                         </div>
                     </div>
                      <div class="form-group row">
-                        <label class="el-form-item__label col-sm-3" >Moneda:</label>
-                        <div class="col-sm-4 grupolabel">
-                            <div class="input-group mb-3" >
-                            <el-input size ="small"   placeholder="*"></el-input>
-                            <div class="input-group-append buttongrupolabel">
-                                <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="viewMoneda()"></el-button>
+                         <label class="el-form-item__label col-sm-3" >Moneda:</label>
+                            <div class="col-sm-4 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"  placeholder="*">
+                                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                    background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                </el-input>
+                                <!-- <div class="input-group-append buttongrupolabel">
+                                    <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
+                                </div> -->
+                                </div>
                             </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -69,7 +74,7 @@
                             <label class="el-form-item__label col-sm-5" >Fecha contabilización:</label>
                             <div class="col-sm-4 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input type="date"  size ="small"   placeholder="*"></el-input>
+                                <el-input type="date"  size ="small" style="font-size:11px;"  placeholder="*"></el-input>
                                 </div>
                             </div>
                             </div>
@@ -82,22 +87,27 @@
                             <label class="el-form-item__label col-sm-5" >Docs. ingresados hastas:</label>
                             <div class="col-sm-4 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input type="date"  size ="small"   placeholder="*"></el-input>
+                                <el-input type="date"  size ="small"  style="font-size:11px;" placeholder="*"></el-input>
                                 </div>
                             </div>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group row">
-                                <label class="el-form-item__label col-sm-5" >Banco pagador:</label>
-                                <div class="col-sm-4 grupolabel">
-                                    <div class="input-group mb-4" >
-                                    <el-input size ="small"   placeholder="*"></el-input>
-                                    <div class="input-group-append buttongrupolabel">
-                                        <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="viewMoneda()"></el-button>
+                                 <label class="el-form-item__label col-sm-5" >Banco pagador:</label>
+                                    <div class="col-sm-4 grupolabel">
+                                        <div class="input-group mb-3" >
+                                        <el-input size ="small"  placeholder="*">
+                                            <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                        </el-input>
+                                        <!-- <div class="input-group-append buttongrupolabel">
+                                            <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
+                                        </div> -->
+                                        </div>
                                     </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -108,7 +118,7 @@
                             <label class="el-form-item__label col-sm-5" >Pos. deudores vence a:</label>
                             <div class="col-sm-4 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input type="date"  size ="small"   placeholder="*"></el-input>
+                                <el-input type="date"  size ="small"  style="font-size:11px;" placeholder="*"></el-input>
                                 </div>
                             </div>
                             </div>
@@ -124,7 +134,7 @@
                                             white-space: nowrap;">
                                 <thead>
                                     <tr>
-                                        <th class="heading" style="width: 3%;">&nbsp;</th>
+                                        <th class="heading" style="width: 1%;">&nbsp;</th>
                                         <th style="width: 10%;"><span  class="col-form-label" style="border-bottom: none;font-size: 12px !important;">Categoria Cuenta</span></th>
                                         <th style="width: 10%;"><span  class="col-form-label" style="border-bottom: none;font-size: 12px !important;">Categoria Linea</span></th>
                                         <th style="width: 10%;"><span  class="col-form-label" style="border-bottom: none;font-size: 12px !important;">Almacen</span></th>

@@ -119,6 +119,9 @@ export default class BarmenuComponent extends Vue {
   linkRouterunpagos(){
     router.push('/barmenu/run')
   }
+  linkCrearProveedor(){
+    router.push('/barmenu/FI-FINANZAS/proveedor/crear-proveedor')
+  }
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     }
