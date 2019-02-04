@@ -60,6 +60,8 @@ export default class InicioComponent extends Vue {
    video:any='https://www.youtube.com/watch?v=P0Xlf6qTuNQ';
    type:any='video/mp4';
    efectoinput:boolean=false;
+   modalPopup:boolean=false;
+   btnactivarproveedor:boolean=false;
    editing:any= {
      row:'',
      column:''
@@ -77,6 +79,7 @@ constructor (){
   // this.getEmail();
   // this.statisticsGraphic();
 }
+
 loadingDataNewDocuments(){
   inicioService.loadingDataNewDocuments()
   .then(response=>{
@@ -345,6 +348,14 @@ getDateString(fecha:string){
     this.editing.column='';
     console.log('blur');
   }
+  activar_proveedor(){
+    debugger;
+    this.btnactivarproveedor=true;
+  }
+  desactivar_proveedor(){
+    debugger;
+    this.btnactivarproveedor=false;
+  }
   alerta2(){
     alert("hola");
   }
@@ -358,6 +369,9 @@ getDateString(fecha:string){
     this.editing.row=event;
     this.editing.column=column;
     console.log('alerta',event,edit);
+   }
+   abrirpopup(){
+    this.modalPopup=true;
    }
    data() {
     return {
