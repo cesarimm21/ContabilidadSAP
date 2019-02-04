@@ -147,7 +147,7 @@
               </template>
               <el-submenu index="2-1">
                 <template slot="title">REQUISICIÓN DE COMPRA</template>
-                <el-menu-item index="2-1-1">LR01-Crear Requerimiento de Compra</el-menu-item>
+                <el-menu-item index="2-1-1" @click="linkCrearRequisicion()">LR01-Crear Requerimiento de Compra</el-menu-item>
                 <el-menu-item index="2-1-2">LR02-Modificar Requerimiento de Compras</el-menu-item>
                 <el-menu-item index="2-1-3">LR04-Visualizar Requerimiento de Compras</el-menu-item>
                 <el-menu-item index="2-1-4">LR07-Aceptacion del Servicio</el-menu-item>
