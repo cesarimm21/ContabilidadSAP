@@ -407,5 +407,9 @@ body {
 .el-loading-mask{
   background-color: rgba(0, 0, 0, 0.8);
 }
+.el-input__inner{
+  height: 22px;
+  font-size: 12px;
+}
 
 </style>

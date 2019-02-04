@@ -26,6 +26,7 @@ export default class CrearProveedorComponent extends Vue {
   ocultar:boolean=false;
   dialogVisible:boolean=false;
   SendDocument:boolean=false;
+  btnactivarproveedor:boolean=false;
   constructor(){
     super();
   }
@@ -120,6 +121,14 @@ export default class CrearProveedorComponent extends Vue {
         return 'selected-row';
     }
   }
+  activar_proveedor(){
+    debugger;
+    this.btnactivarproveedor=true;
+  }
+  desactivar_proveedor(){
+    debugger;
+    this.btnactivarproveedor=false;
+  }
   data(){
     return{
       dialogTableVisible: false,
@@ -162,6 +171,22 @@ export default class CrearProveedorComponent extends Vue {
       user: {
         authenticated: false
       },
+      options: [{
+        value: '1',
+        label: 'Antapaccay'
+      }, {
+        value: '2',
+        label: 'las bambas'
+      }],
+      categoria: [{
+        value: '1',
+        label: 'Juridica'
+      }, {
+        value: '2',
+        label: 'Natural'
+      }],
+      value: '',
+      value1:'',
       data:{
         Usuario:localStorage.getItem('User_Nombre'),
       },

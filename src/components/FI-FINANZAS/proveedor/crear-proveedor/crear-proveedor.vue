@@ -46,6 +46,216 @@
                   </div>
               </div>
           </el-card>
+          <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Nuevo Proveedor</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-6">                       
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Compañia</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-select v-model="value" class="selected">
+                                    <el-option
+                                    class="opciones"
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-2" >Nombre</label>
+                            <div class="col-md-4 grupolabel">
+                                <div class="input-group mb-5" >
+                                <el-input size ="small"   placeholder="">                    
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-3" >Categoria</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-select v-model="value1" class="selected">
+                                    <el-option
+                                    class="opciones"
+                                    v-for="item in categoria"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                </div>
+                            </div>
+                        </div>                      
+                  </div>
+                  <div class="col-md-12">
+                       <div class="form-group row ">
+                            <label class="el-form-item__label col-md-1" >Nombre</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-2" >Apellido Paterno</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>
+                             <label class="el-form-item__label col-md-2" >Apellido Materno</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-1" >RUC</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-1" >Pais</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-1" >Departamento</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>                           
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-1" >Provincia</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-1" >Distrito</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>   
+                            <label class="el-form-item__label col-md-2" >Codigo postal</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>                         
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-1" >Avenida</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-1" >Numero</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-1" >DEPTO</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">                    
+                                </el-input>
+                                </div>
+                            </div>   
+                            <label class="el-form-item__label col-md-1" >OF.</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">                    
+                                </el-input>
+                                </div>
+                            </div>  
+                            <label class="el-form-item__label col-md-1" >Lote</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small"   placeholder="">                    
+                                </el-input>
+                                </div>
+                            </div>                       
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-1" >Banco</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small"   placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-2" >Cuenta coorporativa</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small"   placeholder="">                    
+                                </el-input>
+                                </div>
+                            </div>                       
+                        </div>
+                  </div>
+              </div>
+          </el-card>
       </div>
       <el-dialog
         title="Proveedores"
@@ -115,4 +325,16 @@ export default CrearProveedorComponent
     background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
     background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
 }
+.selected {
+    width: 100%;
+    padding-left: 0px;
+    height: 22px !important;
+}
+.selected .el-input__inner {
+    cursor: pointer;
+    padding-right: 35px;
+    height: 22px !important;
+}
+
+
 </style>
