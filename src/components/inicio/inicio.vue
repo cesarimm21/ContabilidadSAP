@@ -9,19 +9,18 @@
         </div>
        <div class="row bodycard">
           <div class="col-md-5">
+       
             <div class="form-group row">
               <label class="el-form-item__label col-sm-2" >Proveedor:</label>
               <div class="col-sm-4 grupolabel">
                 <div class="input-group mb-3" >
-                  <el-input size ="small"  v-model="FormSearch.Supplier" placeholder="*">
-                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                  <el-input size ="small" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                    <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
     background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
     background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
     background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
                   </el-input>
-                  <!-- <div class="input-group-append buttongrupolabel">
-                    <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
-                  </div> -->
+                
                 </div>
               </div>
             </div>
@@ -33,14 +32,10 @@
           style="width: 50%" class="ExcelTable2007">
           <el-table-column sortable  prop="date" label="Fecha">
             <template scope="scope">
-               <!-- <editable-column-content 
-                :is-editing="isEditing" :scope="scope" :editing="editing" property="address"
-                @blur-input="onCellBlur" @enter-input="onCellBlur">
-                </editable-column-content> -->
+            
                 <el-input  v-if="editingb  && (scope.row === editing.row) 
                   && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.date" ></el-input>
                 <span v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">{{ scope.row.date }}</span>
-                <!-- <el-button  v-show="scope.row.edit" size="small" @click="scope.row.edit = !scope.row.edit">{{ scope.row.edit ? 'Save' : 'Edit' }}</el-button> -->
             </template>
           </el-table-column>  
           <el-table-column sortable prop="name" label="Fecha">
@@ -50,10 +45,9 @@
                  <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
     background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
     background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button>  
+    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone" @click="abrirpopup()"></el-button>  
                 </el-input>
                 <span v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">{{ scope.row.name }}</span>
-                <!-- <el-button  v-show="scope.row.edit" size="small" @click="scope.row.edit = !scope.row.edit">{{ scope.row.edit ? 'Save' : 'Edit' }}</el-button> -->
             </template>
           </el-table-column>  
         
@@ -62,7 +56,6 @@
             label="Dirección">
           </el-table-column>
         </el-table>
-        <el-input size ="small" v-if="efectoinput"  v-model="FormSearch.Supplier" placeholder="*"></el-input>
                  
 
         <el-tabs type="border-card">
@@ -76,6 +69,20 @@
         </el-tabs>
       </el-card>
     </div>
+    <b-modal ref="myModalRef" hide-footer title="Guardar" size="lg"  v-model="modalPopup" @keydown.native.enter="confirmaraceptar">
+      <div>
+        <img src="../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute('/menu/inicio')"/>
+        <span style="font-size:13px">¿Desea grabar el documento?</span>
+      </div>
+      <footer class="modal-footer">
+        <el-button class="buttonfilter btn btn-outline-secondary orange" @click="BuscarSome()">
+          <img class="imagenfilter" src="../../images/check.png" alt="" >
+        </el-button>
+        <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="modalPopup = false">
+          <img class="imagenfilter" src="../../images/close.png" alt="" >
+        </el-button>
+      </footer>
+    </b-modal>
   </div>
 
 <!-- <video width="320" height="240" controls>

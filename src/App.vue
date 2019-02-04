@@ -17,7 +17,18 @@ export default {
 html {
   height: 100%;
 }
+.btn-primary {
+    color: #fff;
+    font-size: 13px;
+    background-color: #498bbb !important;
+    border-color: #498bbb !important;
+}
 
+.col-md-4 {
+    -ms-flex: 0 0 30.333333% !important;
+    flex: 0 0 30.333333% !important;
+    max-width: 30.333333% !important;
+}
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
