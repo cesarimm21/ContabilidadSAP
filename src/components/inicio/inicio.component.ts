@@ -7,17 +7,28 @@ import * as CONFIG from '../../Config';
 import GLOBAL from '../../Global';
 import { Notification } from 'element-ui';
 import { Loading } from 'element-ui';
-import contextMenu from 'vue-context-menu';
+import { mixin as focusMixin }  from 'vue-focus';
+import '../../assets/css/excel-2007.scss';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
 import trumbowyg from 'vue-trumbowyg';
 import 'trumbowyg/dist/ui/trumbowyg.css';
+import Handsontable from 'handsontable-pro';
+Vue.directive('focus', {
+  inserted: function(el) {
+    el.focus()
+  }
+})
+var EditableColumn = {
+  template: '#editable-column-content',
+  props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
+}
 import VueChart from 'vue-chart-js';
 @Component({
    name: 'inicio',
-   components: { contextMenu,trumbowyg,VueChart}
+   components: { trumbowyg,VueChart,Handsontable,'editable-column-content': EditableColumn }
 })
 export default class InicioComponent extends Vue {
    msg: string;
@@ -46,6 +57,18 @@ export default class InicioComponent extends Vue {
    codfile:any;
    temp:any;
    codfiletitle:any;
+   video:any='https://www.youtube.com/watch?v=P0Xlf6qTuNQ';
+   type:any='video/mp4';
+   efectoinput:boolean=false;
+   editing:any= {
+     row:'',
+     column:''
+   };
+   editingb:boolean=false;
+   EditableColumn:any={
+    template: '#editable-column-content',
+    props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
+  } ;
 constructor (){
   super()
   this.msg='';
@@ -299,8 +322,54 @@ getDateString(fecha:string){
          }
       })
    }
+  isEditing() {
+    return this.editing !== null
+  }
+  onCellBlur(row, column, cell, event) {
+    debugger;
+    this.editing = null
+    console.log('onCellBlur',row, column, cell, event);
+  }
+  onCellClick(row, column, cell, event) {
+    this.editing = {
+      row,
+      column,
+      cell
+    }
+  }
+  handleBlur(event) {
+    debugger;
+    this.editingb=false;
+    event.edit=false;
+    this.editing.row='';
+    this.editing.column='';
+    console.log('blur');
+  }
+  alerta2(){
+    alert("hola");
+  }
+  // alerta(event){
+  //   console.log('alerta',event);
+  //  } 
+   alerta(event,edit,column){
+    debugger;
+    this.editingb=true;
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+    console.log('alerta',event,edit);
+   }
    data() {
     return {
+      hotSettings: {
+        startRows: 5,
+        startCols: 5,
+        colHeaders: true,
+        stretchH: 'all'
+      },
+      id: 'my-custom-id',
+      className: 'my-custom-classname',
+      style: 'width: 300px; height: 142px; overflow: hidden; border: 1px solid red;',
       gridDataNew:[],
       gridDataNewHist:[],
       gridDataPublishList:[],
@@ -348,6 +417,27 @@ getDateString(fecha:string){
         labels: ['Documentos nuevos', 'Documentos aprobados', 'Documentos eliminados'],
         datasets:[]
       },
+      tableData: [{
+        date: '2016-05-03',
+        name: 'andre',
+        edit: false,
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-02',
+        name: 'Tom',
+        edit: false,
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-04',
+        name: 'Tom',
+        edit: false,
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-01',
+        name: 'Tom',
+        edit: false,
+        address: 'No. 189, Grove St, Los Angeles'
+      }],
       datacollection: {
         //Data to be represented on x-axis
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],

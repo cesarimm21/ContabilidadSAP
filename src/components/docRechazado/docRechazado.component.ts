@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import InfiniteScroll from 'vue-infinite-scroll';
 import '../../assets/css/docRechazado.scss';
-import contextMenu from 'vue-context-menu';
+
 import Jerarquia from '@components/jerarquia/jerarquia.vue';
 import MessageBox from 'vue-msgbox';
 import swal from 'sweetalert'
@@ -21,7 +21,7 @@ Vue.use(BootstrapVue);
 
 @Component({
    name: 'docRechazado',
-   components: { contextMenu,Modal }
+   components: { Modal }
 })
 export default class DocRechazadoComponent extends Vue {
   public griddinamicang:string ="row listadinamica nav nav-tabs";

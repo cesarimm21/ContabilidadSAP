@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import InfiniteScroll from 'vue-infinite-scroll';
 import '../../assets/css/docNuevo.scss';
-import contextMenu from 'vue-context-menu';
+
 import MessageBox from 'vue-msgbox';
 import swal from 'sweetalert'
 import VueSweetAlert from 'vue-sweetalert';
@@ -22,7 +22,7 @@ Vue.use(BootstrapVue);
 
 @Component({
    name: 'runpagos',
-   components: { contextMenu,Pagination,Modal }
+   components: { Pagination,Modal }
 })
 export default class Runpagos extends Vue {
   outerVisible:boolean=false;

@@ -1,6 +1,6 @@
 
 <template>
-  <!-- <div class="inicio" >
+  <div class="inicio" >
     <h1>{{msg}}</h1>
     <div class="principal" >
       <el-card class="box-card" >
@@ -13,7 +13,12 @@
               <label class="el-form-item__label col-sm-2" >Proveedor:</label>
               <div class="col-sm-4 grupolabel">
                 <div class="input-group mb-3" >
-                  <el-input size ="small"  v-model="FormSearch.Supplier" placeholder="*"></el-input>
+                  <el-input size ="small"  v-model="FormSearch.Supplier" placeholder="*">
+                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                  </el-input>
                   <div class="input-group-append buttongrupolabel">
                     <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
                   </div>
@@ -22,10 +27,48 @@
             </div>
           </div>
         </div>
+        <el-table
+          :data="tableData"
+          stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+          style="width: 50%" class="ExcelTable2007">
+          <el-table-column sortable  prop="date" label="Fecha">
+            <template scope="scope">
+               <!-- <editable-column-content 
+                :is-editing="isEditing" :scope="scope" :editing="editing" property="address"
+                @blur-input="onCellBlur" @enter-input="onCellBlur">
+                </editable-column-content> -->
+                <el-input  v-if="editingb  && (scope.row === editing.row) 
+                  && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.date" ></el-input>
+                <span v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">{{ scope.row.date }}</span>
+                <!-- <el-button  v-show="scope.row.edit" size="small" @click="scope.row.edit = !scope.row.edit">{{ scope.row.edit ? 'Save' : 'Edit' }}</el-button> -->
+            </template>
+          </el-table-column>  
+          <el-table-column sortable prop="name" label="Fecha">
+            <template scope="scope">
+                <el-input  v-if="editingb  && (scope.row === editing.row) 
+                  && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.name" >
+                 <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button>  
+                </el-input>
+                <span v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">{{ scope.row.name }}</span>
+                <!-- <el-button  v-show="scope.row.edit" size="small" @click="scope.row.edit = !scope.row.edit">{{ scope.row.edit ? 'Save' : 'Edit' }}</el-button> -->
+            </template>
+          </el-table-column>  
+        
+          <el-table-column
+            prop="address" sortable
+            label="Dirección">
+          </el-table-column>
+        </el-table>
+        <el-input size ="small" v-if="efectoinput"  v-model="FormSearch.Supplier" placeholder="*"></el-input>
+                 
+
         <el-tabs type="border-card">
           <el-tab-pane>
             <span slot="label"><i class="el-icon-date"></i> Route</span>
-            Route
+            Route 
           </el-tab-pane>
           <el-tab-pane label="Config">Config</el-tab-pane>
           <el-tab-pane label="Role">Role</el-tab-pane>
@@ -33,12 +76,35 @@
         </el-tabs>
       </el-card>
     </div>
-  </div> -->
-  <el-carousel :interval="4000" style="margin-top: 7%;" type="card" height="400px" width="400px" >
-    <el-carousel-item v-for="item in 6" :key="item">
-      <img src="../../images/fondo3.jpg" style="height: 400px; width:100% !important;" />
+  </div>
+
+<!-- <video width="320" height="240" controls>
+  <source :src="video" :type="type">
+  Your browser does not support the video tag.
+</video> -->
+
+
+
+  <!-- <el-carousel :interval="5000" style="margin-top: 7%;" type="card" height="400px" width="370px" >
+    <el-carousel-item  >
+      <img src="../../images/slide3.jpg" style="height: 400px; width:100% !important;" />
     </el-carousel-item>
-  </el-carousel>
+    <el-carousel-item >
+      <img src="../../images/slide2.jpg" style="height: 400px; width:100% !important;" />
+    </el-carousel-item>
+     <el-carousel-item >
+       <iframe width="100%" height="410px"
+        src="https://www.youtube.com/embed/DwbJrco6xFA?rel=0&mute=1&amp;controls=0&amp;showinfo=0&amp;autoplay=1&amp;html5=1&amp;allowfullscreen=true&amp;wmode=transparent"
+        frameborder="0"
+        allow="autoplay;
+        encrypted-media" allowfullscreen>
+      </iframe>
+    </el-carousel-item>
+ 
+    <el-carousel-item  >
+      <img src="../../images/slide4.jpg" style="height: 400px; width:100% !important;" />
+    </el-carousel-item>
+  </el-carousel>  -->
 </template>
 
 <script>

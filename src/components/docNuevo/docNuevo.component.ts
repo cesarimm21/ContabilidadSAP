@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import InfiniteScroll from 'vue-infinite-scroll';
 import '../../assets/css/docNuevo.scss';
-import contextMenu from 'vue-context-menu';
+
 import Jerarquia from '@components/jerarquia/jerarquia.vue';
 import MessageBox from 'vue-msgbox';
 import swal from 'sweetalert'
@@ -29,7 +29,7 @@ Vue.use(BootstrapVue);
 
 @Component({
    name: 'docNuevo',
-   components: { contextMenu,Pagination,Modal,trumbowyg }
+   components: { Pagination,Modal,trumbowyg }
 })
 export default class DocNuevoComponent extends Vue {
   public griddinamicang:string ="row listadinamica nav nav-tabs";

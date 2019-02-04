@@ -27,6 +27,16 @@ body {
   margin: 0;
 }
 
+.el-table th>.cell{
+  background: rgba(255,255,255,1) !important;
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(16%, rgba(255,255,255,1)), color-stop(37%, rgba(240,244,248,1)), color-stop(96%, rgba(217,225,236,1)), color-stop(100%, rgba(217,225,236,1))) !important;
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d9e1ec', GradientType=0 ) !important;
+}
 #app {
   color: #2c3e50;
   width: 100%;

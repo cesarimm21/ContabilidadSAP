@@ -7,7 +7,7 @@ import * as CONFIG from '../../Config';
 import GLOBAL from '../../Global';
 import { Notification } from 'element-ui';
 import { Loading } from 'element-ui';
-import contextMenu from 'vue-context-menu';
+
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
@@ -19,7 +19,7 @@ import aprobacionDocs from '@/components/service/aprobacionDocs.service';
 import { debug } from 'util';
 @Component({
    name: 'aprobacionDocs',
-   components: { contextMenu,trumbowyg,VueChart}
+   components: { trumbowyg,VueChart}
 })
 export default class AprobacionDocsComponent extends Vue {
     public TextTitle:string ="Aprobación de documentos pendientes";

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import contextMenu from 'vue-context-menu';
-import VueLocalStorage from 'vue-localstorage';
+
+
 import Login from '@/components/login/login.vue';
 import Roles from '@/components/roles/roles.vue';
 import UsuarioService from '@/components/service/usuario.service';
@@ -14,8 +14,7 @@ import 'element-ui/lib/theme-default/index.css';
 
 import { Notification } from 'element-ui';
 @Component({
-  name: 'quickaccessmenu',
-  components: { contextMenu }
+  name: 'quickaccessmenu'
 })
 export default class QuickAccessMenuComponent extends Vue {
   timer=0;

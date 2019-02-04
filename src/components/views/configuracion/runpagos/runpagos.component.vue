@@ -120,8 +120,8 @@
                             <!-- <div class="card cardButtons"> -->
                                 <div class="table-title" >
                                   <div style="margin-top: 4px;">   
-                                    <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
-                                        <img class="accionButtonsImage" src="../../../../images/buscar.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../../../images/buscar.png" alt="" >
                                     </el-button>
                                     <el-button class="accionButtons btn btn-outline-secondary orange" style="width:15px; height:28px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;">
                                         <img class="accionButtonsImage" src="../../../../images/tacho.png" alt="" style="width:16px; height:16px;margin-left: -19px; margin-top: -5px;">

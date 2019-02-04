@@ -1,0 +1,61 @@
+.ExcelTable2007 {
+	border: 1px solid #B0CBEF;
+	border-width: 1px 0px 0px 1px;
+	font-size: 11pt;
+	font-family: Calibri;
+	font-weight: 100;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+.el-table td, .el-table th.is-leaf {
+    border-bottom: 0px solid #dfe6ec !important;
+}
+.el-table td, .el-table th {
+    height: 20px !important;
+}
+.el-table th>.cell {
+    line-height: 14px !important;
+}
+.ExcelTable2007 TH DIV {
+    background: rgba(255,255,255,1) !important;
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(16%, rgba(255,255,255,1)), color-stop(37%, rgba(240,244,248,1)), color-stop(96%, rgba(217,225,236,1)), color-stop(100%, rgba(217,225,236,1))) !important;
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 16%, rgba(240,244,248,1) 37%, rgba(217,225,236,1) 96%, rgba(217,225,236,1) 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d9e1ec', GradientType=0 ) !important;
+  
+	font-weight: normal;
+	font-size: 14px;
+	border: 1px solid #9EB6CE;
+	border-width: 0px 1px 1px 0px;
+    height: 25px;
+    margin-top: 0px;
+}
+
+.ExcelTable2007 TD {
+	border: 0px;
+	background-color: white;
+	padding: 0px 4px 0px 2px;
+	border: 1px solid #D0D7E5;
+	border-width: 0px 1px 1px 0px;
+}
+
+.ExcelTable2007 TD B {
+	border: 0px;
+	background-color: white;
+	font-weight: bold;
+}
+
+.ExcelTable2007 TD.heading {
+	background-color: #E4ECF7;
+	text-align: center;
+	border: 1px solid #9EB6CE;
+	border-width: 0px 1px 1px 0px;
+}
+
+.ExcelTable2007 TH.heading {
+	background-image: url(excel-2007-header-left.gif);
+	background-repeat: none;
+}
