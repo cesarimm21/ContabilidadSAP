@@ -3,6 +3,7 @@ export class ProveedorModel {
     intIdProveedor:number;
     intIdDepartamento:any ;
     intIdDoc:any ;
+    strCountry:any;
     strVendor_Number:string ;
     strCat_Person:string ;
     TAX_ID:string ;        

@@ -1,6 +1,6 @@
 <template>
   <div >
-    <img src="../../images/icon_validar.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/>
+    <img src="../../images/icon_validar.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/barmenu/inicio')"/>
     <input type="text"  v-if="!ocultar" style="height: 10px;font-size: 12px;display: inline;width: 100px;margin-left: 0.5rem;" class="form-control" placeholder=" " required>
     <img src="../../images/collapse_left.png" v-if="!ocultar" style="width:9px; height:13px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
     <img src="../../images/collapse_derecha.png" v-if="ocultar" style="width:9px; height:13px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>

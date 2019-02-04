@@ -411,5 +411,10 @@ body {
   height: 22px;
   font-size: 12px;
 }
-
+.buttonSave span {
+    padding-left: 1px !important;
+}
+.elform{
+        margin-top: -4px;
+}
 </style>

@@ -5,85 +5,46 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-
+import {ProveedorModel} from '../../../../modelo/maestro/proveedor';
 import { Notification } from 'element-ui';
 @Component({
   name: 'crear-proveedor'
 })
 export default class CrearProveedorComponent extends Vue {
-  timer=0;
-  hours:number;
-  minutos:number;
-  seconds:number;
-  user:any;
-  tiempoagotado:any;
-  contador:any=0;
-  _10min:boolean=false;
-  ocultarConfig:boolean = true;
-  nameuser:string;
-  namecomplete:string;
-  accesosUser:any=[];
-  ocultar:boolean=false;
+ 
   dialogVisible:boolean=false;
   SendDocument:boolean=false;
   btnactivarproveedor:boolean=false;
+  public Proveedor:ProveedorModel =new ProveedorModel();
+  nameTipoJoN:string='';
+  VisibleForName:boolean=false;
+  ApellidosShow:boolean=false;
+//   ****
+  AddressCalle:string;
+  AddressNumero:string;
+  AddressDprto:string;
+  AddressOf:string;
+  AddressLote:string;
+  RucOrDni:string;
   constructor(){
     super();
   }
-  fnOcultar(){
-    this.ocultar=!this.ocultar;
+  selectCategoria(val){
+      this.VisibleForName=true;
+      if(val==='1'){
+        this.nameTipoJoN='Razon social';
+        this.RucOrDni='RUC';
+        this.ApellidosShow=false;
+      }
+      if(val==='2'){
+        this.nameTipoJoN='Nombres';
+        this.RucOrDni='DNI';
+        this.ApellidosShow=true;
+      }
   }
-  guardar(){
-    this.SendDocument=true;
-  }
-  
-  openMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-  openMessageError(strMessage:string){
-    this.$message({
-        showClose: true,
-        type: 'error',
-        message: strMessage
-      });
-  }
-  linkLogout(){
-   localStorage.clear();
-   window.sessionStorage.clear();
-    router.push('/')
-  }
-  confirmaraceptar(){
-    this.SendDocument=false;
-  }
-  linksUser(comand){
-    router.push('/barmenu/'+comand)
-  }
-  linksLogin(){
-    router.push('/inicio')
-  }
-  linkRoute(route){
-    router.push(route)
-  }
-  redirectLogin(msg){
-    Notification.warning(msg)
-    localStorage.clear();
-    router.push('/')
-  }
-  calcular(temp){
-    if(temp < 600){
-      return { rojo: true,}
-    }
-    else{
-      return { verde: true, }
-    }
-  }
-  loadProveedores(){
-      console.log('hola mundo xrul');
-      this.dialogVisible=true;
+  SaveProveedor(){
+      this.Proveedor.strAddress=this.AddressCalle+' '+this.AddressNumero+' '+this.AddressDprto+' '+this.AddressOf+' '+this.AddressLote
+      console.log(this.Proveedor);
       
   }
   handleClose(){
@@ -103,24 +64,6 @@ export default class CrearProveedorComponent extends Vue {
     //     });          
     //   });
   }
-  tableRowClassName(row, rowIndex) {
-      debugger;
-    // if (row === undefined || row.EstadoAprobacion === undefined) return '';
-    // if (row.EstadoAprobacion === 'R'){
-    //   return 'rechazado-row';
-    // } else if (row.EstadoAprobacion === 'A') {
-    //   return 'aprobado-row';
-    // } else if (row.EstadoAprobacion === 'M'){
-    //   return 'modificado-row';
-    // }
-    // return '';
-  }
-  handleCurrentChange(val) {
-    debugger;
-    if(val.date){
-        return 'selected-row';
-    }
-  }
   activar_proveedor(){
     debugger;
     this.btnactivarproveedor=true;
@@ -133,6 +76,15 @@ export default class CrearProveedorComponent extends Vue {
     return{
       dialogTableVisible: false,
       dialogVisible:false,
+      AddressCalle:'',
+      AddressNumero:'',
+      AddressDprto:'',
+      AddressOf:'',
+      AddressLote:'',
+      RucOrDni:'',
+      VisibleForName:false,
+      ApellidosShow:false,
+      
       tableData: [{
         date: '0001',
         name: 'Ferreyros'
@@ -172,10 +124,10 @@ export default class CrearProveedorComponent extends Vue {
         authenticated: false
       },
       options: [{
-        value: '1',
+        value: '101',
         label: 'Antapaccay'
       }, {
-        value: '2',
+        value: '102',
         label: 'las bambas'
       }],
       categoria: [{
