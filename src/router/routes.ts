@@ -29,6 +29,7 @@ import Plantilla from "@/components/plantilla/plantilla.vue"
 import AccesoDocument from "@/components/accesoDocument/accesoDocument.vue"
 import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue"
 import RunComponent from '../components/run/run.vue'
+import CrearPRComponent from '../components/logistica/requisicion/pr_crear/pr_crear.vue'
 import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
 export default [
  
@@ -50,6 +51,20 @@ export default [
         }]
       }]
       },
+      {
+        path: 'LO-LOGISTICA',
+        component:CrearPRComponent,
+        name:'logistica',
+        children:[{
+          path:'requisicion',
+          component:CrearPRComponent,
+          children:[{
+            path:'pr_crear',
+            component:CrearPRComponent,
+            name:'pr_crear'
+          }]
+        }]
+        },
       
       {
         path: 'inicio',
