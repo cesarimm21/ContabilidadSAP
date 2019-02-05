@@ -31,6 +31,8 @@ import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue
 import RunComponent from '../components/run/run.vue'
 import CrearPRComponent from '../components/logistica/requisicion/pr_crear/pr_crear.vue'
 import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
+import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/modificar-proveedor/modificar-proveedor.vue'
+import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
 export default [
  
   {
@@ -40,16 +42,26 @@ export default [
     children:[{
       path: 'FI-FINANZAS',
       component:CrearProveedorComponent,
-      name:'finanzas',
-      children:[{
+      children:[
+        {
         path:'proveedor',
         component:CrearProveedorComponent,
         children:[{
           path:'crear-proveedor',
           component:CrearProveedorComponent,
           name:'crear-proveedor'
-        }]
-      }]
+        },{
+          path:'modificar-proveedor',
+          component:ModificarProveedorComponent,
+          name:'modificar-proveedor'
+        },{
+          path:'visualizar-proveedor',
+          component:VisualizarProveedorComponent,
+          name:'visualizar-proveedor'
+        }
+      ]
+      }
+    ]
       },
       {
         path: 'LO-LOGISTICA',

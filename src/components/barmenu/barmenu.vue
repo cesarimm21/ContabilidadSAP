@@ -87,9 +87,19 @@
                 </el-submenu>
                  <el-submenu index="1-5-4">
                   <template slot="title">MASTER PROVEEDOR</template>
-                  <el-menu-item index="1-5-4-1" @click="linkCrearProveedor()">MP01-Crear Proveedor</el-menu-item>
-                  <el-menu-item index="1-5-4-2">MP02-Modificar Proveedor</el-menu-item>
-                  <el-menu-item index="1-5-4-3">MP03-Visualizar Proveedor</el-menu-item>
+                  <el-menu-item index="1-5-4-1" @click="linkCrearProveedor()">
+                    <i class="el el-icon-document"></i>
+                    <span> MP01-Crear Proveedor</span>
+                    
+                    </el-menu-item>
+                  <el-menu-item index="1-5-4-2" @click="linkModificarProveedor()">
+                    <i class="el el-icon-edit"></i>
+                    <span> MP02-Modificar Proveedor</span>                    
+                    </el-menu-item>
+                  <el-menu-item index="1-5-4-3" @click="linkVisualizarProveedor()">
+                    <i class="el el-icon-view"></i>
+                    <span> MP03-Visualizar Proveedor</span>
+                   </el-menu-item>
                 </el-submenu>
               </el-submenu>
              

@@ -4,9 +4,11 @@ import 'font-awesome/css/font-awesome.css';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
+import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import {ProveedorModel} from '../../../../modelo/maestro/proveedor';
 import { Notification } from 'element-ui';
+import proveedorService from '@/components/service/proveedor.service'
 @Component({
   name: 'crear-proveedor'
 })
@@ -26,10 +28,17 @@ export default class CrearProveedorComponent extends Vue {
   AddressOf:string;
   AddressLote:string;
   RucOrDni:string;
+  //** */
+  value:any;
+  value1:any;
   constructor(){
     super();
   }
+  loadProveedores(){
+    this.dialogVisible=true;
+  }
   selectCategoria(val){
+    debugger;
       this.VisibleForName=true;
       if(val==='1'){
         this.nameTipoJoN='Razon social';
@@ -43,9 +52,49 @@ export default class CrearProveedorComponent extends Vue {
       }
   }
   SaveProveedor(){
-      this.Proveedor.strAddress=this.AddressCalle+' '+this.AddressNumero+' '+this.AddressDprto+' '+this.AddressOf+' '+this.AddressLote
-      console.log(this.Proveedor);
+    // if(this.value1)
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Guargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      );      
+    this.Proveedor.strCompany_Cod=this.value;
+    if(this.value1===1){
+      this.Proveedor.strCat_Person='Jurídica'
+    }
+    if(this.value1===2){
+      this.Proveedor.strCat_Person='Natural'
+    }  
+    this.Proveedor.strAddress=this.AddressCalle+' '+this.AddressNumero+' Dprto '+this.AddressDprto+' of. '+this.AddressOf+' Mza. '+this.AddressLote
+    
+    proveedorService.putProveedor(this.Proveedor)
+    .then(response=>{
+      loadingInstance.close();
+      this.openMessageSuccess('Se guardo correctamente'+response);
+      this.Proveedor=new ProveedorModel();
+    })
+    .catch(e =>{
+      debugger;
+      this.openMessageError('Error guardar proveedor');
+      loadingInstance.close();
+    })    
       
+  }
+  openMessageError(strMessage:string){
+    this.$message({
+        showClose: true,
+        type: 'error',
+        message: strMessage
+      });
+  }
+  openMessageSuccess(strMessage:string){
+    this.$message({
+        showClose: true,
+        type: 'success',
+        message: strMessage
+      });
   }
   handleClose(){
     // this.$confirm('This will permanently delete the file. Continue?', 'Warning', {

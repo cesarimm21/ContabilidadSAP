@@ -59,7 +59,7 @@
               </div>
               <div class="row bodycard">
                   <div class="col-md-6">                       
-                        <div class="form-group row">
+                        <div class="form-group row" style="height: 40px;">
                             <label class="el-form-item__label col-md-3" >Compañia</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
@@ -137,16 +137,6 @@
                                 </el-input>
                                 </div>
                             </div>
-                             <!-- <label class="el-form-item__label col-md-1" >{{RucOrDni}}</label>
-                            <div class="col-md-2 grupolabel">
-                            <el-form :model="Proveedor" ref="Proveedor"  class="elform">
-                                <el-form-item  
-                                prop="TAX_ID" 
-                                :rules="[{ required: true, message:  'valor requerido', trigger: 'blur' },{ type: 'string', message:  'valor requerido', trigger: 'blur,change' }]">
-                                <el-input placeholder=""  v-model="Proveedor.TAX_ID" auto-complete="off"></el-input>
-                                </el-form-item>        
-                                </el-form>
-                            </div> -->
                             <div class="col-md-1 "></div>
                             <label class="el-form-item__label col-md-2" >Tipo documento</label>
                             <div class="col-md-1 grupolabel">
@@ -177,7 +167,7 @@
                             <label class="el-form-item__label col-md-1" >Departamento</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small"   placeholder="">
+                                <el-input size ="small" v-model="Proveedor.intIdDepartamento"  placeholder="">
                     
                                 </el-input>
                                 </div>
@@ -187,24 +177,22 @@
                         </div>
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-1" >Provincia</label>
-                            <div class="col-md-1 grupolabel">
-                                <div class="input-group mb-1" >
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
                                 <el-input size ="small" v-model="Proveedor.strProvince"  placeholder="">
                     
                                 </el-input>
                                 </div>
                             </div>
-                            <label class="el-form-item__label col-md-1" ></label>
                             <div class="col-md-1 grupolabel"></div>
                             <label class="el-form-item__label col-md-1" >Distrito</label>
-                            <div class="col-md-1 grupolabel">
-                                <div class="input-group mb-1" >
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
                                 <el-input size ="small" v-model="Proveedor.strDistrict"  placeholder="">
                     
                                 </el-input>
                                 </div>
                             </div> 
-                            <label class="el-form-item__label col-md-1" ></label>
                             <div class="col-md-1 grupolabel"></div>   
                             <label class="el-form-item__label col-md-2" >Codigo postal</label>
                             <div class="col-md-1 grupolabel">
@@ -217,8 +205,8 @@
                         </div>
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-1" >Avenida</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-2" >
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="AddressCalle" placeholder="">
                     
                                 </el-input>
@@ -246,7 +234,7 @@
                                 </el-input>
                                 </div>
                             </div>  
-                            <label class="el-form-item__label col-md-1" >Lote</label>
+                            <label class="el-form-item__label col-md-1" >Manzana</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
                                 <el-input size ="small"  v-model="AddressLote" placeholder="">                    
@@ -276,19 +264,10 @@
                                 </el-input>
                                 </div>
                             </div> 
-                            <label class="el-form-item__label col-md-2" >Cuenta coorporativa</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-2" >
-                                <el-input size ="small" v-model="Proveedor.strCurrency_Corp"  placeholder="">                    
-                                </el-input>
-                                </div>
-                            </div>                       
-                        </div>
-                        <div class="form-group row">
                             <label class="el-form-item__label col-md-1" >Moneda</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.strBank_Code" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                <el-input size ="small" v-model="Proveedor.strCurrency" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
                                         <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                         background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                         background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
@@ -296,24 +275,94 @@
                                     </el-input>
                                 </div>
                             </div>  
+                            <label class="el-form-item__label col-md-1" ></label>                     
+                        </div>
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-1" >Banco Coorporativo</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" v-model="Proveedor.strBank_Corp_Cod" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>
                             <label class="el-form-item__label col-md-1" ></label>
-                            <!-- <label class="el-form-item__label col-md-1" >Banco</label>
+                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-2" >Cuenta Coorporativo</label>
                             <div class="col-md-2 grupolabel">
-                            <el-form :model="Proveedor" ref="FormAgregar"  class="elform">
-                                <el-form-item  
-                                prop="email" 
-                                :rules="[{ required: true, message:  'Por favor ingrese un correo valido', trigger: 'blur' },{ type: 'email', message:  'Por favor ingrese un correo valido', trigger: 'blur,change' }]">
-                                <el-input placeholder="Numero" v-model="Proveedor.strCurrency_Corp" auto-complete="off"></el-input>
-                                </el-form-item>        
-                                </el-form>
-                            </div> -->
+                                <div class="input-group mb-2" >
+                                <el-input size ="small" v-model="Proveedor.strBankAcct_Corp_NO"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-1" >Moneda</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" v-model="Proveedor.strCurrency_Corp" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>  
+                            <label class="el-form-item__label col-md-1" ></label>  
                             
                         </div>
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-1" >Banco Fora.</label>
+                            <label class="el-form-item__label col-md-1" >Otro banco</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.strBank_Code" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                <el-input size ="small" v-model="Proveedor.strBank_Other_Cod" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-2" >Cuenta Detraccion</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small" v-model="Proveedor.strBankAcct_Other_NO"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>  
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-1" >Banco Foraneo</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" v-model="Proveedor.strFore_Bank_Code" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
+                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-1" ></label>
+                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                <el-input size ="small" v-model="Proveedor.strFore_AccBank_NO"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-1" >Moneda extranjera</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" v-model="Proveedor.strFore_Currency_Cod" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
                                         <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                         background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                         background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
@@ -321,17 +370,42 @@
                                     </el-input>
                                 </div>
                             </div>  
-                            <label class="el-form-item__label col-md-1" ></label>
-                            <!-- <label class="el-form-item__label col-md-1" >Banco</label>
-                            <div class="col-md-2 grupolabel">
-                            <el-form :model="Proveedor" ref="FormAgregar"  class="elform">
-                                <el-form-item  
-                                prop="email" 
-                                :rules="[{ required: true, message:  'Por favor ingrese un correo valido', trigger: 'blur' },{ type: 'email', message:  'Por favor ingrese un correo valido', trigger: 'blur,change' }]">
-                                <el-input placeholder="Numero" v-model="Proveedor.strCurrency_Corp" auto-complete="off"></el-input>
-                                </el-form-item>        
-                                </el-form>
-                            </div> -->
+                            <label class="el-form-item__label col-md-1" ></label>  
+                            
+                        </div>
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-1" >Retención</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" v-model="Proveedor.strRetention_Cod"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>  
+                            <label class="el-form-item__label col-md-1" >% Retención</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input type="number" size ="small" v-model="Proveedor.fltRetention_Porcen"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>  
+                            <label class="el-form-item__label col-md-1" >Detracción</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input size ="small" v-model="Proveedor.strDetraccion_Cod"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>  
+                            <label class="el-form-item__label col-md-1" >%Detracción</label>
+                            <div class="col-md-1 grupolabel">
+                                <div class="input-group mb-1" >
+                                <el-input type="number" size ="small" v-model="Proveedor.fltDetraccion_Porcen"  placeholder="">
+                    
+                                </el-input>
+                                </div>
+                            </div>   
                             
                         </div>
                         

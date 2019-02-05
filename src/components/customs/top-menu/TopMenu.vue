@@ -23,7 +23,7 @@
     <div class="icon-container red" style="line-height: 35px;" @click="linkLogout"><i class="el-icon-fa-sign-out"></i>
     </div>
     </el-tooltip>
-      <div>
+      <!-- <div>
       <context-menu id="context-menu" mode="horizontal" ref="ctxMenu">
         <div class=" principal blue">
           <el-menu class="el-menu-demo">
@@ -38,7 +38,7 @@
           </el-menu>
         </div>
       </context-menu>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
