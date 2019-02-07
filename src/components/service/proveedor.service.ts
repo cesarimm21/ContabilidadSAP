@@ -4,7 +4,7 @@ import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
   GetAllProveedor(){
-    return axios.get(CONFIG.API_URL+'proveedor/get/all')
+    return axios.get(CONFIG.API_URL+'proveedor')
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })

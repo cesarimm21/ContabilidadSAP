@@ -1,12 +1,13 @@
 export class PaisModel {
-    strCodigoNumerico: string;
-    strNombre:string;
-    strCodigoAlpha2:string;
-    strCodigoAlpha3:string;
+    intIdCountry_ID: number;
+    strCountry_Cod:string;
+    strCountry_Name:string;
+    strLanguage:string;
+    strCountry_Curr:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

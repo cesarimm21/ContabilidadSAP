@@ -14,11 +14,26 @@
               </div>
               <div class="row bodycard">
                   <div class="col-md-6">
-                       <div class="form-group row">
+                      <div class="form-group row ">
+                            <label class="el-form-item__label col-md-3" >Compañia</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="" v-model="codigoCompania" >
+                            <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                disabled="true"></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-2" >{{descripcionCompania}}</label>
+                        </div>
+                       <div class="form-group row Second" >
                         <label class="el-form-item__label col-md-3" >Proveedor</label>
                         <div class="col-md-3 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small"   placeholder="">
+                            <el-input size ="small"   placeholder="" >
                                 <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                 background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                 background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
@@ -29,17 +44,8 @@
                             </div>
                         </div>                        
                         </div>
-                        <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-3" >Compañia</label>
-                            <div class="col-md-3 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                    
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row Third">
+                        
+                        <!-- <div class="form-group row Third">
                             <label class="el-form-item__label col-md-3" >Organización compra</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
@@ -48,7 +54,7 @@
                                 </el-input>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                   </div>
               </div>
@@ -63,24 +69,31 @@
                             <label class="el-form-item__label col-md-3" >Compañia</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-select v-model="value" class="selected">
+                                <!-- <el-select v-model="value" class="selected">
                                     <el-option
                                     class="opciones"
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in Compania"
+                                    :key="item.strCompany_Cod"
+                                    :label="item.strCompany_Name"
+                                    :value="item.strCompany_Cod">
                                     </el-option>
-                                </el-select>
+                                </el-select> -->
+                                <el-input size ="small"   placeholder="" v-model="codigoCompania" >
+                            <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                disabled="true"></el-button> 
+                                </el-input>
                                 </div>
                             </div>
-                            <label class="el-form-item__label col-md-2" >Codigo</label>
-                            <div class="col-md-4 grupolabel">
+                            <label class="el-form-item__label col-md-2" style="color:#1f2d3d;" >{{descripcionCompania}}</label>
+                            <!-- <div class="col-md-4 grupolabel">
                                 <div class="input-group mb-5" >
                                 <el-input size ="small"  v-model="value" placeholder="">                    
                                 </el-input>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-3" >Categoria</label>
@@ -90,10 +103,10 @@
                                 @change="selectCategoria($event)">
                                     <el-option
                                     class="opciones"
-                                    v-for="item in categoria"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
+                                    v-for="item in Categoria"
+                                    :key="item.intIdVenCateg_ID"
+                                    :label="item.strVenCateg_Desc"
+                                    :value="item.intIdVenCateg_ID"
                                     >
                                     </el-option>
                                 </el-select>
@@ -141,38 +154,56 @@
                             <label class="el-form-item__label col-md-2" >Tipo documento</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.intIdDoc" type="text"  @blur="desactivar_proveedor" @focus="activar_proveedor">
-                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                                <el-input size ="small" v-model="tipoDocSelectedIdentidad.strDocIdent_NO" type="text" >
+                                        <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                         background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                         background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                    @click="loadTipoDoc()"
+                                    ></el-button> 
                                     </el-input>
                                 </div>
                             </div>
+                            <label class="el-form-item__label col-md-4" style="color:#1f2d3d;">{{tipoDocSelectedIdentidad.strDocIdent_Name}}</label>
                         </div>
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-1" >Pais</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.strCountry" type="text"  @blur="desactivar_proveedor" @focus="activar_proveedor">
-                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                                <!-- <el-input size ="small" v-model="Proveedor.strCountry" type="text"  @blur="desactivar_pais" @focus="activar_pais">
+                                        <el-button v-if="btnactivarpais" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                         background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                         background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                        
+                                        ></el-button> 
+                                    </el-input> -->
+                                    <el-input size ="small" v-model="gridSelectPais.strCountry_Cod" type="text" >
+                                        <el-button  slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                        @click="paisDialog()"
+                                        ></el-button> 
                                     </el-input>
                                 </div>
                             </div>
-                            <label class="el-form-item__label col-md-1" ></label>
+                            <label class="el-form-item__label col-md-1" style="color:#1f2d3d;">{{gridSelectPais.strCountry_Name}}</label>
                             <div class="col-md-1 grupolabel"></div>
-                            <label class="el-form-item__label col-md-1" >Departamento</label>
+                            <label class="el-form-item__label col-md-1" >Region</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.intIdDepartamento"  placeholder="">
-                    
-                                </el-input>
+                                <el-input size ="small" v-model="selectDepartamento.strRegión_Cod" type="text" >
+                                        <el-button  slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                        @click="departDialog()"
+                                        ></el-button> 
+                                    </el-input>
                                 </div>
                             </div> 
-                            <label class="el-form-item__label col-md-1" ></label>
+                            <label class="el-form-item__label col-md-1" style="color:#1f2d3d;">{{selectDepartamento.strRegión_Desc}}</label>
                             <div class="col-md-1 grupolabel"></div>                           
                         </div>
                         <div class="form-group row ">
@@ -204,23 +235,23 @@
                             </div>                         
                         </div>
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-1" >Avenida</label>
-                            <div class="col-md-3 grupolabel">
-                                <div class="input-group mb-3" >
+                            <label class="el-form-item__label col-md-1" >Dirección</label>
+                            <div class="col-md-6 grupolabel">
+                                <div class="input-group mb-6" >
                                 <el-input size ="small"  v-model="AddressCalle" placeholder="">
                     
                                 </el-input>
                                 </div>
                             </div>
-                            <label class="el-form-item__label col-md-1" >Numero</label>
+                            <!-- <label class="el-form-item__label col-md-1" >Numero</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
                                 <el-input size ="small" v-model="AddressNumero"  placeholder="">
                     
                                 </el-input>
                                 </div>
-                            </div> 
-                            <label class="el-form-item__label col-md-1" >Depto</label>
+                            </div>  -->
+                            <!-- <label class="el-form-item__label col-md-1" >Depto</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
                                 <el-input size ="small" v-model="AddressDprto"  placeholder="">                    
@@ -233,29 +264,36 @@
                                 <el-input size ="small" v-model="AddressOf"  placeholder="">                    
                                 </el-input>
                                 </div>
-                            </div>  
-                            <label class="el-form-item__label col-md-1" >Manzana</label>
+                            </div>   -->
+                            <!-- <label class="el-form-item__label col-md-1" >Lote</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
                                 <el-input size ="small"  v-model="AddressLote" placeholder="">                    
                                 </el-input>
                                 </div>
-                            </div>                       
+                            </div>                        -->
                         </div>
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-1" >Banco</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.strBank_Code" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
-                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                                <!-- <el-input size ="small" v-model="Proveedor.strBank_Code" type="text"    @blur="desactivar_banco" @focus="activar_banco">
+                                        <el-button v-if="btnactivarbanco" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                         background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                         background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
                         background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                                    </el-input> -->
+                                    <el-input size ="small" v-model="selectBanco.strBank_Type" type="text"   >
+                                        <el-button  slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                    @click="bancoDialog()"
+                                    ></el-button> 
                                     </el-input>
                                 </div>
                             </div>
-                            <label class="el-form-item__label col-md-1" ></label>
-                            <div class="col-md-1 grupolabel"></div>
+                            <label class="el-form-item__label col-md-2" style="color:#1f2d3d;" >{{selectBanco.strBank_Name}}</label>
                             <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-2" >
@@ -267,15 +305,17 @@
                             <label class="el-form-item__label col-md-1" >Moneda</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.strCurrency" type="text"    @blur="desactivar_proveedor" @focus="activar_proveedor">
-                                        <el-button v-if="btnactivarproveedor" slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                                <el-input size ="small" v-model="selectMoneda.strCurrency_Cod" type="text" >
+                                        <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                         background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                         background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                    @click="monedaDialog()"
+                                    ></el-button> 
                                     </el-input>
                                 </div>
                             </div>  
-                            <label class="el-form-item__label col-md-1" ></label>                     
+                            <label class="el-form-item__label col-md-1" >{{selectMoneda.strCurrency_Desc}}</label>                     
                         </div>
                         <div class="form-group row">
                             <label class="el-form-item__label col-md-1" >Banco Coorporativo</label>
@@ -441,13 +481,15 @@
                   </div>
               </div>
               <el-table
-                :data="tableData"
+                :data="gridProveedor"
                 stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                style="width: 100%" class="ExcelTable2007"
-                height="250">
-                <el-table-column   prop="date" label="Codigo" width="180">
+                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                highlight-current-row
+                height="250"
+                @current-change="proveedorSelect">
+                <el-table-column   prop="strVendor_NO" label="RUC/DNI" width="180">
                 </el-table-column>  
-                <el-table-column  prop="name" label="Descripción" style="width: 70% !important;">
+                <el-table-column  prop="strVendor_Desc" label="Nombre proveedor" style="width: 70% !important;">
                 </el-table-column> 
                 </el-table>
           </el-card>
@@ -456,6 +498,244 @@
             <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
         </span>
         </el-dialog>
+
+    <el-dialog
+        title="Paises"
+        :visible.sync="paisVisible"
+        width="30%"
+        :before-close="handleClosePais">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Paises</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Paises Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <el-table
+                :data="Pais"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+                highlight-current-row
+                @current-change="paisSelect"
+                height="250">
+                <el-table-column  prop="strCountry_Cod" label="Codigo" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strCountry_Name" label="Nombre del Pais" width="180">
+                </el-table-column> 
+                <el-table-column  prop="strLanguage" label="Idioma" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="paisChosseCheck()"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="paisChosseClose()"/>
+        </span>
+        </el-dialog>
+
+
+    <el-dialog
+        title="Banco"
+        :visible.sync="bancoVisible"
+        width="30%"
+        :before-close="handleCloseBanco">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Banco</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Banco Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <el-table
+                :data="Banco"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                height="250"
+                highlight-current-row
+                @current-change="bancoSelect">
+                <el-table-column  prop="strBank_Cod" label="Codigo" width="180" >
+                </el-table-column>  
+                <el-table-column  prop="strBank_Name" label="Nombre del Banco" width="180">
+                </el-table-column> 
+                <el-table-column  prop="strBank_City" label="Ciudad" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="bancoChosseCheck()"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="bancoChosseClose()"/>
+        </span>
+        </el-dialog>
+
+    <el-dialog
+        title="Tipo documento identidad"
+        :visible.sync="tipodocVisible"
+        width="30%"
+        :before-close="handleCloseTipoDoc">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Documento</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Documento Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <el-table
+                :data="tipoDocIdentidad"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                height="200"
+                highlight-current-row
+                @current-change="tipodocSelect">
+                <el-table-column  prop="strDocIdent_NO" label="Codigo" width="180" >
+                </el-table-column>  
+                <el-table-column  prop="strDocIdent_Name" label="Nombre Documento" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="tipoDocChosseCheck()"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="tipoDocChosseClose()"/>
+        </span>
+        </el-dialog>
+    <el-dialog
+        title="Departamentos"
+        :visible.sync="departVisible"
+        width="30%"
+        :before-close="handleCloseDepart">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Departamento</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Departamento Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <el-table
+                :data="Departamento"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                height="200"
+                highlight-current-row
+                @current-change="departSelect">
+                <el-table-column  prop="strRegión_Cod" label="Codigo" width="180" >
+                </el-table-column>  
+                <el-table-column  prop="strRegión_Desc" label="Nombre Departamento" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="departChosseCheck()"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="departChosseClose()"/>
+        </span>
+    </el-dialog>
+
+<el-dialog
+        title="Moneda"
+        :visible.sync="monedaVisible"
+        width="30%"
+        :before-close="handleCloseMoneda">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Moneda</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Moneda Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <el-table
+                :data="Moneda"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                height="200"
+                highlight-current-row
+                @current-change="monedaSelect">
+                <el-table-column  prop="intIdCurrency_ID" label="Correlativo" width="100">
+                </el-table-column>  
+                <el-table-column  prop="strCurrency_Cod" label="Codigo" width="100">
+                </el-table-column>  
+                <el-table-column  prop="strCurrency_Desc" label="Descripción" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strCountry" label="Paises" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="monedaChosseCheck()"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="monedaChosseClose()"/>
+        </span>
+    </el-dialog>
   </div>  
   
 </template>
@@ -490,6 +770,8 @@ export default CrearProveedorComponent
     padding-right: 35px;
     height: 22px !important;
 }
-
+.el-table .rechazado-row {
+  background: rgb(206, 85, 85);
+}
 
 </style>

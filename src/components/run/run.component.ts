@@ -11,7 +11,8 @@ import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-
+import MonedaService from '@/components/service/moneda.service'
+import {MonedaModel} from '@/modelo/maestro/moneda'
 import { Notification } from 'element-ui';
 @Component({
   name: 'run-pagos',
@@ -28,8 +29,29 @@ export default class RunComponent extends Vue {
     url:string;
     DateExecution:any;
     RunPagoCodigo:any;
+
+    //**Moneda */
+    gridMoney: Array<MonedaModel> = [];
   constructor(){
     super();
+    this.GetAllMoneda();
+
+  }
+  
+
+
+
+
+
+
+  GetAllMoneda(){
+    MonedaService.GetAllMoneda()
+    .then(response=>{
+      this.gridMoney=response.data;
+      console.log(this.gridMoney);
+            
+    }).catch(error=>{      
+    })
   }
   viewMoneda(){
     this.dialogVisible=true; 

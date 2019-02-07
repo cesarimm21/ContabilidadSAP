@@ -262,13 +262,19 @@
               </div>
               <br>
               <el-table
-                :data="tableData"
+                :data="gridMoney"
                 stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                style="width: 100%" class="ExcelTable2007"
-                height="250">
-                <el-table-column   prop="date" label="Codigo" width="180">
+                style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+                height="250"
+                highlight-current-row
+                >
+                <el-table-column  prop="intIdCurrency_ID" label="Correlativo" width="100">
                 </el-table-column>  
-                <el-table-column  prop="name" label="Descripción" style="width: 70% !important;">
+                <el-table-column  prop="strCurrency_Cod" label="Codigo" width="100">
+                </el-table-column>  
+                <el-table-column  prop="strCurrency_Desc" label="Descripción" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strCountry" label="Paises" style="width: 70% !important;">
                 </el-table-column> 
                 </el-table>
           </el-card>

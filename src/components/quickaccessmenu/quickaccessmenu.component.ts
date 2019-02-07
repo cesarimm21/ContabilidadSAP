@@ -40,6 +40,12 @@ export default class QuickAccessMenuComponent extends Vue {
   // this.getAccesos();
   // this.update();
   }
+  //*test
+  proveedorSeleccionado(val){
+    debugger;
+  }
+
+
   fnOcultar(){
     this.ocultar=!this.ocultar;
   }
