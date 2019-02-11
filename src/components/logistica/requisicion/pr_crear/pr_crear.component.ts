@@ -9,8 +9,30 @@ import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vu
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import axios from 'axios';
+import { Loading } from 'element-ui';
+import { mixin as focusMixin }  from 'vue-focus';
+// import '../../../../assets/css/excel-2007.scss';
+import documentService from '@/components/service/documents.service';
+import msmsendService from '@/components/service/msnSend.service';
+import historialService from '@/components/service/historial.service';
+import inicioService from '@/components/service/inicio.service';
+
+
+import Handsontable from 'handsontable-pro';
 
 import { Notification } from 'element-ui';
+Vue.directive('focus', {
+  inserted: function(el) {
+    el.focus()
+  }
+})
+var EditableColumn = {
+  template: '#editable-column-content',
+  props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
+}
 @Component({
   name: 'crear-pr',
   components:{
@@ -18,10 +40,11 @@ import { Notification } from 'element-ui';
     'bproveedor':BProveedorComponent,
     'balmacen':BAlmacenComponent,
     'buttons-accions':ButtonsAccionsComponent
-  }  
+  } ,
 })
 export default class CrearPRComponent extends Vue {
   timer=0;
+  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   hours:number;
   minutos:number;
   seconds:number;
@@ -46,6 +69,15 @@ export default class CrearPRComponent extends Vue {
   btnactivarcompania:boolean=false;
   btnactivarproveedor:boolean=false;
   btnactivaralmacen:boolean=false;
+
+  /*bolean_tabla_dinamica*/
+  bln_tbl_categoria_cuenta:boolean=false;
+
+  /*tabla*/
+  editing:any= {
+    row:'',
+    column:''
+  };
 
   constructor(){
     super();
@@ -219,6 +251,37 @@ export default class CrearPRComponent extends Vue {
     this.btnactivarcompania=false
   }
 
+  /*tabla metodos*/
+  handleBlur(event) {
+    debugger;
+    this.bln_tbl_categoria_cuenta=false;
+    event.edit=false;
+    this.editing.row='';
+    this.editing.column='';
+    console.log('blur');
+  }
+  isEditing() {
+    return this.editing !== null
+  }
+  onCellBlur(row, column, cell, event) {
+    debugger;
+    this.editing = null
+    console.log('onCellBlur',row, column, cell, event);
+  }
+  onCellClick(row, column, cell, event) {
+    this.editing = {
+      row,
+      column,
+      cell
+    }
+  }
+  alerta(event,edit,column){
+    debugger;
+    this.bln_tbl_categoria_cuenta=true;
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+  }
   data(){
     return{
       dialogTableVisible: false,
