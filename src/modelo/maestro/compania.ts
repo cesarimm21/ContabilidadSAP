@@ -1,18 +1,21 @@
 export class CompaniaModel {
-    intIdCompania:number;
-    strCodCompania: string;
-    strNombre:string;
+    intIdCompany_ID:number;
+    strCompany_Cod: string;
+    strCompany_Name:string;
+    strCompany_Desc:string;
     strRUC:string;
-    strCodigoDepartamento:string;
-    strCodigoPais:string;
-    strDireccion:string;
-    strCodMonedaFuncional:string;
-    strCodMonedaGrupo:string;
-    strCodMonedaLocal:string;
+    strCountry:string;
+    strRegion:string;
+    // strCodigoDepartamento:string;
+    // strCodigoPais:string;
+    strAddress:string;
+    strCurr_Funct:string;
+    strCurr_Grp:string;
+    strCurr_Loc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

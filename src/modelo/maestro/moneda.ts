@@ -1,13 +1,13 @@
 export class MonedaModel {
-    intIdMoneda:number;
-    strCurrency_Code:string ;
-    strCurrency_Des:string ;
+    intIdCurrency_ID:number;
+    strCurrency_Cod:string ;
+    strCurrency_Desc:string ;
     strReference:string ;
 	strCountry:string ;
 	
-    strUser_ID:string ;      
+    strCreation_User:string ;      
     dtmCreation_Date:Date ;           
-    strModify_User:string ;
+    strModified_User:string ;
     dtmModified_Date:Date ;
     chrStatus:string ;
 }

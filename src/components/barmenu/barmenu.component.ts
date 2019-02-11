@@ -53,7 +53,7 @@ export default class BarmenuComponent extends Vue {
   }
 
   getAccesos(){
-    console.log(this.tableData);
+    // console.log(this.tableData);
       // for (var j=0; j< this.tableData.length; j++){
       //   if(this.tableData[j].intLevel == 1){
       //     this.accesosBarMenu.push({
@@ -122,15 +122,21 @@ export default class BarmenuComponent extends Vue {
   linkCrearProveedor(){
     router.push('/barmenu/FI-FINANZAS/proveedor/crear-proveedor')
   }
+  linkModificarProveedor(){
+    router.push('/barmenu/FI-FINANZAS/proveedor/modificar-proveedor')
+  }
+  linkVisualizarProveedor(){
+    router.push('/barmenu/FI-FINANZAS/proveedor/visualizar-proveedor')
+  }
   linkCrearRequisicion(){
     router.push('/barmenu/logistica/requisicion/pr_crear')
   }
     handleOpen (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     }
 
     handleClose (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     }
     clickHamburger () {
       this.isActive = !this.isActive

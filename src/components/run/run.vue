@@ -3,6 +3,21 @@
         <el-card class="box-card">
             <div slot="header" class="headercard"  >
                 <span class="labelheadercard">Pagos automaticos</span>
+                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-external-link"
+                     class="buttonSave" 
+                     @click="Propuesta()"      
+                    >Propuesta</el-button>
+                <span class="labelheadercard"> </span>
+                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-check-square-o"
+                     class="buttonSave" 
+                     @click="Ejecucion()"      
+                    >Ejecución</el-button>
             </div>
             <div class="row bodycard">
                 <div class="col-md-5">
@@ -10,7 +25,7 @@
                     <label class="el-form-item__label col-sm-3" >Fecha ejecución:</label>
                     <div class="col-sm-4 grupolabel">
                         <div class="input-group mb-3" >
-                        <el-input type="date"  size ="small"  style="font-size:11px;" placeholder="*"></el-input>
+                        <el-input type="date"  size ="small" v-model="DateExecution" @change="DateSelected()" style="font-size:11px;" ></el-input>
                         </div>
                     </div>
                     </div>
@@ -18,7 +33,7 @@
                         <label class="el-form-item__label col-sm-3" >Codigo pago:</label>
                         <div class="col-sm-4 grupolabel">
                             <div class="input-group mb-4" >
-                            <el-input size ="small" placeholder="*"></el-input>
+                            <el-input size ="small" v-model="RunPagoCodigo" ></el-input>
                             </div>
                         </div>
                     </div>
@@ -26,11 +41,13 @@
                          <label class="el-form-item__label col-sm-3" >Moneda:</label>
                             <div class="col-sm-4 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"  placeholder="*">
+                                <el-input size ="small"  >
                                     <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                     background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                     background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" 
+                                icon="fa fa-clone"
+                                @click="viewMoneda()"></el-button> 
                                 </el-input>
                                 <!-- <div class="input-group-append buttongrupolabel">
                                     <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
@@ -72,9 +89,9 @@
                         <div class="col-md-5">
                             <div class="form-group row">
                             <label class="el-form-item__label col-sm-5" >Fecha contabilización:</label>
-                            <div class="col-sm-4 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input type="date"  size ="small" style="font-size:11px;"  placeholder="*"></el-input>
+                            <div class="col-sm-5 grupolabel">
+                                <div class="input-group mb-4" >
+                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="DateContabilizacion" @change="DateContabilizacionClick()"></el-input>
                                 </div>
                             </div>
                             </div>
@@ -85,9 +102,9 @@
                         <div class="col-md-5">
                             <div class="form-group row">
                             <label class="el-form-item__label col-sm-5" >Docs. ingresados hastas:</label>
-                            <div class="col-sm-4 grupolabel">
+                            <div class="col-sm-5 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input type="date"  size ="small"  style="font-size:11px;" placeholder="*"></el-input>
+                                <el-input type="date"  size ="small" v-model="DocIngresados"  style="font-size:11px;" ></el-input>
                                 </div>
                             </div>
                             </div>
@@ -95,19 +112,22 @@
                         <div class="col-md-5">
                             <div class="form-group row">
                                  <label class="el-form-item__label col-sm-5" >Banco pagador:</label>
-                                    <div class="col-sm-4 grupolabel">
+                                    <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                        <el-input size ="small"  placeholder="*">
+                                        <el-input size ="small"  >
                                             <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                             background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                             background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"></el-button> 
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" 
+                                        icon="fa fa-clone"
+                                        @click="viewBanco()"></el-button> 
                                         </el-input>
                                         <!-- <div class="input-group-append buttongrupolabel">
                                             <el-button size="small"  class="btn btn-outline-secondary orange" type="primary" icon="fa fa-clone" @click="mostrarBusquedaProveedor()"></el-button>
                                         </div> -->
                                         </div>
                                     </div>
+                                <label class="el-form-item__label col-sm-2" ></label>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -116,9 +136,9 @@
                         <div class="col-md-5">
                             <div class="form-group row">
                             <label class="el-form-item__label col-sm-5" >Pos. deudores vence a:</label>
-                            <div class="col-sm-4 grupolabel">
+                            <div class="col-sm-5 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input type="date"  size ="small"  style="font-size:11px;" placeholder="*"></el-input>
+                                <el-input type="date"  size ="small" v-model="DocDeudores" style="font-size:11px;" ></el-input>
                                 </div>
                             </div>
                             </div>
@@ -172,7 +192,7 @@
                             <label class="el-form-item__label col-sm-2" >Proveedor:</label>
                                 <div class="col-sm-2 grupolabel">
                                     <div class="input-group mb-2" >
-                                    <el-input size ="small" placeholder="111111111"></el-input>
+                                    <el-input size ="small" ></el-input>
                                 </div>
                             </div>
                             <div class="col-sm-1" style="aling-text:center;">
@@ -180,18 +200,18 @@
                             </div>
                             <div class="col-sm-2 grupolabel">
                                 <div class="input-group mb-2" >
-                                    <el-input size ="small" placeholder="999999999"></el-input>
+                                    <el-input size ="small" ></el-input>
                                 </div>
                             </div>
                              <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top:2px;" >
-                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" >
+                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" @click="viewProveedor()" >
                                 </el-button>
                         </div>
                         <div class="row bodycard" style="margin-top:0px;">
                             <label class="el-form-item__label col-sm-2" >Cliente:</label>
                                 <div class="col-sm-2 grupolabel">
                                     <div class="input-group mb-2" >
-                                    <el-input size ="small" placeholder="111111111"></el-input>
+                                    <el-input size ="small" ></el-input>
                                     </div>
                                 </div>
                                 <div class="col-sm-1" style="aling-text:center;">
@@ -199,11 +219,11 @@
                             </div>
                             <div class="col-sm-2 grupolabel">
                                 <div class="input-group mb-2" >
-                                    <el-input size ="small" placeholder="999999999"></el-input>
+                                    <el-input size ="small" ></el-input>
                                 </div>
                             </div>
                              <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top:2px;" >
-                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" >
+                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" @click="viewProveedor()">
                                 </el-button>
                         </div>
                         
@@ -213,8 +233,145 @@
           <el-tab-pane label="Contable">Contable</el-tab-pane>
         </el-tabs>
         </el-card>
-    </div>
-  
+    <el-dialog
+        title="Moneda"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleCloseMoneda">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Moneda</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Moneda Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <br>
+              <el-table
+                :data="gridMoney"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+                height="250"
+                highlight-current-row
+                >
+                <el-table-column  prop="intIdCurrency_ID" label="Correlativo" width="100">
+                </el-table-column>  
+                <el-table-column  prop="strCurrency_Cod" label="Codigo" width="100">
+                </el-table-column>  
+                <el-table-column  prop="strCurrency_Desc" label="Descripción" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strCountry" label="Paises" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
+            <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
+        </span>
+    </el-dialog>
+    <el-dialog
+        title="Banco"
+        :visible.sync="VisibleBanco"
+        width="30%"
+        :before-close="handleCloseBanco">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Buscar Banco</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Banco Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <br>
+              <el-table
+                :data="tableData"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%" class="ExcelTable2007"
+                height="250">
+                <el-table-column   prop="date" label="Codigo" width="180">
+                </el-table-column>  
+                <el-table-column  prop="name" label="Descripción" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
+            <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
+        </span>
+    </el-dialog>
+    <el-dialog
+        title="Proveedor"
+        :visible.sync="VisibleProveedor"
+        width="30%"
+        :before-close="handleCloseProveedor">
+        <el-card class="box-card">
+              <div slot="header" class="headercard">
+                  <span class="labelheadercard" >Proveedor</span>
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Proveedor Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              <br>
+              <el-table
+                :data="tableData"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%" class="ExcelTable2007"
+                height="250">
+                <el-table-column   prop="date" label="Codigo" width="180">
+                </el-table-column>  
+                <el-table-column  prop="name" label="Descripción" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+          </el-card>
+        <span slot="footer" class="dialog-footer">
+            <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
+            <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
+        </span>
+    </el-dialog>
+    </div>  
 </template>
 <script>
 

@@ -135,31 +135,6 @@ openMessage(newMsg : string) {
     type: 'success'
   });
 }
-getImageUrl(strCodDocumento){
-  return CONFIG.Local_PathImage+strCodDocumento+".jpg";
-}
-getPdfUrl(){
-  return CONFIG.Local_PathPdfNews+this.PdfText0+".pdf";
-}
-getPdfUrlAprobado(){
-  return CONFIG.Local_PathPdfApproved+this.PdfText0+".pdf";
-}
-viewpdf(strCodDocumento,strTitle,int){
-  debugger;
-  this.modalVisualizarPdf=true;
-  this.temp=int;
-  this.codfile=strCodDocumento;
-  this.codfiletitle=strTitle;
-}
-getPdfview(){
-  debugger;
-  if(this.temp==1){
-    return CONFIG.Local_PathPdfNews+this.codfile+".pdf";
-  }
-  if(this.temp==2){
-    return CONFIG.Local_PathPdfApproved+this.codfile+".pdf";
-  }  
-}
 
 get(event){
   debugger;

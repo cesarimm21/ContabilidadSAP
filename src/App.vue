@@ -451,5 +451,29 @@ body {
 .el-loading-mask{
   background-color: rgba(0, 0, 0, 0.8);
 }
-
+.el-input__inner{
+  height: 22px;
+  font-size: 12px;
+}
+.buttonSave span {
+    padding-left: 1px !important;
+}
+.elform{
+        margin-top: -4px;
+}
+.el-table__body tr.current-row>td {
+    background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+}
+.el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
+    background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+}
+.el-card__header {
+        padding: 0px 0px !important;
+}
 </style>
