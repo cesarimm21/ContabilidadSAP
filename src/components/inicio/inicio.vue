@@ -30,7 +30,7 @@
           :data="tableData"
           stripe  :default-sort = "{prop: 'date', order: 'descending'}"
           style="width: 50%" class="ExcelTable2007">
-          <el-table-column sortable  prop="date" label="Fecha">
+          <el-table-column   prop="date" label="Fecha">
             <template scope="scope">
             
                 <el-input  v-if="editingb  && (scope.row === editing.row) 

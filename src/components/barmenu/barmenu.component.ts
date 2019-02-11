@@ -159,7 +159,16 @@ export default class BarmenuComponent extends Vue {
     }
     links2(){
       router.push('/barmenu/inicio')
-  }
+    }
+    linkModificarRequisicion(){
+      router.push('/barmenu/logistica/requisicion/pr_modificar')
+    }
+    linkVisualizarRequisicion(){
+      router.push('/barmenu/logistica/requisicion/pr_visualizar')
+    }
+    linkVisualizarModificaRequisicion(){
+      router.push('/barmenu/logistica/requisicion/pr_visualizar_modificar')
+    }
   data() {
     return {
       accesosUser: [],

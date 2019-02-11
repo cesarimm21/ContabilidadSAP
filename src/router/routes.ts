@@ -31,6 +31,10 @@ import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue
 import RunComponent from '../components/run/run.vue'
 import CrearPRComponent from '../components/logistica/requisicion/pr_crear/pr_crear.vue'
 import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
+
+import ModificarPRComponent from '../components/logistica/requisicion/pr_modificar/pr_modificar.vue'
+import VisualizarPRComponent from '../components/logistica/requisicion/pr_visualizar/pr_visualizar.vue'
+import VisualizarModificarPRComponent from '../components/logistica/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.vue'
 export default [
  
   {
@@ -52,17 +56,34 @@ export default [
       }]
       },
       {
-        path: 'LO-LOGISTICA',
+        path: 'logistica',
         component:CrearPRComponent,
         name:'logistica',
         children:[{
           path:'requisicion',
           component:CrearPRComponent,
-          children:[{
+          children:[
+          {
             path:'pr_crear',
             component:CrearPRComponent,
             name:'pr_crear'
-          }]
+          },
+          {
+            path:'pr_modificar',
+            component:ModificarPRComponent,
+            name:'pr_modificar'
+          },
+          {
+            path:'pr_visualizar',
+            component:VisualizarPRComponent,
+            name:'pr_visualizar'
+          },
+          {
+            path:'pr_visualizar_modificar',
+            component:VisualizarModificarPRComponent,
+            name:'pr_visualizar_modificar'
+          },
+          ]
         }]
         },
       

@@ -12,7 +12,7 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 
 import { Notification } from 'element-ui';
 @Component({
-  name: 'modificar-pr',
+  name: 'visualizar-pr',
   components:{
     'bcompania':BCompaniaProveedor,
     'bproveedor':BProveedorComponent,
@@ -20,7 +20,7 @@ import { Notification } from 'element-ui';
     'buttons-accions':ButtonsAccionsComponent
   }  
 })
-export default class ModificarPRComponent extends Vue {
+export default class VisualizarPRComponent extends Vue {
   timer=0;
   hours:number;
   minutos:number;
@@ -93,14 +93,6 @@ export default class ModificarPRComponent extends Vue {
     localStorage.clear();
     router.push('/')
   }
-  calcular(temp){
-    if(temp < 600){
-      return { rojo: true,}
-    }
-    else{
-      return { verde: true, }
-    }
-  }
   loadCompania(){
     this.dialogCompania=true;
   }
@@ -109,35 +101,6 @@ export default class ModificarPRComponent extends Vue {
   }
   loadAlmacen(){
     this.dialogAlmacen=true;
-  }
-  handleClose(){
-    // this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
-    //     confirmButtonText: 'OK',
-    //     cancelButtonText: 'Cancel',
-    //     type: 'warning'
-    //   }).then(() => {
-    //     this.$message({
-    //       type: 'success',
-    //       message: 'Delete completed'
-    //     });
-    //   }).catch(() => {
-    //     this.$message({
-    //       type: 'info',
-    //       message: 'Delete canceled'
-    //     });          
-    //   });
-  }
-  tableRowClassName(row, rowIndex) {
-      debugger;
-    // if (row === undefined || row.EstadoAprobacion === undefined) return '';
-    // if (row.EstadoAprobacion === 'R'){
-    //   return 'rechazado-row';
-    // } else if (row.EstadoAprobacion === 'A') {
-    //   return 'aprobado-row';
-    // } else if (row.EstadoAprobacion === 'M'){
-    //   return 'modificado-row';
-    // }
-    // return '';
   }
   handleCurrentChange(val) {
     debugger;

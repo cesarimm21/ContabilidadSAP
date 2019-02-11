@@ -148,9 +148,9 @@
               <el-submenu index="2-1">
                 <template slot="title">REQUISICIÓN DE COMPRA</template>
                 <el-menu-item index="2-1-1" @click="linkCrearRequisicion()">LR01-Crear Requerimiento de Compra</el-menu-item>
-                <el-menu-item index="2-1-2">LR02-Modificar Requerimiento de Compras</el-menu-item>
-                <el-menu-item index="2-1-3">LR04-Visualizar Requerimiento de Compras</el-menu-item>
-                <el-menu-item index="2-1-4">LR07-Aceptacion del Servicio</el-menu-item>
+                <el-menu-item index="2-1-2" @click="linkModificarRequisicion()">LR02-Modificar Requerimiento de Compras</el-menu-item>
+                <el-menu-item index="2-1-3" @click="linkVisualizarRequisicion()">LR04-Visualizar Requerimiento de Compras</el-menu-item>
+                <el-menu-item index="2-1-4" @click="linkVisualizarModificaRequisicion()">LR07-Aceptacion del Servicio</el-menu-item>
               </el-submenu>
               <el-submenu index="2-2">
                 <template slot="title">ORDEN DE COMPRA</template>

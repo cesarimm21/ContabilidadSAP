@@ -10,35 +10,7 @@
       </div>
       </el-tooltip>
     </div>
-    <el-tooltip class="item" effect="dark" :content="namecomplete" placement="bottom">
-      <div class="user-container " style="line-height: 35px;"><i class="el-icon-fa-user"></i> <span style="font-size: 14px;">{{nameuser}}</span>
-      </div>
-    </el-tooltip>
-    <el-tooltip v-if="ocultarConfig" class="item" effect="dark" content="Configuración" placement="bottom">
-      <div class="icon-container blue" style="line-height: 35px;" @click.prevent="$refs.ctxMenu.open"><i class="el-icon-fa-cog"></i>
-      </div>
-    </el-tooltip>
-    
-    <el-tooltip class="item" effect="dark" content="Salir" placement="bottom">
-    <div class="icon-container red" style="line-height: 35px;" @click="linkLogout"><i class="el-icon-fa-sign-out"></i>
-    </div>
-    </el-tooltip>
-      <div>
-      <context-menu id="context-menu" mode="horizontal" ref="ctxMenu">
-        <div class=" principal blue">
-          <el-menu class="el-menu-demo">
-            <el-menu-item 
-              v-for="item in accesosUser"
-              @click="linkRoute(item.strEnlace)"
-              :index="item.strEnlace"
-              :key="item.strEnlace">
-              <i :class="item.strIconName"></i> {{item.strNombre}}
-            </el-menu-item>
-
-          </el-menu>
-        </div>
-      </context-menu>
-    </div>
+   
   </div>
 </template>
 <script>

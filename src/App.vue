@@ -17,6 +17,28 @@ export default {
 html {
   height: 100%;
 }
+.el-select {
+    width: 100% !important;
+    padding-left: 0px !important;
+    height: 22px !important;
+}
+.el-input__icon+.el-input__inner {
+    padding-right: 35px;
+    height: 22px !important;
+}
+.el-button+.el-button {
+    margin-left: -1px;
+}
+.el-select>.el-input {
+    display: block;
+    height: 22px !important;
+}
+.boton{
+  padding: 3px 3px !important;background: #fff5c4;
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+  background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+  background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+}
 .btn-primary {
     color: #fff;
     font-size: 13px;
@@ -116,18 +138,21 @@ body {
 .el-carousel__item--card.is-in-stage {
   width: 745px !important;
 }
+
 .v-separator {
-  content: "";
-  display: inline-block;
-  width: 0px;
-  height: 12px;
-  border-right: 1px solid #fafafa;
-  border-left: 1px solid #b4b4b4;
-  padding: 0;
+    content: "";
+    display: inline-block;
+    width: 0px;
+    height: 14px;
+    border-right: 1px solid #fafafa;
+    border-left: 1px solid #b4b4b4;
+    padding: 0;
+    margin-bottom: -5px;
 }
 .el-card__body {
     text-align: center;
     margin-bottom: 0.4% !important;
+    padding: 13px !important;
 }
 .el-tabs--border-card {
     background: #fff;
@@ -138,6 +163,25 @@ body {
 .el-card {
     cursor: initial !important;
     position: relative;
+     width: 99% !important;
+}
+.el-table th>.cell {
+    word-wrap: normal;
+    text-overflow: ellipsis;
+    line-height: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 2 !important;
+}
+.el-table_1_column_1{
+    background-color: #E4ECF7 !important;
+    text-align: center !important;
+    border: 1px solid #9EB6CE !important;
+    border-width: 0px 1px 1px 0px !important;
+    border-bottom: 1px solid #9eb6ce !important;
+}
+.el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid rgba(158, 182, 206, 0.6784313725490196) !important; 
 }
 .el-tabs__nav-scroll {
     overflow: hidden;
