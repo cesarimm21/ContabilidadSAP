@@ -21,7 +21,7 @@
               <el-submenu index="1-1">
                 <template slot="title">CUENTAS POR PAGAR</template>
                 <el-menu-item index="1-1-1"
-                @click="linkRoute()" >FP01-Ingreso Documento</el-menu-item>
+                @click="linkRoute()" >FP01-Ingreso Comprobante</el-menu-item>
                 <el-menu-item index="1-1-2">FP02-Modificar Documento</el-menu-item>
                 <el-menu-item index="1-1-3">FP03-Visualizar Documento</el-menu-item>
                 <el-menu-item index="1-1-4">FP10-Reconciliación</el-menu-item>
@@ -170,9 +170,9 @@
               </el-submenu>
               <el-submenu index="2-3">
                 <template slot="title">HES</template>
-                <el-menu-item index="2-3-1">P01-Crear</el-menu-item>
-                <el-menu-item index="2-3-2">P02-Modificar</el-menu-item>
-                <el-menu-item index="2-3-3">P03-Visualizar</el-menu-item>
+                <el-menu-item index="2-3-1" @click="linkCrearHes()">P01-Crear</el-menu-item>
+                <el-menu-item index="2-3-2" @click="linkModificarHes()">P02-Modificar</el-menu-item>
+                <el-menu-item index="2-3-3" @click="linkVisualizarHes()">P03-Visualizar</el-menu-item>
               </el-submenu>
                <el-submenu index="2-4">
                 <template slot="title">ALMACENES</template>
