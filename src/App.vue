@@ -429,4 +429,7 @@ body {
                 background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
                 background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
 }
+.el-card__header {
+        padding: 0px 0px !important;
+}
 </style>

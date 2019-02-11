@@ -16,6 +16,7 @@ import tipodocidentidadService from '@/components/service/tipodocidentidad.servi
 import departamentoService from '@/components/service/departamento.service';
 import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
+import impuestoService from '@/components/service/impuesto.service';
 
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import {PaisModel} from '@/modelo/maestro/pais';
@@ -24,6 +25,7 @@ import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
 import {DepartamentoModel} from '@/modelo/maestro/departamento';
 import {MonedaModel} from '@/modelo/maestro/moneda';
 import {CategoriaModel} from '@/modelo/maestro/categoria';
+import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 @Component({
   name: 'crear-proveedor'
 })
@@ -37,7 +39,6 @@ export default class CrearProveedorComponent extends Vue {
   VisibleForName:boolean=true;
   ApellidosShow:boolean=false;
 //   ****
-  AddressCalle:string;
   AddressNumero:string;
   AddressDprto:string;
   AddressOf:string;
@@ -58,7 +59,11 @@ export default class CrearProveedorComponent extends Vue {
   btnactivarpais:boolean=false;
   //**Banco */
   public Banco:BancoModel=new BancoModel();
-  public selectBanco:BancoModel=new BancoModel();
+  public selectBancoA:BancoModel=new BancoModel();
+  public selectBancoB:BancoModel=new BancoModel();
+  public selectBancoC:BancoModel=new BancoModel();
+  public selectBancoD:BancoModel=new BancoModel();
+  FLAGBANCO:String;
 
   bancoVisible:boolean=false;
   btnactivarbanco:boolean=false;
@@ -77,18 +82,27 @@ export default class CrearProveedorComponent extends Vue {
   //**Moneda */
   public Moneda:MonedaModel=new MonedaModel();
   monedaVisible:boolean=false;
-  public selectMoneda:MonedaModel=new MonedaModel();
+  public selectMonedaA:MonedaModel=new MonedaModel();
+  public selectMonedaB:MonedaModel=new MonedaModel();
+  public selectMonedaC:MonedaModel=new MonedaModel();
+  public selectMonedaD:MonedaModel=new MonedaModel();
+  FLAGMONEDA:String;
   //**Categoria */
   public Categoria: CategoriaModel=new CategoriaModel();
+
+  //**Impuesto */
+  public Impuesto:ImpuestoModel=new ImpuestoModel();
+  impuestoVisible:boolean=false;
+  public selectImpuesto:ImpuestoModel=new ImpuestoModel();
+
   constructor(){
     super();
-    this.loadPais();
-    this.loadBanco();
+    // this.loadPais();    
     this.loadCompania();
     this.GetAllProveedor();
-    this.GetAllTipoDocumento();
-    this.GetAllDepartamento();
-    this.GetAllMoneda();
+    // this.GetAllTipoDocumento();
+    // this.GetAllDepartamento();
+    // this.GetAllMoneda();
     this.GetAllCategoria();
   }
   loadCompania(){
@@ -111,18 +125,19 @@ export default class CrearProveedorComponent extends Vue {
     paisService.GetAllCompania()
     .then(response=>{
       this.Pais=response.data;
+      this.paisVisible=true;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar lista de paises'
       });
+      this.paisVisible=false;
     })
   }
 
   paisDialog(){
-    debugger;
-    this.paisVisible=true;
+    this.loadPais();
   }
   activar_pais(){
     this.btnactivarpais=true;
@@ -153,20 +168,36 @@ export default class CrearProveedorComponent extends Vue {
     bancoService.GetAllBanco()
     .then(response=>{
       this.Banco=response.data;
+      this.bancoVisible=true;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar lista de Banco'
       });
+      this.bancoVisible=false;
     })
   }
-  bancoDialog(){
-    this.bancoVisible=true;
+  bancoDialog(val:string){
+    debugger;
+    this.loadBanco();
+    this.FLAGBANCO=val;
   }
-  handleCloseBanco(){
+  handleCloseBanco(){ 
     this.bancoVisible=false;
-    this.selectBanco=new BancoModel();
+    if(this.FLAGBANCO==='A'){
+      this.selectBancoA=new BancoModel();
+    }
+    if(this.FLAGBANCO==='B'){
+      this.selectBancoB=new BancoModel();
+    }
+    if(this.FLAGBANCO==='C'){
+      this.selectBancoC=new BancoModel();
+    }
+    if(this.FLAGBANCO==='D'){
+      this.selectBancoD=new BancoModel();
+    }   
+    
   }
   activar_banco(){
     this.btnactivarbanco=true;
@@ -180,11 +211,22 @@ export default class CrearProveedorComponent extends Vue {
     this.bancoVisible=false;
   }
   bancoChosseClose(){
-    this.selectBanco=new BancoModel();
+    this.selectBancoA=new BancoModel();
     this.bancoVisible=false;
   }
   bancoSelect(val:BancoModel){
-    this.selectBanco=val;
+    if(this.FLAGBANCO==='A'){
+      this.selectBancoA=val;
+    }
+    if(this.FLAGBANCO==='B'){
+      this.selectBancoB=val;
+    }
+    if(this.FLAGBANCO==='C'){
+      this.selectBancoC=val;
+    }
+    if(this.FLAGBANCO==='D'){
+      this.selectBancoD=val;
+    }    
     // debugger;
   }
   //#endregion
@@ -209,12 +251,19 @@ export default class CrearProveedorComponent extends Vue {
     this.gridSelectedProveedor=val;
   }
   //#endregion
-
   //#region [Tipo Documento]
   GetAllTipoDocumento(){      
     tipodocidentidadService.GetAllTipoDocumento()
     .then(response=>{
       this.tipoDocIdentidad=response;
+      this.tipodocVisible=true;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se puede cargar lista de tipo de documento'
+      });
+      this.tipodocVisible=false;
     })
   }  
   handleCloseTipoDoc(){
@@ -232,7 +281,7 @@ export default class CrearProveedorComponent extends Vue {
     this.tipoDocSelectedIdentidad=new TipoDocIdentidadModel();
   }
   loadTipoDoc(){
-    this.tipodocVisible=true;
+    this.GetAllTipoDocumento();
   }
   //#endregion
 
@@ -241,12 +290,14 @@ export default class CrearProveedorComponent extends Vue {
     departamentoService.GetAllDepartamento()
     .then(response=>{
       this.Departamento=response;
+      this.departVisible=true;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se puede cargar lista de departamento'
       });
+      this.departVisible=false;
     })
   }
   handleCloseDepart(){
@@ -264,43 +315,92 @@ export default class CrearProveedorComponent extends Vue {
     this.selectDepartamento=new DepartamentoModel();
   }
   departDialog(){
-    this.departVisible=true;
+    this.GetAllDepartamento();
   }
   //#endregion
   //#region [MONEDA]
   GetAllMoneda(){
     monedaService.GetAllMoneda()
     .then(response=>{
-      this.Moneda=response;      
+      this.Moneda=response;
+      this.monedaVisible=true;      
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se puede cargar lista de moneda'
       });
+      this.monedaVisible=false;
     })
   }
-  monedaDialog(){
-    this.monedaVisible=true;
-    
+  monedaDialog(val:string){
+    this.GetAllMoneda();    
+    this.FLAGMONEDA=val;
   }
   handleCloseMoneda(){
     this.monedaVisible=false;
-    this.selectMoneda=new MonedaModel();
+    if(this.FLAGMONEDA==='A'){
+      this.selectMonedaA=new MonedaModel();
+    }   
+    if(this.FLAGMONEDA==='B'){
+      this.selectMonedaB=new MonedaModel();
+    }   
+    if(this.FLAGMONEDA==='C'){
+      this.selectMonedaC=new MonedaModel();
+    }   
+    if(this.FLAGMONEDA==='D'){
+      this.selectMonedaD=new MonedaModel();
+    }   
+    
   }
   monedaSelect(val:MonedaModel){
-    this.selectMoneda=val;
-    console.log(this.selectMoneda);
-    
+    if(this.FLAGMONEDA==='A'){
+      this.selectMonedaA=val;
+    }   
+    if(this.FLAGMONEDA==='B'){
+      this.selectMonedaB=val;
+    }   
+    if(this.FLAGMONEDA==='C'){
+      this.selectMonedaC=val;
+    }   
+    if(this.FLAGMONEDA==='D'){
+      this.selectMonedaD=val;
+    }   
   }
   monedaChosseCheck(){
     this.monedaVisible=false;
   }
-  monedaChosseClose(){
-    this.monedaVisible=false;
-    this.selectMoneda=new MonedaModel();
+  //#endregion
+  //#region [Impuesto]
+  GetAllImpuesto(){
+    impuestoService.GetAllImpuesto()
+    .then(response=>{
+      this.Impuesto=response;
+      this.impuestoVisible=true;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar lista Impuestos'
+      });
+      this.impuestoVisible=false;
+    })
+  }
+  impuestoDialog(){
+    this.GetAllImpuesto();
+  }
+  handleCloseImpuesto(){
+    this.impuestoVisible=false;
+    this.selectImpuesto=new ImpuestoModel();
+  }
+  impuestoSelect(val:ImpuestoModel){
+    this.selectImpuesto=val;
+  }
+  impuestoChosseCheck(){
+    this.impuestoVisible=false;
   }
   //#endregion
+  
   GetAllCategoria(){
     categoriaService.GetAllCategoria()
     .then(response=>{
@@ -330,36 +430,44 @@ export default class CrearProveedorComponent extends Vue {
       }
   }
   SaveProveedor(){
-    // if(this.value1)
     this.Proveedor.intIdCompany_ID=this.Compania[0].strCompany_Cod;
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guargando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );
-
-    this.Proveedor.intIdCompany_ID=this.value;
-    if(this.value1===1){
-      this.Proveedor.strCat_Person='Jurídica'
-    }
-    if(this.value1===2){
-      this.Proveedor.strCat_Person='Natural'
-    }  
-    this.Proveedor.strAddress=this.AddressCalle+' '+this.AddressNumero+' Dprto '+this.AddressDprto+' of. '+this.AddressOf+' Mza. '+this.AddressLote
+    // let loadingInstance = Loading.service({
+    //   fullscreen: true,
+    //   text: 'Guargando...',
+    //   spinner: 'el-icon-loading',
+    //   background: 'rgba(0, 0, 0, 0.8)'
+    //   }
+    //   ); 
+    this.Proveedor.intIdVenCateg_ID=this.value1;
+    this.Proveedor.intIdDocIdent_ID=this.tipoDocSelectedIdentidad.intIdDocIdent_ID;
+    this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;     
+    this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
+    this.Proveedor.intIdRegion_ID=this.selectDepartamento.intIdRegion_ID;
+    this.Proveedor.strBank_Cod=this.selectBancoA.strBank_Cod;
+    this.Proveedor.strCurrency_Cod=this.selectMonedaA.strCurrency_Cod;
+    this.Proveedor.strBank_Corp_Cod=this.selectBancoB.strBank_Cod;
+    this.Proveedor.strCurrency_Corp=this.selectMonedaB.strCurrency_Cod;
+    this.Proveedor.strBank_Other_Cod=this.selectBancoC.strBank_Cod;
+    this.Proveedor.strDetraccion_Cod=this.selectMonedaC.strCurrency_Cod;
+    this.Proveedor.strFore_Branch_Cod=this.selectBancoD.strBank_Cod;
+    this.Proveedor.strFore_Curr_Cod=this.selectMonedaD.strCurrency_Cod;
+    this.Proveedor.strRetention_Cod=this.selectImpuesto.strWH_Cod;
+    this.Proveedor.fltRetention_Porcen=this.selectImpuesto.fltPorcent;
+    this.Proveedor.strDetraccion_Cod=this.selectImpuesto.strWH_Cod;
+    this.Proveedor.strDocIdent_NO=String(this.selectImpuesto.fltPorcent);
+    console.log(this.Proveedor);
     
-    proveedorService.putProveedor(this.Proveedor)
-    .then(response=>{
-      loadingInstance.close();
-      this.openMessageSuccess('Se guardo correctamente'+response);
-      this.Proveedor=new ProveedorModel();
-    })
-    .catch(e =>{
-      debugger;
-      this.openMessageError('Error guardar proveedor');
-      loadingInstance.close();
-    })    
+    // proveedorService.putProveedor(this.Proveedor)
+    // .then(response=>{
+    //   loadingInstance.close();
+    //   this.openMessageSuccess('Se guardo correctamente'+response);
+    //   this.Proveedor=new ProveedorModel();
+    // })
+    // .catch(e =>{
+    //   debugger;
+    //   this.openMessageError('Error guardar proveedor');
+    //   loadingInstance.close();
+    // })    
       
   }
   openMessageError(strMessage:string){
@@ -377,6 +485,7 @@ export default class CrearProveedorComponent extends Vue {
       });
   }
   handleClose(){
+    this.dialogVisible=false;
     // this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
     //     confirmButtonText: 'OK',
     //     cancelButtonText: 'Cancel',
@@ -405,7 +514,6 @@ export default class CrearProveedorComponent extends Vue {
     return{
       dialogTableVisible: false,
       dialogVisible:false,
-      AddressCalle:'',
       AddressNumero:'',
       AddressDprto:'',
       AddressOf:'',
@@ -413,7 +521,10 @@ export default class CrearProveedorComponent extends Vue {
       RucOrDni:'',
       VisibleForName:true,
       ApellidosShow:false,
-      
+      descripcionCompania:'',
+      codigoCompania:'',
+      FLAGBANCO:'',
+      FLAGMONEDA:'',
       tableData: [{
         date: '0001',
         name: 'Ferreyros'
