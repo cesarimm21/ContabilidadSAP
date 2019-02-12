@@ -27,13 +27,16 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   dialogOrdenCompra:boolean=false;
   btnactivarOrdenCompra:boolean=false;
   dataOrdenCompra:any[];
+  selectData:string;
   //**Proveedor */
   btnactivarproveedor:boolean=false;
   dialogProveedor:boolean=false;
+  dataProveedor:string;
   //**Tipo Documento */
   dialogTipoDocumento:boolean=false;
   btnactivarTipoDocumento:boolean=false;
   dataTipoD:any[];
+  selectType:string;
   //**Documento */
 
   //**Moneda */
@@ -78,6 +81,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     debugger;
     this.btnactivarOrdenCompra=false;
     this.dialogOrdenCompra=false;
+    // this.selectData='';
     return false;
   }
   activar_OrdenCompra(){
@@ -95,11 +99,19 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
     }
   }
+  selectOrdenCompra(val){
+    debugger;
+    this.selectData=val.codigo;
+    console.log(this.selectData);
+    
+  }
+  checkOrdenCompra(){
+    this.dialogOrdenCompra=false;
+  }
+  //#endregion
   handleCurrentChange(){
 
   }
-  //#endregion
-
   //#region [PROVEEDOR]
   loadProveedor(){
     this.dialogProveedor=true;
@@ -123,6 +135,9 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
+  }
+  selectProveFunt(val){
+    this.dataProveedor=val.codigo;
   }
   //#endregion
 
@@ -148,9 +163,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarTipoDocumento=false;
     }
   }
-  leaveTipodoc(){
-    debugger;
-    this.btnactivarTipoDocumento=false;
+  selectTipoDocumento(val){
+    this.selectType=val.codigo;
   }
   //#endregion
 
@@ -185,6 +199,9 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   data(){
     return{
       dialogTableVisible: false,
+      selectData:'',
+      selectType:'',
+      dataProveedor:'',
       codigoCompania:'001',
       descripcionCompania:'Secocha',
       dataOrdenCompra:[{

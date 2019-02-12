@@ -268,6 +268,7 @@
                     </div>
                 </div>
                 <el-table
+                    :data="dataServicio"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
@@ -281,10 +282,10 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeOrdenC()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeServicios()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenC()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeServicios()">
                 <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                 </el-button>
             </footer>

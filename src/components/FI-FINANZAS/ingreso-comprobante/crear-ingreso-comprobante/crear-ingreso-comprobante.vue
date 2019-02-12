@@ -23,7 +23,7 @@
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_OrdenCompra" @focus="activar_OrdenCompra" >  
+                                    <el-input size ="small" @blur="desactivar_OrdenCompra" @focus="activar_OrdenCompra" v-model="selectData" type="text">  
                                         <el-button v-if="btnactivarOrdenCompra && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenCompra()"></el-button>                           
                                     </el-input>
                                     </div>
@@ -31,7 +31,7 @@
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="time" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder=""  >                            
+                                    <el-input size ="time" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="dataProveedor" >                            
                                         <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedor()"></el-button> 
                                     </el-input>
                                     </div>
@@ -41,7 +41,7 @@
                                 <label class="el-form-item__label col-md-3" >Tipo Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento"  >                            
+                                    <el-input size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="selectType" >                            
                                          <el-button v-if="btnactivarTipoDocumento && !dialogTipoDocumento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDocumento()"></el-button> 
                                     </el-input>
                                     </div>
@@ -256,7 +256,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @current-change="handleCurrentChange">
+                    @current-change="selectProveFunt">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
                     <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
@@ -265,7 +265,7 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeOrdenCompra()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenCompra()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenCompra()">
@@ -304,7 +304,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @current-change="handleCurrentChange">
+                    @current-change="selectTipoDocumento">
                     <el-table-column   prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
                     <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">

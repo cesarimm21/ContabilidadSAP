@@ -64,6 +64,7 @@ export default class CrearHesComponent extends Vue {
   loadServicios(){
     this.dialogServicios=true;
   }
+  
 //#endregion
   linksUser(comand){
     router.push('/barmenu/'+comand)
@@ -163,6 +164,25 @@ export default class CrearHesComponent extends Vue {
         descripcion:'Vehiculo de carga'
       },{
         codigo:'67000006',
+        descripcion:'para navidad'
+      }],
+      dataServicio:[{
+        codigo:'SEV0001',
+        descripcion:'compra de vienes y servicio'
+      },{
+        codigo:'SEV0002',
+        descripcion:'compra de vehiculos'
+      },{
+        codigo:'SEV0003',
+        descripcion:'Fomentar el bienestar'
+      },{
+        codigo:'SEV0004',
+        descripcion:'Información en radio'
+      },{
+        codigo:'SEV0005',
+        descripcion:'Vehiculo de carga'
+      },{
+        codigo:'SEV0006',
         descripcion:'para navidad'
       }]
     }
