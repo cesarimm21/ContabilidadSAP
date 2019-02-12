@@ -45,6 +45,8 @@ var EditableColumn = {
 export default class CrearPRComponent extends Vue {
   timer=0;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
+  
   hours:number;
   minutos:number;
   seconds:number;

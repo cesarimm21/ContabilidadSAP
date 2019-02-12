@@ -108,9 +108,7 @@ export default QuickAccessMenuComponent
 .red:hover {
   background-color: #FF4949;
 }
-.el-menu{
-  background-color: white;
-}
+
 .user-container{
   text-align: center;
   line-height: 35px;

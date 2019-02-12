@@ -42,13 +42,13 @@
                                         </div>
                                         <input type="text" class="form-control" style="font-size: 13px;height: calc(2.2rem + 0px) !important" placeholder="Usuario" autocomplete="username" formControlName="strUsuario">
                                     </div>
-                                    <div class="form-group input-group mb-4" style="margin-top: 7px; !important;margin-left: 0px !important;">
+                                    <div class="form-group input-group mb-4" style="margin-top: 28px; !important;margin-left: 0px !important;">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text iconLogin" style="background: #498bbb;border: #498bbb;"><i class="fa fa-lock" style="color:white"></i></span>
                                         </div>
                                         <input type="password" class="form-control" style="font-size: 13px;height: calc(2.2rem + 0px) !important" placeholder="Contraseña" autocomplete="current-password" formControlName="strPassword">
                                     </div>
-                                    <div class="row" style="margin-top: 16px;margin-bottom: -16px;">
+                                    <div class="row" style="margin-top: 28px;margin-bottom: -16px;">
                                         <div class="col-lg-4">
                                             <button type="submit" class="btn btn-primary px-4 " @click="loginUsuario">Iniciar</button>
                                         </div>

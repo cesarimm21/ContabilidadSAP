@@ -10,18 +10,20 @@
       </div>
       </el-tooltip>
     </div>
+    <div class="brand" >Sistema de <span style="color:#d7803d">Gestión Empresarial</span></div>
+
    
     <el-tooltip class="item" effect="dark" :content="namecomplete" placement="bottom">
-      <div class="user-container " style="line-height: 35px;"><i class="el-icon-fa-user"></i> <span style="font-size: 14px;">{{nameuser}}</span>
+      <div class="user-container " style="line-height: 35px;"><i class="el-icon-fa-user" style="font-size: 16px;"></i> <span style="font-size: 14px;">{{nameuser}}</span>
       </div>
     </el-tooltip>
     <el-tooltip v-if="ocultarConfig" class="item" effect="dark" content="Configuración" placement="bottom">
-      <div class="icon-container blue" style="line-height: 35px;" @click.prevent="$refs.ctxMenu.open"><i class="el-icon-fa-cog"></i>
+      <div class="icon-container blue" style="line-height: 35px;" @click.prevent="$refs.ctxMenu.open"><i class="el-icon-fa-cog" style="font-size: 16px;"></i>
       </div>
     </el-tooltip>
     
     <el-tooltip class="item" effect="dark" content="Salir" placement="bottom">
-    <div class="icon-container red" style="line-height: 35px;" @click="linkLogout"><i class="el-icon-fa-sign-out"></i>
+    <div class="icon-container red" style="line-height: 35px;" @click="linkLogout"><i class="el-icon-fa-sign-out" style="font-size: 16px;"></i>
     </div>
     </el-tooltip>
       <!-- <div>
@@ -75,12 +77,7 @@ export default TopMenu
   text-align: left;
   height: 25px;
 }
-.brand {
-  text-align: left;
-  font-size: 1.0em;
-  line-height: 48px;
-  padding: 0 15px 0 40px;
-}
+
 
 .user-container {
   text-align: center;
@@ -108,9 +105,7 @@ export default TopMenu
 .red:hover {
   background-color: #FF4949;
 }
-.el-menu{
-  background-color: white;
-}
+
 .user-container{
   text-align: center;
   line-height: 35px;

@@ -3,7 +3,7 @@
         {
             "intAccess_ID": "1",
             "strName": "FI-Finanzas",
-            "strDescription": "finanzas",
+            "strDescription": "Finanzas",
             "strLink": "/barmenu/finanzas",
             "intLevel": "1",
             "intLevel2": "0",
@@ -15,8 +15,8 @@
         },
         {
             "intAccess_ID": "1",
-            "strName": "FI-Administracion",
-            "strDescription": "administracion",
+            "strName": "FI-Administración",
+            "strDescription": "Administracion",
             "strLink": "/barmenu/administracion",
             "intLevel": "1",
             "intLevel2": "0",

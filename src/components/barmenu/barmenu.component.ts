@@ -33,7 +33,10 @@ export default class BarmenuComponent extends Vue {
   isActive:boolean;
   isCollapse:boolean;
   accesosBarMenu:any=[];
+  
+  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   UserData:any;
+  dimensionContent = 21;
   gridData:any;
   modelAcceso:AccesoModel[];
   tableData:any[];
