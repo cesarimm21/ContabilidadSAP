@@ -1,11 +1,11 @@
 export class CategoriaLineaModel {
-    intIdCategoriaLinea:number;
-    strCodCategoriaLinea: string;
-    strDescripcion:string;
+    intIdCategLine_ID:number;
+    strCategLine_Cod: string;
+    strCategLine_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

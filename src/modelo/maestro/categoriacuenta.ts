@@ -1,11 +1,11 @@
 export class CategoriaCuentaModel {
-    intIdCategoriaCuenta:number;
-    strCodCategoriaCuenta: string;
-    strDescripcion:string;
+    intIdAcctCateg_ID:number;
+    strAcctCateg_Cod: string;
+    strAcctCateg_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }
