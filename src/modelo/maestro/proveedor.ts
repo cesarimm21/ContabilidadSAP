@@ -6,7 +6,8 @@ export class ProveedorModel {
     intIdCompany_ID:string;//*
     strCountry:any;//*
     strVendor_NO:string ;//*
-    strCat_Person:string ;//*
+    intIdVenCateg_ID:number;
+    // strCat_Person:string ;//*
     srtTax_ID:string ;  //*      
     strVendor_Desc:string ;//*
     strLastName:string ;//*

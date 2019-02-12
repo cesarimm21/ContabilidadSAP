@@ -32,6 +32,7 @@ export default class QuickAccessMenuComponent extends Vue {
   ocultar:boolean=false;
   dialogVisible:boolean=false;
   SendDocument:boolean=false;
+  myModalRef:boolean=false;
   constructor(){
     super();
    // this.ChechAccess();

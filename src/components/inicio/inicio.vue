@@ -30,7 +30,7 @@
           :data="tableData"
           stripe  :default-sort = "{prop: 'date', order: 'descending'}"
           style="width: 50%" class="ExcelTable2007">
-          <el-table-column sortable  prop="date" label="Fecha">
+          <el-table-column   prop="date" label="Fecha">
             <template scope="scope">
             
                 <el-input  v-if="editingb  && (scope.row === editing.row) 
@@ -69,7 +69,7 @@
         </el-tabs>
       </el-card>
     </div>
-    <b-modal ref="myModalRef" hide-footer title="Guardar" size="lg"  v-model="modalPopup" @keydown.native.enter="confirmaraceptar">
+    <!-- <b-modal ref="myModalRef" hide-footer title="Guardar" size="lg"  v-model="modalPopup" @keydown.native.enter="confirmaraceptar">
       <div>
         <img src="../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute('/menu/inicio')"/>
         <span style="font-size:13px">¿Desea grabar el documento?</span>
@@ -82,7 +82,7 @@
           <img class="imagenfilter" src="../../images/close.png" alt="" >
         </el-button>
       </footer>
-    </b-modal>
+    </b-modal> -->
   </div>
 
 <!-- <video width="320" height="240" controls>

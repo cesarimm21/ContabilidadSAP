@@ -10,7 +10,7 @@ export default{
     })
   },
   putProveedor(Proveedor){
-    return axios.post(CONFIG.API_URL+'proveedor/put', Proveedor)
+    return axios.post(CONFIG.API_URL+'proveedor', Proveedor)
     .then(response =>{
         return response.data;
       })

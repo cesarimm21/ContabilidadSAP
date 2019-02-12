@@ -2,37 +2,20 @@ import Inicio from '@/components/inicio/inicio.vue'
 import Slider from '@/components/slider/slider.vue'
 import Login from '@/components/login/login.vue'
 import Barmenu from '@/components/barmenu/barmenu.vue'
-import DocComparador from '@/components/docComparador/docComparador.vue'
-import DocNuevo from '@/components/docNuevo/docNuevo.vue'
-import JerarquiaComponent from '@/components/jerarquia/jerarquia.vue'
-import PopUpOpcionComponent from '@/components/popUpOpcion/popUpOpcion.vue'
-import ConfiguracionComponent from '@/components/configuracion/configuracion.vue'
 import TopMenu from '@/components/customs/top-menu/TopMenu.vue';
 import HeaderbuttosComponent from '@/components/views/reusables/headerbuttos/headerbuttos.vue';
-import RolesComponent from '@/components/roles/roles.vue'
 import UsuarioComponent from '@/components/usuario/usuario.vue'
 import LogComponent from '@/components/log/log.vue'
-import DominioComponent from '@/components/dominio/dominio.vue'
-import Versiones from '@/components/versiones/versiones.vue'
-import Permission from '@/components/permission/permission.vue'
-import DocRechazado from '@/components/docRechazado/docRechazado.vue'
-import DocAprobado from '@/components/docAprobado/docAprobado.vue'
-import DocEliminado from '@/components/docEliminado/docEliminado.vue'
-import Statistics from '@/components/statistics/statistics.vue'
-import Reportes from '@/components/reportes/reportes.vue'
-import DocPublicados from "@/components/docPublicados/docPublicados.vue"
-import AprobacionDocs from "@/components/aprobacionDocs/aprobacionDocs.vue"
-import Procesos from "@/components/procesos/procesos.vue"
-import Seguimiento from "@/components/seguimiento/seguimiento.vue"
-import Directorios from "@/components/directorios/directorios.vue"
-import Plantilla from "@/components/plantilla/plantilla.vue"
-import AccesoDocument from "@/components/accesoDocument/accesoDocument.vue"
-import procesoEjecucion from "@/components/procesoEjecucion/procesoEjecucion.vue"
 import RunComponent from '../components/run/run.vue'
 import CrearPRComponent from '../components/logistica/requisicion/pr_crear/pr_crear.vue'
 import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
+import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes.vue'
+import ModificarPRComponent from '../components/logistica/requisicion/pr_modificar/pr_modificar.vue'
+import VisualizarPRComponent from '../components/logistica/requisicion/pr_visualizar/pr_visualizar.vue'
+import VisualizarModificarPRComponent from '../components/logistica/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.vue'
 import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/modificar-proveedor/modificar-proveedor.vue'
 import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
+import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
 export default [
  
   {
@@ -41,7 +24,7 @@ export default [
     name: 'Barmenu',
     children:[{
       path: 'FI-FINANZAS',
-      component:CrearProveedorComponent,
+      component:CrearIngresoComprobanteComponent,
       children:[
         {
         path:'proveedor',
@@ -60,21 +43,46 @@ export default [
           name:'visualizar-proveedor'
         }
       ]
+      },{
+        path:'ingreso-comprobante',
+        component:CrearIngresoComprobanteComponent,
+        children:[{
+          path:'crear-ingreso-comprobante',
+          component:CrearIngresoComprobanteComponent,
+          name:'crear-ingreso-comprobante'
+        }]
       }
     ]
       },
       {
-        path: 'LO-LOGISTICA',
+        path: 'logistica',
         component:CrearPRComponent,
         name:'logistica',
         children:[{
           path:'requisicion',
           component:CrearPRComponent,
-          children:[{
+          children:[
+          {
             path:'pr_crear',
             component:CrearPRComponent,
             name:'pr_crear'
-          }]
+          },
+          {
+            path:'pr_modificar',
+            component:ModificarPRComponent,
+            name:'pr_modificar'
+          },
+          {
+            path:'pr_visualizar',
+            component:VisualizarPRComponent,
+            name:'pr_visualizar'
+          },
+          {
+            path:'pr_visualizar_modificar',
+            component:VisualizarModificarPRComponent,
+            name:'pr_visualizar_modificar'
+          },
+          ]
         }]
         },
       
@@ -82,59 +90,12 @@ export default [
         path: 'inicio',
         component: Inicio,
         name: 'Inicio',
-      },
+      },  
       {
-        path: 'directorios',
-        component: Directorios,
-        name: 'directorios',
-      },
-      {
-        path:'docComparador',
-        component:DocComparador,
-        name:'docComparador',
-      },{
-        path:'docAprobado',
-        component:DocAprobado,
-        name:'docAprobado',
-      },
-      {
-        path:'docNuevo',
-        component:DocNuevo,
-        name:'docNuevo',
-      },{
-        path:'docRechazado',
-        component:DocRechazado,
-        name:'docRechazado'
-      },{
-        path:'docEliminado',
-        component:DocEliminado,
-        name:'docEliminado'
-      },{
-        path:'docPublicados',
-        component:DocPublicados,
-        name:'docPublicados'
-      },
-      {
-        path:'jerarquia',
-        component:JerarquiaComponent,
-        name:'jerarquia',
-        
-      },
-      {
-        path:'popUpOpcion',
-        component:PopUpOpcionComponent,
-        name:'popUpOpcion',
-      },
-      {
-        path:'configuracion',
-        component:ConfiguracionComponent,
-        name:'configuracion',
-      },
-      {
-        path:'roles',
-        component:RolesComponent,
-        name:'roles'
-      },
+        path:'LO-LOGISTICA/HES/crear-hes',
+        component:CrearHesComponent,
+        name:'hes'
+      },    
       {
         path:'usuario',
         component:UsuarioComponent,
@@ -144,60 +105,6 @@ export default [
         path:'log',
         component:LogComponent,
         name:'log'
-      },
-      {
-        path:'dominio',
-        component:DominioComponent,
-        name:'dominio'
-      },
-      {
-        path:'versiones',
-        component:Versiones,
-        name:'versiones'
-      },
-      {
-        path:'permission',
-        component:Permission,
-        name:'permission'
-      },
-      {
-        path:'statistics',
-        component:Statistics,
-        name:'statistics'
-      },
-      {
-        path:'reportes',
-        component:Reportes,
-        name:'reportes'
-      },
-      {
-        path:'aprobacionDocs',
-        component:AprobacionDocs,
-        name:'aprobacionDocs'
-      },
-      {
-        path:'procesos',
-        component:Procesos,
-        name:'procesos'
-      },{
-        path:'seguimiento',
-        component:Seguimiento,
-        name:'seguimiento'
-      },
-      {
-        path:'plantilla',
-        component:Plantilla,
-        name:'plantilla'
-      },
-      {
-        path:'accesoDocument',
-        component:AccesoDocument,
-        name:'accesoDocument'
-      },
-      {
-        path:'procesoEjecucion',
-        component:procesoEjecucion,
-        name:'procesoEjecucion'
       },
       {
         path:'run',

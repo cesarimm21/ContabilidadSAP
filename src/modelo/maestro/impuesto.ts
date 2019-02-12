@@ -1,24 +1,21 @@
 export class ImpuestoModel {
-    intIdImpuesto:number;
-    strCodigo: string;
-    strCodigo2: string;
-    strCodigo3: string;
-
-    strBase: string;
-    strBase2: string;
-    strBase3: string;
-
-    strCuentaDebito:string;
-    strCuentaCredito:string;
-    fltMonto:number;
-    fltPorcent:number;
-    blnGrupo:boolean;
-    
-    strDescripcion:string;
-    
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    intIdWH_ID:number;
+    strWH_Cod: string;
+    blnWH_Grp: boolean;
+    strWH_Name: string;
+    strWH_Desc:string;
+    fltPorcent: number;
+    Calc_Bas1: string;
+    strAcct_Debit: string;
+    strAcct_Credit:string;
+    strCalc_Bas2:string;
+    fltMonto:string;
+    strWH_Cod2:string;
+    strCalc_Bas3:string;    
+    strWH_Cod3:string;    
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

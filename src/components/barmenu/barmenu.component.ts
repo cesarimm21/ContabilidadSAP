@@ -33,7 +33,10 @@ export default class BarmenuComponent extends Vue {
   isActive:boolean;
   isCollapse:boolean;
   accesosBarMenu:any=[];
+  
+  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   UserData:any;
+  dimensionContent = 21;
   gridData:any;
   modelAcceso:AccesoModel[];
   tableData:any[];
@@ -114,7 +117,7 @@ export default class BarmenuComponent extends Vue {
     // router.push('/')
   }
   linkRoute(){
-    router.push('/barmenu/docNuevo')
+    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }
   linkRouterunpagos(){
     router.push('/barmenu/run')
@@ -130,6 +133,16 @@ export default class BarmenuComponent extends Vue {
   }
   linkCrearRequisicion(){
     router.push('/barmenu/logistica/requisicion/pr_crear')
+  }
+
+  linkCrearHes(){
+    router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
+  }
+  linkModificarHes(){
+
+  }
+  linkVisualizarHes(){
+
   }
     handleOpen (key, keyPath) {
       // console.log(key, keyPath)
@@ -165,7 +178,16 @@ export default class BarmenuComponent extends Vue {
     }
     links2(){
       router.push('/barmenu/inicio')
-  }
+    }
+    linkModificarRequisicion(){
+      router.push('/barmenu/logistica/requisicion/pr_modificar')
+    }
+    linkVisualizarRequisicion(){
+      router.push('/barmenu/logistica/requisicion/pr_visualizar')
+    }
+    linkVisualizarModificaRequisicion(){
+      router.push('/barmenu/logistica/requisicion/pr_visualizar_modificar')
+    }
   data() {
     return {
       accesosUser: [],
