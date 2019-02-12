@@ -116,6 +116,10 @@ export default class BarmenuComponent extends Vue {
     localStorage.clear();
     // router.push('/')
   }
+  linkRouteCrear(){
+    debugger;
+    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
+  }
   linkRoute(){
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }
@@ -135,7 +139,7 @@ export default class BarmenuComponent extends Vue {
     router.push('/barmenu/logistica/requisicion/pr_crear')
   }
 
-  linkCrearHes(){
+  linkRouteHes(){
     router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
   }
   linkModificarHes(){
