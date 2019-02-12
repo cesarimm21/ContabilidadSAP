@@ -9,12 +9,13 @@ import LogComponent from '@/components/log/log.vue'
 import RunComponent from '../components/run/run.vue'
 import CrearPRComponent from '../components/logistica/requisicion/pr_crear/pr_crear.vue'
 import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
-
+import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes.vue'
 import ModificarPRComponent from '../components/logistica/requisicion/pr_modificar/pr_modificar.vue'
 import VisualizarPRComponent from '../components/logistica/requisicion/pr_visualizar/pr_visualizar.vue'
 import VisualizarModificarPRComponent from '../components/logistica/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.vue'
 import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/modificar-proveedor/modificar-proveedor.vue'
 import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
+import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
 export default [
  
   {
@@ -23,7 +24,7 @@ export default [
     name: 'Barmenu',
     children:[{
       path: 'FI-FINANZAS',
-      component:CrearProveedorComponent,
+      component:CrearIngresoComprobanteComponent,
       children:[
         {
         path:'proveedor',
@@ -42,6 +43,14 @@ export default [
           name:'visualizar-proveedor'
         }
       ]
+      },{
+        path:'ingreso-comprobante',
+        component:CrearIngresoComprobanteComponent,
+        children:[{
+          path:'crear-ingreso-comprobante',
+          component:CrearIngresoComprobanteComponent,
+          name:'crear-ingreso-comprobante'
+        }]
       }
     ]
       },
@@ -81,7 +90,12 @@ export default [
         path: 'inicio',
         component: Inicio,
         name: 'Inicio',
-      },      
+      },  
+      {
+        path:'LO-LOGISTICA/HES/crear-hes',
+        component:CrearHesComponent,
+        name:'hes'
+      },    
       {
         path:'usuario',
         component:UsuarioComponent,

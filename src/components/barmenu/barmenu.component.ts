@@ -117,7 +117,7 @@ export default class BarmenuComponent extends Vue {
     // router.push('/')
   }
   linkRoute(){
-    router.push('/barmenu/docNuevo')
+    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }
   linkRouterunpagos(){
     router.push('/barmenu/run')
@@ -133,6 +133,16 @@ export default class BarmenuComponent extends Vue {
   }
   linkCrearRequisicion(){
     router.push('/barmenu/logistica/requisicion/pr_crear')
+  }
+
+  linkCrearHes(){
+    router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
+  }
+  linkModificarHes(){
+
+  }
+  linkVisualizarHes(){
+
   }
     handleOpen (key, keyPath) {
       // console.log(key, keyPath)
