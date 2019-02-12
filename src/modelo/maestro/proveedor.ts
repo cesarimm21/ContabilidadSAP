@@ -1,7 +1,7 @@
 export class ProveedorModel {
     
     intIdVendor_ID:number;//*
-    intIdRegion_ID:any ;//*
+    intIdRegion_ID:number ;//*
     intIdDocIdent_ID:string;//*
     intIdCompany_ID:string;//*
     strCountry:any;//*
