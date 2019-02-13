@@ -318,8 +318,8 @@ export default CrearHesComponent
     line-height: 1.6em;
     text-align: center;
     /* height: 10px; */
-    height: 16px;
-    width: 16px;
+    height: 14px;
+    width: 14px;
     border-style: solid;
     border-width: 1px;
     margin-right: -3px;
@@ -336,8 +336,8 @@ export default CrearHesComponent
     line-height: 1.6em;
     text-align: center;
     /* height: 10px; */
-    height: 16px;
-    width: 16px;
+    height: 14px;
+    width: 14px;
     border-style: solid;
     border-width: 1px;
     margin-right: -3px;
@@ -354,8 +354,8 @@ export default CrearHesComponent
     line-height: 1.6em;
     text-align: center;
     /* height: 10px; */
-    height: 16px;
-    width: 16px;
+    height: 14px;
+    width: 14px;
     border-style: solid;
     border-width: 1px;
     margin-right: -3px;
