@@ -1,10 +1,11 @@
 export class MetodoValuacionModel {
-    strCodValuacion: string;
-    strDescripcion:string;
+    intIdValMeth_ID: string;
+    strValMeth_Cod:string;
+    strValMeth_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    Creation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

@@ -1,11 +1,11 @@
 export class CriticidadModel {
-    intIdCriticidad:number;
-    strCodCriticidad:string;
-    strDescripcion:string;
+    intIdCritical_ID:number;
+    strCritical_Cod:string;
+    strCritical_Desc:string;
 
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

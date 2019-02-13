@@ -3,6 +3,7 @@ export class TipoDocIdentidadModel {
     strDocIdent_NO:string;
     strDocIdent_Name:string;
     strDocIdent_Desc:string;
+    
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;

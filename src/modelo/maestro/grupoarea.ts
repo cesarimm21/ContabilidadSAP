@@ -1,11 +1,11 @@
 export class GrupoAreaModel {
-    intIdGrupoArea:number;
-    strCodGrupoArea: string;
-    strDescripcion:string;
+    intIdCCGrpArea_ID:number;
+    strCCGrpArea_Cod: string;
+    strCCGrpArea_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

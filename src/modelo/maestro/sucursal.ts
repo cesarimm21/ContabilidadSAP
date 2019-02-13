@@ -1,13 +1,13 @@
 export class SucursalModel {
-    intIdSucursal:number;
-    strCodSucursal: string;
-    strDescripcion:string;
-    strUbicacion:string;
-    intIdCompania:number;
+    intIdSubsidiary_ID:number;
+    intIdCompany_ID: number;
+    strSubsidiary_Cod:string;
+    strSubsidiary_Desc:string;
+    strSubsidiary_Address:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

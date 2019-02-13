@@ -1,12 +1,12 @@
 export class PrioridadModel {
-    intIdPrioridad: number;
-    strCodPrioridad: string;
-    strDescripcion:string;
-    strNombre:string;
+    intIdPriority_ID: number;
+    strPriority_Cod: string;
+    strPriority_Name:string;
+    strPriority_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    Modified_Date:Date;
+    chrStatus:string;
 }

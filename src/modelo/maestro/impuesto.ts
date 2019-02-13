@@ -5,11 +5,10 @@ export class ImpuestoModel {
     strWH_Name: string;
     strWH_Desc:string;
     fltPorcent: number;
-    Calc_Bas1: string;
+    strCalc_Bas1: string;
     strAcct_Debit: string;
     strAcct_Credit:string;
     strCalc_Bas2:string;
-    fltMonto:string;
     strWH_Cod2:string;
     strCalc_Bas3:string;    
     strWH_Cod3:string;    
