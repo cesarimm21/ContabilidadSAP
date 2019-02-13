@@ -435,7 +435,7 @@
                 <template slot="title">
                   <i class="fa fa-caret-right" style="width:10px"></i>
                   <img class="el-folder"/>
-                  <span slot="title">HES</span>
+                  <span slot="title">Aceptación servicio</span>
                 </template>
                 <el-menu-item index="2-3-1" @click="linkRouteHes()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" /> 

@@ -9,10 +9,10 @@
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-6">
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Para orde compra</label>
+                                <label class="el-form-item__label col-md-3" >Para orden compra</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                         <el-input size ="time" @blur="desactivar_OrdenC" @focus="activar_OrdenC" >                            
+                                         <el-input size ="time" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="ordenCompraModel.strPO_Number" >                            
                                             <el-button v-if="btnactivarOrdenC && !dialogOrdenC" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
                                         </el-input>
                                         </div>
@@ -183,7 +183,7 @@
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Accept. Data</span>
                 </el-tab-pane>
-                <el-tab-pane>
+                <!-- <el-tab-pane>
                     <span slot="label"><i class="el-icon-view"></i> Valores</span>
                 </el-tab-pane>
                 <el-tab-pane>
@@ -191,20 +191,20 @@
                 </el-tab-pane>
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Historia</span>
-                </el-tab-pane>
+                </el-tab-pane> -->
             </el-tabs>
       </el-card>
 
-        <el-dialog title="Centro de costo"  :visible.sync="dialogOrdenC" @close="closeOrdenC" size="small" >
+        <el-dialog title="Orden de compra"  :visible.sync="dialogOrdenC" @close="closeOrdenC" size="small" >
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Centro de costo</span>
+                    <span class="labelheadercard" >Buscar Orden de compra</span>
                 </div>
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Centro costo Codigo</label>
+                            <label class="el-form-item__label col-md-3" >Orden de compra Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"   placeholder="">
@@ -225,6 +225,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @row-dblclick="dbclickSelect"
                     @current-change="handleCurrentChange">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
@@ -234,7 +235,7 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeOrdenC()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenC()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenC()">
