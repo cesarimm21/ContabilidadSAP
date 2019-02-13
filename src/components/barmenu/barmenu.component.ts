@@ -120,6 +120,10 @@ export default class BarmenuComponent extends Vue {
     debugger;
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }
+  linkRouteModificar(){
+    debugger;
+    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante')
+  }
   linkRoute(){
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }

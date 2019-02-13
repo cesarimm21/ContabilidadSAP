@@ -141,7 +141,7 @@
                                                 <el-table-column type="index" width="50">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="cuenta" sortable min-width="80"
+                                                    prop="cuenta" sortable width="100"
                                                     label="Servicio N.">
                                                 </el-table-column>
                                                 <el-table-column
@@ -149,7 +149,7 @@
                                                     label="Descripción">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="cantidad" sortable min-width="80"
+                                                    prop="cantidad" sortable width="80"
                                                     label="Cantidad">
                                                 </el-table-column>
                                                 <el-table-column
@@ -157,7 +157,7 @@
                                                     label="Servicio Ejecutado">
                                                 </el-table-column> 
                                                 <el-table-column
-                                                    prop="moneda" sortable min-width="80"
+                                                    prop="moneda" sortable width="80"
                                                     label="Moneda">
                                                 </el-table-column>
                                                 <el-table-column

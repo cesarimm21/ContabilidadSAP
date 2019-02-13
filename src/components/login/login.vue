@@ -32,7 +32,7 @@
                                 <form >
                                     <div class="row justify-content-md-center">
                                         <div class="col-md-9">
-                                            <img src="../../images/logo_login.png" style="width: 100%;" class="img-fluid">
+                                            <img :src="logo" style="width: 100%;" class="img-fluid">
                                         </div>
                                     </div>
                                     <p class="text-muted text-center"><span style="font-size:13px;color:white">Iniciar sesión</span></p>
