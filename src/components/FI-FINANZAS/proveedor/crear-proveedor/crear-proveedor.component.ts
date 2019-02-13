@@ -439,8 +439,8 @@ export default class CrearProveedorComponent extends Vue {
     //   }
     //   ); 
     this.Proveedor.intIdVenCateg_ID=this.value1;
-    this.Proveedor.intIdDocIdent_ID=this.tipoDocSelectedIdentidad.intIdDocIdent_ID;
-    this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;     
+    // this.Proveedor.intIdDocIdent_ID=this.tipoDocSelectedIdentidad.intIdDocIdent_ID;
+    // this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;     
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
     this.Proveedor.intIdRegion_ID=this.selectDepartamento.intIdRegion_ID;
     this.Proveedor.strBank_Cod=this.selectBancoA.strBank_Cod;

@@ -1,16 +1,15 @@
 export class AlmacenModel {
-    intIdAlmacen:number;
-    strWHS_Code :string;
+    intIdWHS_ID:number;
+    strCompany_Cod :string;
+    strSubsComp_Cod :string;
     strWHS_Name :string;
-    strWHS_Description :string;
+    strWHS_Desc :string;
     strLocation :string;
     strLocation_Type :string;
-    intIdCompania:number;
-    intIdSucursal:number;
 
-    strUser_ID:string ;      
+    strCreation_User:string ;      
     dtmCreation_Date:Date ;           
-    strModify_User:string ;
+    strModified_User:string ;
     dtmModified_Date:Date ;
     chrStatus:string ;        
 

@@ -1,10 +1,11 @@
 export class CatalogoExistenciaModel {
-    strCodigo: string;
-    strDescripcion:string;
+    intIdSut_Stock_ID:number;
+    strSut_Stock_Cod: string;
+    strSut_Stock_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

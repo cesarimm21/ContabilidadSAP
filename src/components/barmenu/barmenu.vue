@@ -25,28 +25,27 @@
                   <img class="el-folder"/> 
                   <span slot="title">Cuentas por pagar</span>
                 </template>
-                <el-menu-item index="1-1-1"
-                @click="linkRoute()" >
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                <el-menu-item index="1-1-1"  @click="linkRouteCrear()">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;"/> 
                   <span slot="title">FP01-Ingreso Documento</span>
                 </el-menu-item>
                 <el-menu-item index="1-1-2">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span slot="title">FP01-Ingreso Documento</span>
-                  FP02-Modificar Documento</el-menu-item>
+                  <span slot="title">FP02-Modificar Documento</span>
+                  </el-menu-item>
                 <el-menu-item index="1-1-3">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span slot="title">FP01-Ingreso Documento</span>
-                  FP03-Visualizar Documento</el-menu-item>
+                  <span slot="title">FP03-Visualizar Documento</span>
+                  </el-menu-item>
                 <el-menu-item index="1-1-4">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span slot="title">FP01-Ingreso Documento</span>
-                  FP10-Reconciliación</el-menu-item>
+                  <span slot="title">FP10-Reconciliación</span>
+                  </el-menu-item>
                 <el-menu-item index="1-1-5"
                 @click="linkRouterunpagos()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span slot="title">FP01-Ingreso Documento</span>
-                  FP04-Pagos</el-menu-item>
+                  <span slot="title">FP04-Pagos</span>
+                  </el-menu-item>
                 <el-submenu index="1-1-6">
                   <template slot="title">
                     <i class="fa fa-caret-right" style="width:10px"></i>
@@ -438,8 +437,8 @@
                   <img class="el-folder"/>
                   <span slot="title">HES</span>
                 </template>
-                <el-menu-item index="2-3-1">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                <el-menu-item index="2-3-1" @click="linkRouteHes()">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" /> 
                   <span>P01-Crear</span>
                 </el-menu-item>
                 <el-menu-item index="2-3-2">
