@@ -126,6 +126,9 @@ export default class  BCentroCostoComponent extends Vue {
         message: strMessage
       });
   }
+  seleccionar(row,index){
+    this.$emit('centrocostoselecionado',row);
+  }
   data() {
     return {
       categorias: [{
@@ -143,6 +146,35 @@ export default class  BCentroCostoComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    dataTable:[{
+        CostCenter_NO:'630207101',
+        CostCen_Father_NO:'630207',
+        CostCenter_Name:'Perforación Primaria Ore',
+        CostCenter_Desc:'Perforación Primaria Ore',
+        Cat_Code:'01',
+      },
+      {
+        CostCenter_NO:'630207101',
+        CostCen_Father_NO:'630207',
+        CostCenter_Name:'Perforación Primaria Waste',
+        CostCenter_Desc:'Perforación Primaria Waste',
+        Cat_Code:'01',
+      },
+      {
+        CostCenter_NO:'630207200',
+        CostCen_Father_NO:'630207',
+        CostCenter_Name:'Disparo Primario Ore',
+        CostCenter_Desc:'Disparo Primario Ore',
+        Cat_Code:'01',
+      },
+      {
+        CostCenter_NO:'630207301',
+        CostCen_Father_NO:'630207',
+        CostCenter_Name:'Carguio Waste',
+        CostCenter_Desc:'Carguio Waste',
+        Cat_Code:'01',
+      }
+    ]
 
     };
   }

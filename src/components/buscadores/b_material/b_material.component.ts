@@ -126,6 +126,9 @@ export default class  BMaterialComponent extends Vue {
         message: strMessage
       });
   }
+  seleccionar(row,index){
+    this.$emit('materialselecionado',row);
+  }
   data() {
     return {
       categorias: [{
@@ -143,6 +146,20 @@ export default class  BMaterialComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    
+    dataTable:[{
+      Stock_Cod :'60155170',
+      Stock_Name :'',
+      Stock_Desc:'TIRE,45/65R45,RADIAL,',
+      Exp_Acct:''
+    },
+    {
+      Stock_Cod :'60155177',
+      Stock_Name :'',
+      Stock_Desc:'TIRE,35/65R33,RADIAL,XLD D2A L-5 TREAD,1',
+      Exp_Acct:''
+    },
+    ]
 
     };
   }

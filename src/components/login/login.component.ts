@@ -19,9 +19,13 @@ import loginService from '@/components/service/login.service';
 export default class LoginComponent extends Vue {
   FormLogin:any;
   gridData: any;
+  usuario:string;
+  contrasenia:string;
   user:any;
+  logo:any;
   constructor(){
     super();    
+    this.logo='../../images/logo_login.png';
   }
   navegacion(){
       this.$router.push('/barmenu/inicio');
@@ -34,7 +38,10 @@ export default class LoginComponent extends Vue {
     //   background: 'rgba(0, 0, 0, 0.8)'
     //   }
     //   );
+    if(this.usuario=='egaona' && this.contrasenia=='12345'){
       this.$router.push('/barmenu/inicio');
+    }
+    
     // axios.post(CONFIG.API_URL+'membership/login',FormLogin)
     // .then(response =>{
     //     var encoded=btoa(JSON.stringify(response.data));     
@@ -100,6 +107,7 @@ export default class LoginComponent extends Vue {
     return {
       labelPosition: 'right',
       gridData: [],
+      logo:'images/logo_login.png',
       user: {
         authenticated: false
       },

@@ -113,7 +113,9 @@ export default class  BCategoriaCuentaComponent extends Vue {
 
   }
 
-
+  seleccionar(row,index){
+    this.$emit('categoriacuentaselecionado',row);
+  }
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
@@ -143,7 +145,27 @@ export default class  BCategoriaCuentaComponent extends Vue {
         label: 'TITULO'
       }
     ],
-
+    dataTable:[{
+      CODIGO :'CC',
+      DESCRIPCION:'CENTRO DE COSTO',
+    },
+    {
+      CODIGO :'PY',
+      DESCRIPCION:'PROYECTO',
+    },
+    {
+      CODIGO :'FA',
+      DESCRIPCION:'ACTIVOS FIJO',
+    },
+    {
+      CODIGO :'ST',
+      DESCRIPCION:'ALMACEN',
+    },
+    {
+      CODIGO :'CB',
+      DESCRIPCION:'CUENTA DE BALANCE',
+    },
+    ]
     };
   }
   created() {

@@ -126,6 +126,9 @@ export default class  BCuentaContableComponent extends Vue {
         message: strMessage
       });
   }
+  seleccionar(row,index){
+    this.$emit('cuentacontableselecionado',row);
+  }
   data() {
     return {
       categorias: [{
@@ -143,6 +146,27 @@ export default class  BCuentaContableComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    dataTable:[{
+      Acc_NO_Local :'101000',
+      Acct_NO_Corp:'M1110100',
+      Nombre:'Petty Cash & Imprest',
+    },
+    {
+      Acc_NO_Local :'101000',
+      Acct_NO_Corp:'M1110101',
+      Nombre:'Petty Cash Tintaya',
+    },
+    {
+      Acc_NO_Local :'101000',
+      Acct_NO_Corp:'M1110102',
+      Nombre:'Petty Cash Arequipa',
+    },
+    {
+      Acc_NO_Local :'101000',
+      Acct_NO_Corp:'M1110103',
+      Nombre:'Petty Cash Matarani',
+    },
+    ]
 
     };
   }
