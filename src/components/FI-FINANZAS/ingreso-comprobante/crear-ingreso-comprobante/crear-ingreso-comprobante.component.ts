@@ -220,7 +220,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       selectType:'',
       dataProveedor:[],
       codigoCompania:'001',
-      descripcionCompania:'Secocha',
+      descripcionCompania:'GADEL SOLUTIONS S.R.L.',
       dataOrdenCompra:[{
         codigo:'67000001',
         descripcion:'compra de vienes y servicio'

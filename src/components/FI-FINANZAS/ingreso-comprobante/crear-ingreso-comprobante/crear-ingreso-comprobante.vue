@@ -17,7 +17,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-2" >{{descripcionCompania}}</label>
+                                <label class="el-form-item__label col-md-4" >{{descripcionCompania}}</label>
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
@@ -252,6 +252,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @row-dblclick="selectOrdenCompra"
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
@@ -300,6 +301,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @row-dblclick="selectTipoDocumento"
                     @current-change="selectTipoDocumento">
                     <el-table-column   prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
@@ -348,6 +350,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @row-dblclick="checkSelectMoneda"
                     @current-change="checkSelectMoneda">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
@@ -396,6 +399,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @row-dblclick="checkSelectProveedor"
                     @current-change="checkSelectProveedor">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  

@@ -9,6 +9,9 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import { Notification } from 'element-ui';
+
+import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
+
 @Component({
   name: 'crear-hes',
   components:{'buttons-accions':ButtonsAccionsComponent}
@@ -26,6 +29,9 @@ export default class CrearHesComponent extends Vue {
 
   //**Servicios */
   dialogServicios:boolean=false;
+
+  //**ORDEN COMPRA */
+  public ordenCompraModel:OrdenCompraModel =new OrdenCompraModel();
   constructor(){
     super();
   }
@@ -38,7 +44,12 @@ export default class CrearHesComponent extends Vue {
     debugger;
     this.btnactivarOrdenC=false;
     this.dialogOrdenC=false;
+    // this.ordenCompraModel=new OrdenCompraModel();
     return false;
+  }
+  checkOrdenC(){
+    this.dialogOrdenC=false;
+    this.btnactivarOrdenC=false;
   }
   activar_OrdenC(){
     setTimeout(() => {
@@ -52,7 +63,12 @@ export default class CrearHesComponent extends Vue {
     }
   }
   handleCurrentChange(val){
-
+    this.ordenCompraModel.strPO_Number=val.codigo;
+    console.log(this.ordenCompraModel.strPO_Number);
+    
+  }
+  dbclickSelect(){
+    this.dialogOrdenC=false;
   }
  
 //#endregion
