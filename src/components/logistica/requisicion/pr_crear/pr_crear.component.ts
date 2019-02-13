@@ -125,7 +125,7 @@ export default class CrearPRComponent extends Vue {
   code_almacen:string='';
   tableData1:any=[
     {
-      date:Global.getParseDate(new Date()),
+      date:Global.getParseDate(new Date().toDateString()),
       categoriacuenta: '',
       categorialinea: '',
       cuentacontable: '',
@@ -136,7 +136,7 @@ export default class CrearPRComponent extends Vue {
       proveedor:'',
       moneda:'',
       prioridad:'',
-      fecha_estimada:'',
+      fecha_estimada:Global.getParseDate(new Date().toDateString()),
       centrocosto:'',
     }
   ];
@@ -167,7 +167,7 @@ export default class CrearPRComponent extends Vue {
         proveedor:'',
         moneda:'',
         prioridad:'',
-        fecha_estimada:'',
+        fecha_estimada:Global.getParseDate(new Date().toDateString()),
         centrocosto:'',
       }
       this.tableData1.push(item);

@@ -26,7 +26,7 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{descompania}}</span>
                         </div>
                         <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-2" >Tipo requisición</label>
+                            <label class="el-form-item__label col-md-2" >Tipo Requisición</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                     <el-select v-model="value" placeholder="Select" @change="cambioTipoRequisicion()" >
@@ -78,7 +78,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="58">
                                         </el-table-column>
-                                        <el-table-column sortable prop="categoriacuenta" min-width="200" label="Categoria cuenta">
+                                        <el-table-column sortable prop="categoriacuenta" min-width="80" label="Cta. cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if=" bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.categoriacuenta" >
@@ -88,8 +88,8 @@
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
-                                            prop="categorialinea" sortable  min-width="200"
-                                            label="Categoria linea">
+                                            prop="categorialinea" sortable  min-width="80"
+                                            label="Cat. linea">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_categoria_linea  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.categorialinea" >
@@ -132,7 +132,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="material_descripcion" sortable 
+                                            prop="material_descripcion" sortable width="200"
                                             label="Descripción">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
@@ -142,7 +142,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="cantidad" sortable width="100"
+                                            prop="cantidad" sortable width="80"
                                             label="Cantidad">
                                             <template scope="scope">
                                                 <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
@@ -152,7 +152,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="unidad_medida" sortable 
+                                            prop="unidad_medida" sortable  width="60"
                                             label="UM">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_unidad_medida  && (scope.row === editing.row) 
@@ -163,7 +163,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="proveedor" sortable
+                                            prop="proveedor" sortable width="110"
                                             label="Proveedor">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_proveedor  && (scope.row === editing.row) 
@@ -196,8 +196,8 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fecha_estimada" sortable  width="150"
-                                            label="Fecha estimada">
+                                            prop="fecha_estimada" sortable  width="100"
+                                            label="Fecha Estimada">
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"

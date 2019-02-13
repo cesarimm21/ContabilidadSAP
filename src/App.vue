@@ -679,4 +679,21 @@ body {
     padding-right: 17px;
     height: 22px !important;
 }
+.el-input__inner {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #bfcbd9;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    font-size: inherit;
+    height: 36px;
+    line-height: 1;
+    outline: 0;
+    padding: 3px 4px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+}
 </style>
