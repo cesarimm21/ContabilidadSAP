@@ -2,7 +2,7 @@
   <div class="crear-hes">
       <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear hes</span>
+                <span class="labelheadercard" > Crear aceptación servicio</span>
             </div>
             <div class="row bodycard">
                 <div class="container">

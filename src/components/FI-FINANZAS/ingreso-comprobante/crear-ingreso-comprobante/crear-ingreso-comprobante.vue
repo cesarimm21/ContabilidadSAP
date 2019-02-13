@@ -17,7 +17,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-2" >{{descripcionCompania}}</label>
+                                <label class="el-form-item__label col-md-4" >{{descripcionCompania}}</label>
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
