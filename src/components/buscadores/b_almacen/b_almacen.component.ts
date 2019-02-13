@@ -126,6 +126,9 @@ export default class  BAlmacenComponent extends Vue {
         message: strMessage
       });
   }
+  seleccionar(row,index){
+    this.$emit('almacenseleccionado',row);
+  }
   data() {
     return {
       categorias: [{
@@ -143,6 +146,19 @@ export default class  BAlmacenComponent extends Vue {
         label: 'TITULO'
       }
     ],
+      dataTable:[{
+        PLANTA:'PRINCIPAL',
+        CODIGO :'ALM01',
+        DESCRIPCION:'Almacen principal 1',
+        UBICACION:'Almacen Planta',
+      },
+      {
+        PLANTA:'SUCURSAL',
+        CODIGO :'ALM02',
+        DESCRIPCION:'Almacen principal 2',
+        UBICACION:'Almacen Oficina Aqp',
+      }
+    ]
 
     };
   }

@@ -126,6 +126,10 @@ export default class  BPrioridadComponent extends Vue {
         message: strMessage
       });
   }
+  
+  seleccionar(row,index){
+    this.$emit('prioridadselecionado',row);
+  }
   data() {
     return {
       categorias: [{
@@ -143,6 +147,19 @@ export default class  BPrioridadComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    dataTable:[{
+      CODIGO :'101',
+      DESCRIPCION :'NORMAL',
+    },
+    {
+      CODIGO :'201',
+      DESCRIPCION :'URGENTE',
+    },
+    {
+      CODIGO :'301',
+      DESCRIPCION :'EMERGENCIA',
+    },    
+    ]
 
     };
   }

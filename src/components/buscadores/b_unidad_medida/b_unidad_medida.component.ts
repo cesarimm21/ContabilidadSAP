@@ -126,6 +126,10 @@ export default class  BUnidadMedidaComponent extends Vue {
         message: strMessage
       });
   }
+  
+  seleccionar(row,index){
+    this.$emit('unidadmedidaselecionado',row);
+  }
   data() {
     return {
       categorias: [{
@@ -143,6 +147,23 @@ export default class  BUnidadMedidaComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    dataTable:[{
+      CODIGO :'4A',
+      DESCRIPCION :'BOBINAS',
+    },
+    {
+      CODIGO :'BJ',
+      DESCRIPCION :'BALDE',
+    },
+    {
+      CODIGO :'CEN',
+      DESCRIPCION :'CIENTO DE UNIDADES',
+    },
+    {
+      CODIGO :'PK',
+      DESCRIPCION :'PAQUETE',
+    },
+    ]
 
     };
   }

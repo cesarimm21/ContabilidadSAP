@@ -365,6 +365,10 @@ body {
   margin-bottom: -0.95rem !important;
   margin-left: -6px;
 }
+.form-group1{ 
+  margin-bottom: -0.1rem !important;
+  margin-left: -6px;
+}
 .box-card{
   margin-left: 10px;background-color: rgb(246, 247, 249);
 }
@@ -647,5 +651,32 @@ body {
     flex-wrap: wrap;
     margin-right: -27px;
     margin-left: -11px;
+}
+.el-table .cell, .el-table th>div {
+    padding-left: 5px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+}
+.el-input-number--small .el-input__inner {
+    padding-right: 0px;
+}
+.el-input-number--small .el-input-number__decrease, .el-input-number--small .el-input-number__increase {
+    line-height: 20px;
+    width: 17px;
+    font-size: 9px;
+}
+.el-input-number--small .el-input-number__decrease {
+    right: 17px;
+}
+.el-input-number--small {
+    width: 87px;
+}
+.el-date-editor.el-input {
+    width: 96px;
+}
+.el-input__icon+.el-input__inner {
+    padding-right: 17px;
+    height: 22px !important;
 }
 </style>

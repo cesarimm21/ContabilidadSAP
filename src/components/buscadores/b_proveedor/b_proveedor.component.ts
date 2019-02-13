@@ -126,6 +126,11 @@ export default class  BProveedorComponent extends Vue {
         message: strMessage
       });
   }
+
+  seleccionar(row,index){
+    this.$emit('proveedorselecionado',row);
+  }
+
   data() {
     return {
       categorias: [{
@@ -143,6 +148,28 @@ export default class  BProveedorComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    
+    dataTable:[{
+      Vendor_NO :'4000003',
+      Vendor_Desc :'CARLOS VIAL GOMEZ',
+      Country:'CL'
+    },
+    {
+      Vendor_NO :'4009456',
+      Vendor_Desc :'JORVEX Y COMPAÑIA S.R.L.',
+      Country:'PE'
+    },
+    {
+      Vendor_NO :'4009457',
+      Vendor_Desc :'MANUFACTURAS ELECTRICAS S.A.',
+      Country:'PE'
+    },
+    {
+      Vendor_NO :'4009458',
+      Vendor_Desc :'MINAS Y CONCENTRADORAS S.A.',
+      Country:'PE'
+    },
+    ]
 
     };
   }
