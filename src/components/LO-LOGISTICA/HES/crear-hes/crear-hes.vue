@@ -56,7 +56,7 @@
                                 <div class="row" style="margin-top: 3px;">
                                     <div class="col-sm-6">
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Acc Assgt Cat. </label>
+                                            <label class="el-form-item__label col-sm-3" >Categoria. </label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-select v-model="value" placeholder="Seleccionar">
