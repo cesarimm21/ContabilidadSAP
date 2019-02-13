@@ -9,21 +9,21 @@
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-6">
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Para orden compra</label>
+                                <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                         <el-input size ="time" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="ordenCompraModel.strPO_Number" >                            
+                                         <el-input size ="small" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="ordenCompraModel.strPO_Number" class="inputOrdenCompra">                            
                                             <el-button v-if="btnactivarOrdenC && !dialogOrdenC" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
                                         </el-input>
-                                        </div>
-                                    </div>                                                          
+                                    </div>
+                                </div>                                                          
                             </div>
                             <div class="form-group row">
                                 
                                 <label class="el-form-item__label col-md-3" >Descripción</label>
                                     <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-6" >
-                                    <el-input size ="small" >
+                                    <el-input size ="small" @click="desactivar()">
                                     </el-input>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                                                     label="Descripción">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="cantidad" sortable 
+                                                    prop="cantidad" sortable min-width="80"
                                                     label="Cantidad">
                                                 </el-table-column>
                                                 <el-table-column
@@ -158,7 +158,7 @@
                                                     label="Servicio Ejecutado">
                                                 </el-table-column> 
                                                 <el-table-column
-                                                    prop="moneda" sortable
+                                                    prop="moneda" sortable min-width="80"
                                                     label="Moneda">
                                                 </el-table-column>
                                                 <el-table-column
@@ -181,7 +181,10 @@
                     </el-card>
                 </el-tab-pane>
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Accept. Data</span>
+                    <span slot="label"><i class="el-icon-date"></i> Status</span>
+                        <div class="form-group row">
+                            <span class=""> Estado de aceptación servicio</span>
+                        </div>
                 </el-tab-pane>
                 <!-- <el-tab-pane>
                     <span slot="label"><i class="el-icon-view"></i> Valores</span>
@@ -302,6 +305,6 @@ export default CrearHesComponent
 </script>
 <style scoped>
 .boton{
-    height: 25px;
+    height: 20px;
 }
 </style>
