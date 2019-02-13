@@ -174,7 +174,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="moneda" sortable 
+                                            prop="moneda" sortable width="80"
                                             label="Moneda">
                                              <template scope="scope">
                                                 <el-input  v-if="bln_tbl_moneda  && (scope.row === editing.row) 

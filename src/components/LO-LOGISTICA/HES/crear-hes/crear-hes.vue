@@ -32,15 +32,14 @@
                         <div class="col-sm-6">
                             <div class="form-group row">
                                 <div class="col-sm-6"></div>
-                                <div class="col-md-2" style="margin-top:5px;">
-                                        <el-switch
-                                        v-model="valueSwtch"
-                                        active-color="#13ce66"
-                                        inactive-color="#ff4949"
-                                        active-text="ES OK"
-                                        inactive-text="NO OK">
-                                        </el-switch>
-                                    </div>  
+                                <div class="col-md-4" style="margin-top:5px;">
+                                    <span v-if="isactivered" v-bind:class="{red:isactivered}">&nbsp;</span>
+                                    <span v-if="!isactivered" v-bind:class="{opaco:!isactivered}">&nbsp;</span>
+                                    <span v-if="isactiveyellow" v-bind:class="{yellow:isactiveyellow}">&nbsp;</span>
+                                    <span v-if="!isactiveyellow" v-bind:class="{opaco:!isactiveyellow}">&nbsp;</span>
+                                    <span v-if="isactivegreen" v-bind:class="{green:isactivegreen}">&nbsp;</span>
+                                    <span v-if="!isactivegreen" v-bind:class="{opaco:!isactivegreen}">&nbsp;</span>
+                                </div>  
                             </div>
                         </div>
                     </div>
@@ -303,5 +302,77 @@ export default CrearHesComponent
 <style scoped>
 .boton{
     height: 25px;
+}
+.green {
+  background: #349025;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    border-color: black;
+    color: #fff;
+    display: inline-block;
+    /* font-weight: bold; */
+    line-height: 1.6em;
+    text-align: center;
+    /* height: 10px; */
+    height: 16px;
+    width: 16px;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: -3px;
+}
+.opaco {
+    background: #f6f7f9;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    border-color: black;
+    color: #fff;
+    display: inline-block;
+    /* font-weight: bold; */
+    line-height: 1.6em;
+    text-align: center;
+    /* height: 10px; */
+    height: 16px;
+    width: 16px;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: -3px;
+}
+.red {
+  background: #d43438;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    border-color: black;
+    color: #fff;
+    display: inline-block;
+    /* font-weight: bold; */
+    line-height: 1.6em;
+    text-align: center;
+    /* height: 10px; */
+    height: 16px;
+    width: 16px;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: -3px;
+}
+.yellow {
+  background: #fbba22;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    border-color: black;
+    color: #fff;
+    display: inline-block;
+    /* font-weight: bold; */
+    line-height: 1.6em;
+    text-align: center;
+    /* height: 10px; */
+    height: 16px;
+    width: 16px;
+    border-style: solid;
+    border-width: 1px;
+    margin-right: -3px;
 }
 </style>

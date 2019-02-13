@@ -32,6 +32,12 @@ export default class CrearHesComponent extends Vue {
 
   //**ORDEN COMPRA */
   public ordenCompraModel:OrdenCompraModel =new OrdenCompraModel();
+
+  //activar colores
+  isactivered:boolean=true;
+  isactiveyellow:boolean=false;
+  isactivegreen:boolean=false;
+
   constructor(){
     super();
   }
