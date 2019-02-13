@@ -31,7 +31,7 @@
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="time" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="proveedor.strVendor_NO" >                            
+                                    <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="proveedor.strVendor_NO" >                            
                                         <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedor()"></el-button> 
                                     </el-input>
                                     </div>
@@ -49,7 +49,7 @@
                                 <label class="el-form-item__label col-md-3" >Periodo</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="time" type="date"  placeholder=""  >                            
+                                    <el-input size ="small" type="date"  placeholder=""  >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                 <label class="el-form-item__label col-md-3" >Diario</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="time" type="text"  placeholder=""  >                            
+                                    <el-input size ="small" type="text"  placeholder=""  >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                                 <label class="el-form-item__label col-md-3" >Voucher</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="time" type="text"  placeholder=""  >                            
+                                    <el-input size ="small" type="text"  placeholder=""  >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                                             <label class="el-form-item__label col-sm-3" >Moneda</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input size ="time" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="moneda.strCurrency_Cod">                            
+                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="moneda.strCurrency_Cod">                            
                                                     <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
                                                 </el-input>
                                                 </div>
