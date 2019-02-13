@@ -2,12 +2,12 @@
     <div>
        <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" >Buscar Proveedor</span>
+                <span class="labelheadercard" ></span>
             </div>
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-3" >Proveedor Codigo</label>
+                        <label class="el-form-item__label col-md-1" >Código</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
                             <el-input size ="small"   placeholder="">
@@ -23,14 +23,15 @@
                 </div>
             </div>
             <el-table
-            :data="tableData"
+            :data="dataTable"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
             height="250"
+            @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="date" label="Codigo" width="180">
+            <el-table-column   prop="CostCenter_NO" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column  prop="name" label="Descripción" style="width: 70% !important;">
+            <el-table-column  prop="CostCenter_Name" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

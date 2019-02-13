@@ -110,10 +110,7 @@ export default class  BCompaniaProveedor extends Vue {
 
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
-
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
@@ -125,6 +122,11 @@ export default class  BCompaniaProveedor extends Vue {
         type: 'error',
         message: strMessage
       });
+  }
+  seleccionar(row,index){
+    debugger;
+    console.log("doble",row);
+    this.$emit('proveedorSeleccionado',row);
   }
   data() {
     return {
@@ -142,9 +144,24 @@ export default class  BCompaniaProveedor extends Vue {
         nombre: 'TITULO',
         label: 'TITULO'
       }
-    ],
-
+    ]
+    ,
+    dataTable:[{
+        Code:'1001',
+        Company_Name:'GADEL SOLUTIONS S.R.L.',
+        Company_Desc:'GADEL SOLUTIONS S.R.L.',
+        RUC:'20434853771',
+      },
+      {
+        Code:'1002',
+        Company_Name:'B&Y SOLUTIONS S.R.L.',
+        Company_Desc:'B&Y SOLUTIONS S.R.L.',
+        RUC:'50434853771',
+      },
+    ]
+    
     };
+
   }
   created() {
     if(typeof window != 'undefined') {

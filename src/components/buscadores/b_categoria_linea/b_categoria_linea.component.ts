@@ -118,6 +118,10 @@ export default class  BCategoriaLineaComponent extends Vue {
     var num = parseFloat(number).toFixed(2);
     return num;
   }
+  
+  seleccionar(row,index){
+    this.$emit('categorialineaselecionado',row);
+  }
 
   openMessageError(strMessage:string){
     this.$message({
@@ -143,7 +147,23 @@ export default class  BCategoriaLineaComponent extends Vue {
         label: 'TITULO'
       }
     ],
-
+    dataTable:[{
+      CODIGO :'B',
+      DESCRIPCION:'BIENES',
+    },
+    {
+      CODIGO :'S',
+      DESCRIPCION:'SERVICIOS',
+    },
+    {
+      CODIGO :'C',
+      DESCRIPCION:'CONSIGNACION',
+    },
+    {
+      CODIGO :'T',
+      DESCRIPCION:'TRASNFERENCIA DE STOCK',
+    },
+    ]
     };
   }
   created() {

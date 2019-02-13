@@ -126,6 +126,11 @@ export default class  BMonedaComponent extends Vue {
         message: strMessage
       });
   }
+  
+  seleccionar(row,index){
+    this.$emit('monedaselecionado',row);
+  }
+
   data() {
     return {
       categorias: [{
@@ -143,6 +148,28 @@ export default class  BMonedaComponent extends Vue {
         label: 'TITULO'
       }
     ],
+    
+    dataTable:[{
+      CODIGO :'AED',
+      DESCRIPCION :'UAE Dirham',
+    },
+    {
+      CODIGO :'AFN',
+      DESCRIPCION :'Afghani',
+    },
+    {
+      CODIGO :'EUR',
+      DESCRIPCION :'Euro',
+    },
+    {
+      CODIGO :'PEN',
+      DESCRIPCION :'Nuevo Sol o Sol',
+    },
+    {
+      CODIGO :'USD',
+      DESCRIPCION :'US Dollar',
+    },
+    ]
 
     };
   }
