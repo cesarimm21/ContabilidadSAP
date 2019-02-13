@@ -14,9 +14,9 @@ import 'element-ui/lib/theme-default/index.css';
 
 import { Notification } from 'element-ui';
 @Component({
-  name: 'modificar-ingreso-comprobante'
+  name: 'ver-ingreso-comprobante'
 })
-export default class ModificarIngresoComprobanteComponent extends Vue {
+export default class VerIngresoComprobanteComponent extends Vue {
   
   constructor(){
     super();
