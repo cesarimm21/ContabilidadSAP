@@ -31,7 +31,7 @@
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="time" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="dataProveedor" >                            
+                                    <el-input size ="time" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="proveedor.strVendor_NO" >                            
                                         <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedor()"></el-button> 
                                     </el-input>
                                     </div>
@@ -145,7 +145,7 @@
                                             <label class="el-form-item__label col-sm-3" >Moneda</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input size ="time" @blur="desactivar_Moneda" @focus="activar_Moneda" placeholder=""  >                            
+                                                <el-input size ="time" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="moneda.strCurrency_Cod">                            
                                                     <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
                                                 </el-input>
                                                 </div>
@@ -222,10 +222,6 @@
             <bcompania>
             </bcompania>
         </el-dialog>
-         <el-dialog title="Busqueda proveedor"  :visible.sync="dialogProveedor" @close="closeProveedor" size="small" >
-            <bproveedor>
-            </bproveedor>
-        </el-dialog>
          <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" @close="closeOrdenCompra" size="small" >
             <div>
                 <el-card class="box-card">
@@ -256,7 +252,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @current-change="selectProveFunt">
+                    @current-change="selectOrdenCompra">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
                     <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
@@ -352,7 +348,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @current-change="handleCurrentChange">
+                    @current-change="checkSelectMoneda">
                     <el-table-column  prop="codigo" label="Codigo" width="180">
                     </el-table-column>  
                     <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
@@ -365,6 +361,54 @@
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeMoneda()">
+                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                </el-button>
+            </footer>
+            </div>
+        </el-dialog>
+         <el-dialog title="Proveedor" :visible.sync="dialogProveedor" @close="closeProveedor" size="small" >
+            <div>
+                <el-card class="box-card">
+                <div slot="header" class="headercard">
+                    <span class="labelheadercard" >Buscar Proveedor</span>
+                </div>
+                <div class="row bodycard">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Proveedor Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <el-table
+                    :data="dataProveedor"
+                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+                    height="250"
+                    highlight-current-row
+                    @current-change="checkSelectProveedor">
+                    <el-table-column  prop="codigo" label="Codigo" width="180">
+                    </el-table-column>  
+                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
+                    </el-table-column> 
+                </el-table>
+            </el-card>
+            <br/>
+            <footer class="modal-footer">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeProveedor()">
+                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                </el-button>
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeProveedor()">
                 <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                 </el-button>
             </footer>

@@ -8,6 +8,18 @@ import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
+
+//***Modelos */
+import {ImpuestoModel} from '@/modelo/maestro/impuesto';
+import {AlmacenModel} from '@/modelo/maestro/almacen';
+import {CompaniaModel} from '@/modelo/maestro/compania';
+import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
+import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
+import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
+import {PrioridadModel} from '@/modelo/maestro/prioridad';
+import {MonedaModel} from '@/modelo/maestro/moneda';
+import {ProveedorModel} from '@/modelo/maestro/proveedor';
+
 import { Notification } from 'element-ui';
 @Component({
   name: 'crear-ingreso-comprobante',
@@ -31,7 +43,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   //**Proveedor */
   btnactivarproveedor:boolean=false;
   dialogProveedor:boolean=false;
-  dataProveedor:string;
+  dataProveedor:any[];
+  public proveedor:ProveedorModel=new ProveedorModel();
   //**Tipo Documento */
   dialogTipoDocumento:boolean=false;
   btnactivarTipoDocumento:boolean=false;
@@ -43,6 +56,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   dialogMoneda:boolean=false;
   btnactivarMoneda:boolean=false;
   dataMoneda:any[];
+  public moneda:MonedaModel=new MonedaModel();
   constructor(){
     super();
     
@@ -117,8 +131,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.dialogProveedor=true;
   }
   closeProveedor(){
-    debugger;
     this.btnactivarproveedor=false;
+    this.dialogProveedor=false;
     return false;
   }
   activar_proveedor(){
@@ -136,8 +150,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarproveedor=false;
     }
   }
-  selectProveFunt(val){
-    this.dataProveedor=val.codigo;
+  checkSelectProveedor(val){
+    this.proveedor.strVendor_NO=val.codigo;    
   }
   //#endregion
 
@@ -195,13 +209,16 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarMoneda=false;
     }
   }
+  checkSelectMoneda(val){
+    this.moneda.strCurrency_Cod=val.codigo
+  }
   //#endregion
   data(){
     return{
       dialogTableVisible: false,
       selectData:'',
       selectType:'',
-      dataProveedor:'',
+      dataProveedor:[],
       codigoCompania:'001',
       descripcionCompania:'Secocha',
       dataOrdenCompra:[{
