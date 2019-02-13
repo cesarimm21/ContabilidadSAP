@@ -80,7 +80,7 @@
                                         </el-table-column>
                                         <el-table-column sortable prop="categoriacuenta" min-width="200" label="Categoria cuenta">
                                             <template scope="scope">
-                                                <el-input  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
+                                                <el-input  v-if=" bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.categoriacuenta" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaCuenta(scope.row,scope.column.property)"></el-button>  
                                                 </el-input> 
