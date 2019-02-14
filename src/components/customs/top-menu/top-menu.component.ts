@@ -33,10 +33,8 @@ export default class TopMenu extends Vue {
   accesosUser:any=[];
   isActive:boolean=false;
   isCollapse:boolean=false;
-  topicon:any;
   constructor(){
     super();
-    this.topicon='../../../images/logo.png';
     this.isActive=GLOBAL.isActive;
     this.isCollapse=GLOBAL.isCollapse;
    // this.ChechAccess();

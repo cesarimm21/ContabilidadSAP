@@ -1,7 +1,7 @@
 <template>
   <div class="top-menu">
     <div class="logo" style="align-items: center;justify-content: center;cursor: pointer;" >
-        <img :src="topicon" style="width: 100px !important; height: 51px !important;" @click="linkRoute('/barmenu/inicio')"> 
+        <img src="../../../images/logo.png" style="width: 100px !important; height: 51px !important;" @click="linkRoute('/barmenu/inicio')"> 
     </div>
     <div class="side-toolbar bg-purple2">
       <el-tooltip class="item" effect="dark" content="Activar barmenu" placement="bottom">
@@ -23,7 +23,7 @@
     </el-tooltip>
     
     <el-tooltip class="item" effect="dark" content="Salir" placement="bottom">
-    <div class="icon-container red" style="line-height: 35px;" @click="linkLogout"><i class="el-icon-fa-sign-out" style="font-size: 16px;"></i>
+    <div class="icon-container" style="line-height: 35px;" @click="linkLogout"><i class="el-icon-fa-sign-out" style="font-size: 16px;"></i>
     </div>
     </el-tooltip>
       <!-- <div>
