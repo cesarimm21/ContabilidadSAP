@@ -1,12 +1,12 @@
 export class GrupoCuentaContableModel {
-    intIdGrupoCuentaContable:number;
-    strCodGrupo: string;
-    strNombre:string;
-    strDescripcion:string;
+    intIdGrpCta_ID:number;
+    strGrpAcctCont_Cod: string;
+    strGrpAcctCont_Name:string;
+    strGrpAcctCont_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

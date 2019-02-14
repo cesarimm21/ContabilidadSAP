@@ -29,7 +29,5 @@ export class OrdenCompraModel {
     strModified_User:string ;        
     dtmModified_Date:Date ;  
     chrStatus:string ;
-    listaDetalle: Array<OrdenCompraDetalleModel> = new Array();    
-    strPO_Number:string ;
     
 }

@@ -1,11 +1,11 @@
 export class EstadoModel {
-   intIdEstado:number;
-    strCodEstado:string;
-    strDescripcion:string;
+    intIdWHS_Stat_ID:number;
+    strWHS_Stat_Cod:string;
+    strWHS_Stat_Desc:string;
 
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

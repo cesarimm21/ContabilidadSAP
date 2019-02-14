@@ -1,11 +1,11 @@
 export class TipoProductoModel {
-    strCodTipoTransac: string;
-    strNombre:string;
-    strDescripcion:string;
+    intIdTypeProd_ID: number;
+    strTypeProd_Cod:string;
+    strTypeProd_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dmModified_Date:Date;
+    chrStatus:string;
 }

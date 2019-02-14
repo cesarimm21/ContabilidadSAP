@@ -6,12 +6,10 @@ export class CompaniaModel {
     strRUC:string;
     strCountry:string;
     strRegion:string;
-    // strCodigoDepartamento:string;
-    // strCodigoPais:string;
     strAddress:string;
     strCurr_Funct:string;
-    strCurr_Grp:string;
     strCurr_Loc:string;
+    strCurr_Grp:string;
     
     strCreation_User:string;
     dtmCreation_Date:Date;

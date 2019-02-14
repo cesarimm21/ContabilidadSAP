@@ -1,12 +1,12 @@
 export class RubroModel {
-    intIdRubro:number;
-    strCodRubro: string;
-    strNombre:string;
-    strDescripcion:string;
+    intIdAcctItem_ID:number;
+    strAcctItem_Cod: string;
+    strAcctItem_Name:string;
+    strAcctItem_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

@@ -1,10 +1,11 @@
 export class TipoComprobantePagoModel {
-    strCodigo: string;
-    strDescripcion:string;
+    intIdDocIdent_IDType_ID:number;
+    strDocType_Cod:string;
+    strDocType_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }
