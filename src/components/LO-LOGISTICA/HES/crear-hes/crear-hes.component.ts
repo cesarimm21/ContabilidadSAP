@@ -72,8 +72,8 @@ export default class CrearHesComponent extends Vue {
     this.btnactivarOrdenC=false;
   }
   handleCurrentChange(val){
-    this.ordenCompraModel.strPO_Number=val.codigo;
-    console.log(this.ordenCompraModel.strPO_Number);
+    this.ordenCompraModel.strPO_NO=val.codigo;
+    console.log(this.ordenCompraModel.strPO_NO);
     
   }
   dbclickSelect(){

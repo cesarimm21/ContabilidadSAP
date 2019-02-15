@@ -7,7 +7,7 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-3" >Código</label>
+                        <label class="el-form-item__label col-md-2" >Código</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
                             <el-input size ="small"   placeholder="">
@@ -22,27 +22,31 @@
                     </div>
                 </div>
             </div>
+            <div style="height:5px;"></div>
             <el-table
-            :data="dataTable"
+            :data="companiaModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-            style="width: 100%" class="ExcelTable2007"
+            style="width: 100%;cursor: pointer;" class="ExcelTable2007"
             height="250"
+            highlight-current-row
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="Code" label="Codigo" width="180">
+            <el-table-column   prop="strRUC" label="RUC" width="100">
             </el-table-column>  
-            <el-table-column  prop="Company_Name" label="Nombre" style="width: 70% !important;">
+            <el-table-column   prop="strCompany_Cod" label="Codigo" width="80">
+            </el-table-column>  
+            <el-table-column  prop="strCompany_Name" label="Nombre" style="width: 70% !important;">
             </el-table-column>             
-            <el-table-column  prop="RUC" label="RUC" style="width: 70% !important;">
+            <el-table-column  prop="strCompany_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="BuscarSome()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkCompania()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="modalPopup = false">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeCompania()">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>

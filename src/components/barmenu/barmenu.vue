@@ -523,7 +523,7 @@
               <template slot="title">
                 <i class="fa fa-caret-right" style="width:10px"></i>
                 <img class="el-folder"/>
-                <span >CP-Costos-Presupuestos</span>
+                <span >CC-Costos-Presupuestos</span>
               </template>
               <el-submenu index="3-1">
                 <template slot="title">
@@ -737,7 +737,7 @@
               <template slot="title">
                 <i class="fa fa-caret-right" style="width:10px"></i>
                 <img class="el-folder"/>
-                <span>CO-Operaciones</span>
+                <span>OP-Operaciones</span>
               </template>
               <el-menu-item index="5-1">
                 <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -764,7 +764,7 @@
               <template slot="title">
                 <i class="fa fa-caret-right" style="width:10px"></i>
                 <img class="el-folder"/>
-                <span>CO-Configuración</span>
+                <span>XX-Configuración</span>
               </template>
               <el-submenu index="6-1">
                 <template slot="title">

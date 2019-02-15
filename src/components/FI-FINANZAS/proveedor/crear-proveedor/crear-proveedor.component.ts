@@ -430,7 +430,7 @@ export default class CrearProveedorComponent extends Vue {
       }
   }
   SaveProveedor(){
-    this.Proveedor.intIdCompany_ID=this.Compania[0].strCompany_Cod;
+    this.Proveedor.intIdVendor_ID=this.Compania[0].strCompany_Cod;
     // let loadingInstance = Loading.service({
     //   fullscreen: true,
     //   text: 'Guargando...',
@@ -438,24 +438,6 @@ export default class CrearProveedorComponent extends Vue {
     //   background: 'rgba(0, 0, 0, 0.8)'
     //   }
     //   ); 
-    this.Proveedor.intIdVenCateg_ID=this.value1;
-    // this.Proveedor.intIdDocIdent_ID=this.tipoDocSelectedIdentidad.intIdDocIdent_ID;
-    // this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;     
-    this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
-    this.Proveedor.intIdRegion_ID=this.selectDepartamento.intIdRegion_ID;
-    this.Proveedor.strBank_Cod=this.selectBancoA.strBank_Cod;
-    this.Proveedor.strCurrency_Cod=this.selectMonedaA.strCurrency_Cod;
-    this.Proveedor.strBank_Corp_Cod=this.selectBancoB.strBank_Cod;
-    this.Proveedor.strCurrency_Corp=this.selectMonedaB.strCurrency_Cod;
-    this.Proveedor.strBank_Other_Cod=this.selectBancoC.strBank_Cod;
-    this.Proveedor.strDetraccion_Cod=this.selectMonedaC.strCurrency_Cod;
-    this.Proveedor.strFore_Branch_Cod=this.selectBancoD.strBank_Cod;
-    this.Proveedor.strFore_Curr_Cod=this.selectMonedaD.strCurrency_Cod;
-    this.Proveedor.strRetention_Cod=this.selectImpuesto.strWH_Cod;
-    this.Proveedor.fltRetention_Porcen=this.selectImpuesto.fltPorcent;
-    this.Proveedor.strDetraccion_Cod=this.selectImpuesto.strWH_Cod;
-    this.Proveedor.strDocIdent_NO=String(this.selectImpuesto.fltPorcent);
-    console.log(this.Proveedor);
     
     // proveedorService.putProveedor(this.Proveedor)
     // .then(response=>{

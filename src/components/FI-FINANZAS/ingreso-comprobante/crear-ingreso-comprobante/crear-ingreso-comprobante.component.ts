@@ -35,6 +35,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarcompania:boolean=false;
   dialogCompania:boolean=false;
   dataCompania:any[];
+  public companiaModel:CompaniaModel=new CompaniaModel();
   //**Orden compra */
   dialogOrdenCompra:boolean=false;
   btnactivarOrdenCompra:boolean=false;
@@ -65,6 +66,18 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   loadCompania(){
     this.dialogCompania=true;
   }
+  companiaSeleccionado(val:CompaniaModel,dialog:boolean){
+    this.companiaModel=val;
+    this.dialogCompania=false;    
+  }
+  companiaClose(){
+    this.companiaModel=new CompaniaModel();
+    this.dialogCompania=false;
+  }
+  dialogCompaniaClose(){
+    this.dialogCompania=false;
+    this.btnactivarcompania=false;
+  }
   activar_compania(){
     setTimeout(() => {
       this.btnactivarcompania=true;
@@ -75,7 +88,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     }, 120)
   }
   desactivar_compania(){
-    debugger;
     if(this.dialogCompania){
       this.btnactivarcompania=false;
     }
@@ -83,6 +95,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   closeCompania(){
     debugger;
     this.btnactivarcompania=false;
+    this.dialogCompania=false;
     return false;
   }
   //#endregion

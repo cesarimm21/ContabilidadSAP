@@ -123,6 +123,8 @@ export default class CrearPRComponent extends Vue {
   code_compania:string='';
   desalmacen:string='';
   code_almacen:string='';
+  cell_ocultar:string='transparent';
+  value: string='';
   tableData1:any=[
     {
       date:Global.getParseDate(new Date().toDateString()),
@@ -149,11 +151,13 @@ export default class CrearPRComponent extends Vue {
   fecha_actual:string;
   selectrow:any;
   selectcolumn:any;
-  blntiporequisicion:boolean=false;
+  blntiporequisicion:boolean=true;
+  tiporequisicion:string='';
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
+    this.tiporequisicion="A";
     for(var i=0;i<10;i++){
       var item:any={
         date:Global.getParseDate(new Date().toDateString()),
@@ -334,9 +338,18 @@ export default class CrearPRComponent extends Vue {
     this.btnactivarproveedor=false;
     this.btnactivarcompania=false
   }
-  activar_tipo_requisicion(){
+  activar_tipo_requisicion(value){
     debugger;
     console.log("activar_tipo_requisicion");
+    this.tiporequisicion=value;
+    if(value=='N'){
+      this.cell_ocultar='transparent';
+      this.blntiporequisicion=true;
+    }
+    else{
+      this.cell_ocultar='#e4e2e2';        
+      this.blntiporequisicion=false;
+    }
     this.btnactivaralmacen=false;
     this.btnactivarproveedor=false;
     this.btnactivarcompania=false
@@ -548,7 +561,10 @@ export default class CrearPRComponent extends Vue {
     this.dialogPrioridad=false;
   }
   cambioTipoRequisicion(selected){
-    console.log(selected);
+    if(this.tiporequisicion!=selected){
+      this.tiporequisicion=selected;
+    }
+    console.log('select',selected);
   }
   data(){
     return{

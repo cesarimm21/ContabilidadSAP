@@ -4,6 +4,9 @@ import { Loading } from 'element-ui';
 
 import { Notification } from 'element-ui';
 import router from '@/router';
+import {CompaniaModel} from '@/modelo/maestro/compania';
+import companiaService from '@/components/service/compania.service';
+
 @Component({
   name: 'bcompania'
 })
@@ -13,15 +16,13 @@ export default class  BCompaniaProveedor extends Vue {
    //PAGINATION
    pagina:number =1;
    RegistersForPage:number = 5;
-   totalRegistros:number = this.RegistersForPage;
-
+   totalRegistros:number = this.RegistersForPage;   
    CompleteData:any;
   //Busqueda
   formularioBusqueda:any={
     categoria:'CODIGO',
     descripcion:'',
     cambioPagina:55,};
-
   numeroPagina:number=20;
 
   //ComoboBox
@@ -31,12 +32,38 @@ export default class  BCompaniaProveedor extends Vue {
   //Modelos
   articulos:any =[];
 
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
+  public companiaModel:Array<CompaniaModel>[];
+  public companiaSelectModel:CompaniaModel=new CompaniaModel();
   constructor() {
     super();
+    this.loadCompania();
+    
+  }
+  loadCompania(){
+    companiaService.GetAllCompania()
+    .then(response=>{
+      this.companiaModel=response;    
+      console.log(this.companiaModel);
+      
+      
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar proveedores'
+      });
+    })
+  }
+
+  handleCurrentChange(val:CompaniaModel){
+    this.companiaSelectModel=val;
+  }
+
+  checkCompania(){
+    this.$emit('companiaSeleccionado',this.companiaSelectModel);
+  }
+  closeCompania(){
+    this.$emit('companiaClose');
   }
 
   redirectLogin(msg){
@@ -60,40 +87,7 @@ export default class  BCompaniaProveedor extends Vue {
   }
 
   bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
+   
   }
 
   CerrarVentana(){
@@ -126,10 +120,12 @@ export default class  BCompaniaProveedor extends Vue {
   seleccionar(row,index){
     debugger;
     console.log("doble",row);
+    this.$emit('companiaSeleccionado',row);
     this.$emit('proveedorSeleccionado',row);
   }
   data() {
     return {
+      companiaModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',
