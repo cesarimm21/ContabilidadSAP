@@ -1,10 +1,3 @@
-import {TipoCuentaContableModel} from "./tipocuentacontable";
-import {GrupoCuentaContableModel} from "./grupocuentacontable";
-import {RubroModel} from "./rubro";
-import {GrupoGastosModel} from "./grupogastos";
-import {MonedaModel} from "./moneda";
-import { NumericDictionary } from "lodash";
-
 export class CuentaContableModel {
     intIdAcctCont_ID:number;
     intIdCompany_ID: number;

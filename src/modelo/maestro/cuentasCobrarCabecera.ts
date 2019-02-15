@@ -1,0 +1,40 @@
+export class cuentasCobrarCabeceraModel {
+    intAPDOCH_ID:number;
+    intIdVendor_ID:number;
+    intPeriodH_ID:number;
+    intPeriodD_ID:number;
+    strSerie_Doc:string;
+    strDocument_NO:string;
+    intIdCompany_ID:number;
+    intIdPOH_ID:number;
+    strVoucher_NO:string;
+    dtmDoc_Acc_Date:Date;
+    dtmDoc_Date:Date;
+    strType_Doc:string;
+    intIdCurrency_ID:number;
+    intExchRate_ID:number;
+    fltQuantity_Doc:number;
+    fltValue_Doc:number;
+    fltValue_Corp:number;
+    strTax_Cod:string;
+    strValue_Tax:string;
+    strTax_Porcent:string;
+    strWH_Detrac_Cod:string;
+    strValue_WH_Detrac:string;
+    strWH_Reten_Cod:string;
+    strValue_WH_Retention:string;
+    strDesc_Doc:string;
+    strPayment_RUN:string;
+    dtmProcess_Date:Date;
+    dtmPayment_Date:Date;
+    strAppr_RUN:string;
+    strPaid_Bank:string;
+    strPaid_Curr_Bank:string;
+    strPaid_Acct_Bank:string;
+
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
+}
