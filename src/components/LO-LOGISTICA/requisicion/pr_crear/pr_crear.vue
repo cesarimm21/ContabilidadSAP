@@ -595,7 +595,7 @@
   
 </template>
 <script>
-import CrearPRComponent from '@/components/logistica/requisicion/pr_crear/pr_crear.component'
+import CrearPRComponent from '@/components/LO-LOGISTICA/requisicion/pr_crear/pr_crear.component'
 export default CrearPRComponent
 </script>
 <style scoped>

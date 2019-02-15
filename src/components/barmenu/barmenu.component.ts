@@ -140,11 +140,16 @@ export default class BarmenuComponent extends Vue {
     router.push('/barmenu/FI-FINANZAS/proveedor/visualizar-proveedor')
   }
   linkCrearRequisicion(){
-    router.push('/barmenu/logistica/requisicion/pr_crear')
+    router.push('/barmenu/LO-LOGISTICA/requisicion/pr_crear')
   }
-
+  linkCrearSalidaAlmacen(){
+    router.push('/barmenu/LO-LOGISTICA/almacen/al_salida')
+  }
   linkRouteHes(){
     router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
+  }
+  linkCrearMaterial(){
+    router.push('/barmenu/LO-LOGISTICA/almacen/al_crear')
   }
   linkModificarHes(){
 
@@ -188,13 +193,13 @@ export default class BarmenuComponent extends Vue {
       router.push('/barmenu/inicio')
     }
     linkModificarRequisicion(){
-      router.push('/barmenu/logistica/requisicion/pr_modificar')
+      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_modificar')
     }
     linkVisualizarRequisicion(){
-      router.push('/barmenu/logistica/requisicion/pr_visualizar')
+      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar')
     }
     linkVisualizarModificaRequisicion(){
-      router.push('/barmenu/logistica/requisicion/pr_visualizar_modificar')
+      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar_modificar')
     }
   data() {
     return {

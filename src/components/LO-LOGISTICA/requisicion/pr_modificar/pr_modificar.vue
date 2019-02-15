@@ -445,7 +445,7 @@
   
 </template>
 <script>
-import ModificarPRComponent from '@/components/logistica/requisicion/pr_modificar/pr_modificar.component'
+import ModificarPRComponent from '@/components/LO-LOGISTICA/requisicion/pr_modificar/pr_modificar.component'
 export default ModificarPRComponent
 </script>
 <style scoped>
