@@ -1,13 +1,13 @@
 export class ClaseProductoModel 
 {
-    intIdClase:number;
+    intIdClase_ID:number;
     strCodClase: string;
-    strNombre:string;
-    strDescripcion:string;
+    strName:string;
+    strDescr:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
     chrEstado:string;
 }

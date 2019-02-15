@@ -1,11 +1,11 @@
 export class ControlPrecioModel {
-    intIdControlPrecio:number;
-    strCodControlPrecio:string;
-    strDescripcion:string;
+    intIdCtlPrec_ID:number;
+    strCtlPrec_Cod:string;
+    strCtlPrec_Desc:string;
 
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

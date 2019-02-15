@@ -29,7 +29,7 @@
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;"/> 
                   <span slot="title">FP01-Ingreso Documento</span>
                 </el-menu-item>
-                <el-menu-item index="1-1-2">
+                <el-menu-item index="1-1-2"  @click="linkRouteModificar()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span slot="title">FP02-Modificar Documento</span>
                   </el-menu-item>

@@ -22,8 +22,10 @@ export default class LoginComponent extends Vue {
   usuario:string;
   contrasenia:string;
   user:any;
+  logo:any;
   constructor(){
     super();    
+    this.logo='../../images/logo_login.png';
   }
   navegacion(){
       this.$router.push('/barmenu/inicio');
@@ -105,6 +107,7 @@ export default class LoginComponent extends Vue {
     return {
       labelPosition: 'right',
       gridData: [],
+      logo:'images/logo_login.png',
       user: {
         authenticated: false
       },

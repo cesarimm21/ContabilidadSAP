@@ -1,11 +1,12 @@
 export class TipoMedioPagoModel {
-    strCodigo: string;
-    strNombre:string;
-    strDescripcion:string;
+    intIdPayWay_ID:string;
+    strPayWay_Cod:string;
+    strPayWay_Name:string;
+    strPayWay_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

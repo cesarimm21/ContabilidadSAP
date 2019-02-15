@@ -1,13 +1,13 @@
 export class GrupoProductoModel 
 {
-    intIdGrupo:number;
-    strCodGrupo: string;
-    strNombre:string;
-    strDescripcion:string;
+    intIdProccGrp_ID:number;
+    strCCGrpProc_Cod: string;
+    strCCGrpProc_Name:string;
+    strCCGrpProc_Desc:string;
     
-    strUsuarioCrea:string;
-    dtmFechaCrea:Date;
-    strUsuarioModif:string;
-    dtmFechaModif:Date;
-    chrEstado:string;
+    strCreation_User:string;
+    dtmCreation_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
+    chrStatus:string;
 }

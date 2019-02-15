@@ -16,6 +16,7 @@ import VisualizarModificarPRComponent from '../components/logistica/requisicion/
 import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/modificar-proveedor/modificar-proveedor.vue'
 import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
 import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
+import ModificarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante/modificar-ingreso-comprobante.vue'
 export default [
  
   {
@@ -95,6 +96,11 @@ export default [
         path:'LO-LOGISTICA/HES/crear-hes',
         component:CrearHesComponent,
         name:'hes'
+      },    
+      {
+        path:'FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante',
+        component:ModificarIngresoComprobanteComponent,
+        name:'modificar'
       },    
       {
         path:'usuario',
