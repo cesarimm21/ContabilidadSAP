@@ -12,12 +12,12 @@
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="codigoCompania"  placeholder="">
+                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="companiaModel.strCompany_Cod"  placeholder="">
                                         <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-4" >{{descripcionCompania}}</label>
+                                <label class="el-form-item__label col-md-4" >{{companiaModel.strCompany_Name}}</label>
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
@@ -218,8 +218,8 @@
                 </el-tab-pane>
             </el-tabs>
         </el-card>
-        <el-dialog title="Busqueda compañia"  :visible.sync="dialogCompania" @close="closeCompania" size="small" >
-            <bcompania>
+        <el-dialog title="Busqueda compañia"  :visible.sync="dialogCompania" @close="dialogCompaniaClose" size="small" >
+            <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)" v-on:companiaClose="companiaClose()">
             </bcompania>
         </el-dialog>
          <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" @close="closeOrdenCompra" size="small" >
