@@ -3,13 +3,20 @@ import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
+import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
+import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
+import Global from '@/Global';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 
+///**Servicios */
+import ordencompraService from '@/components/service/ordencompra.service';
+import diarioService from '@/components/service/diario.service'; 
 //***Modelos */
+import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
 import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {CompaniaModel} from '@/modelo/maestro/compania';
@@ -19,11 +26,20 @@ import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 import {PrioridadModel} from '@/modelo/maestro/prioridad';
 import {MonedaModel} from '@/modelo/maestro/moneda';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
+import {FacturaModel} from '@/modelo/maestro/factura';
+import {FacturaDetalleModel} from '@/modelo/maestro/facturadetalle';
+import {DiarioModel} from '@/modelo/maestro/diario';
 
 import { Notification } from 'element-ui';
 @Component({
   name: 'crear-ingreso-comprobante',
-  components:{'buttons-accions':ButtonsAccionsComponent,'bproveedor':BProveedorComponent,'bcompania':BCompaniaProveedor}
+  components:{
+  'buttons-accions':ButtonsAccionsComponent,
+  'bproveedor':BProveedorComponent,
+  'bcompania':BCompaniaProveedor,
+  'bdocumento':BDocumentoComponent,
+  'bmoneda':BMonedaComponent,
+  }
 })
 export default class CrearIngresoComprobanteComponent extends Vue {
   timer=0;
@@ -31,6 +47,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   descripcionCompania:string;
   sizeScreen:string = (window.innerHeight - 420).toString();
   TableIngreso:any[];
+  periodoData:Date;
   //**Compania */
   btnactivarcompania:boolean=false;
   dialogCompania:boolean=false;
@@ -41,6 +58,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarOrdenCompra:boolean=false;
   dataOrdenCompra:any[];
   selectData:string;
+  public ordencompra:OrdenCompraModel=new OrdenCompraModel();
+  public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
   //**Proveedor */
   btnactivarproveedor:boolean=false;
   dialogProveedor:boolean=false;
@@ -49,8 +68,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   //**Tipo Documento */
   dialogTipoDocumento:boolean=false;
   btnactivarTipoDocumento:boolean=false;
-  dataTipoD:any[];
-  selectType:string;
+  public selectTipoDoc:TipoDocIdentidadModel=new TipoDocIdentidadModel();
+
   //**Documento */
 
   //**Moneda */
@@ -58,9 +77,20 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarMoneda:boolean=false;
   dataMoneda:any[];
   public moneda:MonedaModel=new MonedaModel();
-  constructor(){
+  //**Factura */
+  public factura:FacturaModel=new FacturaModel();
+
+  //**Diario */
+  public diarioModel:DiarioModel=new DiarioModel();
+  dialogDiario:boolean=false;
+  btnactivarDiario:boolean=false;
+  public diarioSelect:DiarioModel=new DiarioModel();
+  fecha_actual:string;
+  fecha_ejecucion:string;
+  constructor(){    
     super();
-    
+    this.fecha_actual=Global.getDate(new Date().toDateString());   
+    this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
   }
   //#region [COMPANIA]
   loadCompania(){
@@ -68,6 +98,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   }
   companiaSeleccionado(val:CompaniaModel,dialog:boolean){
     this.companiaModel=val;
+    this.factura.strCompany_Cod=this.companiaModel.strCompany_Cod;
     this.dialogCompania=false;    
   }
   companiaClose(){
@@ -85,6 +116,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarproveedor=false;
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=false;
     }, 120)
   }
   desactivar_compania(){
@@ -102,13 +134,23 @@ export default class CrearIngresoComprobanteComponent extends Vue {
 
   //#region [ORDEN COMPRA]
   loadOrdenCompra(){
-    this.dialogOrdenCompra=true;
+    ordencompraService.GetAllOrdenCompra()
+    .then(respose=>{
+      this.ordencompra=respose;
+      this.dialogOrdenCompra=true;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'no se pudo cargar orden compra'
+      });
+      this.dialogOrdenCompra=false;
+    })
   }
   closeOrdenCompra(){
-    debugger;
     this.btnactivarOrdenCompra=false;
     this.dialogOrdenCompra=false;
-    // this.selectData='';
+    this.ordencompraSelect=new OrdenCompraModel();
     return false;
   }
   activar_OrdenCompra(){
@@ -118,6 +160,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarproveedor=false;
       this.btnactivarOrdenCompra=true;
       this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=false;
     }, 120)
   }
   desactivar_OrdenCompra(){
@@ -126,13 +169,12 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
     }
   }
-  selectOrdenCompra(val){
-    debugger;
-    this.selectData=val.codigo;
-    console.log(this.selectData);
-    
+  selectOrdenCompra(val:OrdenCompraModel){
+    this.ordencompraSelect=val;
   }
-  checkOrdenCompra(){
+  checkOrdenCompra(){    
+    this.factura.strPO_NO=this.ordencompraSelect.strPO_NO;
+    this.factura.strVendor_NO=this.ordencompraSelect.strVendor_NO;
     this.dialogOrdenCompra=false;
   }
   //#endregion
@@ -155,6 +197,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarproveedor=true;
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=false;
     }, 120)
   }
   desactivar_proveedor(){
@@ -183,6 +226,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarproveedor=false;
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=true;
+      this.btnactivarDiario=false;
     }, 120)
   }
   desactivar_TipoDocumento(){
@@ -190,8 +234,16 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarTipoDocumento=false;
     }
   }
-  selectTipoDocumento(val){
-    this.selectType=val.codigo;
+  tipoSeleccionado(val:TipoDocIdentidadModel){
+    this.selectTipoDoc=val
+    this.factura.strType_Doc=this.selectTipoDoc.strDocIdent_NO;
+    this.dialogTipoDocumento=false;
+  }
+
+  closeTipo(){
+    this.selectTipoDoc=new TipoDocIdentidadModel();
+    this.factura.strType_Doc=this.selectTipoDoc.strDocIdent_NO;
+    this.dialogTipoDocumento=false;
   }
   //#endregion
 
@@ -201,11 +253,10 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   loadMoneda(){
     this.dialogMoneda=true;
   }
-  closeMoneda(){
-    debugger;
+  
+  closeDialogMoneda(){
     this.btnactivarMoneda=false;
     this.dialogMoneda=false;
-    return false;
   }
   activar_Moneda(){
     setTimeout(() => {
@@ -214,21 +265,81 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarproveedor=false;
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=false;
     }, 120)
   }
   desactivar_Moneda(){
-    debugger;
     if(this.dialogMoneda){
       this.btnactivarMoneda=false;
     }
   }
+  
   checkSelectMoneda(val){
     this.moneda.strCurrency_Cod=val.codigo
   }
+  MonedaSeleccionado(val:MonedaModel){
+    this.moneda=val
+    this.factura.strCompany_Cod=this.moneda.strCurrency_Cod;
+    this.dialogMoneda=false;
+  }
+
+  closeMoneda(){
+    this.moneda=new MonedaModel();
+    this.factura.strCompany_Cod=this.moneda.strCurrency_Cod;
+    this.dialogMoneda=false;
+  }
+
   //#endregion
+  //#region [Diario]
+  loadDiario(){
+    diarioService.GetAllDiarios()
+    .then(response=>{
+      this.diarioModel=response;
+      this.dialogDiario=true;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'no se pudo cargar diarios'
+      });
+      this.dialogDiario=false;
+    })
+  }
+  desactivar_Diario(){
+    if(this.dialogDiario){
+      this.btnactivarDiario=false;
+    }
+  }
+  activar_Diario(){
+    setTimeout(() => {
+      this.btnactivarcompania=false;
+      this.btnactivarMoneda=false;
+      this.btnactivarproveedor=false;
+      this.btnactivarOrdenCompra=false;
+      this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=true;
+    }, 120)
+  }
+  checkSelectdbDiario(val:DiarioModel){
+    this.factura.strDaily_Cod=this.diarioSelect.strDaily_Cod;
+    this.dialogDiario=false;
+  }
+  checkSelectDiario(val:DiarioModel){
+    this.diarioSelect=val;
+  }
+  closeDiario(){
+    this.diarioSelect=new DiarioModel();
+    this.dialogDiario=false;
+  }
+  closeDialogDiario(){
+    this.dialogDiario=false;
+  }
+  //#endregion
+
   data(){
     return{
       dialogTableVisible: false,
+      periodoData:'',
       selectData:'',
       selectType:'',
       dataProveedor:[],

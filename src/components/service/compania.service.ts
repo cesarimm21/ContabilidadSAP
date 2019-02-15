@@ -9,6 +9,12 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  searchCompania(){  
+    return axios.get(CONFIG.API_URL+'compania/:strCodCompania')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

@@ -12,7 +12,7 @@
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="companiaModel.strCompany_Cod"  placeholder="">
+                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="factura.strCompany_Cod"  placeholder="">
                                         <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
@@ -23,7 +23,7 @@
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_OrdenCompra" @focus="activar_OrdenCompra" v-model="selectData" type="text">  
+                                    <el-input size ="small" @blur="desactivar_OrdenCompra" @focus="activar_OrdenCompra" v-model="factura.strPO_NO" type="text">  
                                         <el-button v-if="btnactivarOrdenCompra && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenCompra()"></el-button>                           
                                     </el-input>
                                     </div>
@@ -31,7 +31,7 @@
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="proveedor.strVendor_NO" >                            
+                                    <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="factura.strVendor_NO" >                            
                                         <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedor()"></el-button> 
                                     </el-input>
                                     </div>
@@ -41,7 +41,7 @@
                                 <label class="el-form-item__label col-md-3" >Tipo Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="selectType" >                            
+                                    <el-input size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="factura.strType_Doc" >                            
                                          <el-button v-if="btnactivarTipoDocumento && !dialogTipoDocumento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDocumento()"></el-button> 
                                     </el-input>
                                     </div>
@@ -49,7 +49,7 @@
                                 <label class="el-form-item__label col-md-3" >Periodo</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" type="date"  placeholder=""  >                            
+                                    <el-input size ="small" type="text"  placeholder="" v-model="fecha_actual" >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -58,23 +58,24 @@
                                 <label class="el-form-item__label col-md-3" >Serie</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   placeholder=""  >                            
+                                    <el-input size ="small"   v-model="factura.strSerie_Doc" maxlength="5">                            
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Diario</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" type="text"  placeholder=""  >                            
+                                    <el-input size ="small"   @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" >                            
+                                         <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Documento</label>
+                                <label class="el-form-item__label col-md-3" >N. Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   placeholder=""  >                            
+                                    <el-input size ="small" v-model="factura.intDocument_NO" maxlength="9" >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -83,6 +84,17 @@
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" type="text"  placeholder=""  >                            
                                     </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div  class="form-group row ">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <div align="right"
+                                        style="padding-top:5px;padding-bottom:5px;font-size:12px;margin-right: 30px;">
+                                        <span>Fecha Ejecución: {{fecha_ejecucion}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +157,7 @@
                                             <label class="el-form-item__label col-sm-3" >Moneda</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="moneda.strCurrency_Cod">                            
+                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strCompany_Cod">                            
                                                     <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
                                                 </el-input>
                                                 </div>
@@ -222,7 +234,8 @@
             <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)" v-on:companiaClose="companiaClose()">
             </bcompania>
         </el-dialog>
-         <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" @close="closeOrdenCompra" size="small" >
+    
+         <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" @close="checkOrdenCompra" size="small" >
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
@@ -231,7 +244,7 @@
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Orde de compra Codigo</label>
+                            <label class="el-form-item__label col-md-2" >Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"   placeholder="">
@@ -247,16 +260,16 @@
                     </div>
                 </div>
                 <el-table
-                    :data="dataOrdenCompra"
+                    :data="ordencompra"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
                     @row-dblclick="selectOrdenCompra"
                     @current-change="selectOrdenCompra">
-                    <el-table-column  prop="codigo" label="Codigo" width="180">
+                    <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
@@ -272,103 +285,13 @@
             </div>
         </el-dialog>
          <el-dialog title="Tipo documento"  :visible.sync="dialogTipoDocumento" @close="closeTipoDocumento" size="small" >
-            <div>
-                <el-card class="box-card">
-                <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Tipo documento</span>
-                </div>
-                <div class="row bodycard">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Tipo documento Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <el-table
-                    :data="dataTipoD"
-                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                    height="250"
-                    highlight-current-row
-                    @row-dblclick="selectTipoDocumento"
-                    @current-change="selectTipoDocumento">
-                    <el-table-column   prop="codigo" label="Codigo" width="180">
-                    </el-table-column>  
-                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
-                    </el-table-column> 
-                </el-table>
-            </el-card>
-            <br/>
-            <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeTipoDocumento()">
-                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
-                </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeTipoDocumento()">
-                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
-                </el-button>
-            </footer>
-            </div>
-        </el-dialog>
-         <el-dialog title="Moneda"  :visible.sync="dialogMoneda" @close="closeMoneda" size="small" >
-            <div>
-                <el-card class="box-card">
-                <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Moneda</span>
-                </div>
-                <div class="row bodycard">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Moneda Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <el-table
-                    :data="dataMoneda"
-                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                    height="250"
-                    highlight-current-row
-                    @row-dblclick="checkSelectMoneda"
-                    @current-change="checkSelectMoneda">
-                    <el-table-column  prop="codigo" label="Codigo" width="180">
-                    </el-table-column>  
-                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
-                    </el-table-column> 
-                </el-table>
-            </el-card>
-            <br/>
-            <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeMoneda()">
-                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
-                </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeMoneda()">
-                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
-                </el-button>
-            </footer>
-            </div>
-        </el-dialog>
+            <bdocumento v-on:tipoSeleccionado="tipoSeleccionado($event)" v-on:closeTipo="closeTipo()">
+            </bdocumento>
+        </el-dialog>  
+        <el-dialog title="Moneda"  :visible.sync="dialogMoneda" @close="closeDialogMoneda" size="small" >
+            <bmoneda v-on:MonedaSeleccionado="MonedaSeleccionado($event)" v-on:closeMoneda="closeMoneda()">
+            </bmoneda>
+        </el-dialog>  
          <el-dialog title="Proveedor" :visible.sync="dialogProveedor" @close="closeProveedor" size="small" >
             <div>
                 <el-card class="box-card">
@@ -413,6 +336,57 @@
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeProveedor()">
+                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                </el-button>
+            </footer>
+            </div>
+        </el-dialog>
+        <el-dialog title="Diarios" :visible.sync="dialogDiario" @close="closeDialogDiario" size="small" >
+            <div>
+                <el-card class="box-card">
+                <div slot="header" class="headercard">
+                    <span class="labelheadercard" >Buscar Diario</span>
+                </div>
+                <div class="row bodycard">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >Diario Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <el-table
+                    :data="diarioModel"
+                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+                    height="250"
+                    highlight-current-row
+                    @row-dblclick="checkSelectdbDiario"
+                    @current-change="checkSelectDiario">
+                    <el-table-column  prop="strDaily_Cod" label="Codigo" width="180">
+                    </el-table-column>  
+                    <el-table-column  prop="strDaily_Desc" label="Descripción" style="width: 70% !important;">
+                    </el-table-column> 
+                    <el-table-column  prop="strDaily_Type" label="Tipo" width="180">
+                    </el-table-column> 
+                </el-table>
+            </el-card>
+            <br/>
+            <footer class="modal-footer">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdbDiario()">
+                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                </el-button>
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDiario()">
                 <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                 </el-button>
             </footer>

@@ -4,11 +4,11 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllMoneda(){   
-    return axios.get(CONFIG.API_URL+'moneda')
+  GetAllCompania(){      
+    debugger;
+    return axios.get(CONFIG.API_URL+'pais')
     .then(response =>{            
-        return JSON.parse(JSON.stringify(response.data));
+        return JSON.parse(JSON.stringify(response));
     })
   }
 }
-  

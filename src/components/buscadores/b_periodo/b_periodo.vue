@@ -23,27 +23,26 @@
                 </div>
             </div>
             <el-table
-            :data="monedaData"
+            :data="periodoModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-            style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+            style="width: 100%" class="ExcelTable2007"
             height="250"
-            highlight-current-row
-            @row-dblclick="seleccionar"
+            @row-dblclick="selectData"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="strCurrency_Cod" label="Codigo" width="180">
+            <el-table-column   prop="dtmPeriod_NO" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column  prop="strCurrency_Desc" label="Descripción" style="width: 70% !important;">
-            </el-table-column> 
-            <el-table-column  prop="strCountry" label="Pais" style="width: 70% !important;">
+            <el-table-column   prop="strPeriod_Name" label="Nombre" width="180">
+            </el-table-column>  
+            <el-table-column  prop="strPeriod_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkMoneda()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="BuscarSome()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeMoneda()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="modalPopup = false">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>
@@ -51,6 +50,6 @@
 </template>
 
 <script>
-    import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.component'
-    export default BMonedaComponent
+    import BPeriodoComponent from '@/components/buscadores/b_periodo/b_periodo.component'
+    export default BPeriodoComponent
 </script>

@@ -23,27 +23,27 @@
                 </div>
             </div>
             <el-table
-            :data="monedaData"
+            :data="TipoDoc"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%;cursor: pointer;" class="ExcelTable2007"
             height="250"
             highlight-current-row
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="strCurrency_Cod" label="Codigo" width="180">
+            <el-table-column   prop="intIdDocIdent_ID" label="Id" width="180">
             </el-table-column>  
-            <el-table-column  prop="strCurrency_Desc" label="Descripción" style="width: 70% !important;">
-            </el-table-column> 
-            <el-table-column  prop="strCountry" label="Pais" style="width: 70% !important;">
+            <el-table-column   prop="strDocIdent_NO" label="Codigo" width="180">
+            </el-table-column>  
+            <el-table-column  prop="strDocIdent_Name" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkMoneda()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkTipo()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeMoneda()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeTipo()">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>
@@ -51,6 +51,6 @@
 </template>
 
 <script>
-    import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.component'
-    export default BMonedaComponent
+    import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.component'
+    export default BDocumentoComponent
 </script>

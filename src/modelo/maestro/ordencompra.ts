@@ -14,7 +14,7 @@ export class OrdenCompraModel {
     strRequis_NO:string ;
     strRequis_Item_NO:string;
     strPO_Item_Type:string;
-    strVendor_Cod:string;
+    strVendor_NO:string;
     intChange_Count:number;
     strAuthsd_Status:string;
     strAuthsd_By:string;
