@@ -29,8 +29,9 @@
                             <label class="el-form-item__label col-md-2" >Tipo Requisición</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                    <el-select v-model="value" placeholder="Select" @change="cambioTipoRequisicion()" >
-                                        <el-option
+                                    
+                                    <el-select v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-option style="font-size:13px"
                                         v-for="item in options"
                                         :key="item.value"
                                         :label="item.label"
@@ -78,13 +79,13 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="58">
                                         </el-table-column>
-                                        <el-table-column sortable prop="categoriacuenta" min-width="80" label="Cta. cuenta">
+                                        <el-table-column  sortable prop="categoriacuenta" min-width="80" label="Cta. cuenta">
                                             <template scope="scope">
-                                                <el-input  v-if=" bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
+                                                <el-input  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.categoriacuenta" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaCuenta(scope.row,scope.column.property)"></el-button>  
                                                 </el-input> 
-                                                <label style="width:100%" v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.categoriacuenta }}</label>
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.categoriacuenta }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
@@ -174,7 +175,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="moneda" sortable width="80"
+                                            prop="moneda" sortable 
                                             label="Moneda">
                                              <template scope="scope">
                                                 <el-input  v-if="bln_tbl_moneda  && (scope.row === editing.row) 

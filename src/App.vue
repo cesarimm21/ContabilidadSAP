@@ -735,7 +735,7 @@ body {
     border-width: 1px;
     margin-right: -3px;
 }
-.red {
+.red1 {
   background: #d43438;
     border-radius: 0.8em;
     -moz-border-radius: 0.8em;
