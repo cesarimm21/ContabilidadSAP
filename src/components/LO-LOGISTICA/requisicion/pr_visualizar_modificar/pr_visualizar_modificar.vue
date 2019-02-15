@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import VisualizarModificarPRComponent from '@/components/logistica/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.component'
+import VisualizarModificarPRComponent from '@/components/LO-LOGISTICA/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.component'
 export default VisualizarModificarPRComponent
 </script>
 <style scoped>

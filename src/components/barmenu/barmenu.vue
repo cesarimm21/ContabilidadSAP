@@ -387,7 +387,7 @@
               <template slot="title">
                 <i class="fa fa-caret-right" style="width:10px"></i>
                 <img class="el-folder"/>
-                <span>LO-logistica</span>
+                <span>LO-Logistica</span>
               </template>
               <el-submenu index="2-1">
                 <template slot="title">
@@ -456,13 +456,17 @@
                   <img class="el-folder"/>
                   <span slot="title">Almacenes</span>
                 </template>
-                <el-menu-item index="2-4-1">
+                <el-menu-item index="2-4-1"  @click="linkCrearMaterial()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LA01-Crear Material de Almacen</span>
                 </el-menu-item>
                 <el-menu-item index="2-4-2">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LA02-Visualizar Material de Almacen</span>
+                </el-menu-item>
+                <el-menu-item index="2-4-20" @click="linkCrearSalidaAlmacen()">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>LA03-Salida Material de Almacen</span>
                 </el-menu-item>
                 <el-menu-item index="2-4-3">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
