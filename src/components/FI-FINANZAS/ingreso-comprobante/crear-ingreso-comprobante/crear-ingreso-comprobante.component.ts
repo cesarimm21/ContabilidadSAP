@@ -5,6 +5,7 @@ import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vu
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
+import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -15,12 +16,14 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 ///**Servicios */
 import ordencompraService from '@/components/service/ordencompra.service';
 import diarioService from '@/components/service/diario.service'; 
+import tipocambioService from '@/components/service/tipocambio.service'
+import facturaService from '@/components/service/factura.service'
 //***Modelos */
 import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
-import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
+import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
 import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 import {PrioridadModel} from '@/modelo/maestro/prioridad';
@@ -29,6 +32,8 @@ import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {FacturaModel} from '@/modelo/maestro/factura';
 import {FacturaDetalleModel} from '@/modelo/maestro/facturadetalle';
 import {DiarioModel} from '@/modelo/maestro/diario';
+import {TipoCambioModel} from '@/modelo/maestro/tipocambio';
+import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 
 import { Notification } from 'element-ui';
 @Component({
@@ -39,6 +44,7 @@ import { Notification } from 'element-ui';
   'bcompania':BCompaniaProveedor,
   'bdocumento':BDocumentoComponent,
   'bmoneda':BMonedaComponent,
+  'bimpuesto':BImpuestoComponent
   }
 })
 export default class CrearIngresoComprobanteComponent extends Vue {
@@ -48,6 +54,16 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 420).toString();
   TableIngreso:any[];
   periodoData:Date;
+  totalUnidad:number;
+  totalDinero:number;
+  salidaUnidad:string;
+  salidaDinero:string;
+  totalDolars:string;
+  TotalPagarS:string;
+  TotalPagarD:string;
+  voucher:string;
+
+  public tipocambio:TipoCambioModel=new TipoCambioModel();
   //**Compania */
   btnactivarcompania:boolean=false;
   dialogCompania:boolean=false;
@@ -58,6 +74,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarOrdenCompra:boolean=false;
   dataOrdenCompra:any[];
   selectData:string;
+  // public ordencompraDetalle:Array<OrdenCompraDetalleModel>[];
+  public ordencompraDetalle:OrdenCompraDetalleModel[];
   public ordencompra:OrdenCompraModel=new OrdenCompraModel();
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
   //**Proveedor */
@@ -87,11 +105,25 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   public diarioSelect:DiarioModel=new DiarioModel();
   fecha_actual:string;
   fecha_ejecucion:string;
+
+  //**impuesto */
+  public Impuesto:ImpuestoModel=new ImpuestoModel();
+  dialogImpuesto:boolean=false;
+  btnactivarImpuesto:boolean=false;
   constructor(){    
     super();
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
+    this.loadTipocambio();
   }
+  loadTipocambio(){
+    tipocambioService.GetAllTipoCambio()
+    .then(response=>{
+      this.tipocambio=response;
+      console.log(response);      
+    }).catch(error=>{})
+  }
+
   //#region [COMPANIA]
   loadCompania(){
     this.dialogCompania=true;
@@ -117,6 +149,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
       this.btnactivarDiario=false;
+      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_compania(){
@@ -125,13 +158,11 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     }
   }
   closeCompania(){
-    debugger;
     this.btnactivarcompania=false;
     this.dialogCompania=false;
     return false;
   }
   //#endregion
-
   //#region [ORDEN COMPRA]
   loadOrdenCompra(){
     ordencompraService.GetAllOrdenCompra()
@@ -145,6 +176,35 @@ export default class CrearIngresoComprobanteComponent extends Vue {
         message: 'no se pudo cargar orden compra'
       });
       this.dialogOrdenCompra=false;
+    })
+  }
+  loadOrdenCompraDetalle(val){
+    ordencompraService.GetAllOrdenDetalle(val)
+    .then(respose=>{
+      this.ordencompraDetalle=respose;    
+      for(var i=0;i<this.ordencompraDetalle.length;i++){
+        var a=this.ordencompraDetalle[i].fltPO_QTY_I;
+        var c=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
+        var b=parseInt(a);
+        var d=parseInt(c);
+        this.totalUnidad=this.totalUnidad+b;
+        this.totalDinero=this.totalDinero+d;
+        debugger;
+      }
+    this.factura.intQuantity_Doc=this.totalUnidad;
+    this.factura.intValue_Doc=this.totalDinero;
+    this.salidaUnidad=this.factura.intQuantity_Doc+' Unid.';
+    this.salidaDinero='S/. '+this.factura.intValue_Doc+'.00';
+
+    this.totalDolars='$. '+(this.totalDinero/this.tipocambio.fltExchRate_Buy).toFixed(2);
+    this.factura.strValue_Local=this.factura.intValue_Doc.toString();
+    this.factura.strValue_Corp=(this.totalDinero/this.tipocambio.fltExchRate_Buy).toFixed(2);
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'no se pudo cargar orden compra detalle'
+      });
     })
   }
   closeOrdenCompra(){
@@ -161,10 +221,10 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=true;
       this.btnactivarTipoDocumento=false;
       this.btnactivarDiario=false;
+      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_OrdenCompra(){
-    debugger;
     if(this.dialogOrdenCompra){
       this.btnactivarOrdenCompra=false;
     }
@@ -174,13 +234,14 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   }
   checkOrdenCompra(){    
     this.factura.strPO_NO=this.ordencompraSelect.strPO_NO;
+    // this.factura.strVendor_NO=this.ordencompraSelect.strVendor_NO;
     this.factura.strVendor_NO=this.ordencompraSelect.strVendor_NO;
+    this.factura.strDesc_Doc=this.ordencompraSelect.strPO_Desc;
     this.dialogOrdenCompra=false;
+    debugger;
+    this.loadOrdenCompraDetalle(this.ordencompraSelect.intIdPOH_ID);
   }
   //#endregion
-  handleCurrentChange(){
-
-  }
   //#region [PROVEEDOR]
   loadProveedor(){
     this.dialogProveedor=true;
@@ -198,10 +259,10 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
       this.btnactivarDiario=false;
+      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_proveedor(){
-    debugger;
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
@@ -210,7 +271,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.proveedor.strVendor_NO=val.codigo;    
   }
   //#endregion
-
   //#region [TIPO DOCUMENTO]
   loadTipoDocumento(){
     this.dialogTipoDocumento=true;
@@ -227,6 +287,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=true;
       this.btnactivarDiario=false;
+      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_TipoDocumento(){
@@ -246,7 +307,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.dialogTipoDocumento=false;
   }
   //#endregion
-
   //#region [DOCUMENTO]
   //#endregion
   //#region [MONEDA]
@@ -266,6 +326,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
       this.btnactivarDiario=false;
+      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_Moneda(){
@@ -288,7 +349,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.factura.strCompany_Cod=this.moneda.strCurrency_Cod;
     this.dialogMoneda=false;
   }
-
   //#endregion
   //#region [Diario]
   loadDiario(){
@@ -318,6 +378,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.btnactivarOrdenCompra=false;
       this.btnactivarTipoDocumento=false;
       this.btnactivarDiario=true;
+      this.btnactivarImpuesto=false;
     }, 120)
   }
   checkSelectdbDiario(val:DiarioModel){
@@ -335,7 +396,76 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.dialogDiario=false;
   }
   //#endregion
+  //#region [IMPUESTO]
+  loadImpuesto(){
+    this.dialogImpuesto=true;
+  }
+  
+  closeDialogImpuesto(){
+    this.btnactivarImpuesto=false;
+    this.dialogImpuesto=false;
+  }
+  activar_Impuesto(){
+    setTimeout(() => {
+      this.btnactivarcompania=false;
+      this.btnactivarMoneda=false;
+      this.btnactivarproveedor=false;
+      this.btnactivarOrdenCompra=false;
+      this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=false;
+      this.btnactivarImpuesto=true;
+    }, 120)
+  }
+  desactivar_Impuesto(){
+    if(this.dialogImpuesto){
+      this.btnactivarImpuesto=false;
+    }
+  }  
+  ImpuestoSeleccionado(val:ImpuestoModel){
+    this.Impuesto=val
+    this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
+    this.dialogImpuesto=false;
+    this.TotalPagarS='S/. '+(this.totalDinero+ this.totalDinero*(this.Impuesto.fltPorcent/100)).toFixed(2);
+    this.TotalPagarD='$. '+((this.totalDinero+ this.totalDinero*(this.Impuesto.fltPorcent/100))/this.tipocambio.fltExchRate_Buy).toFixed(2);
+  }
 
+  closeImpuesto(){
+    this.Impuesto=new ImpuestoModel();
+    this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
+    this.dialogImpuesto=false;
+  }
+  //#endregion
+  //#region [Factura]
+  saveFactura(){
+    debugger;
+    this.voucher='1000000001';
+    if(this.factura.strPO_NO==undefined){
+      this.$message({
+        showClose: true,
+        type: 'warning',
+        message: 'Ingresa la orden de compra'
+      });
+    }
+    else{
+      this.$message({
+        showClose: true,
+        type: 'success',
+        message: 'Factura guardada numero '+this.voucher
+      });
+    }
+    
+    // for(var i=0;this.ordencompraDetalle.length;i++){
+    //   this.factura.listaDetalle[i].strCompany_Cod=this.ordencompra.strCompany_Cod;
+    //   this.factura.listaDetalle[i].strPO_NO=this.ordencompraDetalle[i].strPO_NO;
+    // }
+    // facturaService.CreateFactura(this.factura)
+    // .then(response=>{
+
+    // }).catch(error=>{
+
+    // })
+  }
+  //#endregion
   data(){
     return{
       dialogTableVisible: false,
@@ -343,108 +473,17 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       selectData:'',
       selectType:'',
       dataProveedor:[],
+      ordencompraDetalle:[],
       codigoCompania:'001',
-      descripcionCompania:'GADEL SOLUTIONS S.R.L.',
-      dataOrdenCompra:[{
-        codigo:'67000001',
-        descripcion:'compra de vienes y servicio'
-      },{
-        codigo:'45000002',
-        descripcion:'compra de vehiculos'
-      },{
-        codigo:'56000003',
-        descripcion:'Fomentar el bienestar'
-      },{
-        codigo:'67000004',
-        descripcion:'Información en radio'
-      },{
-        codigo:'67000005',
-        descripcion:'Vehiculo de carga'
-      },{
-        codigo:'67000006',
-        descripcion:'para navidad'
-      }],
-      TableIngreso:[{
-        cuenta:'0011-0222-0200400701',
-        almacen:'almacen centro',
-        material:'material 1',
-        descripcion:'descripcion 1',
-        lugar:'Arequipa'
-      },{
-        cuenta:'0011-0222-0200400234',
-        almacen:'almacen 2',
-        material:'material 2',
-        descripcion:'descripcion 2',
-        lugar:'Cusco'
-      },{
-        cuenta:'0011-0222-0200400701',
-        almacen:'almacen 3',
-        material:'material 3',
-        descripcion:'descripcion 3',
-        lugar:'Moquegua'
-      },{
-        cuenta:'0011-0222-0200400701',
-        almacen:'almacen centro',
-        material:'material 4',
-        descripcion:'descripcion 4',
-        lugar:'Arequipa'
-      },{
-        cuenta:'0011-0222-0200400701',
-        almacen:'almacen centro',
-        material:'material 5',
-        descripcion:'descripcion 5',
-        lugar:'Arequipa'
-      },{
-        cuenta:'0011-0222-0200400701',
-        almacen:'almacen centro',
-        material:'material 6',
-        descripcion:'descripcion 6',
-        lugar:'Arequipa'
-      },{
-        cuenta:'0011-0222-0200400701',
-        almacen:'almacen centro',
-        material:'material 7',
-        descripcion:'descripcion 7',
-        lugar:'Arequipa'
-      }],
-      dataTipoD:[{
-        codigo:'0',
-        descripcion:'OTROS TIPOS DE DOCUMENTOS'
-      },{
-        codigo:'1',
-        descripcion:'DOCUMENTO NACIONAL DE IDENTIDAD (DNI)'
-      },{
-        codigo:'4',
-        descripcion:'CARNET DE EXTRANJERIA'
-      },{
-        codigo:'6',
-        descripcion:'REGISTRO ÚNICO DE CONTRIBUYENTES'
-      },{
-        codigo:'7',
-        descripcion:'PASAPORTE'
-      },{
-        codigo:'A',
-        descripcion:'CÉDULA DIPLOMÁTICA DE IDENTIDAD'
-      },],
-      dataMoneda:[{
-        codigo:'PEN',
-        descripcion:'soles'
-      },{
-        codigo:'USD',
-        descripcion:'Dólar estadounidense'
-      },{
-        codigo:'ARG',
-        descripcion:'Peso argentino'
-      },{
-        codigo:'AUD',
-        descripcion:'Dólar australiano'
-      },{
-        codigo:'AMD',
-        descripcion:'Kwanza'
-      },{
-        codigo:'AED',
-        descripcion:'Dírham de los Emiratos Árabes Unidos'
-      },]
+      totalDinero:0,
+      totalUnidad:0,
+      salidaUnidad:'',
+      salidaDinero:'',
+      totalDolars:'',
+      TotalPagarS:'',
+      TotalPagarD:'',
+      voucher:''
+     
     }
   }
   

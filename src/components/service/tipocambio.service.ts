@@ -4,17 +4,11 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllOrdenCompra(){      
+  GetAllTipoCambio(){      
     debugger;
-    return axios.get(CONFIG.API_URL+'ordencompra')
+    return axios.get(CONFIG.API_URL+'tipocambiotoday')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
-    })
-  },
-  GetAllOrdenDetalle(idHeader){
-    return axios.get(CONFIG.API_URL+'ordencompradetalle/'+idHeader)
-    .then(response=>{
-      return JSON.parse(JSON.stringify(response.data));
     })
   }
 }

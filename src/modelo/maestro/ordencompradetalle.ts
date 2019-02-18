@@ -10,6 +10,7 @@ export class OrdenCompraDetalleModel {
     strPO_Item_Desc:string;
     chrPO_Item_Status:string;
     strPO_Curr:string;
+    strPO_NO:string;
     strRequis_NO:string;
     intRequis_Item_NO:number;
     intChange_Count:number;
@@ -19,10 +20,10 @@ export class OrdenCompraDetalleModel {
     intIdInvStock_ID:number ;
     dtmOrig_Due_Date:Date ;
     strUnit_Of_Purch:string ;
-    fltPO_QTY_I:number ;
-    fltPO_Net_PR_I:number ;
-    fltCurr_Net_PR_P:number ;
-    intConv_Factor:string ;
+    fltPO_QTY_I:string ;
+    fltPO_Net_PR_I:string ;
+    fltCurr_Net_PR_P:string ;
+    intConv_Factor:number ;
     strTax_Cod:string ;
     strWH_Tax_Detraccion:string;
     strWH_Retention:string;

@@ -47,6 +47,7 @@ export default class  BMonedaComponent extends Vue {
   }
   data() {
     return {
+      monedaData:[]
     };
   }
 }

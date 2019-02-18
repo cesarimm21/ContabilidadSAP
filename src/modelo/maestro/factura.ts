@@ -1,3 +1,4 @@
+import {FacturaDetalleModel} from "./facturadetalle";
 export class FacturaModel{
     intAPDocH_ID:number;
     strCompany_Cod:string;
@@ -36,4 +37,5 @@ export class FacturaModel{
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    listaDetalle: Array<FacturaDetalleModel> = new Array(); 
 }
