@@ -1,7 +1,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
-
+import Global from '@/Global';
 import { Notification } from 'element-ui';
 import router from '@/router';
 import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';

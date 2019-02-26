@@ -11,7 +11,7 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-
+import Global from '@/Global';
 import { Notification } from 'element-ui';
 @Component({
   name: 'modificar-ingreso-comprobante'
@@ -20,6 +20,7 @@ export default class ModificarIngresoComprobanteComponent extends Vue {
   
   constructor(){
     super();
+    Global.nameComponent='modificar-ingreso-comprobante';
   }
   data(){
     return{

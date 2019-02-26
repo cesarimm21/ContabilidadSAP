@@ -3,7 +3,7 @@
         <el-card class="box-card">
             <div slot="header" class="headercard">
                 <span class="labelheadercard" > Crear ingreso comprobante</span>
-                <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()">Guardar</el-button> 
+                <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -144,7 +144,7 @@
                                             <label class="el-form-item__label col-sm-3" >Moneda</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strCompany_Cod">                            
+                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strPaid_Bank">                            
                                                     <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
                                                 </el-input>
                                                 </div>

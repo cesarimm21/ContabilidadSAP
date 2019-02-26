@@ -12,6 +12,8 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
+//**BUS */
+import {bus} from '../../../../main';
 
 ///**Servicios */
 import ordencompraService from '@/components/service/ordencompra.service';
@@ -48,6 +50,8 @@ import { Notification } from 'element-ui';
   }
 })
 export default class CrearIngresoComprobanteComponent extends Vue {
+  nameComponent:string;
+  habilitar:boolean=false;
   timer=0;
   codigoCompania:string;
   descripcionCompania:string;
@@ -112,6 +116,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarImpuesto:boolean=false;
   constructor(){    
     super();
+    Global.nameComponent='crear-ingreso-comprobante';
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
     this.loadTipocambio();
@@ -340,13 +345,13 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   }
   MonedaSeleccionado(val:MonedaModel){
     this.moneda=val
-    this.factura.strCompany_Cod=this.moneda.strCurrency_Cod;
+    this.factura.strPaid_Bank=this.moneda.strCurrency_Cod;
     this.dialogMoneda=false;
   }
 
   closeMoneda(){
     this.moneda=new MonedaModel();
-    this.factura.strCompany_Cod=this.moneda.strCurrency_Cod;
+    this.factura.strPaid_Bank=this.moneda.strCurrency_Cod;
     this.dialogMoneda=false;
   }
   //#endregion
@@ -436,38 +441,52 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   }
   //#endregion
   //#region [Factura]
+  created(){
+    bus.$on('SaveFactura',(data)=>{
+      if(data===this.nameComponent){
+        this.saveFactura();
+      }
+    })
+    bus.$on('ValidadProveedor',(data)=>{
+      if(data===this.nameComponent){
+          this.$message({
+              showClose:true,
+              type:'info',
+              message:'Validate Proveedor'
+          })
+      }
+  })
+  }
   saveFactura(){
+    
     debugger;
     this.voucher='1000000001';
-    if(this.factura.strPO_NO==undefined){
-      this.$message({
-        showClose: true,
-        type: 'warning',
-        message: 'Ingresa la orden de compra'
-      });
-    }
-    else{
-      this.$message({
-        showClose: true,
-        type: 'success',
-        message: 'Factura guardada numero '+this.voucher
-      });
-    }
-    
-    // for(var i=0;this.ordencompraDetalle.length;i++){
-    //   this.factura.listaDetalle[i].strCompany_Cod=this.ordencompra.strCompany_Cod;
-    //   this.factura.listaDetalle[i].strPO_NO=this.ordencompraDetalle[i].strPO_NO;
+    this.$message({
+      showClose: true,
+      type: 'success',
+      message: 'Factura guardada numero '+this.voucher
+    });
+    // if(this.factura.strPO_NO==undefined){
+    //   this.$message({
+    //     showClose: true,
+    //     type: 'warning',
+    //     message: 'Ingresa la orden de compra'
+    //   });
     // }
-    // facturaService.CreateFactura(this.factura)
-    // .then(response=>{
-
-    // }).catch(error=>{
-
-    // })
+    // else{
+    //   this.$message({
+    //     showClose: true,
+    //     type: 'success',
+    //     message: 'Factura guardada numero '+this.voucher
+    //   });
+    //   this.habilitar=true;
+    // }
+    
   }
   //#endregion
   data(){
     return{
+      nameComponent:'crear-ingreso-comprobante',
       dialogTableVisible: false,
       periodoData:'',
       selectData:'',
@@ -482,7 +501,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       totalDolars:'',
       TotalPagarS:'',
       TotalPagarD:'',
-      voucher:''
+      voucher:'',
+      habilitar:false
      
     }
   }

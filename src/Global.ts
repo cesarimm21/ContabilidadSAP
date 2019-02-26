@@ -3,7 +3,7 @@ export default {
     token:'',
     isActive:false,
     isCollapse:false,
-
+    nameComponent:'',
     limpiarDatosSession(){
       this.token='';
     },

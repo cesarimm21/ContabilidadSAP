@@ -20,6 +20,7 @@ import HeaderbuttosComponent from '@/components/headerbuttos/headerbuttos.vue'
 import { Notification } from 'element-ui';
 import { AccesoModel } from  'src/modelo/login/acceso';
 import GLOBAL from '../../Global';
+import Global from '../../Global';
 @Component({
    name: 'barmenu',
    components:{
@@ -145,8 +146,17 @@ export default class BarmenuComponent extends Vue {
   linkCrearSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_salida')
   }
-  linkRouteHes(){
-    router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
+  linkRouteHes(val:string){
+    if(val==='crear'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/crear-hes');
+    }
+    if(val==='edit'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/edit-hes');
+    }
+    if(val==='view'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/view-hes');
+    }
+    
   }
   linkCrearMaterial(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_crear')

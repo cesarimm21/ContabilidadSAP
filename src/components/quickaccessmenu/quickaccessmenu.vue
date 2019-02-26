@@ -1,10 +1,12 @@
 <template>
   <div >
-    <img src="../../images/icon_validar.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/barmenu/inicio')"/>
+    <img src="../../images/icon_validar.png" style="width:17px; height:15px; cursor: pointer;" @click="validar()"/>
     <input type="text"  v-if="!ocultar" style="height: 10px;font-size: 12px;display: inline;width: 100px;margin-left: 0.5rem;" class="form-control" placeholder=" " required>
     <img src="../../images/collapse_left.png" v-if="!ocultar" style="width:9px; height:13px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
     <img src="../../images/collapse_derecha.png" v-if="ocultar" style="width:9px; height:13px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+    <el-tooltip class="itemTool" content="Guardar" placement="right" effect="dark">
     <img src="../../images/guardar.png" style="width:16px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="guardar()"/>
+    </el-tooltip>
     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
     <img src="../../images/cancelar.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute('/barmenu/inicio')"/>
     <img src="../../images/nuevo.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute('/menu/inicio')"/>
@@ -129,5 +131,4 @@ i{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 </style>

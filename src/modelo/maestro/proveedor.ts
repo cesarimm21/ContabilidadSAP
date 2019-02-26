@@ -3,6 +3,8 @@ export class ProveedorModel {
     intIdVendor_ID:number;//*
     intIdRegion_ID:number ;//*
     intIdDocIdent_ID:number;//*
+    intIdCompany_ID:number;
+    strCompany_Cod:string;
     strVendor_NO:string ;//*
     strCountry:string ;
     strCat_Person:string ;
@@ -16,6 +18,7 @@ export class ProveedorModel {
     strProvince:string ;
     strPostal_Cod:string ;
     strCurrency:string ;
+    strDocIdent_NO:string;
     strBank_Cod:string ;
     intDayToPay:number;
     strBankAcct_Local_NO:string ;

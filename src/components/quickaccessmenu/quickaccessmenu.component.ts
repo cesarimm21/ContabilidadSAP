@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-
+import Global from '@/Global';
+//**BUS */
+import {bus} from '../../main';
 
 import Login from '@/components/login/login.vue';
 import Roles from '@/components/roles/roles.vue';
@@ -54,6 +56,47 @@ export default class QuickAccessMenuComponent extends Vue {
     //this.dialogVisible=true;
     this.SendDocument=true;
     //this.$refs.myModalRef.show();
+    if(Global.nameComponent==='crear-ingreso-comprobante'){
+      bus.$emit('SaveFactura',Global.nameComponent);
+    }
+    if(Global.nameComponent==='crear-hes'){
+      bus.$emit('SaveHes',Global.nameComponent);
+    }
+    if(Global.nameComponent==='edit-hes'){
+      bus.$emit('EditHes',Global.nameComponent);
+    }
+    if(Global.nameComponent==='view-hes'){
+      bus.$emit('ViewHes',Global.nameComponent);
+    }
+    if(Global.nameComponent==='crear-proveedor'){
+      bus.$emit('SaveProveedor',Global.nameComponent);
+    }   
+    if(Global.nameComponent==='modificar-proveedor'){
+      bus.$emit('EditProveedor',Global.nameComponent);
+    }   
+    if(Global.nameComponent==='visualizar-proveedor'){
+      bus.$emit('ViewProveedor',Global.nameComponent);
+    }   
+  }
+  validar(){
+    if(Global.nameComponent==='crear-proveedor'){
+      bus.$emit('ValidadProveedor',Global.nameComponent);
+    }  
+    if(Global.nameComponent==='modificar-proveedor'){
+      bus.$emit('ValEditProveedor',Global.nameComponent);
+    }  
+    if(Global.nameComponent==='visualizar-proveedor'){
+      bus.$emit('ValViewProveedor',Global.nameComponent);
+    }  
+    if(Global.nameComponent==='crear-hes'){
+      bus.$emit('ValidadHes',Global.nameComponent);
+    }  
+    if(Global.nameComponent==='edit-hes'){
+      bus.$emit('ValEditHes',Global.nameComponent);
+    }  
+    if(Global.nameComponent==='view-hes'){
+      bus.$emit('ValViewHes',Global.nameComponent);
+    }  
   }
   
   openMessage(newMsg : string) {

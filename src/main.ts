@@ -12,6 +12,9 @@ import 'element-ui/lib/theme-default/index.css'
 import InfiniteScroll from 'vue-infinite-scroll';
 import './assets/css/style.scss';
 import VueChart from 'vue-chart-js'
+//**BUS CARGA DE DATOS */
+export const bus=new Vue();
+
 //import 'font-awesome/css/font-awesome.css';
 import locale from 'element-ui/lib/locale/lang/es'
 Vue.use(VueChart)
