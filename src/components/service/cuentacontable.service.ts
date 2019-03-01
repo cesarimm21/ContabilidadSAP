@@ -9,12 +9,6 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  },
-  GetOnlyOneCuentaGastos(code){
-    return axios.get(CONFIG.API_URL+'cuentacontable/'+code)
-    .then(response =>{           
-        return JSON.parse(JSON.stringify(response.data));
-    })
   }
 }
   
