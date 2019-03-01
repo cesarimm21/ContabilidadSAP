@@ -6,6 +6,7 @@ import {MonedaModel} from '@/modelo/maestro/moneda';
 import monedaService from '@/components/service/moneda.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+
 @Component({
   name: 'bmoneda'
 })
@@ -140,59 +141,25 @@ export default class  BMonedaComponent extends Vue {
     this.$message({
         showClose: true,
         type: 'error',
-        message: strMessage
+        message: 'No se puede cargar lista Moneda'
       });
   }
-  
-  seleccionar(row,index){
-    this.$emit('monedaselecionado',row);
+  seleccionar(val:MonedaModel){
+    this.monedaSelectModel=val;
+    this.$emit('MonedaSeleccionado',this.monedaSelectModel);
   }
-
+  handleCurrentChange(val:MonedaModel){
+    this.monedaSelectModel=val;
+  }
+  checkMoneda(){
+    this.$emit('MonedaSeleccionado',this.monedaSelectModel)
+  }
+  closeMoneda(){
+    this.$emit('closeMoneda');
+  }
   data() {
     return {
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    
-    dataTable:[{
-      CODIGO :'AED',
-      DESCRIPCION :'UAE Dirham',
-    },
-    {
-      CODIGO :'AFN',
-      DESCRIPCION :'Afghani',
-    },
-    {
-      CODIGO :'EUR',
-      DESCRIPCION :'Euro',
-    },
-    {
-      CODIGO :'PEN',
-      DESCRIPCION :'Nuevo Sol o Sol',
-    },
-    {
-      CODIGO :'USD',
-      DESCRIPCION :'US Dollar',
-    },
-    ]
-
+      monedaData:[]
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

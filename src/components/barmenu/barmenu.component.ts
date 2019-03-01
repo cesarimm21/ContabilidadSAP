@@ -20,6 +20,7 @@ import HeaderbuttosComponent from '@/components/headerbuttos/headerbuttos.vue'
 import { Notification } from 'element-ui';
 import { AccesoModel } from  'src/modelo/login/acceso';
 import GLOBAL from '../../Global';
+import Global from '../../Global';
 @Component({
    name: 'barmenu',
    components:{
@@ -124,6 +125,10 @@ export default class BarmenuComponent extends Vue {
     debugger;
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante')
   }
+  linkRouteVisualizar(){
+    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante')
+  }
+  
   linkRoute(){
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }
@@ -151,8 +156,26 @@ export default class BarmenuComponent extends Vue {
   linkVisualizarSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_salida_visualizar')
   }
-  linkRouteHes(){
-    router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
+  CrearPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_crear')
+  }
+  EditPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_modificar')
+  }
+  ViewPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_visualizar')
+  }
+  linkRouteHes(val:string){
+    if(val==='crear'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/crear-hes');
+    }
+    if(val==='edit'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/edit-hes');
+    }
+    if(val==='view'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/view-hes');
+    }
+    
   }
   linkCrearMaterial(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_crear')

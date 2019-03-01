@@ -10,7 +10,6 @@ export default{
     })
   },
   GetAllVersion(){
-    debugger;
       return axios.get(CONFIG.API_URL+'versiones/get/all/'+window.localStorage.getItem('User_CodPersona'),{headers:{'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
       .then(response=>{
         return JSON.parse(JSON.stringify(response.data));

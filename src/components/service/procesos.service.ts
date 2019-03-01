@@ -28,14 +28,12 @@ export default{
       })
   },
   EliminarProceso(row){
-    debugger;
     return axios.delete(CONFIG.API_URL+'aprobar/delete/'+row.CodProceso+'/'+row.CodTipoAprobacion+'/'+localStorage.getItem('User_Usuario'),{headers: this.headers})
     .then(response => {
       return response.data
     })
   },
   DeleteTipoAprobacion(deleteTipApro){
-    debugger;
     return axios.delete(CONFIG.API_URL+'aprobar/delete/tipo/'+deleteTipApro.CodTipoAprobacion+'/'+deleteTipApro.UsuarioModif,{headers: this.headers})
     .then(response => {
       return response.data

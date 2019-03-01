@@ -11,8 +11,7 @@ export default{
         })
     } ,
     reloadProceso(DocumentoModel){
-        // console.log("Bearer "+GLOBAL.getToken());  
-        debugger;      
+        // console.log("Bearer "+GLOBAL.getToken()); 
         return axios.post(CONFIG.API_URL+'query/post/execute',DocumentoModel,{headers:{'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
         .then(response=>{
             return response.data;

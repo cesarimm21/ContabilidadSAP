@@ -11,7 +11,6 @@ export default {
     })
   },
   Authentification(usuario){
-    debugger;
     return axios.post(CONFIG.API_URL+'membership/authentication', usuario)
     .then(response =>{
       window.sessionStorage.setItem('usuario_token',response.data);

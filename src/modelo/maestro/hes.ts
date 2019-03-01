@@ -1,3 +1,4 @@
+import {HesDetalleModel} from "./hesDetalle";
 export class HESModel {
     intIdHESH_ID:number;
     strCompany_Cod:string;
@@ -20,4 +21,5 @@ export class HESModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    listaDetalle: Array<HesDetalleModel> = new Array(); 
 }    

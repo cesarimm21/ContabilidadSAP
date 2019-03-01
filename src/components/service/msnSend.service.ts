@@ -5,7 +5,6 @@ import { log } from 'util';
 export default{
   headers : {'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')},
   AgregarMsnEnviado(FormAgregar){
-    debugger;
     return axios.post(CONFIG.API_URL+'msmEnviado/put',FormAgregar,{headers:  {'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
     .then(response =>{
       return response.data;

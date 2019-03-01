@@ -9,14 +9,20 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import { Notification } from 'element-ui';
-
+import ordencompraService from '@/components/service/ordencompra.service';
+//**BUS */
+import {bus} from '../../../../main';
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
+import {HESModel} from '@/modelo/maestro/hes';
+import {HesDetalleModel} from '@/modelo/maestro/hesDetalle';
+import Global from '@/Global';
 
 @Component({
   name: 'crear-hes',
   components:{'buttons-accions':ButtonsAccionsComponent}
 })
 export default class CrearHesComponent extends Vue {
+  nameComponent:string;
   timer=0;
   valueSwtch:boolean=false;
   codigoCompania:string;
@@ -31,25 +37,62 @@ export default class CrearHesComponent extends Vue {
   dialogServicios:boolean=false;
 
   //**ORDEN COMPRA */
+  dialogOrdenCompra:boolean=false;
+  btnactivarOrdenCompra:boolean=false;
+  dataOrdenCompra:any[];
   public ordenCompraModel:OrdenCompraModel =new OrdenCompraModel();
+  public ordencompra:OrdenCompraModel=new OrdenCompraModel();
+  public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
 
   //activar colores
   isactivered:boolean=true;
   isactiveyellow:boolean=false;
   isactivegreen:boolean=false;
 
+  //HES
+  public hesModel:HESModel =new HESModel();
+  public hesDetalleModel:HesDetalleModel=new HesDetalleModel();
+
   constructor(){
     super();
+    Global.nameComponent='crear-hes';
   }
 
   //#region [ORDEN COMPRA]
+  loadOrdenCompra(){
+    ordencompraService.GetAllOrdenCompra()
+    .then(respose=>{
+      this.ordencompra=respose;
+      this.dialogOrdenCompra=true;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'no se pudo cargar orden compra'
+      });
+      this.dialogOrdenCompra=false;
+    })
+  }
+  selectOrdenCompra(val:OrdenCompraModel){    
+    this.ordencompraSelect=val;
+  }
+  checkOrdenCompra(){    
+    this.dialogOrdenCompra=false;
+    debugger;
+  }
+  closeOrdenCompra(){
+    this.btnactivarOrdenCompra=false;
+    this.dialogOrdenCompra=false;
+    this.ordencompraSelect=new OrdenCompraModel();
+    return false;
+  }
   loadOrdenC(){
-    this.dialogOrdenC=true;
+    this.loadOrdenCompra();
   }
   closeOrdenC(){
     debugger;
     this.btnactivarOrdenC=false;
-    this.dialogOrdenC=false;
+    this.dialogOrdenCompra=false;
     // this.ordenCompraModel=new OrdenCompraModel();
     return false;
   }
@@ -88,14 +131,34 @@ export default class CrearHesComponent extends Vue {
   }
   loadServicios(){
     this.dialogServicios=true;
-  }
-  
+  }  
 //#endregion
   linksUser(comand){
     router.push('/barmenu/'+comand)
   }
+  SaveHes(){
+    this.hesModel.strCompany_Cod=this.ordencompraSelect.strCompany_Cod;
+    // this.hesModel.
+  }
+  created(){
+    bus.$on('SaveHes',(data)=>{
+      if(data===this.nameComponent){
+        this.SaveHes();
+      }
+    })
+    bus.$on('ValidadHes',(data)=>{
+      if(data===this.nameComponent){
+          this.$message({
+              showClose:true,
+              type:'info',
+              message:'Validate hes'
+          })
+      }
+  })
+  }
   data(){
     return{
+      nameComponent:'crear-hes',
       dialogTableVisible: false,
       codigoCompania:'',
       options: [{

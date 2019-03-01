@@ -13,6 +13,9 @@ import bootstrapvue from 'bootstrap-vue'
 import InfiniteScroll from 'vue-infinite-scroll';
 import './assets/css/style.scss';
 import VueChart from 'vue-chart-js'
+//**BUS CARGA DE DATOS */
+export const bus=new Vue();
+
 //import 'font-awesome/css/font-awesome.css';
 import locale from 'element-ui/lib/locale/lang/es'
 import VeeValidate from 'vee-validate'

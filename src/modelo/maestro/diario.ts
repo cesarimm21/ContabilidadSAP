@@ -3,10 +3,10 @@ export class DiarioModel {
     strDaily_Cod:string;
     strDaily_Desc:string;
     strDaily_Type:string;
-
-    strCreation_User:string;
+    
+    strUser_ID:string;
     dtmCreation_Date:Date;
-    strModified_User:string;
-    dtmModified_Date:Date;
+    strModify_User:string;
+    dmModified_Date:Date;
     chrStatus:string;
 }

@@ -22,14 +22,12 @@ export default{
       })
   },
   getProveedorID(id){
-    debugger;
-    return axios.post(CONFIG.API_URL+'proveedor/get/'+id)
+    return axios.get(CONFIG.API_URL+'proveedor/'+id)
     .then(response => {
       return response.data
     })
   },
   DeleteProveedor(id){
-    debugger;
     return axios.delete(CONFIG.API_URL+'proveedor/delete/'+id)
     .then(response => {
       return response.data

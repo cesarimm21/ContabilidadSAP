@@ -3,8 +3,8 @@ export class RequisicionModel {
     
     intIdPurReqH_ID:number;
     intIdCompany_ID:number ;
-    strRequis_NO:string ;
-    intIdAlmacen:number ;
+    strRequis_NO:string ='';
+    intIdWHS_ID:number ;
     intIdTypeReq_ID:number ;
     strRequested_By:string ;
     dtmRequested_Date:Date ;
@@ -18,7 +18,7 @@ export class RequisicionModel {
     strCompany_Desc:string;
     strWHS_Cod:string;
     strWHS_Desc:string;
-
+   
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;

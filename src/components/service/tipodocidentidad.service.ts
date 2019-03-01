@@ -4,8 +4,7 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllTipoDocumento(){      
-    debugger;
+  GetAllTipoDocumento(){  
     return axios.get(CONFIG.API_URL+'tipodocidentidad')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));

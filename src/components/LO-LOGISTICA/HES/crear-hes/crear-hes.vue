@@ -12,8 +12,8 @@
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                         <el-input size ="small" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="ordenCompraModel.strPO_Number" class="inputOrdenCompra">                            
-                                            <el-button v-if="btnactivarOrdenC && !dialogOrdenC" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
+                                         <el-input size ="small" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="ordencompraSelect.strPO_NO" class="inputOrdenCompra">                            
+                                            <el-button v-if="btnactivarOrdenC && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>                                                          
@@ -23,7 +23,7 @@
                                 <label class="el-form-item__label col-md-3" >Descripción</label>
                                     <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-6" >
-                                    <el-input size ="small" @click="desactivar()">
+                                    <el-input size ="small" @click="desactivar()" v-model="ordencompraSelect.strPO_Desc">
                                     </el-input>
                                     </div>
                                 </div>
@@ -197,16 +197,16 @@
             </el-tabs>
       </el-card>
 
-        <el-dialog title="Orden de compra"  :visible.sync="dialogOrdenC" @close="closeOrdenC" size="small" >
+    <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Orden de compra</span>
+                    <span class="labelheadercard" >Buscar orden de compra</span>
                 </div>
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Orden de compra Codigo</label>
+                            <label class="el-form-item__label col-md-2" >Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"   placeholder="">
@@ -222,30 +222,30 @@
                     </div>
                 </div>
                 <el-table
-                    :data="dataOrdenCompra"
+                    :data="ordencompra"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @row-dblclick="dbclickSelect"
-                    @current-change="handleCurrentChange">
-                    <el-table-column  prop="codigo" label="Codigo" width="180">
+                    @row-dblclick="selectOrdenCompra"
+                    @current-change="selectOrdenCompra">
+                    <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenC()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenCompra()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenC()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenCompra()">
                 <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                 </el-button>
             </footer>
             </div>
-        </el-dialog>    
+        </el-dialog>
         <el-dialog title="Servicios"  :visible.sync="dialogServicios" @close="closeServicios" size="small" >
             <div>
                 <el-card class="box-card">

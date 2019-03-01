@@ -25,7 +25,7 @@
             <el-table
             :data="monedaModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-            style="width: 100%" class="ExcelTable2007"
+            style="width: 100%;cursor: pointer;" class="ExcelTable2007"
             height="250"
             highlight-current-row
             @row-dblclick="seleccionar"
