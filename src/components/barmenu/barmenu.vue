@@ -33,7 +33,7 @@
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span slot="title">FP02-Modificar Documento</span>
                   </el-menu-item>
-                <el-menu-item index="1-1-3">
+                <el-menu-item index="1-1-3"  @click="linkRouteVisualizar()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span slot="title">FP03-Visualizar Documento</span>
                   </el-menu-item>
@@ -418,15 +418,15 @@
                   <img class="el-folder"/>
                   <span slot="title">Orden de compra</span>
                 </template>
-                <el-menu-item index="2-2-1">
+                <el-menu-item index="2-2-1" @click="CrearPO()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LO01-Crear Orden de Compra</span>
                 </el-menu-item>
-                <el-menu-item index="2-2-2">
+                <el-menu-item index="2-2-2" @click="EditPO()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LO02-Modificar Orden de Compra</span>
                 </el-menu-item>
-                <el-menu-item index="2-2-3">
+                <el-menu-item index="2-2-3" @click="ViewPO()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LO04-Visualizar Orden de Compra</span>
                 </el-menu-item>

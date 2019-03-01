@@ -4,8 +4,7 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllPais(){      
-    debugger;
+  GetAllPais(){    
     return axios.get(CONFIG.API_URL+'pais')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response));

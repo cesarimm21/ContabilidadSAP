@@ -125,6 +125,10 @@ export default class BarmenuComponent extends Vue {
     debugger;
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante')
   }
+  linkRouteVisualizar(){
+    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante')
+  }
+  
   linkRoute(){
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
   }
@@ -145,6 +149,15 @@ export default class BarmenuComponent extends Vue {
   }
   linkCrearSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_salida')
+  }
+  CrearPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_crear')
+  }
+  EditPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_modificar')
+  }
+  ViewPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_visualizar')
   }
   linkRouteHes(val:string){
     if(val==='crear'){

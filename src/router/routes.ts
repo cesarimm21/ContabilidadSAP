@@ -19,8 +19,12 @@ import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/mod
 import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
 import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
 import ModificarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante/modificar-ingreso-comprobante.vue'
+import VisualizarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante/ver-ingreso-comprobante.vue'
 import CrearSalidaAlmacenComponent from '../components/LO-LOGISTICA/almacen/al_salida/al_salida.vue'
 import CrearMaterialComponent from '../components/LO-LOGISTICA/almacen/al_crear/al_crear.vue'
+import CrearPOComponent from '../components/LO-LOGISTICA/orden_compra/po_crear/po_crear.vue'
+import ModificarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.vue'
+import VisualizarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_visualizar/po_visualizar.vue'
 export default [
  
   {
@@ -47,17 +51,6 @@ export default [
         path: 'LO-LOGISTICA',
         component:CrearPRComponent,
         children:[
-          // {
-          //   path:'almacen',
-          //   component:CrearSalidaAlmacenComponent,
-          //   children:[
-          //   {
-          //     path:'al_salida',
-          //     component:CrearSalidaAlmacenComponent,
-          //     name:'al_salida'
-          //   }
-          //   ]
-          // },
           {
           path:'requisicion',
           component:CrearPRComponent,
@@ -107,6 +100,21 @@ export default [
         name:'visualizar-proveedor'
       }, 
       {
+        path:'LO-LOGISTICA/orden_compra/po_crear',
+        component:CrearPOComponent,
+        name:'crear-po'
+      }, 
+      {
+        path:'LO-LOGISTICA/orden_compra/po_modificar',
+        component:ModificarPOComponent,
+        name:'modificar-po'
+      }, 
+      {
+        path:'LO-LOGISTICA/orden_compra/po_visualizar',
+        component:VisualizarPOComponent,
+        name:'visualizar-po'
+      }, 
+      {
         path:'LO-LOGISTICA/HES/crear-hes',
         component:CrearHesComponent,
         name:'hes'
@@ -135,6 +143,11 @@ export default [
       {
         path:'FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante',
         component:ModificarIngresoComprobanteComponent,
+        name:'modificar'
+      },    
+      {
+        path:'FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante',
+        component:VisualizarIngresoComprobanteComponent,
         name:'modificar'
       },    
       {

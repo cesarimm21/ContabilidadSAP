@@ -18,7 +18,6 @@ export default{
     })
   },
   historialPublish(FormNew){
-    debugger;
     return axios.post(CONFIG.API_URL +'historial/post/docPublish',FormNew,{headers:{'Authorization':'Bearer '+window.sessionStorage.getItem('usuario_token')}})
     .then(response=>{
       return JSON.parse(JSON.stringify(response.data));

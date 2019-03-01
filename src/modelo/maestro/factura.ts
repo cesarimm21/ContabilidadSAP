@@ -1,41 +1,41 @@
 import {FacturaDetalleModel} from "./facturadetalle";
 export class FacturaModel{
     intAPDocH_ID:number;
-    strCompany_Cod:string;
-    strPO_NO:string;
-    strDaily_Cod:string;
-    strVoucher_NO:string;
-    dtmPeriod_NO:Date;
-    strVendor_NO:string;
-    dtmDoc_Acc_Date:Date;
-    dtmDoc_Date:Date;
-    dtmDue_Date:Date;
-    strType_Doc:string;
-    strSerie_Doc:string;
-    intDocument_NO:number;
-    strCurrency_Doc:string;
-    strExchange_Rate:string;
-    intQuantity_Doc:number;
-    intValue_Doc:number;
-    strValue_Local:string;
-    strValue_Corp:string;
-    intNetValue_Doc:number;
-    strTax_Cod:string;
-    strValue_Tax:string;
-    strDesc_Doc:string;
-    strDoc_Status:string;
+    strCompany_Cod:string;//*
+    strPO_NO:string;//*
+    strDaily_Cod:string;//*
+    strVoucher_NO:string;//autogenerado
+    strPeriod_NO:string;//Se cambio a string
+    strVendor_NO:string;//
+    dtmDoc_Acc_Date:Date;//falta
+    dtmDoc_Date:Date;//now
+    dtmDue_Date:Date;//falta
+    strType_Doc:string;//
+    strSerie_Doc:string;//
+    intDocument_NO:number;//
+    strCurrency_Doc:string;//falta
+    strExchange_Rate:string;//falta
+    intQuantity_Doc:number;//falta
+    intValue_Doc:number;//
+    strValue_Local:string;//
+    strValue_Corp:string;//
+    intNetValue_Doc:number;//
+    strTax_Cod:string;//
+    fltValue_Tax:number;//
+    strDesc_Doc:string;//
+    strDoc_Status:any;//
     intIdPayRunD_ID:number;
-    strPayRun_NO:string;
+    strPayRun_NO:string='';
     dtmRunCreation_Date:Date;
     dtmPayRun_Date:Date;
-    strApprRun_User:string;
-    strPaid_Bank:string;
-    strPaid_Curr_Bank:string;
-    strPaid_Acct_Bank:string;
+    strApprRun_User:string='';
+    strPaid_Bank:string='';
+    strPaid_Curr_Bank:string='';
+    strPaid_Acct_Bank:string='';
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
-    listaDetalle: Array<FacturaDetalleModel> = new Array(); 
+    listaDetalle:any[]; 
 }

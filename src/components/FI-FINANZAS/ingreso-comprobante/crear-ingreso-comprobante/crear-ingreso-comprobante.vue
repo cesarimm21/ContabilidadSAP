@@ -13,7 +13,11 @@
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="factura.strCompany_Cod"  placeholder="">
+                                    <el-input  
+                                    size ="small" 
+                                    @blur="desactivar_compania" 
+                                    @focus="activar_compania" 
+                                    v-model="factura.strCompany_Cod">
                                         <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
@@ -32,8 +36,7 @@
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" placeholder="" v-model="factura.strVendor_NO" >                            
-                                        <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedor()"></el-button> 
+                                    <el-input size ="small" v-model="factura.strVendor_NO" >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -59,7 +62,7 @@
                                 <label class="el-form-item__label col-md-3" >Serie</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   v-model="factura.strSerie_Doc" maxlength="4">                            
+                                    <el-input size ="small"   v-model="factura.strSerie_Doc" :maxlength="4"><!-- maxlength="4" type="text">-->                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -76,7 +79,7 @@
                                 <label class="el-form-item__label col-md-3" >N. Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="factura.intDocument_NO" maxlength="9" type="number">                            
+                                    <el-input size ="small" v-model="factura.intDocument_NO" type="number" :maxlength="9">                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -121,16 +124,16 @@
                                 <div class="row" style="margin-top: 3px;">
                                     <div class="col-sm-6">
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Fecha doc.</label>
+                                            <label class="el-form-item__label col-sm-3" >Fecha Contable</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" ></el-input>
+                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="factura.dtmDoc_Acc_Date"  @change="DateContabilizacionClick()"></el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-sm-3" >Fecha Estimada</label>
+                                            <label class="el-form-item__label col-sm-3" >Fecha Vencimiento</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" ></el-input>
+                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="fechavencida" disabled></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,7 +147,7 @@
                                             <label class="el-form-item__label col-sm-3" >Moneda</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strPaid_Bank">                            
+                                                <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strCurrency_Doc">                            
                                                     <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
                                                 </el-input>
                                                 </div>
@@ -280,13 +283,14 @@
                         </div>  
                     </el-card>          
                 </el-tab-pane>
-                <el-tab-pane >
+                <el-tab-pane :disabled="habilitarPane">
                     <span slot="label"><i class="el-icon-date"></i>Impuesto</span>
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="el-form-item__label col-sm-3" >Factura creada:</label>
+                            <label class="el-form-item__label col-sm-2" >{{fecha_ejecucion}}</label>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" style="margin-top:10px;">
                             <label class="el-form-item__label col-sm-3" >Numero de Voucher:</label>
                             <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -389,55 +393,6 @@
             <bmoneda v-on:MonedaSeleccionado="MonedaSeleccionado($event)" v-on:closeMoneda="closeMoneda()">
             </bmoneda>
         </el-dialog>  
-         <el-dialog title="Proveedor" :visible.sync="dialogProveedor" @close="closeProveedor" size="small" >
-            <div>
-                <el-card class="box-card">
-                <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Proveedor</span>
-                </div>
-                <div class="row bodycard">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Proveedor Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <el-table
-                    :data="dataProveedor"
-                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                    height="250"
-                    highlight-current-row
-                    @row-dblclick="checkSelectProveedor"
-                    @current-change="checkSelectProveedor">
-                    <el-table-column  prop="codigo" label="Codigo" width="180">
-                    </el-table-column>  
-                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
-                    </el-table-column> 
-                </el-table>
-            </el-card>
-            <br/>
-            <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeProveedor()">
-                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
-                </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeProveedor()">
-                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
-                </el-button>
-            </footer>
-            </div>
-        </el-dialog>
         <el-dialog title="Diarios" :visible.sync="dialogDiario" @close="closeDialogDiario" size="small" >
             <div>
                 <el-card class="box-card">

@@ -17,6 +17,7 @@ import departamentoService from '@/components/service/departamento.service';
 import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
 import impuestoService from '@/components/service/impuesto.service';
+import cuentaContableService from '@/components/service/cuentaContable.service';
 
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
@@ -25,6 +26,7 @@ import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vu
 import Global from '@/Global';
 import {bus} from '../../../../main';
 import {CompaniaModel} from '@/modelo/maestro/compania';
+import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import {PaisModel} from '@/modelo/maestro/pais';
 import {BancoModel} from '@/modelo/maestro/banco';
 import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
@@ -115,6 +117,7 @@ export default class CrearProveedorComponent extends Vue {
   public selectMonedaD:MonedaModel=new MonedaModel();
   FLAGMONEDA:String;
   //**Categoria */
+
   public Categoria: CategoriaModel=new CategoriaModel();
 
   //**Impuesto */
@@ -122,21 +125,27 @@ export default class CrearProveedorComponent extends Vue {
   impuestoVisible:boolean=false;
   public selectImpuesto:ImpuestoModel=new ImpuestoModel();
   btnactivarimpuesto:boolean=false;
-
+  //**cuenta contable */
+  cuenta:CuentaContableModel[];
   constructor(){
     super();
     Global.nameComponent='crear-proveedor';
-    // this.loadPais();    
-    // this.loadCompania();
     this.GetAllProveedor();
-    // this.GetAllTipoDocumento();
-    // this.GetAllDepartamento();
-    // this.GetAllMoneda();
     this.GetAllCategoria();
+    this.GetAllCuentaContable();
+  }
+// [Cuenta contable]
+  GetAllCuentaContable(){
+    cuentaContableService.GetAllCuentaContable()
+    .then(response=>{
+      this.cuenta=response;
+      this.Proveedor.intAcc_NO_Local=this.cuenta[0].intAcc_NO_Local;      
+    }).catch(error=>{
+
+    })
   }
   //#region [COMPAÑIA]
   loadCompania(val:string){
-    debugger;
     this.flagCompania=val;
     this.dialogCompania=true;
   }
@@ -307,7 +316,6 @@ export default class CrearProveedorComponent extends Vue {
     })
   }
   bancoDialog(val:string){
-    debugger;
     this.loadBanco();
     this.FLAGBANCO=val;
   }
@@ -443,15 +451,13 @@ export default class CrearProveedorComponent extends Vue {
     if(this.FLAGBANCO==='D'){
       this.selectBancoD=val;
     }    
-    // debugger;
   }
   //#endregion
   //#region [Proveedor]
   GetAllProveedor(){
     proveedorService.GetAllProveedor()
     .then(response=>{
-      this.gridProveedor=response;
-      
+      this.gridProveedor=response;      
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -502,7 +508,6 @@ export default class CrearProveedorComponent extends Vue {
   tipoSeleccionado(val:TipoDocIdentidadModel){
     this.selectTipoDoc=val
     this.tipodocVisible=false;
-    console.log(this.selectTipoDoc);
     
   }
   activar_TipoDocumento(){
@@ -678,8 +683,8 @@ export default class CrearProveedorComponent extends Vue {
       this.btnactivarbancoB=false;
       this.btnactivarbancoC=false;
       this.btnactivarbancoD=false;
-      this.btnactivarmonedaA=true;
-      this.btnactivarmonedaB=false;
+      this.btnactivarmonedaA=false;
+      this.btnactivarmonedaB=true;
       this.btnactivarmonedaC=false;
       this.btnactivarmonedaD=false;
       this.btnactivarimpuesto=false;
@@ -810,7 +815,6 @@ export default class CrearProveedorComponent extends Vue {
     })
   }
   selectCategoria(val){
-    debugger;
       this.VisibleForName=true;
       if(val===1){
         this.nameTipoJoN='Razon social';
@@ -824,6 +828,7 @@ export default class CrearProveedorComponent extends Vue {
       }
   }
   SaveProveedor(){
+    this.Proveedor.strCreation_User='egaona';
     this.Proveedor.intIdCompany_ID=this.companiaModel.intIdCompany_ID;
     this.Proveedor.strCompany_Cod=this.codigoCompaniaB;
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
@@ -832,15 +837,17 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.intIdDocIdent_ID=this.selectTipoDoc.intIdDocIdent_ID;
     this.Proveedor.strDocIdent_NO=this.selectTipoDoc.strDocIdent_NO;
     this.Proveedor.strBank_Cod=this.selectBancoA.strBank_Cod;
-    this.Proveedor.strCurrency=this.selectMonedaA.strCurrency_Cod;
+    this.Proveedor.strCurrency_Cod=this.selectMonedaA.strCurrency_Cod;
     this.Proveedor.strBank_Corp_Cod=this.selectBancoB.strBank_Cod;
     this.Proveedor.strCurrency_Corp=this.selectMonedaB.strCurrency_Cod;
     this.Proveedor.strBank_Other_Cod=this.selectBancoC.strBank_Cod;
-    this.Proveedor.strFore_Bank_Cod=this.selectBancoD.strBank_Cod;
-    this.Proveedor.strFore_Currency_Cod=this.selectMonedaD.strCurrency_Cod;
+    this.Proveedor.strFore_Swift_Cod=this.selectMonedaC.strCurrency_Cod;
+    this.Proveedor.strFore_Branch_Cod=this.selectBancoD.strBank_Cod;
+    this.Proveedor.strFore_Curr_Cod=this.selectMonedaD.strCurrency_Cod;
     this.Proveedor.strRetention_Cod=this.selectImpuesto.strWH_Cod;
     this.Proveedor.fltRetention_Porcen=this.selectImpuesto.fltPorcent; 
-    this.Proveedor.strFore_Swift_Cod='Val 1';
+    console.log(this.Proveedor);
+    
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guargando...',
@@ -857,6 +864,8 @@ export default class CrearProveedorComponent extends Vue {
     })
     .catch(e =>{
       debugger;
+      console.log(e);
+      
       this.openMessageError('Error guardar proveedor');
       loadingInstance.close();
     })    

@@ -3,7 +3,13 @@
       <div >
           <el-card class="box-card">
               <div slot="header" class="headercard">
-                  <span class="labelheadercard" > </span>
+                 <span class="labelheadercard" > Crear proveedor</span>
+                 <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-clone"
+                                @click="SaveProveedor()"
+                                >Guardar</el-button> 
               </div>
               <div class="row bodycard">
                   <div class="col-md-6">
@@ -46,7 +52,7 @@
                                     </el-input>
                                 </div>
                             </div>
-                            <label class="el-form-item__label col-md-2" style="color:#1f2d3d;" >{{descripcionCompaniaB}}</label>
+                            <label class="el-form-item__label col-md-4" style="color:#1f2d3d;" >{{descripcionCompaniaB}}</label>
                            
                         </div>
                         <div class="form-group row ">
@@ -159,7 +165,7 @@
                             <label class="el-form-item__label col-md-2" >Codigo postal</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
-                                <el-input size ="small" v-model="Proveedor.strCode_Postal"  placeholder="">
+                                <el-input size ="small" v-model="Proveedor.strPostal_Cod"  placeholder="">
                     
                                 </el-input>
                                 </div>
@@ -230,7 +236,7 @@
                                 </el-input>
                                 </div>
                             </div> 
-                            <label class="el-form-item__label col-md-1" >Moneda</label>
+                            <label class="el-form-item__label col-md-1" >Moneda Coorp.</label>
                             <div class="col-md-1 grupolabel">
                                 <div class="input-group mb-1" >
                                 <el-input size ="small" @blur="desactivar_monedaB" @focus="activar_monedaB" v-model="selectMonedaB.strCurrency_Cod">                            

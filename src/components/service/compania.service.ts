@@ -16,5 +16,11 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetCompaniaBystrCod(v){  
+    return axios.get(CONFIG.API_URL+'compania/'+v)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

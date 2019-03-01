@@ -4,8 +4,7 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllTipoCambio(){      
-    debugger;
+  GetAllTipoCambio(){    
     return axios.get(CONFIG.API_URL+'tipocambiotoday')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));

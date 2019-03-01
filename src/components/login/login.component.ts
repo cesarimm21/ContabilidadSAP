@@ -38,6 +38,7 @@ export default class LoginComponent extends Vue {
     //   );
     if(this.usuario=='egaona' && this.contrasenia=='12345'){
       this.$router.push('/barmenu/inicio');
+      localStorage.setItem('User_Usuario',this.usuario);
     }
     
     // axios.post(CONFIG.API_URL+'membership/login',FormLogin)

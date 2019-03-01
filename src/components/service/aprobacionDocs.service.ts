@@ -12,7 +12,6 @@ export default{
       })
   },
   AprobarDocumento(AprobacionesModel){
-    debugger;
     AprobacionesModel["CodPersonaAprobador"] = window.localStorage.getItem('User_CodPersona'); //------------------------dato temporal
     AprobacionesModel["Usuario"] = window.localStorage.getItem('User_Usuario'); //------------------------dato temporal
     return axios 
@@ -22,7 +21,6 @@ export default{
       })
   },
   DocumentoPublicar(CodDocumentoApro){
-    debugger;
     return axios 
       .post(CONFIG.API_URL + 'aprobar/change/publicar/'+ CodDocumentoApro , { headers: { 'Authorization': 'Bearer ' + window.sessionStorage.getItem('usuario_token') } })
       .then(response => {

@@ -3,8 +3,8 @@ export class RequisicionModel {
     
     intIdPurReqH_ID:number;
     intIdCompany_ID:number ;
-    strRequis_NO:string ;
-    intIdAlmacen:number ;
+    strRequis_NO:string ='';
+    intIdWHS_ID:number ;
     intIdTypeReq_ID:number ;
     strRequested_By:string ;
     dtmRequested_Date:Date ;
@@ -12,8 +12,7 @@ export class RequisicionModel {
     strAuthsd_By:string ;
     strDesc_Header:string ;
     dtmAuthsd_Date:Date ;
-    chrAuthsd_Status:string ;
-    
+    chrAuthsd_Status:string ;    
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;

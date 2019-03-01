@@ -29,7 +29,6 @@ export default{
     })
     },
     deleteDocumentsPublish(intDocID){
-      debugger;
       return axios.delete(CONFIG.API_URL+'documentos/deletePublish/'+intDocID+'/'+localStorage.getItem('User_Usuario'), {headers: {'Authorization': 'Bearer '+window.sessionStorage.getItem('usuario_token')}})
     .then(response => {
       return response.data
