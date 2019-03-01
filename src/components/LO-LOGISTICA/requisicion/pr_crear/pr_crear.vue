@@ -227,17 +227,17 @@
                             <label class="el-form-item__label col-md-2" >Nº Linea</label>
                             <div class="col-md-7 grupolabel" style="margin-right: -10px;">
                                 <div class="input-group mb-3" >
-                                    <el-input type="text" disabled="true" size ="small" v-model="txtnroline"   aria-describedby="basic-addon2">
+                                    <el-input type="text"  size ="small" v-model="txtnroline"   aria-describedby="basic-addon2">
                                     </el-input>
                                 </div>
                             </div>
                                   
                             <div class="col-md-2 grupolabel" style="text-align:left">
-                                <el-button class="buttonfilter btn btn-outline-secondary orange" >
-                                    <img class="imagenfilter" @click="backTable()"  style="    width: 11px;height: 10px;margin-left: -1px;margin-top: -3px;" src="../../../../images/arriba.png" alt="">
+                                <el-button  @click="backTable()" class="buttonfilter btn btn-outline-secondary orange" >
+                                    <img class="imagenfilter"  style="    width: 11px;height: 10px;margin-left: -1px;margin-top: -3px;" src="../../../../images/arriba.png" alt="">
                                 </el-button>
-                                 <el-button class="buttonfilter btn btn-outline-secondary orange" >
-                                    <img class="imagenfilter" @click="nextTable()" style="    width: 11px;height: 10px;margin-left: -1px;margin-top: -3px;" src="../../../../images/abajo.png" alt="">
+                                 <el-button @click="nextTable()" class="buttonfilter btn btn-outline-secondary orange" >
+                                    <img class="imagenfilter"  style="    width: 11px;height: 10px;margin-left: -1px;margin-top: -3px;" src="../../../../images/abajo.png" alt="">
                                 </el-button>
                             </div>
                             <!-- <div class="input-group col-md-8">
@@ -291,7 +291,7 @@
                                                 <label class="el-form-item__label col-md-3" >Código</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.strStock_Cod" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -302,7 +302,7 @@
                                                 <label class="el-form-item__label col-md-4" >Descripción</label>
                                                 <div class="col-md-8 grupolabel">
                                                     <div class="input-group mb-8" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.strStock_Desc" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -315,7 +315,7 @@
                                                 <label class="el-form-item__label col-md-3" >Nombre</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-7" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.strStock_Name" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -332,7 +332,7 @@
                                                 <label class="el-form-item__label col-md-6" >Cantidad</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -356,7 +356,7 @@
                                                 <label class="el-form-item__label col-md-6" >Cantidad Ordenada</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.fltQuantity" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -367,7 +367,7 @@
                                                 <label class="el-form-item__label col-md-6" >Fecha Requerida</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.dtmRequested_Date" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -380,7 +380,7 @@
                                                 <label class="el-form-item__label col-md-6" >Cantidad Pendiente</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.fltQuantity" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -408,7 +408,7 @@
                                                 <label class="el-form-item__label col-md-4" >Precio</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.fltPrecUnit_Local" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -419,7 +419,7 @@
                                                 <label class="el-form-item__label col-md-4" >Cantidad</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.fltQuantity" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -432,7 +432,7 @@
                                                 <label class="el-form-item__label col-md-4" >Total</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                        <el-input size ="small" placeholder="">
+                                                        <el-input size ="small" v-model="getTotals" placeholder="">
                                                         </el-input>
                                                     </div>
                                                 </div>
@@ -449,7 +449,7 @@
                                                 <label class="el-form-item__label col-md-6" >G/L Cuenta</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.strAccount_NO" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -473,7 +473,7 @@
                                                 <label class="el-form-item__label col-md-6" >Centro Costo</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.strCostCenter" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -491,7 +491,7 @@
                                                 <label class="el-form-item__label col-md-6" >Código Proveedor</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="proveedorModel.strVendor_NO"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -502,7 +502,7 @@
                                                 <label class="el-form-item__label col-md-6" >Nombre Proveedor</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small"  v-model="proveedorModel.strVendor_Desc" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
