@@ -34,5 +34,11 @@ export default{
     .then(response => {
       return response.data
     })
+  },
+  GetOnlyOneProveedor(code){
+    return axios.get(CONFIG.API_URL+'proveedor/busqueda/'+code)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }

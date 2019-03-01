@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
+import categoriacuentaService from '@/components/service/categoriacuenta.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -35,8 +37,26 @@ export default class  BCategoriaCuentaComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
+  public categoriacuentaModel:Array<CategoriaCuentaModel>=[];
+  public categoriacuentaSelectModel:CategoriaCuentaModel=new CategoriaCuentaModel();
+
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    categoriacuentaService.GetAllCategoriaCuenta()
+    .then(response=>{
+      console.log('categoriacuenta',response);
+      
+      this.categoriacuentaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar categoria cuenta'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -128,8 +148,21 @@ export default class  BCategoriaCuentaComponent extends Vue {
         message: strMessage
       });
   }
+  
+
+  handleCurrentChange(val:CategoriaCuentaModel){
+    this.categoriacuentaSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('categoriacuentaselecionado',this.categoriacuentaSelectModel);
+  }
+  closePopup(){
+    this.$emit('categoriacuentaclose');
+  }
   data() {
     return {
+      categoriacuentaModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

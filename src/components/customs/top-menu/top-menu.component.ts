@@ -38,8 +38,8 @@ export default class TopMenu extends Vue {
     this.isActive=GLOBAL.isActive;
     this.isCollapse=GLOBAL.isCollapse;
    // this.ChechAccess();
-  this.nameuser='edwing';
-  this.namecomplete='gaona';
+  this.nameuser='Andre';
+  this.namecomplete='Cordova';
   // this.getAccesos();
   // this.update();
   }

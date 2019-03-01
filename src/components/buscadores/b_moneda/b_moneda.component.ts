@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {MonedaModel} from '@/modelo/maestro/moneda';
+import monedaService from '@/components/service/moneda.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -34,9 +36,24 @@ export default class  BMonedaComponent extends Vue {
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
+  public monedaModel:Array<MonedaModel>=[];
+  public monedaSelectModel:MonedaModel=new MonedaModel();
 
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    monedaService.GetAllMoneda()
+    .then(response=>{
+      this.monedaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar moneda'
+      });
+    })
   }
 
   redirectLogin(msg){

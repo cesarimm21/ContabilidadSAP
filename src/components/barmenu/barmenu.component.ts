@@ -145,14 +145,38 @@ export default class BarmenuComponent extends Vue {
   linkCrearSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_salida')
   }
+  linkModificarSalidaAlmacen(){
+    router.push('/barmenu/LO-LOGISTICA/almacen/al_salida_visualizar_modificar')
+  }
+  linkVisualizarSalidaAlmacen(){
+    router.push('/barmenu/LO-LOGISTICA/almacen/al_salida_visualizar')
+  }
   linkRouteHes(){
     router.push('/barmenu/LO-LOGISTICA/HES/crear-hes')
   }
   linkCrearMaterial(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_crear')
   }
+  linkModificarMaterial(){
+    debugger;
+    GLOBAL.vmmaterial='Modificar Material';
+    router.push('/barmenu/LO-LOGISTICA/almacen/al_visualizar_modificar')
+  
+  //  router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_visualizar_modificar`, query: { vista: 'modificar' }  })
+     // router.push('/barmenu/LO-LOGISTICA/almacen/al_modificar')
+  }
+  linkVisualizarMaterialAlmacen(){
+    debugger;
+    GLOBAL.vmmaterial='Visualizar Material';
+    //router.go(-3);
+    router.replace({ path: `/barmenu/LO-LOGISTICA/almacen/al_visualizar`, query: { vista: 'visualizar' }  })
+  }
   linkModificarHes(){
 
+  }
+  guardarTodo(val){
+    debugger;
+    alert(val)
   }
   linkVisualizarHes(){
 

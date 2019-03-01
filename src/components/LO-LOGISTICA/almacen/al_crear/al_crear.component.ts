@@ -5,18 +5,27 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-// import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
-// import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
+import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
+import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
+import BClaseMaterialComponent from '@/components/buscadores/b_clase_material/b_clase_material.vue';
+import BCategoriaMaterialComponent from '@/components/buscadores/b_categoria_material/b_categoria_material.vue';
+import BCriticidadComponent from '@/components/buscadores/b_criticidad/b_criticidad.vue';
+import BGrupoCompradorComponent from '@/components/buscadores/b_grupo_comprador/b_grupo_comprador.vue';
+import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
+import BControlPrecioComponent from '@/components/buscadores/b_control_precio/b_control_precio.vue';
+import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
+import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_unidad_medida.vue';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 // import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
 // import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
-// import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
-// import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
 // import BMaterialComponent from '@/components/buscadores/b_material/b_material.vue';
-// import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_unidad_medida.vue';
 // import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 // import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
 // import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 
+//***Modelos */
+import {ProductoModel} from '@/modelo/maestro/producto';
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -34,6 +43,18 @@ import Handsontable from 'handsontable-pro';
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';
+import companiaService from '@/components/service/compania.service';
+import almacenService from '@/components/service/almacen.service';
+import clasematerialService from '@/components/service/clasematerial.service';
+import criticidadService from '@/components/service/criticidad.service';
+import proveedorService from '@/components/service/proveedor.service';
+import cuentacontableService from '@/components/service/cuentacontable.service';
+import categoriamaterialService from '@/components/service/categoriamaterial.service';
+import grupocompradorService from '@/components/service/grupocomprador.service';
+import controlprecioService from '@/components/service/controlprecio.service';
+import impuestoService from '@/components/service/impuesto.service';
+import unidadmedidaService from '@/components/service/unidadmedida.service';
+import productoService from '@/components/service/producto.service';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -47,6 +68,18 @@ var EditableColumn = {
   name: 'al-crear',
   components:{
     'buttons-accions':ButtonsAccionsComponent,
+    'bcompania':BCompaniaProveedor,
+    'balmacen':BAlmacenComponent,
+    'bcuentacontable':BCuentaContableComponent,
+    'bclasematerial':BClaseMaterialComponent,
+    'bcategoriamaterial':BCategoriaMaterialComponent,
+    'bcriticidad':BCriticidadComponent,
+    'bgrupocomprador':BGrupoCompradorComponent,
+    'bproveedor':BProveedorComponent,
+    'bcontrolprecio':BControlPrecioComponent,
+    'bimpuesto':BImpuestoComponent,
+    'bunidadmedida':BUnidadMedidaComponent,
+    'quickaccessmenu':QuickAccessMenuComponent,
   } ,
   // components:{
   //   'bcompania':BCompaniaProveedor,
@@ -95,7 +128,12 @@ export default class CrearMaterialComponent extends Vue {
   dialogMoneda:boolean=false;
   dialogPrioridad:boolean=false;
   dialogCentroCostos:boolean=false;
-
+  dialogClaseMaterial:boolean=false;
+  dialogCategoriaMaterial:boolean=false;
+  dialogCriticidad:boolean=false;
+  dialogGrupoComprador:boolean=false;
+  dialogControlPrecio:boolean=false;
+  dialogImpuesto:boolean=false;
 
   /*input*/
   btnactivarcompania:boolean=false;
@@ -106,6 +144,16 @@ export default class CrearMaterialComponent extends Vue {
   btnactivarmoneda:boolean=false;
   btnactivarprioridad:boolean=false;
   btnactivarcentrocosto:boolean=false;
+  btnactivarcuentacontable:boolean=false;
+  btnactivarclasematerial:boolean=false;
+  btnactivarcategoriamaterial:boolean=false;
+  btnactivarcriticidad:boolean=false;
+  btnactivargrupocomprador:boolean=false;
+  btnactivarcontrolprecio:boolean=false;
+  btnactivarimpuesto:boolean=false;
+  
+  /*Model*/
+  public productoModel:ProductoModel=new ProductoModel();
 
   /*bolean_tabla_dinamica*/
   bln_tbl_categoria_cuenta:boolean=false;
@@ -122,8 +170,18 @@ export default class CrearMaterialComponent extends Vue {
   bln_tbl_centro_costo:boolean=false;
 
   descompania:string='';
+  
   code_compania:string='';
   desalmacen:string='';
+  desclasematerial:string='';
+  desCuentaGasto:string='';
+  desunidadmedida:string='';
+  descategoriamaterial:string='';
+  desgrupocomprador:string='';
+  descontrolprecio:string='';
+  desimpuesto:string='';
+  desproveedor:string='';
+  descriticidad:string='';
   code_almacen:string='';
   cell_ocultar:string='transparent';
   value: string='';
@@ -155,6 +213,9 @@ export default class CrearMaterialComponent extends Vue {
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -184,9 +245,7 @@ export default class CrearMaterialComponent extends Vue {
   fnOcultar(){
     this.ocultar=!this.ocultar;
   }
-  guardar(){
-    this.SendDocument=true;
-  }
+  
   
   openMessage(newMsg : string) {
     this.$message({
@@ -277,15 +336,74 @@ export default class CrearMaterialComponent extends Vue {
   /*Compania imput*/
   activar_compania(){
     setTimeout(() => {
+      this.limpiarBotones();
       this.btnactivarcompania=true;
-      this.btnactivaralmacen=false;
-      this.btnactivarproveedor=false;
+    }, 120)
+  }
+  activar_control_precio(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarcontrolprecio=true;
+    }, 120)
+  }
+  activar_cuenta_contable(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarcuentacontable=true;
     }, 120)
   }
   desactivar_compania(){
     debugger;
     if(this.dialogCompania){
       this.btnactivarcompania=false;
+    }
+  }
+  desactivar_unidad_medida(){
+    debugger;
+    if(this.dialogUnidadMedida){
+      this.btnactivarunidadmedida=false;
+    }
+  }
+  desactivar_impuesto(){
+    debugger;
+    if(this.dialogImpuesto){
+      this.btnactivarimpuesto=false;
+    }
+  }
+  desactivar_control_precio(){
+    debugger;
+    if(this.dialogControlPrecio){
+      this.btnactivarcontrolprecio=false;
+    }
+  }
+  desactivar_clase_material(){
+    debugger;
+    if(this.dialogClaseMaterial){
+      this.btnactivarclasematerial=false;
+    }
+  }
+  desactivar_criticidad(){
+    debugger;
+    if(this.dialogCriticidad){
+      this.btnactivarcriticidad=false;
+    }
+  }
+  desactivar_grupo_comprador(){
+    debugger;
+    if(this.dialogGrupoComprador){
+      this.btnactivargrupocomprador=false;
+    }
+  }
+  desactivar_categoria_material(){
+    debugger;
+    if(this.dialogCategoriaMaterial){
+      this.btnactivarcategoriamaterial=false;
+    }
+  }
+  desactivar_cuenta_contable(){
+    debugger;
+    if(this.dialogCuentaContable){
+      this.btnactivarcuentacontable=false;
     }
   }
   closeCompania(){
@@ -297,9 +415,44 @@ export default class CrearMaterialComponent extends Vue {
   /*Proveedor imput*/
   activar_proveedor(){
     setTimeout(() => {
+      this.limpiarBotones();
       this.btnactivarproveedor=true;
-      this.btnactivarcompania=false;
-      this.btnactivaralmacen=false;
+    }, 120)
+  }
+  activar_impuesto(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarimpuesto=true;
+    }, 120)
+  }
+  activar_clase_material(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarclasematerial=true;
+    }, 120)
+  }
+  activar_unidad_medida(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarunidadmedida=true;
+    }, 120)
+  }
+  activar_grupo_comprador(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivargrupocomprador=true;
+    }, 120)
+  }
+  activar_criticidad(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarcriticidad=true;
+    }, 120)
+  }
+  activar_categoria_material(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarcategoriamaterial=true;
     }, 120)
   }
   desactivar_proveedor(){
@@ -317,10 +470,8 @@ export default class CrearMaterialComponent extends Vue {
   /*Almacen imput*/
   activar_almacen(){
     setTimeout(() => {
-      console.log("activar_almacen");
+      this.limpiarBotones();
       this.btnactivaralmacen=true;
-      this.btnactivarcompania=false;
-      this.btnactivarproveedor=false;
     }, 120)
   }
   desactivar_almacen(){
@@ -391,8 +542,7 @@ export default class CrearMaterialComponent extends Vue {
     this.selectrow=row;
     this.dialogCategoriaLinea=true;
   }
-  LoadCuentaContable(row){
-    this.selectrow=row;
+  LoadCuentaContable(){
     this.dialogCuentaContable=true;
   }
   LoadMaterial(row){
@@ -403,8 +553,8 @@ export default class CrearMaterialComponent extends Vue {
     this.selectrow=row;
     this.dialogUnidadMedida=true;
   }
-  LoadProveedor(row){
-    this.selectrow=row;
+  LoadProveedor(){
+    //this.selectrow=row;
     this.dialogProveedor=true;      
   }
   LoadMoneda(row){
@@ -506,17 +656,90 @@ export default class CrearMaterialComponent extends Vue {
   getParseDate(fecha){
     return Global.getParseDate(fecha);
   }
-  proveedorSeleccionado(val){
+  companiaSeleccionado(val){
+    debugger;
     console.log('traer',val);
-    this.code_compania=val.Code;
-    this.descompania=val.Company_Desc;
+    this.productoModel.strCompany_Cod=val.strCompany_Cod
+    this.productoModel.strCompany_Desc=val.strCompany_Desc
+    this.descompania=val.strCompany_Desc;
+   
     this.dialogCompania=false;
   }
-  SeleccionadoAlmacen(val){
-    console.log('traer',val);
-    this.code_almacen=val.CODIGO;
-    this.desalmacen=val.DESCRIPCION;
+  companiaClose(val){
+    this.dialogCompania=false;
+  }
+  criticidadClose(val){
+    this.dialogCriticidad=false;
+  }
+  clasematerialClose(val){
+    this.dialogClaseMaterial=false;
+  }
+  companiaAlmacen(val){
     this.dialogAlmacen=false;
+  }
+  SeleccionadoImpuesto(val){
+    debugger;
+    this.productoModel.strTAX_Ind=val.strWH_Cod
+    this.productoModel.intIdCommTax_ID=val.intIdWH_ID
+    this.desimpuesto=val.strWH_Desc;
+    this.dialogImpuesto=false;
+  }
+  SeleccionadoCategoriaMaterial(val){
+    debugger;
+    this.productoModel.strMaterial_Categ=val.strCategMat_Cod;
+    this.productoModel.intIdCategMat_ID=val.intIdCategMat_ID;
+    this.productoModel.strCategMat_Desc=val.strCategMat_Desc;
+    this.descategoriamaterial=val.strCategMat_Desc;
+    this.dialogCategoriaMaterial=false;
+  }
+  SeleccionadoControlPrecio(val){
+    debugger;
+    this.productoModel.fltPriceControl=val.strCtlPrec_Cod;
+    this.productoModel.intIdCtlPrec_ID=val.intIdCtlPrec_ID;
+    this.productoModel.strCtlPrec_Desc=val.strCtlPrec_Desc;
+    this.descontrolprecio=val.strCtlPrec_Desc;
+    this.dialogControlPrecio=false;
+  }
+  grupocompradorSeleccionado(val){
+    debugger;
+    this.productoModel.strGrpPurch_Cod=val.strGrpPurch_Cod;
+    this.productoModel.intIdGrpPurch_ID=val.intIdGrpPurch_ID;
+    this.productoModel.strGrpPurch_Desc=val.strGrpPurch_Desc;
+    this.desgrupocomprador=val.strGrpPurch_Desc;
+    this.dialogGrupoComprador=false;
+  }
+  controlprecioClose(){
+    this.dialogControlPrecio=false;
+  }
+  impuestoClose(){
+    this.dialogImpuesto=false;
+  }
+  unidadmedidaClose(){
+    this.dialogUnidadMedida=false;
+  }
+  criticidadSeleccionado(val){
+    debugger;
+    this.productoModel.strCritical_Item=val.strCritical_Cod;
+    this.productoModel.intIdCritical_ID=val.intIdCritical_ID;
+    this.productoModel.strCritical_Desc=val.strCritical_Desc;
+    this.descriticidad=val.strCritical_Desc;
+    this.dialogCriticidad=false;
+  }
+  SeleccionadoAlmacen(val){
+    debugger;
+    console.log('traer',val);
+    this.productoModel.strWHS_Cod=val.strWHS_Cod;
+    this.productoModel.intIdWHS_Stat_ID=val.intIdWHS_ID;
+    this.productoModel.strWHS_Desc=val.strWHS_Desc;
+    this.desalmacen=val.strWHS_Desc;
+    this.dialogAlmacen=false;
+  }
+  SeleccionadoClaseMaterial(val){
+    this.productoModel.strMaterial_Class=val.strMatClass_Cod;
+    this.productoModel.intIdMatClass_ID=val.intIdMatClass_ID;
+    this.productoModel.strMatClass_Desc=val.strMatClass_Desc;
+    this.desclasematerial=val.strMatClass_Desc;
+    this.dialogClaseMaterial=false;
   }
   SeleccionadoCategoriaCuenta(val){
     this.selectrow.categoriacuenta=val.CODIGO;
@@ -534,7 +757,10 @@ export default class CrearMaterialComponent extends Vue {
   }
   SeleccionadoCuentaContable(val){
     debugger;
-    this.selectrow.cuentacontable=val.Acct_NO_Corp;
+    this.productoModel.strExp_Acct=val.strAcc_NO_Corp;
+    this.productoModel.intIdAcctCont_ID=val.intIdAcctCont_ID;
+    this.productoModel.strAcc_Desc=val.strAcc_Desc;
+    this.desCuentaGasto=val.strAcc_Desc;
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
@@ -544,12 +770,19 @@ export default class CrearMaterialComponent extends Vue {
   }
   SeleccionadoUnidadMedida(val){
     debugger;
-    this.selectrow.unidad_medida=val.CODIGO;
+    this.productoModel.strUM_Cod=val.strUM_Cod;
+    this.productoModel.intIdUnidadMedida=val.intUnit_Measure_ID;
+    this.productoModel.strUM_Desc=val.strUM_Desc;
+    this.desunidadmedida=val.strUM_Desc;
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
     debugger;
-    this.selectrow.proveedor=val.Vendor_NO;
+
+    this.productoModel.strVendor_NO=val.strVendor_NO;
+    this.productoModel.intIdVendor_ID=val.intIdVendor_ID;
+    this.productoModel.strVendor_Desc=val.strVendor_Desc;
+    this.desproveedor=val.strVendor_Desc;
     this.dialogProveedor=false;
   }
   SeleccionadoMoneda(val){
@@ -562,12 +795,488 @@ export default class CrearMaterialComponent extends Vue {
     this.selectrow.prioridad=val.CODIGO;
     this.dialogPrioridad=false;
   }
+  loadClaseMaterial(){
+    this.dialogClaseMaterial=true;
+  }
+  loadCategoriaMaterial(){
+    this.dialogCategoriaMaterial=true;
+  }
+  loadCriticidad(){
+    this.dialogCriticidad=true;
+  }
+  loadGrupoComprador(){
+    this.dialogGrupoComprador=true;
+  }
+  loadControlPrecio(){
+    this.dialogControlPrecio=true;
+  }
+  loadImpuesto(){
+    this.dialogImpuesto=true;
+  }
+  loadUnidadMedida(){
+    this.dialogUnidadMedida=true;
+  }
   cambioTipoRequisicion(selected){
     if(this.tiporequisicion!=selected){
       this.tiporequisicion=selected;
     }
     console.log('select',selected);
   }
+  limpiarBotones(){
+      this.btnactivarcompania=false;
+      this.btnactivarcuentacontable=false;
+      this.btnactivarproveedor=false;
+      this.btnactivaralmacen=false;
+      this.btnactivarmaterial=false;
+      this.btnactivarunidadmedida=false;
+      this.btnactivarmoneda=false;
+      this.btnactivarprioridad=false;
+      this.btnactivarcentrocosto=false;
+      this.btnactivarclasematerial=false;
+      this.btnactivarcategoriamaterial=false;
+      this.btnactivarcriticidad=false;
+      this.btnactivargrupocomprador=false;
+      this.btnactivarcontrolprecio=false;
+      this.btnactivarimpuesto=false;
+  }
+  
+  closeImpuesto(){
+    debugger;
+    this.btnactivarimpuesto=false;
+    return false;
+  }
+  proveedorClose(){
+    this.dialogProveedor=false;
+  }
+  cuentacontableClose(){
+    this.dialogCuentaContable=false;
+  }
+  categoriamaterialClose(){
+    this.dialogCategoriaMaterial=false;
+  }
+  grupocompradorClose(){
+    this.dialogGrupoComprador=false;
+  }
+  closeControlPrecio(){
+    debugger;
+    this.btnactivarcontrolprecio=false;
+    return false;
+  }
+  closeGrupoComprador(){
+    debugger;
+    this.btnactivargrupocomprador=false;
+    return false;
+  }
+  closeCriticidad(){
+    debugger;
+    this.btnactivarcriticidad=false;
+    return false;
+  }
+  closeCategoriaMaterial(){
+    debugger;
+    this.btnactivarcategoriamaterial=false;
+    return false;
+  }
+  closeClaseMaterial(){
+    debugger;
+    this.btnactivarclasematerial=false;
+    return false;
+  }
+  closeCentroCostos(){
+    debugger;
+    this.btnactivarcentrocosto=false;
+    return false;
+  }
+  closePrioridad(){
+    debugger;
+    this.btnactivarprioridad=false;
+    return false;
+  }
+  closeMoneda(){
+    debugger;
+    this.btnactivarmoneda=false;
+    return false;
+  }
+  closeUnidadMedida(){
+    debugger;
+    this.btnactivarunidadmedida=false;
+    return false;
+  }
+  closeMaterial(){
+    debugger;
+    this.btnactivarmaterial=false;
+    return false;
+  }
+  closeCuentaContable(){
+    debugger;
+    this.btnactivarcuentacontable=false;
+    return false;
+  }
+  borrarCompania(){
+    this.descompania='';
+    this.productoModel.strCompany_Desc='';
+    this.dialogCompania=false;
+    this.btnactivarcompania=false;
+  }
+  enterCompania(code){
+    //alert('Bien'+code);
+    debugger;
+    console.log('compania_enter_1',code);
+    companiaService.GetOnlyOneCompania(code)
+    .then(response=>{
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strCompany_Cod=response[0].strCompany_Cod
+          this.productoModel.strCompany_Desc=response[0].strCompany_Desc
+          this.descompania=response[0].strCompany_Desc;
+          this.dialogCompania=false;
+          this.btnactivarcompania=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar compañia'
+      });
+    })
+  }
+  borrarAlmacen(){
+    this.desalmacen='';
+    this.productoModel.strWHS_Desc='';
+    this.dialogAlmacen=false;
+    this.btnactivaralmacen=false;
+  }
+  enterAlmacen(code){
+    //alert('Bien'+code);
+    debugger;
+    almacenService.GetOnlyOneAlmacen(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strWHS_Cod=response[0].strWHS_Cod
+          this.productoModel.intIdWHS_Stat_ID=response[0].intIdWHS_Stat_ID;
+          this.productoModel.strWHS_Desc=response[0].strWHS_Desc;
+          this.desalmacen=response[0].strWHS_Desc;
+          this.dialogAlmacen=false;
+          this.btnactivaralmacen=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar almacen'
+      });
+    })
+  }
+  borrarClaseMaterial(){
+    this.desclasematerial='';
+    this.productoModel.strMatClass_Desc='';
+    this.dialogClaseMaterial=false;
+    this.btnactivarclasematerial=false;
+  }
+  enterClaseMaterial(code){
+    //alert('Bien'+code);
+    debugger;
+    clasematerialService.GetOnlyOneClaseMaterial(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strMaterial_Class=response[0].strMatClass_Cod;
+          this.productoModel.intIdMatClass_ID=response[0].intIdMatClass_ID;
+          this.productoModel.strMatClass_Desc=response[0].strMatClass_Desc;
+          this.desclasematerial=response[0].strMatClass_Desc;
+          this.dialogClaseMaterial=false;
+          this.btnactivarclasematerial=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar clase material'
+      });
+    })
+  }
+  borrarCriticidad(){
+    this.desclasematerial='';
+    this.productoModel.strMatClass_Desc='';
+    this.dialogClaseMaterial=false;
+    this.btnactivarclasematerial=false;
+  }
+  enterCriticidad(code){
+    //alert('Bien'+code);
+    debugger;
+    criticidadService.GetOnlyOneCriticidad(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strCritical_Item=response[0].strCritical_Cod;
+          this.productoModel.intIdCritical_ID=response[0].intIdCritical_ID;
+          this.productoModel.strCritical_Desc=response[0].strCritical_Desc;
+          this.descriticidad=response[0].strCritical_Desc;
+          this.dialogCriticidad=false;
+          this.btnactivarcriticidad=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar criticidad'
+      });
+    })
+  }
+  borrarProveedor(){
+    this.desproveedor='';
+    this.productoModel.strVendor_Desc='';
+    this.dialogProveedor=false;
+    this.btnactivarproveedor=false;
+  }
+  enterProveedor(code){
+    //alert('Bien'+code);
+    debugger;
+    proveedorService.GetOnlyOneProveedor(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strVendor_NO=response[0].strVendor_NO;
+          this.productoModel.intIdVendor_ID=response[0].intIdVendor_ID;
+          this.productoModel.strVendor_Desc=response[0].strVendor_Desc;
+          this.desproveedor=response[0].strVendor_Desc;
+          this.dialogProveedor=false;
+          this.btnactivarproveedor=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar proveedor'
+      });
+    })
+  }
+  borrarCuentaGastos(){
+    this.desCuentaGasto='';
+    this.productoModel.strAcc_Desc='';
+    this.dialogCuentaContable=false;
+    this.btnactivarcuentacontable=false;
+  }
+  enterCuentaGastos(code){
+    //alert('Bien'+code);
+    debugger;
+    cuentacontableService.GetOnlyOneCuentaGastos(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strExp_Acct=response[0].strAcct_NO_Corp;
+          this.productoModel.intIdAcctCont_ID=response[0].intIdAcctCont_ID;
+          this.productoModel.strAcc_Desc=response[0].strAcc_Desc;
+          this.desCuentaGasto=response[0].strAcc_Desc;
+          this.dialogCuentaContable=false;
+          this.btnactivarcuentacontable=false;
+        }
+
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar cuenta contable'
+      });
+    })
+  }
+  borrarCategoriaMaterial(){
+    this.descategoriamaterial='';
+    this.productoModel.strCategMat_Desc='';
+    this.dialogCategoriaMaterial=false;
+    this.btnactivarcategoriamaterial=false;
+  }
+  enterCategoriaMaterial(code){
+    //alert('Bien'+code);
+    debugger;
+    categoriamaterialService.GetOnlyOneCategoriaMaterial(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strMaterial_Categ=response[0].strCategMat_Cod;
+          this.productoModel.intIdCategMat_ID=response[0].intIdCategMat_ID;
+          this.productoModel.strCategMat_Desc=response[0].strCategMat_Desc;
+          this.descategoriamaterial=response[0].strCategMat_Desc;
+          this.dialogCategoriaMaterial=false;
+          this.btnactivarcategoriamaterial=false;
+        }
+
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar categoria material'
+      });
+    })
+  }
+  borrarGrupoComprador(){
+    this.desgrupocomprador='';
+    this.productoModel.strGrpPurch_Desc='';
+    this.dialogGrupoComprador=false;
+    this.btnactivargrupocomprador=false;
+  }
+  enterGrupoComprador(code){
+    //alert('Bien'+code);
+    debugger;
+    grupocompradorService.GetOnlyOneGrupoComprador(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strGrpPurch_Cod=response[0].strGrpPurch_Cod;
+          this.productoModel.intIdGrpPurch_ID=response[0].intIdGrpPurch_ID;
+          this.productoModel.strGrpPurch_Desc=response[0].strGrpPurch_Desc;
+          this.desgrupocomprador=response[0].strGrpPurch_Desc;
+          this.dialogGrupoComprador=false;
+          this.btnactivargrupocomprador=false;
+        }
+
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar grupo comprador'
+      });
+    })
+  }
+  borrarControlPrecio(){
+    this.descontrolprecio='';
+    this.productoModel.strCtlPrec_Desc='';
+    this.dialogControlPrecio=false;
+    this.btnactivarcontrolprecio=false;
+  }
+  enterControlPrecio(code){
+    //alert('Bien'+code);
+    debugger;
+    controlprecioService.GetOnlyOneControlPrecio(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.fltPriceControl=response[0].strCtlPrec_Cod;
+          this.productoModel.intIdCtlPrec_ID=response[0].intIdCtlPrec_ID;
+          this.productoModel.strCtlPrec_Desc=response[0].strCtlPrec_Desc;
+          this.descontrolprecio=response[0].strCtlPrec_Desc;
+          this.dialogControlPrecio=false;
+          this.btnactivarcontrolprecio=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar control precio'
+      });
+    })
+  }
+  borrarImpuesto(){
+    this.desimpuesto='';
+    this.dialogImpuesto=false;
+    this.btnactivarimpuesto=false;
+  }
+  enterImpuesto(code){
+    //alert('Bien'+code);
+    debugger;
+    impuestoService.GetOnlyOneImpuesto(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+
+          this.productoModel.strTAX_Ind=response[0].strWH_Cod;
+          this.productoModel.intIdCommTax_ID=response[0].intIdCommTax_ID;
+          this.desimpuesto=response[0].strWH_Desc;
+          this.dialogImpuesto=false;
+          this.btnactivarimpuesto=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar impuesto'
+      });
+    })
+  }
+  
+  borrarUnidadMedida(){
+    this.desunidadmedida='';
+    this.productoModel.strUM_Desc='';
+    this.dialogUnidadMedida=false;
+    this.btnactivarunidadmedida=false;
+  }
+  enterUnidadMedida(code){
+    //alert('Bien'+code);
+    debugger;
+    unidadmedidaService.GetOnlyOneUnidadMedida(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strUM_Cod=response[0].strUM_Cod;
+          this.productoModel.intIdUnidadMedida=response[0].intIdUnidadMedida;
+          this.productoModel.strUM_Desc=response[0].strUM_Desc;
+          this.desunidadmedida=response[0].strUM_Desc;
+          this.dialogUnidadMedida=false;
+          this.btnactivarunidadmedida=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar unidad medida'
+      });
+    })
+  }
+
+  guardar(){
+    this.SendDocument=true;
+  }
+
+  guardarTodo(val){
+    this.productoModel.intIdWHS_Stat_ID=1;
+    this.productoModel.intIdCommTax_ID=1;
+    productoService.saveProducto(this.productoModel)
+    .then(res=>{ 
+      debugger;
+      this.issave=true;
+      this.textosave='Se guardo correctamente.'
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo guardar producto'
+      });
+    })
+  }
+
   data(){
     return{
       dialogTableVisible: false,

@@ -1,38 +1,97 @@
+
 <template>
-    <div class="visualizar-modificar-pr">
-        <el-card class="box-card">
-            <div slot="header" class="headercard">
-                <span class="labelheadercard" >Modificar Requisición</span>
+
+  <div class="pr-visualizar-modificar">
+    <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
+        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="validarView()"/>
+    </ol>
+
+    <el-card class="box-card">
+        <div slot="header" class="headercard">
+            <span class="labelheadercard" >Modificar Requisición</span>
+        </div>
+        <div class="row bodycard">
+            <div class="container">
+                <div class="row" style="margin-top: 3px;">
+                    <div class="col-sm-6" >
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-3" >Compañia</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strCompany_Cod"  @keyup.enter.native="enterCompania(productoModel.strCompany_Cod)"  @keyup.delete.native="borrarCompania()" placeholder="">
+                                    <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{descompania}}</span>
+                        </div> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" >
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-3" >Código Material</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
+                                </el-input>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" >
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-3" >Descripcion</label>
+                            <div class="col-md-6 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Desc"  placeholder="">
+                                </el-input>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
             </div>
-            <div class="row bodycard">
+        </div>
+    </el-card>
+    <div class="footer1">
+        <div class="row">
+            <div class="col-sm-9" style="text-align:left" >
+                <img src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <span class="footertext2" style="" >{{textosave}}</span>
             </div>
-        </el-card>
+            <div class="col-sm-3">
+                <div style="text-align:right">
+                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">SQV1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">PQM1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">OVR1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <i class="fa fa-unlock" aria-hidden="true" style="margin-left: 0.3rem;margin-right: 1rem;color:#7b7b7b"></i>
+                </div>
+            </div>
+        </div>
+        
     </div>
+   
+    <!--DIALOG BUSQUEDA COMPAÑIA-->
+    <el-dialog title="Busqueda Compañia" :visible.sync="dialogCompania" @close="closeCompania" size="small" >
+      <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event);" v-on:companiaClose="companiaClose($event);" >
+      </bcompania>
+    </el-dialog>
+</div>  
+  
 </template>
 <script>
 import VisualizarModificarPRComponent from '@/components/LO-LOGISTICA/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.component'
 export default VisualizarModificarPRComponent
 </script>
 <style scoped>
-.el-table_1_column_1{
-    background-color: #E4ECF7;
-    text-align: center;
-    border: 1px solid #9EB6CE;
-    border-width: 0px 1px 1px 0px;
-}
-.Second{
-    margin-top: -15px;
-}
-.Third{
-    margin-top: -15px;
-}
-.el-table .selected-row {
-  background: rgb(206, 85, 85);
-}
-.el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
-    background: #fff5c4;
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-    background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
-}
+
 </style>

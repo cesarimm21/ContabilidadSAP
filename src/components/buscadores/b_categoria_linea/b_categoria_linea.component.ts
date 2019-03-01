@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
+import categorialineaService from '@/components/service/categorialinea.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -35,9 +37,28 @@ export default class  BCategoriaLineaComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
+  public categorialineaModel:Array<CategoriaLineaModel>=[];
+  public categorialineaSelectModel:CategoriaLineaModel=new CategoriaLineaModel();
+
   constructor() {
     super();
+    this.load();
   }
+  load(){
+    categorialineaService.GetAllCategoriaLinea()
+    .then(response=>{
+      console.log('categorialinea',response);
+      
+      this.categorialineaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar categoria linea'
+      });
+    })
+  }
+
 
   redirectLogin(msg){
     Notification.warning(msg)
@@ -130,8 +151,21 @@ export default class  BCategoriaLineaComponent extends Vue {
         message: strMessage
       });
   }
+
+
+  handleCurrentChange(val:CategoriaLineaModel){
+    this.categorialineaSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('categorialineaselecionado',this.categorialineaSelectModel);
+  }
+  closePopup(){
+    this.$emit('categorialineaclose');
+  }
   data() {
     return {
+      categorialineaModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

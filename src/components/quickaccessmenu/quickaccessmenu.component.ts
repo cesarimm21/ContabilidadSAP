@@ -2,7 +2,6 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 
-
 import Login from '@/components/login/login.vue';
 import Roles from '@/components/roles/roles.vue';
 import UsuarioService from '@/components/service/usuario.service';
@@ -51,7 +50,7 @@ export default class QuickAccessMenuComponent extends Vue {
     this.ocultar=!this.ocultar;
   }
   guardar(){
-    //this.dialogVisible=true;
+    this.dialogVisible=true;
     this.SendDocument=true;
     //this.$refs.myModalRef.show();
   }
@@ -62,6 +61,9 @@ export default class QuickAccessMenuComponent extends Vue {
       message: newMsg,
       type: 'success'
     });
+  }
+  submit(){
+    alert("entro");
   }
   openMessageError(strMessage:string){
     this.$message({
@@ -79,6 +81,8 @@ export default class QuickAccessMenuComponent extends Vue {
   confirmaraceptar(){
     //alert("Excelente");
     this.SendDocument=false;
+    this.$emit('guardarTodo','hola');
+
   }
   linksUser(comand){
     router.push('/barmenu/'+comand)
@@ -102,6 +106,9 @@ export default class QuickAccessMenuComponent extends Vue {
     else{
       return { verde: true, }
     }
+  }
+  ValidarItem(){
+    this.$emit('validarView');
   }
   // update(){
   //     if (this.contador == 0) {

@@ -61,6 +61,7 @@ export default class  BCompaniaProveedor extends Vue {
 
   checkCompania(){
     this.$emit('companiaSeleccionado',this.companiaSelectModel);
+    //this.$emit('companiaSeleccionado',this.companiaSelectModel);
   }
   closeCompania(){
     this.$emit('companiaClose');
@@ -79,7 +80,7 @@ export default class  BCompaniaProveedor extends Vue {
     this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
   }
   seleccionarProveedor(index, rows){
-    this.$emit('cartaSelecionado',rows[index]);
+    this.$emit('companiaSelecionado',rows[index]);
   }
 
   buscarProveedor(){
@@ -121,7 +122,6 @@ export default class  BCompaniaProveedor extends Vue {
     debugger;
     console.log("doble",row);
     this.$emit('companiaSeleccionado',row);
-    this.$emit('proveedorSeleccionado',row);
   }
   data() {
     return {

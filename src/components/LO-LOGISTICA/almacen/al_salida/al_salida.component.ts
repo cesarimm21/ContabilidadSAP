@@ -5,12 +5,20 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-// import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+import BCompaniaComponent from '@/components/buscadores/b_compania/b_compania.vue';
+import BTipoMovimientoComponent from '@/components/buscadores/b_tipo_movimiento/b_tipo_movimiento.vue';
+import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
+import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
+import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_unidad_medida.vue';
+import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
+import BMaterialComponent from '@/components/buscadores/b_material/b_material.vue';
+import BPlantaComponent from '@/components/buscadores/b_planta/b_planta.vue';
+import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 // import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 // import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
 // import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
 // import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
-// import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
 // import BMaterialComponent from '@/components/buscadores/b_material/b_material.vue';
 // import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_unidad_medida.vue';
 // import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
@@ -29,7 +37,9 @@ import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
-
+import salidaService from '@/components/service/salida.service';
+import {SalidaDetalleModel} from '@/modelo/maestro/salidadetalle';
+import {SalidaModel} from '@/modelo/maestro/salida';
 import Handsontable from 'handsontable-pro';
 
 import { Notification } from 'element-ui';
@@ -47,6 +57,16 @@ var EditableColumn = {
   name: 'salida-pr',
   components:{
     'buttons-accions':ButtonsAccionsComponent,
+    'bcompania':BCompaniaComponent,
+    'btipomovimiento':BTipoMovimientoComponent,
+    'bcentrocosto':BCentroCostoComponent,
+    'bprioridad':BPrioridadComponent,
+    'bunidadmedida':BUnidadMedidaComponent,
+    'bcuentacontable':BCuentaContableComponent,
+    'bmaterial':BMaterialComponent,
+    'quickaccessmenu':QuickAccessMenuComponent,
+    'bplanta':BPlantaComponent,
+    'balmacen':BAlmacenComponent,
   } ,
   // components:{
   //   'bcompania':BCompaniaProveedor,
@@ -67,7 +87,11 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   timer=0;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
-  
+  vifprogress:boolean=true;
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
+
   hours:number;
   minutos:number;
   seconds:number;
@@ -85,6 +109,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
 
   /*dialog*/
   dialogCompania:boolean=false;
+  dialogTipoMovimiento:boolean=false;
   dialogProveedor:boolean=false;
   dialogAlmacen:boolean=false;
   dialogCategoriaCuenta:boolean=false;
@@ -95,10 +120,14 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   dialogMoneda:boolean=false;
   dialogPrioridad:boolean=false;
   dialogCentroCostos:boolean=false;
+  dialogPlanta:boolean=false;
+  valuem:number=0;
 
+  public salidaModel:SalidaModel=new SalidaModel();
 
   /*input*/
   btnactivarcompania:boolean=false;
+  btnactivartipomovimiento:boolean=false;
   btnactivarproveedor:boolean=false;
   btnactivaralmacen:boolean=false;
   btnactivarmaterial:boolean=false;
@@ -106,6 +135,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   btnactivarmoneda:boolean=false;
   btnactivarprioridad:boolean=false;
   btnactivarcentrocosto:boolean=false;
+  btnactivarplanta:boolean=false;
 
   /*bolean_tabla_dinamica*/
   bln_tbl_categoria_cuenta:boolean=false;
@@ -122,28 +152,17 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   bln_tbl_centro_costo:boolean=false;
 
   descompania:string='';
+  destipomovimiento:string='';
   code_compania:string='';
   desalmacen:string='';
+  desplanta:string='';
   code_almacen:string='';
+  code_planta:string='';
   cell_ocultar:string='transparent';
   value: string='';
-  tableData1:any=[
-    {
-      date:Global.getParseDate(new Date().toDateString()),
-      categoriacuenta: '',
-      categorialinea: '',
-      cuentacontable: '',
-      material:'',
-      material_descripcion:'',
-      cantidad:0,
-      unidad_medida:'',
-      proveedor:'',
-      moneda:'',
-      prioridad:'',
-      fecha_estimada:Global.getParseDate(new Date().toDateString()),
-      centrocosto:'',
-    }
-  ];
+  txtSave:string='';
+  blntxtSave:boolean=false;
+  public tableData1:Array<SalidaDetalleModel>=[]; 
   
   /*tabla*/
   editing:any= {
@@ -155,28 +174,35 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
+
+  valmacen:boolean=false;
+  vtipomovimiento:boolean=false;
+  vcompania:boolean=false;
+
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
     for(var i=0;i<10;i++){
-      var item:any={
-        date:Global.getParseDate(new Date().toDateString()),
-        categoriacuenta: '',
-        categorialinea: '',
-        cuentacontable: '',
-        material:'',
-        material_descripcion:'',
-        cantidad:0,
-        unidad_medida:'',
-        proveedor:'',
-        moneda:'',
-        prioridad:'',
-        fecha_estimada:Global.getParseDate(new Date().toDateString()),
-        centrocosto:'',
-      }
-      this.tableData1.push(item);
+      var items:SalidaDetalleModel=new SalidaDetalleModel();
+      items.strStock_Cod='';
+      items.strStock_Desc='';
+      items.fltIssueRequest_QTY=0;
+      items.fltAjust_QTY=0;
+      items.fltIssueDelivery_QTY=0;
+      items.strUM_Cod='';
+      items.strCostCenter_NO='';
+      items.strAcc_NO_Local='';
+      items.strDelivery_Place='';
+      items.dtmDelivery_Date=new Date();
+      items.strPriority_Cod='';
+      items.errorCentroCosto=false;
+      items.errorLugarEntrega=false;
+      items.errorPrioridad=false;
+
+      this.tableData1.push(items);
     }
     console.log(this.tableData1);
   }
@@ -235,6 +261,9 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   loadCompania(){
     this.dialogCompania=true;
   }
+  loadTipoMovimiento(){
+    this.dialogTipoMovimiento=true;
+  }
   
   loadAlmacen(){
     this.dialogAlmacen=true;
@@ -258,15 +287,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   tableRowClassName(row, rowIndex) {
       debugger;
-    // if (row === undefined || row.EstadoAprobacion === undefined) return '';
-    // if (row.EstadoAprobacion === 'R'){
-    //   return 'rechazado-row';
-    // } else if (row.EstadoAprobacion === 'A') {
-    //   return 'aprobado-row';
-    // } else if (row.EstadoAprobacion === 'M'){
-    //   return 'modificado-row';
-    // }
-    // return '';
+      return 'rechazado-row';
+    
   }
   handleCurrentChange(val) {
     debugger;
@@ -280,12 +302,33 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       this.btnactivarcompania=true;
       this.btnactivaralmacen=false;
       this.btnactivarproveedor=false;
+      this.btnactivartipomovimiento=false;
+      this.btnactivarplanta=false;
+    }, 120)
+  }
+  activar_tipo_movimiento(){
+    setTimeout(() => {
+      this.btnactivartipomovimiento=true;
+      this.btnactivarcompania=false;
+      this.btnactivarplanta=false;
     }, 120)
   }
   desactivar_compania(){
     debugger;
     if(this.dialogCompania){
       this.btnactivarcompania=false;
+    }
+  }
+  desactivar_planta(){
+    debugger;
+    if(this.dialogPlanta){
+      this.btnactivarplanta=false;
+    }
+  }
+  desactivar_tipo_movimiento(){
+    debugger;
+    if(this.dialogTipoMovimiento){
+      this.btnactivartipomovimiento=false;
     }
   }
   closeCompania(){
@@ -300,6 +343,13 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       this.btnactivarproveedor=true;
       this.btnactivarcompania=false;
       this.btnactivaralmacen=false;
+    }, 120)
+  }
+  activar_planta(){
+    setTimeout(() => {
+      this.btnactivarplanta=true;
+      this.btnactivarcompania=false;
+      this.btnactivartipomovimiento=false;
     }, 120)
   }
   desactivar_proveedor(){
@@ -320,7 +370,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       console.log("activar_almacen");
       this.btnactivaralmacen=true;
       this.btnactivarcompania=false;
-      this.btnactivarproveedor=false;
+      this.btnactivartipomovimiento=false;
     }, 120)
   }
   desactivar_almacen(){
@@ -446,6 +496,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    console.log("---edit",this.editing);
   }
   clickmaterialdescripcion(event,edit,column){
     debugger;
@@ -506,12 +557,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   getParseDate(fecha){
     return Global.getParseDate(fecha);
   }
-  proveedorSeleccionado(val){
-    console.log('traer',val);
-    this.code_compania=val.Code;
-    this.descompania=val.Company_Desc;
-    this.dialogCompania=false;
-  }
+  
   SeleccionadoAlmacen(val){
     console.log('traer',val);
     this.code_almacen=val.CODIGO;
@@ -529,22 +575,35 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   SeleccionadoCentroCosto(val){
     debugger;
-    this.selectrow.centrocosto=val.CostCenter_NO;
+    this.selectrow.strCostCenter_NO=val.strCostCenter_NO;
+    this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
+
     this.dialogCentroCostos=false;
   }
   SeleccionadoCuentaContable(val){
     debugger;
-    this.selectrow.cuentacontable=val.Acct_NO_Corp;
+    this.selectrow.strAcc_NO_Local=val.strAcc_NO_Corp;
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
     debugger;
-    this.selectrow.material=val.Stock_Cod;
+    this.selectrow.strStock_Cod='';
+    this.selectrow.strStock_Desc='';
+    this.selectrow.strUM_Cod='';
+    this.selectrow.strAcc_NO_Local='';
+
+    this.selectrow.strStock_Cod=val.strStock_Cod;
+    this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
+    this.selectrow.strStock_Desc=val.strStock_Desc;
+    this.selectrow.strUM_Cod=val.strUM_Cod;
+    this.selectrow.strAcc_NO_Local=val.strExp_Acct;
+    this.selectrow.fltAjust_QTY=val.fltQuantity;
+    
     this.dialogMaterial=false;
   }
   SeleccionadoUnidadMedida(val){
     debugger;
-    this.selectrow.unidad_medida=val.CODIGO;
+    this.selectrow.strUM_Cod=val.strUM_Cod;
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
@@ -559,7 +618,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   SeleccionadoPrioridad(val){
     debugger;
-    this.selectrow.prioridad=val.CODIGO;
+    this.selectrow.strPriority_Cod=val.strPriority_Cod;
+    this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;
   }
   cambioTipoRequisicion(selected){
@@ -567,6 +627,185 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       this.tiporequisicion=selected;
     }
     console.log('select',selected);
+  }
+
+  /*prioridad*/
+  closePrioridad(){
+    this.btnactivarcompania=false;
+    return false;
+  }
+  prioridadClose(){
+    this.dialogPrioridad=false;
+  }
+
+  centrocostoClose(){
+    this.dialogCentroCostos=false;
+  }
+  cuentacontableClose(){
+    this.dialogCuentaContable=false;
+  }
+  unidadmedidaClose(){
+    this.dialogUnidadMedida=false;
+  }
+  tipomovimientoSelecionado(val){
+    this.salidaModel.strTypeMov_Cod=val.strTypeMov_Cod;
+    this.salidaModel.strTypeMov_Desc=val.strTypeMov_Desc;
+    this.salidaModel.intIdTypeMov_ID=val.intIdTypeMov_ID;
+    this.destipomovimiento=val.strTypeMov_Desc;
+   
+    this.dialogTipoMovimiento=false;
+    this.validate();
+  }
+  companiaSeleccionado(val){
+    debugger;
+    this.salidaModel.strCompany_Cod=val.strCompany_Cod;
+    this.salidaModel.strCompany_Desc=val.strCompany_Desc;
+    this.descompania=val.strCompany_Desc;
+    this.validate();
+   
+    this.dialogCompania=false;
+  }
+  LoadAlmacen(){
+    this.dialogAlmacen=true;      
+  }
+  SeleccionadoPlanta(val){
+    this.code_planta=val.strPlant_Cod;
+    this.desplanta=val.strPlan_Desc;
+    this.dialogPlanta=false;
+  }
+  plantaClose(){
+    this.dialogPlanta=false;
+  }
+  almacenseleccionado(val){
+    this.salidaModel.strWHS_Cod=val.strWHS_Cod;
+    this.salidaModel.intIdWHS_ID=val.intIdWHS_ID;
+    this.salidaModel.strWHS_Desc=val.strWHS_Desc;
+    this.dialogAlmacen=false;
+    this.validate();
+  }
+  submit() {
+    if(!this.validate()) {
+      alert('Submitted')
+    } else {
+      alert('Not Submitted')
+    }
+  }  
+  change(){
+    this.validate();
+  }
+
+  async validateTabla(tabla,index){
+    debugger;
+    var bandera=false;
+    for(var i=index;i<tabla.length;i++){
+      if(tabla[i].strCostCenter_NO=="" || tabla[i].strCostCenter_NO==undefined){
+        this.tableData1[tabla[i].index].errorCentroCosto=true;
+        bandera=true;
+      }
+      if(tabla[i].strDelivery_Place=="" || tabla[i].strDelivery_Place==undefined){
+        this.tableData1[tabla[i].index].errorLugarEntrega=true;
+        bandera=true;
+      }
+      if(tabla[i].strPriority_Cod=="" || tabla[i].strPriority_Cod==undefined){
+        this.tableData1[tabla[i].index].errorPrioridad=true;
+        bandera=true;
+      }
+     
+    }
+
+    if(bandera){
+      this.txtSave=" Verifique los campos"
+      this.blntxtSave=true;
+    }
+    return bandera;
+  }
+
+  async validate() {
+    debugger;
+    var validation=false;
+    if(this.salidaModel.strCompany_Cod==undefined || this.salidaModel.strCompany_Cod==""){
+      validation=true;
+      this.vcompania=true;
+    }
+    else{
+      this.vcompania=false;
+    }
+    if(this.salidaModel.strTypeMov_Cod==undefined || this.salidaModel.strTypeMov_Cod==""){
+      validation=true;
+      this.vtipomovimiento=true;
+    }
+    else{
+      this.vtipomovimiento=false;
+    }
+    if(this.salidaModel.strWHS_Cod==undefined || this.salidaModel.strWHS_Cod==""){
+      validation=true;
+      this.valmacen=true;
+    }
+    else{
+      this.valmacen=false;
+    }
+    this.limpiarbotones();
+    return validation;
+  }
+  limpiarbotones(){
+    this.btnactivaralmacen=false;
+    this.btnactivartipomovimiento=false;
+    this.btnactivarcompania=false;
+  }
+  async guardarTodo(val){
+    debugger;
+    
+    var tabla:Array<SalidaDetalleModel>=[];
+
+    for(var i=0;i<this.tableData1.length;i++){
+      if(this.tableData1[i].strStock_Cod!=""){
+        this.tableData1[i].index=i;
+        tabla.push(this.tableData1[i]);
+      }
+    }
+    console.log(tabla);
+    var vcabecera=await this.validate();
+    var vdetalle=await this.validateTabla(tabla,0);
+    if(!vcabecera && !vdetalle){
+      this.salidaModel.listaDetalle=tabla;
+      let loading = Loading.service({
+        fullscreen: true,
+        text: 'Cargando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );
+      for(var i=0;i<50;i++){
+        this.valuem=this.valuem+1; 
+      }
+
+      salidaService.CrearSalida(this.salidaModel)
+      .then(res=>{
+        debugger;
+        for(var i=0;i<50;i++){
+          this.valuem++; 
+        }
+        console.log(this.valuem);
+        loading.close();
+        if(this.valuem>=100){
+          setTimeout(() => {
+            this.vifprogress=false;
+            this.issave=true;
+            this.textosave='Se guardo correctamente.'
+            this.openMessage('Se guardo correctamente');
+          }, 2000)
+        }
+      })
+      .catch(error=>{
+        loading.close();
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo guardar salida'
+        });
+      })
+    }
+    
   }
   data(){
     return{

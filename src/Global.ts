@@ -3,7 +3,8 @@ export default {
     token:'',
     isActive:false,
     isCollapse:false,
-
+    vmmaterial:'',
+    codematerial:'',
     limpiarDatosSession(){
       this.token='';
     },

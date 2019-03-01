@@ -96,7 +96,7 @@ body {
 
 .main-container {
   display: flex;
-  height: calc(100% - 48px);
+  height: calc(100% - 34px);
 }
 
 .side-container {
@@ -468,16 +468,10 @@ body {
         margin-top: -4px;
 }
 .el-table__body tr.current-row>td {
-    background: #fff5c4;
-                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+    background: rgba(255, 244, 191, 0.611764705882353);
 }
 .el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
-    background: #fff5c4;
-                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);
+    background: rgba(255, 244, 191, 0.611764705882353)
 }
 .el-card__header {
         padding: 0px 0px !important;

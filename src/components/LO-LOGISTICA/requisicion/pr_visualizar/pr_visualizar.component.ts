@@ -6,57 +6,75 @@ import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
-import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
-import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import axios from 'axios';
+import { Loading } from 'element-ui';
+import { mixin as focusMixin }  from 'vue-focus';
+
+//***Modelos */
+import {ProductoModel} from '@/modelo/maestro/producto';
 
 import { Notification } from 'element-ui';
+import Global from '@/Global';
+import companiaService from '@/components/service/compania.service';
+import productoService from '@/components/service/producto.service';
+Vue.directive('focus', {
+  inserted: function(el) {
+    el.focus()
+  }
+})
+var EditableColumn = {
+  template: '#editable-column-content',
+  props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
+}
 @Component({
-  name: 'visualizar-pr',
+  name: 'pr-visualizar',
   components:{
+    'buttons-accions':ButtonsAccionsComponent,
     'bcompania':BCompaniaProveedor,
-    'bproveedor':BProveedorComponent,
-    'balmacen':BAlmacenComponent,
-    'buttons-accions':ButtonsAccionsComponent
-  }  
+    'quickaccessmenu':QuickAccessMenuComponent,
+  } ,
+ 
 })
 export default class VisualizarPRComponent extends Vue {
-  timer=0;
-  hours:number;
-  minutos:number;
-  seconds:number;
-  user:any;
-  tiempoagotado:any;
-  contador:any=0;
-  _10min:boolean=false;
-  ocultarConfig:boolean = true;
+  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
+  
   nameuser:string;
   namecomplete:string;
-  accesosUser:any=[];
-  ocultar:boolean=false;
-  dialogVisible:boolean=false;
   SendDocument:boolean=false;
-
+  vmaterial:string='';
   /*dialog*/
   dialogCompania:boolean=false;
-  dialogProveedor:boolean=false;
-  dialogAlmacen:boolean=false;
-
+ 
   /*input*/
   btnactivarcompania:boolean=false;
-  btnactivarproveedor:boolean=false;
-  btnactivaralmacen:boolean=false;
+   
+  /*Model*/
+  public productoModel:ProductoModel=new ProductoModel();
 
+  descompania:string='';
+  code_compania:string='';
+
+  fecha_actual:string;
+  selectrow:any;
+  selectcolumn:any;
+  blntiporequisicion:boolean=true;
+  tiporequisicion:string='';
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
   constructor(){
     super();
+    this.fecha_actual=Global.getParseDate(new Date().toDateString());
+    debugger;
+    this.tiporequisicion="A";
+   
   }
-  fnOcultar(){
-    this.ocultar=!this.ocultar;
-  }
-  guardar(){
-    this.SendDocument=true;
-  }
-  
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
@@ -96,12 +114,6 @@ export default class VisualizarPRComponent extends Vue {
   loadCompania(){
     this.dialogCompania=true;
   }
-  loadProveedores(){
-    this.dialogProveedor=true;      
-  }
-  loadAlmacen(){
-    this.dialogAlmacen=true;
-  }
   handleCurrentChange(val) {
     debugger;
     if(val.date){
@@ -111,9 +123,8 @@ export default class VisualizarPRComponent extends Vue {
   /*Compania imput*/
   activar_compania(){
     setTimeout(() => {
+      this.limpiarBotones();
       this.btnactivarcompania=true;
-      this.btnactivaralmacen=false;
-      this.btnactivarproveedor=false;
     }, 120)
   }
   desactivar_compania(){
@@ -127,127 +138,73 @@ export default class VisualizarPRComponent extends Vue {
     this.btnactivarcompania=false;
     return false;
   }
-
-  /*Proveedor imput*/
-  activar_proveedor(){
-    setTimeout(() => {
-      this.btnactivarproveedor=true;
-      this.btnactivarcompania=false;
-      this.btnactivaralmacen=false;
-    }, 120)
+ 
+  
+  getParseDate(fecha){
+    return Global.getParseDate(fecha);
   }
-  desactivar_proveedor(){
+  companiaSeleccionado(val){
     debugger;
-    if(this.dialogProveedor){
-      this.btnactivarproveedor=false;
+    console.log('traer',val);
+    this.productoModel.strCompany_Cod=val.strCompany_Cod
+    this.descompania=val.strCompany_Desc;
+   
+    this.dialogCompania=false;
+  }
+  companiaClose(val){
+    this.dialogCompania=false;
+  }
+  limpiarBotones(){
+      this.btnactivarcompania=false;     
+  }
+  borrarCompania(){
+    this.descompania='';
+    this.dialogCompania=false;
+    this.btnactivarcompania=false;
+  }
+  enterCompania(code){
+    //alert('Bien'+code);
+    debugger;
+    console.log('compania_enter_1',code);
+    companiaService.GetOnlyOneCompania(code)
+    .then(response=>{
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strCompany_Cod=response[0].strCompany_Cod
+          this.descompania=response[0].strCompany_Desc;
+          this.dialogCompania=false;
+          this.btnactivarcompania=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar compañia'
+      });
+    })
+  }
+  validarView(){
+    Global.codematerial=this.productoModel.strStock_Cod;
+    router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'visualizar' }  })
+  }
+  created() {
+    debugger;
+    if(typeof window != 'undefined') {
+      // this.getAccesos();
+      debugger;
+      this.vmaterial=Global.vmmaterial;
     }
   }
-  closeProveedor(){
-    debugger;
-    this.btnactivarproveedor=false;
-    return false;
-  }
-
-  /*Almacen imput*/
-  activar_almacen(){
-    setTimeout(() => {
-      console.log("activar_almacen");
-      this.btnactivaralmacen=true;
-      this.btnactivarcompania=false;
-      this.btnactivarproveedor=false;
-    }, 120)
-  }
-  desactivar_almacen(){
-    debugger;
-    if(this.dialogAlmacen){
-      this.btnactivaralmacen=false;
-    }
-  }
-  closeAlmacen(){
-    debugger;
-    console.log("closeAlmacen");
-    this.btnactivaralmacen=false;
-    return false;
-  }
-  activar_descripcion(){
-    this.btnactivaralmacen=false;
-    this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
-  }
-  activar_tipo_requisicion(){
-    debugger;
-    console.log("activar_tipo_requisicion");
-    this.btnactivaralmacen=false;
-    this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
-  }
-
   data(){
     return{
       dialogTableVisible: false,
       dialogVisible:false,
-      tableData: [{
-        date: '0001',
-        name: 'Ferreyros'
-      }, {
-        date: '0002',
-        name: 'Yura SAC'
-      }, {
-        date: '0003',
-        name: 'Signal company'
-      }, {
-        date: '0004',
-        name: 'Cruz del Sur'
-      }
-      , {
-        date: '0005',
-        name: 'Tisur'
-      }, {
-        date: '0006',
-        name: 'Seguro'
-      }, {
-        date: '0007',
-        name: 'Cruz del Sur'
-      }, {
-        date: '0008',
-        name: 'Cruz del Sur'
-      }, {
-        date: '0009',
-        name: 'Cruz del Sur'
-      }, {
-        date: '0010',
-        name: 'Linea'
-      }, {
-        date: '0011',
-        name: 'Cruz del Sur'
-      }],
+      tableDataServicio:[{}],
       user: {
         authenticated: false
       },
-      data:{
-        Usuario:localStorage.getItem('User_Nombre'),
-      },
-      options: [{
-        value: 'Option1',
-        label: 'Option1'
-      }, {
-        value: 'Option2',
-        label: 'Option2'
-      }, {
-        value: 'Option3',
-        label: 'Option3'
-      }, {
-        value: 'Option4',
-        label: 'Option4'
-      }, {
-        value: 'Option5',
-        label: 'Option5'
-      }],
-      value: '',
-      accesosUser: [],
-      hours: 0,
-      minutos:0,
-      seconds:0
     }
   }
   

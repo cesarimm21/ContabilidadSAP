@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
+import cuentacontableService from '@/components/service/cuentacontable.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -31,12 +33,28 @@ export default class  BCuentaContableComponent extends Vue {
   //Modelos
   articulos:any =[];
 
+  public cuentacontableModel:Array<CuentaContableModel>=[];
+  public cuentacontableSelectModel:CuentaContableModel=new CuentaContableModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    cuentacontableService.GetAllCuentaContable()
+    .then(response=>{
+      console.log('cuentacontable',response);
+      this.cuentacontableModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar los almacenes'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -129,8 +147,19 @@ export default class  BCuentaContableComponent extends Vue {
   seleccionar(row,index){
     this.$emit('cuentacontableselecionado',row);
   }
+  handleCurrentChange(val:CuentaContableModel){
+    this.cuentacontableSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('cuentacontableselecionado',this.cuentacontableSelectModel);
+  }
+  closePopup(){
+    this.$emit('cuentacontableClose');
+  }
   data() {
     return {
+      cuentacontableModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

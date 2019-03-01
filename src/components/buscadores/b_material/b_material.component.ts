@@ -2,11 +2,15 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {ProductoModel} from '@/modelo/maestro/producto';
+import productoService from '@/components/service/producto.service';
+
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
   name: 'bmaterial'
 })
+
 
 export default class  BMaterialComponent extends Vue {
 
@@ -35,8 +39,25 @@ export default class  BMaterialComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
+  public productoModel:Array<ProductoModel>=[];
+  public productoSelectModel:ProductoModel=new ProductoModel();
+
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    productoService.GetAllProducto()
+    .then(response=>{
+      console.log('producto',response);
+      this.productoModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar producto'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -48,9 +69,11 @@ export default class  BMaterialComponent extends Vue {
   beforeMount(){
     this.getProveedorSupplier()
   }
+
   cambioPagina(){
     this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
   }
+
   seleccionarProveedor(index, rows){
     this.$emit('cartaSelecionado',rows[index]);
   }
@@ -107,12 +130,9 @@ export default class  BMaterialComponent extends Vue {
   getProveedorSupplier(){
 
   }
-
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
 
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
@@ -129,8 +149,21 @@ export default class  BMaterialComponent extends Vue {
   seleccionar(row,index){
     this.$emit('materialselecionado',row);
   }
+  
+
+  handleCurrentChange(val:ProductoModel){
+    this.productoSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('materialselecionado',this.productoSelectModel);
+  }
+  closePopup(){
+    this.$emit('materialClose');
+  }
   data() {
     return {
+      productoModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

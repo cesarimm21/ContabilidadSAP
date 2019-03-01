@@ -21,6 +21,7 @@ export class ProductoModel {
     fltPrecUnit_USD:number;
     strPart_NO:string;
     strStock_Type:string;
+    strMark:string;
     strFleet:string;
     strExp_Acct:string;
     strMaterial_Class:string;
@@ -46,4 +47,14 @@ export class ProductoModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    strMatClass_Desc:string;
+    strCritical_Desc:string;
+    strCategMat_Desc:string;
+    strGrpPurch_Desc:string;
+    strCtlPrec_Desc:string;
+    strUM_Desc:string;
+    strAcc_Desc:string;
+    strCompany_Desc:string;
+    strWHS_Desc:string;
+
 }

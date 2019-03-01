@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {AlmacenModel} from '@/modelo/maestro/almacen';
+import almacenService from '@/components/service/almacen.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -31,12 +33,28 @@ export default class  BAlmacenComponent extends Vue {
   //Modelos
   articulos:any =[];
 
+  public almacenModel:Array<AlmacenModel>=[];
+  public almacenSelectModel:AlmacenModel=new AlmacenModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
   constructor() {
     super();
+    this.loadCompania();
+  }
+  loadCompania(){
+    almacenService.GetAllAlmacen()
+    .then(response=>{
+      console.log('almacen',response);
+      this.almacenModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar los almacenes'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -129,6 +147,17 @@ export default class  BAlmacenComponent extends Vue {
   seleccionar(row,index){
     this.$emit('almacenseleccionado',row);
   }
+  checkCompania(){
+    this.$emit('almacenseleccionado',this.almacenSelectModel);
+  }
+  closeCompania(){
+    this.$emit('companiaAlmacen');
+  }
+  
+  handleCurrentChange(val:AlmacenModel){
+    this.almacenSelectModel=val;
+  }
+
   data() {
     return {
       categorias: [{

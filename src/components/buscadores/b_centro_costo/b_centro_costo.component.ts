@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {CentroCostosModel} from '@/modelo/maestro/centrocostos';
+import centrocostoService from '@/components/service/centrocostos.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -35,8 +37,25 @@ export default class  BCentroCostoComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
+  public centrocostosModel:Array<CentroCostosModel>[];
+  public centrocostosSelectModel:CentroCostosModel=new CentroCostosModel();
+  
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    centrocostoService.GetAllCentroCostos()
+    .then(response=>{
+      debugger;
+      this.centrocostosModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo centro costos'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -129,8 +148,20 @@ export default class  BCentroCostoComponent extends Vue {
   seleccionar(row,index){
     this.$emit('centrocostoselecionado',row);
   }
+  
+  handleCurrentChange(val:CentroCostosModel){
+    this.centrocostosSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('centrocostosselecionado',this.centrocostosSelectModel);
+  }
+  closePopup(){
+    this.$emit('centrocostosclose');
+  }
   data() {
     return {
+      centrocostosModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

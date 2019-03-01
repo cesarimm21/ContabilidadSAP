@@ -4,6 +4,7 @@ import 'font-awesome/css/font-awesome.css';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
+
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
@@ -16,6 +17,7 @@ import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_un
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
 import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
@@ -29,7 +31,8 @@ import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
-
+import {RequisicionDetalleModel} from '@/modelo/maestro/requisiciondetalle';
+import {RequisicionModel} from '@/modelo/maestro/requisicion';
 
 import Handsontable from 'handsontable-pro';
 
@@ -58,14 +61,17 @@ var EditableColumn = {
     'bunidadmedida':BUnidadMedidaComponent,
     'bmoneda':BMonedaComponent,
     'bprioridad':BPrioridadComponent,
-    'bcentrocosto':BCentroCostoComponent
+    'bcentrocosto':BCentroCostoComponent,
+    'quickaccessmenu':QuickAccessMenuComponent,
+    
   } ,
 })
 export default class CrearPRComponent extends Vue {
   timer=0;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
-  
+  currentRow:any;
+  txtnroline:string='';
   hours:number;
   minutos:number;
   seconds:number;
@@ -125,23 +131,9 @@ export default class CrearPRComponent extends Vue {
   code_almacen:string='';
   cell_ocultar:string='transparent';
   value: string='';
-  tableData1:any=[
-    {
-      date:Global.getParseDate(new Date().toDateString()),
-      categoriacuenta: '',
-      categorialinea: '',
-      cuentacontable: '',
-      material:'',
-      material_descripcion:'',
-      cantidad:0,
-      unidad_medida:'',
-      proveedor:'',
-      moneda:'',
-      prioridad:'',
-      fecha_estimada:Global.getParseDate(new Date().toDateString()),
-      centrocosto:'',
-    }
-  ];
+  
+  public tableData1:Array<RequisicionDetalleModel>=[]; 
+  public requisicionModel:RequisicionModel=new RequisicionModel();
   
   /*tabla*/
   editing:any= {
@@ -152,29 +144,31 @@ export default class CrearPRComponent extends Vue {
   selectrow:any;
   selectcolumn:any;
   blntiporequisicion:boolean=true;
+  blncategorialinea:boolean=true;
+  blncuentacontable:boolean=false;
+  blncentrocosto:boolean=true;
+  blnunidadmedida:boolean=true;
+  blnproveedor:boolean=true;
+  intlineaselect:number=-1;
+
   tiporequisicion:string='';
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
+    this.cell_ocultar='#e4e2e2';        
+    this.blntiporequisicion=false;
+    this.blncategorialinea=false;
+    this.blncuentacontable=false;
+    this.blncentrocosto=false;
+    this.blnunidadmedida=false;
+    this.blnproveedor=false;
     for(var i=0;i<10;i++){
-      var item:any={
-        date:Global.getParseDate(new Date().toDateString()),
-        categoriacuenta: '',
-        categorialinea: '',
-        cuentacontable: '',
-        material:'',
-        material_descripcion:'',
-        cantidad:0,
-        unidad_medida:'',
-        proveedor:'',
-        moneda:'',
-        prioridad:'',
-        fecha_estimada:Global.getParseDate(new Date().toDateString()),
-        centrocosto:'',
-      }
-      this.tableData1.push(item);
+      var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+      reqDetalle.strCateg_Account="A";
+      reqDetalle.intRequis_Item_NO=i+1;
+      this.tableData1.push(reqDetalle);
     }
     console.log(this.tableData1);
   }
@@ -268,9 +262,27 @@ export default class CrearPRComponent extends Vue {
   }
   handleCurrentChange(val) {
     debugger;
-    if(val.date){
-        return 'selected-row';
+    this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
+    this.intlineaselect=val.intRequis_Item_NO-1;
+    this.currentRow = val;
+  }
+
+  nextTable(){
+    debugger;
+    if(this.intlineaselect<this.tableData1.length-1){
+      this.intlineaselect++;
     }
+    var document:any = this.$refs.missionTable;
+      document.setCurrentRow(this.tableData1[this.intlineaselect]);
+    this.txtnroline="["+this.tableData1[this.intlineaselect].intRequis_Item_NO+"] "+this.tableData1[this.intlineaselect].strDescription;
+  }
+  backTable(){
+    if(this.intlineaselect>0){
+      this.intlineaselect--;
+    }
+    var document:any = this.$refs.missionTable;
+    document.setCurrentRow(this.tableData1[this.intlineaselect]);
+    this.txtnroline="["+this.tableData1[this.intlineaselect].intRequis_Item_NO+"] "+this.tableData1[this.intlineaselect].strDescription;
   }
   /*Compania imput*/
   activar_compania(){
@@ -345,14 +357,37 @@ export default class CrearPRComponent extends Vue {
     if(value=='N'){
       this.cell_ocultar='transparent';
       this.blntiporequisicion=true;
+      this.blncategorialinea=true;
+      
+      this.blncentrocosto=true;
+      this.blnunidadmedida=true;
+      this.blnproveedor=true;
+      this.tableData1=[];
+      
+      for(var i=0;i<10;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+        this.tableData1.push(reqDetalle);
+      }
     }
     else{
       this.cell_ocultar='#e4e2e2';        
       this.blntiporequisicion=false;
+      this.blncategorialinea=false;
+      this.blncuentacontable=false;
+      this.blncentrocosto=false;
+      this.blnunidadmedida=false;
+      this.blnproveedor=false;
+      this.tableData1=[];
+      
+      for(var i=0;i<10;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+        reqDetalle.strCateg_Account="A"
+        this.tableData1.push(reqDetalle);
+      }
     }
-    this.btnactivaralmacen=false;
-    this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
+    // this.btnactivaralmacen=false;
+    // this.btnactivarproveedor=false;
+    // this.btnactivarcompania=false
   }
 
   /*tabla metodos*/
@@ -504,60 +539,89 @@ export default class CrearPRComponent extends Vue {
   getParseDate(fecha){
     return Global.getParseDate(fecha);
   }
-  proveedorSeleccionado(val){
+  companiaSeleccionado(val){
     console.log('traer',val);
-    this.code_compania=val.Code;
-    this.descompania=val.Company_Desc;
+    this.requisicionModel.strCompany_Cod=val.strCompany_Cod;
+    this.requisicionModel.strCompany_Desc=val.strCompany_Desc;
     this.dialogCompania=false;
   }
   SeleccionadoAlmacen(val){
     console.log('traer',val);
-    this.code_almacen=val.CODIGO;
-    this.desalmacen=val.DESCRIPCION;
+    this.requisicionModel.strWHS_Cod=val.strWHS_Cod;
+    this.requisicionModel.strWHS_Desc=val.strWHS_Desc;
+    
     this.dialogAlmacen=false;
   }
   SeleccionadoCategoriaCuenta(val){
-    this.selectrow.categoriacuenta=val.CODIGO;
+    this.selectrow.strCateg_Account=val.strAcctCateg_Cod;
+    this.selectrow.intIdAcctCateg_ID=val.intIdAcctCateg_ID;
     this.dialogCategoriaCuenta=false;
+
+    setTimeout(() => {
+      if(val.strAcctCateg_Cod=='C'){
+        this.dialogCentroCostos=true;
+      }
+    }, 300)
+   
   }
   SeleccionadoCategoriaLinea(val){
     debugger;
-    this.selectrow.categorialinea=val.CODIGO;
+    this.selectrow.strCateg_Line=val.strCategItem_Cod;
+    this.selectrow.intIdCategLine_ID=val.intIdCategLine_ID;
     this.dialogCategoriaLinea=false;
+
+    setTimeout(() => {
+      debugger;
+      if(this.selectrow.strCateg_Account=='C'){
+        if(this.selectrow.strCateg_Line=='B' || this.selectrow.strCateg_Line=='S'){
+          this.dialogMaterial=true;
+        }
+      }
+    }, 300)
   }
   SeleccionadoCentroCosto(val){
     debugger;
-    this.selectrow.centrocosto=val.CostCenter_NO;
+    this.selectrow.strCostCenter=val.strCostCenter_NO;
+    this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
     this.dialogCentroCostos=false;
   }
   SeleccionadoCuentaContable(val){
     debugger;
-    this.selectrow.cuentacontable=val.Acct_NO_Corp;
+    this.selectrow.strAccount_NO=val.strAcc_NO_Local;
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
     debugger;
-    this.selectrow.material=val.Stock_Cod;
+    this.selectrow.strMaterial_Cod=val.strStock_Cod;
+    this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
+    this.selectrow.strUM=val.strUM_Cod;
+    this.selectrow.strDescription=val.strStock_Desc;
+    this.selectrow.strAccount_NO=val.strExp_Acct;
+    this.selectrow.strVendor_Suggested=val.strVendor_NO;
+
     this.dialogMaterial=false;
   }
   SeleccionadoUnidadMedida(val){
     debugger;
-    this.selectrow.unidad_medida=val.CODIGO;
+    this.selectrow.strUM=val.strUM_Cod;
+    
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
     debugger;
-    this.selectrow.proveedor=val.Vendor_NO;
+    this.selectrow.strVendor_Suggested=val.strVendor_NO;
     this.dialogProveedor=false;
   }
   SeleccionadoMoneda(val){
     debugger;
-    this.selectrow.moneda=val.CODIGO;
+    this.selectrow.strCurr=val.strCurrency_Cod;
+    this.selectrow.intIdCurrency_ID=val.intIdCurrency_ID;
     this.dialogMoneda=false;
   }
   SeleccionadoPrioridad(val){
     debugger;
-    this.selectrow.prioridad=val.CODIGO;
+    this.selectrow.strPriority_Cod=val.strPriority_Cod;
+    this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;
   }
   cambioTipoRequisicion(selected){
@@ -566,10 +630,66 @@ export default class CrearPRComponent extends Vue {
     }
     console.log('select',selected);
   }
+  async guardarTodo(val){
+    debugger;
+    
+    var tabla:Array<RequisicionDetalleModel>=[];
+
+    for(var i=0;i<this.tableData1.length;i++){
+      if(this.tableData1[i].strCateg_Account!=""){
+        this.tableData1[i].intRequis_Item_NO=i;
+        tabla.push(this.tableData1[i]);
+      }
+    }
+    console.log(tabla);
+    // var vcabecera=await this.validate();
+    // var vdetalle=await this.validateTabla(tabla,0);
+    // if(!vcabecera && !vdetalle){
+    //   this.salidaModel.listaDetalle=tabla;
+    //   let loading = Loading.service({
+    //     fullscreen: true,
+    //     text: 'Cargando...',
+    //     spinner: 'el-icon-loading',
+    //     background: 'rgba(0, 0, 0, 0.8)'
+    //     }
+    //   );
+    //   for(var i=0;i<50;i++){
+    //     this.valuem=this.valuem+1; 
+    //   }
+
+    //   salidaService.CrearSalida(this.salidaModel)
+    //   .then(res=>{
+    //     debugger;
+    //     for(var i=0;i<50;i++){
+    //       this.valuem++; 
+    //     }
+    //     console.log(this.valuem);
+    //     loading.close();
+    //     if(this.valuem>=100){
+    //       setTimeout(() => {
+    //         this.vifprogress=false;
+    //         this.issave=true;
+    //         this.textosave='Se guardo correctamente.'
+    //         this.openMessage('Se guardo correctamente');
+    //       }, 2000)
+    //     }
+    //   })
+    //   .catch(error=>{
+    //     loading.close();
+    //     this.$message({
+    //       showClose: true,
+    //       type: 'error',
+    //       message: 'No se pudo guardar salida'
+    //     });
+    //   })
+    // }
+    
+  }
   data(){
     return{
       dialogTableVisible: false,
       dialogVisible:false,
+      currentRow: null,
       tableDataServicio:[{}],
       item:{
         date: '',

@@ -23,24 +23,25 @@
                 </div>
             </div>
             <el-table
-            :data="dataTable"
+            :data="monedaModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
             height="250"
+            highlight-current-row
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="CODIGO" label="Codigo" width="180">
+            <el-table-column   prop="strCurrency_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column  prop="DESCRIPCION" label="Descripción" style="width: 70% !important;">
+            <el-table-column  prop="strCurrency_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="BuscarSome()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="modalPopup = false">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>

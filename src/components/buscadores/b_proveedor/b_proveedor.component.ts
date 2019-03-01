@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+import {ProveedorModel} from '@/modelo/maestro/proveedor';
+import proveedorService from '@/components/service/proveedor.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -34,9 +36,25 @@ export default class  BProveedorComponent extends Vue {
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
+  public proveedorModel:Array<ProveedorModel>=[];
+  public proveedorSelectModel:ProveedorModel=new ProveedorModel();
 
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    proveedorService.GetAllProveedor()
+    .then(response=>{
+      console.log('proveedor',response);
+      this.proveedorModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar proveedor'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -129,6 +147,17 @@ export default class  BProveedorComponent extends Vue {
 
   seleccionar(row,index){
     this.$emit('proveedorselecionado',row);
+  }
+
+  handleCurrentChange(val:ProveedorModel){
+    this.proveedorSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('proveedorselecionado',this.proveedorSelectModel);
+  }
+  closePopup(){
+    this.$emit('proveedorClose');
   }
 
   data() {

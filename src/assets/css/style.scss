@@ -12,6 +12,24 @@
 
 $fa-css-prefix: el-icon-fa;
 @import 'node_modules/font-awesome/scss/font-awesome';
+.footer1{
+    position: fixed;
+    width: 84%;
+    color: white;
+    text-align: center;
+    bottom: 0;
+    overflow: visible;
+    z-index: 99;
+    clear: both;
+    margin-left: -0.8rem;
+    -webkit-box-shadow: 0px 0px 2px #cecece;
+    background-color: rgb(242, 247, 249);
+}
+.footertext2{
+  color: black;
+  font-size: 11px;
+  line-height: 10px;
+}
 .footer{
   position: fixed;
   width: 100%;
@@ -21,7 +39,7 @@ $fa-css-prefix: el-icon-fa;
   overflow: visible;
   z-index: 99;
   clear: both;
-  background-color: rgba(0, 0, 0, 0.72);
+  background-color: rgba(0,0,0,.6);
 }
 .footertext{
   color: #fff;

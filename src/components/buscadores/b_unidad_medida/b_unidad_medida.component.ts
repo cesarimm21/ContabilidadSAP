@@ -2,6 +2,9 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
+
+import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
+import unidadmedidaService from '@/components/service/unidadmedida.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
@@ -30,6 +33,8 @@ export default class  BUnidadMedidaComponent extends Vue {
 
   //Modelos
   articulos:any =[];
+  public unidadmedidaModel:Array<UnidadMedidaModel>=[];
+  public unidadmedidaSelectModel:UnidadMedidaModel=new UnidadMedidaModel();
 
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
@@ -37,6 +42,20 @@ export default class  BUnidadMedidaComponent extends Vue {
 
   constructor() {
     super();
+    this.load();
+  }
+  load(){
+    unidadmedidaService.GetAllUnidadMedida()
+    .then(response=>{
+      console.log('unidadmedida',response);
+      this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar unidad medida'
+      });
+    })
   }
 
   redirectLogin(msg){
@@ -129,6 +148,16 @@ export default class  BUnidadMedidaComponent extends Vue {
   
   seleccionar(row,index){
     this.$emit('unidadmedidaselecionado',row);
+  }
+  handleCurrentChange(val:UnidadMedidaModel){
+    this.unidadmedidaSelectModel=val;
+  }
+  checkPopup(){
+    debugger;
+    this.$emit('unidadmedidaselecionado',this.unidadmedidaSelectModel);
+  }
+  closePopup(){
+    this.$emit('unidadmedidaClose');
   }
   data() {
     return {

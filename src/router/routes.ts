@@ -19,6 +19,14 @@ import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-
 import ModificarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante/modificar-ingreso-comprobante.vue'
 import CrearSalidaAlmacenComponent from '../components/LO-LOGISTICA/almacen/al_salida/al_salida.vue'
 import CrearMaterialComponent from '../components/LO-LOGISTICA/almacen/al_crear/al_crear.vue'
+import VisualizarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_visualizar/al_visualizar.vue'
+import ModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_modificar/al_modificar.vue'
+import VisualizarModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_visualizar_modificar/al_visualizar_modificar.vue'
+import VisualizarSalidaMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salida_visualizar/al_salida_visualizar.vue'
+import VisualizarSalidaModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salida_visualizar_modificar/al_salida_visualizar_modificar.vue'
+import ModificarSalidaMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salidam/al_salidam.vue'
+
+
 export default [
  
   {
@@ -121,6 +129,54 @@ export default [
         path:'LO-LOGISTICA/almacen/al_crear',
         component:CrearMaterialComponent,
         name:'almacen_crear'
+      }, 
+      {
+        path:'LO-LOGISTICA/almacen/al_visualizar',
+        component:VisualizarMaterialComponent,
+        name:'almacen_visualizar'
+      }, 
+      {
+        path:'LO-LOGISTICA/almacen/al_visualizar_modificar',
+        component:VisualizarModificarMaterialComponent,
+        name:'almacen_visualizar_modificar'
+      },
+      {
+        path:'LO-LOGISTICA/almacen/al_salida_visualizar',
+        component:VisualizarSalidaMaterialComponent,
+        name:'al_salida_visualizar'
+      },
+      {
+        path:'LO-LOGISTICA/almacen/al_salida_visualizar_modificar',
+        component:VisualizarSalidaModificarMaterialComponent,
+        name:'al_salida_visualizar_modificar'
+      },
+      {
+        path:'LO-LOGISTICA/almacen/al_modificar',
+        component:ModificarMaterialComponent,
+        name:'almacen_modificar'
+      },
+      
+      {
+        path:'LO-LOGISTICA/almacen/al_salidam',
+        component:ModificarSalidaMaterialComponent,
+        name:'al_salidam'
+      },
+      
+      {
+        path:'LO-LOGISTICA/requisicion/pr_crear',
+        component:CrearPRComponent,
+        name:'requisicion_crear'
+      }, 
+      
+      {
+        path:'LO-LOGISTICA/requisicion/pr_visualizar',
+        component:VisualizarPRComponent,
+        name:'pr_visualizar'
+      }, 
+      {
+        path:'LO-LOGISTICA/requisicion/pr_visualizar_modificar',
+        component:VisualizarModificarPRComponent,
+        name:'pr_visualizar_modificar'
       }, 
       {
         path:'LO-LOGISTICA/almacen/al_salida',

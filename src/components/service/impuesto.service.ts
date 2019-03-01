@@ -10,6 +10,12 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetOnlyOneImpuesto(code){
+    return axios.get(CONFIG.API_URL+'impuesto/'+code)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

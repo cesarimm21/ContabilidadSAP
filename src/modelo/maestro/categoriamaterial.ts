@@ -2,6 +2,8 @@ export class CategoriaMaterialModel {
     intIdCategMat_ID:number;
     strCategMat_Cod:string;
     strCategMat_Desc:string;
+    strCategMat_Location:string;
+    
 
     strCreation_User:string;
     dtmCreation_Date:Date;

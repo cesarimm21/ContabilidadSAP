@@ -1,4 +1,4 @@
-import {ReqDetalleModel} from "./reqdetalle";
+import {RequisicionDetalleModel} from "./requisiciondetalle";
 export class RequisicionModel {
     
     intIdPurReqH_ID:number;
@@ -13,11 +13,15 @@ export class RequisicionModel {
     strDesc_Header:string ;
     dtmAuthsd_Date:Date ;
     chrAuthsd_Status:string ;
-    
+    listaDetalle: Array<RequisicionDetalleModel> = new Array();  
+    strCompany_Cod:string;
+    strCompany_Desc:string;
+    strWHS_Cod:string;
+    strWHS_Desc:string;
+
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;
     dtmModified_Date:Date ;
     chrStatus:string ;
-   
 }

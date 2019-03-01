@@ -6,6 +6,7 @@
         <!-- <el-dialog title="Búsqueda Proveedor"  :visible.sync="busquedaProveedorVista" @close="busquedaProveedorVista=false" size="small" >
           <busquedaProveedor v-on:proveedorSeleccionado="proveedorSeleccionado($event)"></busquedaProveedor>
         </el-dialog> -->
+      
       </el-col>
     </el-row>
     <el-row class="main-container">
@@ -399,17 +400,13 @@
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LR01-Crear Requerimiento de Compra</span>
                 </el-menu-item>
-                <el-menu-item index="2-1-2" @click="linkModificarRequisicion()">
+                <el-menu-item index="2-1-2" @click="linkVisualizarModificaRequisicion()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LR02-Modificar Requerimiento de Compras</span>
                 </el-menu-item>
                 <el-menu-item index="2-1-3" @click="linkVisualizarRequisicion()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LR04-Visualizar Requerimiento de Compras</span>
-                </el-menu-item>
-                <el-menu-item index="2-1-4" @click="linkVisualizarModificaRequisicion()">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>LR07-Aceptacion del Servicio</span>
                 </el-menu-item>
               </el-submenu>
               <el-submenu index="2-2">
@@ -454,28 +451,65 @@
                 <template slot="title">
                   <i class="fa fa-caret-right" style="width:10px"></i>
                   <img class="el-folder"/>
-                  <span slot="title">Almacenes</span>
+                  <span slot="title">Inventario</span>
                 </template>
-                <el-menu-item index="2-4-1"  @click="linkCrearMaterial()">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>LA01-Crear Material de Almacen</span>
-                </el-menu-item>
-                <el-menu-item index="2-4-2">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>LA02-Visualizar Material de Almacen</span>
-                </el-menu-item>
-                <el-menu-item index="2-4-20" @click="linkCrearSalidaAlmacen()">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>LA03-Salida Material de Almacen</span>
-                </el-menu-item>
-                <el-menu-item index="2-4-3">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>LA05-Crear Clases de Material</span>
-                </el-menu-item>
-                <el-menu-item index="2-4-3">
-                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>LA06-Visualizar Clases de Material</span>
-                </el-menu-item>
+                <el-submenu index="2-4-1">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Almacen Suministros</span>
+                  </template>
+                  <el-menu-item index="2-4-1-1"  @click="linkCrearMaterial()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA01-Crear Material de Suministros</span>
+                  </el-menu-item>
+                  <el-menu-item index="2-4-1-2" @click="linkModificarMaterial()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA02-Modificar Material de Suministros</span>
+                  </el-menu-item>
+                  <el-menu-item index="2-4-1-20" @click="linkVisualizarMaterialAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA04-Visualizar Material de Suministros</span>
+                  </el-menu-item>
+                </el-submenu>
+                <el-submenu index="2-4-2">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Almacen Mineral</span>
+                  </template>
+                  <el-menu-item index="2-4-2-1"  @click="linkCrearMaterial()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA10-Crear Lotes Mineral</span>
+                  </el-menu-item>
+                  <el-menu-item index="2-4-2-2">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA12-Modificar Lotes Mineral</span>
+                  </el-menu-item>
+                  <el-menu-item index="2-4-2-20" @click="linkCrearSalidaAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA14-Visualizar Lotes Mineral</span>
+                  </el-menu-item>
+                </el-submenu>                
+                <el-submenu index="2-4-3">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Salida Material</span>
+                  </template>
+                  <el-menu-item index="2-4-3-1" @click="linkCrearSalidaAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA03-Crear Salida Material</span>
+                  </el-menu-item>
+                  <el-menu-item index="2-4-3-2" @click="linkModificarSalidaAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>LA03-Modificar Salida Material</span>
+                  </el-menu-item>
+                  <el-menu-item index="2-4-3-3" @click="linkVisualizarSalidaAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                   <span>LA03-Visualizar Salida Material</span>
+                  </el-menu-item>
+                </el-submenu>
               </el-submenu>
               <el-submenu index="2-5">
                 <template slot="title">
@@ -930,12 +964,8 @@
         </div>
       </div>
       <el-col :span="dimensionContent" style="padding: 0px 1%; overflow-y:auto; weight:100%; height:100%; background:#ffffff;">
-        <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-           <quickaccessmenu/>
-        </ol>
         <router-view></router-view>
       </el-col>
-     
     </el-row>
   </div>
 </template>
