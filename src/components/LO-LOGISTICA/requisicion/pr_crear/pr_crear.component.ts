@@ -303,6 +303,14 @@ export default class CrearPRComponent extends Vue {
     this.btnactivarcompania=false;
     return false;
   }
+  closePrioridad(){
+    this.btnactivarprioridad=false;
+    return false;
+  }
+  closeUnidadMedida(){
+    this.btnactivarunidadmedida=false;
+    return false;
+  }
 
   /*Proveedor imput*/
   activar_proveedor(){
@@ -321,6 +329,27 @@ export default class CrearPRComponent extends Vue {
   closeProveedor(){
     debugger;
     this.btnactivarproveedor=false;
+    return false;
+  }
+  closeMaterial(){
+    debugger;
+    this.btnactivarmaterial=false;
+    return false;
+  }
+  closeCuentaContable(){
+    
+    return false;
+  }
+  closeCategoriaLinea(){
+    return false;
+  }
+  closeCentroCostos(){
+    return false;
+  }
+  closeCategoriaCuenta(){
+    return false;
+  }
+  closeMoneda(){
     return false;
   }
 

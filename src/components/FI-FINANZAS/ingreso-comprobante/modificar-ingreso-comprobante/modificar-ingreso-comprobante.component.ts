@@ -97,7 +97,7 @@ export default class ModificarIngresoComprobanteComponent extends Vue {
     this.loadCompania(this.factura.strCompany_Cod)
   }
   loadCompania(v){
-    companiaService.GetCompaniaBystrCod(v)
+    companiaService.GetOnlyOneCompania(v)
     .then(response=>{
       this.companiaModel=response;            
     })
