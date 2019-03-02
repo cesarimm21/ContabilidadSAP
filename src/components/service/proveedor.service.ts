@@ -24,7 +24,7 @@ export default{
   getProveedorID(id){
     return axios.get(CONFIG.API_URL+'proveedor/'+id)
     .then(response => {
-      return response.data
+      return JSON.parse(JSON.stringify(response.data));
     })
   },
   DeleteProveedor(id){

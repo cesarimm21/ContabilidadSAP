@@ -15,11 +15,5 @@ export default{
     .then(response=>{
       return JSON.parse(JSON.stringify(response.data));
     })
-  },
-  getRequisicionByCod(cod){
-    return axios.get(CONFIG.API_URL+'requisicionByCod/'+cod)
-    .then(response=>{
-      return JSON.parse(JSON.stringify(response.data));
-    })
   }
 }
