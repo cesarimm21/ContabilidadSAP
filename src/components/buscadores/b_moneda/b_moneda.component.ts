@@ -147,12 +147,16 @@ export default class  BMonedaComponent extends Vue {
   seleccionar(val:MonedaModel){
     this.monedaSelectModel=val;
     this.$emit('MonedaSeleccionado',this.monedaSelectModel);
+    
+    this.$emit('monedaselecionado',this.monedaSelectModel)
   }
   handleCurrentChange(val:MonedaModel){
     this.monedaSelectModel=val;
   }
   checkMoneda(){
     this.$emit('MonedaSeleccionado',this.monedaSelectModel)
+    
+    this.$emit('monedaselecionado',this.monedaSelectModel)
   }
   closeMoneda(){
     this.$emit('closeMoneda');
