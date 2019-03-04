@@ -125,7 +125,11 @@ export default class QuickAccessMenuComponent extends Vue {
   confirmaraceptar(){
     //alert("Excelente");
     this.SendDocument=false;
-    this.$emit('guardarTodo','hola');
+     if(Global.nameComponent==='crear-po'){
+      this.$emit('guardarPO',Global.nameComponent);    
+      debugger;
+    }  
+    // this.$emit('guardarTodo','hola');
 
   }
   linksUser(comand){

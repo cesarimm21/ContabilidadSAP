@@ -14,7 +14,7 @@ export class RequisicionDetalleModel {
     strCateg_Line:string;
     strMaterial_Cod:string;
     strPriority_Cod:string;
-    fltQuantity:number ;
+    fltQuantity:number=0 ;
     strUM:string ;
     fltUnitPrice:number;
     fltValue_Total:number ;

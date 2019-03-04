@@ -291,7 +291,7 @@
                                                 <label class="el-form-item__label col-md-3" >Código</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" v-model="productoModel.strStock_Cod" placeholder="">
+                                                    <el-input size ="small" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -302,7 +302,7 @@
                                                 <label class="el-form-item__label col-md-4" >Descripción</label>
                                                 <div class="col-md-8 grupolabel">
                                                     <div class="input-group mb-8" >
-                                                    <el-input size ="small" v-model="productoModel.strStock_Desc" placeholder="">
+                                                    <el-input size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -315,7 +315,7 @@
                                                 <label class="el-form-item__label col-md-3" >Nombre</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-7" >
-                                                    <el-input size ="small" v-model="productoModel.strStock_Name" placeholder="">
+                                                    <el-input size ="small" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -408,7 +408,7 @@
                                                 <label class="el-form-item__label col-md-4" >Precio</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" v-model="productoModel.fltPrecUnit_Local" placeholder="">
+                                                    <el-input size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>

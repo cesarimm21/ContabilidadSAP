@@ -47,7 +47,6 @@ export default class  BImpuestoComponent extends Vue {
   load(){
     impuestoService.GetAllImpuesto()
     .then(response=>{
-      console.log('impuesto',response);
       this.impuestoModel=response;       
     }).catch(error=>{
       this.$message({
@@ -151,6 +150,7 @@ export default class  BImpuestoComponent extends Vue {
     this.impuestoSelectModel=val;
   }
   checkPopup(){
+    
     debugger;
     this.$emit('impuestoselecionado',this.impuestoSelectModel);
   }
