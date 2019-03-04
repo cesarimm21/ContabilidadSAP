@@ -38,10 +38,10 @@
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkMoneda()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeMoneda()">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>

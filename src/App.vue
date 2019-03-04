@@ -765,4 +765,17 @@ body {
     border-width: 1px;
     margin-right: -3px;
 }
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #308d33;
+    border-color: #308d33;
+}
+.el-checkbox__inner {
+    border-radius: 14px;
+}
+.el-input.is-disabled .el-input__inner {
+    background-color: #eef1f6;
+    border-color: #d1dbe5;
+    color: #1f2d3d;
+    cursor: not-allowed;
+}
 </style>

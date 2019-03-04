@@ -130,9 +130,10 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   DateContabilizacionClick(){ 
     var date1=Global.getDateVencida(this.factura.dtmDoc_Acc_Date,this.proveedor.intDayToPay);
     this.factura.dtmDue_Date=date1;
-    this.fechavencida=Global.getDateString(date1);    
+    this.fechavencida=Global.getDateString(date1);   
     
 }
+
   //#region [COMPANIA]
   loadCompania(){
     this.dialogCompania=true;

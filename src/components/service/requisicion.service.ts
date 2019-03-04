@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as CONFIG from '../../Config';
 import GLOBAL from '../../Global';
 export default{
-  headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
+  // headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
  
   crearRequisicion(data){
     return axios.post(CONFIG.API_URL+'requisicion', data)

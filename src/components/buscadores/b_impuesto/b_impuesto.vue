@@ -25,14 +25,14 @@
             <el-table
             :data="impuestoModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-            style="width: 100%" class="ExcelTable2007"
+            style="width: 100%;cursor: pointer;" class="ExcelTable2007"
             height="250"
             highlight-current-row
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
             <el-table-column   prop="strWH_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column  prop="strWH_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column  prop="fltPorcent" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
