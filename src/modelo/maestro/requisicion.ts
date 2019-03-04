@@ -12,7 +12,7 @@ export class RequisicionModel {
     strDesc_Header:string ;
     dtmAuthsd_Date:Date ;
     chrAuthsd_Status:string ;
-    // listaDetalle: Array<RequisicionDetalleModel> = new Array();  
+    listaDetalle: Array<RequisicionDetalleModel> = new Array();  
     strCompany_Cod:string;
     strCompany_Desc:string;
     strWHS_Cod:string;
