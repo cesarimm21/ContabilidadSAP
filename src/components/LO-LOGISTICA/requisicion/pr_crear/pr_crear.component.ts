@@ -85,7 +85,9 @@ export default class CrearPRComponent extends Vue {
   hours:number;
   minutos:number;
   seconds:number;
+  textosave:string='';
   user:any;
+  vifprogress:boolean=true;
   tiempoagotado:any;
   contador:any=0;
   _10min:boolean=false;
@@ -109,7 +111,8 @@ export default class CrearPRComponent extends Vue {
   dialogMoneda:boolean=false;
   dialogPrioridad:boolean=false;
   dialogCentroCostos:boolean=false;
-
+  valuem:number=0;
+  issave:boolean=true;
 
   /*input*/
   btnactivarcompania:boolean=false;
@@ -144,14 +147,13 @@ export default class CrearPRComponent extends Vue {
   
   public tableData1:Array<RequisicionDetalleModel>=[]; 
   public requisicionModel:RequisicionModel=new RequisicionModel();
-  public almacenModel:AlmacenModel=new AlmacenModel();
   public productoModel:ProductoModel=new ProductoModel();
   public selectrow:RequisicionDetalleModel=new RequisicionDetalleModel();
   public proveedorModel:ProveedorModel=new ProveedorModel();
   public categoriaCuentaModel:CategoriaCuentaModel=new CategoriaCuentaModel();
   public tipoRequisicionModel:TipoRequisicionModel=new TipoRequisicionModel();
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
-  
+
   getTotals:number=0;
   
   /*tabla*/
@@ -160,7 +162,6 @@ export default class CrearPRComponent extends Vue {
     column:''
   };
   fecha_actual:string;
-  selectrow:any;
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   blncategorialinea:boolean=true;
@@ -169,8 +170,8 @@ export default class CrearPRComponent extends Vue {
   blnunidadmedida:boolean=true;
   blnproveedor:boolean=true;
   intlineaselect:number=-1;
-
-  tiporequisicion:string='';
+  tiporequisicion:string='';  
+  tiporequisicionant:string='';
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());

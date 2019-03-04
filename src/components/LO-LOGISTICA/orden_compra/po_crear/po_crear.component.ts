@@ -39,11 +39,12 @@ export default class CrearPOComponent extends Vue {
     btnactivarrequisicion:boolean=false;
     dialogRequisicion:boolean=false;
     fecha_ejecucion:string;
-    vifprogress=false;
-    issave=false;
-    iserror=false;
+    vifprogress:boolean=true;
+    issave:boolean=false;
+    iserror:boolean=false;
     codigoInput:any;
-    textosave=''
+    textosave='';
+    valuem:number=0;
     totalItems:number;
     totalPrice:number;
     //**[IMPUESTO] */
