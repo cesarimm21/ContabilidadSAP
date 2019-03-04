@@ -29,10 +29,14 @@ import VisualizarSalidaMaterialComponent from '../components/LO-LOGISTICA/almace
 import VisualizarSalidaModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salida_visualizar_modificar/al_salida_visualizar_modificar.vue'
 import ModificarSalidaMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salidam/al_salidam.vue'
 
-
 import CrearPOComponent from '../components/LO-LOGISTICA/orden_compra/po_crear/po_crear.vue'
 import ModificarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.vue'
 import VisualizarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_visualizar/po_visualizar.vue'
+import AprobarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_aprobacion/po_aprobacion.vue'
+import AprobadorPRComponent from '../components/LO-LOGISTICA/requisicion/pr_aprobador/pr_aprobador.vue'
+import AprobarSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidaaprobar/al_salidaaprobar.vue'
+
+
 export default [
  
   {
@@ -67,11 +71,6 @@ export default [
             path:'pr_crear',
             component:CrearPRComponent,
             name:'pr_crear'
-          },
-          {
-            path:'pr_modificar',
-            component:ModificarPRComponent,
-            name:'pr_modificar'
           },
           {
             path:'pr_visualizar',
@@ -164,23 +163,40 @@ export default [
         name:'al_salida_visualizar_modificar'
       },
       {
+        path:'LO-LOGISTICA/almacen/salida/al_salidaaprobar',
+        component:AprobarSalidaComponent,
+        name:'al_salidaaprobar'
+      },
+      {
         path:'LO-LOGISTICA/almacen/al_modificar',
         component:ModificarMaterialComponent,
         name:'almacen_modificar'
       },
-      
+      {
+        path:'LO-LOGISTICA/orden_compra/po_aprobacion',
+        component:AprobarPOComponent,
+        name:'po_aprobacion'
+      },
       {
         path:'LO-LOGISTICA/almacen/al_salidam',
         component:ModificarSalidaMaterialComponent,
         name:'al_salidam'
       },
-      
       {
         path:'LO-LOGISTICA/requisicion/pr_crear',
         component:CrearPRComponent,
         name:'requisicion_crear'
       }, 
-      
+      {
+        path:'LO-LOGISTICA/requisicion/pr_modificar',
+        component:ModificarPRComponent,
+        name:'requisicion_modificar'
+      }, 
+      {
+        path:'LO-LOGISTICA/requisicion/pr_aprobador',
+        component:AprobadorPRComponent,
+        name:'requisicion_aprobador'
+      }, 
       {
         path:'LO-LOGISTICA/requisicion/pr_visualizar',
         component:VisualizarPRComponent,

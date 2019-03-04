@@ -408,6 +408,10 @@
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LR04-Visualizar Requerimiento de Compras</span>
                 </el-menu-item>
+                <el-menu-item index="2-1-4" @click="linkAprobarRequisicionAlmacen()">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>LR05-Aprobar Requerimiento</span>
+                </el-menu-item>
               </el-submenu>
               <el-submenu index="2-2">
                 <template slot="title">
@@ -426,6 +430,10 @@
                 <el-menu-item index="2-2-3" @click="ViewPO()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>LO04-Visualizar Orden de Compra</span>
+                </el-menu-item>
+                <el-menu-item index="2-2-4" @click="AprobarPO()">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>LO05-Aprobar Orden de Compra</span>
                 </el-menu-item>
               </el-submenu>
               <el-submenu index="2-3">
@@ -509,6 +517,11 @@
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                    <span>LA03-Visualizar Salida Material</span>
                   </el-menu-item>
+                  <el-menu-item index="2-4-3-4" @click="linkAprobarSalidaAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                   <span>LA04-Aprobar Salida Material</span>
+                  </el-menu-item>
+                  
                 </el-submenu>
               </el-submenu>
               <el-submenu index="2-5">

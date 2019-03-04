@@ -187,6 +187,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.tiporequisicion="A";
     for(var i=0;i<10;i++){
       var items:SalidaDetalleModel=new SalidaDetalleModel();
+      items.intIssueAjust_Item=i+1;
       items.strStock_Cod='';
       items.strStock_Desc='';
       items.fltIssueRequest_QTY=0;
@@ -582,7 +583,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   SeleccionadoCuentaContable(val){
     debugger;
-    this.selectrow.strAcc_NO_Local=val.strAcc_NO_Corp;
+    this.selectrow.strAcc_NO_Local=val.strAcc_Local_NO;
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
@@ -778,6 +779,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       for(var i=0;i<50;i++){
         this.valuem=this.valuem+1; 
       }
+      console.log('salida',this.salidaModel);
 
       salidaService.CrearSalida(this.salidaModel)
       .then(res=>{

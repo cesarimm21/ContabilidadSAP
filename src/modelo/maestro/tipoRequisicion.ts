@@ -1,4 +1,4 @@
-export class TipoRequisiciónModel {
+export class TipoRequisicionModel {
     intIdTypeReq_ID:number;
     strTypeReq_Cod:string;
     strTipReq_Desc:string;

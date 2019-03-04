@@ -21,5 +21,17 @@ export default{
     .then(response=>{
       return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  aprobarPO(data){
+    return axios.post(CONFIG.API_URL+'ordencompra/aprobar',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  busquedaPO(data){
+    return axios.get(CONFIG.API_URL+'busqueda/ordencompra/'+data.strPO_NO+'/'+data.strVendor_NO+'/'+data.desde+'/'+data.hasta)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

@@ -150,6 +150,16 @@ export default class BarmenuComponent extends Vue {
   linkCrearSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_salida')
   }
+  linkAprobarSalidaAlmacen(){
+    router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidaaprobar')
+  }
+  AprobarPO(){
+    router.push('/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion')
+  }
+  linkAprobarRequisicionAlmacen(){
+    router.push('/barmenu/LO-LOGISTICA/requisicion/pr_aprobador')
+  }
+  
   linkModificarSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/al_salida_visualizar_modificar')
   }
@@ -246,7 +256,7 @@ export default class BarmenuComponent extends Vue {
       router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar')
     }
     linkVisualizarModificaRequisicion(){
-      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar_modificar')
+      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_modificar')
     }
   data() {
     return {

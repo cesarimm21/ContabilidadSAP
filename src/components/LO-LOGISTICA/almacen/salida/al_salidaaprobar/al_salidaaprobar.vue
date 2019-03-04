@@ -1,13 +1,13 @@
 <template>
-  <div class="aprobar-po">
+  <div class="aprobador-pr">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
         <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"  v-on:validarView="validarView()"/>
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Aprobador Orden Compra</span>
+            <span class="labelheadercard" >Aprobador Salida</span>
             <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
-                <img class="imagenfilter" src="../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
+                <img class="imagenfilter" src="../../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
             </el-button>
         </div>
         <div class="row bodycard">
@@ -18,23 +18,11 @@
                             <label class="el-form-item__label col-md-2" >Código</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"  v-model="strPO_NO"  placeholder="">
+                                <el-input size ="small"  v-model="formBusqueda.strIssueAjust_NO"  placeholder="">
                                 </el-input>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Proveedor</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
-                                        <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="LoadProveedor()"></el-button> 
-                                    </el-input>
-                                </div>
-                            </div>
-                            <span style="font-size: 11px;margin-top: 5px;">{{strVendor_Desc}}</span>
-                        </div>
-                        
                         <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha Desde</label>
                             <div class="col-md-2 grupolabel">
@@ -79,14 +67,14 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Código PO">
+                                        <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Código">
                                             <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strIssueAjust_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCompany_Cod" sortable  width="120"
-                                            label="Cod. Compañia">
+                                            label="Código Compañia">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCompany_Cod }}</label>
                                             </template>
@@ -100,43 +88,30 @@
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strTypeMov_Cod" sortable  width="120"
-                                            label="Cod. Almacen">
+                                            label="Código Tipo Movimiento">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strTypeMov_Desc" sortable width="150"
-                                            label="Almacen">
+                                            prop="strTypeMov_Desc" sortable width="100"
+                                            label="Tipo Movimiento">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strWHS_Cod" sortable width="100"
-                                            label="Cod Proveedor">
+                                            prop="strWHS_Cod" sortable width="150"
+                                            label="Código Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="" sortable width="150"
-                                            label="Proveedor">
+                                            prop="strWHS_Desc" sortable 
+                                            label="Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        
-                                        <el-table-column
-                                            prop="dtmTransaction_Date" sortable width="100"
-                                            label="Cantidad Total">
-                                            <template scope="scope">
-                                                <el-date-picker
-                                                    type="date"
-                                                    v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmTransaction_Date" >
-                                                </el-date-picker>
-                                                <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmTransaction_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -168,13 +143,13 @@
                          <b-progress-bar :value="valuem" :label="valuem + '%'" />
                     </b-progress>
                 </div>
-                <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img  src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span> 
             </div>
             <div class="col-sm-3">
                 <div style="text-align:right">
-                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <img src="../../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
                     <span class="footertext2">SQV1</span>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
@@ -188,16 +163,11 @@
         </div>
         
     </div>
-      <!--DIALOG BUSQUEDA PROVEEDOR-->
-    <el-dialog title="Busqueda proveedor"  :visible.sync="dialogProveedor" @close="closeProveedor" size="small" >
-      <bproveedor v-on:proveedorselecionado="SeleccionadoProveedor($event)" v-on:proveedorClose="proveedorClose($event)">
-      </bproveedor>
-    </el-dialog>
   </div>  
 </template>
 <script>
-import AprobarPOComponent from '@/components/LO-LOGISTICA/orden_compra/po_aprobacion/po_aprobacion.component'
-export default AprobarPOComponent
+import AprobarSalidaComponent from '@/components/LO-LOGISTICA/almacen/salida/al_salidaaprobar/al_salidaaprobar.component'
+export default AprobarSalidaComponent
 </script>
 <style scoped>
 .selected{

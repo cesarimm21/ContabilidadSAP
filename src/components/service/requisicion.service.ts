@@ -9,5 +9,35 @@ export default{
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  busquedaRequisicion(data){
+    return axios.get(CONFIG.API_URL+'busqueda/requisicion/'+data.strRequis_NO+'/'+data.desde+'/'+data.hasta+'/'+data.strDesc_Header)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getRequisicionByCod(code){
+    return axios.get(CONFIG.API_URL+'requisicionByCod/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getrequisiciondetalle(code){
+    return axios.get(CONFIG.API_URL+'requisiciondetallev2/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  aprobarRequisicion(data){
+    return axios.post(CONFIG.API_URL+'requisicion/aprobar',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  rechasarRequisicion(data){
+    return axios.post(CONFIG.API_URL+'requisicion/rechasar',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }

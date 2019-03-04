@@ -18,10 +18,32 @@ export class RequisicionModel {
     strCompany_Desc:string;
     strWHS_Cod:string;
     strWHS_Desc:string;
+    strTipReq_Desc:string;
+    strTypeReq_Cod:string;
    
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;
     dtmModified_Date:Date ;
     chrStatus:string ;
+    constructor(){
+        this.intIdPurReqH_ID=-1;
+        this.intIdCompany_ID=-1;
+        this.strRequis_NO='';
+        this.intIdWHS_ID=-1;
+        this.intIdTypeReq_ID=-1;
+        this.strRequested_By='';
+        this.dtmRequested_Date=new Date();
+        this.strReq_By_Pos='';
+        this.strAuthsd_By='';
+        this.strDesc_Header='';
+        this.dtmAuthsd_Date=new Date();
+        this.chrAuthsd_Status='';
+        this.strCompany_Cod='';
+        this.strCompany_Desc='';
+        this.strWHS_Cod='';
+        this.strWHS_Desc='';
+        this.strTipReq_Desc='';
+        this.strTypeReq_Cod='';
+    }
 }

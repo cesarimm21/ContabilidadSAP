@@ -35,10 +35,14 @@ import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
+import salidaService from '@/components/service/salida.service';
 
 import Handsontable from 'handsontable-pro';
 
 import {SalidaMaterialModel} from '@/modelo/maestro/salidamaterial';
+import {SalidaModel} from '@/modelo/maestro/salida';
+import {SalidaDetalleModel} from '@/modelo/maestro/salidadetalle';
+
 import { Notification } from 'element-ui';
 import Global from '@/Global';
 Vue.directive('focus', {
@@ -112,7 +116,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   dialogPrioridad:boolean=false;
   dialogCentroCostos:boolean=false;
 
-  public salidaModel:SalidaMaterialModel=new SalidaMaterialModel();
+  public salidaModel:SalidaModel=new SalidaModel();
 
   /*input*/
   btnactivarcompania:boolean=false;
@@ -146,24 +150,11 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   code_almacen:string='';
   cell_ocultar:string='transparent';
   value: string='';
-  tableData1:any=[
-    {
-      date:Global.getParseDate(new Date().toDateString()),
-      categoriacuenta: '',
-      categorialinea: '',
-      cuentacontable: '',
-      material:'',
-      material_descripcion:'',
-      cantidad:0,
-      unidad_medida:'',
-      proveedor:'',
-      moneda:'',
-      prioridad:'',
-      fecha_estimada:Global.getParseDate(new Date().toDateString()),
-      centrocosto:'',
-    }
-  ];
-  
+  vifprogress:boolean=true;
+  textosave:string='';
+  iserror:boolean=false;
+  issave:boolean=false;
+  public tableData1:Array<SalidaDetalleModel>=[];  
   /*tabla*/
   editing:any= {
     row:'',
@@ -175,6 +166,11 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
   visualizar:boolean;
+  
+  vifaprobarrechasar:boolean=false;
+  txtmodulo:string='';
+  valuem:number=0;
+  tiporequisicionant:string='';
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -199,16 +195,50 @@ export default class ModificarSalidaMaterialComponent extends Vue {
       this.tableData1.push(item);
     }
     console.log(this.tableData1);
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   load(){
-    var view = this.$route.query.vista;
-    if(view==="visualizar"){
-      this.visualizar=true;
+    var object = JSON.parse(this.$route.query.data);
+    var modulo = this.$route.query.vista;
+    if(modulo.toLowerCase()!='aprobar'){
+      this.txtmodulo='Modificar Salida';
+      this.vifaprobarrechasar=false;
+      if(modulo.toLowerCase()!='visualizar'){
+        this.visualizar=true;
+      }
+      else{
+        this.visualizar=false;
+      }
     }
     else{
-      this.visualizar=false;
+        this.visualizar=true;
+        this.vifaprobarrechasar=true;
+        this.txtmodulo='Aprobar Salida';
+        console.log('Aprobar',object.strIssueAjust_NO);
+        this.cargar(object.strIssueAjust_NO);
     }
+  }
+  cargar(code){
+    salidaService.getSalidaId(code)
+    .then(res=>{
+      if(res!=undefined){
+        console.log('cargarData1',res)
+        salidaService.getSalidaDetalleId(res[0].intIssueAjustH_ID)
+        .then(resd=>{
+          this.salidaModel=res[0];
+          this.tableData1=resd;
+          console.log('cargarData2',resd,this.tableData1)
+        })
+        .catch(error=>{
+          console.log('error',error)
+        })     
+      }
+    })
+    .catch(error=>{
+      console.log('error',error)
+    })
   }
   fnOcultar(){
     this.ocultar=!this.ocultar;
@@ -638,17 +668,71 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     this.dialogUnidadMedida=false;
   }
   tipomovimientoSelecionado(val){
-    this.salidaModel.tipomovimiento=val.strTypeMov_Cod
-    this.destipomovimiento=val.strTypeMov_Desc;
+    // this.salidaModel.tipomovimiento=val.strTypeMov_Cod
+    // this.destipomovimiento=val.strTypeMov_Desc;
    
-    this.dialogTipoMovimiento=false;
+    // this.dialogTipoMovimiento=false;
   }
   companiaSeleccionado(val){
     debugger;
-    this.salidaModel.compania=val.strCompany_Cod
-    this.descompania=val.strCompany_Desc;
+    // this.salidaModel.compania=val.strCompany_Cod
+    // this.descompania=val.strCompany_Desc;
    
-    this.dialogCompania=false;
+    // this.dialogCompania=false;
+  }
+  async aprobar(){
+    this.valuem=0;
+    this.salidaModel.strApproved_User='ADMINISTRADOR';
+    await setTimeout(() => {
+      for(var i=0;i<100;i++){
+        this.valuem++; 
+      }
+    }, 200)
+    console.log('aprobar',this.salidaModel);
+    await salidaService.aprobarSalida(this.salidaModel)
+    .then(res=>{
+      debugger;
+      console.log(this.valuem);
+      this.salidaModel.listaDetalle=this.tableData1;
+      salidaService.inventarioSalida(this.salidaModel)
+      .then(res=>{
+        setTimeout(() => {
+          this.vifprogress=false;
+          this.issave=true;
+          this.textosave='Se aprobó correctamente. '+res.strIssueAjust_NO;
+          this.openMessage('Se aprobó correctamente '+res.strIssueAjust_NO);
+        }, 600)
+      })
+      .catch(error=>{
+        this.textosave='Ocurrio un error inesperado. ';
+      })
+    })
+    .catch(error=>{
+      this.textosave='Ocurrio un error inesperado. ';
+    })
+  }
+  async rechasar(){
+    this.valuem=0;
+    this.salidaModel.strApproved_Status='ADMINISTRADOR';
+    await setTimeout(() => {
+      for(var i=0;i<100;i++){
+        this.valuem++; 
+      }
+    }, 200)
+    await salidaService.rechasarSalida(this.salidaModel)
+    .then(res=>{
+      debugger;
+      console.log(this.valuem);
+      setTimeout(() => {
+        this.vifprogress=false;
+        this.issave=true;
+        this.textosave='Se rechazó correctamente. '+res.strIssueAjust_NO;
+        this.openMessage('Se rechazó correctamente '+res.strIssueAjust_NO);
+      }, 600)
+    })
+    .catch(error=>{
+      this.textosave='Ocurrio un error inesperado. ';
+    })
   }
   data(){
     return{

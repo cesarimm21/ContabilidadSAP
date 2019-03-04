@@ -36,11 +36,13 @@ import proveedorService from '@/components/service/proveedor.service';
 import requisicionService from '@/components/service/requisicion.service';
 import productoService from '@/components/service/producto.service';
 import categoriacuentaService from '@/components/service/categoriacuenta.service';
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
 import {RequisicionDetalleModel} from '@/modelo/maestro/requisiciondetalle';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {RequisicionModel} from '@/modelo/maestro/requisicion';
 import {ProductoModel} from '@/modelo/maestro/producto';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 
 import Handsontable from 'handsontable-pro';
@@ -150,6 +152,8 @@ export default class CrearPRComponent extends Vue {
   public selectrow:RequisicionDetalleModel=new RequisicionDetalleModel();
   public proveedorModel:ProveedorModel=new ProveedorModel();
   public categoriaCuentaModel:CategoriaCuentaModel=new CategoriaCuentaModel();
+  public tipoRequisicionModel:TipoRequisicionModel=new TipoRequisicionModel();
+  public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
   
   getTotals:number=0;
   
@@ -177,9 +181,7 @@ export default class CrearPRComponent extends Vue {
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
-    this.tiporequisicion="A";    
-    this.tiporequisicionant='A';
-
+   
     this.cell_ocultar='#e4e2e2';        
     this.blntiporequisicion=false;
     this.blncategorialinea=false;
@@ -192,22 +194,33 @@ export default class CrearPRComponent extends Vue {
 
   load(){
     categoriacuentaService.GetOnlyOneCategoriaCuenta("A")
-      .then(res=>{
-        this.categoriaCuentaModel=res[0];
-        console.log('Categoria-Cuenta',this.categoriaCuentaModel);
-        for(var i=0;i<10;i++){
-          var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-          reqDetalle.strCateg_Account="A";
-          reqDetalle.intRequis_Item_NO=i+1;
-          reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
-          this.tableData1.push(reqDetalle);
-        }
-        console.log(this.tableData1);
- 
-      })
-      .catch(error=>{
-        console.log('error',error)
-      })
+    .then(res=>{
+      this.categoriaCuentaModel=res[0];
+      console.log('Categoria-Cuenta',this.categoriaCuentaModel);
+      for(var i=0;i<10;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+        reqDetalle.strCateg_Account="A";
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.tableData1.push(reqDetalle);
+      }
+      console.log(this.tableData1);
+
+    })
+    .catch(error=>{
+      console.log('error',error)
+    })
+    tipoRequisicionService.GetAllTipoRequisicion()
+    .then(res=>{
+      debugger;
+      this.tabletipoRequisicion=res;
+      this.tiporequisicion="A";    
+      this.tiporequisicionant='A';
+  
+    })
+    .catch(error=>{
+      console.log('error',error)
+    })
   }
 
   fnOcultar(){
@@ -669,6 +682,7 @@ export default class CrearPRComponent extends Vue {
     console.log('traer',val);
     this.requisicionModel.strWHS_Cod=val.strWHS_Cod;
     this.requisicionModel.strWHS_Desc=val.strWHS_Desc;
+    this.requisicionModel.intIdWHS_ID=val.intIdWHS_ID;
     
     this.dialogAlmacen=false;
     this.inlineText();
@@ -775,6 +789,13 @@ export default class CrearPRComponent extends Vue {
     for(var i=0;i<50;i++){
       this.valuem=this.valuem+1; 
     }
+    this.requisicionModel.strTypeReq_Cod=this.tiporequisicion;
+    for(var i=0;i<this.tabletipoRequisicion.length;i++){
+      if(this.tiporequisicion==this.tabletipoRequisicion[i].strTypeReq_Cod){
+        this.requisicionModel.strTipReq_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
+        this.requisicionModel.intIdTypeReq_ID=this.tabletipoRequisicion[i].intIdTypeReq_ID;
+      }
+    }
     this.requisicionModel.listaDetalle=tabla;
     console.log('---***---',this.requisicionModel);
     requisicionService.crearRequisicion(this.requisicionModel)
@@ -788,8 +809,9 @@ export default class CrearPRComponent extends Vue {
         setTimeout(() => {
           this.vifprogress=false;
           this.issave=true;
-          this.textosave='Se guardo correctamente.'
-          this.openMessage('Se guardo correctamente');
+          
+          this.textosave='Se guardo correctamente. '+res.strRequis_NO;
+          this.openMessage('Se guardo correctamente '+res.strRequis_NO);
         }, 600)
       }
     })

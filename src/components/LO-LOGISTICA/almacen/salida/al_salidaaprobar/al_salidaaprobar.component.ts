@@ -1,4 +1,3 @@
-
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
@@ -26,17 +25,13 @@ import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
 import salidaService from '@/components/service/salida.service';
-import ordencompraService from '@/components/service/ordencompra.service';
-
-import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 
 import Handsontable from 'handsontable-pro';
-import proveedorService from '@/components/service/proveedor.service';
+
 import {SalidaMaterialModel} from '@/modelo/maestro/salidamaterial';
 import { Notification } from 'element-ui';
 import Global from '@/Global';
 import { SalidaModel } from '@/modelo/maestro/salida';
-import {OrdenCompraModel } from '@/modelo/maestro/ordencompra';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -47,7 +42,7 @@ var EditableColumn = {
   props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
 }
 @Component({
-  name: 'aprobar-po',
+  name: 'salidam-pr',
   components:{
     'buttons-accions':ButtonsAccionsComponent,
     'bcompania':BCompaniaComponent,
@@ -58,34 +53,29 @@ var EditableColumn = {
     'bcuentacontable':BCuentaContableComponent,
     'bmaterial':BMaterialComponent,
     'quickaccessmenu':QuickAccessMenuComponent,
-    'bproveedor':BProveedorComponent,
   } ,
 })
-export default class AprobarPOComponent extends Vue {
+export default class AprobarSalidaComponent extends Vue {
   timer=0;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   formBusqueda:any={
-    'strPO_NO':'',
+    'strIssueAjust_NO':'',
     'desde':new Date(),
     'hasta':new Date(),
-    'strVendor_NO':''
+    'strDesc_Header':''
   }
-  strPO_NO:string='';
-
   public salidaModel:SalidaMaterialModel=new SalidaMaterialModel();
   
   fechaHasta:any=new Date();
   fechaDesde:any=new Date();
-  public tableData:Array<OrdenCompraModel>=[]; 
+  public tableData:Array<SalidaModel>=[]; 
   vifprogress:boolean=true;
   textosave:string='';
   iserror:boolean=false;
   issave:boolean=false;
   valuem=0;
   
-  btnactivarproveedor:boolean=false;
-  dialogProveedor:boolean=false;
   tableData1:any=[
     {
       date:Global.getParseDate(new Date().toDateString()),
@@ -116,8 +106,9 @@ export default class AprobarPOComponent extends Vue {
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
   visualizar:boolean;
-  strVendor_NO:string='';
-  strVendor_Desc:string='';
+  
+  btnactivarproveedor:boolean=false;
+  dialogProveedor:boolean=false;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -153,64 +144,14 @@ export default class AprobarPOComponent extends Vue {
       this.visualizar=false;
     }
   }
+  
   desactivar_proveedor(){
     debugger;
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
   }
-  activar_proveedor(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarproveedor=true;
-    }, 120)
-  }
-  limpiarBotones(){
-    this.btnactivarproveedor=false;
-  }
-  closeProveedor(){
-    debugger;
-    this.btnactivarproveedor=false;
-    return false;
-  }
-  SeleccionadoProveedor(val){
-    debugger;
-
-    this.strVendor_NO=val.strVendor_NO;
-    this.strVendor_Desc=val.strVendor_Desc;
-    this.dialogProveedor=false;
-  }
-  enterProveedor(code){
-    //alert('Bien'+code);
-    debugger;
-    proveedorService.GetOnlyOneProveedor(code)
-    .then(response=>{
-      debugger;
-      if(response!=undefined){
-        if(response.length>0){
-          this.strVendor_NO=response[0].strVendor_NO;
-          this.strVendor_Desc=response[0].strVendor_Desc;
-          this.dialogProveedor=false;
-          this.btnactivarproveedor=false;
-        }
-      }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar proveedor'
-      });
-    })
-  }
-  borrarProveedor(){
-    this.strVendor_Desc='';
-    this.dialogProveedor=false;
-    this.btnactivarproveedor=false;
-  }
-  LoadProveedor(){
-    this.dialogProveedor=true;      
-  }
+  
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
@@ -303,18 +244,15 @@ export default class AprobarPOComponent extends Vue {
   async Buscar(){
     debugger;
     var data:any=this.formBusqueda;
-    if(this.strPO_NO==''){
-      data.strPO_NO='*'
-    }
-    if(this.strVendor_NO==''){
-      data.strVendor_NO='*'
+    if(data.strIssueAjust_NO==''){
+      data.strIssueAjust_NO='*'
     }
     data.desde=await Global.getDateString(this.fechaDesde)
     data.hasta= await Global.getDateString(this.fechaHasta)
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
-    await ordencompraService.busquedaPO(data)
+    await salidaService.busquedaSalida(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){

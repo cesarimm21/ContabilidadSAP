@@ -35,10 +35,10 @@
                                     
                                     <el-select v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
                                         <el-option style="font-size:13px"
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
+                                        v-for="item in tabletipoRequisicion"
+                                        :key="item.strTypeReq_Cod"
+                                        :label="item.strTipReq_Desc"
+                                        :value="item.strTypeReq_Cod">
                                         </el-option>
                                     </el-select>
                                 </div>
