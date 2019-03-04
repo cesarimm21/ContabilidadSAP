@@ -168,7 +168,14 @@ export default class CrearPOComponent extends Vue {
           }, 120)
     }
     handleSelectionChange(val) {
-        this.multipleSelection = val;                     
+        this.multipleSelection = val;    
+        this.totalItems=0;
+        this.totalPrice=0;
+        for(var i=0;i<this.multipleSelection.length;i++){
+            this.totalItems=this.totalItems+Math.round(this.multipleSelection[i].fltQuantity * 100)/100;
+            this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[i].fltValue_Total * 100)/100;
+        }    
+        console.log(this.totalPrice);        
       }
     //#endregion
 
@@ -222,14 +229,7 @@ export default class CrearPOComponent extends Vue {
         this.requiDetalle1=[];
         this.requiDetalle1 = temp.filter(function(hero) {
             return hero.strVendor_Suggested == code;
-        }); 
-        for(var i=0;i<this.requiDetalle1.length;i++){
-            this.totalItems=this.totalItems+this.requiDetalle1[i].fltQuantity;
-            this.totalPrice=this.totalPrice*this.requiDetalle1[i].fltValue_Total;
-        }   
-        if(this.Impuesto.fltPorcent!=undefined){
-            this.totalPrice=this.Impuesto.fltPorcent;  
-        }     
+        });         
     }
     //#endregion
 //#region [IMPUESTO]

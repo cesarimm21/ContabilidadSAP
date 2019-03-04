@@ -40,6 +40,7 @@ import tipoRequisicionService from '@/components/service/tipoRequisicion.service
 import {RequisicionDetalleModel} from '@/modelo/maestro/requisiciondetalle';
 import {RequisicionModel} from '@/modelo/maestro/requisicion';
 import {ProductoModel} from '@/modelo/maestro/producto';
+import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
@@ -160,7 +161,7 @@ export default class CrearPRComponent extends Vue {
     column:''
   };
   fecha_actual:string;
-  selectrow:any;
+  // selectrow:any;
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   blncategorialinea:boolean=true;

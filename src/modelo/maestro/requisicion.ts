@@ -19,7 +19,7 @@ export class RequisicionModel {
     strWHS_Desc:string;
     strTipReq_Desc:string;
     strTypeReq_Cod:string;
-   
+    listaDetalle:[];
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;
@@ -44,5 +44,6 @@ export class RequisicionModel {
         this.strWHS_Desc='';
         this.strTipReq_Desc='';
         this.strTypeReq_Cod='';
+        this.listaDetalle=[];
     }
 }
