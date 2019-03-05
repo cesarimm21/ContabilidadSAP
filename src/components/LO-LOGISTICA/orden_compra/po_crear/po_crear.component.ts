@@ -108,8 +108,10 @@ export default class CrearPOComponent extends Vue {
         this.getRequisicion(this.codigoInput);
     }
     getRequisicion(codigo){
+        debugger;
         requisicionService.getRequisicionByCod(codigo)
         .then(response=>{
+            console.log(response);
             this.requisicionData=response;                                 
         })
     }
