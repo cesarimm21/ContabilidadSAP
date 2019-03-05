@@ -1,7 +1,8 @@
 import {RequisicionDetalleModel} from "./requisiciondetalle";
 export class RequisicionModel {    
     intIdPurReqH_ID:number;
-    intIdCompany_ID:number ;
+    intIdCompany_ID:number;
+    intIdInvStock_ID:number;
     strRequis_NO:string;
     intIdWHS_ID:number ;
     intIdTypeReq_ID:number ;
@@ -19,7 +20,6 @@ export class RequisicionModel {
     strWHS_Desc:string;
     strTipReq_Desc:string;
     strTypeReq_Cod:string;
-    listaDetalle:[];
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;
@@ -28,6 +28,7 @@ export class RequisicionModel {
     constructor(){
         this.intIdPurReqH_ID=-1;
         this.intIdCompany_ID=-1;
+        this.intIdInvStock_ID=-1;
         this.strRequis_NO='';
         this.intIdWHS_ID=-1;
         this.intIdTypeReq_ID=-1;
@@ -44,6 +45,5 @@ export class RequisicionModel {
         this.strWHS_Desc='';
         this.strTipReq_Desc='';
         this.strTypeReq_Cod='';
-        this.listaDetalle=[];
     }
 }

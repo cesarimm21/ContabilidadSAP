@@ -76,8 +76,8 @@ export default class CrearPOComponent extends Vue {
     ordencompraDetalle:any[];
     //* [COMPANIA]
     public compania:CompaniaModel=new CompaniaModel();
-
-
+    //**[PRODUCTO] */
+    valorSelectCodStock:any[];
     provData:ProveedorModel[];
     provData1:ProveedorModel[];
     constructor(){
@@ -102,6 +102,7 @@ export default class CrearPOComponent extends Vue {
         this.dialogRequisicion=true;
         this.requisicionData=[];
         this.codigoInput='';
+        this.getRequisicion(this.codigoInput);
     }
     searchRequisicion(){
         this.getRequisicion(this.codigoInput);
@@ -115,7 +116,7 @@ export default class CrearPOComponent extends Vue {
     getReqDetalle(v){
         requisicionService.getRequiDetallById(v)
         .then(response=>{
-            this.requiDetalle=response;   
+            this.requiDetalle=response;    
             this.requiDetalle1=response;
             for(var i=0;i<=this.requiDetalle.length;i++){                
                 if(this.requiDetalle[i].strVendor_Suggested!=undefined){
@@ -169,6 +170,10 @@ export default class CrearPOComponent extends Vue {
           }, 120)
     }
     handleSelectionChange(val) {
+        // console.log(val[0].intIdInvStock_ID.intIdInvStock_ID);
+        this.valorSelectCodStock=val;
+        console.log(this.valorSelectCodStock[0].intIdInvStock_ID.intIdInvStock_ID);
+        
         this.multipleSelection = val;    
         this.totalItems=0;
         this.totalPrice=0;
@@ -179,7 +184,9 @@ export default class CrearPOComponent extends Vue {
         console.log(this.totalPrice);        
       }
     //#endregion
+    //#region [PRODUCTO]
 
+    //#endregion
     //#region [PROVEEDORES]
     desactivar_pro(){
         if(this.dialogProveedor){
@@ -289,14 +296,14 @@ loadImpuesto(){
                     intPO_Item_NO:1,//falta de la cabecea
                     strPO_Item_Desc:this.multipleSelection[i].strDescription,
                     chrPO_Item_Status:this.multipleSelection[i].chrStatus,
-                    strPO_Curr:this.OrdenCompra.strRequis_NO,
+                    strPO_Curr:this.multipleSelection[i].strCurr,
                     strRequis_NO:this.OrdenCompra.strRequis_NO,
                     intRequis_Item_NO:this.requiSelect.intIdPurReqH_ID,//requis
                     intChange_Count:0,//0 cantidad de veces que cambia
                     chrReceipt_Status:'00',//los codigos de aprobacion
                     strMaterial_Group:this.multipleSelection[i].strMat_Group_Cod,//si hay
                     strPreq_Stock_Cod:this.multipleSelection[i].strMaterial_Cod,
-                    intIdInvStock_ID:1,//id  de stock
+                    intIdInvStock_ID:this.valorSelectCodStock[i].intIdInvStock_ID.intIdInvStock_ID,//id  de stock
                     dtmOrig_Due_Date:new Date(),
                     strUnit_Of_Purch:this.multipleSelection[i].strUM,//unidad de medida
                     fltPO_QTY_I:this.multipleSelection[i].fltQuantity,//cantidad
@@ -307,7 +314,7 @@ loadImpuesto(){
                     strWH_Tax_Detraccion:this.Impuesto.strWH_Cod,
                     strWH_Retention:this.Impuesto.fltPorcent,
                     fltTax_Percent:this.Impuesto.fltPorcent,
-                    intIdWHS_ID:1,//almacen id correlativo
+                    intIdWHS_ID:this.OrdenCompra.intIdWHS_ID,//almacen id correlativo
                     intInv_QTY_UOP:0,//Inv_QTY //viene de la factura
                     intInvoice_NO:0,//numero de la factura
                     fltInv_Pend_QTY_P:0,//cantidad pendiente
@@ -317,7 +324,6 @@ loadImpuesto(){
                     strDeliv_Location:'',//texto de la requisicion puede ser editado
                     fltTot_PO_Item:1,
                     strAccount_Cod:'',//codigo de cuenta contable
-                    intIdCostCenter:1,//
                     strWBS_Project:'',//vacio
                     strCreation_User:'egaona'
                 });
@@ -328,7 +334,7 @@ loadImpuesto(){
             this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
             this.OrdenCompra.strPO_Item_Type='C';
             this.OrdenCompra.strAuthsd_Status='00';
-            this.OrdenCompra.fltCURR_QTY_I=0;
+            this.OrdenCompra.fltCURR_QTY_I=this.totalItems;
             this.OrdenCompra.fltTotal_Val=0;
             this.OrdenCompra.strCreation_User='egaona';
             let loadingInstance = Loading.service({
@@ -407,7 +413,8 @@ loadImpuesto(){
             multipleSelection:[],
             ordencompraDetalle:[],
             totalItems:0,
-            totalPrice:0
+            totalPrice:0,
+            valorSelectCodStock:[]
         }
       }
   }
