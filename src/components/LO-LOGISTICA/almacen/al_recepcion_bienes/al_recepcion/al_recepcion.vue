@@ -133,13 +133,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6" ></label>
-                                <label class="sinLinea el-form-item__label col-md-3" >Fecha Ejecución</label>
-                                <label class="sinLinea el-form-item__label col-md-3" > {{fecha_ejecucion}}</label>
-                            </div>
-                        </div>
                     </div>
                     <br/>
                     <div class="row">
