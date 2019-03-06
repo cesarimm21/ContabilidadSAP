@@ -11,12 +11,15 @@ import {RequisicionDetalleModel} from '@/modelo/maestro/requisiciondetalle';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {MonedaModel} from '@/modelo/maestro/moneda';
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
+import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
 import ordenCompraService from '@/components/service/ordencompra.service';
 import requisicionService from '@/components/service/requisicion.service';
 import proveedorService from '@/components/service/proveedor.service';
+import almacenService from '@/components/service/almacen.service';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
+import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
@@ -29,7 +32,8 @@ import Global from '@/Global';
         'buttons-accions':ButtonsAccionsComponent,
         'bmoneda':BMonedaComponent,
         'quickaccessmenu':QuickAccessMenuComponent,
-        'bimpuesto':BImpuestoComponent
+        'bimpuesto':BImpuestoComponent,
+        'bprioridad':BPrioridadComponent,
     }
 })
 export default class CrearPOComponent extends Vue {
@@ -47,6 +51,24 @@ export default class CrearPOComponent extends Vue {
     valuem:number=0;
     totalItems:number;
     totalPrice:number;
+    dialogPrioridad:boolean=false;
+    btnactivarprioridad:boolean=false;
+    public selectrow:RequisicionDetalleModel=new RequisicionDetalleModel();
+  /*bolean_tabla_dinamica*/
+    editing:any= {
+        row:'',
+        column:''
+    };
+    //#region [BOTONES]
+    bln_tbl_cantidad:boolean=false;
+    bln_tbl_UnidadMedida:boolean=false;
+    bln_tbl_Precio:boolean=false;
+    bln_tbl_prioridad:boolean=false;
+    //#endregion
+
+    //#region [ALMACEN]
+    public almacen:AlmacenModel=new AlmacenModel();
+    //#endregion
     //**[IMPUESTO] */
     public Impuesto:ImpuestoModel=new ImpuestoModel();
     dialogImpuesto:boolean=false;
@@ -91,7 +113,8 @@ export default class CrearPOComponent extends Vue {
         companiaService.GetOnlyOneCompania(v)
         .then(response=>{
             this.compania=response;   
-            this.OrdenCompra.intIdCompany_ID=this.compania.intIdCompany_ID;                                 
+            this.OrdenCompra.intIdCompany_ID=this.compania.intIdCompany_ID; 
+            this.OrdenCompra.strCompany_Desc=this.compania.strCompany_Desc;                                
         })
     }
 
@@ -102,7 +125,10 @@ export default class CrearPOComponent extends Vue {
         this.dialogRequisicion=true;
         this.requisicionData=[];
         this.codigoInput='';
-        this.getRequisicion(this.codigoInput);
+        requisicionService.getAllRequisicion()
+        .then(response=>{
+            this.requisicionData=response;
+        })
     }
     searchRequisicion(){
         this.getRequisicion(this.codigoInput);
@@ -111,23 +137,25 @@ export default class CrearPOComponent extends Vue {
         debugger;
         requisicionService.getRequisicionByCod(codigo)
         .then(response=>{
-            console.log(response);
             this.requisicionData=response;                                 
         })
     }
     getReqDetalle(v){
         requisicionService.getRequiDetallById(v)
         .then(response=>{
-            this.requiDetalle=response;    
-            this.requiDetalle1=response;
-            for(var i=0;i<=this.requiDetalle.length;i++){                
+            this.requiDetalle=response;          
+            for(var i=0;i<this.requiDetalle.length;i++){        
+                this.requiDetalle[i].fltUnitPrice=Math.round(this.requiDetalle[i].fltUnitPrice * 100)/100; 
+                this.requiDetalle[i].fltQuantity=Math.round(this.requiDetalle[i].fltQuantity * 100)/100; 
+
                 if(this.requiDetalle[i].strVendor_Suggested!=undefined){
                    proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
                     .then(response=>{
                         this.provData.push(response);                            
                     })
                 } 
-            }
+            }            
+            this.requiDetalle1= this.requiDetalle;
         })
     }
     closeDialogReq(){
@@ -144,13 +172,14 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
-        
+        debugger;  
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;
-        this.requiSelect=val;            
+        this.requiSelect=val;  
+        debugger;          
         this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
         this.loadCompania(this.requiSelect.strCompany_Cod); 
-        
+        this.loadAlmacen(this.requiSelect.strWHS_Cod);
         this.OrdenCompra.strCompany_Cod=this.requiSelect.strCompany_Cod;
     }
     checkSelectdbRequi(){
@@ -172,18 +201,24 @@ export default class CrearPOComponent extends Vue {
           }, 120)
     }
     handleSelectionChange(val) {
-        // console.log(val[0].intIdInvStock_ID.intIdInvStock_ID);
+        debugger;
         this.valorSelectCodStock=val;
-        console.log(this.valorSelectCodStock[0].intIdInvStock_ID.intIdInvStock_ID);
-        
         this.multipleSelection = val;    
         this.totalItems=0;
         this.totalPrice=0;
         for(var i=0;i<this.multipleSelection.length;i++){
             this.totalItems=this.totalItems+Math.round(this.multipleSelection[i].fltQuantity * 100)/100;
             this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[i].fltValue_Total * 100)/100;
-        }    
-        console.log(this.totalPrice);        
+        }           
+      }
+    //#endregion
+    //#region [ALMACEN]
+      loadAlmacen(code){
+        almacenService.getAlmacenCodigo(code)
+        .then(response=>{
+            this.almacen=response;
+            console.log(this.almacen);            
+        })
       }
     //#endregion
     //#region [PRODUCTO]
@@ -234,6 +269,7 @@ export default class CrearPOComponent extends Vue {
         this.selectProo=val;   
         this.OrdenCompra.strVendor_NO=this.selectProo.strVendor_NO;
         this.OrdenCompra.intIdVendor_ID=this.selectProo.intIdVendor_ID;
+        this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
         var code=val.strVendor_NO;
         var temp=this.requiDetalle;
         this.requiDetalle1=[];
@@ -296,6 +332,14 @@ loadImpuesto(){
                     intIdCurrency_ID:this.multipleSelection[i].intIdCurrency_ID,
                     intIdCostCenter_ID:this.multipleSelection[i].intIdCostCenter_ID,
                     intPO_Item_NO:1,//falta de la cabecea
+                    strAcctCateg_Cod:this.valorSelectCodStock[i].intIdAcctCateg_ID.strAcctCateg_Cod,
+                    strCategItem_Cod:this.valorSelectCodStock[i].intIdCategLine_ID.strCategItem_Cod,
+                    strCostCenter_NO:this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_NO,
+                    strStock_Cod:this.valorSelectCodStock[i].intIdInvStock_ID.strStock_Cod,
+                    strUM_Cod:this.valorSelectCodStock[i].intIdInvStock_ID.strUM_Cod,
+                    strVendor_NO:this.OrdenCompra.strVendor_NO,
+                    strCurrency_Cod:this.OrdenCompra.strPO_Curr,
+                    strPriority_Cod:this.multipleSelection[i].strPriority_Cod,
                     strPO_Item_Desc:this.multipleSelection[i].strDescription,
                     chrPO_Item_Status:this.multipleSelection[i].chrStatus,
                     strPO_Curr:this.multipleSelection[i].strCurr,
@@ -330,6 +374,8 @@ loadImpuesto(){
                     strCreation_User:'egaona'
                 });
             }
+            this.OrdenCompra.strWH_Cod=this.Impuesto.strWH_Cod;
+            this.OrdenCompra.strWH_Desc=this.Impuesto.strWH_Desc;
             this.OrdenCompra.strAuthsd_By='egaona';
             this.OrdenCompra.intChange_Count=0;
             this.OrdenCompra.dtmProcess_Date=new Date();
@@ -337,7 +383,7 @@ loadImpuesto(){
             this.OrdenCompra.strPO_Item_Type='C';
             this.OrdenCompra.strAuthsd_Status='00';
             this.OrdenCompra.fltCURR_QTY_I=this.totalItems;
-            this.OrdenCompra.fltTotal_Val=0;
+            this.OrdenCompra.fltTotal_Val=this.totalPrice;
             this.OrdenCompra.strCreation_User='egaona';
             let loadingInstance = Loading.service({
             fullscreen: true,
@@ -377,6 +423,8 @@ loadImpuesto(){
         this.moneda=val
         this.dialogMoneda=false;
         this.OrdenCompra.strPO_Curr=this.moneda.strCurrency_Cod;
+        this.OrdenCompra.strCurrency_Cod=this.moneda.strCurrency_Cod;
+        this.OrdenCompra.strCurrency_Desc=this.moneda.strCurrency_Desc;
       }
       closeMoneda(){
         this.moneda=new MonedaModel();
@@ -400,6 +448,64 @@ loadImpuesto(){
         }, 120)
       }
     //#endregion
+    //#region [ACCIONES TABLA]
+    clickcantidad(event,edit,column){
+        debugger;
+        this.bln_tbl_Precio=false;
+        this.bln_tbl_cantidad=true;
+        this.bln_tbl_UnidadMedida=false;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+    clickUnidadMedida(event,edit,column){
+        debugger;
+        this.bln_tbl_Precio=false;
+        this.bln_tbl_cantidad=false;
+        this.bln_tbl_UnidadMedida=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+    clickPrice(event,edit,column){
+        debugger;
+        this.bln_tbl_Precio=true;
+        this.bln_tbl_cantidad=false;
+        this.bln_tbl_UnidadMedida=false;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      clickprioridad(event,edit,column){
+        debugger;
+        this.bln_tbl_prioridad=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      handleBlur(event) {
+        debugger;
+        // this.bln_tbl_categoria_cuenta=false;
+        event.edit=false;
+        this.editing.row='';
+        this.editing.column='';
+      }
+      LoadPrioridad(row){
+        this.selectrow=row;
+        this.dialogPrioridad=true;      
+      }
+      closePrioridad(){
+        this.btnactivarprioridad=false;
+        return false;
+      }
+      SeleccionadoPrioridad(val){
+        debugger;
+        this.selectrow.strPriority_Cod=val.strPriority_Cod;
+        this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
+        this.dialogPrioridad=false;
+      }
+    //#endregion
+    
     data(){
         return{
             nameComponent:'crear-po',

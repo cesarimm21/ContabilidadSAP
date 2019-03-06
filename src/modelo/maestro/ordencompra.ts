@@ -6,6 +6,12 @@ export class OrdenCompraModel {
     intIdTypeReq_ID:number ;//si
     intIdVendor_ID:number;//si
     strCompany_Cod:string ;//si
+    strCompany_Desc:string;//si new
+    strCurrency_Cod:string;//si new
+    strCurrency_Desc:string;//si new
+    strVendor_Desc:string;//si new
+    strWH_Cod:string;//si new 
+    strWH_Desc:string;    //si new
     strPO_NO:string ;//si
     chrPO_Status:string ;//si
     strPO_Desc:string;//si

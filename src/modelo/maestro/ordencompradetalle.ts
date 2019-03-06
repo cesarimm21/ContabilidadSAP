@@ -8,6 +8,14 @@ export class OrdenCompraDetalleModel {
     intIdCostCenter_ID:number;   //
     strPO_NO:string;//
     intPO_Item_NO:number;   //
+    strAcctCateg_Cod:string;
+    strCategItem_Cod:string;
+    strCostCenter_NO:string;
+    strStock_Cod:string;
+    strUM_Cod:string;
+    strVendor_NO:string;
+    strCurrency_Cod:string;
+    strPriority_Cod:string;    
     strPO_Item_Desc:string;//
     chrPO_Item_Status:string;//
     strPO_Curr:string;    //

@@ -129,6 +129,9 @@ export default class QuickAccessMenuComponent extends Vue {
       this.$emit('guardarPO',Global.nameComponent);    
       debugger;
     }  
+    if(Global.nameComponent==='crear-hes'){
+      this.$emit('guardarHES',Global.nameComponent);
+    }
     // this.$emit('guardarTodo','hola');
 
   }

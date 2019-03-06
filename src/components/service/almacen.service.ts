@@ -16,6 +16,12 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  getAlmacenCodigo(code){
+    return axios.get(CONFIG.API_URL+'almacenCodigo/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   
