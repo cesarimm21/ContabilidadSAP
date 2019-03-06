@@ -28,7 +28,7 @@
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-6">
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Código PO</label>
+                                <label class="el-form-item__label col-md-3" >Código Aprobación</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strPO_NO">
@@ -44,53 +44,50 @@
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strCompany_Desc}}</span>
                             </div>
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Código Requisición</label>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Guia Remitente</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar"
-                                    size ="small"
-                                    @blur="desactivar_requisicion"
-                                    @focus="activar_requisicion"
-                                    v-model="OrdenCompra.strRequis_NO">
-                                        <el-button v-if="btnactivarrequisicion && !dialogRequisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadRequisicion()"></el-button>
+                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strCompany_Cod">
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Almacén</label>
+                                <label class="el-form-item__label col-md-3" >Guia Transportista</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strWHS_Cod">
+                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strPO_NO">
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strWHS_Desc}}</span>
                             </div>
                             <div  class="form-group row ">
-                                
-                                <label class="el-form-item__label col-md-3" >Doc. Date</label>
+                                <label class="el-form-item__label col-md-3" >Fecha G.Transportisita</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small"  type="date" v-model="OrdenCompra.dtmProcess_Date" >
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Moneda Pago</label>
+                                <label class="el-form-item__label col-md-3" >Fecha Recepcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr">
-                                            <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button>
-                                        </el-input>
+                                    <el-input :disabled="visualizar" size ="small"  type="date" v-model="OrdenCompra.dtmProcess_Date" >
+                                    </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strCurrency_Desc}}</span>
                             </div>
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Importe Total</label>
+                             <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Conductor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small"  type="number" v-model="OrdenCompra.fltTotal_Val">
-                                    </el-input>
+                                        <div class="input-group mb-3" >
+                                            <el-input :disabled="visualizar" size ="small"
+                                            @blur="desactivar_pro"
+                                            @focus="activar_pro"
+                                            v-model="OrdenCompra.strVendor_NO">
+                                            <el-button v-if="btnactivarpro && !dialogRequisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadPro()"></el-button>
+                                            </el-input>
+                                        </div>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
@@ -106,35 +103,9 @@
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strVendor_Desc}}</span>
                             </div>
-                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Cantidad Total</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" type="number" v-model="OrdenCompra.fltTotal_Val">
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <label class="el-form-item__label col-md-3" >Impuesto(IGV)</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="OrdenCompra.fltTotal_Val" >
-                                            <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Descripción</label>
-                                <div class="col-md-9 grupolabel">
-                                    <div class="input-group mb-9" >
-                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strPO_Desc">
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div>
+                               
                         </div>
                     </div>
-                    <br/>
                     <div class="row">
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
@@ -171,7 +142,7 @@
                                             label="Ctd.Comprada">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltPO_QTY_I" sortable width="100"
+                                            prop="fltPO_Rec_QYT" sortable width="100"
                                             label="Ctd.Recibida">
                                         </el-table-column>
                                         <el-table-column
@@ -179,14 +150,13 @@
                                             label="UM">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltPO_Net_PR_I" sortable width="80"
-                                            label="Valor Unitario">
-                                        </el-table-column>
-                                        <el-table-column
                                             prop="strCostCenter_NO" sortable width="80"
                                             label="Centro costos">
                                         </el-table-column>
-                                        
+                                        <el-table-column
+                                            prop="strAccount_Cod" sortable width="80"
+                                            label="Cuenta Contable">
+                                        </el-table-column>
                                         <el-table-column
                                             prop="strVendor_NO" sortable width="110"
                                             label="Proveedor">

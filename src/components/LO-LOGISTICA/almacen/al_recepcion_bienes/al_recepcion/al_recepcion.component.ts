@@ -410,7 +410,7 @@ export default class RecepcionMaterialComponent extends Vue {
         console.log('data extra',object);
         var modulo = this.$route.query.vista;
         if(modulo.toLowerCase()!='aprobar'){
-          this.txtmodulo='Modificar Orden Compra';
+          this.txtmodulo='Recepción Material';
           this.vifaprobarrechasar=false;
           if(modulo.toLowerCase()!='visualizar'){
             this.visualizar=true;
