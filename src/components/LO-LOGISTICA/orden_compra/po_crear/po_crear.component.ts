@@ -75,12 +75,12 @@ export default class CrearPOComponent extends Vue {
     public OrdenCompra: OrdenCompraModel = new OrdenCompraModel();
     ordencompraDetalle: any[];
     //* [COMPANIA]
-    public compania: CompaniaModel = new CompaniaModel();
-
-
-    provData: ProveedorModel[];
-    provData1: ProveedorModel[];
-    constructor() {
+    public compania:CompaniaModel=new CompaniaModel();
+    //**[PRODUCTO] */
+    valorSelectCodStock:any[];
+    provData:ProveedorModel[];
+    provData1:ProveedorModel[];
+    constructor(){
         super();
         Global.nameComponent = 'crear-po';
         this.OrdenCompra.chrPO_Status = '00';
@@ -97,10 +97,11 @@ export default class CrearPOComponent extends Vue {
 
     //#endregion
     //#region [REQUISICION]
-    loadRequisicion() {
-        this.dialogRequisicion = true;
-        this.requisicionData = [];
-        this.codigoInput = '';
+    loadRequisicion(){
+        this.dialogRequisicion=true;
+        this.requisicionData=[];
+        this.codigoInput='';
+        this.getRequisicion(this.codigoInput);
     }
     searchRequisicion() {
         this.getRequisicion(this.codigoInput);
@@ -115,53 +116,53 @@ export default class CrearPOComponent extends Vue {
     }
     getReqDetalle(v) {
         requisicionService.getRequiDetallById(v)
-            .then(response => {
-                this.requiDetalle = response;
-                this.requiDetalle1 = response;
-                for (var i = 0; i <= this.requiDetalle.length; i++) {
-                    if (this.requiDetalle[i].strVendor_Suggested != undefined) {
-                        proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                            .then(response => {
-                                this.provData.push(response);
-                            })
-                    }
-                }
-            })
+        .then(response=>{
+            this.requiDetalle=response;    
+            this.requiDetalle1=response;
+            for(var i=0;i<=this.requiDetalle.length;i++){                
+                if(this.requiDetalle[i].strVendor_Suggested!=undefined){
+                   proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                    .then(response=>{
+                        this.provData.push(response);                            
+                    })
+                } 
+            }
+        })
     }
-    closeDialogReq() {
-        this.dialogRequisicion = false;
-        this.requiSelect = new RequisicionModel();
-        this.OrdenCompra.strRequis_NO = this.requiSelect.strRequis_NO;
+    closeDialogReq(){
+        this.dialogRequisicion=false;
+        this.requiSelect=new RequisicionModel();
+        this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;        
     }
-    closeDialog() {
-        this.dialogRequisicion = false;
+    closeDialog(){
+        this.dialogRequisicion=false;
     }
-    desactivar_requisicion() {
-        if (this.dialogRequisicion) {
-            this.btnactivarrequisicion = false;
-        }
+    desactivar_requisicion(){
+        if(this.dialogRequisicion){
+            this.btnactivarrequisicion=false;      
+        }   
     }
-    checkSelectdbRequisicion(val) {
-
-        this.OrdenCompra.intIdTypeReq_ID = val.intIdTypeReq_ID.intIdTypeReq_ID;
-        this.OrdenCompra.intIdWHS_ID = val.intIdWHS_ID.intIdWHS_ID;
-        this.requiSelect = val;
-        this.getReqDetalle(this.requiSelect.intIdPurReqH_ID);
-        this.loadCompania(this.requiSelect.strCompany_Cod);
-
-        this.OrdenCompra.strCompany_Cod = this.requiSelect.strCompany_Cod;
+    checkSelectdbRequisicion(val){
+        
+        this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
+        this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;
+        this.requiSelect=val;            
+        this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
+        this.loadCompania(this.requiSelect.strCompany_Cod); 
+        
+        this.OrdenCompra.strCompany_Cod=this.requiSelect.strCompany_Cod;
     }
-    checkSelectdbRequi() {
-        this.dialogRequisicion = false;
-        this.OrdenCompra.strRequis_NO = this.requiSelect.strRequis_NO;
-
+    checkSelectdbRequi(){
+        this.dialogRequisicion=false;
+        this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
+        
     }
-    checkSelectdb(val: RequisicionModel) {
-        this.requiSelect = val;
-        this.dialogRequisicion = false;
-        this.OrdenCompra.strRequis_NO = this.requiSelect.strRequis_NO;
+    checkSelectdb(val:RequisicionModel){
+        this.requiSelect=val;
+        this.dialogRequisicion=false;
+        this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
     }
-    activar_requisicion() {
+    activar_requisicion(){
         setTimeout(() => {
             this.btnactivarpro = false;
             this.btnactivarrequisicion = true;
@@ -170,8 +171,22 @@ export default class CrearPOComponent extends Vue {
         }, 120)
     }
     handleSelectionChange(val) {
-        this.multipleSelection = val;
-    }
+        // console.log(val[0].intIdInvStock_ID.intIdInvStock_ID);
+        this.valorSelectCodStock=val;
+        console.log(this.valorSelectCodStock[0].intIdInvStock_ID.intIdInvStock_ID);
+        
+        this.multipleSelection = val;    
+        this.totalItems=0;
+        this.totalPrice=0;
+        for(var i=0;i<this.multipleSelection.length;i++){
+            this.totalItems=this.totalItems+Math.round(this.multipleSelection[i].fltQuantity * 100)/100;
+            this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[i].fltValue_Total * 100)/100;
+        }    
+        console.log(this.totalPrice);        
+      }
+    //#endregion
+    //#region [PRODUCTO]
+
     //#endregion
     //#region [PROVEEDORES]
     desactivar_pro() {
@@ -223,49 +238,7 @@ export default class CrearPOComponent extends Vue {
         this.requiDetalle1 = [];
         this.requiDetalle1 = temp.filter(function (hero) {
             return hero.strVendor_Suggested == code;
-        });
-        for (var i = 0; i < this.requiDetalle1.length; i++) {
-            this.totalItems = this.totalItems + this.requiDetalle1[i].fltQuantity;
-            this.totalPrice = this.totalPrice * this.requiDetalle1[i].fltValue_Total;
-        }
-        if (this.Impuesto.fltPorcent != undefined) {
-            this.totalPrice = this.Impuesto.fltPorcent;
-        }
-    }
-    //#endregion
-    //#region [IMPUESTO]
-    loadImpuesto() {
-        this.dialogImpuesto = true;
-    }
-
-    closeDialogImpuesto() {
-        this.btnactivarImpuesto = false;
-        this.dialogImpuesto = false;
-    }
-    activar_Impuesto() {
-        setTimeout(() => {
-            this.btnactivarMoneda = false;
-            this.btnactivarImpuesto = true;
-            this.btnactivarpro = false;
-            this.btnactivarrequisicion = false;
-        }, 120)
-    }
-    desactivar_Impuesto() {
-        if (this.dialogImpuesto) {
-            this.btnactivarImpuesto = false;
-        }
-    }
-    impuestoselecionado(val: ImpuestoModel) {
-        this.Impuesto = val;
-        this.dialogImpuesto = false;
-    }
-    closeImpuesto() {
-        this.Impuesto = new ImpuestoModel();
-        this.dialogImpuesto = false;
-    }
-    impuestoClose() {
-        this.Impuesto = new ImpuestoModel();
-        this.dialogImpuesto = false;
+        });         
     }
     //#endregion
     //#region [ORDEN COMPRA]
@@ -282,55 +255,54 @@ export default class CrearPOComponent extends Vue {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
                 this.OrdenCompra.listaDetalle.push({
-                    intIdAcctCateg_ID: this.multipleSelection[i].intIdAcctCateg_ID,
-                    intIdCategLine_ID: this.multipleSelection[i].intIdCategLine_ID,
-                    intIdCurrency_ID: this.multipleSelection[i].intIdCurrency_ID,
-                    intIdCostCenter_ID: this.multipleSelection[i].intIdCostCenter_ID,
-                    intPO_Item_NO: 1,//falta de la cabecea
-                    strPO_Item_Desc: this.multipleSelection[i].strDescription,
-                    chrPO_Item_Status: this.multipleSelection[i].chrStatus,
-                    strPO_Curr: this.OrdenCompra.strRequis_NO,
-                    strRequis_NO: this.OrdenCompra.strRequis_NO,
-                    intRequis_Item_NO: this.requiSelect.intIdPurReqH_ID,//requis
-                    intChange_Count: 0,//0 cantidad de veces que cambia
-                    chrReceipt_Status: '00',//los codigos de aprobacion
-                    strMaterial_Group: this.multipleSelection[i].strMat_Group_Cod,//si hay
-                    strPreq_Stock_Cod: this.multipleSelection[i].strMaterial_Cod,
-                    intIdInvStock_ID: 2,//id  de stock
-                    dtmOrig_Due_Date: new Date(),
-                    strUnit_Of_Purch: this.multipleSelection[i].strUM,//unidad de medida
-                    fltPO_QTY_I: this.multipleSelection[i].fltQuantity,//cantidad
-                    fltPO_Net_PR_I: this.multipleSelection[i].fltUnitPrice,//precio unitario
-                    fltCurr_Net_PR_P: this.multipleSelection[i].fltValue_Total,//total por producto
-                    intConv_Factor: 1,//factor multiplica a la cantidad de productos/Editable
-                    strTax_Cod: this.Impuesto.strWH_Cod,
-                    strWH_Tax_Detraccion: this.Impuesto.strWH_Cod,
-                    strWH_Retention: this.Impuesto.fltPorcent,
-                    fltTax_Percent: this.Impuesto.fltPorcent,
-                    intIdWHS_ID: 4,//almacen id correlativo
-                    intInv_QTY_UOP: 0,//Inv_QTY //viene de la factura
-                    intInvoice_NO: 0,//numero de la factura
-                    fltInv_Pend_QTY_P: 0,//cantidad pendiente
-                    fltInv_Pend_Val_F: 0,//
-                    fltInv_Pend_Val_L: 0,
-                    fltInv_Pend_Val_S: 0,
-                    strDeliv_Location: '',//texto de la requisicion puede ser editado
-                    fltTot_PO_Item: 1,
-                    strAccount_Cod: '',//codigo de cuenta contable
-                    intIdCostCenter: 2,//
-                    strWBS_Project: '',//vacio
-                    strCreation_User: 'egaona'
+                    intIdAcctCateg_ID:this.multipleSelection[i].intIdAcctCateg_ID,
+                    intIdCategLine_ID:this.multipleSelection[i].intIdCategLine_ID,
+                    intIdCurrency_ID:this.multipleSelection[i].intIdCurrency_ID,
+                    intIdCostCenter_ID:this.multipleSelection[i].intIdCostCenter_ID,
+                    intPO_Item_NO:1,//falta de la cabecea
+                    strPO_Item_Desc:this.multipleSelection[i].strDescription,
+                    chrPO_Item_Status:this.multipleSelection[i].chrStatus,
+                    strPO_Curr:this.multipleSelection[i].strCurr,
+                    strRequis_NO:this.OrdenCompra.strRequis_NO,
+                    intRequis_Item_NO:this.requiSelect.intIdPurReqH_ID,//requis
+                    intChange_Count:0,//0 cantidad de veces que cambia
+                    chrReceipt_Status:'00',//los codigos de aprobacion
+                    strMaterial_Group:this.multipleSelection[i].strMat_Group_Cod,//si hay
+                    strPreq_Stock_Cod:this.multipleSelection[i].strMaterial_Cod,
+                    intIdInvStock_ID:this.valorSelectCodStock[i].intIdInvStock_ID.intIdInvStock_ID,//id  de stock
+                    dtmOrig_Due_Date:new Date(),
+                    strUnit_Of_Purch:this.multipleSelection[i].strUM,//unidad de medida
+                    fltPO_QTY_I:this.multipleSelection[i].fltQuantity,//cantidad
+                    fltPO_Net_PR_I:this.multipleSelection[i].fltUnitPrice,//precio unitario
+                    fltCurr_Net_PR_P:this.multipleSelection[i].fltValue_Total,//total por producto
+                    intConv_Factor:1,//factor multiplica a la cantidad de productos/Editable
+                    strTax_Cod:this.Impuesto.strWH_Cod,
+                    strWH_Tax_Detraccion:this.Impuesto.strWH_Cod,
+                    strWH_Retention:this.Impuesto.fltPorcent,
+                    fltTax_Percent:this.Impuesto.fltPorcent,
+                    intIdWHS_ID:this.OrdenCompra.intIdWHS_ID,//almacen id correlativo
+                    intInv_QTY_UOP:0,//Inv_QTY //viene de la factura
+                    intInvoice_NO:0,//numero de la factura
+                    fltInv_Pend_QTY_P:0,//cantidad pendiente
+                    fltInv_Pend_Val_F:0,//
+                    fltInv_Pend_Val_L:0,
+                    fltInv_Pend_Val_S:0,
+                    strDeliv_Location:'',//texto de la requisicion puede ser editado
+                    fltTot_PO_Item:1,
+                    strAccount_Cod:'',//codigo de cuenta contable
+                    strWBS_Project:'',//vacio
+                    strCreation_User:'egaona'
                 });
             }
-            this.OrdenCompra.strAuthsd_By = 'egaona';
-            this.OrdenCompra.intChange_Count = 0;
-            this.OrdenCompra.dtmProcess_Date = new Date();
-            this.OrdenCompra.intIdPurReqH_ID = this.requiSelect.intIdPurReqH_ID;
-            this.OrdenCompra.strPO_Item_Type = 'C';
-            this.OrdenCompra.strAuthsd_Status = '00';
-            this.OrdenCompra.fltCURR_QTY_I = 0;
-            this.OrdenCompra.fltTotal_Val = 0;
-            this.OrdenCompra.strCreation_User = 'egaona';
+            this.OrdenCompra.strAuthsd_By='egaona';
+            this.OrdenCompra.intChange_Count=0;
+            this.OrdenCompra.dtmProcess_Date=new Date();
+            this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
+            this.OrdenCompra.strPO_Item_Type='C';
+            this.OrdenCompra.strAuthsd_Status='00';
+            this.OrdenCompra.fltCURR_QTY_I=this.totalItems;
+            this.OrdenCompra.fltTotal_Val=0;
+            this.OrdenCompra.strCreation_User='egaona';
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guargando...',
@@ -392,23 +364,23 @@ export default class CrearPOComponent extends Vue {
         }, 120)
     }
     //#endregion
-    
-    data() {
-        return {
-            nameComponent: 'crear-po',
-            codigoInput: '',
-            tableData: [],
-            requisicionDetalle: [],
-            requisicionData: [],
-            provData: [],
-            provData1: [],
-            valueProvee: '',
-            requiDetalle: [],
-            requiDetalle1: [],
-            multipleSelection: [],
-            ordencompraDetalle: [],
-            totalItems: 0,
-            totalPrice: 0
+    data(){
+        return{
+            nameComponent:'crear-po',
+            codigoInput:'',
+            tableData:[],
+            requisicionDetalle:[],
+            requisicionData:[],
+            provData:[],
+            provData1:[],
+            valueProvee:'',
+            requiDetalle:[],
+            requiDetalle1:[],
+            multipleSelection:[],
+            ordencompraDetalle:[],
+            totalItems:0,
+            totalPrice:0,
+            valorSelectCodStock:[]
         }
     }
 }

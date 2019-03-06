@@ -38,7 +38,6 @@ export class OrdenCompraDetalleModel {
     strDeliv_Location:string ;//
     fltTot_PO_Item:number ;//
     strAccount_Cod:string ;//
-    intIdCostCenter:number;//
     strWBS_Project:string;//
 
     strCreation_User:Date ;
