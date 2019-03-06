@@ -239,11 +239,11 @@ export default class ModificarPRComponent extends Vue {
     .then(res=>{
       if(res!=undefined){
         console.log('cargarData1',res)
-        requisicionService.getrequisiciondetalle(res.intIdPurReqH_ID)
+        requisicionService.getrequisiciondetalle(res[0].intIdPurReqH_ID)
         .then(resd=>{
-          this.requisicionModel=res;
+          this.requisicionModel=res[0];
           this.tableData1=resd;
-          console.log('cargarData2',this.requisicionModel,this.tableData1)
+          console.log('cargarData2',this.requisicionModel,resd)
         })
         .catch(error=>{
           console.log('error',error)

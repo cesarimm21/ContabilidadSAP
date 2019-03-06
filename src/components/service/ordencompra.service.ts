@@ -34,4 +34,22 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  busquedaRPO(data){
+    return axios.get(CONFIG.API_URL+'busqueda/recepcion/ordencompra/'+data.strPO_NO+'/'+data.strVendor_NO+'/'+data.desde+'/'+data.hasta)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getPOId(code){
+    return axios.get(CONFIG.API_URL+'ordencompra/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getPODetalleId(code){
+    return axios.get(CONFIG.API_URL+'ordencompradetalle/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

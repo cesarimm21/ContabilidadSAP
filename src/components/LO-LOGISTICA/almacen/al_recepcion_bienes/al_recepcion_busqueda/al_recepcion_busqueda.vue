@@ -1,13 +1,13 @@
 <template>
-  <div class="aprobar-po">
+  <div class="recepcion-b">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
         <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"  v-on:validarView="validarView()"/>
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Aprobador Orden Compra</span>
+            <span class="labelheadercard" >Recepción Bienes</span>
             <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
-                <img class="imagenfilter" src="../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
+                <img class="imagenfilter" src="../../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
             </el-button>
         </div>
         <div class="row bodycard">
@@ -151,13 +151,13 @@
                          <b-progress-bar :value="valuem" :label="valuem + '%'" />
                     </b-progress>
                 </div>
-                <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img  src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span> 
             </div>
             <div class="col-sm-3">
                 <div style="text-align:right">
-                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <img src="../../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
                     <span class="footertext2">SQV1</span>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
@@ -179,8 +179,8 @@
   </div>  
 </template>
 <script>
-import AprobarPOComponent from '@/components/LO-LOGISTICA/orden_compra/po_aprobacion/po_aprobacion.component'
-export default AprobarPOComponent
+import RecepcionBusquedaComponent from '@/components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda/al_recepcion_busqueda.component'
+export default RecepcionBusquedaComponent
 </script>
 <style scoped>
 .selected{

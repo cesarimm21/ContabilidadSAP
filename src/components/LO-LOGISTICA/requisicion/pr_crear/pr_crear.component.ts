@@ -98,7 +98,7 @@ export default class CrearPRComponent extends Vue {
   ocultar:boolean=false;
   dialogVisible:boolean=false;
   SendDocument:boolean=false;
-
+  iserror:boolean=false;
   /*dialog*/
   dialogCompania:boolean=false;
   dialogProveedor:boolean=false;
@@ -709,16 +709,21 @@ export default class CrearPRComponent extends Vue {
     debugger;
     
     var tabla:Array<RequisicionDetalleModel>=[];
-
+    
+    console.log('guardar todo',this.tableData1);
+    
     for(var i=0;i<this.tableData1.length;i++){
-      if(this.tableData1[i].strCateg_Account!=""){
+      if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!="" && this.tableData1[i].strMaterial_Cod!=""){
         this.tableData1[i].intRequis_Item_NO=i;
         tabla.push(this.tableData1[i]);
       }
     }
+
+    console.log('paso 2',tabla);   
     for(var i=0;i<50;i++){
       this.valuem=this.valuem+1; 
     }
+
     this.requisicionModel.strTypeReq_Cod=this.tiporequisicion;
     for(var i=0;i<this.tabletipoRequisicion.length;i++){
       if(this.tiporequisicion==this.tabletipoRequisicion[i].strTypeReq_Cod){
@@ -726,6 +731,7 @@ export default class CrearPRComponent extends Vue {
         this.requisicionModel.intIdTypeReq_ID=this.tabletipoRequisicion[i].intIdTypeReq_ID;
       }
     }
+
     this.requisicionModel.listaDetalle=tabla;
     console.log('---***---',this.requisicionModel);
     requisicionService.crearRequisicion(this.requisicionModel)

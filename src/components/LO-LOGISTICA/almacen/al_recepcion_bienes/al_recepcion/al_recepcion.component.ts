@@ -24,7 +24,7 @@ import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
 @Component({
-    name: 'crear-po',
+    name: 'al-recepcion',
     components: {
         'buttons-accions': ButtonsAccionsComponent,
         'bmoneda': BMonedaComponent,
@@ -32,8 +32,8 @@ import Global from '@/Global';
         'bimpuesto': BImpuestoComponent
     }
 })
-export default class CrearPOComponent extends Vue {
-    nameComponent: string = 'crear-po';
+export default class RecepcionMaterialComponent extends Vue {
+    nameComponent: string = 'modificar-po';
     sizeScreen: string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth: string = (window.innerWidth - 288).toString();//'0';
     btnactivarrequisicion: boolean = false;
@@ -51,6 +51,11 @@ export default class CrearPOComponent extends Vue {
     public Impuesto: ImpuestoModel = new ImpuestoModel();
     dialogImpuesto: boolean = false;
     btnactivarImpuesto: boolean = false;
+    intIdPurReqH_ID:number=0;
+    intIdVendor_ID:number=0;
+    intIdTypeReq_ID:number=0;
+    intIdCompany_ID:number=0;
+    intIdWHS_ID:number=0;
 
     //**[MONEDA] */
     dialogMoneda: boolean = false;
@@ -77,6 +82,9 @@ export default class CrearPOComponent extends Vue {
     //* [COMPANIA]
     public compania: CompaniaModel = new CompaniaModel();
 
+    txtmodulo:string='';
+    vifaprobarrechasar:boolean=false;
+    visualizar:boolean=false;
 
     provData: ProveedorModel[];
     provData1: ProveedorModel[];
@@ -85,6 +93,9 @@ export default class CrearPOComponent extends Vue {
         Global.nameComponent = 'crear-po';
         this.OrdenCompra.chrPO_Status = '00';
         this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
+        setTimeout(() => {
+            this.loadPO();
+        }, 200)
     }
     //#region [COMPANIA]
     loadCompania(v) {
@@ -392,7 +403,93 @@ export default class CrearPOComponent extends Vue {
         }, 120)
     }
     //#endregion
-    
+    //#region [LOAD GET]
+    loadPO(){
+        debugger;
+        var object = JSON.parse(this.$route.query.data);
+        console.log('data extra',object);
+        var modulo = this.$route.query.vista;
+        if(modulo.toLowerCase()!='aprobar'){
+          this.txtmodulo='Modificar Orden Compra';
+          this.vifaprobarrechasar=false;
+          if(modulo.toLowerCase()!='visualizar'){
+            this.visualizar=true;
+          }
+          else{
+            this.visualizar=false;
+          }
+        }
+        else{
+            this.visualizar=true;
+            this.vifaprobarrechasar=true;
+            this.txtmodulo='Aprobar Orden Compra';
+            console.log(object.intIdPOH_ID);
+        }
+        this.intIdVendor_ID=object.intIdVendor_ID;
+            this.intIdTypeReq_ID=object.intIdTypeReq_ID;
+            this.intIdPurReqH_ID=object.intIdPurReqH_ID;
+            this.intIdWHS_ID=object.intIdWHS_ID;
+        this.cargar(object.intIdPOH_ID);
+      }
+      cargar(code){
+        ordenCompraService.getPOId(code)
+        .then(res=>{
+          if(res!=undefined){
+            console.log('cargarData1',res)
+            ordenCompraService.getPODetalleId(res[0].intIdPOH_ID)
+            .then(resd=>{
+              this.OrdenCompra=res[0];
+              this.requiDetalle1=resd;
+              console.log('cargarData2',resd,this.requiDetalle1)
+            })
+            .catch(error=>{
+              console.log('error',error)
+            })     
+          }
+        })
+        .catch(error=>{
+          console.log('error',error)
+        })
+      }
+    async aprobar(){
+        this.valuem=0;
+        this.OrdenCompra.strAuthsd_By='ADMINISTRADOR';
+        this.OrdenCompra.intIdPurReqH_ID=this.intIdPurReqH_ID;
+        this.OrdenCompra.intIdVendor_ID=this.intIdVendor_ID;
+        this.OrdenCompra.intIdTypeReq_ID=this.intIdTypeReq_ID;
+        this.OrdenCompra.intIdPurReqH_ID=this.intIdPurReqH_ID;
+        this.OrdenCompra.intIdWHS_ID=this.intIdWHS_ID;
+        
+        console.log('aprobar',this.OrdenCompra);
+        await setTimeout(() => {
+            for(var i=0;i<100;i++){
+            this.valuem++; 
+            }
+        }, 200)
+        await ordenCompraService.aprobarPO(this.OrdenCompra)
+        .then(res=>{
+            debugger;
+            console.log(this.valuem);
+            setTimeout(() => {
+                this.vifprogress=false;
+                this.issave=true;
+                this.textosave='Se aprobó correctamente. '+res.strPO_NO;
+                this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+            }, 600)
+        })
+        .catch(error=>{
+            this.textosave='Ocurrio un error inesperado. ';
+        })
+    }
+      
+    openMessage(newMsg : string) {
+        this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+        });
+    }
+    //#endregion
     data() {
         return {
             nameComponent: 'crear-po',

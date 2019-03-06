@@ -35,6 +35,8 @@ import VisualizarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_vi
 import AprobarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_aprobacion/po_aprobacion.vue'
 import AprobadorPRComponent from '../components/LO-LOGISTICA/requisicion/pr_aprobador/pr_aprobador.vue'
 import AprobarSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidaaprobar/al_salidaaprobar.vue'
+import RecepcionBusquedaComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda/al_recepcion_busqueda.vue'
+import RecepcionMaterialComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion/al_recepcion.vue'
 
 
 export default [
@@ -168,6 +170,16 @@ export default [
         name:'al_salidaaprobar'
       },
       {
+        path:'LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda',
+        component:RecepcionBusquedaComponent,
+        name:'al_recepcion_busqueda'
+      },
+      {
+        path:'LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion',
+        component:RecepcionMaterialComponent,
+        name:'al_recepcion'
+      },
+      {
         path:'LO-LOGISTICA/almacen/al_modificar',
         component:ModificarMaterialComponent,
         name:'almacen_modificar'
@@ -176,6 +188,11 @@ export default [
         path:'LO-LOGISTICA/orden_compra/po_aprobacion',
         component:AprobarPOComponent,
         name:'po_aprobacion'
+      },
+      {
+        path:'LO-LOGISTICA/orden_compra/po_modificar',
+        component:ModificarPOComponent,
+        name:'po_modificar'
       },
       {
         path:'LO-LOGISTICA/almacen/al_salidam',

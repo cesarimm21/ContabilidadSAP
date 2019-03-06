@@ -47,7 +47,7 @@ var EditableColumn = {
   props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
 }
 @Component({
-  name: 'aprobar-po',
+  name: 'recepcion-b',
   components:{
     'buttons-accions':ButtonsAccionsComponent,
     'bcompania':BCompaniaComponent,
@@ -61,7 +61,7 @@ var EditableColumn = {
     'bproveedor':BProveedorComponent,
   } ,
 })
-export default class AprobarPOComponent extends Vue {
+export default class RecepcionBusquedaComponent extends Vue {
   timer=0;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
@@ -86,6 +86,7 @@ export default class AprobarPOComponent extends Vue {
   
   btnactivarproveedor:boolean=false;
   dialogProveedor:boolean=false;
+  btnbuscarb:boolean=false;
   tableData1:any=[
     {
       date:Global.getParseDate(new Date().toDateString()),
@@ -142,7 +143,9 @@ export default class AprobarPOComponent extends Vue {
       this.tableData1.push(item);
     }
     console.log(this.tableData1);
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   load(){
     var view = this.$route.query.vista;
@@ -152,6 +155,7 @@ export default class AprobarPOComponent extends Vue {
     else{
       this.visualizar=false;
     }
+    this.cargarList();
   }
   desactivar_proveedor(){
     debugger;
@@ -287,7 +291,7 @@ export default class AprobarPOComponent extends Vue {
         this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
         console.log('----,,,',this.selectrow);
         if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPOH_ID!=-1){
-          router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_modificar`, query: { vista: 'aprobar',data:JSON.stringify(this.selectrow) }  })
+          router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
         }
       }, 600)
     }
@@ -305,8 +309,7 @@ export default class AprobarPOComponent extends Vue {
       type: 'warning'
     });
   }
-  async Buscar(){
-    debugger;
+  async cargarList(){
     var data:any=this.formBusqueda;
     if(this.strPO_NO==''){
       data.strPO_NO='*'
@@ -322,12 +325,19 @@ export default class AprobarPOComponent extends Vue {
     }
     var hdate=new Date(this.fechaHasta);
     hdate.setDate(hdate.getDate()+1)
-    data.desde=await Global.getDateString(this.fechaDesde)
-    data.hasta= await Global.getDateString(hdate)
+    if(this.btnbuscarb){
+      data.desde=await Global.getDateString(this.fechaDesde)
+      data.hasta= await Global.getDateString(hdate)
+    }
+    else{
+      data.desde="*";
+      data.hasta="*";
+    }
+    
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
-    await ordencompraService.busquedaPO(data)
+    await ordencompraService.busquedaRPO(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
@@ -346,6 +356,11 @@ export default class AprobarPOComponent extends Vue {
     .catch(error=>{
       
     })
+  }
+  async Buscar(){
+    debugger;
+    this.btnbuscarb=true;
+    this.cargarList();
   }
  
   data(){

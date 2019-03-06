@@ -1,5 +1,5 @@
 <template>
-    <div class="modificar-po">
+    <div class="al-recepcion">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
         <quickaccessmenu v-on:guardarPO="guardarPO($event)"></quickaccessmenu>
         </ol>
@@ -158,27 +158,28 @@
                                         @selection-change="handleSelectionChange">
                                         <el-table-column type="index" width="58">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
+                                        <!-- <el-table-column  sortable prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCategItem_Cod" sortable  min-width="80"
                                             label="Cat. linea">
                                         </el-table-column>
+                                         -->
                                         <el-table-column
-                                            prop="strCostCenter_NO" sortable
-                                            label="Centro costos">
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="strStock_Cod" sortable
+                                            prop="strStock_Cod" sortable  width="100"
                                             label="Material">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPO_Item_Desc" sortable width="200"
+                                            prop="strPO_Item_Desc" sortable 
                                             label="Descripción">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltPO_QTY_I" sortable width="80"
-                                            label="Cantidad">
+                                            prop="fltPO_QTY_I" sortable width="100"
+                                            label="Ctd.Comprada">
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="fltPO_QTY_I" sortable width="100"
+                                            label="Ctd.Recibida">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strUM_Cod" sortable  width="60"
@@ -189,22 +190,22 @@
                                             label="Valor Unitario">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltCurr_Net_PR_P" sortable width="80"
-                                            label="Valor total">
+                                            prop="strCostCenter_NO" sortable width="80"
+                                            label="Centro costos">
                                         </el-table-column>
                                         
                                         <el-table-column
                                             prop="strVendor_NO" sortable width="110"
                                             label="Proveedor">
                                         </el-table-column>
-                                        <el-table-column
+                                        <!--<el-table-column
                                             prop="strCurrency_Cod" sortable
                                             label="Moneda">
-                                        </el-table-column>
-                                        <el-table-column
+                                        </el-table-column> -->
+                                        <!-- <el-table-column
                                             prop="strPriority_Cod" sortable
                                             label="Prioridad">
-                                        </el-table-column>
+                                        </el-table-column> -->
 
                                     </el-table>
                                 </div>
@@ -225,13 +226,13 @@
                          <b-progress-bar :value="valuem" :label="valuem + '%'" />
                     </b-progress>
                 </div>
-                <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img  src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>
             </div>
             <div class="col-sm-3">
                 <div style="text-align:right">
-                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <img src="../../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
                     <span class="footertext2">SQV1</span>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
@@ -297,10 +298,10 @@
             <br/>
             <footer class="modal-footer">
                 <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdbRequi()">
-                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                <img class="imagenfilter" src="../../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDialogReq()">
-                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                <img class="imagenfilter" src="../../../../../images/close.png" alt="" >
                 </el-button>
             </footer>
             </div>
@@ -349,10 +350,10 @@
             <br/>
             <footer class="modal-footer">
                 <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdbProveedor()">
-                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                <img class="imagenfilter" src="../../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDialogProX()">
-                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                <img class="imagenfilter" src="../../../../../images/close.png" alt="" >
                 </el-button>
             </footer>
             </div>
@@ -360,8 +361,8 @@
     </div>
 </template>
 <script>
-import ModificarPOComponent from '@/components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.component'
-export default ModificarPOComponent
+import RecepcionMaterialComponent from '@/components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion/al_recepcion.component'
+export default RecepcionMaterialComponent
 </script>
 <style scoped>
 .sinLinea{
