@@ -30,7 +30,7 @@
                                 </div>                                                      
                             </div>
                             <div class="form-group row">                                
-                                <label class="el-form-item__label col-md-3" >Para Orden Compra</label>
+                                <label class="el-form-item__label col-md-3" >Orden Compra Detalle</label>
                                     <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2" >
                                     <el-input size ="small" @blur="desactivar_OrdenD" @focus="activar_OrdenD" v-model="ordencompraDetalleSelect.intIdPOD_ID" class="inputOrdenCompra" :disabled="valueSwtch">                            
