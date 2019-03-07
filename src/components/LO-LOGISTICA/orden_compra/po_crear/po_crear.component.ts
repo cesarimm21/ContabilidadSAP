@@ -199,6 +199,7 @@ export default class CrearPOComponent extends Vue {
             this.btnactivarImpuesto = false;
         }, 120)
     }
+    
     handleSelectionChange(val) {
         debugger;
         this.valorSelectCodStock=val;
@@ -210,6 +211,9 @@ export default class CrearPOComponent extends Vue {
             this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[i].fltValue_Total * 100)/100;
         }           
       }
+    //   selectforEdit(val){
+
+    //   }
     //#endregion
     //#region [ALMACEN]
       loadAlmacen(code){
@@ -277,6 +281,37 @@ export default class CrearPOComponent extends Vue {
         });         
     }
     //#endregion
+    //#region [IMPUESTO]
+  loadImpuesto(){
+    this.dialogImpuesto=true;
+  }
+  
+  closeDialogImpuesto(){
+    this.btnactivarImpuesto=false;
+    this.dialogImpuesto=false;
+  }
+  activar_Impuesto(){
+    setTimeout(() => {
+      this.btnactivarMoneda=false;
+      this.btnactivarImpuesto=true;
+      this.btnactivarpro = false;
+      this.btnactivarrequisicion = false;
+    }, 120)
+  }
+  desactivar_Impuesto(){
+    if(this.dialogImpuesto){
+      this.btnactivarImpuesto=false;
+    }
+  }  
+  ImpuestoSeleccionado(val:ImpuestoModel){
+    this.Impuesto=val
+    this.dialogImpuesto=false;
+  }
+  closeImpuesto(){
+    this.Impuesto=new ImpuestoModel();
+    this.dialogImpuesto=false;
+  }
+  //#endregion
     //#region [ORDEN COMPRA]
     guardarPO(val) {
         if (this.multipleSelection.length == 0) {
@@ -365,6 +400,9 @@ export default class CrearPOComponent extends Vue {
                         this.OrdenCompra = new OrdenCompraModel();
                         this.requiSelect = new RequisicionModel();
                         this.Impuesto = new ImpuestoModel();
+                        this.almacen=new AlmacenModel();
+                        this.moneda=new MonedaModel();
+                        this.selectProo=new ProveedorModel();
                         this.requiDetalle1 = [];
                         this.textosave = 'Se guardo correctamente.';
 

@@ -157,8 +157,8 @@
                                         class="ExcelTable2007"
                                         @selection-change="handleSelectionChange">
                                         <el-table-column
-                                            type="selection" v-if="blnSelection"
-                                            width="55">
+                                            type="selection"
+                                            width="45">
                                         </el-table-column>
                                         <el-table-column type="index" width="38">
                                         </el-table-column>
@@ -180,11 +180,11 @@
                                             prop="strDescription" sortable width="200"
                                             label="Descripción">
                                         </el-table-column>
-                                        <el-table-column 
+                                        <!-- <el-table-column 
                                             type="selection"
                                             width="55"
                                             class="secondCheck">
-                                        </el-table-column>
+                                        </el-table-column> -->
                                         <el-table-column
                                             prop="fltQuantity" sortable width="100"
                                             label="Cantidad">
@@ -192,7 +192,7 @@
                                                 <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
                                                 </el-input-number>
-                                                <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
+                                                <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -202,7 +202,7 @@
                                                 <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" >
                                                 </el-input>
-                                                <label v-else @click="clickUnidadMedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
+                                                <label style="width:100%" v-else @click="clickUnidadMedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -212,7 +212,7 @@
                                                 <el-input-number  v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltUnitPrice" >
                                                 </el-input-number>
-                                                <label v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
+                                                <label style="width:100%"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -275,7 +275,7 @@
             </bmoneda>
         </el-dialog>
         <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeDialogImpuesto" size="small" >
-            <bimpuesto v-on:impuestoselecionado="impuestoselecionado($event)" v-on:companiaClose="impuestoClose()">
+            <bimpuesto v-on:impuestoseleccionado="ImpuestoSeleccionado($event)" v-on:impuestoClose="closeImpuesto()">
             </bimpuesto>
         </el-dialog>
         <!--DIALOG BUSQUEDA PRIORIDAD-->

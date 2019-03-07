@@ -781,7 +781,6 @@ body {
 .el-table .cell {
     white-space: normal;
     word-break: break-all;
-    line-height: 31px;
     font-size: 13px;
 }
 </style>
