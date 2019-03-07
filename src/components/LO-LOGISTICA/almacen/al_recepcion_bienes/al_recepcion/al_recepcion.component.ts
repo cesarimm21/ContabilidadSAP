@@ -24,7 +24,7 @@ import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
 @Component({
-    name: 'modificar-po',
+    name: 'al-recepcion',
     components: {
         'buttons-accions': ButtonsAccionsComponent,
         'bmoneda': BMonedaComponent,
@@ -32,7 +32,7 @@ import Global from '@/Global';
         'bimpuesto': BImpuestoComponent
     }
 })
-export default class ModificarPOComponent extends Vue {
+export default class RecepcionMaterialComponent extends Vue {
     nameComponent: string = 'modificar-po';
     sizeScreen: string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth: string = (window.innerWidth - 288).toString();//'0';
@@ -410,7 +410,7 @@ export default class ModificarPOComponent extends Vue {
         console.log('data extra',object);
         var modulo = this.$route.query.vista;
         if(modulo.toLowerCase()!='aprobar'){
-          this.txtmodulo='Modificar Orden Compra';
+          this.txtmodulo='Recepción Material';
           this.vifaprobarrechasar=false;
           if(modulo.toLowerCase()!='visualizar'){
             this.visualizar=true;
@@ -424,12 +424,12 @@ export default class ModificarPOComponent extends Vue {
             this.vifaprobarrechasar=true;
             this.txtmodulo='Aprobar Orden Compra';
             console.log(object.intIdPOH_ID);
-            this.intIdVendor_ID=object.intIdVendor_ID;
+        }
+        this.intIdVendor_ID=object.intIdVendor_ID;
             this.intIdTypeReq_ID=object.intIdTypeReq_ID;
             this.intIdPurReqH_ID=object.intIdPurReqH_ID;
             this.intIdWHS_ID=object.intIdWHS_ID;
-            this.cargar(object.intIdPOH_ID);
-        }
+        this.cargar(object.intIdPOH_ID);
       }
       cargar(code){
         ordenCompraService.getPOId(code)

@@ -14,14 +14,14 @@
                 padding: 4px 4px 4px 4px !important;" @click="aprobar()">
                 Aprobar
             </el-button>
-            <el-button v-if="vifaprobarrechasar" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
+            <!-- <el-button v-if="vifaprobarrechasar" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
                 width: inherit;
                 background: rgb(171, 67, 4);
                 border-color: transparent;
                 color: #f6f7f9;
                 padding: 4px 4px 4px 4px !important;" @click="rechasar()">
-                Rechasar
-            </el-button>
+                Rechazar
+            </el-button> -->
         </div>
         <div class="row bodycard">
             <div class="container">

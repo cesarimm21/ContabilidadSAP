@@ -153,6 +153,9 @@ export default class BarmenuComponent extends Vue {
   linkAprobarSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidaaprobar')
   }
+  linkRecepcionarSalidaAlmacen(){
+    router.push('/barmenu/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda')
+  }
   AprobarPO(){
     router.push('/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion')
   }

@@ -23,7 +23,7 @@ import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import {ImpuestoModel} from '@/modelo/maestro/impuesto';
+import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
 @Component({
@@ -70,32 +70,32 @@ export default class CrearPOComponent extends Vue {
     public almacen:AlmacenModel=new AlmacenModel();
     //#endregion
     //**[IMPUESTO] */
-    public Impuesto:ImpuestoModel=new ImpuestoModel();
-    dialogImpuesto:boolean=false;
-    btnactivarImpuesto:boolean=false;
+    public Impuesto: ImpuestoModel = new ImpuestoModel();
+    dialogImpuesto: boolean = false;
+    btnactivarImpuesto: boolean = false;
 
     //**[MONEDA] */
-    dialogMoneda:boolean=false;
-    btnactivarMoneda:boolean=false;
-    dataMoneda:any[];
-    public moneda:MonedaModel=new MonedaModel();
+    dialogMoneda: boolean = false;
+    btnactivarMoneda: boolean = false;
+    dataMoneda: any[];
+    public moneda: MonedaModel = new MonedaModel();
     //**[REQUISICION] */
-    requisicionData:Array<RequisicionModel>[];
-    requisicionDetalle:any[];
-    public requiSelect:RequisicionModel=new RequisicionModel();
-    public requiDetalle:RequisicionDetalleModel[];
-    public requiDetalle1:RequisicionDetalleModel[];
-    multipleSelection:RequisicionDetalleModel[];
+    requisicionData: Array<RequisicionModel>[];
+    requisicionDetalle: any[];
+    public requiSelect: RequisicionModel = new RequisicionModel();
+    public requiDetalle: RequisicionDetalleModel[];
+    public requiDetalle1: RequisicionDetalleModel[];
+    multipleSelection: RequisicionDetalleModel[];
 
     //**[PROVEEDORES] */
-    dialogProveedor:boolean=false;
-    btnactivarpro:boolean=false;
-    valueProvee:Array<ProveedorModel>[];
-    public selectProo:ProveedorModel=new ProveedorModel();
+    dialogProveedor: boolean = false;
+    btnactivarpro: boolean = false;
+    valueProvee: Array<ProveedorModel>[];
+    public selectProo: ProveedorModel = new ProveedorModel();
 
     //**[ORDEN COMPRA] */
-    public OrdenCompra:OrdenCompraModel=new OrdenCompraModel();
-    ordencompraDetalle:any[];
+    public OrdenCompra: OrdenCompraModel = new OrdenCompraModel();
+    ordencompraDetalle: any[];
     //* [COMPANIA]
     public compania:CompaniaModel=new CompaniaModel();
     //**[PRODUCTO] */
@@ -104,12 +104,12 @@ export default class CrearPOComponent extends Vue {
     provData1:ProveedorModel[];
     constructor(){
         super();
-        Global.nameComponent='crear-po';
-        this.OrdenCompra.chrPO_Status='00';
-        this.fecha_ejecucion=Global.getParseDate(new Date().toDateString()); 
+        Global.nameComponent = 'crear-po';
+        this.OrdenCompra.chrPO_Status = '00';
+        this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
     }
     //#region [COMPANIA]
-    loadCompania(v){
+    loadCompania(v) {
         companiaService.GetOnlyOneCompania(v)
         .then(response=>{
             this.compania=response;   
@@ -119,7 +119,6 @@ export default class CrearPOComponent extends Vue {
     }
 
     //#endregion
-
     //#region [REQUISICION]
     loadRequisicion(){
         this.dialogRequisicion=true;
@@ -130,17 +129,17 @@ export default class CrearPOComponent extends Vue {
             this.requisicionData=response;
         })
     }
-    searchRequisicion(){
+    searchRequisicion() {
         this.getRequisicion(this.codigoInput);
     }
-    getRequisicion(codigo){
+    getRequisicion(codigo) {
         debugger;
         requisicionService.getRequisicionByCod(codigo)
         .then(response=>{
             this.requisicionData=response;                                 
         })
     }
-    getReqDetalle(v){
+    getReqDetalle(v) {
         requisicionService.getRequiDetallById(v)
         .then(response=>{
             this.requiDetalle=response;          
@@ -194,11 +193,11 @@ export default class CrearPOComponent extends Vue {
     }
     activar_requisicion(){
         setTimeout(() => {
-            this.btnactivarpro=false; 
-            this.btnactivarrequisicion=true;
-            this.btnactivarMoneda=false;
-            this.btnactivarImpuesto=false;
-          }, 120)
+            this.btnactivarpro = false;
+            this.btnactivarrequisicion = true;
+            this.btnactivarMoneda = false;
+            this.btnactivarImpuesto = false;
+        }, 120)
     }
     handleSelectionChange(val) {
         debugger;
@@ -225,44 +224,44 @@ export default class CrearPOComponent extends Vue {
 
     //#endregion
     //#region [PROVEEDORES]
-    desactivar_pro(){
-        if(this.dialogProveedor){
-            this.btnactivarpro=false;      
-        }   
+    desactivar_pro() {
+        if (this.dialogProveedor) {
+            this.btnactivarpro = false;
+        }
     }
-    activar_pro(){
+    activar_pro() {
         setTimeout(() => {
-            this.btnactivarpro=true; 
-            this.btnactivarrequisicion=false;
-            this.btnactivarMoneda=false;
-            this.btnactivarImpuesto=false;
-          }, 120)
+            this.btnactivarpro = true;
+            this.btnactivarrequisicion = false;
+            this.btnactivarMoneda = false;
+            this.btnactivarImpuesto = false;
+        }, 120)
     }
-    loadPro(){
-        this.dialogProveedor=true;
+    loadPro() {
+        this.dialogProveedor = true;
     }
-    searchProo(){
+    searchProo() {
         proveedorService.GetOnlyOneProveedor(this.valueProvee)
-        .then(response=>{
-            this.provData=response;            
-        })
+            .then(response => {
+                this.provData = response;
+            })
     }
-    checkSelectProo(){
-        this.dialogProveedor=false;
-        this.OrdenCompra.strVendor_NO=this.selectProo.strVendor_NO;
-        this.OrdenCompra.intIdVendor_ID=this.selectProo.intIdVendor_ID;
+    checkSelectProo() {
+        this.dialogProveedor = false;
+        this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+        this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
     }
-    checkDoblePro(){
-        this.dialogProveedor=false;
-        this.OrdenCompra.strVendor_NO=this.selectProo.strVendor_NO;
-        this.OrdenCompra.intIdVendor_ID=this.selectProo.intIdVendor_ID;
+    checkDoblePro() {
+        this.dialogProveedor = false;
+        this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+        this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
     }
-    closeDialogPro(){
-        this.dialogProveedor=false;
+    closeDialogPro() {
+        this.dialogProveedor = false;
     }
-    closeDialogProX(){
-        this.dialogProveedor=false;
-        this.selectProo=new ProveedorModel();
+    closeDialogProX() {
+        this.dialogProveedor = false;
+        this.selectProo = new ProveedorModel();
     }
     checkSelectdbProveedor(val:ProveedorModel){
         this.dialogProveedor=false;
@@ -278,54 +277,19 @@ export default class CrearPOComponent extends Vue {
         });         
     }
     //#endregion
-//#region [IMPUESTO]
-loadImpuesto(){
-    this.dialogImpuesto=true;
-  }
-  
-  closeDialogImpuesto(){
-    this.btnactivarImpuesto=false;
-    this.dialogImpuesto=false;
-  }
-  activar_Impuesto(){
-    setTimeout(() => {
-      this.btnactivarMoneda=false;
-      this.btnactivarImpuesto=true;
-      this.btnactivarpro=false; 
-      this.btnactivarrequisicion=false;
-    }, 120)
-  }
-  desactivar_Impuesto(){
-    if(this.dialogImpuesto){
-      this.btnactivarImpuesto=false;
-    }
-  }  
-  impuestoselecionado(val:ImpuestoModel){
-    this.Impuesto=val; 
-    this.dialogImpuesto=false;  
-  }
-  closeImpuesto(){
-    this.Impuesto=new ImpuestoModel();
-    this.dialogImpuesto=false;
-  }
-  impuestoClose(){
-    this.Impuesto=new ImpuestoModel();
-    this.dialogImpuesto=false;
-  }
-  //#endregion
     //#region [ORDEN COMPRA]
-    guardarPO(val){
-        if(this.multipleSelection.length==0){
+    guardarPO(val) {
+        if (this.multipleSelection.length == 0) {
             this.$message({
                 showClose: true,
                 type: 'warning',
                 message: 'Debe seleccionar al menos 1 detalle'
-              });
+            });
         }
 
-        else{
-            this.OrdenCompra.listaDetalle=[];
-            for(var i=0;i<this.multipleSelection.length;i++){
+        else {
+            this.OrdenCompra.listaDetalle = [];
+            for (var i = 0; i < this.multipleSelection.length; i++) {
                 this.OrdenCompra.listaDetalle.push({
                     intIdAcctCateg_ID:this.multipleSelection[i].intIdAcctCateg_ID,
                     intIdCategLine_ID:this.multipleSelection[i].intIdCategLine_ID,
@@ -386,33 +350,33 @@ loadImpuesto(){
             this.OrdenCompra.fltTotal_Val=this.totalPrice;
             this.OrdenCompra.strCreation_User='egaona';
             let loadingInstance = Loading.service({
-            fullscreen: true,
-            text: 'Guargando...',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.8)'
+                fullscreen: true,
+                text: 'Guargando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
             }
-            );        
-            if(val=='crear-po'){
+            );
+            if (val == 'crear-po') {
                 ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
-                .then(response=>{
-                    loadingInstance.close();
-                    this.issave=true;
-                    this.iserror=false;
-                    this.OrdenCompra=new OrdenCompraModel();
-                    this.requiSelect=new RequisicionModel();
-                    this.Impuesto=new ImpuestoModel();
-                    this.requiDetalle1=[];
-                    this.textosave='Se guardo correctamente.';
-                        
-                }).catch(error=>{
-                    loadingInstance.close();
-                    this.issave=false;
-                    this.iserror=true;
-                    this.textosave='Error al guardar.';
-                })
-            }  
+                    .then(response => {
+                        loadingInstance.close();
+                        this.issave = true;
+                        this.iserror = false;
+                        this.OrdenCompra = new OrdenCompraModel();
+                        this.requiSelect = new RequisicionModel();
+                        this.Impuesto = new ImpuestoModel();
+                        this.requiDetalle1 = [];
+                        this.textosave = 'Se guardo correctamente.';
+
+                    }).catch(error => {
+                        loadingInstance.close();
+                        this.issave = false;
+                        this.iserror = true;
+                        this.textosave = 'Error al guardar.';
+                    })
+            }
         }
-                
+
     }
     //#endregion
     //#region [MONEDA]
@@ -438,15 +402,15 @@ loadImpuesto(){
         if(this.dialogMoneda){
           this.btnactivarMoneda=false;
         }
-      }
-      activar_Moneda(){
+    }
+    activar_Moneda() {
         setTimeout(() => {
-            this.btnactivarpro=false; 
-            this.btnactivarrequisicion=false;
-            this.btnactivarMoneda=true;
-            this.btnactivarImpuesto=false;
+            this.btnactivarpro = false;
+            this.btnactivarrequisicion = false;
+            this.btnactivarMoneda = true;
+            this.btnactivarImpuesto = false;
         }, 120)
-      }
+    }
     //#endregion
     //#region [ACCIONES TABLA]
     clickcantidad(event,edit,column){
@@ -524,5 +488,5 @@ loadImpuesto(){
             totalPrice:0,
             valorSelectCodStock:[]
         }
-      }
-  }
+    }
+}

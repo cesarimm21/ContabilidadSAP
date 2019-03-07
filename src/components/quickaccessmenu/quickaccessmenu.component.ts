@@ -133,6 +133,7 @@ export default class QuickAccessMenuComponent extends Vue {
       this.$emit('guardarHES',Global.nameComponent);
     }
     // this.$emit('guardarTodo','hola');
+    this.$emit('guardarTodo');
 
   }
   linksUser(comand){
