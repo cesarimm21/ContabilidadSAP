@@ -91,8 +91,8 @@ export default class RecepcionMaterialComponent extends Vue {
 
     strGuiaRemitente:string='';
     strGuiaTransportista:string='';
-    dtmFechaGuiaTransportista:Date;
-    dtmFechaRecepcion:Date;
+    dtmFechaGuiaTransportista:Date=new Date();
+    dtmFechaRecepcion:Date=new Date();
     strConductor:string='';
     strVendor_NO:string='';
     strCompany:string='';
@@ -321,6 +321,7 @@ export default class RecepcionMaterialComponent extends Vue {
                     strWH_Retention: this.Impuesto.fltPorcent,
                     fltTax_Percent: this.Impuesto.fltPorcent,
                     fltRec_QYT:this.multipleSelection[i].fltRec_QYT,
+                    //fltRec_Pend_QTY:this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT,
                     strGuiaRem_NO:this.strGuiaRemitente,
                     //dtmGuiaRem_Date:this.dtmFechaRecepcion,
                     strGuiaTrans_NO:this.strGuiaTransportista,
