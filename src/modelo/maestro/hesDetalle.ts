@@ -9,6 +9,8 @@ export class HesDetalleModel {
     intQuantity:number;
     strUM:string;
     strCurrency:string;
+    intIdCostCenter_ID:number;
+    strCostCenter_NO:string;
     fltGross_Price:number;
     fltNet_Value:number;
     strCreation_User:string;
@@ -27,6 +29,8 @@ export class HesDetalleModel {
         this.intQuantity=0;
         this.strUM='';
         this.strCurrency='';
+        this.intIdCostCenter_ID=-1;
+        this.strCostCenter_NO='';
         this.fltGross_Price=0;
         this.fltNet_Value=0;
         this.strCreation_User='';

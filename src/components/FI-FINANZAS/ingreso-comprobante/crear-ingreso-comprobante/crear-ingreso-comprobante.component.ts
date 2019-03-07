@@ -232,8 +232,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
         });
         var a=this.ordencompraDetalle[i].fltPO_QTY_I;
         var c=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
-        var b=parseInt(a);
-        var d=parseInt(c);
+        var b=a;
+        var d=c;
         this.totalUnidad=this.totalUnidad+b;
         this.totalDinero=this.totalDinero+d;
       }

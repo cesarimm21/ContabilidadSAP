@@ -10,8 +10,10 @@ import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import { Notification } from 'element-ui';
 import ordencompraService from '@/components/service/ordencompra.service';
+import hesService from '@/components/service/hes.service';
 import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 //**BUS */
 import {bus} from '../../../../main';
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
@@ -19,6 +21,7 @@ import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
 import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
 import {HESModel} from '@/modelo/maestro/hes';
 import {HesDetalleModel} from '@/modelo/maestro/hesDetalle';
+import {CentroCostosModel} from '@/modelo/maestro/centrocostos';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
 
@@ -26,7 +29,8 @@ import { Loading } from 'element-ui';
   name: 'crear-hes',
   components:{'buttons-accions':ButtonsAccionsComponent,
   'bcategorialinea':BCategoriaLineaComponent,
-  'quickaccessmenu':QuickAccessMenuComponent,}
+  'quickaccessmenu':QuickAccessMenuComponent,
+  'bcentrocosto':BCentroCostoComponent,}
 })
 export default class CrearHesComponent extends Vue {
   nameComponent:string;
@@ -36,6 +40,11 @@ export default class CrearHesComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   fecha_ejecucion:string;
+  vifprogress:boolean=true;
+  valuem:number=0;
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave='';
   /*bolean_tabla_dinamica*/
   editing:any= {
     row:'',
@@ -52,7 +61,11 @@ export default class CrearHesComponent extends Vue {
   //**CENTRO COSTO */
   dialogOrdenC:boolean=false;
   btnactivarOrdenC:boolean=false;
-
+  dialogCentroCostos:boolean=false;
+  blncentrocosto:boolean=true;
+  bln_tbl_centro_costo:boolean=false;
+  cell_ocultar:string='transparent';
+  public centrocosto:CentroCostosModel=new CentroCostosModel();
   //**CATEGORIA LINEA */
   dialogCategoriaLinea:boolean=false;
   btnactivarcategoria:boolean=false;
@@ -82,6 +95,7 @@ export default class CrearHesComponent extends Vue {
   constructor(){
     super();
     Global.nameComponent='crear-hes';
+    // this.cell_ocultar='#e4e2e2';  
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString()); 
     // this.TableIngreso=[];
     for(var i=0;i<10;i++){
@@ -117,6 +131,7 @@ export default class CrearHesComponent extends Vue {
   }
   selectdbOrdenCompra(){
     this.dialogOrdenCompra=false;
+    this.valueSwtch=false;
   }
   selectOrdenCompra(val:OrdenCompraModel){    
     this.ordencompraSelect=val;
@@ -133,8 +148,7 @@ export default class CrearHesComponent extends Vue {
       var reqDetalle:HesDetalleModel=new HesDetalleModel();
       reqDetalle.chrStatus="A";
       reqDetalle.strCurrency=this.ordencompraSelect.strCurrency_Cod;
-      this.TableIngreso.push(reqDetalle);
-      console.log(i + ' '+reqDetalle.strCurrency);      
+      this.TableIngreso.push(reqDetalle);   
     }
   } 
   closeOrdenCompra(){    
@@ -209,7 +223,6 @@ export default class CrearHesComponent extends Vue {
 //#endregion
   //#region [GUARDAR HES]
   guardarHes(){
-    alert('ESTAMOS EN HES');
     this.hesModel.intIdCategLine_ID=this.categoriaSelect.intIdCategLine_ID;
     this.hesModel.strCategItem_Cod=this.categoriaSelect.strCategLine_Cod;
     this.hesModel.strCompany_Cod=this.ordencompraSelect.strCompany_Cod;
@@ -218,11 +231,57 @@ export default class CrearHesComponent extends Vue {
     this.hesModel.dtmProcess_Date=new Date();
     this.hesModel.dtmAuthsd_Date=this.ordencompraSelect.dtmProcess_Date;
     this.hesModel.strCurrency=this.ordencompraSelect.strCurrency_Cod;
-    this.hesModel.fltTot_QTY=parseInt(this.ordencompraDetalleSelect.fltCurr_Net_PR_P);
+    this.hesModel.fltTot_QTY=this.ordencompraDetalleSelect.fltCurr_Net_PR_P;
     this.hesModel.strCreation_User='egaona';
     this.hesModel.fltTot_Value=0;
-    console.log(this.hesModel);
-    
+    this.hesModel.listaDetalle=[];
+    for(var i=0;i< this.TableIngreso.length;i++){
+      if(this.TableIngreso[i].strCostCenter_NO!=''&&this.TableIngreso[i].strDesc_Detail!=''){
+        this.hesModel.listaDetalle.push({
+          intHES_Item_NO:0,
+          strService_NO:this.TableIngreso[i].strService_NO,
+          strDesc_Detail:this.TableIngreso[i].strDesc_Detail,
+          strHES_Status:'00',
+          intQuantity:this.TableIngreso[i].intQuantity,
+          strUM:this.TableIngreso[i].strUM,
+          strCurrency:this.TableIngreso[i].strCurrency,
+          intIdCostCenter_ID:-1,
+          strCostCenter_NO:this.TableIngreso[i].strCostCenter_NO,
+          fltGross_Price:this.TableIngreso[i].fltGross_Price,
+          fltNet_Value:0
+        })
+      }      
+    }
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Guargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      );
+      hesService.CreateHes(this.hesModel)
+      .then(response=>{
+        loadingInstance.close();
+        this.issave = true;
+        this.iserror = false;
+        this.hesModel=new HESModel();
+        this.TableIngreso=[];
+        for(var i=0;i<10;i++){
+          var reqDetalle:HesDetalleModel=new HesDetalleModel();
+          reqDetalle.chrStatus="A";
+          this.TableIngreso.push(reqDetalle);
+        } 
+        this.ordencompraDetalleSelect=new OrdenCompraDetalleModel();
+        this.categoriaSelect=new CategoriaLineaModel();
+        this.ordencompraSelect=new OrdenCompraModel();
+        this.ordenCompraDetalle=new OrdenCompraDetalleModel();
+        this.textosave = 'Se guardo correctamente '+response.strHES_NO;
+      }).catch(error=>{
+        loadingInstance.close();
+        this.issave = false;
+        this.iserror = true;
+        this.textosave = 'Error al guardar.';
+      })    
   }
   //#endregion
   linksUser(comand){
@@ -272,7 +331,32 @@ export default class CrearHesComponent extends Vue {
 
   }
   //#endregion
-
+  //#region [CENTRO COSTO]
+  LoadCentroCosto(row){    
+    this.centrocosto=row;
+    this.dialogCentroCostos=true;
+  }
+  clickcentrocosto(event,edit,column){
+    debugger;
+    this.bln_tbl_centro_costo=true;
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+  }
+  SeleccionadoCentroCosto(val){
+    debugger;
+    this.centrocosto.strCostCenter_NO=val.strCostCenter_NO;
+    this.centrocosto.intIdCostCenter_ID=val.intIdCostCenter_ID;
+    this.dialogCentroCostos=false;
+  }
+  Centrocostoclose(){
+    this.dialogCentroCostos=false;
+    this.centrocosto=new CentroCostosModel();
+  }
+  closeCentroCostos(){
+    return false;
+  }
+  //#endregion
   //#region [ACCIONES BOTON]
   handleBlur(event) {
     debugger;

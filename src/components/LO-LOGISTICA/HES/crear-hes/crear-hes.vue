@@ -235,8 +235,20 @@
                                                     label="Persona Ejecución">
                                                 </el-table-column>                                                -->
                                                 <el-table-column
-                                                    prop="strUM" sortable 
+                                                    prop="strCostCenter_NO" sortable 
                                                     label="Centro de costo">
+                                                     <template scope="scope">
+                                                        <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter_NO" >
+                                                        <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCentroCosto(scope.row)"></el-button>  
+                                                        </el-input>
+                                                        <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
+                                                    </template>
+                                                </el-table-column>
+                                                <el-table-column width="20"
+                                                    sortable 
+                                                    label="">
+                                                    
                                                 </el-table-column>
                                             </el-table>
                                         </div>
@@ -257,10 +269,43 @@
                 </el-tab-pane> -->
             </el-tabs>
       </el-card>
+         <div class="footer1">
+        <div class="row">
+            <div class="col-sm-9" style="text-align:left" >
+                <div class="col-sm-2">
+                    <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
+                         <b-progress-bar :value="valuem" :label="valuem + '%'" />
+                    </b-progress>
+                </div>
+                <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <span class="footertext2" style="" >{{textosave}}</span>
+            </div>
+            <div class="col-sm-3">
+                <div style="text-align:right">
+                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">SQV1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">PQM1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">OVR1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <i class="fa fa-unlock" aria-hidden="true" style="margin-left: 0.3rem;margin-right: 1rem;color:#7b7b7b"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <!--DIALOG BUSQUEDA CATEGORIA LINEA-->
     <el-dialog title="Busqueda categoria linea"  :visible.sync="dialogCategoriaLinea" @close="closeCategoriaLinea" size="small" >
       <bcategorialinea v-on:categorialineaselecionado="SeleccionadoCategoriaLinea($event)" v-on:categorialineaclose="closeCategoriaLinea()">
       </bcategorialinea>
+    </el-dialog>
+    <!--DIALOG BUSQUEDA CENTRO COSTOS-->
+    <el-dialog title="Busqueda centro de costos"  :visible.sync="dialogCentroCostos" @close="closeCentroCostos" size="small" >
+      <bcentrocosto v-on:centrocostoselecionado="SeleccionadoCentroCosto($event)" v-on:centrocostosclose="Centrocostoclose()">
+      </bcentrocosto>
     </el-dialog>
     <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
             <div>
@@ -292,7 +337,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @row-dblclick="selectdbOrdenCompra"
+                    @row-dblclick="checkOrdenCompra"
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  

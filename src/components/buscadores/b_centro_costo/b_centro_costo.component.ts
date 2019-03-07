@@ -154,7 +154,7 @@ export default class  BCentroCostoComponent extends Vue {
   }
   checkPopup(){
     debugger;
-    this.$emit('centrocostosselecionado',this.centrocostosSelectModel);
+    this.$emit('centrocostoselecionado',this.centrocostosSelectModel);
   }
   closePopup(){
     this.$emit('centrocostosclose');

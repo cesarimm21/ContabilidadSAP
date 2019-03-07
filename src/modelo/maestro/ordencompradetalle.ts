@@ -28,9 +28,9 @@ export class OrdenCompraDetalleModel {
     intIdInvStock_ID:number ;//
     dtmOrig_Due_Date:Date ;//
     strUnit_Of_Purch:string ;//
-    fltPO_QTY_I:string ;//
-    fltPO_Net_PR_I:string ;//
-    fltCurr_Net_PR_P:string ;//
+    fltPO_QTY_I:number ;//
+    fltPO_Net_PR_I:number ;//
+    fltCurr_Net_PR_P:number ;//
     intConv_Factor:number ;//
     strTax_Cod:string ;//
     strWH_Tax_Detraccion:string;//
@@ -38,7 +38,7 @@ export class OrdenCompraDetalleModel {
     fltTax_Percent:number ;//
     intIdWHS_ID:number ;//
     intInv_QTY_UOP:number ;//
-    intInvoice_NO:string;//
+    intInvoice_NO:number;//
     fltInv_Pend_QTY_P:number ;//
     fltInv_Pend_Val_F:number ;//
     fltInv_Pend_Val_L:number ;//
