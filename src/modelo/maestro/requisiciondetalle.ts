@@ -27,6 +27,8 @@ export class RequisicionDetalleModel {
     strAccount_NO:string ;
     strCostCenter:string ;
     dtmCompleted_Date:Date;
+
+ 
     
     strCreation_User:Date ;
     dtmCreation_Date:string ;
@@ -62,5 +64,6 @@ export class RequisicionDetalleModel {
         this.strAccount_NO=''
         this.strCostCenter=''
         this.dtmCompleted_Date =new Date()
+        
     }
 }

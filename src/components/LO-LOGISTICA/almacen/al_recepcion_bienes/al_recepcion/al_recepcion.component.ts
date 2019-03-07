@@ -67,8 +67,8 @@ export default class RecepcionMaterialComponent extends Vue {
     requisicionDetalle: any[];
     public requiSelect: RequisicionModel = new RequisicionModel();
     public requiDetalle: RequisicionDetalleModel[];
-    public requiDetalle1: RequisicionDetalleModel[];
-    multipleSelection: RequisicionDetalleModel[];
+    public requiDetalle1: OrdenCompraDetalleModel[];
+    multipleSelection: OrdenCompraDetalleModel[];
 
     //**[PROVEEDORES] */
     dialogProveedor: boolean = false;
@@ -88,6 +88,19 @@ export default class RecepcionMaterialComponent extends Vue {
 
     provData: ProveedorModel[];
     provData1: ProveedorModel[];
+
+    strGuiaRemitente:string='';
+    strGuiaTransportista:string='';
+    dtmFechaGuiaTransportista:Date=new Date();
+    dtmFechaRecepcion:Date=new Date();
+    strConductor:string='';
+    strVendor_NO:string='';
+    strCompany:string='';
+    strCode:string='';
+    fltTot_Rec_QYT:number=0;
+    fltTot_Rec_Pend_QTY:number=0;
+    fltCURR_QTY_I:number=0;
+    blnchangerec:boolean=true;
     constructor() {
         super();
         Global.nameComponent = 'crear-po';
@@ -181,7 +194,14 @@ export default class RecepcionMaterialComponent extends Vue {
         }, 120)
     }
     handleSelectionChange(val) {
-        this.multipleSelection = val;
+        var dataselect:any=[];
+        for(var i=0;i<val.length;i++){
+            if(val[0].blnSelection){
+                dataselect.push(val[0])
+            }
+        }
+        this.multipleSelection = dataselect;
+        console.log('item select',this.multipleSelection);
     }
     //#endregion
     //#region [PROVEEDORES]
@@ -224,25 +244,7 @@ export default class RecepcionMaterialComponent extends Vue {
         this.dialogProveedor = false;
         this.selectProo = new ProveedorModel();
     }
-    checkSelectdbProveedor(val: ProveedorModel) {
-        this.dialogProveedor = false;
-        this.selectProo = val;
-        this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
-        this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
-        var code = val.strVendor_NO;
-        var temp = this.requiDetalle;
-        this.requiDetalle1 = [];
-        this.requiDetalle1 = temp.filter(function (hero) {
-            return hero.strVendor_Suggested == code;
-        });
-        for (var i = 0; i < this.requiDetalle1.length; i++) {
-            this.totalItems = this.totalItems + this.requiDetalle1[i].fltQuantity;
-            this.totalPrice = this.totalPrice * this.requiDetalle1[i].fltValue_Total;
-        }
-        if (this.Impuesto.fltPorcent != undefined) {
-            this.totalPrice = this.Impuesto.fltPorcent;
-        }
-    }
+  
     //#endregion
     //#region [IMPUESTO]
     loadImpuesto() {
@@ -298,26 +300,37 @@ export default class RecepcionMaterialComponent extends Vue {
                     intIdCurrency_ID: this.multipleSelection[i].intIdCurrency_ID,
                     intIdCostCenter_ID: this.multipleSelection[i].intIdCostCenter_ID,
                     intPO_Item_NO: 1,//falta de la cabecea
-                    strPO_Item_Desc: this.multipleSelection[i].strDescription,
+                    strPO_Item_Desc: this.multipleSelection[i].strPO_Item_Desc,
                     chrPO_Item_Status: this.multipleSelection[i].chrStatus,
                     strPO_Curr: this.OrdenCompra.strRequis_NO,
                     strRequis_NO: this.OrdenCompra.strRequis_NO,
                     intRequis_Item_NO: this.requiSelect.intIdPurReqH_ID,//requis
                     intChange_Count: 0,//0 cantidad de veces que cambia
                     chrReceipt_Status: '00',//los codigos de aprobacion
-                    strMaterial_Group: this.multipleSelection[i].strMat_Group_Cod,//si hay
-                    strPreq_Stock_Cod: this.multipleSelection[i].strMaterial_Cod,
+                    strMaterial_Group: this.multipleSelection[i].strMaterial_Group,//si hay
+                    strPreq_Stock_Cod: this.multipleSelection[i].strPreq_Stock_Cod,
                     intIdInvStock_ID: 2,//id  de stock
                     dtmOrig_Due_Date: new Date(),
-                    strUnit_Of_Purch: this.multipleSelection[i].strUM,//unidad de medida
-                    fltPO_QTY_I: this.multipleSelection[i].fltQuantity,//cantidad
-                    fltPO_Net_PR_I: this.multipleSelection[i].fltUnitPrice,//precio unitario
-                    fltCurr_Net_PR_P: this.multipleSelection[i].fltValue_Total,//total por producto
+                    strUnit_Of_Purch: this.multipleSelection[i].strUnit_Of_Purch,//unidad de medida
+                    fltPO_QTY_I: this.multipleSelection[i].fltPO_QTY_I,//cantidad
+                    fltPO_Net_PR_I: this.multipleSelection[i].fltPO_Net_PR_I,//precio unitario
+                    fltCurr_Net_PR_P: this.multipleSelection[i].fltCurr_Net_PR_P,//total por producto
                     intConv_Factor: 1,//factor multiplica a la cantidad de productos/Editable
                     strTax_Cod: this.Impuesto.strWH_Cod,
                     strWH_Tax_Detraccion: this.Impuesto.strWH_Cod,
                     strWH_Retention: this.Impuesto.fltPorcent,
                     fltTax_Percent: this.Impuesto.fltPorcent,
+                    fltRec_QYT:this.multipleSelection[i].fltRec_QYT,
+                    //fltRec_Pend_QTY:this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT,
+                    strGuiaRem_NO:this.strGuiaRemitente,
+                    //dtmGuiaRem_Date:this.dtmFechaRecepcion,
+                    strGuiaTrans_NO:this.strGuiaTransportista,
+                    dtmGuiaTrans_Date:this.dtmFechaGuiaTransportista,
+                    dtmReceived_Date:this.dtmFechaRecepcion,
+                    strReceived_User:'egaona',
+                    strRec_Driver:this.strConductor,
+                    //strPlaca:this.str,
+                  
                     intIdWHS_ID: 4,//almacen id correlativo
                     intInv_QTY_UOP: 0,//Inv_QTY //viene de la factura
                     intInvoice_NO: 0,//numero de la factura
@@ -342,32 +355,37 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.fltCURR_QTY_I = 0;
             this.OrdenCompra.fltTotal_Val = 0;
             this.OrdenCompra.strCreation_User = 'egaona';
-            let loadingInstance = Loading.service({
-                fullscreen: true,
-                text: 'Guargando...',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.8)'
-            }
-            );
-            if (val == 'crear-po') {
-                ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
-                    .then(response => {
-                        loadingInstance.close();
-                        this.issave = true;
-                        this.iserror = false;
-                        this.OrdenCompra = new OrdenCompraModel();
-                        this.requiSelect = new RequisicionModel();
-                        this.Impuesto = new ImpuestoModel();
-                        this.requiDetalle1 = [];
-                        this.textosave = 'Se guardo correctamente.';
+            this.OrdenCompra.fltTot_Rec_QYT=this.fltTot_Rec_QYT;
+            this.OrdenCompra.fltTot_Rec_Pend_QTY=this.fltTot_Rec_Pend_QTY;
+            // let loadingInstance = Loading.service({
+            //     fullscreen: true,
+            //     text: 'Guargando...',
+            //     spinner: 'el-icon-loading',
+            //     background: 'rgba(0, 0, 0, 0.8)'
+            // }
+            // );
+           
+            // loadingInstance.close();
+            console.log(this.OrdenCompra)
+            // if (val == 'crear-po') {
+            //     ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
+            //         .then(response => {
+            //             loadingInstance.close();
+            //             this.issave = true;
+            //             this.iserror = false;
+            //             this.OrdenCompra = new OrdenCompraModel();
+            //             this.requiSelect = new RequisicionModel();
+            //             this.Impuesto = new ImpuestoModel();
+            //             this.requiDetalle1 = [];
+            //             this.textosave = 'Se guardo correctamente.';
 
-                    }).catch(error => {
-                        loadingInstance.close();
-                        this.issave = false;
-                        this.iserror = true;
-                        this.textosave = 'Error al guardar.';
-                    })
-            }
+            //         }).catch(error => {
+            //             loadingInstance.close();
+            //             this.issave = false;
+            //             this.iserror = true;
+            //             this.textosave = 'Error al guardar.';
+            //         })
+            // }
         }
 
     }
@@ -404,6 +422,53 @@ export default class RecepcionMaterialComponent extends Vue {
     }
     //#endregion
     //#region [LOAD GET]
+    changeRecibida(){
+        var total=0;
+        this.blnchangerec=false;
+        setTimeout(() => {
+            for(var i=0;i<this.requiDetalle1.length;i++){
+                debugger;
+                if(this.requiDetalle1[i].blnCheck){
+                    this.multipleSelection.push(this.requiDetalle1[i])
+                    if(this.requiDetalle1[i].fltRec_QYT >0){
+                        total+=this.requiDetalle1[i].fltRec_QYT;
+                    }
+                }
+            } 
+            this.fltTot_Rec_QYT=total;
+            this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
+            console.log('change*******',this.requiDetalle1,total);  
+        }, 120)
+    }
+    getNumber(num){
+        return parseFloat(num);
+    }
+    selectRow(row){
+        debugger;
+        this.multipleSelection=[];
+        console.log('entro-check',row);
+        var total=0;
+        for(var i=0;i<this.requiDetalle1.length;i++){
+            if(this.requiDetalle1[i].blnCheck){
+                this.multipleSelection.push(this.requiDetalle1[i])
+                if(this.requiDetalle1[i].fltRec_QYT >0){
+                    total+=this.requiDetalle1[i].fltRec_QYT;
+                }
+            }
+        }
+        this.fltTot_Rec_QYT=total;
+        this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
+        console.log('entro-check-2',this.multipleSelection)
+    }
+    getDisabled(num1,num2,row){
+        if(this.blnchangerec){
+            if(num1==num2){
+                row.blnSelection=false;
+                return true;
+            }
+        }
+        return false;
+    }
     loadPO(){
         debugger;
         var object = JSON.parse(this.$route.query.data);
@@ -426,9 +491,16 @@ export default class RecepcionMaterialComponent extends Vue {
             console.log(object.intIdPOH_ID);
         }
         this.intIdVendor_ID=object.intIdVendor_ID;
-            this.intIdTypeReq_ID=object.intIdTypeReq_ID;
-            this.intIdPurReqH_ID=object.intIdPurReqH_ID;
-            this.intIdWHS_ID=object.intIdWHS_ID;
+        this.intIdTypeReq_ID=object.intIdTypeReq_ID;
+        this.intIdPurReqH_ID=object.intIdPurReqH_ID;
+        this.intIdWHS_ID=object.intIdWHS_ID;
+        this.strVendor_NO=object.strVendor_NO;
+        this.strCompany=object.strCompany_Cod;
+        this.strCode=object.strPO_NO;
+        this.fltTot_Rec_QYT=0;
+        this.fltTot_Rec_Pend_QTY=0;
+        this.fltCURR_QTY_I=object.fltCURR_QTY_I;
+        this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
         this.cargar(object.intIdPOH_ID);
       }
       cargar(code){
@@ -439,7 +511,14 @@ export default class RecepcionMaterialComponent extends Vue {
             ordenCompraService.getPODetalleId(res[0].intIdPOH_ID)
             .then(resd=>{
               this.OrdenCompra=res[0];
-              this.requiDetalle1=resd;
+              //this.requiDetalle1=resd;
+              for(var i=0;i<resd.length;i++){
+                var item:any;
+                item=resd[i];
+                item.blnSelection=true;
+                item.blnCheck=false;
+                this.requiDetalle1.push(item);
+              }
               console.log('cargarData2',resd,this.requiDetalle1)
             })
             .catch(error=>{

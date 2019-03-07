@@ -47,6 +47,19 @@ export class OrdenCompraDetalleModel {
     fltTot_PO_Item:number ;//
     strAccount_Cod:string ;//
     strWBS_Project:string;//
+    
+    fltRec_QYT:number;
+    fltRec_Value:number;
+    strGuiaRem_NO:string;
+    dtmGuiaRem_Date:Date;
+    strGuiaTrans_NO:string;
+    dtmGuiaTrans_Date:Date;
+    dtmReceived_Date:Date;
+    strReceived_User:string;
+    strRec_Driver:string;
+    strPlaca:string;
+    blnSelection:boolean=false;
+    blnCheck:boolean=false;
 
     strCreation_User:Date ;
     dtmCreation_Date:string ;
