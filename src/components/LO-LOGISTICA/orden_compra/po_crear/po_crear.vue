@@ -24,9 +24,6 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-4" ></label>
-                            </div>
-                            <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -34,7 +31,12 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Almacen</label>
+                            </div>
+                            <div  class="form-group row ">
+                                <div class="col-md-6 grupolabel">
+                                    <!-- <div class="input-group mb-3" > -->
+                                </div>
+                                <label class="el-form-item__label col-md-3" >Almacén</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" type="text" v-model="requiSelect.strWHS_Cod">
@@ -44,6 +46,34 @@
 
                             </div>
                              <div  class="form-group row ">
+                                
+                                <label class="el-form-item__label col-md-3" >Fecha Docum.</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small"  type="date" v-model="fecha_ejecucion" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="el-form-item__label col-md-3" >Moneda</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr">
+                                            <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button>
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                             <div  class="form-group row ">
+                                 <label class="el-form-item__label col-md-3" >Cantidad Total</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" type="number" v-model="totalItems">
+
+                                    </el-input>
+                                    </div>
+                                </div>
+                                
+                                
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -55,46 +85,21 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Moneda pago</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr">
-                                            <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button>
-                                        </el-input>
-                                    </div>
-                                </div>
                             </div>
                              <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Impuesto(IGV)</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="Impuesto.fltPorcent" >
-                                            <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
-                                        </el-input>
-                                    </div>
-                                </div>
-                                <label class="el-form-item__label col-md-3" >Doc. Date</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small"  type="date" v-model="fecha_ejecucion" disabled>
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div>
-                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Cantidad total</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small" type="number" v-model="totalItems">
-
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <label class="el-form-item__label col-md-3" >Importe total</label>
+                                 <label class="el-form-item__label col-md-3" >Valor documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small"  type="number" v-model="totalPrice">
                                     </el-input>
+                                    </div>
+                                </div>
+                                <label class="el-form-item__label col-md-3" >Impuesto(IGV)</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="Impuesto.strWH_Cod" >
+                                            <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
+                                        </el-input>
                                     </div>
                                 </div>
                             </div>
@@ -118,9 +123,19 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6" ></label>
-                                <label class="sinLinea el-form-item__label col-md-3" >Fecha ejecución</label>
-                                <label class="sinLinea el-form-item__label col-md-3" > {{fecha_ejecucion}}</label>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{OrdenCompra.strCompany_Desc}}</label>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{selectProo.strVendor_Desc}}</label>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{Impuesto.fltPorcent}}</label>
                             </div>
                         </div>
                     </div>
@@ -134,8 +149,10 @@
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
+                                        ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="requiDetalle1"
+                                        highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @selection-change="handleSelectionChange">
@@ -143,7 +160,7 @@
                                             type="selection" v-if="blnSelection"
                                             width="55">
                                         </el-table-column>
-                                        <el-table-column type="index" width="58">
+                                        <el-table-column type="index" width="38">
                                         </el-table-column>
                                         <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cta. cuenta">
                                         </el-table-column>
@@ -157,40 +174,61 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strMaterial_Cod" sortable
-                                            label="Material">
+                                            label="Material/Producto">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strDescription" sortable width="200"
                                             label="Descripción">
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="fltQuantity" sortable width="80"
-                                            label="Cantidad">
+                                        <el-table-column 
+                                            type="selection"
+                                            width="55"
+                                            class="secondCheck">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strUM" sortable  width="60"
+                                            prop="fltQuantity" sortable width="100"
+                                            label="Cantidad">
+                                            <template scope="scope">
+                                                <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
+                                                </el-input-number>
+                                                <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="strUM" sortable  width="100"
                                             label="UM">
+                                            <template scope="scope">
+                                                <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" >
+                                                </el-input>
+                                                <label v-else @click="clickUnidadMedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltUnitPrice" sortable width="80"
                                             label="Valor Unitario">
+                                            <template scope="scope">
+                                                <el-input-number  v-if="bln_tbl_Precio  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltUnitPrice" >
+                                                </el-input-number>
+                                                <label v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltValue_Total" sortable width="80"
                                             label="Valor total">
                                         </el-table-column>
-                                        
                                         <el-table-column
-                                            prop="strVendor_Suggested" sortable width="110"
-                                            label="Proveedor">
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="strCurr" sortable
-                                            label="Moneda">
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="strPriority_Cod" sortable
+                                            prop="strPriority_Cod" sortable width="130"
                                             label="Prioridad">
+                                            <template scope="scope">
+                                                <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
+                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
+                                                </el-input>
+                                                <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
+                                            </template>
                                         </el-table-column>
 
                                     </el-table>
@@ -240,6 +278,11 @@
             <bimpuesto v-on:impuestoselecionado="impuestoselecionado($event)" v-on:companiaClose="impuestoClose()">
             </bimpuesto>
         </el-dialog>
+        <!--DIALOG BUSQUEDA PRIORIDAD-->
+    <el-dialog title="Busqueda prioridad"  :visible.sync="dialogPrioridad" @close="closePrioridad" size="small" >
+      <bprioridad v-on:prioridadselecionado="SeleccionadoPrioridad($event)">
+      </bprioridad>
+    </el-dialog>
         <el-dialog title="Requisicion" :visible.sync="dialogRequisicion" @close="closeDialog" size="small" >
             <div>
                 <el-card class="box-card">

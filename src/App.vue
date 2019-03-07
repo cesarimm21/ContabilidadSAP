@@ -468,10 +468,10 @@ body {
         margin-top: -4px;
 }
 .el-table__body tr.current-row>td {
-    background: rgba(255, 244, 191, 0.611764705882353);
+    background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%);
 }
 .el-table--striped .el-table__body tr.el-table__row--striped.current-row td {
-    background: rgba(255, 244, 191, 0.611764705882353)
+    background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%);
 }
 .el-card__header {
         padding: 0px 0px !important;

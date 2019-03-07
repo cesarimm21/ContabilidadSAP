@@ -1,6 +1,10 @@
 <template>
   <div class="crear-hes">
+      <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
+        <quickaccessmenu v-on:guardarHES="guardarHes($event)"></quickaccessmenu>
+        </ol>
       <el-card class="box-card">
+          
             <div slot="header" class="headercard">
                 <span class="labelheadercard" > Crear aceptación servicio</span>
             </div>
@@ -16,14 +20,30 @@
                                             <el-button v-if="btnactivarOrdenC && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
                                         </el-input>
                                     </div>
-                                </div>                                                          
+                                </div>     
+                                <label class="el-form-item__label col-md-3" >Compañia</label>
+                                    <div class="col-md-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                         <el-input size ="small" v-model="ordencompraSelect.strCompany_Cod" disabled>  
+                                        </el-input>
+                                    </div>
+                                </div>                                                      
                             </div>
-                            <div class="form-group row">
-                                
+                            <div class="form-group row">                                
+                                <label class="el-form-item__label col-md-3" >Para Orden Compra</label>
+                                    <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-2" >
+                                    <el-input size ="small" @blur="desactivar_OrdenD" @focus="activar_OrdenD" v-model="ordencompraDetalleSelect.intIdPOD_ID" class="inputOrdenCompra" :disabled="valueSwtch">                            
+                                            <el-button v-if="btnactivarOrdenD && !dialogOrdenD" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenD()"></el-button> 
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" style="margin-top:10px;">                                
                                 <label class="el-form-item__label col-md-3" >Descripción</label>
-                                    <div class="col-md-6 grupolabel">
-                                    <div class="input-group mb-6" >
-                                    <el-input size ="small" @click="desactivar()" v-model="ordencompraSelect.strPO_Desc">
+                                    <div class="col-md-9 grupolabel">
+                                    <div class="input-group mb-9" >
+                                    <el-input size ="small" @click="desactivar()" v-model="hesModel.strDesc_Header">
                                     </el-input>
                                     </div>
                                 </div>
@@ -31,7 +51,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group row">
-                                <div class="col-sm-6"></div>
+                                <div class="col-md-3 grupolabel">{{ordencompraSelect.strCompany_Desc}}</div>
+                                <div class="col-sm-3"></div>
                                 <div class="col-md-4" style="margin-top:5px;">
                                     <span v-if="isactivered" v-bind:class="{red:isactivered}">&nbsp;</span>
                                     <span v-if="!isactivered" v-bind:class="{opaco:!isactivered}">&nbsp;</span>
@@ -48,78 +69,93 @@
             <br>
             <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-tickets"></i> Datos Basicos</span>
+                    <span slot="label"><i class="el-icon-tickets"></i> Aceptación Servicio</span>
                     <el-card class="box-card">
                         <div class="row bodycard">
                             <div class="container">
                                 <div class="row" style="margin-top: 3px;">
                                     <div class="col-sm-6">
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Categoria. </label>
+                                            <label class="el-form-item__label col-sm-3" >Categoria linea. </label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-select v-model="value" placeholder="Seleccionar">
-                                                    <el-option
-                                                    v-for="item in options"
-                                                    :key="item.value"
-                                                    :label="item.label"
-                                                    :value="item.value">
-                                                    </el-option>
-                                                </el-select>
+                                                    <el-input size ="small" @blur="desactivar_categoria" @focus="activar_categoria" v-model="categoriaSelect.strCategItem_Cod" class="inputOrdenCompra">                            
+                                                    <el-button v-if="btnactivarcategoria && !dialogCategoriaLinea" slot="append" class="boton" icon="fa fa-clone" @click="loadCategoria()"></el-button> 
+                                                </el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-sm-3" >N. Documento ext.</label>
+                                            <label class="el-form-item__label col-sm-3"  >Fecha Docum.</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
+                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="fecha_ejecucion"></el-input>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <div class="form-group row">
                                             
-                                            <label class="el-form-item__label col-sm-3"  >Fecha referencia</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" ></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Servicios</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            
-                                            <label class="el-form-item__label col-sm-3" >Responsable Inter.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Responsable Ext.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Periodo.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" ></el-input>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-1" style="text-aling:center;">
-                                                <label class="el-form-item__label col-sm-1">A</label>
-                                            </div>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" ></el-input>
+                                            <label class="el-form-item__label col-sm-3" >Responsable Inter.</label><!--editable que entre-->
+                                            <div class="col-sm-9 grupolabel">
+                                                <div class="input-group mb-9" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" v-model="hesModel.strAuthsd_BYInt"></el-input>
                                                 </div>
                                             </div>                                            
+                                        </div>
+                                        <div class="form-group row" style="margin-top:10px;">
+                                            <label class="el-form-item__label col-sm-3" >Responsable Ext.</label><!--editable que entre-->
+                                            <div class="col-sm-9 grupolabel">
+                                                <div class="input-group mb-9" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" v-model="hesModel.strAuthsd_ByExt"></el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="margin-top:10px;">
+                                            <label class="el-form-item__label col-sm-3" >Fecha.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="hesModel.dtmSince_Date"></el-input>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3" style="text-aling:center;">
+                                                <div class="col-sm-3 grupolabel">
+                                                    <div class="input-group mb-3" >
+                                                        <span style="align:center;">-</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="hesModel.dtmUntil_Date"></el-input>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">                                           
+                                            
+                                            <label class="el-form-item__label col-sm-3" >Importe</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" v-model="ordencompraDetalleSelect.fltCurr_Net_PR_P"></el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            
+                                            <label class="el-form-item__label col-sm-3"  >Aceptado</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="el-form-item__label col-sm-3" >Pendiente</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -138,52 +174,77 @@
                                                 :data="TableIngreso"
                                                 stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                                 class="ExcelTable2007">
-                                                <el-table-column type="index" width="50">
+                                                <el-table-column type="index" label="Item" width="50">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="cuenta" sortable width="100"
+                                                    prop="strService_NO" sortable width="100"
                                                     label="Servicio N.">
+                                                    <template scope="scope">
+                                                        <el-input v-if="bln_tbl_Servicio  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strService_NO" >
+                                                        </el-input>
+                                                        <label style="width:100%" v-else @click="clickServicio(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strService_NO }}</label>
+                                                    </template>
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="descripcion" sortable min-width="150"
+                                                    prop="strDesc_Detail" sortable min-width="150"
                                                     label="Descripción">
+                                                    <template scope="scope">
+                                                        <el-input v-if="bln_tbl_Descripcion  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDesc_Detail" >
+                                                        </el-input>
+                                                        <label style="width:100%" v-else @click="clickDescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Detail }}</label>
+                                                    </template>
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="cantidad" sortable width="80"
+                                                    prop="intQuantity" sortable width="120" 
                                                     label="Cantidad">
+                                                    <template scope="scope">
+                                                        <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.intQuantity" >
+                                                        </el-input-number>
+                                                        <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intQuantity }}</label>
+                                                    </template>
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="material" sortable
-                                                    label="Servicio Ejecutado">
+                                                    prop="strUM" sortable width="80"
+                                                    label="Unidad">
+                                                    <template scope="scope">
+                                                        <el-input v-if="bln_tbl_Unidad  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" >
+                                                        </el-input>
+                                                        <label style="width:100%" v-else @click="clickUnidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
+                                                    </template>
+                                                </el-table-column>
+                                                <el-table-column
+                                                    prop="fltGross_Price" sortable
+                                                    label="Importe">
+                                                    <template scope="scope">
+                                                        <el-input-number  v-if="bln_tbl_total  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltGross_Price" >
+                                                        </el-input-number>
+                                                        <label style="width:100%" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltGross_Price }}</label>
+                                                    </template>
                                                 </el-table-column> 
                                                 <el-table-column
-                                                    prop="moneda" sortable width="80"
+                                                    prop="strCurrency" sortable width="80"
                                                     label="Moneda">
                                                 </el-table-column>
-                                                <el-table-column
+                                                <!-- <el-table-column
                                                     prop="recurso" sortable 
                                                     label="Persona Ejecución">
-                                                </el-table-column>                                               
+                                                </el-table-column>                                                -->
                                                 <el-table-column
-                                                    prop="centro" sortable 
+                                                    prop="strUM" sortable 
                                                     label="Centro de costo">
                                                 </el-table-column>
                                             </el-table>
                                         </div>
-
                                     </div>
-                                    <label class="el-form-item__label col-sm-2"  >Seleccionar servicios</label>
-                                    <el-button slot="append" class="boton" icon="fa fa-clone" @click="loadServicios()"></el-button> 
                                 </div>
                             </div>
                         </div>
                     </el-card>
-                </el-tab-pane>
-                <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Status</span>
-                        <div class="form-group row">
-                            <span class=""> Estado de aceptación servicio</span>
-                        </div>
                 </el-tab-pane>
                 <!-- <el-tab-pane>
                     <span slot="label"><i class="el-icon-view"></i> Valores</span>
@@ -196,7 +257,11 @@
                 </el-tab-pane> -->
             </el-tabs>
       </el-card>
-
+    <!--DIALOG BUSQUEDA CATEGORIA LINEA-->
+    <el-dialog title="Busqueda categoria linea"  :visible.sync="dialogCategoriaLinea" @close="closeCategoriaLinea" size="small" >
+      <bcategorialinea v-on:categorialineaselecionado="SeleccionadoCategoriaLinea($event)" v-on:categorialineaclose="closeCategoriaLinea()">
+      </bcategorialinea>
+    </el-dialog>
     <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
             <div>
                 <el-card class="box-card">
@@ -227,7 +292,7 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @row-dblclick="selectOrdenCompra"
+                    @row-dblclick="selectdbOrdenCompra"
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
@@ -246,7 +311,7 @@
             </footer>
             </div>
         </el-dialog>
-        <el-dialog title="Servicios"  :visible.sync="dialogServicios" @close="closeServicios" size="small" >
+        <el-dialog title="Servicios"  :visible.sync="dialogOrdenD" @close="closeServicios" size="small" >
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
@@ -271,21 +336,21 @@
                     </div>
                 </div>
                 <el-table
-                    :data="dataServicio"
+                    :data="ordenCompraDetalle"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
                     @current-change="handleCurrentChange">
-                    <el-table-column  prop="codigo" label="Codigo" width="180">
+                    <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="descripcion" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Item_Desc" label="Descripción" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="closeServicios()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="CheckServicios()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeServicios()">

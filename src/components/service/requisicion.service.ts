@@ -45,6 +45,12 @@ export default{
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  getAllRequisicion(){
+    return axios.get(CONFIG.API_URL+'requisicion')
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
   }
 
 
