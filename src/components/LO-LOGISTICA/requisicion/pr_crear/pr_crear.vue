@@ -149,7 +149,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltQuantity" sortable width="80"
+                                            prop="fltQuantity" sortable width="100"
                                             label="Cantidad">
                                             <template scope="scope">
                                                 <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
