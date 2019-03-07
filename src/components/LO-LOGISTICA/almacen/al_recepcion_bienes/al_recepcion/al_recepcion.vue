@@ -31,14 +31,14 @@
                                 <label class="el-form-item__label col-md-3" >Código Aprobación</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strPO_NO">
+                                    <el-input  size ="small" :disabled="true" type="text" v-model="strCode">
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strCompany_Cod">
+                                    <el-input  size ="small" :disabled="true" type="text" v-model="strCompany">
                                     </el-input>
                                     </div>
                                 </div>
@@ -48,62 +48,88 @@
                                 <label class="el-form-item__label col-md-3" >Guia Remitente</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strCompany_Cod">
+                                    <el-input  size ="small" type="text" v-model="strGuiaRemitente">
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Guia Transportista</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="OrdenCompra.strPO_NO">
+                                    <el-input  size ="small" type="text" v-model="strGuiaTransportista">
                                     </el-input>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Fecha G.Transportisita</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small"  type="date" v-model="OrdenCompra.dtmProcess_Date" >
-                                    </el-input>
+                                        <el-date-picker
+                                            size="mini"
+                                            style="width:128px !important"
+                                            v-model="dtmFechaGuiaTransportista" >
+                                        </el-date-picker>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Fecha Recepcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small"  type="date" v-model="OrdenCompra.dtmProcess_Date" >
-                                    </el-input>
+                                        <el-date-picker
+                                            size="mini"
+                                            style="width:128px !important"
+                                            v-model="dtmFechaRecepcion" >
+                                        </el-date-picker>
                                     </div>
                                 </div>
                             </div>
-                             <div  class="form-group row ">
+                            <div class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Conductor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar" size ="small"
-                                            @blur="desactivar_pro"
-                                            @focus="activar_pro"
-                                            v-model="OrdenCompra.strVendor_NO">
-                                            <el-button v-if="btnactivarpro && !dialogRequisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadPro()"></el-button>
-                                            </el-input>
-                                        </div>
+                                    <el-input :disabled="visualizar" size ="small" type="text" v-model="strConductor">
+                                    </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small"
-                                    @blur="desactivar_pro"
-                                    @focus="activar_pro"
-                                    v-model="OrdenCompra.strVendor_NO">
-                                     <el-button v-if="btnactivarpro && !dialogRequisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadPro()"></el-button>
+                                    <el-input :disabled="true" size ="small" type="text" v-model="strVendor_NO">
                                     </el-input>
                                     </div>
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strVendor_Desc}}</span>
                             </div>
-                               
+                             <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Total Comprado</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input-number :disabled="true" size="small" v-model="fltCURR_QTY_I" >
+                                        </el-input-number>
+                                    </div>
+                                </div>
+                                   <label class="el-form-item__label col-md-3" >Total Recibido</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input-number :disabled="true" size="small" v-model="fltTot_Rec_QYT" >
+                                        </el-input-number>
+                                    </div>
+                                </div>
+                            </div> 
+                             <div class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Total Pendiente</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <div class="input-group mb-3" >
+                                            <el-input-number :disabled="true"  size="small" v-model="fltTot_Rec_Pend_QTY" >
+                                            </el-input-number>
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                           
+                            
                         </div>
                     </div>
                     <div class="row">
@@ -120,7 +146,14 @@
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @selection-change="handleSelectionChange">
-                                        <el-table-column type="index" width="58">
+                                        <el-table-column
+                                             
+                                            width="40" style="margin-top: 5px;">
+                                            <template scope="scope">
+                                                <el-checkbox @change="selectRow(scope.row)" v-if="scope.row.blnSelection" v-model="scope.row.blnCheck" ></el-checkbox>
+                                            </template>
+                                        </el-table-column>  
+                                        <el-table-column type="index" label="Item" width="40">
                                         </el-table-column>
                                         <!-- <el-table-column  sortable prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
                                         </el-table-column>
@@ -142,8 +175,12 @@
                                             label="Ctd.Comprada">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltPO_Rec_QYT" sortable width="100"
+                                            prop="fltRec_QYT" sortable width="100"
                                             label="Ctd.Recibida">
+                                            <template scope="scope">
+                                                <el-input-number :disabled="getDisabled(scope.row.fltPO_QTY_I,scope.row.fltRec_QYT,scope.row)" @change="changeRecibida" :min="0" :max="getNumber(scope.row.fltPO_QTY_I)" size="small" v-model="scope.row.fltRec_QYT" >
+                                                </el-input-number>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strUM_Cod" sortable  width="60"

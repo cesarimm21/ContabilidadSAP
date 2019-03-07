@@ -140,7 +140,7 @@
                                         class="ExcelTable2007"
                                         @selection-change="handleSelectionChange">
                                         <el-table-column
-                                            type="selection"
+                                            type="selection" v-if="blnSelection"
                                             width="55">
                                         </el-table-column>
                                         <el-table-column type="index" width="58">

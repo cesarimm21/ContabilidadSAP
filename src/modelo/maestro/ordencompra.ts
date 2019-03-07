@@ -30,6 +30,9 @@ export class OrdenCompraModel {
     dtmModified_Date:Date ;  //si
     chrStatus:string ;//si
     listaDetalle:any[]; 
-    fltPO_Rec_QYT:number;
-    fltPO_Rec_Value:number;
+    fltTot_Rec_QYT:number;
+    fltTot_Rec_Pend_QTY:number;
+    fltTot_Rec_Value:number;
+    Tot_Inv_QTY:number;
+    fltTot_Inv_Value:number;
 }

@@ -778,4 +778,10 @@ body {
     color: #1f2d3d;
     cursor: not-allowed;
 }
+.el-table .cell {
+    white-space: normal;
+    word-break: break-all;
+    line-height: 31px;
+    font-size: 13px;
+}
 </style>
