@@ -155,7 +155,8 @@
                                         highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
-                                        @selection-change="handleSelectionChange">
+                                        @selection-change="handleSelectionChange"
+                                        @current-change="handleCurrentChange">
                                         <el-table-column
                                             type="selection"
                                             width="45">
@@ -180,17 +181,23 @@
                                             prop="strDescription" sortable width="200"
                                             label="Descripción">
                                         </el-table-column>
-                                        <!-- <el-table-column 
-                                            type="selection"
-                                            width="55"
-                                            class="secondCheck">
-                                        </el-table-column> -->
+                                        <el-table-column 
+                                            prop="blnCheck"
+                                            width="100"
+                                            label="Costo">
+                                            <template scope="scope">
+                                             <el-checkbox class="newCheckBox" v-if="(scope.row != editing.row)||(scope.row === editing.row)" v-focus size="small" v-model="scope.row.blnCheck" @change="clickCheck(scope.row,$event,scope.column.property)">
+                                                </el-checkbox>
+                                            <!-- <el-checkbox class="newCheckBox" v-else @change="clickCheck(scope.row,$event,scope.column.property)" v-model="scope.row.blnCheck"></el-checkbox> -->
+                                                <!-- <label  v-else @click="clickCheck(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.blnCheck }}</label> -->
+                                            </template>
+                                        </el-table-column>
                                         <el-table-column
                                             prop="fltQuantity" sortable width="100"
                                             label="Cantidad">
                                             <template scope="scope">
                                                 <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltQuantity" :precision="2">
                                                 </el-input-number>
                                                 <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
@@ -206,18 +213,18 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltUnitPrice" sortable width="80"
+                                            prop="fltUnitPrice" sortable width="100"
                                             label="Valor Unitario">
                                             <template scope="scope">
                                                 <el-input-number  v-if="bln_tbl_Precio  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltUnitPrice" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2">
                                                 </el-input-number>
                                                 <label style="width:100%"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltValue_Total" sortable width="80"
-                                            label="Valor total">
+                                            prop="fltValue_Total" sortable width="100"
+                                            label="Valor total" >
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPriority_Cod" sortable width="130"
@@ -228,6 +235,15 @@
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column prop="intConv_Factor" sortable width="100"
+                                            label="Factor">
+                                            <template scope="scope">
+                                                <el-input-number  v-if="bln_tbl_factor  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
+                                                </el-input-number>
+                                                <label style="width:100%"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
                                             </template>
                                         </el-table-column>
 

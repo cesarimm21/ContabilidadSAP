@@ -770,6 +770,7 @@ body {
     border-color: #308d33;
 }
 .el-checkbox__inner {
+    margin-top: 8px;
     border-radius: 14px;
 }
 .el-input.is-disabled .el-input__inner {
@@ -777,6 +778,14 @@ body {
     border-color: #d1dbe5;
     color: #1f2d3d;
     cursor: not-allowed;
+}
+.newCheckBox .el-checkbox__input.is-checked .el-checkbox__inner{
+    background-color:#6ca5da;
+    border-color: #6ca5da;
+}
+.newCheckBox .el-checkbox__inner {
+    margin-top: 8px;
+    border-radius: 4px;
 }
 .el-table .cell {
     white-space: normal;

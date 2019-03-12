@@ -59,11 +59,14 @@ export default class CrearPOComponent extends Vue {
         row:'',
         column:''
     };
+    rowSelect:number;
     //#region [BOTONES]
     bln_tbl_cantidad:boolean=false;
     bln_tbl_UnidadMedida:boolean=false;
     bln_tbl_Precio:boolean=false;
     bln_tbl_prioridad:boolean=false;
+    bln_tbl_factor:boolean=false;
+    bln_tbl_check:boolean=true;
     //#endregion
 
     //#region [ALMACEN]
@@ -84,7 +87,10 @@ export default class CrearPOComponent extends Vue {
     requisicionDetalle: any[];
     public requiSelect: RequisicionModel = new RequisicionModel();
     public requiDetalle: RequisicionDetalleModel[];
-    public requiDetalle1: RequisicionDetalleModel[];
+    requiDetalle1:any[];
+    requiTemp:any[];
+    arrayTemp:any[];
+    public detalleOrdenCompra:OrdenCompraDetalleModel[];
     multipleSelection: RequisicionDetalleModel[];
 
     //**[PROVEEDORES] */
@@ -133,7 +139,6 @@ export default class CrearPOComponent extends Vue {
         this.getRequisicion(this.codigoInput);
     }
     getRequisicion(codigo) {
-        debugger;
         requisicionService.getRequisicionByCod(codigo)
         .then(response=>{
             this.requisicionData=response;                                 
@@ -142,19 +147,52 @@ export default class CrearPOComponent extends Vue {
     getReqDetalle(v) {
         requisicionService.getRequiDetallById(v)
         .then(response=>{
-            this.requiDetalle=response;          
-            for(var i=0;i<this.requiDetalle.length;i++){        
-                this.requiDetalle[i].fltUnitPrice=Math.round(this.requiDetalle[i].fltUnitPrice * 100)/100; 
-                this.requiDetalle[i].fltQuantity=Math.round(this.requiDetalle[i].fltQuantity * 100)/100; 
+            this.requiDetalle=response;  
+            this.requiDetalle1=[];        
+            for(var i=0;i<this.requiDetalle.length;i++){ 
+                this.requiDetalle1.push({
+                    intIdPurReqD_ID:this.requiDetalle[i].intIdPurReqD_ID,
+                    intRequis_Item_NO:this.requiDetalle[i].intRequis_Item_NO,
+                    intIdPurReqH_ID:this.requiDetalle[i].intIdPurReqH_ID,
+                    intIdInvStock_ID:this.requiDetalle[i].intIdInvStock_ID,
+                    intIdAcctCateg_ID:this.requiDetalle[i].intIdAcctCateg_ID,
+                    intIdCategLine_ID:this.requiDetalle[i].intIdCategLine_ID,
+                    intIdCurrency_ID:this.requiDetalle[i].intIdCurrency_ID,
+                    intIdCostCenter_ID:this.requiDetalle[i].intIdCostCenter_ID,
+                    intIdPriority_ID:this.requiDetalle[i].intIdPriority_ID,
+                    strDescription:this.requiDetalle[i].strDescription,
+                    strCateg_Account:this.requiDetalle[i].strCateg_Account,
+                    strCateg_Line:this.requiDetalle[i].strCateg_Line,
+                    strMaterial_Cod:this.requiDetalle[i].strMaterial_Cod,
+                    strPriority_Cod:this.requiDetalle[i].strPriority_Cod,
+                    blncheck:false,
+                    fltQuantity:Math.round(this.requiDetalle[i].fltQuantity * 100)/100,
+                    strUM:this.requiDetalle[i].strUM,
+                    fltUnitPrice:Math.round(this.requiDetalle[i].fltUnitPrice * 100)/100,
+                    fltValue_Total:(Math.round(this.requiDetalle[i].fltQuantity * 100)/100)*(Math.round(this.requiDetalle[i].fltUnitPrice * 100)/100)*1,
+                    strCurr:this.requiDetalle[i].strCurr,
+                    dtmRequested_Date:this.requiDetalle[i].dtmRequested_Date,
+                    dtmDelivery_Date:this.requiDetalle[i].dtmDelivery_Date,
+                    strMat_Group_Cod:this.requiDetalle[i].strMat_Group_Cod,
+                    strWHS_Cod:this.requiDetalle[i].strWHS_Cod,
+                    strVendor_Suggested:this.requiDetalle[i].strVendor_Suggested,
+                    strAccount_NO:this.requiDetalle[i].strAccount_NO,
+                    strCostCenter:this.requiDetalle[i].strCostCenter,
+                    dtmCompleted_Date:this.requiDetalle[i].dtmCompleted_Date,
+                    intConv_Factor:1
+                })
+                
+                // this.requiDetalle[i].fltUnitPrice=Math.round(this.requiDetalle[i].fltUnitPrice * 100)/100; 
+                // this.requiDetalle[i].fltQuantity=Math.round(this.requiDetalle[i].fltQuantity * 100)/100; 
 
-                if(this.requiDetalle[i].strVendor_Suggested!=undefined){
-                   proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                    .then(response=>{
-                        this.provData.push(response);                            
-                    })
-                } 
+                // if(this.requiDetalle[i].strVendor_Suggested!=undefined){
+                //    proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                //     .then(response=>{
+                //         this.provData.push(response);                            
+                //     })
+                // } 
             }            
-            this.requiDetalle1= this.requiDetalle;
+            // this.requiDetalle1= this.requiDetalle;            
         })
     }
     closeDialogReq(){
@@ -171,11 +209,9 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
-        debugger;  
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;
         this.requiSelect=val;  
-        debugger;          
         this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
         this.loadCompania(this.requiSelect.strCompany_Cod); 
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
@@ -201,15 +237,31 @@ export default class CrearPOComponent extends Vue {
     }
     
     handleSelectionChange(val) {
-        debugger;
         this.valorSelectCodStock=val;
-        this.multipleSelection = val;    
+        this.multipleSelection = val;
+        this.arrayTemp=[];
         this.totalItems=0;
         this.totalPrice=0;
-        for(var i=0;i<this.multipleSelection.length;i++){
-            this.totalItems=this.totalItems+Math.round(this.multipleSelection[i].fltQuantity * 100)/100;
-            this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[i].fltValue_Total * 100)/100;
-        }           
+        for (let i = 0; i < this.requiDetalle1.length; i++) {
+            for(let y=0;y<this.multipleSelection.length;y++){
+                if(this.requiDetalle1[i].intIdPurReqD_ID === this.multipleSelection[y].intIdPurReqD_ID){
+                    this.requiDetalle1[i].blnCheck=true;
+                    this.requiTemp=this.requiDetalle1; 
+                    this.requiDetalle1=[];              
+                    this.requiDetalle1=this.requiTemp;  
+                    this.requiTemp=[];
+                }             
+            }       
+          } 
+          for(let y=0;y<this.multipleSelection.length;y++){
+            if(this.multipleSelection[y].blnCheck==true){
+                this.totalItems=this.totalItems+Math.round(this.multipleSelection[y].fltQuantity * 100)/100;
+                this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[y].fltValue_Total * 100)/100;
+            }
+          }         
+      }
+      handleCurrentChange(val){
+          this.rowSelect=val.intIdPurReqD_ID;         
       }
     //   selectforEdit(val){
 
@@ -219,8 +271,7 @@ export default class CrearPOComponent extends Vue {
       loadAlmacen(code){
         almacenService.getAlmacenCodigo(code)
         .then(response=>{
-            this.almacen=response;
-            console.log(this.almacen);            
+            this.almacen=response;          
         })
       }
     //#endregion
@@ -354,7 +405,7 @@ export default class CrearPOComponent extends Vue {
                     fltPO_QTY_I:this.multipleSelection[i].fltQuantity,//cantidad
                     fltPO_Net_PR_I:this.multipleSelection[i].fltUnitPrice,//precio unitario
                     fltCurr_Net_PR_P:this.multipleSelection[i].fltValue_Total,//total por producto
-                    intConv_Factor:1,//factor multiplica a la cantidad de productos/Editable
+                    intConv_Factor:this.multipleSelection[i].intConv_Factor,//factor multiplica a la cantidad de productos/Editable
                     strTax_Cod:this.Impuesto.strWH_Cod,
                     strWH_Tax_Detraccion:this.Impuesto.strWH_Cod,
                     strWH_Retention:this.Impuesto.fltPorcent,
@@ -452,7 +503,6 @@ export default class CrearPOComponent extends Vue {
     //#endregion
     //#region [ACCIONES TABLA]
     clickcantidad(event,edit,column){
-        debugger;
         this.bln_tbl_Precio=false;
         this.bln_tbl_cantidad=true;
         this.bln_tbl_UnidadMedida=false;
@@ -461,7 +511,6 @@ export default class CrearPOComponent extends Vue {
         this.editing.column=column;
       }
     clickUnidadMedida(event,edit,column){
-        debugger;
         this.bln_tbl_Precio=false;
         this.bln_tbl_cantidad=false;
         this.bln_tbl_UnidadMedida=true;
@@ -470,7 +519,6 @@ export default class CrearPOComponent extends Vue {
         this.editing.column=column;
       }
     clickPrice(event,edit,column){
-        debugger;
         this.bln_tbl_Precio=true;
         this.bln_tbl_cantidad=false;
         this.bln_tbl_UnidadMedida=false;
@@ -479,14 +527,31 @@ export default class CrearPOComponent extends Vue {
         this.editing.column=column;
       }
       clickprioridad(event,edit,column){
-        debugger;
         this.bln_tbl_prioridad=true;
         event.edit=!edit;
         this.editing.row=event;
         this.editing.column=column;
       }
+      clickFactor(event,edit,column){
+        this.bln_tbl_factor=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      clickCheck(event,edit,column){
+        this.bln_tbl_check=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+        this.totalPrice=0;
+        for (let i = 0; i < this.requiDetalle1.length; i++) {
+            if(this.requiDetalle1[i].blnCheck===true){
+                this.totalPrice=this.totalPrice+Math.round(this.requiDetalle1[i].fltValue_Total * 100)/100;
+            }
+        }
+        
+      }
       handleBlur(event) {
-        debugger;
         // this.bln_tbl_categoria_cuenta=false;
         event.edit=false;
         this.editing.row='';
@@ -501,10 +566,43 @@ export default class CrearPOComponent extends Vue {
         return false;
       }
       SeleccionadoPrioridad(val){
-        debugger;
         this.selectrow.strPriority_Cod=val.strPriority_Cod;
         this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
         this.dialogPrioridad=false;
+      }
+      handleChangeCantidad(val){
+          debugger;
+          for (let i = 0; i < this.requiDetalle1.length; i++) {
+            if(this.requiDetalle1[i].intIdPurReqD_ID == this.rowSelect){
+                this.requiDetalle1[i].fltValue_Total=val*this.requiDetalle1[i].fltUnitPrice*this.requiDetalle1[i].intConv_Factor;
+                this.requiTemp=this.requiDetalle1; 
+                this.requiDetalle1=[];              
+                this.requiDetalle1=this.requiTemp;  
+                this.requiTemp=[];
+            }
+          }          
+      }
+      handleChangeValUni(val){
+        for (let i = 0; i < this.requiDetalle1.length; i++) {
+            if(this.requiDetalle1[i].intIdPurReqD_ID == this.rowSelect){
+                this.requiDetalle1[i].fltValue_Total=val*this.requiDetalle1[i].fltQuantity*this.requiDetalle1[i].intConv_Factor;
+                this.requiTemp=this.requiDetalle1; 
+                this.requiDetalle1=[];              
+                this.requiDetalle1=this.requiTemp;  
+                this.requiTemp=[];
+            }
+          }  
+      }
+      handleChangeFactor(val){
+        for (let i = 0; i < this.requiDetalle1.length; i++) {
+            if(this.requiDetalle1[i].intIdPurReqD_ID == this.rowSelect){
+                this.requiDetalle1[i].fltValue_Total=val*this.requiDetalle1[i].fltQuantity*this.requiDetalle1[i].fltUnitPrice;
+                this.requiTemp=this.requiDetalle1; 
+                this.requiDetalle1=[];              
+                this.requiDetalle1=this.requiTemp;  
+                this.requiTemp=[];
+            }
+          }  
       }
     //#endregion
     
@@ -520,11 +618,14 @@ export default class CrearPOComponent extends Vue {
             valueProvee:'',
             requiDetalle:[],
             requiDetalle1:[],
+            detalleOrdenCompra:[],
             multipleSelection:[],
             ordencompraDetalle:[],
             totalItems:0,
             totalPrice:0,
-            valorSelectCodStock:[]
+            valorSelectCodStock:[],
+            checked: true,
+            bln_tbl_check:true
         }
     }
 }
