@@ -207,7 +207,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     }
     console.log(this.tableData1);
   }
-
   fnOcultar(){
     this.ocultar=!this.ocultar;
   }

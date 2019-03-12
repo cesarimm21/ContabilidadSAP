@@ -370,17 +370,116 @@
                   </el-menu-item>
                   
                 </el-submenu>
+                <el-submenu index="1-6-7-7">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Registro Costos</span>
+                  </template>
+                  <el-menu-item index="1-6-7-7-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RG01 - 10.1 Registro de costos - estado de costo de ventas anual</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-7-2">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RG02 - 10.2 Registro de costos - elementos del costo mensual</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-7-3">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RG03 - 10.3 Registro de costos - estado de costo de produccion valorizado anual</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-7-4">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RG04 - 10.4 Registro de costos - centro de costos</span>
+                  </el-menu-item>
+                  
+                </el-submenu>
+                <el-submenu index="1-6-7-2">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Registro Del Inventario Permanente En Unidades Físicas</span>
+                  </template>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RP01 - 12.1 Registro del inventario permanente en unidades físicas - detalle del inventario permanente en unidades físicas</span>
+                  </el-menu-item>
+                </el-submenu>
+                <el-submenu index="1-6-7-3">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Registro De Ventas e Ingresos</span>
+                  </template>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RP03 - 14.1 Registro de ventas e ingresos</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RP04 - 14.2 Registro de ventas e ingresos simplificado</span>
+                  </el-menu-item>
+                </el-submenu>
+                <el-submenu index="1-6-7-3">
+                  <template slot="title">
+                    <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">PDB Exportador-Sunat</span>
+                  </template>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RE01-Comprobantes de Compra</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RE02-Comprobantes de Venta</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RE03-Forma de Pago</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-6-7-2-1">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span>RE04-Tipo de Cambio</span>
+                  </el-menu-item>
+                </el-submenu>
               </el-submenu>              
               <el-submenu index="1-7">
                 <template slot="title">
                   <i class="fa fa-caret-right" style="width:10px"></i>
                     <img class="el-folder"/>
-                    <span slot="title">Cierre periodo</span>
+                    <span slot="title">Cierre Periodo</span>
+                </template>
+                <el-submenu index="1-7-2">
+                <template slot="title">
+                  <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Cierre Mensual</span>
                 </template>
                 <el-menu-item index="1-1-1">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>item one</span>
+                  <span>CM01 - Cierre Diarios</span>
                 </el-menu-item>
+                <el-menu-item index="1-1-1">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>CM02 - Cierre Mensual</span>
+                </el-menu-item>
+                </el-submenu>
+                <el-submenu index="1-7-2">
+                <template slot="title">
+                  <i class="fa fa-caret-right" style="width:10px"></i>
+                    <img class="el-folder"/>
+                    <span slot="title">Cierre Anual</span>
+                </template>
+                <el-menu-item index="1-1-1">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>CA01 - Cierre Año</span>
+                </el-menu-item>
+                <el-menu-item index="1-1-1">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>CA02 - Transferencia de Saldos Balance</span>
+                </el-menu-item>
+                </el-submenu>
               </el-submenu>
               
             </el-submenu>
@@ -526,7 +625,10 @@
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                    <span>LA04-Aprobar Salida Material</span>
                   </el-menu-item>
-                  
+                  <el-menu-item index="2-4-3-5" @click="linkDespachoSalidaAlmacen()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                   <span>LA04-Despacho Material</span>
+                  </el-menu-item>
                 </el-submenu>
               </el-submenu>
               <el-submenu index="2-5">
@@ -637,6 +739,26 @@
                 <el-menu-item index="3-2-4">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>CP04-Datos Estadisticos</span>
+                </el-menu-item>
+             </el-submenu>
+             
+             <el-submenu index="3-2">
+                <template slot="title">
+                  <i class="fa fa-caret-right" style="width:10px"></i>
+                  <img class="el-folder"/>
+                  <span >Activos Fijos</span>
+                </template>
+                <el-menu-item index="3-2-1">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>CP01-Crear Activos Fijos</span>
+                </el-menu-item>
+                <el-menu-item index="3-2-2">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>CP02-Modificar Activos Fijos</span>
+                </el-menu-item>
+                <el-menu-item index="3-2-3">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>CP03-Ingreso Datos de Deprecación</span>
                 </el-menu-item>
              </el-submenu>
              <el-submenu index="3-3">

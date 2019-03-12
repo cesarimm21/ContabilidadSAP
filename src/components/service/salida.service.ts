@@ -34,6 +34,18 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  modificarSalida(data){
+    return axios.post(CONFIG.API_URL+'salida/modificar',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  despachoSalida(data){
+    return axios.post(CONFIG.API_URL+'salida/despacho',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   inventarioSalida(data){
     return axios.post(CONFIG.API_URL+'salida/aprobar/inventario',data)
     .then(response =>{

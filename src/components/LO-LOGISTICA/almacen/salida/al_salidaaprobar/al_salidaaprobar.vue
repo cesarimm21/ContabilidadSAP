@@ -22,7 +22,33 @@
                                 </el-input>
                                 </div>
                             </div>
+                            <label class="el-form-item__label col-md-2" >Tipo Movimiento</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   @blur="desactivar_tipo_movimiento" @focus="activar_tipo_movimiento" v-model="strTypeMov_Cod"  placeholder="">
+                                    <el-button v-if="btnactivartipomovimiento && !dialogTipoMovimiento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoMovimiento()"></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
                         </div>
+                        <!-- <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Tipo Movimiento</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                    <el-button  slot="append" class="boton" icon="fa fa-clone" ></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                            <label class="el-form-item__label col-md-2" >Centro Costos</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                    <el-button  slot="append" class="boton" icon="fa fa-clone" ></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>  -->
                         <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha Desde</label>
                             <div class="col-md-2 grupolabel">
@@ -34,7 +60,7 @@
                                     </el-date-picker>
                                 </div>
                             </div>    
-                            <label class="el-form-item__label col-md-1" >Hasta</label>
+                            <label class="el-form-item__label col-md-2" >Hasta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                     <el-date-picker
@@ -163,6 +189,11 @@
         </div>
         
     </div>
+    <!--DIALOG BUSQUEDA TIPO MOVIMIENTO-->
+    <el-dialog title="Busqueda Tipo Movimiento"  :visible.sync="dialogTipoMovimiento"  size="small" >
+      <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
+      </btipomovimiento>
+    </el-dialog>
   </div>  
 </template>
 <script>

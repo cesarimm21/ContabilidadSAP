@@ -113,16 +113,6 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="cantidad" sortable width="80"
-                                            label="Cantidad Despachada">
-                                            <template scope="scope">
-                                                <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltAjust_QTY" >
-                                                </el-input-number>
-                                                <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltAjust_QTY }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
                                             prop="unidad_medida" sortable  width="60"
                                             label="UM">
                                             <template scope="scope">
