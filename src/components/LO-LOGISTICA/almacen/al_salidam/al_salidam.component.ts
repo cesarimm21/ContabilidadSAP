@@ -36,6 +36,7 @@ import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
 import salidaService from '@/components/service/salida.service';
+import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
 
 import Handsontable from 'handsontable-pro';
 
@@ -66,6 +67,7 @@ var EditableColumn = {
     'bcuentacontable':BCuentaContableComponent,
     'bmaterial':BMaterialComponent,
     'quickaccessmenu':QuickAccessMenuComponent,
+    'balmacen':BAlmacenComponent,
   } ,
   // components:{
   //   'bcompania':BCompaniaProveedor,
@@ -161,7 +163,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     column:''
   };
   fecha_actual:string;
-  selectrow:any;
+  selectrow:SalidaDetalleModel;
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
@@ -169,8 +171,10 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   
   vifaprobarrechasar:boolean=false;
   txtmodulo:string='';
+  txtviewmodulo:string='';
   valuem:number=0;
   tiporequisicionant:string='';
+  vifdespacho:boolean=false;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -200,25 +204,39 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     }, 200)
   }
   load(){
+    debugger;
     var object = JSON.parse(this.$route.query.data);
     var modulo = this.$route.query.vista;
+    this.txtviewmodulo=modulo;
     if(modulo.toLowerCase()!='aprobar'){
-      this.txtmodulo='Modificar Salida';
-      this.vifaprobarrechasar=false;
-      if(modulo.toLowerCase()!='visualizar'){
-        this.visualizar=true;
+      if(modulo.toLowerCase()!='despacho'){
+        if(modulo.toLowerCase()!='visualizar'){
+          this.vifaprobarrechasar=false;
+          this.txtmodulo='Modificar Salida';
+          this.visualizar=false;
+        }
+        else{
+          this.txtmodulo='Visualizar Salida';
+          this.visualizar=true;
+          this.vifaprobarrechasar=false;
+        }
       }
       else{
-        this.visualizar=false;
+        this.txtmodulo='Despacho Material';
+        this.vifaprobarrechasar=false;
+        this.visualizar=true;
+        this.vifdespacho=true;
       }
+      
     }
     else{
         this.visualizar=true;
         this.vifaprobarrechasar=true;
         this.txtmodulo='Aprobar Salida';
         console.log('Aprobar',object.strIssueAjust_NO);
-        this.cargar(object.strIssueAjust_NO);
+        
     }
+    this.cargar(object.strIssueAjust_NO);
   }
   cargar(code){
     salidaService.getSalidaId(code)
@@ -228,7 +246,15 @@ export default class ModificarSalidaMaterialComponent extends Vue {
         salidaService.getSalidaDetalleId(res[0].intIssueAjustH_ID)
         .then(resd=>{
           this.salidaModel=res[0];
-          this.tableData1=resd;
+          var data:Array<SalidaDetalleModel>=[];  
+          for(var i=0;i<resd.length;i++){
+            if(resd[i].intIdInvStock_ID!=undefined){
+              var item=resd[i].intIdInvStock_ID;
+              resd[i].fltQuantity=item.fltQuantity;
+            }
+            data.push(resd[i]);
+          }
+          this.tableData1=data;
           console.log('cargarData2',resd,this.tableData1)
         })
         .catch(error=>{
@@ -245,6 +271,85 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   }
   guardar(){
     this.SendDocument=true;
+  }
+  async guardarTodo(){
+    debugger;
+    if(this.txtviewmodulo=='despacho'){
+      this.salidaModel.listaDetalle=this.tableData1;
+      let loading = Loading.service({
+        fullscreen: true,
+        text: 'Cargando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );
+      for(var i=0;i<50;i++){
+        this.valuem=this.valuem+1; 
+      }
+      salidaService.despachoSalida(this.salidaModel)
+      .then(res=>{
+        debugger;
+        for(var i=0;i<50;i++){
+          this.valuem++; 
+        }
+        console.log(this.valuem);
+        loading.close();
+        if(this.valuem>=100){
+          setTimeout(() => {
+            this.vifprogress=false;
+            this.issave=true;
+            this.textosave='Se guardo correctamente.'
+            this.openMessage('Se guardo correctamente');
+          }, 2000)
+        }
+      })
+      .catch(error=>{
+        loading.close();
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo guardar salida'
+        });
+      })
+    }
+    if(this.txtviewmodulo=='modificar'){
+      this.salidaModel.listaDetalle=this.tableData1;
+      let loading = Loading.service({
+        fullscreen: true,
+        text: 'Cargando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );
+      for(var i=0;i<50;i++){
+        this.valuem=this.valuem+1; 
+      }
+      salidaService.modificarSalida(this.salidaModel)
+      .then(res=>{
+        debugger;
+        for(var i=0;i<50;i++){
+          this.valuem++; 
+        }
+        console.log(this.valuem);
+        loading.close();
+        if(this.valuem>=100){
+          setTimeout(() => {
+            this.vifprogress=false;
+            this.issave=true;
+            this.textosave='Se modifico correctamente.'
+            this.openMessage('Se modifico correctamente');
+          }, 2000)
+        }
+      })
+      .catch(error=>{
+        loading.close();
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo modificar salida'
+        });
+      })
+    }
   }
   
   openMessage(newMsg : string) {
@@ -298,7 +403,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     this.dialogTipoMovimiento=true;
   }
   
-  loadAlmacen(){
+  LoadAlmacen(){
     this.dialogAlmacen=true;
   }
   handleClose(){
@@ -503,80 +608,109 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   }
   clickcategorialinea(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_categoria_linea=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickcuentacontable(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_cuenta_contable=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickmaterial(event,edit,column){
     debugger;
-    this.bln_tbl_material=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
+    if(!this.visualizar){
+      this.bln_tbl_material=true;
+      event.edit=!edit;
+      this.editing.row=event;
+      this.editing.column=column;
+    }
   }
   clickmaterialdescripcion(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_material_descripcion=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickcantidad(event,edit,column){
     debugger;
-    this.bln_tbl_cantidad=true;
+    if(!this.visualizar){
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
+  }
+  clickstock(event,edit,column){
+    debugger;
+    if(!this.visualizar){
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+    }
   }
   clickunidadmedida(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_unidad_medida=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickproveedor(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_proveedor=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickmoneda(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_moneda=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickprioridad(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_prioridad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickfechaestimada(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_fecha_estimada=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   clickcentrocosto(event,edit,column){
     debugger;
+    if(!this.visualizar){
     this.bln_tbl_centro_costo=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
+    }
   }
   getParseDate(fecha){
     return Global.getParseDate(fecha);
@@ -588,58 +722,58 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     this.desalmacen=val.DESCRIPCION;
     this.dialogAlmacen=false;
   }
-  SeleccionadoCategoriaCuenta(val){
-    this.selectrow.categoriacuenta=val.CODIGO;
-    this.dialogCategoriaCuenta=false;
-  }
-  SeleccionadoCategoriaLinea(val){
-    debugger;
-    this.selectrow.categorialinea=val.CODIGO;
-    this.dialogCategoriaLinea=false;
-  }
+  // SeleccionadoCategoriaCuenta(val){
+  //   this.selectrow.categoriacuenta=val.CODIGO;
+  //   this.dialogCategoriaCuenta=false;
+  // }
+  // SeleccionadoCategoriaLinea(val){
+  //   debugger;
+  //   this.selectrow.categorialinea=val.CODIGO;
+  //   this.dialogCategoriaLinea=false;
+  // }
   SeleccionadoCentroCosto(val){
     debugger;
-    this.selectrow.centrocosto=val.strCostCenter_NO;
+    this.selectrow.strCostCenter_NO=val.strCostCenter_NO;
     this.dialogCentroCostos=false;
   }
   SeleccionadoCuentaContable(val){
     debugger;
-    this.selectrow.cuentacontable=val.strAcc_NO_Corp;
+    this.selectrow.strAcc_NO_Local=val.strAcc_NO_Local;
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
     debugger;
-    this.selectrow.material='';
-    this.selectrow.material_descripcion='';
-    this.selectrow.unidad_medida='';
-    this.selectrow.cuentacontable='';
+    this.selectrow.strStock_Cod='';
+    this.selectrow.strStock_Desc='';
+    this.selectrow.strUM_Cod='';
+    this.selectrow.strAcc_NO_Local='';
 
-    this.selectrow.material=val.strStock_Cod;
-    this.selectrow.material_descripcion=val.strStock_Desc;
-    this.selectrow.unidad_medida=val.strUM_Cod;
-    this.selectrow.cuentacontable=val.strExp_Acct;
-    this.selectrow.cantidad=val.fltQuantity;
+    this.selectrow.strStock_Cod=val.strStock_Cod;
+    this.selectrow.strStock_Desc=val.strStock_Desc;
+    this.selectrow.strUM_Cod=val.strUM_Cod;
+    this.selectrow.strAcc_NO_Local=val.strExp_Acct;
+    this.selectrow.fltQuantity=parseFloat(val.fltQuantity);
     
     this.dialogMaterial=false;
   }
   SeleccionadoUnidadMedida(val){
     debugger;
-    this.selectrow.unidad_medida=val.strUM_Cod;
+    this.selectrow.strUM_Cod=val.strUM_Cod;
     this.dialogUnidadMedida=false;
   }
-  SeleccionadoProveedor(val){
-    debugger;
-    this.selectrow.proveedor=val.Vendor_NO;
-    this.dialogProveedor=false;
-  }
-  SeleccionadoMoneda(val){
-    debugger;
-    this.selectrow.moneda=val.CODIGO;
-    this.dialogMoneda=false;
-  }
+  // SeleccionadoProveedor(val){
+  //   debugger;
+  //   this.selectrow.str=val.Vendor_NO;
+  //   this.dialogProveedor=false;
+  // }
+  // SeleccionadoMoneda(val){
+  //   debugger;
+  //   this.selectrow.moneda=val.CODIGO;
+  //   this.dialogMoneda=false;
+  // }
   SeleccionadoPrioridad(val){
     debugger;
-    this.selectrow.prioridad=val.strPriority_Cod;
+    this.selectrow.strPriority_Cod=val.strPriority_Cod;
     this.dialogPrioridad=false;
   }
   cambioTipoRequisicion(selected){
@@ -668,17 +802,17 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     this.dialogUnidadMedida=false;
   }
   tipomovimientoSelecionado(val){
-    // this.salidaModel.tipomovimiento=val.strTypeMov_Cod
-    // this.destipomovimiento=val.strTypeMov_Desc;
+    this.salidaModel.strTypeMov_Cod=val.strTypeMov_Cod
+    this.destipomovimiento=val.strTypeMov_Desc;
    
-    // this.dialogTipoMovimiento=false;
+    this.dialogTipoMovimiento=false;
   }
   companiaSeleccionado(val){
     debugger;
-    // this.salidaModel.compania=val.strCompany_Cod
-    // this.descompania=val.strCompany_Desc;
+    this.salidaModel.strCompany_Cod=val.strCompany_Cod
+    this.descompania=val.strCompany_Desc;
    
-    // this.dialogCompania=false;
+    this.dialogCompania=false;
   }
   async aprobar(){
     this.valuem=0;
@@ -733,6 +867,14 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     .catch(error=>{
       this.textosave='Ocurrio un error inesperado. ';
     })
+  }
+  
+  almacenseleccionado(val){
+    this.salidaModel.strWHS_Cod=val.strWHS_Cod;
+    this.salidaModel.intIdWHS_ID=val.intIdWHS_ID;
+    this.salidaModel.strWHS_Desc=val.strWHS_Desc;
+    this.dialogAlmacen=false;
+    //this.validate();
   }
   data(){
     return{

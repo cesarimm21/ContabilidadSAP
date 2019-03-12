@@ -37,7 +37,7 @@ import AprobadorPRComponent from '../components/LO-LOGISTICA/requisicion/pr_apro
 import AprobarSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidaaprobar/al_salidaaprobar.vue'
 import RecepcionBusquedaComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda/al_recepcion_busqueda.vue'
 import RecepcionMaterialComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion/al_recepcion.vue'
-
+import DespachoSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidadespacho/al_salidadespacho.vue'
 
 export default [
  
@@ -169,6 +169,12 @@ export default [
         component:AprobarSalidaComponent,
         name:'al_salidaaprobar'
       },
+      {
+        path:'LO-LOGISTICA/almacen/salida/al_salidadespacho',
+        component:DespachoSalidaComponent,
+        name:'al_salidadespacho'
+      },
+      
       {
         path:'LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda',
         component:RecepcionBusquedaComponent,

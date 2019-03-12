@@ -94,12 +94,13 @@ export default class RecepcionMaterialComponent extends Vue {
     dtmFechaGuiaTransportista:Date=new Date();
     dtmFechaRecepcion:Date=new Date();
     strConductor:string='';
-    strVendor_NO:string='';
+    strPlaca:string='';
     strCompany:string='';
     strCode:string='';
     fltTot_Rec_QYT:number=0;
     fltTot_Rec_Pend_QTY:number=0;
     fltCURR_QTY_I:number=0;
+    fltTot_Rec_Value:number=0;
     blnchangerec:boolean=true;
     constructor() {
         super();
@@ -109,6 +110,13 @@ export default class RecepcionMaterialComponent extends Vue {
         setTimeout(() => {
             this.loadPO();
         }, 200)
+    }
+    getParseDate(date){
+        console.log('date:',date);
+        if(date!='' && date!=null && date!=undefined){
+            return Global.getParseDate(date);
+        }
+        return '';
     }
     //#region [COMPANIA]
     loadCompania(v) {
@@ -283,6 +291,7 @@ export default class RecepcionMaterialComponent extends Vue {
     //#endregion
     //#region [ORDEN COMPRA]
     guardarPO(val) {
+        this.vifprogress=true;
         if (this.multipleSelection.length == 0) {
             this.$message({
                 showClose: true,
@@ -295,6 +304,7 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
                 this.OrdenCompra.listaDetalle.push({
+                    intIdPOD_ID:this.multipleSelection[i].intIdPOD_ID,
                     intIdAcctCateg_ID: this.multipleSelection[i].intIdAcctCateg_ID,
                     intIdCategLine_ID: this.multipleSelection[i].intIdCategLine_ID,
                     intIdCurrency_ID: this.multipleSelection[i].intIdCurrency_ID,
@@ -311,6 +321,7 @@ export default class RecepcionMaterialComponent extends Vue {
                     strPreq_Stock_Cod: this.multipleSelection[i].strPreq_Stock_Cod,
                     intIdInvStock_ID: 2,//id  de stock
                     dtmOrig_Due_Date: new Date(),
+                    strPlaca:this.strPlaca,
                     strUnit_Of_Purch: this.multipleSelection[i].strUnit_Of_Purch,//unidad de medida
                     fltPO_QTY_I: this.multipleSelection[i].fltPO_QTY_I,//cantidad
                     fltPO_Net_PR_I: this.multipleSelection[i].fltPO_Net_PR_I,//precio unitario
@@ -324,7 +335,7 @@ export default class RecepcionMaterialComponent extends Vue {
                     fltRec_Pend_QTY:this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT,
                     fltRec_Value:this.multipleSelection[i].fltPO_Net_PR_I*this.multipleSelection[i].fltRec_QYT*this.multipleSelection[i].intConv_Factor,
                     strGuiaRem_NO:this.strGuiaRemitente,
-                    //dtmGuiaRem_Date:this.dtmFechaRecepcion,
+                    dtmGuiaRem_Date:this.dtmFechaRecepcion,
                     strGuiaTrans_NO:this.strGuiaTransportista,
                     dtmGuiaTrans_Date:this.dtmFechaGuiaTransportista,
                     dtmReceived_Date:this.dtmFechaRecepcion,
@@ -344,7 +355,8 @@ export default class RecepcionMaterialComponent extends Vue {
                     strAccount_Cod: '',//codigo de cuenta contable
                     intIdCostCenter: 2,//
                     strWBS_Project: '',//vacio
-                    strCreation_User: 'egaona'
+                    strCreation_User: 'egaona',
+                    fltTot_Rec_Value:this.fltTot_Rec_Value
                 });
             }
             this.OrdenCompra.strAuthsd_By = 'egaona';
@@ -358,16 +370,30 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.strCreation_User = 'egaona';
             this.OrdenCompra.fltTot_Rec_QYT=this.fltTot_Rec_QYT;
             this.OrdenCompra.fltTot_Rec_Pend_QTY=this.fltTot_Rec_Pend_QTY;
-            // let loadingInstance = Loading.service({
-            //     fullscreen: true,
-            //     text: 'Guargando...',
-            //     spinner: 'el-icon-loading',
-            //     background: 'rgba(0, 0, 0, 0.8)'
-            // }
-            // );
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Guargando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+            }
+            );
            
             // loadingInstance.close();
             console.log(this.OrdenCompra)
+            ordenCompraService.recepcionar(this.OrdenCompra)
+            .then(response => {
+                loadingInstance.close();
+                this.issave = true;
+                this.iserror = false;
+                this.vifprogress=false;
+                this.textosave = 'Se guardo correctamente. '+ this.strCode;
+                this.loadPO();
+            }).catch(error => {
+                loadingInstance.close();
+                this.issave = false;
+                this.iserror = true;
+                this.textosave = 'Error al guardar.';
+            })
             // if (val == 'crear-po') {
             //     ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
             //         .then(response => {
@@ -425,6 +451,7 @@ export default class RecepcionMaterialComponent extends Vue {
     //#region [LOAD GET]
     changeRecibida(){
         var total=0;
+        var valueTotal=0;
         this.blnchangerec=false;
         setTimeout(() => {
             for(var i=0;i<this.requiDetalle1.length;i++){
@@ -433,11 +460,13 @@ export default class RecepcionMaterialComponent extends Vue {
                     this.multipleSelection.push(this.requiDetalle1[i])
                     if(this.requiDetalle1[i].fltRec_QYT >0){
                         total+=this.requiDetalle1[i].fltRec_QYT;
+                        valueTotal+=this.requiDetalle1[i].fltRec_QYT*this.requiDetalle1[i].fltPO_Net_PR_I;
                     }
                 }
             } 
             this.fltTot_Rec_QYT=total;
             this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
+            this.fltTot_Rec_Value=valueTotal;
             console.log('change*******',this.requiDetalle1,total);  
         }, 120)
     }
@@ -449,15 +478,18 @@ export default class RecepcionMaterialComponent extends Vue {
         this.multipleSelection=[];
         console.log('entro-check',row);
         var total=0;
+        var valueTotal=0;
         for(var i=0;i<this.requiDetalle1.length;i++){
             if(this.requiDetalle1[i].blnCheck){
                 this.multipleSelection.push(this.requiDetalle1[i])
                 if(this.requiDetalle1[i].fltRec_QYT >0){
                     total+=this.requiDetalle1[i].fltRec_QYT;
+                    valueTotal+=this.requiDetalle1[i].fltRec_QYT*this.requiDetalle1[i].fltPO_Net_PR_I;
                 }
             }
         }
         this.fltTot_Rec_QYT=total;
+        this.fltTot_Rec_Value=valueTotal;
         this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
         console.log('entro-check-2',this.multipleSelection)
     }
@@ -470,7 +502,25 @@ export default class RecepcionMaterialComponent extends Vue {
         }
         return false;
     }
+    limpiarVista(){
+        this.intIdVendor_ID=0;
+        this.intIdTypeReq_ID=0;
+        this.intIdPurReqH_ID=0;
+        this.intIdWHS_ID=0;
+        this.strCompany='';
+        this.strCode='';
+        this.fltTot_Rec_QYT=0;
+        this.fltTot_Rec_Pend_QTY=0;
+        this.fltCURR_QTY_I=0;
+        this.fltTot_Rec_Pend_QTY=0;
+        this.strPlaca='';
+        this.strConductor='';
+        this.strGuiaRemitente='';
+        this.strGuiaTransportista='';
+        this.requiDetalle1=[];
+    }
     loadPO(){
+        this.limpiarVista();
         debugger;
         var object = JSON.parse(this.$route.query.data);
         console.log('data extra',object);
@@ -495,13 +545,16 @@ export default class RecepcionMaterialComponent extends Vue {
         this.intIdTypeReq_ID=object.intIdTypeReq_ID;
         this.intIdPurReqH_ID=object.intIdPurReqH_ID;
         this.intIdWHS_ID=object.intIdWHS_ID;
-        this.strVendor_NO=object.strVendor_NO;
         this.strCompany=object.strCompany_Cod;
         this.strCode=object.strPO_NO;
-        this.fltTot_Rec_QYT=0;
-        this.fltTot_Rec_Pend_QTY=0;
+        this.fltTot_Rec_QYT=object.fltTot_Rec_QYT;
+        this.fltTot_Rec_Pend_QTY=object.fltTot_Rec_Pend_QTY;
         this.fltCURR_QTY_I=object.fltCURR_QTY_I;
         this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
+        this.strPlaca=object.strPlaca;
+        this.strConductor=object.strRec_Driver;
+        this.strGuiaRemitente=object.strGuiaRem_NO;
+        this.strGuiaTransportista=object.strGuiaTrans_NO;
         this.cargar(object.intIdPOH_ID);
       }
       cargar(code){

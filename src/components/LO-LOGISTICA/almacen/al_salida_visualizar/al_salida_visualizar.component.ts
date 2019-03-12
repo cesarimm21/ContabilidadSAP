@@ -15,6 +15,10 @@ import axios from 'axios';
 import { Loading } from 'element-ui';
 import { mixin as focusMixin }  from 'vue-focus';
 
+import salidaService from '@/components/service/salida.service';
+
+import Handsontable from 'handsontable-pro';
+
 //***Modelos */
 import {ProductoModel} from '@/modelo/maestro/producto';
 
@@ -22,6 +26,8 @@ import { Notification } from 'element-ui';
 import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
+
+import { SalidaModel } from '@/modelo/maestro/salida';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -41,9 +47,14 @@ var EditableColumn = {
  
 })
 export default class VisualizarSalidaMaterialComponent extends Vue {
-  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+  sizeScreen:string = (window.innerHeight - 250).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
-  
+  formBusqueda:any={
+    'strIssueAjust_NO':'',
+    'desde':new Date(),
+    'hasta':new Date(),
+    'strDesc_Header':''
+  }
   nameuser:string;
   namecomplete:string;
   SendDocument:boolean=false;
@@ -68,12 +79,58 @@ export default class VisualizarSalidaMaterialComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  public tableData:Array<SalidaModel>=[]; 
+  fechaHasta:any=new Date();
+  fechaDesde:any=new Date();
+  vifprogress:boolean=true;
+  valuem=0;  
+  currentRow:any;
+  dialogTipoMovimiento:boolean=false;
+  btnactivartipomovimiento:boolean=false;
+
+  strTypeMov_Cod:string='';
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
+    setTimeout(() => {
+      this.load();
+    }, 200)
+  }
+  load(){
+    this.cargar();
+  }
+  async validarView(){
+    debugger;
+    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIssueAjustH_ID!=-1){
+      this.vifprogress=true;
+      this.valuem=0;
+      await setTimeout(() => {
+        for(var i=0;i<100;i++){
+          this.valuem++; 
+        }
+      }, 200)
+      await setTimeout(() => {
+        debugger;
+        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIssueAjustH_ID!=-1){
+          router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salidam`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
+        }
+      }, 600)
+    }
+    else{
+      this.vifprogress=false;
+      this.textosave='Seleccione alguna salida. ';
+      this.warningMessage('Seleccione  alguna salida. ');
+    }
+  }
    
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
   }
   openMessage(newMsg : string) {
     this.$message({
@@ -116,8 +173,9 @@ export default class VisualizarSalidaMaterialComponent extends Vue {
   }
   handleCurrentChange(val) {
     debugger;
-    if(val.date){
-        return 'selected-row';
+    if(val!=null){
+      this.selectrow=val;
+      this.currentRow = val;
     }
   }
   /*Compania imput*/
@@ -185,10 +243,10 @@ export default class VisualizarSalidaMaterialComponent extends Vue {
       });
     })
   }
-  validarView(){
-    Global.codematerial=this.productoModel.strStock_Cod;
-    router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salidam`, query: { vista: 'visualizar' }  })
-  }
+  // validarView(){
+  //   Global.codematerial=this.productoModel.strStock_Cod;
+  //   router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salidam`, query: { vista: 'visualizar' }  })
+  // }
   created() {
     debugger;
     if(typeof window != 'undefined') {
@@ -197,6 +255,85 @@ export default class VisualizarSalidaMaterialComponent extends Vue {
       this.vmaterial=Global.vmmaterial;
     }
   }
+  async cargar(){
+    var data:any=this.formBusqueda;
+    data.strIssueAjust_NO='*'
+    data.desde='*'
+    data.hasta= '*'
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await salidaService.busquedaSalida(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 200)
+      }
+    })
+    .catch(error=>{
+      
+    })
+  }
+  async Buscar(){
+    debugger;
+    var data:any=this.formBusqueda;
+    if(data.strIssueAjust_NO==''){
+      data.strIssueAjust_NO='*'
+    }
+    data.desde=await Global.getDateString(this.fechaDesde)
+    data.hasta= await Global.getDateString(this.fechaHasta)
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await salidaService.busquedaSalida(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 600)
+      }
+    })
+    .catch(error=>{
+      
+    })
+  }
+  tipomovimientoSelecionado(val){
+    this.strTypeMov_Cod=val.strTypeMov_Cod;
+    this.btnactivartipomovimiento=false;
+    this.dialogTipoMovimiento=false;
+  }
+  activar_tipo_movimiento(){
+    setTimeout(() => {
+      this.btnactivartipomovimiento=true;      
+    }, 120)
+  }
+  loadTipoMovimiento(){
+    this.dialogTipoMovimiento=true;
+  }
+  desactivar_tipo_movimiento(){
+    debugger;
+    if(this.dialogTipoMovimiento){
+      this.btnactivartipomovimiento=false;
+    }
+  }
+  
   data(){
     return{
       dialogTableVisible: false,

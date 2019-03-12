@@ -52,4 +52,10 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  recepcionar(data){
+    return axios.post(CONFIG.API_URL+'ordencompra/recepcion',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  }
 }

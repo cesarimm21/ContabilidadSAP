@@ -57,7 +57,7 @@ var EditableColumn = {
 })
 export default class AprobarSalidaComponent extends Vue {
   timer=0;
-  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+  sizeScreen:string = (window.innerHeight - 250).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   formBusqueda:any={
     'strIssueAjust_NO':'',
@@ -75,6 +75,10 @@ export default class AprobarSalidaComponent extends Vue {
   iserror:boolean=false;
   issave:boolean=false;
   valuem=0;
+  
+  dialogTipoMovimiento:boolean=false;
+  btnactivartipomovimiento:boolean=false;
+  strTypeMov_Cod:string='';
   
   tableData1:any=[
     {
@@ -133,7 +137,9 @@ export default class AprobarSalidaComponent extends Vue {
       this.tableData1.push(item);
     }
     console.log(this.tableData1);
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   load(){
     var view = this.$route.query.vista;
@@ -143,6 +149,35 @@ export default class AprobarSalidaComponent extends Vue {
     else{
       this.visualizar=false;
     }
+    this.cargar();
+  }
+  async cargar(){
+    var data:any=this.formBusqueda;
+    data.strIssueAjust_NO='*'
+    data.desde='*'
+    data.hasta= '*'
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await salidaService.busquedaSalida(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 200)
+      }
+    })
+    .catch(error=>{
+      
+    })
   }
   
   desactivar_proveedor(){
@@ -271,6 +306,25 @@ export default class AprobarSalidaComponent extends Vue {
     .catch(error=>{
       
     })
+  }
+  tipomovimientoSelecionado(val){
+    this.strTypeMov_Cod=val.strTypeMov_Cod;
+    this.btnactivartipomovimiento=false;
+    this.dialogTipoMovimiento=false;
+  }
+  activar_tipo_movimiento(){
+    setTimeout(() => {
+      this.btnactivartipomovimiento=true;      
+    }, 120)
+  }
+  loadTipoMovimiento(){
+    this.dialogTipoMovimiento=true;
+  }
+  desactivar_tipo_movimiento(){
+    debugger;
+    if(this.dialogTipoMovimiento){
+      this.btnactivartipomovimiento=false;
+    }
   }
  
   data(){
