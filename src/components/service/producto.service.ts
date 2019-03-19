@@ -22,7 +22,7 @@ export default{
       })
   },
   UpdateProducto(Producto){
-    return axios.post(CONFIG.API_URL+'producto/update', Producto)
+    return axios.put(CONFIG.API_URL+'producto/'+Producto.strStock_Cod, Producto)
     .then(response =>{
         return response.data;
       })
@@ -46,5 +46,11 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  busquedaProducto(data){
+    return axios.get(CONFIG.API_URL+'busqueda/producto/'+data.strStock_Cod+'/'+data.desde+'/'+data.hasta)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

@@ -62,33 +62,6 @@ export default [
     ]
       },
       {
-        path: 'LO-LOGISTICA',
-        component:CrearPRComponent,
-        children:[
-          {
-          path:'requisicion',
-          component:CrearPRComponent,
-          children:[
-          {
-            path:'pr_crear',
-            component:CrearPRComponent,
-            name:'pr_crear'
-          },
-          {
-            path:'pr_visualizar',
-            component:VisualizarPRComponent,
-            name:'pr_visualizar'
-          },
-          {
-            path:'pr_visualizar_modificar',
-            component:VisualizarModificarPRComponent,
-            name:'pr_visualizar_modificar'
-          },
-          ]
-        }]
-        },
-      
-      {
         path: 'inicio',
         component: Inicio,
         name: 'Inicio',

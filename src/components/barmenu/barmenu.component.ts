@@ -262,7 +262,7 @@ export default class BarmenuComponent extends Vue {
       router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar')
     }
     linkVisualizarModificaRequisicion(){
-      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_modificar')
+      router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar_modificar')
     }
   data() {
     return {

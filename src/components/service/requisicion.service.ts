@@ -10,6 +10,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  updateRequisicion(data){
+    return axios.post(CONFIG.API_URL+'requisicion/update', data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   busquedaRequisicion(data){
     return axios.get(CONFIG.API_URL+'busqueda/requisicion/'+data.strRequis_NO+'/'+data.desde+'/'+data.hasta+'/'+data.strDesc_Header)
     .then(response =>{

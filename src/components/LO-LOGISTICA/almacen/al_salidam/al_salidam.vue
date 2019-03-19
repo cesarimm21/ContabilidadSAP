@@ -40,6 +40,19 @@
                         </div> 
                     </div>
                 </div>
+                <div class="row" style="margin-top: 3px;">
+                    <div class="col-sm-8" >
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Código Salida</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                    <el-input :disabled="visualizar"  size ="small"  v-model="salidaModel.strIssueAjust_NO"  placeholder="">
+                                    </el-input>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-sm-8" >
                         <div class="form-group row ">
@@ -61,7 +74,7 @@
                             <label class="el-form-item__label col-md-2" >Almacen</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-bind:class="{ error: valmacen }"  @change="change()" @blur="desactivar_almacen" @focus="activar_almacen" v-model="salidaModel.strWHS_Cod"  placeholder="">
+                                <el-input size ="small" :disabled="visualizar"   @change="change()" @blur="desactivar_almacen" @focus="activar_almacen" v-model="salidaModel.strWHS_Cod"  placeholder="">
                                     <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="LoadAlmacen()"></el-button> 
                                 </el-input>
                                 </div>

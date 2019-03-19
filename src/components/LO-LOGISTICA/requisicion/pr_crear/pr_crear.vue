@@ -153,9 +153,16 @@
                                             label="Cantidad">
                                             <template scope="scope">
                                                 <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" @change="cambiarCantidad(scope.row)" v-model="scope.row.fltQuantity" >
                                                 </el-input-number>
                                                 <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="fltUnitPrice" sortable width="100"
+                                            label="Precio">
+                                            <template scope="scope">
+                                                <label>&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -283,6 +290,7 @@
                                     </div>
                                 </div>
                             </el-tab-pane>
+                           
                             <el-tab-pane label="Datos Material">
                                 <div class="container">
                                     <div class="row">
@@ -291,7 +299,7 @@
                                                 <label class="el-form-item__label col-md-3" >Código</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.strStock_Cod" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -302,7 +310,7 @@
                                                 <label class="el-form-item__label col-md-4" >Descripción</label>
                                                 <div class="col-md-8 grupolabel">
                                                     <div class="input-group mb-8" >
-                                                    <el-input size ="small"  placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.strStock_Desc" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -315,7 +323,7 @@
                                                 <label class="el-form-item__label col-md-3" >Nombre</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-7" >
-                                                    <el-input size ="small" placeholder="">
+                                                    <el-input size ="small" v-model="productoModel.strStock_Name" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -408,7 +416,7 @@
                                                 <label class="el-form-item__label col-md-4" >Precio</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small"  placeholder="">
+                                                    <el-input size ="small" v-model="selectrow.fltUnitPrice" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -432,7 +440,7 @@
                                                 <label class="el-form-item__label col-md-4" >Total</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                        <el-input size ="small" v-model="getTotals" placeholder="">
+                                                        <el-input size ="small" v-model="selectrow.fltValue_Total" placeholder="">
                                                         </el-input>
                                                     </div>
                                                 </div>

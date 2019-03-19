@@ -222,11 +222,14 @@ export default class ModificarMaterialComponent extends Vue {
       this.tableData1.push(item);
     }
     console.log(this.tableData1);
-    this.Load();
+    setTimeout(() => {
+      this.Load();
+    }, 200)
   }
   Load(){
     debugger;
     var view = this.$route.query.vista;
+    var object = JSON.parse(this.$route.query.data);
     if(view==="visualizar"){
       this.visualizar=true;
     }
@@ -238,7 +241,8 @@ export default class ModificarMaterialComponent extends Vue {
       spinner: 'el-icon-loading',
       text:'Cargando...'
     });
-    productoService.GetOnlyOneProducto(Global.codematerial)
+    var id=object.strStock_Cod;
+    productoService.GetOnlyOneProducto(id)
     .then(response=>{
       debugger;
       if(response!=undefined){
@@ -694,6 +698,7 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.strTAX_Ind=val.strWH_Cod
     this.productoModel.intIdCommTax_ID=val.intIdWH_ID
+    this.productoModel.strWHS_Desc=val.strWH_Desc
     this.desimpuesto=val.strWH_Desc;
     this.dialogImpuesto=false;
   }
@@ -701,6 +706,7 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.strMaterial_Categ=val.strCategMat_Cod;
     this.productoModel.intIdCategMat_ID=val.intIdCategMat_ID;
+    this.productoModel.strCategMat_Desc=val.strCategMat_Desc;
     this.descategoriamaterial=val.strCategMat_Desc;
     this.dialogCategoriaMaterial=false;
   }
@@ -708,6 +714,7 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.fltPriceControl=val.strCtlPrec_Cod;
     this.productoModel.intIdCtlPrec_ID=val.intIdCtlPrec_ID;
+    this.productoModel.strCtlPrec_Desc=val.strCtlPrec_Desc;
     this.descontrolprecio=val.strCtlPrec_Desc;
     this.dialogControlPrecio=false;
   }
@@ -715,6 +722,7 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.strGrpPurch_Cod=val.strGrpPurch_Cod;
     this.productoModel.intIdGrpPurch_ID=val.intIdGrpPurch_ID;
+    this.productoModel.strGrpPurch_Desc=val.strGrpPurch_Desc;
     this.desgrupocomprador=val.strGrpPurch_Desc;
     this.dialogGrupoComprador=false;
   }
@@ -731,6 +739,7 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.strCritical_Item=val.strCritical_Cod;
     this.productoModel.intIdCritical_ID=val.intIdCritical_ID;
+    this.productoModel.strCritical_Desc=val.strCritical_Desc;
     this.descriticidad=val.strCritical_Desc;
     this.dialogCriticidad=false;
   }
@@ -740,10 +749,12 @@ export default class ModificarMaterialComponent extends Vue {
     this.productoModel.strWHS_Cod=val.strWHS_Cod;
     this.productoModel.intIdWHS_Stat_ID=val.intIdWHS_ID;
     this.desalmacen=val.strWHS_Desc;
+    this.productoModel.strWHS_Desc=val.strWHS_Desc;
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
     this.productoModel.strMaterial_Class=val.strMatClass_Cod;
+    this.productoModel.strMatClass_Desc=val.strMatClass_Desc;
     this.productoModel.intIdMatClass_ID=val.intIdMatClass_ID;
     this.desclasematerial=val.strMatClass_Desc;
     this.dialogClaseMaterial=false;
@@ -766,6 +777,7 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.strExp_Acct=val.strAcc_NO_Corp;
     this.productoModel.intIdAcctCont_ID=val.intIdAcctCont_ID;
+    this.productoModel.strAcc_Desc=val.strAcc_Desc;
     this.desCuentaGasto=val.strAcc_Desc;
     this.dialogCuentaContable=false;
   }
@@ -778,14 +790,15 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     this.productoModel.strUM_Cod=val.strUM_Cod;
     this.productoModel.intIdUnidadMedida=val.intUnit_Measure_ID;
+    this.productoModel.strUM_Desc=val.strUM_Desc;
     this.desunidadmedida=val.strUM_Desc;
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
     debugger;
-
     this.productoModel.strVendor_NO=val.strVendor_NO;
     this.productoModel.intIdVendor_ID=val.intIdVendor_ID;
+    this.productoModel.strVendor_Desc=val.strVendor_Desc;
     this.desproveedor=val.strVendor_Desc;
     this.dialogProveedor=false;
   }
@@ -1247,7 +1260,7 @@ export default class ModificarMaterialComponent extends Vue {
   guardarTodo(val){
     this.productoModel.intIdWHS_Stat_ID=1;
     this.productoModel.intIdCommTax_ID=1;
-    productoService.saveProducto(this.productoModel)
+    productoService.UpdateProducto(this.productoModel)
     .then(res=>{ 
       debugger;
       this.issave=true;
