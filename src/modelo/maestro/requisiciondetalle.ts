@@ -27,8 +27,8 @@ export class RequisicionDetalleModel {
     strAccount_NO:string ;
     strCostCenter:string ;
     dtmCompleted_Date:Date;
-
- 
+    intConv_Factor:number;
+    blnCheck:boolean;
     
     strCreation_User:Date ;
     dtmCreation_Date:string ;
@@ -64,6 +64,7 @@ export class RequisicionDetalleModel {
         this.strAccount_NO=''
         this.strCostCenter=''
         this.dtmCompleted_Date =new Date()
-        
+        this.intConv_Factor=1
+        this.blnCheck=true;
     }
 }
