@@ -553,6 +553,10 @@
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                   <span>P03-Visualizar</span>
                 </el-menu-item>
+                <el-menu-item index="2-3-4" @click="linkRouteHes('aprobar')">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>P04-Aprobar</span>
+                </el-menu-item>
               </el-submenu>
                <el-submenu index="2-4">
                 <template slot="title">

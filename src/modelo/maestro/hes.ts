@@ -4,6 +4,7 @@ export class HESModel {
     strCompany_Cod:string;//
     strHES_NO:string;//
     intIdPOH_ID:number;//
+    strPO_NO:string;
     intIdCategLine_ID:number;
     strCategItem_Cod:string;
     strPO_Item_NO:string;//falta
@@ -19,6 +20,7 @@ export class HESModel {
     strCurrency:string;//
     fltTot_QTY:number;//
     fltTot_Value:number;//falta calculo
+    fltTot_Peding_Value:number;//falta calculo
 
     strCreation_User:string;//
     dtmCreation_Date:Date;//

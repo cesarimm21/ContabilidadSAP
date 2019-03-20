@@ -125,12 +125,21 @@ export default class QuickAccessMenuComponent extends Vue {
   confirmaraceptar(){
     //alert("Excelente");
     this.SendDocument=false;
-     if(Global.nameComponent==='crear-po'){
+    if(Global.nameComponent==='crear-po'){
       this.$emit('guardarPO',Global.nameComponent);    
       debugger;
     }  
     if(Global.nameComponent==='crear-hes'){
       this.$emit('guardarHES',Global.nameComponent);
+    }
+    if(Global.nameComponent==='edit-hes'){
+      this.$emit('guardarEditHES',Global.nameComponent);
+    }
+    if(Global.nameComponent==='crear-proveedor'){
+      this.$emit('guardarProveedor',Global.nameComponent);
+    }
+    if(Global.nameComponent==='modificar-proveedor'){
+      this.$emit('actualizarProveedor',Global.nameComponent);
     }
     // this.$emit('guardarTodo','hola');
     this.$emit('guardarTodo');

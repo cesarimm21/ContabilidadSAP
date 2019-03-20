@@ -9,5 +9,11 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response));
     })
+  },
+  GetOnlyOnePais(code){
+    return axios.get(CONFIG.API_URL+'pais/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }

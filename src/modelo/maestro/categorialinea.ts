@@ -1,6 +1,6 @@
 export class CategoriaLineaModel {
     intIdCategLine_ID:number;
-    strCategLine_Cod: string;
+    strCategItem_Cod: string;
     strCategLine_Desc:string;
     
     strCreation_User:string;
