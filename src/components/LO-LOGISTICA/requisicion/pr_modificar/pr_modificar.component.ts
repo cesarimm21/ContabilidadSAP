@@ -177,10 +177,21 @@ export default class ModificarPRComponent extends Vue {
   tiporequisicion:string='';
   txtmodulo:string='';
   tiporequisicionant:string='';
+  visualizar:boolean=false;
+  fltQuantity:number=0;
+  dtmRequested_Date:string='';
+  fltUnitPrice:number=0;
+  fltValue_Total:number=0;
+  strAccount_NO:string='';
+  strCostCenter:string='';
+  strVendor_NO:string='';
+  strVendor_Desc:string='';
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
+    
    
     this.cell_ocultar='#e4e2e2';        
     this.blntiporequisicion=false;
@@ -210,9 +221,17 @@ export default class ModificarPRComponent extends Vue {
       var object = JSON.parse(this.$route.query.data);
       var modulo = this.$route.query.vista;
       if(modulo.toLowerCase()!='aprobar'){
-        this.txtmodulo='Modificar Requisición';
+        if(modulo.toLowerCase()!='modificar'){
+          this.visualizar=true;
+          this.txtmodulo='Visualizar Requisición';
+        }
+        else{
+          this.visualizar=false;
+          this.txtmodulo='Modificar Requisición';
+        }
       }
       else{
+        this.visualizar=true;
         this.vifaprobarrechasar=true;
         this.txtmodulo='Aprobar Requisición';
       }
@@ -351,7 +370,14 @@ export default class ModificarPRComponent extends Vue {
       else{
         this.intlineaselect=val.intRequis_Item_NO-1;
       }
+      console.log('handleCurrentChange',val);
       this.currentRow = val;
+      this.fltQuantity=val.fltQuantity;
+      this.dtmRequested_Date=this.getParseDate(val.dtmRequested_Date);
+      this.fltUnitPrice=val.fltUnitPrice;
+      this.fltValue_Total=this.fltUnitPrice*this.fltQuantity;
+      this.strAccount_NO=val.strAccount_NO;
+      this.strCostCenter=val.strCostCenter;
       this.getDetalle(val);
     }
   }
@@ -365,20 +391,22 @@ export default class ModificarPRComponent extends Vue {
         this.productoModel=res[0];
         console.log('producto--obtener',this.productoModel);
         this.getTotals=this.productoModel.fltPrecUnit_Local*this.selectrow.fltQuantity;
+        proveedorService.GetOnlyOneProveedor(val.strVendor_Suggested)
+        .then(ress=>{
+          debugger;
+          this.proveedorModel=ress;
+          this.strVendor_NO=ress.strVendor_NO;
+          this.strVendor_Desc=ress.strVendor_Desc;
+          console.log('proveedor--obtener',this.proveedorModel);
+        })
+        .catch(error=>{
+          console.log('error',error)
+        })
+        
       })
       .catch(error=>{
         console.log('error',error)
       })
-
-      proveedorService.GetOnlyOneProveedor(val.strVendor_Suggested)
-      .then(res=>{
-        this.proveedorModel=res[0];
-        console.log('proveedor--obtener',this.proveedorModel);
-      })
-      .catch(error=>{
-        console.log('error',error)
-      })
-      
     }
   }
 
@@ -829,7 +857,7 @@ export default class ModificarPRComponent extends Vue {
     }
     this.requisicionModel.listaDetalle=tabla;
     console.log('---***---',this.requisicionModel);
-    requisicionService.crearRequisicion(this.requisicionModel)
+    requisicionService.updateRequisicion(this.requisicionModel)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
@@ -841,8 +869,8 @@ export default class ModificarPRComponent extends Vue {
           this.vifprogress=false;
           this.issave=true;
           
-          this.textosave='Se guardo correctamente. '+res.strRequis_NO;
-          this.openMessage('Se guardo correctamente '+res.strRequis_NO);
+          this.textosave='Se modifico correctamente. '+res.strRequis_NO;
+          this.openMessage('Se modifico correctamente '+res.strRequis_NO);
         }, 600)
       }
     })

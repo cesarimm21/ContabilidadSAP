@@ -303,61 +303,7 @@ export default class RecepcionMaterialComponent extends Vue {
         else {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
-                this.OrdenCompra.listaDetalle.push({
-                    intIdPOD_ID:this.multipleSelection[i].intIdPOD_ID,
-                    intIdAcctCateg_ID: this.multipleSelection[i].intIdAcctCateg_ID,
-                    intIdCategLine_ID: this.multipleSelection[i].intIdCategLine_ID,
-                    intIdCurrency_ID: this.multipleSelection[i].intIdCurrency_ID,
-                    intIdCostCenter_ID: this.multipleSelection[i].intIdCostCenter_ID,
-                    intPO_Item_NO: 1,//falta de la cabecea
-                    strPO_Item_Desc: this.multipleSelection[i].strPO_Item_Desc,
-                    chrPO_Item_Status: this.multipleSelection[i].chrStatus,
-                    strPO_Curr: this.OrdenCompra.strRequis_NO,
-                    strRequis_NO: this.OrdenCompra.strRequis_NO,
-                    intRequis_Item_NO: this.requiSelect.intIdPurReqH_ID,//requis
-                    intChange_Count: 0,//0 cantidad de veces que cambia
-                    chrReceipt_Status: '00',//los codigos de aprobacion
-                    strMaterial_Group: this.multipleSelection[i].strMaterial_Group,//si hay
-                    strPreq_Stock_Cod: this.multipleSelection[i].strPreq_Stock_Cod,
-                    intIdInvStock_ID: 2,//id  de stock
-                    dtmOrig_Due_Date: new Date(),
-                    strPlaca:this.strPlaca,
-                    strUnit_Of_Purch: this.multipleSelection[i].strUnit_Of_Purch,//unidad de medida
-                    fltPO_QTY_I: this.multipleSelection[i].fltPO_QTY_I,//cantidad
-                    fltPO_Net_PR_I: this.multipleSelection[i].fltPO_Net_PR_I,//precio unitario
-                    fltCurr_Net_PR_P: this.multipleSelection[i].fltCurr_Net_PR_P,//total por producto
-                    intConv_Factor: 1,//factor multiplica a la cantidad de productos/Editable
-                    strTax_Cod: this.Impuesto.strWH_Cod,
-                    strWH_Tax_Detraccion: this.Impuesto.strWH_Cod,
-                    strWH_Retention: this.Impuesto.fltPorcent,
-                    fltTax_Percent: this.Impuesto.fltPorcent,
-                    fltRec_QYT:this.multipleSelection[i].fltRec_QYT,
-                    fltRec_Pend_QTY:this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT,
-                    fltRec_Value:this.multipleSelection[i].fltPO_Net_PR_I*this.multipleSelection[i].fltRec_QYT*this.multipleSelection[i].intConv_Factor,
-                    strGuiaRem_NO:this.strGuiaRemitente,
-                    dtmGuiaRem_Date:this.dtmFechaRecepcion,
-                    strGuiaTrans_NO:this.strGuiaTransportista,
-                    dtmGuiaTrans_Date:this.dtmFechaGuiaTransportista,
-                    dtmReceived_Date:this.dtmFechaRecepcion,
-                    strReceived_User:'egaona',
-                    strRec_Driver:this.strConductor,
-                    //strPlaca:this.str,
-                  
-                    intIdWHS_ID: 4,//almacen id correlativo
-                    intInv_QTY_UOP: 0,//Inv_QTY //viene de la factura
-                    intInvoice_NO: 0,//numero de la factura
-                    fltInv_Pend_QTY_P: 0,//cantidad pendiente
-                    fltInv_Pend_Val_F: 0,//
-                    fltInv_Pend_Val_L: 0,
-                    fltInv_Pend_Val_S: 0,
-                    strDeliv_Location: '',//texto de la requisicion puede ser editado
-                    fltTot_PO_Item: 1,
-                    strAccount_Cod: '',//codigo de cuenta contable
-                    intIdCostCenter: 2,//
-                    strWBS_Project: '',//vacio
-                    strCreation_User: 'egaona',
-                    fltTot_Rec_Value:this.fltTot_Rec_Value
-                });
+                this.OrdenCompra.listaDetalle.push(this.multipleSelection[i]);
             }
             this.OrdenCompra.strAuthsd_By = 'egaona';
             this.OrdenCompra.intChange_Count = 0;

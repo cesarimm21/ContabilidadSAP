@@ -16,7 +16,8 @@ export class SalidaModel {
     intIdWHS_ID:number;
     intIdTypeMov_ID:number;
     listaDetalle: Array<SalidaDetalleModel> = new Array();  
-
+    strPlant_Cod:string;
+    strPlan_Desc:string;
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;

@@ -34,6 +34,7 @@ import { mixin as focusMixin }  from 'vue-focus';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
+import diarioGeneralService from '@/components/service/diarioGeneral.service';
 import inicioService from '@/components/service/inicio.service';
 import salidaService from '@/components/service/salida.service';
 import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
@@ -43,6 +44,7 @@ import Handsontable from 'handsontable-pro';
 import {SalidaMaterialModel} from '@/modelo/maestro/salidamaterial';
 import {SalidaModel} from '@/modelo/maestro/salida';
 import {SalidaDetalleModel} from '@/modelo/maestro/salidadetalle';
+import {DiarioGeneralModel} from '@/modelo/maestro/diariogeneral';
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';
@@ -119,7 +121,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   dialogCentroCostos:boolean=false;
 
   public salidaModel:SalidaModel=new SalidaModel();
-
+  public diarioGeneralModel:DiarioGeneralModel=new DiarioGeneralModel();
   /*input*/
   btnactivarcompania:boolean=false;
   btnactivartipomovimiento:boolean=false;
@@ -167,7 +169,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
-  visualizar:boolean;
+  visualizar:boolean=false;
   
   vifaprobarrechasar:boolean=false;
   txtmodulo:string='';
@@ -246,6 +248,12 @@ export default class ModificarSalidaMaterialComponent extends Vue {
         salidaService.getSalidaDetalleId(res[0].intIssueAjustH_ID)
         .then(resd=>{
           this.salidaModel=res[0];
+          var almacen=res[0].intIdWHS_ID;
+          if(almacen!=undefined){
+            var planta=almacen.intPlant_ID;
+            this.salidaModel.strPlant_Cod=planta.strPlant_Cod;
+            console.log('strPlant_Cod',this.salidaModel.strPlant_Cod)
+          }
           var data:Array<SalidaDetalleModel>=[];  
           for(var i=0;i<resd.length;i++){
             if(resd[i].intIdInvStock_ID!=undefined){

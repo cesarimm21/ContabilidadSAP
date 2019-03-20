@@ -306,12 +306,53 @@ export default class CrearPRComponent extends Vue {
     // }
     // return '';
   }
+  // handleCurrentChange(val) {
+  //   debugger;
+  //   this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
+  //   this.intlineaselect=val.intRequis_Item_NO-1;
+  //   this.currentRow = val;
+  // }
   handleCurrentChange(val) {
     debugger;
-    this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
-    this.intlineaselect=val.intRequis_Item_NO-1;
-    this.currentRow = val;
+    if(val!=undefined){
+      this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
+      if(val.intRequis_Item_NO==0){
+        this.intlineaselect=0;  
+      }
+      else{
+        this.intlineaselect=val.intRequis_Item_NO-1;
+      }
+      this.currentRow = val;
+      this.getDetalle(val);
+    }
   }
+
+  getDetalle(val){
+    debugger;
+    if(val.strDescription!='' && val.strDescription!=undefined)
+    {
+      productoService.GetOnlyOneProducto(val.strMaterial_Cod)
+      .then(res=>{
+        this.productoModel=res[0];
+        console.log('producto--obtener',this.productoModel);
+        this.getTotals=this.productoModel.fltPrecUnit_Local*this.selectrow.fltQuantity;
+      })
+      .catch(error=>{
+        console.log('error',error)
+      })
+
+      proveedorService.GetOnlyOneProveedor(val.strVendor_Suggested)
+      .then(res=>{
+        this.proveedorModel=res[0];
+        console.log('proveedor--obtener',this.proveedorModel);
+      })
+      .catch(error=>{
+        console.log('error',error)
+      })
+      
+    }
+  }
+
 
   nextTable(){
     debugger;
@@ -674,8 +715,15 @@ export default class CrearPRComponent extends Vue {
     this.selectrow.strDescription=val.strStock_Desc;
     this.selectrow.strAccount_NO=val.strExp_Acct;
     this.selectrow.strVendor_Suggested=val.strVendor_NO;
-
+    this.selectrow.fltUnitPrice=val.fltPrecUnit_Local;
+    this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
     this.dialogMaterial=false;
+  }
+  cambiarCantidad(val){
+    setTimeout(() => {
+      this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
+    }, 200)
+    
   }
   SeleccionadoUnidadMedida(val){
     debugger;

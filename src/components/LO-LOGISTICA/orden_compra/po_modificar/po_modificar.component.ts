@@ -468,14 +468,19 @@ export default class ModificarPOComponent extends Vue {
         }, 200)
         await ordenCompraService.aprobarPO(this.OrdenCompra)
         .then(res=>{
-            debugger;
-            console.log(this.valuem);
-            setTimeout(() => {
-                this.vifprogress=false;
-                this.issave=true;
-                this.textosave='Se aprobó correctamente. '+res.strPO_NO;
-                this.openMessage('Se aprobó correctamente '+res.strPO_NO);
-            }, 600)
+            this.OrdenCompra.listaDetalle=this.requiDetalle1;
+            ordenCompraService.inventarioPO(this.OrdenCompra)
+            .then(res=>{
+                setTimeout(() => {
+                    this.vifprogress=false;
+                    this.issave=true;
+                    this.textosave='Se aprobó correctamente. '+res.strPO_NO;
+                    this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+                }, 600)
+            })
+            .catch(error=>{
+                this.textosave='Ocurrio un error inesperado. ';
+            })
         })
         .catch(error=>{
             this.textosave='Ocurrio un error inesperado. ';

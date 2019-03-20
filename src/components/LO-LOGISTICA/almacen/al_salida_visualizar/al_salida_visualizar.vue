@@ -163,61 +163,56 @@
                                         </el-table-column>
                                         <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Código">
                                             <template scope="scope">
-                                            <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strIssueAjust_NO }}</label>
+                                            <label  >&nbsp;{{ scope.row.strIssueAjust_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCompany_Cod" sortable  width="120"
                                             label="Código Compañia">
                                             <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCompany_Cod }}</label>
+                                                <label >&nbsp;{{ scope.row.strCompany_Cod }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strCompany_Desc" sortable  width="180"
                                             label="Compañia">
                                             <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCompany_Desc }}</label>
+                                                <label >&nbsp;{{ scope.row.strCompany_Desc }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strTypeMov_Cod" sortable  width="120"
                                             label="Código Tipo Movimiento">
                                             <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
+                                                <label >&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strTypeMov_Desc" sortable width="100"
                                             label="Tipo Movimiento">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Desc }}</label>
+                                                <label >&nbsp;{{ scope.row.strTypeMov_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strWHS_Cod" sortable width="150"
                                             label="Código Almacen">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
+                                                <label >&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strWHS_Desc" sortable 
                                             label="Almacen">
                                             <template scope="scope">
-                                                <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
+                                                <label >&nbsp;{{ scope.row.strWHS_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="dtmTransaction_Date" sortable width="100"
                                             label="Fecha">
                                             <template scope="scope">
-                                                <el-date-picker
-                                                    type="date"
-                                                    v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmTransaction_Date" >
-                                                </el-date-picker>
-                                                <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmTransaction_Date) }}</label>
+                                                <label >&nbsp;{{ getParseDate(scope.row.dtmTransaction_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                     </el-table>

@@ -7,7 +7,7 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-
+import proveedorService from '@/components/service/proveedor.service';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -22,6 +22,9 @@ import { Notification } from 'element-ui';
 import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
+import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
+import {OrdenCompraModel } from '@/modelo/maestro/ordencompra';
+import ordencompraService from '@/components/service/ordencompra.service';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -37,6 +40,7 @@ var EditableColumn = {
     'buttons-accions':ButtonsAccionsComponent,
     'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
+    'bproveedor':BProveedorComponent,
   } ,
  
 })
@@ -62,18 +66,96 @@ export default class VisualizarMaterialComponent extends Vue {
 
   fecha_actual:string;
   selectrow:any;
+  currentRow:any;
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  
+  formBusqueda:any={
+    'strPO_NO':'',
+    'desde':new Date(),
+    'hasta':new Date(),
+    'strVendor_NO':''
+  }
+  public tableData:Array<OrdenCompraModel>=[]; 
+  valuem=0;
+  btnbuscarb:boolean=false;
+  fechaHasta:any=new Date();
+  fechaDesde:any=new Date();
+  strPO_NO:string='';
+  btnactivarproveedor:boolean=false;
+  dialogProveedor:boolean=false;
+  strVendor_NO:string='';
+  strVendor_Desc:string='';
+  vifprogress:boolean=true;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
-   
+    setTimeout(() => {
+      this.load();
+    }, 200)
+  }
+  load(){
+    this.cargarList();
+  }
+  async cargarList(){
+    debugger;
+    var data:any=this.formBusqueda;
+    if(this.strPO_NO==''){
+      data.strPO_NO='*'
+    }
+    else{
+      data.strPO_NO=this.strPO_NO
+    }
+    if(this.strVendor_NO==''){
+      data.strStock_Cod='*'
+    }
+    else{
+      data.strStock_Cod=this.strVendor_NO
+    }
+    var hdate=new Date(this.fechaHasta);
+    hdate.setDate(hdate.getDate()+1)
+    if(this.btnbuscarb){
+      data.desde=await Global.getDateString(this.fechaDesde)
+      data.hasta= await Global.getDateString(hdate)
+    }
+    else{
+      data.desde="*";
+      data.hasta="*";
+    }
+    
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await productoService.busquedaProducto(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 600)
+      }
+    })
+    .catch(error=>{
+      
+    })
+  }
+  async Buscar(){
+    debugger;
+    this.btnbuscarb=true;
+    this.cargarList();
   }
   openMessage(newMsg : string) {
     this.$message({
@@ -116,8 +198,9 @@ export default class VisualizarMaterialComponent extends Vue {
   }
   handleCurrentChange(val) {
     debugger;
-    if(val.date){
-        return 'selected-row';
+    if(val!=null){
+      this.selectrow=val;
+      this.currentRow = val;
     }
   }
   /*Compania imput*/
@@ -154,9 +237,6 @@ export default class VisualizarMaterialComponent extends Vue {
   companiaClose(val){
     this.dialogCompania=false;
   }
-  limpiarBotones(){
-      this.btnactivarcompania=false;     
-  }
   borrarCompania(){
     this.descompania='';
     this.dialogCompania=false;
@@ -185,10 +265,11 @@ export default class VisualizarMaterialComponent extends Vue {
       });
     })
   }
-  validarView(){
-    Global.codematerial=this.productoModel.strStock_Cod;
-    router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'visualizar' }  })
-  }
+  // validarView(){
+  //   Global.codematerial='mat001';//this.productoModel.strStock_Cod;
+  //   router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'visualizar' }  })
+  // }
+  
   created() {
     debugger;
     if(typeof window != 'undefined') {
@@ -196,6 +277,91 @@ export default class VisualizarMaterialComponent extends Vue {
       debugger;
       this.vmaterial=Global.vmmaterial;
     }
+  }
+  async validarView(){
+    debugger;
+    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
+      this.vifprogress=true;
+      this.valuem=0;
+      await setTimeout(() => {
+        for(var i=0;i<100;i++){
+          this.valuem++; 
+        }
+      }, 200)
+      await setTimeout(() => {
+        debugger;
+        // this.selectrow.intIdPurReqH_ID=this.selectrow.intIdPurReqH_ID.intIdPurReqH_ID;
+        // this.selectrow.intIdVendor_ID=this.selectrow.intIdVendor_ID.intIdVendor_ID;
+        // this.selectrow.intIdTypeReq_ID=this.selectrow.intIdTypeReq_ID.intIdTypeReq_ID;
+        // this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
+        console.log('----,,,',this.selectrow);
+        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
+          router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_modificar`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
+        }
+      }, 600)
+    }
+    else{
+      this.vifprogress=false;
+      this.textosave='Seleccione alguna salida. ';
+    }
+  }
+  desactivar_proveedor(){
+    debugger;
+    if(this.dialogProveedor){
+      this.btnactivarproveedor=false;
+    }
+  }
+  activar_proveedor(){
+    setTimeout(() => {
+      this.limpiarBotones();
+      this.btnactivarproveedor=true;
+    }, 120)
+  }
+  limpiarBotones(){
+    this.btnactivarproveedor=false;
+  }
+  closeProveedor(){
+    debugger;
+    this.btnactivarproveedor=false;
+    return false;
+  }
+  SeleccionadoProveedor(val){
+    debugger;
+
+    this.strVendor_NO=val.strVendor_NO;
+    this.strVendor_Desc=val.strVendor_Desc;
+    this.dialogProveedor=false;
+  }
+  enterProveedor(code){
+    //alert('Bien'+code);
+    debugger;
+    proveedorService.GetOnlyOneProveedor(code)
+    .then(response=>{
+      debugger;
+      if(response!=undefined){
+        if(response.length>0){
+          this.strVendor_NO=response[0].strVendor_NO;
+          this.strVendor_Desc=response[0].strVendor_Desc;
+          this.dialogProveedor=false;
+          this.btnactivarproveedor=false;
+        }
+      }
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar proveedor'
+      });
+    })
+  }
+  borrarProveedor(){
+    this.strVendor_Desc='';
+    this.dialogProveedor=false;
+    this.btnactivarproveedor=false;
+  }
+  LoadProveedor(){
+    this.dialogProveedor=true;      
   }
   data(){
     return{

@@ -17,6 +17,20 @@ import { mixin as focusMixin }  from 'vue-focus';
 
 //***Modelos */
 import {ProductoModel} from '@/modelo/maestro/producto';
+import historialService from '@/components/service/historial.service';
+import inicioService from '@/components/service/inicio.service';
+import almacenService from '@/components/service/almacen.service';
+import proveedorService from '@/components/service/proveedor.service';
+import requisicionService from '@/components/service/requisicion.service';
+import categoriacuentaService from '@/components/service/categoriacuenta.service';
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
+import {RequisicionDetalleModel} from '@/modelo/maestro/requisiciondetalle';
+import {AlmacenModel} from '@/modelo/maestro/almacen';
+import {RequisicionModel} from '@/modelo/maestro/requisicion';
+
+import {ProveedorModel} from '@/modelo/maestro/proveedor';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
+import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';
@@ -55,25 +69,51 @@ export default class VisualizarPRComponent extends Vue {
   btnactivarcompania:boolean=false;
    
   /*Model*/
-  public productoModel:ProductoModel=new ProductoModel();
 
   descompania:string='';
   code_compania:string='';
 
   fecha_actual:string;
-  selectrow:any;
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  formBusqueda:any={
+    'strRequis_NO':'',
+    'desde':new Date(),
+    'hasta':new Date(),
+    'strDesc_Header':''
+  }
+  
+  public tableData1:Array<RequisicionDetalleModel>=[]; 
+  public tableData:Array<RequisicionModel>=[]; 
+  public requisicionModel:RequisicionModel=new RequisicionModel();
+  public almacenModel:AlmacenModel=new AlmacenModel();
+  public productoModel:ProductoModel=new ProductoModel();
+  public selectrow:RequisicionModel=new RequisicionModel();
+  public proveedorModel:ProveedorModel=new ProveedorModel();
+  public categoriaCuentaModel:CategoriaCuentaModel=new CategoriaCuentaModel();
+  public tipoRequisicionModel:TipoRequisicionModel=new TipoRequisicionModel();
+  public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
+  fechaHasta:any=new Date();
+  fechaDesde:any=new Date();
+  getTotals:number=0;
+  txtnroline:string='';
+  intlineaselect:number=-1;
+  currentRow:any;
+  cell_ocultar:string='transparent';
+  vifprogress:boolean=true;
+  valuem:number=0;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
-   
+    setTimeout(() => {
+      this.cargar();
+    }, 200)
   }
   openMessage(newMsg : string) {
     this.$message({
@@ -114,12 +154,7 @@ export default class VisualizarPRComponent extends Vue {
   loadCompania(){
     this.dialogCompania=true;
   }
-  handleCurrentChange(val) {
-    debugger;
-    if(val.date){
-        return 'selected-row';
-    }
-  }
+  
   /*Compania imput*/
   activar_compania(){
     setTimeout(() => {
@@ -185,16 +220,124 @@ export default class VisualizarPRComponent extends Vue {
       });
     })
   }
-  validarView(){
-    Global.codematerial=this.productoModel.strStock_Cod;
-    router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'visualizar' }  })
-  }
+  // validarView(){
+  //   Global.codematerial=this.productoModel.strStock_Cod;
+  //   router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'visualizar' }  })
+  // }
   created() {
     debugger;
     if(typeof window != 'undefined') {
       // this.getAccesos();
       debugger;
       this.vmaterial=Global.vmmaterial;
+    }
+  }
+  async validarView(){
+    debugger;
+    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
+      this.vifprogress=true;
+      this.valuem=0;
+      await setTimeout(() => {
+        for(var i=0;i<100;i++){
+          this.valuem++; 
+        }
+      }, 200)
+      await setTimeout(() => {
+        debugger;
+        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
+          router.push({ path: `/barmenu/LO-LOGISTICA/requisicion/pr_modificar`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
+        }
+      }, 600)
+    }
+    else{
+      this.vifprogress=false;
+      this.textosave='Seleccione la requisición. ';
+      this.warningMessage('Seleccione la requisición. ');
+    }
+  }
+  async cargar(){
+    debugger;
+    var data:any=this.formBusqueda;
+    data.strRequis_NO='*'
+    data.strDesc_Header='*'
+    data.desde='*'
+    data.hasta= '*'
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await requisicionService.busquedaRequisicion(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 600)
+      }
+    })
+    .catch(error=>{
+      
+    })
+  }
+  async Buscar(){
+    debugger;
+    var data:any=this.formBusqueda;
+    if(data.strRequis_NO==''){
+      data.strRequis_NO='*'
+    }
+    if(data.strDesc_Header==''){
+      data.strDesc_Header='*'
+    }
+    data.desde=await Global.getDateString(this.fechaDesde)
+    data.hasta= await Global.getDateString(this.fechaHasta)
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await requisicionService.busquedaRequisicion(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 600)
+      }
+    })
+    .catch(error=>{
+      
+    })
+  }
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
+  handleCurrentChange(val) {
+    debugger;
+    if(val!=null){
+      this.selectrow=val;
+      this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
+      if(val.intRequis_Item_NO==0){
+        this.intlineaselect=0;  
+      }
+      else{
+        this.intlineaselect=val.intRequis_Item_NO-1;
+      }
+      this.currentRow = val;
     }
   }
   data(){
