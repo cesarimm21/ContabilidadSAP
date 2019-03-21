@@ -27,7 +27,6 @@ export class RequisicionModel {
     dtmModified_Date:Date ;
     chrStatus:string ;
     strTypeMov_Cod:string;
-    strTypeMov_Desc:string;
 
     constructor(){
         this.intIdPurReqH_ID=-1;
@@ -50,7 +49,6 @@ export class RequisicionModel {
         this.strWHS_Desc='';
         this.strTipReq_Desc='';
         this.strTypeReq_Cod='';
-        this.strTypeMov_Desc='';
         this.strTypeMov_Cod='';
     }
 }

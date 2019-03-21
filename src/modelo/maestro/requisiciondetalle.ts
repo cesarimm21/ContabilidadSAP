@@ -33,10 +33,6 @@ export class RequisicionDetalleModel {
     strVendor_Desc:string;
     intConv_Factor:number;
     blnCheck:boolean;
-    strMatClass_Cod:string;
-    strMatClass_Desc:string;
-    strCostCenter_Desc:string;
-    strVendor_Desc:string;
     
     strCreation_User:Date ;
     dtmCreation_Date:string ;
