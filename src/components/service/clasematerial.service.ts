@@ -15,6 +15,13 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetTypeClaseMaterial(code){
+    return axios.get(CONFIG.API_URL+'clasematerial/type/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
+  
 }
   

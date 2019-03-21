@@ -26,15 +26,26 @@
         <div class="row bodycard">
            <div class="container">
                 <div class="row" style="margin-top: 3px;">
-                    <div class="col-sm-12">
+                    <!-- <div class="col-sm-12">
                         <div align="right"
                             style="padding-top:5px;padding-bottom:5px;font-size:12px;margin-right: 30px;">
                             <span>Fecha Proceso: {{fecha_actual}}</span>
                         </div>
-                     </div>
-                    <div class="col-sm-9" style="margin-top: -29px;">
+                     </div> -->
+                    <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <label class="el-form-item__label col-md-2" >Fec. Proceso</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                    <el-date-picker
+                                        type="date"
+                                        style="width:128px !important"
+                                        :disabled="true"
+                                        size="small" v-model="fecha_actual" >
+                                    </el-date-picker>
+                                </div>
+                            </div> 
+                            <label class="el-form-item__label col-md-1" >Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" :disabled="visualizar"  @blur="desactivar_compania" @focus="activar_compania" v-model="requisicionModel.strCompany_Cod"  placeholder="">
@@ -106,7 +117,7 @@
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"   v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaCuenta(scope.row,scope.column.property)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadCategoriaCuenta(scope.row,scope.column.property)"></el-button>  
                                                 </el-input> 
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCateg_Account }}</label>
                                             </template>
@@ -117,7 +128,7 @@
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"   v-if="blncategorialinea && bln_tbl_categoria_linea  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Line" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaLinea(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadCategoriaLinea(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCateg_Line }}</label>
                                             </template>
@@ -128,7 +139,7 @@
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"  v-if="blncuentacontable && bln_tbl_cuenta_contable  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strAccount_NO" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCuentaContable(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadCuentaContable(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label style="width:100%" v-bind:style="{background:'#e4e2e2',width:'100%',margin: '0rem'}" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAccount_NO }}</label>
                                             </template>
@@ -139,7 +150,7 @@
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"   v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCentroCosto(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadCentroCosto(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter }}</label>
                                             </template>
@@ -150,8 +161,8 @@
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"   v-if="bln_tbl_material  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strMaterial_Cod" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadMaterial(scope.row)"></el-button>  
-                                                </el-input>
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadMaterial(scope.row)"></el-button>  
+                                                </el-input> 
                                                 <label style="width:100%" v-else @click="clickmaterial(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strMaterial_Cod }}</label>
                                             </template>
                                         </el-table-column>
@@ -181,7 +192,7 @@
                                             <template scope="scope">
                                                 <el-input  :disabled="visualizar"  v-if=" blnunidadmedida && bln_tbl_unidad_medida  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadUnidadMedida(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadUnidadMedida(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickunidadmedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
                                             </template>
@@ -192,7 +203,7 @@
                                             <template scope="scope">
                                                 <el-input  :disabled="visualizar"  v-if="blnproveedor && bln_tbl_proveedor  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strVendor_Suggested" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadProveedor(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar"  class="boton" icon="fa fa-clone" @click="LoadProveedor(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickproveedor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strVendor_Suggested }}</label>
                                             </template>
@@ -203,7 +214,7 @@
                                              <template scope="scope">
                                                 <el-input :disabled="visualizar"   v-if="bln_tbl_moneda  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCurr" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadMoneda(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadMoneda(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label style="width:100%" v-else @click="clickmoneda(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCurr }}</label>
                                             </template>
@@ -214,7 +225,7 @@
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"   v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
+                                                <el-button slot="append" :disabled="visualizar" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
                                             </template>

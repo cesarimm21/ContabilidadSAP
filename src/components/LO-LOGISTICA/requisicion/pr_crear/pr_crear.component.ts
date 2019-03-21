@@ -36,12 +36,15 @@ import proveedorService from '@/components/service/proveedor.service';
 import requisicionService from '@/components/service/requisicion.service';
 import productoService from '@/components/service/producto.service';
 import categoriacuentaService from '@/components/service/categoriacuenta.service';
-import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
+import maestroService from '@/components/service/maestro.service';
+
+import {MaestroModel} from '@/modelo/maestro/maestro';
 import {RequisicionDetalleModel} from '@/modelo/maestro/requisiciondetalle';
 import {RequisicionModel} from '@/modelo/maestro/requisicion';
 import {ProductoModel} from '@/modelo/maestro/producto';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 
@@ -113,7 +116,7 @@ export default class CrearPRComponent extends Vue {
   dialogPrioridad:boolean=false;
   dialogCentroCostos:boolean=false;
   valuem:number=0;
-  issave:boolean=true;
+  issave:boolean=false;
 
   /*input*/
   btnactivarcompania:boolean=false;
@@ -173,9 +176,12 @@ export default class CrearPRComponent extends Vue {
   intlineaselect:number=-1;
   tiporequisicion:string='';  
   tiporequisicionant:string='';
+  strTypeMov_Cod:string='';
+  strTypeMov_Desc:string='';
+
   constructor(){
     super();
-    this.fecha_actual=Global.getParseDate(new Date().toDateString());
+    this.fecha_actual=(new Date()).toString();
     debugger;
    
     this.cell_ocultar='#e4e2e2';        
@@ -185,7 +191,9 @@ export default class CrearPRComponent extends Vue {
     this.blncentrocosto=false;
     this.blnunidadmedida=false;
     this.blnproveedor=false;
+    setTimeout(() => {
       this.load();
+    }, 200)
   }
 
   load(){
@@ -217,6 +225,19 @@ export default class CrearPRComponent extends Vue {
     .catch(error=>{
       console.log('error',error)
     })
+    maestroService.GetMaestro('VIEW','LA05') 
+    .then(res=>{
+      debugger;
+      if(res!=undefined){
+        this.strTypeMov_Cod=res.strTypeMov_Cod;
+        this.strTypeMov_Desc=res.strTypeMov_Desc;
+      }
+    })
+    .catch(error=>{
+      console.log('error',error)
+    });
+
+
   }
 
   fnOcultar(){
@@ -470,7 +491,7 @@ export default class CrearPRComponent extends Vue {
     debugger;
     console.log("activar_tipo_requisicion");
     this.tiporequisicion=value;
-    if(value=='N'){
+    if(value=='N' || value=='AC'){
       this.cell_ocultar='transparent';
       this.blntiporequisicion=true;
       this.blncategorialinea=true;
@@ -699,6 +720,7 @@ export default class CrearPRComponent extends Vue {
   SeleccionadoCentroCosto(val){
     debugger;
     this.selectrow.strCostCenter=val.strCostCenter_NO;
+    this.selectrow.strCostCenter_Desc=val.strCostCenter_Desc;
     this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
     this.dialogCentroCostos=false;
   }
@@ -715,6 +737,10 @@ export default class CrearPRComponent extends Vue {
     this.selectrow.strDescription=val.strStock_Desc;
     this.selectrow.strAccount_NO=val.strExp_Acct;
     this.selectrow.strVendor_Suggested=val.strVendor_NO;
+    this.selectrow.strVendor_Desc=val.strVendor_Desc;
+    this.selectrow.strMatClass_Cod=val.strMaterial_Class;
+    this.selectrow.strMatClass_Desc=val.strMatClass_Desc;
+
     this.selectrow.fltUnitPrice=val.fltPrecUnit_Local;
     this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
     this.dialogMaterial=false;
@@ -780,7 +806,8 @@ export default class CrearPRComponent extends Vue {
         this.requisicionModel.intIdTypeReq_ID=this.tabletipoRequisicion[i].intIdTypeReq_ID;
       }
     }
-
+    this.requisicionModel.strTypeMov_Cod=this.strTypeMov_Cod;
+    this.requisicionModel.strTypeMov_Desc=this.strTypeMov_Desc;
     this.requisicionModel.listaDetalle=tabla;
     console.log('---***---',this.requisicionModel);
     requisicionService.crearRequisicion(this.requisicionModel)

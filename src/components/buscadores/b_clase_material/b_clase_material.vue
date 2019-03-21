@@ -32,6 +32,8 @@
             @current-change="handleCurrentChange">
             <!-- @current-change="handleCurrentChange"> -->
             <el-table-column   prop="strMatClass_Cod" label="Codigo" width="180">
+            </el-table-column> 
+            <el-table-column  prop="strExp_Cod_Loc" label="Cuenta" >
             </el-table-column>  
             <el-table-column  prop="strMatClass_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 

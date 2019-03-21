@@ -142,7 +142,9 @@ export default class AprobarPOComponent extends Vue {
       this.tableData1.push(item);
     }
     console.log(this.tableData1);
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   load(){
     var view = this.$route.query.vista;
@@ -152,6 +154,7 @@ export default class AprobarPOComponent extends Vue {
     else{
       this.visualizar=false;
     }
+    this.cargar()
   }
   desactivar_proveedor(){
     debugger;
@@ -304,6 +307,35 @@ export default class AprobarPOComponent extends Vue {
       message: newMsg,
       type: 'warning'
     });
+  }
+  async cargar(){
+    debugger;
+    var data:any=this.formBusqueda;
+    data.strPO_NO='*'
+    data.strVendor_NO='*'
+    data.desde='*'
+    data.hasta= '*'
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await ordencompraService.busquedaPO(data)
+    .then(res=>{
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 600)
+      }
+    })
+    .catch(error=>{
+      
+    })
   }
   async Buscar(){
     debugger;
