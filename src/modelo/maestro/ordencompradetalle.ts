@@ -65,7 +65,7 @@ export class OrdenCompraDetalleModel {
     blnSelection:boolean=false;
     blnCheck:boolean;
 
-    strCreation_User:Date ;
+    strCreation_User:string ;
     dtmCreation_Date:string ;
     strModified_User:Date ;
     dmModified_Date: Date ;

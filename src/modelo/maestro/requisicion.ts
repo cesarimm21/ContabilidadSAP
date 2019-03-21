@@ -48,7 +48,6 @@ export class RequisicionModel {
         this.strWHS_Desc='';
         this.strTipReq_Desc='';
         this.strTypeReq_Cod='';
-        this.strTypeMov_Desc='';
         this.strTypeMov_Cod='';
     }
 }
