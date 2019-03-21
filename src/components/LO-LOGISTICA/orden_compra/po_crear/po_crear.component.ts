@@ -107,6 +107,7 @@ export default class CrearPOComponent extends Vue {
     //**[PRODUCTO] */
     valorSelectCodStock:any[];
     provData:ProveedorModel[];
+    provData1:ProveedorModel[];
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
@@ -186,38 +187,10 @@ export default class CrearPOComponent extends Vue {
                     strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
                     intConv_Factor:1
                 })
-                    proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                    .then(response=>{
-                        this.provData.push(response);
-                        console.log(this.provData.length);
-                         
-                        if(this.provData.length>0){
-                            debugger;
-                            var temp='';
-                            for(var j=0;j<this.provData.length;j++){
-                                if(this.provData[j].strVendor_NO===this.requiDetalle[i].strVendor_Suggested){
-                                    debugger;
-                                    temp='si';
-                                }                                
-                            }
-                            if(temp===''){
-                                debugger;
-                                console.log(this.provData.length +' tamaño if');
-                                proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                                .then(response=>{
-                                    this.provData.push(response);                            
-                                })
-                            }
-                        }
-                        else if(this.provData.length==0){
-                            debugger;
-                            proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                            .then(response=>{
-                                this.provData.push(response); 
-                            })
-                        }  
-                    })                  
-                
+                proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                .then(response=>{
+                    this.provData.push(response);                       
+                })
             }                       
         })
     }
@@ -237,9 +210,10 @@ export default class CrearPOComponent extends Vue {
     checkSelectdbRequisicion(val){
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;  
-        this.OrdenCompra.strPO_Desc=val.strDesc_Header;      
+        this.OrdenCompra.strPO_Desc=val.strDesc_Header;
+        this.OrdenCompra.strTypeMov_Cod=val.strTypeMov_Cod;    
+        this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
         this.requiSelect=val;  
-        this.OrdenCompra.strTypeMov_Desc=this.requiSelect.strTypeMov_Desc;
         this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
         this.loadCompania(this.requiSelect.strCompany_Cod); 
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
@@ -262,8 +236,7 @@ export default class CrearPOComponent extends Vue {
             this.btnactivarMoneda = false;
             this.btnactivarImpuesto = false;
         }, 120)
-    }
-    
+    }    
     handleSelectionChange(val) {
         this.valorSelectCodStock=val;
         this.multipleSelection = val;
@@ -272,8 +245,7 @@ export default class CrearPOComponent extends Vue {
         this.totalPrice=0;
         for (let i = 0; i < this.requiDetalle1.length; i++) {
             for(let y=0;y<this.multipleSelection.length;y++){
-                if(this.requiDetalle1[i].intIdPurReqD_ID === this.multipleSelection[y].intIdPurReqD_ID){
-                   
+                if(this.requiDetalle1[i].intIdPurReqD_ID === this.multipleSelection[y].intIdPurReqD_ID){                   
                     this.requiDetalle1[i].blnCheck=true;
                     this.requiTemp=this.requiDetalle1; 
                     this.requiDetalle1=[];              
@@ -323,6 +295,29 @@ export default class CrearPOComponent extends Vue {
     }
     loadPro() {
         this.dialogProveedor = true;
+        this.provData1=this.provData;
+        this.provData=[];
+        var temp=0;
+        if(this.provData1.length>0){
+            for(var i=0;i<this.provData1.length;i++){
+                if(this.provData.length>0){
+                    for(var j=0;j<this.provData.length;j++){
+                        if(this.provData[j].strVendor_NO===this.provData1[i].strVendor_NO){
+                            temp=1;
+                            console.log('A');                            
+                        }
+                    }
+                    if(temp==0){
+                        console.log('B');
+                        
+                        this.provData.push(this.provData1[i]);
+                    }
+                }
+                else{
+                    this.provData.push(this.provData1[i]);
+                }
+            }          
+        }
     }
     searchProo() {
         proveedorService.GetOnlyOneProveedor(this.valueProvee)
@@ -401,7 +396,6 @@ export default class CrearPOComponent extends Vue {
                 message: 'Debe seleccionar al menos 1 detalle'
             });
         }
-
         else {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
@@ -488,7 +482,7 @@ export default class CrearPOComponent extends Vue {
                         this.moneda=new MonedaModel();
                         this.selectProo=new ProveedorModel();
                         this.requiDetalle1 = [];
-                        this.textosave = 'Se guardo correctamente.';
+                        this.textosave = 'Se guardo correctamente. '+response;
 
                     }).catch(error => {
                         loadingInstance.close();

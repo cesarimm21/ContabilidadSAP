@@ -11,11 +11,11 @@ export class OrdenCompraDetalleModel {
     strAcctCateg_Cod:string;
     strCategItem_Cod:string;
     strCostCenter_NO:string;
-    strCostCenter_Desc:string;
+    strCostCenter_Desc:string;//----
     strStock_Cod:string;
     strUM_Cod:string;
     strVendor_NO:string;
-    strVendor_Desc:string;//
+    strVendor_Desc:string;//-----
     strCurrency_Cod:string;
     strPriority_Cod:string;    
     strPO_Item_Desc:string;//
@@ -58,8 +58,8 @@ export class OrdenCompraDetalleModel {
     dtmGuiaTrans_Date:Date;
     dtmReceived_Date:Date;
     strReceived_User:string;
-    strMatClass_Cod:string;
-    strMatClass_Desc:string;
+    strMatClass_Cod:string;//----------
+    strMatClass_Desc:string;///--------
     strRec_Driver:string;
     strPlaca:string;
     blnSelection:boolean=false;
