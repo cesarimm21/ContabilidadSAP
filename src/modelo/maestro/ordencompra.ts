@@ -5,10 +5,15 @@ export class OrdenCompraModel {
     intIdPurReqH_ID:number ;//si
     intIdTypeReq_ID:number ;//si
     intIdVendor_ID:number;//si
+    strTypeMov_Cod:string;
+    strTypeMov_Desc:string;//new
     strCompany_Cod:string ;//si
     strCompany_Desc:string;//si new
     strCurrency_Cod:string;//si new
     strCurrency_Desc:string;//si new
+    intIdAcctCont_ID:number;
+    strAcc_Local_NO:string;
+    strAcc_Corp_NO:string;//
     strVendor_Desc:string;//si new
     strWH_Cod:string;//si new 
     strWH_Desc:string;    //si new

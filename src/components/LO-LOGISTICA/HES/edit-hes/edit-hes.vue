@@ -36,20 +36,31 @@
                                     <el-input size ="small"  v-model="hesModel.strPO_NO" class="inputOrdenCompra" :disabled="valueSwtch"> 
                                         </el-input>
                                     </div>
-                                </div>
-                                <label class="el-form-item__label col-md-3" >Orden Compra Detalle</label>
-                                    <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="hesModel.strPO_Item_NO" class="inputOrdenCompra" :disabled="valueSwtch"> 
+                                </div>                                
+                            </div>
+                            <div class="form-group row" >                                
+                                <label class="el-form-item__label col-md-3" >Descripción PO</label>
+                                    <div class="col-md-9 grupolabel">
+                                    <div class="input-group mb-9" >
+                                    <el-input size ="small" @click="desactivar()" v-model="hesModel.strDesc_Header">
                                     </el-input>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row" style="margin-top:10px;">                                
-                                <label class="el-form-item__label col-md-3" >Descripción</label>
-                                    <div class="col-md-9 grupolabel">
-                                    <div class="input-group mb-9" >
-                                    <el-input size ="small" @click="desactivar()" v-model="hesModel.strDesc_Header">
+                            <div class="form-group row" style="margin-top:10px;">
+                                <label class="el-form-item__label col-md-3" >Orden Compra Detalle</label>
+                                    <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" v-model="hesModel.intIdPOD_ID" class="inputOrdenCompra" :disabled="valueSwtch"> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" >
+                                <label class="el-form-item__label col-md-3" >Descripción Servicio</label>
+                                    <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" v-model="hesModel.strPO_Item_Desc" class="inputOrdenCompra" :disabled="valueSwtch"> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -253,11 +264,6 @@
                                                         </el-input>
                                                         <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
                                                     </template>
-                                                </el-table-column>
-                                                <el-table-column width="20"
-                                                    sortable 
-                                                    label="">
-                                                    
                                                 </el-table-column>
                                             </el-table>
                                         </div>

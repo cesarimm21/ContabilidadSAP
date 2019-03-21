@@ -29,7 +29,17 @@
                                     </div>
                                 </div>                                                      
                             </div>
-                            <div class="form-group row">                                
+                            
+                            <div class="form-group row" >                                
+                                <label class="el-form-item__label col-md-3" >Descripción PO</label>
+                                    <div class="col-md-9 grupolabel">
+                                    <div class="input-group mb-9" >
+                                    <el-input size ="small" @click="desactivar()" v-model="hesModel.strDesc_Header">
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" style="margin-top:10px;">                                
                                 <label class="el-form-item__label col-md-3" >Orden Compra Detalle</label>
                                     <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2" >
@@ -40,10 +50,10 @@
                                 </div>
                             </div>
                             <div class="form-group row" style="margin-top:10px;">                                
-                                <label class="el-form-item__label col-md-3" >Descripción</label>
+                                <label class="el-form-item__label col-md-3" >Descripción Servicio</label>
                                     <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
-                                    <el-input size ="small" @click="desactivar()" v-model="hesModel.strDesc_Header">
+                                    <el-input size ="small"  v-model="ordencompraDetalleSelect.strPO_Item_Desc" disabled>
                                     </el-input>
                                     </div>
                                 </div>
@@ -55,7 +65,7 @@
                                 <!-- <div class="col-md-3 grupolabel">{{ordencompraSelect.strCompany_Desc}}</div> -->
                                 <div class="col-sm-3"></div>
                                 <div class="col-md-4" style="margin-top:5px;">
-                                    <span v-if="isactivered" v-bind:class="{red:isactivered}">&nbsp;</span>
+                                    <span v-if="isactivered" v-bind:class="{red1:isactivered}">&nbsp;</span>
                                     <span v-if="!isactivered" v-bind:class="{opaco:!isactivered}">&nbsp;</span>
                                     <span v-if="isactiveyellow" v-bind:class="{yellow:isactiveyellow}">&nbsp;</span>
                                     <span v-if="!isactiveyellow" v-bind:class="{opaco:!isactiveyellow}">&nbsp;</span>
@@ -249,11 +259,6 @@
                                                         </el-input>
                                                         <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
                                                     </template>
-                                                </el-table-column>
-                                                <el-table-column width="20"
-                                                    sortable 
-                                                    label="">
-                                                    
                                                 </el-table-column>
                                             </el-table>
                                         </div>

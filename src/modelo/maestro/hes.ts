@@ -5,6 +5,8 @@ export class HESModel {
     strHES_NO:string;//
     intIdPOH_ID:number;//
     strPO_NO:string;
+    intIdPOD_ID:number;
+    strPO_Item_Desc:string;
     intIdCategLine_ID:number;
     strCategItem_Cod:string;
     strPO_Item_NO:string;//falta

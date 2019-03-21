@@ -13,6 +13,7 @@ export class RequisicionModel {
     strDesc_Header:string ;
     dtmAuthsd_Date:Date ;
     chrAuthsd_Status:string ;
+    strTypeMov_Desc:string;
     listaDetalle: Array<RequisicionDetalleModel> = new Array();  
     strCompany_Cod:string;
     strCompany_Desc:string;
@@ -39,6 +40,7 @@ export class RequisicionModel {
         this.strDesc_Header='';
         this.dtmAuthsd_Date=new Date();
         this.chrAuthsd_Status='';
+        this.strTypeMov_Desc='';
         this.strCompany_Cod='';
         this.strCompany_Desc='';
         this.strWHS_Cod='';

@@ -107,7 +107,6 @@ export default class CrearPOComponent extends Vue {
     //**[PRODUCTO] */
     valorSelectCodStock:any[];
     provData:ProveedorModel[];
-    provData1:ProveedorModel[];
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
@@ -148,7 +147,9 @@ export default class CrearPOComponent extends Vue {
         requisicionService.getRequiDetallById(v)
         .then(response=>{
             this.requiDetalle=response;  
-            this.requiDetalle1=[];        
+            this.requiDetalle1=[];     
+            this.provData=[]; 
+            debugger;  
             for(var i=0;i<this.requiDetalle.length;i++){ 
                 this.requiDetalle1.push({
                     intIdPurReqD_ID:this.requiDetalle[i].intIdPurReqD_ID,
@@ -179,20 +180,45 @@ export default class CrearPOComponent extends Vue {
                     strAccount_NO:this.requiDetalle[i].strAccount_NO,
                     strCostCenter:this.requiDetalle[i].strCostCenter,
                     dtmCompleted_Date:this.requiDetalle[i].dtmCompleted_Date,
+                    strMatClass_Cod:this.requiDetalle[i].strMatClass_Cod,
+                    strMatClass_Desc:this.requiDetalle[i].strMatClass_Desc,
+                    strCostCenter_Desc:this.requiDetalle[i].strCostCenter_Desc,
+                    strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
                     intConv_Factor:1
                 })
+                    proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                    .then(response=>{
+                        this.provData.push(response);
+                        console.log(this.provData.length);
+                         
+                        if(this.provData.length>0){
+                            debugger;
+                            var temp='';
+                            for(var j=0;j<this.provData.length;j++){
+                                if(this.provData[j].strVendor_NO===this.requiDetalle[i].strVendor_Suggested){
+                                    debugger;
+                                    temp='si';
+                                }                                
+                            }
+                            if(temp===''){
+                                debugger;
+                                console.log(this.provData.length +' tamaño if');
+                                proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                                .then(response=>{
+                                    this.provData.push(response);                            
+                                })
+                            }
+                        }
+                        else if(this.provData.length==0){
+                            debugger;
+                            proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                            .then(response=>{
+                                this.provData.push(response); 
+                            })
+                        }  
+                    })                  
                 
-                // this.requiDetalle[i].fltUnitPrice=Math.round(this.requiDetalle[i].fltUnitPrice * 100)/100; 
-                // this.requiDetalle[i].fltQuantity=Math.round(this.requiDetalle[i].fltQuantity * 100)/100; 
-
-                // if(this.requiDetalle[i].strVendor_Suggested!=undefined){
-                //    proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                //     .then(response=>{
-                //         this.provData.push(response);                            
-                //     })
-                // } 
-            }            
-            // this.requiDetalle1= this.requiDetalle;            
+            }                       
         })
     }
     closeDialogReq(){
@@ -210,8 +236,10 @@ export default class CrearPOComponent extends Vue {
     }
     checkSelectdbRequisicion(val){
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
-        this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;
+        this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;  
+        this.OrdenCompra.strPO_Desc=val.strDesc_Header;      
         this.requiSelect=val;  
+        this.OrdenCompra.strTypeMov_Desc=this.requiSelect.strTypeMov_Desc;
         this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
         this.loadCompania(this.requiSelect.strCompany_Cod); 
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
@@ -245,12 +273,13 @@ export default class CrearPOComponent extends Vue {
         for (let i = 0; i < this.requiDetalle1.length; i++) {
             for(let y=0;y<this.multipleSelection.length;y++){
                 if(this.requiDetalle1[i].intIdPurReqD_ID === this.multipleSelection[y].intIdPurReqD_ID){
+                   
                     this.requiDetalle1[i].blnCheck=true;
                     this.requiTemp=this.requiDetalle1; 
                     this.requiDetalle1=[];              
                     this.requiDetalle1=this.requiTemp;  
                     this.requiTemp=[];
-                }             
+                }      
             }       
           } 
           for(let y=0;y<this.multipleSelection.length;y++){
@@ -385,9 +414,11 @@ export default class CrearPOComponent extends Vue {
                     strAcctCateg_Cod:this.valorSelectCodStock[i].intIdAcctCateg_ID.strAcctCateg_Cod,
                     strCategItem_Cod:this.valorSelectCodStock[i].intIdCategLine_ID.strCategItem_Cod,
                     strCostCenter_NO:this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_NO,
+                    strCostCenter_Desc:this.multipleSelection[i].strCostCenter_Desc,
                     strStock_Cod:this.valorSelectCodStock[i].intIdInvStock_ID.strStock_Cod,
                     strUM_Cod:this.valorSelectCodStock[i].intIdInvStock_ID.strUM_Cod,
                     strVendor_NO:this.OrdenCompra.strVendor_NO,
+                    strVendor_Desc:this.OrdenCompra.strVendor_Desc,
                     strCurrency_Cod:this.OrdenCompra.strPO_Curr,
                     strPriority_Cod:this.multipleSelection[i].strPriority_Cod,
                     strPO_Item_Desc:this.multipleSelection[i].strDescription,
@@ -421,6 +452,8 @@ export default class CrearPOComponent extends Vue {
                     fltTot_PO_Item:1,
                     strAccount_Cod:'',//codigo de cuenta contable
                     strWBS_Project:'',//vacio
+                    strMatClass_Cod:this.multipleSelection[i].strMatClass_Cod,
+                    strMatClass_Desc:this.multipleSelection[i].strMatClass_Desc,
                     strCreation_User:'egaona'
                 });
             }
@@ -478,6 +511,9 @@ export default class CrearPOComponent extends Vue {
         this.OrdenCompra.strPO_Curr=this.moneda.strCurrency_Cod;
         this.OrdenCompra.strCurrency_Cod=this.moneda.strCurrency_Cod;
         this.OrdenCompra.strCurrency_Desc=this.moneda.strCurrency_Desc;
+        this.OrdenCompra.intIdAcctCont_ID=this.moneda.intIdAcctCont_ID;
+        this.OrdenCompra.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
+        this.OrdenCompra.strAcc_Corp_NO=this.moneda.strAcc_Corp_NO;
       }
       closeMoneda(){
         this.moneda=new MonedaModel();
@@ -571,7 +607,6 @@ export default class CrearPOComponent extends Vue {
         this.dialogPrioridad=false;
       }
       handleChangeCantidad(val){
-          debugger;
           for (let i = 0; i < this.requiDetalle1.length; i++) {
             if(this.requiDetalle1[i].intIdPurReqD_ID == this.rowSelect){
                 this.requiDetalle1[i].fltValue_Total=val*this.requiDetalle1[i].fltUnitPrice*this.requiDetalle1[i].intConv_Factor;
@@ -614,7 +649,6 @@ export default class CrearPOComponent extends Vue {
             requisicionDetalle:[],
             requisicionData:[],
             provData:[],
-            provData1:[],
             valueProvee:'',
             requiDetalle:[],
             requiDetalle1:[],

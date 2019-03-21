@@ -27,6 +27,10 @@ export class RequisicionDetalleModel {
     strAccount_NO:string ;
     strCostCenter:string ;
     dtmCompleted_Date:Date;
+    strMatClass_Cod:string;
+    strMatClass_Desc:string;
+    strCostCenter_Desc:string;
+    strVendor_Desc:string;
     intConv_Factor:number;
     blnCheck:boolean;
     
@@ -64,6 +68,10 @@ export class RequisicionDetalleModel {
         this.strAccount_NO=''
         this.strCostCenter=''
         this.dtmCompleted_Date =new Date()
+        this.strMatClass_Cod='';
+        this.strMatClass_Desc='';
+        this.strCostCenter_Desc='';
+        this.strVendor_Desc='';
         this.intConv_Factor=1
         this.blnCheck=true;
     }

@@ -85,7 +85,7 @@ export default class CrearHesComponent extends Vue {
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
 
   //activar colores
-  isactivered:boolean=false;
+  isactivered:boolean=true;
   isactiveyellow:boolean=false;
   isactivegreen:boolean=false;
 
@@ -231,6 +231,8 @@ export default class CrearHesComponent extends Vue {
     this.hesModel.strCurrency=this.ordencompraSelect.strCurrency_Cod;
     this.hesModel.fltTot_QTY=this.ordencompraDetalleSelect.fltCurr_Net_PR_P;
     this.hesModel.strPO_Item_NO=this.ordencompraDetalleSelect.intIdPOD_ID.toString();
+    this.hesModel.intIdPOD_ID=this.ordencompraDetalleSelect.intIdPOD_ID;
+    this.hesModel.strPO_Item_Desc=this.ordencompraDetalleSelect.strPO_Item_Desc;
     this.hesModel.strCreation_User='egaona';
     this.hesModel.fltTot_Value=this.montoaceptado;
     this.hesModel.fltTot_Peding_Value=this.montopendiente;
@@ -238,7 +240,7 @@ export default class CrearHesComponent extends Vue {
     for(var i=0;i< this.TableIngreso.length;i++){
       if(this.TableIngreso[i].strCostCenter_NO!=''&&this.TableIngreso[i].strDesc_Detail!=''&&this.TableIngreso[i].strService_NO!=''){
         this.hesModel.listaDetalle.push({
-          intHES_Item_NO:this.ordencompraDetalleSelect.intIdPOD_ID,
+          intHES_Item_NO:i+1,
           strService_NO:this.TableIngreso[i].strService_NO,
           strDesc_Detail:this.TableIngreso[i].strDesc_Detail,
           strHES_Status:'00',

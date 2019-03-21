@@ -170,6 +170,9 @@ export default class QuickAccessMenuComponent extends Vue {
   }
   ValidarItem(){
     this.$emit('validarView');
+    if(Global.nameComponent==='visualizar-proveedor'){
+      this.$emit('visualizarProveedor',Global.nameComponent);
+    }
   }
   // update(){
   //     if (this.contador == 0) {

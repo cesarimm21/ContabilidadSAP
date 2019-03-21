@@ -11,9 +11,11 @@ export class OrdenCompraDetalleModel {
     strAcctCateg_Cod:string;
     strCategItem_Cod:string;
     strCostCenter_NO:string;
+    strCostCenter_Desc:string;
     strStock_Cod:string;
     strUM_Cod:string;
     strVendor_NO:string;
+    strVendor_Desc:string;//
     strCurrency_Cod:string;
     strPriority_Cod:string;    
     strPO_Item_Desc:string;//
@@ -56,6 +58,8 @@ export class OrdenCompraDetalleModel {
     dtmGuiaTrans_Date:Date;
     dtmReceived_Date:Date;
     strReceived_User:string;
+    strMatClass_Cod:string;
+    strMatClass_Desc:string;
     strRec_Driver:string;
     strPlaca:string;
     blnSelection:boolean=false;
@@ -78,9 +82,11 @@ export class OrdenCompraDetalleModel {
         this.strAcctCateg_Cod='';
         this.strCategItem_Cod='';
         this.strCostCenter_NO='';
+        this.strCostCenter_Desc='';
         this.strStock_Cod='';
         this.strUM_Cod='';
         this.strVendor_NO='';
+        this.strVendor_Desc='';
         this.strCurrency_Cod='';
         this.strPriority_Cod='';    
         this.strPO_Item_Desc='';//
@@ -123,6 +129,8 @@ export class OrdenCompraDetalleModel {
         this.dtmGuiaTrans_Date=new Date;
         this.dtmReceived_Date=new Date;
         this.strReceived_User='';
+        this.strMatClass_Cod='';
+        this.strMatClass_Desc='';
         this.strRec_Driver='';
         this.strPlaca='';
         this.blnSelection=false;

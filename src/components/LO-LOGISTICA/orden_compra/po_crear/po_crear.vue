@@ -67,7 +67,7 @@
                                  <label class="el-form-item__label col-md-3" >Cantidad Total</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" type="number" v-model="totalItems">
+                                    <el-input size ="small" type="number" v-model="totalItems" disabled>
 
                                     </el-input>
                                     </div>
@@ -90,7 +90,7 @@
                                  <label class="el-form-item__label col-md-3" >Valor documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  type="number" v-model="totalPrice">
+                                    <el-input size ="small"  type="number" v-model="totalPrice" disabled>
                                     </el-input>
                                     </div>
                                 </div>
@@ -334,9 +334,11 @@
                     @current-change="checkSelectdbRequisicion">
                     <el-table-column  prop="strRequis_NO" label="Codigo" width="180">
                     </el-table-column>
-                    <el-table-column  prop="strRequested_By" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
                     </el-table-column>
-                    <el-table-column  prop="dtmRequested_Date" label="Fecha" width="180">
+                    <el-table-column  prop="strTipReq_Desc" label="Tipo requisición" width="180">
+                    </el-table-column>
+                    <el-table-column  prop="strWHS_Desc" label="Almacen" width="180">
                     </el-table-column>
                 </el-table>
             </el-card>
