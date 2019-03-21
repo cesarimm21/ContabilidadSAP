@@ -56,5 +56,5 @@ export class ProductoModel {
     strAcc_Desc:string;
     strCompany_Desc:string;
     strWHS_Desc:string;
-
+    strStock_Type_Desc:string;
 }

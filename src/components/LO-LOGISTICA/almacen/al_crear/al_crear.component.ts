@@ -24,6 +24,8 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 // import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
 // import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 //***Modelos */
 import {ProductoModel} from '@/modelo/maestro/producto';
 
@@ -55,6 +57,7 @@ import controlprecioService from '@/components/service/controlprecio.service';
 import impuestoService from '@/components/service/impuesto.service';
 import unidadmedidaService from '@/components/service/unidadmedida.service';
 import productoService from '@/components/service/producto.service';
+import { ClaseMaterialModel } from '@/modelo/maestro/clasematerial';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -154,6 +157,7 @@ export default class CrearMaterialComponent extends Vue {
   
   /*Model*/
   public productoModel:ProductoModel=new ProductoModel();
+  public clasematerialSelectModel:ClaseMaterialModel=new ClaseMaterialModel();
 
   /*bolean_tabla_dinamica*/
   bln_tbl_categoria_cuenta:boolean=false;
@@ -216,6 +220,11 @@ export default class CrearMaterialComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
+  public tableClaseMaterial:Array<ClaseMaterialModel>=[]; 
+  
+  tiporequisicionant:string='';
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -240,6 +249,42 @@ export default class CrearMaterialComponent extends Vue {
       this.tableData1.push(item);
     }
     console.log(this.tableData1);
+    setTimeout(() => {
+      this.load();
+    }, 200)
+  }
+  load(){
+    tipoRequisicionService.GetAllTipoRequisicion()
+    .then(res=>{
+      debugger;
+      this.tabletipoRequisicion=res;
+      this.tiporequisicion="A";    
+      this.tiporequisicionant='A';
+      clasematerialService.GetAllClaseMaterial()
+      .then(response=>{
+        this.tableClaseMaterial=response;    
+        this.tableClaseMaterial=[];
+          clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
+            .then(response=>{
+              this.tableClaseMaterial=response;       
+            }).catch(error=>{
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: 'No se pudo cargar clase material'
+              });
+            })   
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo cargar clase material'
+        });
+      })
+    })
+    .catch(error=>{
+      console.log('error',error)
+    })
   }
 
   fnOcultar(){
@@ -327,11 +372,14 @@ export default class CrearMaterialComponent extends Vue {
     // }
     // return '';
   }
-  handleCurrentChange(val) {
-    debugger;
-    if(val.date){
-        return 'selected-row';
-    }
+  // handleCurrentChange(val) {
+  //   debugger;
+  //   if(val.date){
+  //       return 'selected-row';
+  //   }
+  // }
+  handleCurrentChange(val:ClaseMaterialModel){
+    this.clasematerialSelectModel=val;
   }
   /*Compania imput*/
   activar_compania(){
@@ -493,19 +541,14 @@ export default class CrearMaterialComponent extends Vue {
   }
   activar_tipo_requisicion(value){
     debugger;
-    console.log("activar_tipo_requisicion");
-    this.tiporequisicion=value;
-    if(value=='N'){
-      this.cell_ocultar='transparent';
-      this.blntiporequisicion=true;
-    }
-    else{
-      this.cell_ocultar='#e4e2e2';        
-      this.blntiporequisicion=false;
-    }
-    this.btnactivaralmacen=false;
-    this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
+    setTimeout(() => {
+      this.productoModel.strMaterial_Class="";
+      this.productoModel.intIdMatClass_ID=-1;
+      this.productoModel.strMatClass_Desc="";
+      this.desclasematerial="";
+      this.dialogClaseMaterial=false;
+      console.log('activar_tipo_requisicion',this.tiporequisicion);
+    }, 200)
   }
 
   /*tabla metodos*/
@@ -738,6 +781,8 @@ export default class CrearMaterialComponent extends Vue {
     this.productoModel.strMaterial_Class=val.strMatClass_Cod;
     this.productoModel.intIdMatClass_ID=val.intIdMatClass_ID;
     this.productoModel.strMatClass_Desc=val.strMatClass_Desc;
+    this.productoModel.strExp_Acct=val.strExp_Cod_Loc;
+    this.productoModel.strAcc_Desc=val.strExp_Desc_Loc;
     this.desclasematerial=val.strMatClass_Desc;
     this.dialogClaseMaterial=false;
   }
@@ -757,9 +802,9 @@ export default class CrearMaterialComponent extends Vue {
   }
   SeleccionadoCuentaContable(val){
     debugger;
-    this.productoModel.strExp_Acct=val.strAcc_NO_Corp;
+    this.productoModel.strExp_Acct=val.strAcc_Local_NO;
     this.productoModel.intIdAcctCont_ID=val.intIdAcctCont_ID;
-    this.productoModel.strAcc_Desc=val.strAcc_Desc;
+    this.productoModel.strAcc_Desc=val.strAcc_Local_Name;
     this.desCuentaGasto=val.strAcc_Desc;
     this.dialogCuentaContable=false;
   }
@@ -797,6 +842,17 @@ export default class CrearMaterialComponent extends Vue {
   }
   loadClaseMaterial(){
     this.dialogClaseMaterial=true;
+    this.tableClaseMaterial=[];
+    clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
+      .then(response=>{
+        this.tableClaseMaterial=response;       
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo cargar clase material'
+        });
+      })
   }
   loadCategoriaMaterial(){
     this.dialogCategoriaMaterial=true;
@@ -815,12 +871,6 @@ export default class CrearMaterialComponent extends Vue {
   }
   loadUnidadMedida(){
     this.dialogUnidadMedida=true;
-  }
-  cambioTipoRequisicion(selected){
-    if(this.tiporequisicion!=selected){
-      this.tiporequisicion=selected;
-    }
-    console.log('select',selected);
   }
   limpiarBotones(){
       this.btnactivarcompania=false;
@@ -1259,10 +1309,22 @@ export default class CrearMaterialComponent extends Vue {
   guardar(){
     this.SendDocument=true;
   }
+  cambioTipoRequisicion(selected){
+    if(this.tiporequisicion!=selected){
+      this.tiporequisicion=selected;
+    }
+    console.log('select',selected);
+  }
 
   guardarTodo(val){
     this.productoModel.intIdWHS_Stat_ID=1;
     this.productoModel.intIdCommTax_ID=1;
+    this.productoModel.strStock_Type=this.tiporequisicion;
+    for(var i=0;i<this.tabletipoRequisicion.length;i++){
+      if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
+        this.productoModel.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
+      }
+    }
     productoService.saveProducto(this.productoModel)
     .then(res=>{ 
       debugger;
@@ -1282,6 +1344,7 @@ export default class CrearMaterialComponent extends Vue {
       dialogTableVisible: false,
       dialogVisible:false,
       tableDataServicio:[{}],
+      tableClaseMaterial:[{}],
       item:{
         date: '',
         categoriacuenta: '',

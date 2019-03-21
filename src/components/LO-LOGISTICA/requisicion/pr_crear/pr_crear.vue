@@ -10,15 +10,26 @@
         <div class="row bodycard">
            <div class="container">
                 <div class="row" style="margin-top: 3px;">
-                    <div class="col-sm-12">
+                    <!-- <div class="col-sm-12">
                         <div align="right"
                             style="padding-top:5px;padding-bottom:5px;font-size:12px;margin-right: 30px;">
                             <span>Fecha Proceso: {{fecha_actual}}</span>
                         </div>
-                     </div>
-                    <div class="col-sm-9" style="margin-top: -29px;">
+                     </div> -->
+                    <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <label class="el-form-item__label col-md-2" >Fec. Proceso</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                    <el-date-picker
+                                        type="date"
+                                        style="width:128px !important"
+                                        :disabled="true"
+                                        size="small" v-model="fecha_actual" >
+                                    </el-date-picker>
+                                </div>
+                            </div>  
+                            <label class="el-form-item__label col-md-1" >Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="requisicionModel.strCompany_Cod"  placeholder="">

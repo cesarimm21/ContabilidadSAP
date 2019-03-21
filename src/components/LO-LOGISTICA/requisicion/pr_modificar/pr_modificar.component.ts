@@ -778,6 +778,7 @@ export default class ModificarPRComponent extends Vue {
     debugger;
     this.selectrow.strCostCenter=val.strCostCenter_NO;
     this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
+    this.selectrow.strCostCenter_Desc=val.strCostCenter_Desc;
     this.dialogCentroCostos=false;
     this.inlineText();
   }
@@ -789,18 +790,41 @@ export default class ModificarPRComponent extends Vue {
   }
   SeleccionadoMaterial(val){
     debugger;
+    // this.selectrow.strMaterial_Cod=val.strStock_Cod;
+    // this.selectrow.strWHS_Cod=val.strStock_Cod;
+    // this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
+    // this.selectrow.strUM=val.strUM_Cod;
+    // this.selectrow.strDescription=val.strStock_Desc;
+    // //this.selectrow.strs=val.strStock_Desc;
+    // this.selectrow.strAccount_NO=val.strExp_Acct;
+    // this.selectrow.strVendor_Suggested=val.strVendor_NO;
+ 
     this.selectrow.strMaterial_Cod=val.strStock_Cod;
-    this.selectrow.strWHS_Cod=val.strStock_Cod;
     this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
     this.selectrow.strUM=val.strUM_Cod;
     this.selectrow.strDescription=val.strStock_Desc;
-    //this.selectrow.strs=val.strStock_Desc;
     this.selectrow.strAccount_NO=val.strExp_Acct;
     this.selectrow.strVendor_Suggested=val.strVendor_NO;
+    this.selectrow.strVendor_Desc=val.strVendor_Desc;
+    this.selectrow.strMatClass_Cod=val.strMaterial_Class;
+    this.selectrow.strMatClass_Desc=val.strMatClass_Desc;
+    this.selectrow.fltUnitPrice=val.fltPrecUnit_Local;
+    this.selectrow.fltQuantity=0;
+    this.selectrow.strCurr='';
+    this.selectrow.strPriority_Cod='';
+    this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
+    
+    this.strVendor_NO=val.strVendor_NO;
+    this.strVendor_Desc=val.strVendor_Desc;
+    this.strAccount_NO=val.strExp_Acct;
+    this.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
+    this.fltUnitPrice=val.fltPrecUnit_Local;
+    this.fltQuantity=0;
 
     this.dialogMaterial=false;
     this.inlineText();
   }
+ 
   SeleccionadoUnidadMedida(val){
     debugger;
     this.selectrow.strUM=val.strUM_Cod;

@@ -49,6 +49,11 @@ import controlprecioService from '@/components/service/controlprecio.service';
 import impuestoService from '@/components/service/impuesto.service';
 import unidadmedidaService from '@/components/service/unidadmedida.service';
 import productoService from '@/components/service/producto.service';
+import { ClaseMaterialModel } from '@/modelo/maestro/clasematerial';
+
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
+
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -198,6 +203,12 @@ export default class ModificarMaterialComponent extends Vue {
   iserror:boolean=false;
   textosave:string='';
   visualizar:boolean;
+  public clasematerialSelectModel:ClaseMaterialModel=new ClaseMaterialModel();
+  public tableClaseMaterial:Array<ClaseMaterialModel>=[]; 
+  public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
+  
+  tiporequisicionant:string='';
+  
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -249,6 +260,37 @@ export default class ModificarMaterialComponent extends Vue {
         this.productoModel=response[0];
         console.log('cargar-Material:',response);
         loading.close();
+        tipoRequisicionService.GetAllTipoRequisicion()
+        .then(res=>{
+          debugger;
+          this.tabletipoRequisicion=res;
+          this.tiporequisicion="A";    
+          this.tiporequisicionant='A';
+          clasematerialService.GetAllClaseMaterial()
+          .then(response=>{
+            this.tableClaseMaterial=response;    
+            this.tableClaseMaterial=[];
+              clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
+                .then(response=>{
+                  this.tableClaseMaterial=response;       
+                }).catch(error=>{
+                  this.$message({
+                    showClose: true,
+                    type: 'error',
+                    message: 'No se pudo cargar clase material'
+                  });
+                })   
+          }).catch(error=>{
+            this.$message({
+              showClose: true,
+              type: 'error',
+              message: 'No se pudo cargar clase material'
+            });
+          })
+        })
+        .catch(error=>{
+          console.log('error',error)
+        })
       }
       //this.unidadmedidaModel=response;       
     }).catch(error=>{
@@ -511,19 +553,27 @@ export default class ModificarMaterialComponent extends Vue {
   }
   activar_tipo_requisicion(value){
     debugger;
-    console.log("activar_tipo_requisicion");
-    this.tiporequisicion=value;
-    if(value=='N'){
-      this.cell_ocultar='transparent';
-      this.blntiporequisicion=true;
-    }
-    else{
-      this.cell_ocultar='#e4e2e2';        
-      this.blntiporequisicion=false;
-    }
-    this.btnactivaralmacen=false;
-    this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
+    // console.log("activar_tipo_requisicion");
+    // this.tiporequisicion=value;
+    // if(value=='N'){
+    //   this.cell_ocultar='transparent';
+    //   this.blntiporequisicion=true;
+    // }
+    // else{
+    //   this.cell_ocultar='#e4e2e2';        
+    //   this.blntiporequisicion=false;
+    // }
+    // this.btnactivaralmacen=false;
+    // this.btnactivarproveedor=false;
+    // this.btnactivarcompania=false
+    setTimeout(() => {
+      this.productoModel.strMaterial_Class="";
+      this.productoModel.intIdMatClass_ID=-1;
+      this.productoModel.strMatClass_Desc="";
+      this.desclasematerial="";
+      this.dialogClaseMaterial=false;
+      console.log('activar_tipo_requisicion',this.tiporequisicion);
+    }, 200)
   }
 
   /*tabla metodos*/
@@ -814,6 +864,17 @@ export default class ModificarMaterialComponent extends Vue {
   }
   loadClaseMaterial(){
     this.dialogClaseMaterial=true;
+    this.tableClaseMaterial=[];
+    clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
+      .then(response=>{
+        this.tableClaseMaterial=response;       
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo cargar clase material'
+        });
+      })
   }
   loadCategoriaMaterial(){
     this.dialogCategoriaMaterial=true;

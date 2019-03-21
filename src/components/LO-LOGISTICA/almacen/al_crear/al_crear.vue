@@ -101,11 +101,23 @@
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Tipo</label>
-                                        <div class="col-md-2 grupolabel">
+                                        <!--<div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
                                                 <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                             </el-input>
+                                            </div> 
+                                        </div>-->
+                                        <div class="col-md-2 grupolabel">
+                                            <div class="input-group mb-3" >
+                                                <el-select v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
+                                                    <el-option style="font-size:13px"
+                                                    v-for="item in tabletipoRequisicion"
+                                                    :key="item.strTypeReq_Cod"
+                                                    :label="item.strTipReq_Desc"
+                                                    :value="item.strTypeReq_Cod">
+                                                    </el-option>
+                                                </el-select>
                                             </div>
                                         </div>
                                     </div> 
@@ -156,6 +168,16 @@
                                                 <el-button v-if="btnactivarclasematerial && !dialogClaseMaterial" slot="append" class="boton" icon="fa fa-clone" @click="loadClaseMaterial()"></el-button> 
                                             </el-input>
                                             </div>
+                                            <!-- <div class="input-group mb-3" >
+                                                <el-select v-model="productoModel.strMaterial_Class" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                                    <el-option style="font-size:13px"
+                                                        v-for="item in tableClaseMaterial"
+                                                        :key="item.strMatClass_Cod"
+                                                        :label="item.strMatClass_Desc"
+                                                        :value="item.strMatClass_Cod">
+                                                    </el-option>
+                                                </el-select>
+                                            </div> -->
                                         </div>
                                         <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strMatClass_Desc}}</span>
                                     </div> 
@@ -232,8 +254,8 @@
                                         <label class="el-form-item__label col-md-2" >Cta. Gasto</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input  @blur="desactivar_cuenta_contable" @focus="activar_cuenta_contable" size="small" v-model="productoModel.strExp_Acct" @keyup.enter.native="enterCuentaGastos(productoModel.strExp_Acct)"  @keyup.delete.native="borrarCuentaGastos()">
-                                                <el-button slot="append" v-if="btnactivarcuentacontable && !dialogCuentaContable" class="boton" icon="fa fa-clone" @click="LoadCuentaContable()"></el-button>  
+                                            <el-input :disabled="true" @blur="desactivar_cuenta_contable" @focus="activar_cuenta_contable" size="small" v-model="productoModel.strExp_Acct" @keyup.enter.native="enterCuentaGastos(productoModel.strExp_Acct)"  @keyup.delete.native="borrarCuentaGastos()">
+                                                <!-- <el-button slot="append" v-if="btnactivarcuentacontable && !dialogCuentaContable" class="boton" icon="fa fa-clone" @click="LoadCuentaContable()"></el-button>   -->
                                             </el-input>
                                             </div>
                                         </div>
@@ -248,7 +270,7 @@
                                         <label class="el-form-item__label col-md-6" >P. Unitario PEN</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltActual_Local" @focus="limpiarBotones"  type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltPrecUnit_Local" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -276,7 +298,7 @@
                                         <label class="el-form-item__label col-md-6" >P. Unitario USD</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltActual_USD" @focus="limpiarBotones"   type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltPrecUnit_USD" @focus="limpiarBotones"   type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -297,32 +319,7 @@
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-sm-3" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Saldo Cantidad </label>
-                                        <div class="col-md-6 grupolabel">
-                                            <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltQuantity_Balance" @focus="limpiarBotones"  type="number">                            
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="col-sm-9" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Control Precio</label>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_control_precio" @focus="activar_control_precio" v-model="productoModel.fltPriceControl"  placeholder="" @keyup.enter.native="enterControlPrecio(productoModel.fltPriceControl)"  @keyup.delete.native="borrarControlPrecio()">
-                                                <el-button v-if="btnactivarcontrolprecio && !dialogControlPrecio" slot="append" class="boton" icon="fa fa-clone" @click="loadControlPrecio()"></el-button> 
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strCtlPrec_Desc}}</span>
-                                    </div> 
-                                </div>
-                            </div>
+                            
                             <div class="row">
                                 
                                 <div class="col-sm-3" >
@@ -376,6 +373,32 @@
                                     </div> 
                                 </div>
                             </div>
+                            <div class="row">
+                                <!-- <div class="col-sm-3" >
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" >Saldo Cantidad </label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                                <el-input size ="small" v-model="productoModel.fltQuantity_Balance" @focus="limpiarBotones"  type="number">                            
+                                                </el-input>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> -->
+                                <div class="col-sm-9" >
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-2" >Control Precio</label>
+                                        <div class="col-md-2 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" @blur="desactivar_control_precio" @focus="activar_control_precio" v-model="productoModel.fltPriceControl"  placeholder="" @keyup.enter.native="enterControlPrecio(productoModel.fltPriceControl)"  @keyup.delete.native="borrarControlPrecio()">
+                                                <el-button v-if="btnactivarcontrolprecio && !dialogControlPrecio" slot="append" class="boton" icon="fa fa-clone" @click="loadControlPrecio()"></el-button> 
+                                            </el-input>
+                                            </div>
+                                        </div>
+                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strCtlPrec_Desc}}</span>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </el-card>
@@ -414,7 +437,7 @@
 
     <!--DIALOG BUSQUEDA IMPUESTO-->
     <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeImpuesto" size="small" >
-      <bimpuesto v-on:impuestoselecionado="SeleccionadoImpuesto($event)" v-on:impuestoClose="impuestoClose($event)">
+      <bimpuesto v-on:impuestoseleccionado="SeleccionadoImpuesto($event)" v-on:impuestoClose="impuestoClose($event)">
       </bimpuesto>
     </el-dialog>
     <!--DIALOG BUSQUEDA CONTROL PRECIO-->
@@ -454,8 +477,58 @@
     </el-dialog>
      <!--DIALOG CLASE MATERIAL-->
     <el-dialog title="Busqueda Clase Material"  :visible.sync="dialogClaseMaterial" @close="closeClaseMaterial" size="small" >
-      <bclasematerial v-on:clasematerialseleccionado="SeleccionadoClaseMaterial($event)" v-on:clasematerialClose="clasematerialClose($event);" >
-      </bclasematerial>
+      <!-- <bclasematerial v-on:clasematerialseleccionado="SeleccionadoClaseMaterial($event)" v-on:clasematerialClose="clasematerialClose($event);" >
+      </bclasematerial> -->
+        <div>
+            <el-card class="box-card">
+                    <div slot="header" class="headercard">
+                        <span class="labelheadercard" ></span>
+                    </div>
+                    <div class="row bodycard">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-md-3" >Código</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small"   placeholder="">
+                                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                                > </el-button>
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <el-table
+                    :data="tableClaseMaterial"
+                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                    class="ExcelTable2007"
+                    height="250"
+                    highlight-current-row
+                    @row-dblclick="SeleccionadoClaseMaterial"
+                    @current-change="handleCurrentChange">
+                    <!-- @current-change="handleCurrentChange"> -->
+                    <el-table-column   prop="strMatClass_Cod" label="Codigo" width="100" >
+                    </el-table-column>  
+                    <el-table-column  prop="strExp_Cod_Loc" label="Cuenta" >
+                    </el-table-column> 
+                    <el-table-column  prop="strMatClass_Desc" label="Descripción" >
+                    </el-table-column> 
+                    </el-table>
+                </el-card>
+                <br/>
+                <footer class="modal-footer">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+                    <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                    </el-button>
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+                    <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                    </el-button>
+                </footer>
+            </div>
     </el-dialog>
      <!--DIALOG CATEGORIA MATERIAL-->
     <el-dialog title="Busqueda Categoria Material"  :visible.sync="dialogCategoriaMaterial" @close="closeCategoriaMaterial" size="small" >

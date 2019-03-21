@@ -41,11 +41,15 @@ export default class  BCuentaContableComponent extends Vue {
 
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   load(){
+    debugger
     cuentacontableService.GetAllCuentaContable()
     .then(response=>{
+      debugger
       console.log('cuentacontable',response);
       this.cuentacontableModel=response;       
     }).catch(error=>{

@@ -207,6 +207,7 @@ export default class AprobadorPRComponent extends Vue {
           var requesicion:RequisicionModel=new RequisicionModel();
           this.tableData.push(requesicion);
         }
+        this.cargar();
       }, 120)
       
   }
@@ -759,6 +760,36 @@ export default class AprobadorPRComponent extends Vue {
       this.warningMessage('Seleccione la requisición. ');
     }
   }
+  async cargar(){
+    debugger;
+    var data:any=this.formBusqueda;
+    data.strRequis_NO='*'
+    data.strDesc_Header='*'
+    data.desde='*'
+    data.hasta= '*'
+    for(var i=0;i<50;i++){
+      this.valuem++; 
+    }
+    await requisicionService.busquedaRequisicion(data)
+    .then(res=>{
+      debugger;
+      for(var i=0;i<50;i++){
+        this.valuem++; 
+      }
+      console.log(res);
+      if(this.valuem>=100){
+        setTimeout(() => {
+          console.log('/****************Busqueda***************/')
+          console.log(res)
+          this.tableData=res;
+          this.vifprogress=false;
+        }, 600)
+      }
+    })
+    .catch(error=>{
+      
+    })
+  }
   async Buscar(){
     debugger;
     var data:any=this.formBusqueda;
@@ -768,8 +799,10 @@ export default class AprobadorPRComponent extends Vue {
     if(data.strDesc_Header==''){
       data.strDesc_Header='*'
     }
+    var hdate=new Date(this.fechaHasta);
+    hdate.setDate(hdate.getDate()+1)
     data.desde=await Global.getDateString(this.fechaDesde)
-    data.hasta= await Global.getDateString(this.fechaHasta)
+    data.hasta= await Global.getDateString(hdate)
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
