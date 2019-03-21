@@ -15,5 +15,23 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  UpdateHes(hesModel){    
+    return axios.post(CONFIG.API_URL+'hes/update',hesModel)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetHesDetalle(intIdHESH_ID){      
+    return axios.get(CONFIG.API_URL+'hesdetalle/'+intIdHESH_ID)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  busquedaHES(data){
+    return axios.get(CONFIG.API_URL+'busqueda/hes/'+data.strHES_NO+'/'+data.desde+'/'+data.hasta)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }

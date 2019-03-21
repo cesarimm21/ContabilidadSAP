@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getOrdenCompraTypeRequisicion(){      
+    return axios.get(CONFIG.API_URL+'ordencompraTypeRequisicion')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateOrdenCompra(ordencompraModel){    
     return axios.post(CONFIG.API_URL+'ordencompra',ordencompraModel)
     .then(response =>{            

@@ -9,6 +9,12 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetOnlyOneTipoDocumento(code){
+    return axios.get(CONFIG.API_URL+'tipodocidentidad/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

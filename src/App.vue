@@ -158,7 +158,7 @@ body {
     background: #fff;
     border: 1px solid #d1dbe5;
     margin-left: -10px !important;
-    margin-right: -10px !important;
+    margin-right: 10px !important;
 }
 .el-card {
     cursor: initial !important;
@@ -199,12 +199,7 @@ body {
     color: #8391a5;
     position: relative;
 }
-.row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-}
+
 .buttonfilter{
     width: 22px;
     height: 22px;
@@ -378,6 +373,11 @@ body {
 }
 .headercard{
   height: 25px;margin-bottom: 0;background-color: #f9f9f9;background: -webkit-gradient(left top, left bottom, color-stop(0%, #d7dff2), color-stop(37%, #cadbed), color-stop(100%, #b5c9e2));background: linear-gradient(to bottom, #d7dff2 0%, #cadbed 37%, #b5c9e2 100%);
+}
+.headercardSecond{
+  text-align: left;
+  color: #61a0ff;
+  height: 25px;margin-bottom: 0;background-color: #f9f9f9;background: -webkit-gradient(left top, left bottom, color-stop(0%, #e6edff), color-stop(37%, #e1efff), color-stop(100%, #eef6ff));background: linear-gradient(to bottom, #e7eeff 0%, #dfefff 37%, #e7f2ff 100%);
 }
 .labelheadercard{
   font-size: 13px;margin-left: 10px;
@@ -643,7 +643,7 @@ body {
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin-right: -27px;
+    margin-right: -20px;
     margin-left: -11px;
 }
 .el-table .cell, .el-table th>div {

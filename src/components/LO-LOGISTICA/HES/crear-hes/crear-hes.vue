@@ -16,7 +16,7 @@
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                         <el-input size ="small" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="ordencompraSelect.strPO_NO" class="inputOrdenCompra">                            
+                                         <el-input size ="small" @blur="desactivar_OrdenC" @focus="activar_OrdenC" v-model="hesModel.strPO_NO" class="inputOrdenCompra">                            
                                             <el-button v-if="btnactivarOrdenC && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
                                         </el-input>
                                     </div>
@@ -24,7 +24,7 @@
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                         <el-input size ="small" v-model="ordencompraSelect.strCompany_Cod" disabled>  
+                                         <el-input size ="small" v-model="hesModel.strCompany_Cod" disabled>  
                                         </el-input>
                                     </div>
                                 </div>                                                      
@@ -51,7 +51,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group row">
-                                <div class="col-md-3 grupolabel">{{ordencompraSelect.strCompany_Desc}}</div>
+                                <label class="sinLinea el-form-item__label col-md-3" >{{ordencompraSelect.strCompany_Desc}}</label>
+                                <!-- <div class="col-md-3 grupolabel">{{ordencompraSelect.strCompany_Desc}}</div> -->
                                 <div class="col-sm-3"></div>
                                 <div class="col-md-4" style="margin-top:5px;">
                                     <span v-if="isactivered" v-bind:class="{red:isactivered}">&nbsp;</span>
@@ -79,7 +80,7 @@
                                             <label class="el-form-item__label col-sm-3" >Categoria linea. </label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                    <el-input size ="small" @blur="desactivar_categoria" @focus="activar_categoria" v-model="categoriaSelect.strCategItem_Cod" class="inputOrdenCompra">                            
+                                                    <el-input size ="small" @blur="desactivar_categoria" @focus="activar_categoria" v-model="hesModel.strCategItem_Cod" class="inputOrdenCompra">                            
                                                     <el-button v-if="btnactivarcategoria && !dialogCategoriaLinea" slot="append" class="boton" icon="fa fa-clone" @click="loadCategoria()"></el-button> 
                                                 </el-input>
                                                 </div>
@@ -135,7 +136,7 @@
                                             <label class="el-form-item__label col-sm-3" >Importe</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" v-model="ordencompraDetalleSelect.fltCurr_Net_PR_P"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="ordencompraDetalleSelect.fltCurr_Net_PR_P"></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,7 +145,7 @@
                                             <label class="el-form-item__label col-sm-3"  >Aceptado</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="montoaceptado" ></el-input>
                                                 </div>
                                             </div>
                                             
@@ -153,7 +154,7 @@
                                             <label class="el-form-item__label col-sm-3" >Pendiente</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" ></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="montopendiente" ></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -200,9 +201,9 @@
                                                     prop="intQuantity" sortable width="120" 
                                                     label="Cantidad">
                                                     <template scope="scope">
-                                                        <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.intQuantity" >
-                                                        </el-input-number>
+                                                        <el-input type="number"  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus size="small" v-model="scope.row.intQuantity" >
+                                                        </el-input>
                                                         <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intQuantity }}</label>
                                                     </template>
                                                 </el-table-column>
@@ -217,15 +218,19 @@
                                                     </template>
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="fltGross_Price" sortable
+                                                    prop="fltGross_Price" sortable width="120"
                                                     label="Importe">
                                                     <template scope="scope">
-                                                        <el-input-number  v-if="bln_tbl_total  && (scope.row === editing.row) 
-                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltGross_Price" >
-                                                        </el-input-number>
+                                                        <el-input type="number" v-if="bln_tbl_total  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus size="small" v-model="scope.row.fltGross_Price" :precision="2" :step="0.01" >
+                                                        </el-input>
                                                         <label style="width:100%" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltGross_Price }}</label>
                                                     </template>
                                                 </el-table-column> 
+                                                <el-table-column
+                                                    prop="fltNet_Value" sortable width="120"
+                                                    label="Valor total">
+                                                </el-table-column>
                                                 <el-table-column
                                                     prop="strCurrency" sortable width="80"
                                                     label="Moneda">
@@ -235,7 +240,7 @@
                                                     label="Persona Ejecución">
                                                 </el-table-column>                                                -->
                                                 <el-table-column
-                                                    prop="strCostCenter_NO" sortable 
+                                                    prop="strCostCenter_NO" sortable width="120"
                                                     label="Centro de costo">
                                                      <template scope="scope">
                                                         <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
@@ -413,5 +418,7 @@ import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes
 export default CrearHesComponent
 </script>
 <style scoped>
-
+.sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+}
 </style>

@@ -11,7 +11,8 @@ export class ImpuestoModel {
     strCalc_Bas2:string;
     strWH_Cod2:string;
     strCalc_Bas3:string;    
-    strWH_Cod3:string;    
+    strWH_Cod3:string;  
+    strCta_Country:string;  
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;

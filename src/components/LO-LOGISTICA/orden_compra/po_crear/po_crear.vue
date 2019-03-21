@@ -412,6 +412,7 @@ export default CrearPOComponent
 <style scoped>
 .sinLinea{
   border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
 }
 .el-table__body-wrapper{
     height: 50%;

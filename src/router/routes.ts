@@ -12,6 +12,7 @@ import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-p
 import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes.vue'
 import EditHesComponent from '@/components/LO-LOGISTICA/HES/edit-hes/edit-hes.vue'
 import ViewHesComponent from '@/components/LO-LOGISTICA/HES/view-hes/view-hes.vue'
+import AprobarHesComponent from '@/components/LO-LOGISTICA/HES/aprobar-hes/aprobar-hes.vue'
 import ModificarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_modificar/pr_modificar.vue'
 import VisualizarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_visualizar/pr_visualizar.vue'
 import VisualizarModificarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.vue'
@@ -99,6 +100,11 @@ export default [
       {
         path:'LO-LOGISTICA/HES/crear-hes',
         component:CrearHesComponent,
+        name:'hes'
+      },  
+      {
+        path:'LO-LOGISTICA/HES/aprobar-hes',
+        component:AprobarHesComponent,
         name:'hes'
       },  
       {

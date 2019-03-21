@@ -67,7 +67,7 @@ export class OrdenCompraDetalleModel {
     dmModified_Date: Date ;
     chrStatus:string ;
     constructor(){
-        this.intIdPOD_ID=-1;//
+        this.intIdPOD_ID=0;//
         this.intIdPOH_ID=-1;//
         this.intIdAcctCateg_ID=-1;//
         this.intIdCategLine_ID=-1; //

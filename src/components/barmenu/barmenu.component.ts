@@ -191,6 +191,9 @@ export default class BarmenuComponent extends Vue {
     if(val==='view'){
       return router.push('/barmenu/LO-LOGISTICA/HES/view-hes');
     }
+    if(val==='aprobar'){
+      return router.push('/barmenu/LO-LOGISTICA/HES/aprobar-hes');
+    }
     
   }
   linkCrearMaterial(){

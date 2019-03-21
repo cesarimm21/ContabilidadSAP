@@ -38,5 +38,11 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetProveedoresCompany(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'proveedorByCompania/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }

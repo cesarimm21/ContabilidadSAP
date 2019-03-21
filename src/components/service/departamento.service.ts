@@ -9,6 +9,13 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetOnlyOneDepartamento(code){
+    return axios.get(CONFIG.API_URL+'departamento/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
+
 }
   

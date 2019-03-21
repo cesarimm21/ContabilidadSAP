@@ -9,6 +9,12 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetOnlyOneMoneda(code){
+    return axios.get(CONFIG.API_URL+'moneda/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   
