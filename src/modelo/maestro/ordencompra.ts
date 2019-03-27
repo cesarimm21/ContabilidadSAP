@@ -46,4 +46,5 @@ export class OrdenCompraModel {
     fltTot_Rec_Value:number;
     fltTot_Inv_QTY:number;
     fltTot_Inv_Value:number;
+    strReceipt_Status:string;
 }

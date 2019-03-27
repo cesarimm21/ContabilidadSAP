@@ -1,18 +1,35 @@
 <template>
   <div class="salidam-pr">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"/>
+        <quickaccessmenu  v-on:guardarTodo="guardarTodo($event)"/>
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
            <span class="labelheadercard" >{{txtmodulo}}</span>
-            <el-button v-if="vifaprobarrechasar" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
+            <el-button v-if="vifaprobarrechasar" :disabled="vifcomprobarapro" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
                 width: inherit;
                 background: #4685b5;
                 border-color: transparent;
                 color: #f6f7f9;
                 padding: 4px 4px 4px 4px !important;" @click="aprobar()">
                 Aprobar
+            </el-button>
+            <el-button v-if="vifaprobarrechasar" :disabled="vifcomprobarapro" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
+                width: inherit;
+                background: #d03605;
+                border-color: transparent;
+                color: #f6f7f9;
+                padding: 4px 4px 4px 4px !important;" @click="Eliminar()">
+                Eliminar
+            </el-button>
+            
+            <el-button v-if="vifimprimir" :disabled="vifcomprobarapro" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
+                width: inherit;
+                background: #4685b5;
+                border-color: transparent;
+                color: #f6f7f9;
+                padding: 4px 4px 4px 4px !important;" @click="ExportarPDF()">
+                Imprimir
             </el-button>
             <!-- <el-button v-if="vifaprobarrechasar" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
                 width: inherit;
@@ -127,9 +144,20 @@
                                                 <!-- <el-input-number  v-if="(scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
                                                 </el-input-number> -->
-                                                <label  @click="clickstock(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity}}</label>
+                                                <label  >&nbsp;{{ getCantidadVirtual(scope.row)}}</label>
                                             </template>
                                         </el-table-column>
+                                        <el-table-column v-if="vifCantidadDesp"
+                                            prop="fltQuantityR" sortable width="100"
+                                            label="Stock Real">
+                                            <template scope="scope">
+                                                <!-- <el-input-number  v-if="(scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
+                                                </el-input-number> -->
+                                                <label  >&nbsp;{{ getCantidadReal(scope.row)}}</label>
+                                            </template>
+                                        </el-table-column>
+                                        
                                         <el-table-column
                                             prop="cantidad" sortable width="100"
                                             label="Cantidad">
@@ -144,7 +172,7 @@
                                             prop="cantidad" sortable width="100"
                                             label="Cta. Despachada">
                                             <template scope="scope">
-                                                <el-input-number  size="small" v-model="scope.row.fltIssueDelivery_QTY" >
+                                                <el-input-number  size="small" v-model="scope.row.fltIssueDelivery_QTY"  >
                                                 </el-input-number>
                                             </template>
                                         </el-table-column>
@@ -233,7 +261,7 @@
                     </b-progress>
                 </div>
                 <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span> 
             </div>
             <div class="col-sm-3">

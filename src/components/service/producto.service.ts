@@ -27,6 +27,18 @@ export default{
         return response.data;
       })
   },
+  UpdateStock(Producto){
+    return axios.post(CONFIG.API_URL+'producto/stock', Producto)
+    .then(response =>{
+        return response.data;
+      })
+  },
+  UpdateStockVirtual(Producto){
+    return axios.post(CONFIG.API_URL+'producto/stock/virtual', Producto)
+    .then(response =>{
+        return response.data;
+      })
+  },
   getProductoID(id){
     debugger;
     return axios.post(CONFIG.API_URL+'producto/get/'+id)

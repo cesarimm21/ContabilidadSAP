@@ -560,8 +560,9 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   
   SeleccionadoAlmacen(val){
     console.log('traer',val);
-    this.code_almacen=val.CODIGO;
-    this.desalmacen=val.DESCRIPCION;
+    this.code_almacen=val.strWHS_Cod;
+    this.desalmacen=val.strWHS_Name;
+    this.code_planta=val.strPlant_Cod;
     this.dialogAlmacen=false;
   }
   SeleccionadoCategoriaCuenta(val){
@@ -597,7 +598,9 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.selectrow.strStock_Desc=val.strStock_Desc;
     this.selectrow.strUM_Cod=val.strUM_Cod;
     this.selectrow.strAcc_NO_Local=val.strExp_Acct;
-    this.selectrow.fltAjust_QTY=val.fltQuantity;
+    this.selectrow.fltQuantity=val.fltQuantity_Virtual;
+    this.selectrow.fltPrecUnit_Local=val.fltPrecUnit_Local;
+    this.selectrow.fltPrecUnit_USD=val.fltPrecUnit_USD;
     
     this.dialogMaterial=false;
   }
@@ -677,9 +680,17 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.dialogPlanta=false;
   }
   almacenseleccionado(val){
+    debugger;
     this.salidaModel.strWHS_Cod=val.strWHS_Cod;
     this.salidaModel.intIdWHS_ID=val.intIdWHS_ID;
     this.salidaModel.strWHS_Desc=val.strWHS_Desc;
+    
+    var planta=val.intPlant_ID;
+    if(planta!=undefined && planta!=null){
+      this.code_planta=planta.strPlant_Cod;
+      this.desplanta=planta.strPlan_Desc;
+    }
+    
     this.dialogAlmacen=false;
     this.validate();
   }
@@ -779,6 +790,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
         this.valuem=this.valuem+1; 
       }
       console.log('salida',this.salidaModel);
+      this.salidaModel.strPlant_Cod=this.code_planta;
+      this.salidaModel.strPlan_Desc=this.desplanta;
 
       salidaService.CrearSalida(this.salidaModel)
       .then(res=>{

@@ -239,7 +239,7 @@ export default class DespachoSalidaComponent extends Vue {
       this.warningMessage('Seleccione  alguna salida. ');
     }
   }
-  
+
   warningMessage(newMsg : string) {
     this.$message({
       showClose: true,
@@ -255,7 +255,7 @@ export default class DespachoSalidaComponent extends Vue {
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
-    await salidaService.busquedaSalida(data)
+    await salidaService.busquedaSalidaDespacho(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
