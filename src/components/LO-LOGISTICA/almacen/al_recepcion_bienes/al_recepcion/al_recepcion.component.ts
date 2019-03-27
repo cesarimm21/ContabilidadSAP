@@ -303,6 +303,24 @@ export default class RecepcionMaterialComponent extends Vue {
         else {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
+                this.multipleSelection[i].strGuiaRem_NO=this.strGuiaRemitente;
+                this.multipleSelection[i].strGuiaTrans_NO=this.strGuiaTransportista;
+                this.multipleSelection[i].dtmGuiaRem_Date=this.dtmFechaRecepcion;
+                this.multipleSelection[i].dtmGuiaTrans_Date=this.dtmFechaGuiaTransportista;
+                this.multipleSelection[i].strRec_Driver=this.strConductor;
+                this.multipleSelection[i].strPlaca=this.strPlaca;
+                if(this.multipleSelection[i].fltRec_QYT!=undefined && this.multipleSelection[i].fltPO_QTY_I!=undefined && this.multipleSelection[i].fltRec_QYT!=null && this.multipleSelection[i].fltPO_QTY_I!=null) {
+                    this.multipleSelection[i].fltRec_Pend_QTY=this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT;
+                    if(this.multipleSelection[i].fltRec_Pend_QTY==0){
+                        this.multipleSelection[i].chrReceipt_Status='50';
+                    }
+                    else{
+                        if(this.multipleSelection[i].fltRec_Pend_QTY>0)
+                        {
+                            this.multipleSelection[i].chrReceipt_Status='30';
+                        }
+                    }
+                }
                 this.OrdenCompra.listaDetalle.push(this.multipleSelection[i]);
             }
             this.OrdenCompra.strAuthsd_By = 'egaona';
@@ -316,6 +334,14 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.strCreation_User = 'egaona';
             this.OrdenCompra.fltTot_Rec_QYT=this.fltTot_Rec_QYT;
             this.OrdenCompra.fltTot_Rec_Pend_QTY=this.fltTot_Rec_Pend_QTY;
+            if(this.fltTot_Rec_Pend_QTY==0){
+                this.OrdenCompra.strReceipt_Status='50'  
+            }
+            else{
+                if(this.fltTot_Rec_Pend_QTY>0){
+                    this.OrdenCompra.strReceipt_Status='30'  ;
+                }
+            }
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guargando...',
@@ -328,12 +354,20 @@ export default class RecepcionMaterialComponent extends Vue {
             console.log(this.OrdenCompra)
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
-                loadingInstance.close();
-                this.issave = true;
-                this.iserror = false;
-                this.vifprogress=false;
-                this.textosave = 'Se guardo correctamente. '+ this.strCode;
-                this.loadPO();
+                ordenCompraService.inventarioPO(this.OrdenCompra)
+                .then(res=>{
+                    setTimeout(() => {
+                        loadingInstance.close();
+                        this.issave = true;
+                        this.iserror = false;
+                        this.vifprogress=false;
+                        this.textosave = 'Se guardo correctamente. '+ this.strCode;
+                        this.loadPO();
+                    }, 600)
+                })
+                .catch(error=>{
+                    this.textosave='Ocurrio un error inesperado. ';
+                })
             }).catch(error => {
                 loadingInstance.close();
                 this.issave = false;

@@ -18,7 +18,7 @@
         <span style="font-size:13px">¿Desea grabar el documento?</span>
       </div>
       <footer class="modal-footer">
-        <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="confirmaraceptar()"/>
+        <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="confirmaraceptar"/>
         <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="SendDocument = false"/>
       </footer>
     </b-modal>

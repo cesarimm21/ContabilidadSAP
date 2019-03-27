@@ -6,6 +6,7 @@ export class SalidaDetalleModel {
     fltIssueDelivery_QTY: number | null;
     fltAjust_QTY: number | null;
     fltQuantity:number;
+    fltQuantityR:number;
     strStock_Cod: string | null;
     strStock_Desc: string | null;
     strUM_Cod: string | null;

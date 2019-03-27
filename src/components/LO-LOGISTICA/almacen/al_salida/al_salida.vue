@@ -93,23 +93,23 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="cantidad" sortable width="80"
+                                            prop="cantidad" sortable width="110"
                                             label="Stock">
                                             <template scope="scope">
-                                                <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltIssueRequest_QTY" >
-                                                </el-input-number>
-                                                <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueRequest_QTY }}</label>
+                                                <!-- <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
+                                                </el-input-number> -->
+                                                <label >&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="cantidad" sortable width="80"
+                                            prop="cantidad" sortable width="110"
                                             label="Cantidad">
                                             <template scope="scope">
-                                                <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltIssueDelivery_QTY" >
+                                                <el-input-number :max="scope.row.fltQuantity" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltIssueRequest_QTY" >
                                                 </el-input-number>
-                                                <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueDelivery_QTY }}</label>
+                                                <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueRequest_QTY }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column

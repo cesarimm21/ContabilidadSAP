@@ -16,6 +16,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  busquedaSalidaDespacho(data){
+    return axios.get(CONFIG.API_URL+'busqueda/salida/despacho/'+data.strIssueAjust_NO+'/'+data.desde+'/'+data.hasta)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   getSalidaId(code){
     return axios.get(CONFIG.API_URL+'salidaId/'+code)
     .then(response =>{
@@ -42,6 +48,12 @@ export default{
   },
   despachoSalida(data){
     return axios.post(CONFIG.API_URL+'salida/despacho',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  cancelarSalida(data){
+    return axios.post(CONFIG.API_URL+'salida/cancelar',data)
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })

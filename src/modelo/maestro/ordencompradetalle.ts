@@ -52,6 +52,7 @@ export class OrdenCompraDetalleModel {
     
     fltRec_QYT:number;
     fltRec_Value:number;
+    fltRec_Pend_QTY:number;
     strGuiaRem_NO:string;
     dtmGuiaRem_Date:Date;
     strGuiaTrans_NO:string;
@@ -123,6 +124,7 @@ export class OrdenCompraDetalleModel {
         
         this.fltRec_QYT=0;
         this.fltRec_Value=0;
+        this.fltRec_Pend_QTY=0;
         this.strGuiaRem_NO='';
         this.dtmGuiaRem_Date=new Date;
         this.strGuiaTrans_NO='';
