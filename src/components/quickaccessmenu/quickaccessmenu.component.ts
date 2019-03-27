@@ -126,8 +126,10 @@ export default class QuickAccessMenuComponent extends Vue {
     //alert("Excelente");
     this.SendDocument=false;
     if(Global.nameComponent==='crear-po'){
-      this.$emit('guardarPO',Global.nameComponent);    
-      debugger;
+      this.$emit('guardarPO',Global.nameComponent);  
+    }  
+    if(Global.nameComponent==='modificar-po'){
+      this.$emit('guardarEditPO',Global.nameComponent);  
     }  
     if(Global.nameComponent==='crear-hes'){
       this.$emit('guardarHES',Global.nameComponent);
@@ -172,6 +174,12 @@ export default class QuickAccessMenuComponent extends Vue {
     this.$emit('validarView');
     if(Global.nameComponent==='visualizar-proveedor'){
       this.$emit('visualizarProveedor',Global.nameComponent);
+    }
+    if(Global.nameComponent==='view-hes'){
+      this.$emit('checkViewHES',Global.nameComponent);
+    }
+    if(Global.nameComponent==='aprobar-hes'){
+      this.$emit('validarHes',Global.nameComponent);
     }
   }
   // update(){

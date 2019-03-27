@@ -34,6 +34,7 @@ import { Loading } from 'element-ui';
 })
 export default class CrearHesComponent extends Vue {
   nameComponent:string;
+  CodigoPO:string;
   timer=0;
   valueSwtch:boolean=true;
   codigoCompania:string;
@@ -81,7 +82,7 @@ export default class CrearHesComponent extends Vue {
   public ordenCompraModel:OrdenCompraModel =new OrdenCompraModel();
   public ordenCompraDetalle:OrdenCompraDetalleModel =new OrdenCompraDetalleModel();
   public ordencompraDetalleSelect:OrdenCompraDetalleModel =new OrdenCompraDetalleModel();
-  public ordencompra:OrdenCompraModel=new OrdenCompraModel();
+  public ordencompra:OrdenCompraModel[];
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
 
   //activar colores
@@ -108,6 +109,22 @@ export default class CrearHesComponent extends Vue {
   }
 
   //#region [ORDEN COMPRA]
+  searchPO(){
+    if(this.CodigoPO==''){
+      this.$message({
+        showClose: true,
+        type: 'warning',
+        message: 'Ingrese código PO'
+      });
+    }
+    else{
+      ordencompraService.getPOCod(this.CodigoPO)
+      .then(response=>{
+        this.ordencompra=response;
+      })
+    }
+  
+  }
   loadOrdenCompra(){
     let loadingInstance = Loading.service({
       fullscreen: true,
@@ -119,6 +136,8 @@ export default class CrearHesComponent extends Vue {
     ordencompraService.getOrdenCompraTypeRequisicion()
     .then(respose=>{
       this.ordencompra=respose;
+      console.log(this.ordencompra);
+      
       loadingInstance.close();
       this.dialogOrdenCompra=true;
     }).catch(error=>{
@@ -255,7 +274,6 @@ export default class CrearHesComponent extends Vue {
         })
       }      
     }
-    
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guargando...',
@@ -282,6 +300,9 @@ export default class CrearHesComponent extends Vue {
           this.ordenCompraDetalle=new OrdenCompraDetalleModel();
           this.montoaceptado=0;
           this.montopendiente=0;
+          this.ordencompraDetalleSelect.fltCurr_Net_PR_P=0;
+          this.hesModel.dtmSince_Date=new Date();
+          this.hesModel.dtmUntil_Date=new Date();
           this.textosave = 'Se guardo correctamente '+response.strHES_NO;
         }).catch(error=>{
           loadingInstance.close();
@@ -469,7 +490,9 @@ export default class CrearHesComponent extends Vue {
       dataOrdenCompra:[],
       valueSwtch:true,
       montoaceptado:0,
-      montopendiente:0
+      montopendiente:0,
+      CodigoPO:'',
+      ordencompra:[]
     }
   }
   

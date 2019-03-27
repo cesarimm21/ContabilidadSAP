@@ -33,5 +33,18 @@ export default{
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  busquedaHESByCod(data){
+    return axios.get(CONFIG.API_URL+'busquedaByCod/hes/'+data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  aprobarHES(data){
+    debugger;
+    return axios.post(CONFIG.API_URL+'hes/aprobar',data)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

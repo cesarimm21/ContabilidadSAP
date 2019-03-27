@@ -28,6 +28,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getUpdateRequisicionStatus(code){
+    return axios.get(CONFIG.API_URL+'requisicionUpdate/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   getrequisiciondetalle(code){
     return axios.get(CONFIG.API_URL+'requisiciondetallev2/'+code)
     .then(response =>{

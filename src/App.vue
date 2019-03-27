@@ -793,4 +793,13 @@ body {
     line-height: 20px;
     font-size: 13px;
 }
+.el-table .warning-row td{
+    background: #b2bbc4;
+  }
+.el-table .warning-row tr:hover>td{
+    background: #b2bbc4;
+  }
+/* .el-table .success-row td{
+    background: #2e6610;
+  } */
 </style>

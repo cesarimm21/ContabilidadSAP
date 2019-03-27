@@ -1,26 +1,26 @@
 
 export class OrdenCompraDetalleModel {
     intIdPOD_ID:number;//
-    intIdPOH_ID:number;//
+    intIdPOH_ID:number;
     intIdAcctCateg_ID:number;//
-    intIdCategLine_ID:number; //
+    intIdCategLine_ID:number;//
     intIdCurrency_ID:number;//
-    intIdCostCenter_ID:number;   //
+    intIdCostCenter_ID:number; //
     strPO_NO:string;//
-    intPO_Item_NO:number;   //
-    strAcctCateg_Cod:string;
-    strCategItem_Cod:string;
-    strCostCenter_NO:string;
-    strCostCenter_Desc:string;//----
-    strStock_Cod:string;
-    strUM_Cod:string;
-    strVendor_NO:string;
-    strVendor_Desc:string;//-----
-    strCurrency_Cod:string;
-    strPriority_Cod:string;    
+    intPO_Item_NO:number; //
+    strAcctCateg_Cod:string;//
+    strCategItem_Cod:string;//
+    strCostCenter_NO:string;//
+    strCostCenter_Desc:string;//
+    strStock_Cod:string;//
+    strUM_Cod:string;//
+    strVendor_NO:string;//
+    strVendor_Desc:string;//
+    strCurrency_Cod:string;//
+    strPriority_Cod:string;//    
     strPO_Item_Desc:string;//
     chrPO_Item_Status:string;//
-    strPO_Curr:string;    //
+    strPO_Curr:string;  //
     strRequis_NO:string;//
     intRequis_Item_NO:number;//
     intChange_Count:number;//
@@ -36,19 +36,19 @@ export class OrdenCompraDetalleModel {
     intConv_Factor:number ;//
     strTax_Cod:string ;//
     strWH_Tax_Detraccion:string;//
-    strWH_Retention:string;//
+    fltWH_Retention:number;//
     fltTax_Percent:number ;//
     intIdWHS_ID:number ;//
-    intInv_QTY_UOP:number ;//
-    intInvoice_NO:number;//
-    fltInv_Pend_QTY_P:number ;//
-    fltInv_Pend_Val_F:number ;//
-    fltInv_Pend_Val_L:number ;//
-    fltInv_Pend_Val_S:number ;//
-    strDeliv_Location:string ;//
-    fltTot_PO_Item:number ;//
-    strAccount_Cod:string ;//
-    strWBS_Project:string;//
+    intInv_QTY_UOP:number ;
+    intInvoice_NO:number;
+    fltInv_Pend_QTY_P:number ;
+    fltInv_Pend_Val_F:number ;
+    fltInv_Pend_Val_L:number ;
+    fltInv_Pend_Val_S:number ;
+    strDeliv_Location:string ;
+    fltTot_PO_Item:number ;
+    strAccount_Cod:string ;
+    strWBS_Project:string;
     
     fltRec_QYT:number;
     fltRec_Value:number;
@@ -58,8 +58,8 @@ export class OrdenCompraDetalleModel {
     dtmGuiaTrans_Date:Date;
     dtmReceived_Date:Date;
     strReceived_User:string;
-    strMatClass_Cod:string;//----------
-    strMatClass_Desc:string;///--------
+    strMatClass_Cod:string;
+    strMatClass_Desc:string;
     strRec_Driver:string;
     strPlaca:string;
     blnSelection:boolean=false;
@@ -107,7 +107,7 @@ export class OrdenCompraDetalleModel {
         this.intConv_Factor=0;//
         this.strTax_Cod='' ;//
         this.strWH_Tax_Detraccion='';//
-        this.strWH_Retention='';//
+        this.fltWH_Retention=0;//
         this.fltTax_Percent=0 ;//
         this.intIdWHS_ID=-1 ;//
         this.intInv_QTY_UOP=0;//

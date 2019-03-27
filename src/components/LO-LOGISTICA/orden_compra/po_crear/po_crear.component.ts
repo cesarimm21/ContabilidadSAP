@@ -86,7 +86,7 @@ export default class CrearPOComponent extends Vue {
     requisicionData: Array<RequisicionModel>[];
     requisicionDetalle: any[];
     public requiSelect: RequisicionModel = new RequisicionModel();
-    public requiDetalle: RequisicionDetalleModel[];
+    public requiDetalle: any[];
     requiDetalle1:any[];
     requiTemp:any[];
     arrayTemp:any[];
@@ -111,7 +111,8 @@ export default class CrearPOComponent extends Vue {
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
-        this.OrdenCompra.chrPO_Status = '00';
+        this.OrdenCompra.chrPO_Status = 'A';
+        this.OrdenCompra.strRequis_Item_NO="0";
         this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
     }
     //#region [COMPANIA]
@@ -150,7 +151,6 @@ export default class CrearPOComponent extends Vue {
             this.requiDetalle=response;  
             this.requiDetalle1=[];     
             this.provData=[]; 
-            debugger;  
             for(var i=0;i<this.requiDetalle.length;i++){ 
                 this.requiDetalle1.push({
                     intIdPurReqD_ID:this.requiDetalle[i].intIdPurReqD_ID,
@@ -185,14 +185,22 @@ export default class CrearPOComponent extends Vue {
                     strMatClass_Desc:this.requiDetalle[i].strMatClass_Desc,
                     strCostCenter_Desc:this.requiDetalle[i].strCostCenter_Desc,
                     strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
-                    intConv_Factor:1
+                    intConv_Factor:1,
+                    chrStatus:this.requiDetalle[i].chrStatus
                 })
                 proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
                 .then(response=>{
                     this.provData.push(response);                       
                 })
-            }                       
+            }
+            this.requiDetalle=[];
+            this.requiDetalle=this.requiDetalle1;                       
         })
+    }
+    tableRowClassName(val,row) {
+        if (val.chrStatus === "B") {    
+          return 'warning-row';
+        } 
     }
     closeDialogReq(){
         this.dialogRequisicion=false;
@@ -214,20 +222,16 @@ export default class CrearPOComponent extends Vue {
         this.OrdenCompra.strTypeMov_Cod=val.strTypeMov_Cod;    
         this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
         this.requiSelect=val;  
+        
+    }
+    checkSelectdb(){        
+        this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
         this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
         this.loadCompania(this.requiSelect.strCompany_Cod); 
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
         this.OrdenCompra.strCompany_Cod=this.requiSelect.strCompany_Cod;
-    }
-    checkSelectdbRequi(){
-        this.dialogRequisicion=false;
         this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
-        
-    }
-    checkSelectdb(val:RequisicionModel){
-        this.requiSelect=val;
         this.dialogRequisicion=false;
-        this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
     }
     activar_requisicion(){
         setTimeout(() => {
@@ -238,6 +242,7 @@ export default class CrearPOComponent extends Vue {
         }, 120)
     }    
     handleSelectionChange(val) {
+        debugger;
         this.valorSelectCodStock=val;
         this.multipleSelection = val;
         this.arrayTemp=[];
@@ -262,11 +267,9 @@ export default class CrearPOComponent extends Vue {
           }         
       }
       handleCurrentChange(val){
+          debugger;
           this.rowSelect=val.intIdPurReqD_ID;         
       }
-    //   selectforEdit(val){
-
-    //   }
     //#endregion
     //#region [ALMACEN]
       loadAlmacen(code){
@@ -275,9 +278,6 @@ export default class CrearPOComponent extends Vue {
             this.almacen=response;          
         })
       }
-    //#endregion
-    //#region [PRODUCTO]
-
     //#endregion
     //#region [PROVEEDORES]
     desactivar_pro() {
@@ -303,12 +303,10 @@ export default class CrearPOComponent extends Vue {
                 if(this.provData.length>0){
                     for(var j=0;j<this.provData.length;j++){
                         if(this.provData[j].strVendor_NO===this.provData1[i].strVendor_NO){
-                            temp=1;
-                            console.log('A');                            
+                            temp=1;                     
                         }
                     }
                     if(temp==0){
-                        console.log('B');
                         
                         this.provData.push(this.provData1[i]);
                     }
@@ -325,15 +323,17 @@ export default class CrearPOComponent extends Vue {
                 this.provData = response;
             })
     }
-    checkSelectProo() {
-        this.dialogProveedor = false;
+    checkDoblePro() {        
         this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
         this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
-    }
-    checkDoblePro() {
-        this.dialogProveedor = false;
-        this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
-        this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
+        this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
+        var code=this.selectProo.strVendor_NO;
+        var temp=this.requiDetalle;
+        this.requiDetalle1=[];
+        this.requiDetalle1 = temp.filter(function(hero) {
+            return hero.strVendor_Suggested == code;
+        });  
+        this.dialogProveedor = false;  
     }
     closeDialogPro() {
         this.dialogProveedor = false;
@@ -343,17 +343,7 @@ export default class CrearPOComponent extends Vue {
         this.selectProo = new ProveedorModel();
     }
     checkSelectdbProveedor(val:ProveedorModel){
-        this.dialogProveedor=false;
-        this.selectProo=val;   
-        this.OrdenCompra.strVendor_NO=this.selectProo.strVendor_NO;
-        this.OrdenCompra.intIdVendor_ID=this.selectProo.intIdVendor_ID;
-        this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
-        var code=val.strVendor_NO;
-        var temp=this.requiDetalle;
-        this.requiDetalle1=[];
-        this.requiDetalle1 = temp.filter(function(hero) {
-            return hero.strVendor_Suggested == code;
-        });         
+        this.selectProo=val;                
     }
     //#endregion
     //#region [IMPUESTO]
@@ -380,6 +370,8 @@ export default class CrearPOComponent extends Vue {
   }  
   ImpuestoSeleccionado(val:ImpuestoModel){
     this.Impuesto=val
+    this.OrdenCompra.strWH_Cod=this.Impuesto.strWH_Cod;
+    this.OrdenCompra.strWH_Desc=this.Impuesto.strWH_Desc;
     this.dialogImpuesto=false;
   }
   closeImpuesto(){
@@ -397,19 +389,15 @@ export default class CrearPOComponent extends Vue {
             });
         }
         else {
-            debugger;
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
-                debugger;
                 var item:OrdenCompraDetalleModel=new OrdenCompraDetalleModel();
-                console.log(this.multipleSelection[i]);
                 var IdAcctCateg_ID=this.multipleSelection[i].intIdAcctCateg_ID;
                 item.intIdAcctCateg_ID= parseInt(IdAcctCateg_ID.intIdAcctCateg_ID)
-                debugger;
                 item.intIdCategLine_ID=this.multipleSelection[i].intIdCategLine_ID
                 item.intIdCurrency_ID=this.multipleSelection[i].intIdCurrency_ID
                 item.intIdCostCenter_ID=this.multipleSelection[i].intIdCostCenter_ID
-                item.intPO_Item_NO=1//falta de la cabecea
+                item.intPO_Item_NO=i+1;
                 item.strAcctCateg_Cod=this.valorSelectCodStock[i].intIdAcctCateg_ID.strAcctCateg_Cod
                 if(this.valorSelectCodStock[i].intIdCategLine_ID!=null){
                     item.strCategItem_Cod=this.valorSelectCodStock[i].intIdCategLine_ID.strCategItem_Cod;    
@@ -418,13 +406,13 @@ export default class CrearPOComponent extends Vue {
                     item.strCategItem_Cod='';
                 }
                 if(this.valorSelectCodStock[i].intIdCostCenter_ID){
-                    item.strCostCenter_NO=this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_NO
+                    item.strCostCenter_NO=this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_NO,
+                    item.strCostCenter_Desc=this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_Desc
                 }
                 else{
                     item.strCostCenter_NO='';
-                }
-                
-                item.strCostCenter_Desc=this.multipleSelection[i].strCostCenter_Desc
+                    item.strCostCenter_Desc='';
+                }                
                 item.strStock_Cod=this.valorSelectCodStock[i].intIdInvStock_ID.strStock_Cod
                 item.strUM_Cod=this.valorSelectCodStock[i].intIdInvStock_ID.strUM_Cod
                 item.strVendor_NO=this.OrdenCompra.strVendor_NO
@@ -449,35 +437,42 @@ export default class CrearPOComponent extends Vue {
                 item.intConv_Factor=this.multipleSelection[i].intConv_Factor//factor multiplica a la cantidad de productos/Editable
                 item.strTax_Cod=this.Impuesto.strWH_Cod
                 item.strWH_Tax_Detraccion=this.Impuesto.strWH_Cod
-                item.strWH_Retention=this.Impuesto.fltPorcent.toString()
+                item.fltWH_Retention=this.Impuesto.fltPorcent
                 item.fltTax_Percent=this.Impuesto.fltPorcent
                 item.intIdWHS_ID=this.OrdenCompra.intIdWHS_ID//almacen id correlativo
                 item.intInv_QTY_UOP=0//Inv_QTY //viene de la factura
-                item.intInvoice_NO=0//numero de la factura
+                item.intInvoice_NO=0
                 item.fltInv_Pend_QTY_P=0//cantidad pendiente
                 item.fltInv_Pend_Val_F=0//
                 item.fltInv_Pend_Val_L=0
                 item.fltInv_Pend_Val_S=0
-                item.strDeliv_Location=''//texto de la requisicion puede ser editado
-                item.fltTot_PO_Item=1
+                item.strDeliv_Location=this.OrdenCompra.strPO_Desc//texto de la requisicion puede ser editado
+                item.fltTot_PO_Item=this.multipleSelection[i].fltQuantity
                 item.strAccount_Cod=''//codigo de cuenta contable
                 item.strWBS_Project=''//vacio
+                item.blnCheck=this.multipleSelection[i].blnCheck//vacio
                 item.strMatClass_Cod=this.multipleSelection[i].strMatClass_Cod
                 item.strMatClass_Desc=this.multipleSelection[i].strMatClass_Desc
                 item.strCreation_User='egaona'
-                this.OrdenCompra.listaDetalle.push(item);
-            }
-            this.OrdenCompra.strWH_Cod=this.Impuesto.strWH_Cod;
-            this.OrdenCompra.strWH_Desc=this.Impuesto.strWH_Desc;
+                this.OrdenCompra.listaDetalle.push(item);   
+                requisicionService.getUpdateRequisicionStatus(this.multipleSelection[i].intIdPurReqD_ID)
+                .then(response=>{}).catch(error=>{})
+
+            }            
             this.OrdenCompra.strAuthsd_By='egaona';
             this.OrdenCompra.intChange_Count=0;
-            this.OrdenCompra.dtmProcess_Date=new Date();
-            this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
+            this.OrdenCompra.dtmProcess_Date=new Date();            
             this.OrdenCompra.strPO_Item_Type='C';
             this.OrdenCompra.strAuthsd_Status='00';
             this.OrdenCompra.fltCURR_QTY_I=this.totalItems;
             this.OrdenCompra.fltTotal_Val=this.totalPrice;
+            this.OrdenCompra.strUser_ID='egaona';
             this.OrdenCompra.strCreation_User='egaona';
+            this.OrdenCompra.fltTot_Rec_QYT=0;
+            this.OrdenCompra.fltTot_Rec_Pend_QTY=0;
+            this.OrdenCompra.fltTot_Rec_Value=0;
+            this.OrdenCompra.fltTot_Inv_QTY=0;
+            this.OrdenCompra.fltTot_Inv_Value=0;
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guargando...',
@@ -486,10 +481,8 @@ export default class CrearPOComponent extends Vue {
             }
             );
             if (val == 'crear-po') {
-                debugger;
                 ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
                     .then(response => {
-                        debugger;
                         loadingInstance.close();
                         this.issave = true;
                         this.iserror = false;
@@ -507,10 +500,9 @@ export default class CrearPOComponent extends Vue {
                         this.issave = false;
                         this.iserror = true;
                         this.textosave = 'Error al guardar.';
-                    })
+                })
             }
         }
-
     }
     //#endregion
     //#region [MONEDA]
@@ -548,6 +540,41 @@ export default class CrearPOComponent extends Vue {
             this.btnactivarImpuesto = false;
         }, 120)
     }
+    //#endregion
+    //#region [ACCIONES DE TABLA]
+    handleBlurImporte(event) {
+        debugger;
+        var inttotal=0;   
+        this.totalItems=0;
+        for(var i=0;i< this.multipleSelection.length;i++){
+            if(this.multipleSelection[i].blnCheck==true){
+                
+                inttotal+=Number((this.multipleSelection[i].fltUnitPrice)*(this.multipleSelection[i].fltQuantity)*(this.multipleSelection[i].intConv_Factor));
+                this.totalItems+=Number(this.multipleSelection[i].fltQuantity);
+            }               
+        }
+        this.totalPrice=inttotal;
+        // this.montoaceptado=Math.round(inttotal*100)/100;
+        // if(Number(this.ordencompraDetalleSelect.fltCurr_Net_PR_P)>=Number(this.montoaceptado)){
+        //   this.montopendiente=Math.round((Number(this.ordencompraDetalleSelect.fltCurr_Net_PR_P)-Number(this.montoaceptado))*100)/100;
+          
+        // }
+        // else{
+        //   this.montopendiente=-1;
+        //   this.$message({
+        //     showClose:true,
+        //     type:'warning',
+        //     message:'valor aceptado debe ser menor que el Importe total'
+        // })
+        // }
+        // var Tabletemp:Array<HesDetalleModel>=[];
+        // Tabletemp=this.TableIngreso;
+        // this.TableIngreso=[];
+        // for(var i=0;i<10;i++){
+        //   Tabletemp[i].fltNet_Value=Number(Tabletemp[i].intQuantity)*Number(Tabletemp[i].fltGross_Price);      
+        // }
+        // this.TableIngreso=Tabletemp;        
+      }
     //#endregion
     //#region [ACCIONES TABLA]
     clickcantidad(event,edit,column){
@@ -587,17 +614,19 @@ export default class CrearPOComponent extends Vue {
         this.editing.column=column;
       }
       clickCheck(event,edit,column){
-        this.bln_tbl_check=true;
+          debugger;
         event.edit=!edit;
         this.editing.row=event;
         this.editing.column=column;
         this.totalPrice=0;
-        for (let i = 0; i < this.requiDetalle1.length; i++) {
-            if(this.requiDetalle1[i].blnCheck===true){
-                this.totalPrice=this.totalPrice+Math.round(this.requiDetalle1[i].fltValue_Total * 100)/100;
-            }
-        }
-        
+        this.totalItems=0;
+        for(var i=0;i< this.multipleSelection.length;i++){
+            if(this.multipleSelection[i].blnCheck==true){
+                
+                this.totalPrice+=Number((this.multipleSelection[i].fltUnitPrice)*(this.multipleSelection[i].fltQuantity)*(this.multipleSelection[i].intConv_Factor));
+                this.totalItems+=Number(this.multipleSelection[i].fltQuantity);
+            }               
+        }        
       }
       handleBlur(event) {
         // this.bln_tbl_categoria_cuenta=false;
