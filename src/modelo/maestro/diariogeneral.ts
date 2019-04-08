@@ -3,7 +3,7 @@ export class DiarioGeneralModel {
     strCompany_Desc:string;//*
     strContable_Cod:string;//*
     dtmPosting_Date:Date;//*   
-    strPeriod_NO:string;//*
+    strAccDocum_NO:string;//*
     strYear:string;//*
     dtmProcess_Date:Date;//*
     strTypeMov_Cod:string;
@@ -66,7 +66,7 @@ export class DiarioGeneralModel {
         this.strCompany_Desc='';
         this.strContable_Cod='';
         this.dtmPosting_Date=new Date();
-        this.strPeriod_NO='';
+        this.strAccDocum_NO='';
         this.strYear='';
         this.dtmProcess_Date=new Date();
         this.strTypeMov_Cod='';
