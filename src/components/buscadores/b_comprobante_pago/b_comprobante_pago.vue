@@ -7,7 +7,7 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-1" >Código</label>
+                        <label class="el-form-item__label col-md-2" >Código</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
                             <el-input size ="small"   placeholder="">
@@ -22,26 +22,27 @@
                     </div>
                 </div>
             </div>
+            <div style="height:5px;"></div>
             <el-table
-            :data="TipoDoc"
+            :data="ComprobantePagoModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%;cursor: pointer;" class="ExcelTable2007"
             height="250"
             highlight-current-row
-            @row-dblclick="seleccionar"
+            @row-dblclick="checkComprobantePago"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="strDocIdent_NO" label="Codigo" width="180">
+            <el-table-column   prop="strDocType_Cod" label="Codigo" width="80">
             </el-table-column>  
-            <el-table-column  prop="strDocIdent_Name" label="Descripción" style="width: 70% !important;">
-            </el-table-column> 
+            <el-table-column  prop="strDocType_Desc" label="Nombre" style="width: 70% !important;">
+            </el-table-column>  
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkTipo()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkComprobantePago()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeTipo()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeComprobantePago()">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>
@@ -49,6 +50,6 @@
 </template>
 
 <script>
-    import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.component'
-    export default BDocumentoComponent
+    import BComprobantepagoComponent from '@/components/buscadores/b_comprobante_pago/b_comprobante_pago.component'
+    export default BComprobantepagoComponent
 </script>

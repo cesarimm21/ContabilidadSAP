@@ -190,7 +190,7 @@ activar_Diario(){
   }, 120)
 }
 checkSelectdbDiario(val:DiarioModel){  
-  this.factura.strDaily_Cod=this.diarioSelect.strDaily_Cod;
+  // this.factura.strDaily_Cod=this.diarioSelect.strDaily_Cod;
   this.dialogDiario=false;
 }
 checkSelectDiario(val:DiarioModel){
@@ -229,7 +229,7 @@ desactivar_Impuesto(){
 ImpuestoSeleccionado(val:ImpuestoModel){
   this.Impuesto=val
   this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
-  this.factura.fltValue_Tax=this.Impuesto.fltPorcent;  
+  // this.factura.fltValue_Tax=this.Impuesto.fltPorcent;  
   this.dialogImpuesto=false;
   // this.factura.intNetValue_Doc=this.totalDinero+ this.totalDinero*(this.Impuesto.fltPorcent/100);
   // this.TotalPagarS='S/. '+(this.totalDinero+ this.totalDinero*(this.Impuesto.fltPorcent/100)).toFixed(2);

@@ -143,8 +143,11 @@ export default class QuickAccessMenuComponent extends Vue {
     if(Global.nameComponent==='modificar-proveedor'){
       this.$emit('actualizarProveedor',Global.nameComponent);
     }
+    if(Global.nameComponent==='factura'){
+      this.$emit('SaveFactura',Global.nameComponent);
+    }
     // this.$emit('guardarTodo','hola');
-    this.$emit('guardarTodo');
+    // this.$emit('guardarTodo');
 
   }
   linksUser(comand){
