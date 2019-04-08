@@ -189,6 +189,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   vifdespacho:boolean=false;
   vifcomprobarapro:boolean=false;
   vifimprimir:boolean=false;
+  
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -290,6 +291,62 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     })
   }
 
+  bodyRows(rowCount) {
+    rowCount = rowCount || 10;
+    let body = [{}];
+    for (var j = 1; j <= rowCount; j++) {
+        body.push({
+            id: j,
+            name: 'name'+j,
+            email: 'email'+j,
+            city: 'city'+j,
+        });
+    }
+    return body;
+  }
+
+  headRows() {
+      return [{id: 'ID', name: 'Name', email: 'Email', city: 'City', expenses: 'Sum'}];
+  }
+  columns() {
+    return [
+        {header: 'ID', dataKey: 'id'},
+        {header: 'Name', dataKey: 'name'},
+        {header: 'Email', dataKey: 'email'},
+        {header: 'City', dataKey: 'city'},
+        {header: 'Exp', dataKey: 'expenses'},
+    ]
+  }
+
+  ExportarPDF1(){
+    var doc = new jsPDF('p', 'pt');
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.setFontStyle('bold');
+    doc.text('Rowspan and colspan', 40, 50);
+
+    let body = this.bodyRows(40);
+    for (var i = 0; i < body.length; i++) {
+        var row = body[i];
+        if (i % 5 === 0) {
+            row['id'] = {rowSpan: 5, content: i / 5 + 1, styles: {valign: 'middle', halign: 'center'}};
+        }
+    }
+    console.log(body);
+
+    // }
+    let head = this.headRows();
+    // head[0]['id'] = {content: 'People', colSpan: 5, styles: {halign: 'center', fillColor: [22, 160, 133]}};
+    
+    doc.autoTable({
+        startY: 60,
+        head: head,
+        body: body,
+        theme: 'grid'
+    });
+    doc.save('test.pdf');
+
+  }
   ExportarPDF(){
     let doc = new jsPDF('p', 'pt');
     let marginleft=30;

@@ -35,7 +35,7 @@
             </el-table-column> 
             <el-table-column  prop="strExp_Cod_Loc" label="Cuenta" >
             </el-table-column>  
-            <el-table-column  prop="strMatClass_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column  prop="strMatClass_Desc" label="Descripción Clase" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

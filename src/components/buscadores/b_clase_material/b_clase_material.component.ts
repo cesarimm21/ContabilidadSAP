@@ -45,6 +45,7 @@ export default class  BClaseMaterialComponent extends Vue {
     this.load();
   }
   load(){
+    debugger;
     clasematerialService.GetAllClaseMaterial()
     .then(response=>{
       console.log('clasematerial',response);

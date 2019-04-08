@@ -31,7 +31,7 @@
                             <label class="el-form-item__label col-md-3" >Código Material</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" :disabled="visualizar" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
+                                <el-input size ="small" :disabled="true" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
                                 </el-input>
                                 </div>
                             </div>
@@ -60,32 +60,15 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm-3" >
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Código Antiguo</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar" size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod_Old"  placeholder="">
+                                            <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod_Old"  placeholder="">
                                             </el-input>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div>
-                                <div class="col-sm-9" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Código Almacen</label>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
-                                                <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="loadAlmacen()"></el-button> 
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strWHS_Desc}}</span>
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3" >
+                                    </div>  -->
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Numero Parte</label>
                                         <div class="col-md-6 grupolabel">
@@ -98,17 +81,54 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Tipo</label>
-                                        <!-- <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
-                                                <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
-                                            </el-input>
-                                            </div>
-                                        </div> -->
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Código Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-select v-model="tiporequisicion" style="font-size:13px" @change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
+                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
+                                                <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="loadAlmacen()"></el-button> 
+                                            </el-input>
+                                            </div>
+                                        </div>
+                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strWHS_Desc}}</span>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3" >
+                                    <!-- <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" >Numero Parte</label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strPart_NO"  placeholder="">
+                                            </el-input>
+                                            </div>
+                                        </div>
+                                    </div>  -->
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>UM </label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_unidad_medida" @focus="activar_unidad_medida" v-model="productoModel.strUM_Cod"   placeholder="" @keyup.enter.native="enterUnidadMedida(productoModel.strUM_Cod)"  @keyup.delete.native="borrarUnidadMedida()">
+                                                <el-button v-if="btnactivarunidadmedida && !dialogUnidadMedida" slot="append" class="boton" icon="fa fa-clone" @click="loadUnidadMedida()"></el-button> 
+                                            </el-input>
+                                            </div>
+                                        </div>
+                                        <!-- <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strUM_Desc}}</span> -->
+                                    </div> 
+                                </div>
+                                <div class="col-sm-9" >
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Tipo</label>
+                                        <!--<div class="col-md-2 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
+                                                <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                            </el-input>
+                                            </div> 
+                                        </div>-->
+                                        <div class="col-md-2 grupolabel">
+                                            <div class="input-group mb-3" >
+                                                <el-select :disabled="visualizar" v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
                                                     <el-option style="font-size:13px"
                                                     v-for="item in tabletipoRequisicion"
                                                     :key="item.strTypeReq_Cod"
@@ -127,7 +147,7 @@
                                         <label class="el-form-item__label col-md-6" >Marca</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="visualizar" @focus="limpiarBotones" v-model="productoModel.strMark"  placeholder="">
+                                            <el-input :disabled="visualizar" size ="small" @focus="limpiarBotones" v-model="productoModel.strMark"  placeholder="">
                                             </el-input>
                                             </div>
                                         </div>
@@ -148,10 +168,10 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Cantidad Maxima</label>
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Cantidad Maxima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input :disabled="visualizar" size ="small" v-model="productoModel.fltQtyLimit_Max"  @focus="limpiarBotones"  type="number">                            
+                                                <el-input size ="small" :disabled="visualizar" v-model="productoModel.fltQtyLimit_Max" :min="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -159,13 +179,23 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Clase Material</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Clase Material</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_clase_material" @focus="activar_clase_material" v-model="productoModel.strMaterial_Class"  placeholder="" @keyup.enter.native="enterClaseMaterial(productoModel.strMaterial_Class)"  @keyup.delete.native="borrarClaseMaterial()">
-                                                <el-button v-if="btnactivarclasematerial && !dialogClaseMaterial" slot="append" class="boton" icon="fa fa-clone" @click="loadClaseMaterial()"></el-button> 
+                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_clase_material"  @focus="activar_clase_material" v-model="productoModel.strMaterial_Class"  placeholder="" @keyup.enter.native="enterClaseMaterial(productoModel.strMaterial_Class)"  @keyup.delete.native="borrarClaseMaterial()">
+                                                <el-button v-if="btnactivarclasematerial && !dialogClaseMaterial"  slot="append" class="boton" icon="fa fa-clone" @click="loadClaseMaterial()"></el-button> 
                                             </el-input>
                                             </div>
+                                            <!-- <div class="input-group mb-3" >
+                                                <el-select v-model="productoModel.strMaterial_Class" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                                    <el-option style="font-size:13px"
+                                                        v-for="item in tableClaseMaterial"
+                                                        :key="item.strMatClass_Cod"
+                                                        :label="item.strMatClass_Desc"
+                                                        :value="item.strMatClass_Cod">
+                                                    </el-option>
+                                                </el-select>
+                                            </div> -->
                                         </div>
                                         <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strMatClass_Desc}}</span>
                                     </div> 
@@ -174,10 +204,10 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Factor</label>
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Cantidad Minima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" :disabled="visualizar" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
+                                                <el-input :disabled="visualizar" size ="small" v-model="productoModel.fltQtyLimit_Min" :max="productoModel.fltQtyLimit_Max" :min="0" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -201,22 +231,32 @@
                             <div class="row">
                                 
                                 <div class="col-sm-3" >
+                                    
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Cantidad</label>
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Factor</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input :disabled="visualizar" size ="small" v-model="productoModel.fltQuantity"  @focus="limpiarBotones" type="number">                            
+                                                <el-input size ="small" :disabled="visualizar" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
                                     </div> 
+                                    <!-- <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" >Cantidad</label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                                <el-input size ="small" v-model="productoModel.fltQuantity"  @focus="limpiarBotones" type="number">                            
+                                                </el-input>
+                                            </div>
+                                        </div>
+                                    </div>  -->
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Proveedor</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Proveedor</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="productoModel.strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(productoModel.strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
+                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="productoModel.strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(productoModel.strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
                                                 <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="LoadProveedor()"></el-button> 
                                             </el-input>
                                             </div>
@@ -226,24 +266,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Cantidad Minima</label>
-                                        <div class="col-md-6 grupolabel">
-                                            <div class="input-group mb-3" >
-                                                <el-input :disabled="visualizar" size ="small" v-model="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div>
+                                
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Cta. Gasto</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar"  @blur="desactivar_cuenta_contable" @focus="activar_cuenta_contable" size="small" v-model="productoModel.strExp_Acct" @keyup.enter.native="enterCuentaGastos(productoModel.strExp_Acct)"  @keyup.delete.native="borrarCuentaGastos()">
-                                                <el-button slot="append" v-if="btnactivarcuentacontable && !dialogCuentaContable" class="boton" icon="fa fa-clone" @click="LoadCuentaContable()"></el-button>  
+                                            <el-input :disabled="true"  @blur="desactivar_cuenta_contable" @focus="activar_cuenta_contable" size="small" v-model="productoModel.strExp_Acct" @keyup.enter.native="enterCuentaGastos(productoModel.strExp_Acct)"  @keyup.delete.native="borrarCuentaGastos()">
+                                                <!-- <el-button slot="append" v-if="btnactivarcuentacontable && !dialogCuentaContable" class="boton" icon="fa fa-clone" @click="LoadCuentaContable()"></el-button>   -->
                                             </el-input>
                                             </div>
                                         </div>
@@ -253,17 +283,17 @@
                                 
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >P. Unitario PEN</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" :disabled="visualizar" v-model="productoModel.fltActual_Local" @focus="limpiarBotones"  type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltPrecUnit_Local" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Categ. Material</label>
@@ -281,17 +311,17 @@
                             
                             <div class="row">
                                 
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >P. Unitario USD</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" :disabled="visualizar" v-model="productoModel.fltActual_USD" @focus="limpiarBotones"   type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltPrecUnit_USD" @focus="limpiarBotones"   type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Grupo Comprador</label>
@@ -307,51 +337,26 @@
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-sm-3" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Saldo Cantidad </label>
-                                        <div class="col-md-6 grupolabel">
-                                            <div class="input-group mb-3" >
-                                                <el-input :disabled="visualizar" size ="small" v-model="productoModel.fltQuantity_Balance" @focus="limpiarBotones"  type="number">                            
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="col-sm-9" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Control Precio</label>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_control_precio" @focus="activar_control_precio" v-model="productoModel.fltPriceControl"  placeholder="" @keyup.enter.native="enterControlPrecio(productoModel.fltPriceControl)"  @keyup.delete.native="borrarControlPrecio()">
-                                                <el-button v-if="btnactivarcontrolprecio && !dialogControlPrecio" slot="append" class="boton" icon="fa fa-clone" @click="loadControlPrecio()"></el-button> 
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strCtlPrec_Desc}}</span>
-                                    </div> 
-                                </div>
-                            </div>
+                            
                             <div class="row">
                                 
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Importe_Actual USD</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input :disabled="visualizar" size ="small" v-model="productoModel.fltActual_USD" @focus="limpiarBotones"   type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltActual_USD" @focus="limpiarBotones"   type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Impuesto </label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_impuesto" @focus="activar_impuesto"  v-model="productoModel.strTAX_Ind"  placeholder="" @keyup.enter.native="enterImpuesto(productoModel.strTAX_Ind)"  @keyup.delete.native="borrarImpuesto()">
+                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_impuesto" @focus="activar_impuesto"  v-model="productoModel.strTAX_Ind"  placeholder="" @keyup.enter.native="enterImpuesto(productoModel.strTAX_Ind)"  @keyup.delete.native="borrarImpuesto()">
                                                 <el-button v-if="btnactivarimpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
                                             </el-input>
                                             </div>
@@ -362,28 +367,44 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-3" >
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Importe Actual PEN </label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" :disabled="visualizar" v-model="productoModel.fltActual_Local" @focus="limpiarBotones" type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltActual_Local" @focus="limpiarBotones" type="number">                            
+                                                </el-input>
+                                            </div>
+                                        </div>
+                                    </div>  -->
+                                </div>
+                                <div class="col-sm-9" >
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- <div class="col-sm-3" >
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" >Saldo Cantidad </label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                                <el-input size ="small" v-model="productoModel.fltQuantity_Balance" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >UM </label>
+                                    <!-- <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-2" >Control Precio</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_unidad_medida" @focus="activar_unidad_medida" v-model="productoModel.strUM_Cod"   placeholder="" @keyup.enter.native="enterUnidadMedida(productoModel.strUM_Cod)"  @keyup.delete.native="borrarUnidadMedida()">
-                                                <el-button v-if="btnactivarunidadmedida && !dialogUnidadMedida" slot="append" class="boton" icon="fa fa-clone" @click="loadUnidadMedida()"></el-button> 
+                                            <el-input size ="small" @blur="desactivar_control_precio" @focus="activar_control_precio" v-model="productoModel.fltPriceControl"  placeholder="" @keyup.enter.native="enterControlPrecio(productoModel.fltPriceControl)"  @keyup.delete.native="borrarControlPrecio()">
+                                                <el-button v-if="btnactivarcontrolprecio && !dialogControlPrecio" slot="append" class="boton" icon="fa fa-clone" @click="loadControlPrecio()"></el-button> 
                                             </el-input>
                                             </div>
                                         </div>
-                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strUM_Desc}}</span>
-                                    </div> 
+                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strCtlPrec_Desc}}</span>
+                                    </div>  -->
                                 </div>
                             </div>
                         </div>
@@ -397,7 +418,7 @@
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
                 <img src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>
             </div>
             <div class="col-sm-3">
@@ -424,7 +445,7 @@
 
     <!--DIALOG BUSQUEDA IMPUESTO-->
     <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeImpuesto" size="small" >
-      <bimpuesto v-on:impuestoselecionado="SeleccionadoImpuesto($event)" v-on:impuestoClose="impuestoClose($event)">
+      <bimpuesto v-on:impuestoseleccionado="SeleccionadoImpuesto($event)" v-on:impuestoClose="impuestoClose($event)">
       </bimpuesto>
     </el-dialog>
     <!--DIALOG BUSQUEDA CONTROL PRECIO-->
@@ -463,11 +484,6 @@
       </balmacen>
     </el-dialog>
      <!--DIALOG CLASE MATERIAL-->
-    <!-- <el-dialog title="Busqueda Clase Material"  :visible.sync="dialogClaseMaterial" @close="closeClaseMaterial" size="small" >
-      <bclasematerial v-on:clasematerialseleccionado="SeleccionadoClaseMaterial($event)" v-on:clasematerialClose="clasematerialClose($event);" >
-      </bclasematerial>
-    </el-dialog> -->
-     <!--DIALOG CLASE MATERIAL-->
     <el-dialog title="Busqueda Clase Material"  :visible.sync="dialogClaseMaterial" @close="closeClaseMaterial" size="small" >
       <!-- <bclasematerial v-on:clasematerialseleccionado="SeleccionadoClaseMaterial($event)" v-on:clasematerialClose="clasematerialClose($event);" >
       </bclasematerial> -->
@@ -505,16 +521,18 @@
                     <!-- @current-change="handleCurrentChange"> -->
                     <el-table-column   prop="strMatClass_Cod" label="Codigo" width="100" >
                     </el-table-column>  
+                    <el-table-column  prop="strExp_Cod_Loc" label="Cuenta" >
+                    </el-table-column> 
                     <el-table-column  prop="strMatClass_Desc" label="Descripción" >
                     </el-table-column> 
                     </el-table>
                 </el-card>
                 <br/>
                 <footer class="modal-footer">
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="SeleccionadoClaseMaterial()">
                     <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                     </el-button>
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeClaseMaterial()">
                     <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                     </el-button>
                 </footer>

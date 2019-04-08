@@ -225,6 +225,16 @@ export default class CrearMaterialComponent extends Vue {
   
   tiporequisicionant:string='';
 
+  valboolalmacen:boolean=false;
+  valbooltipo:boolean=false;
+  valboolcantmax:boolean=false;
+  valboolcantmin:boolean=false;
+  valboolclasem:boolean=false;
+  valboolfactor:boolean=false;
+  valboolunidadmedida:boolean=false;
+  valboolproveedor:boolean=false;
+
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -260,8 +270,10 @@ export default class CrearMaterialComponent extends Vue {
       this.tabletipoRequisicion=res;
       this.tiporequisicion="A";    
       this.tiporequisicionant='A';
+      debugger;
       clasematerialService.GetAllClaseMaterial()
       .then(response=>{
+        //console.log("clase material-",response);
         this.tableClaseMaterial=response;    
         this.tableClaseMaterial=[];
           clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
@@ -378,7 +390,7 @@ export default class CrearMaterialComponent extends Vue {
   //       return 'selected-row';
   //   }
   // }
-  handleCurrentChange(val:ClaseMaterialModel){
+  handleCurrentChange(val){
     this.clasematerialSelectModel=val;
   }
   /*Compania imput*/
@@ -778,12 +790,12 @@ export default class CrearMaterialComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
-    this.productoModel.strMaterial_Class=val.strMatClass_Cod;
-    this.productoModel.intIdMatClass_ID=val.intIdMatClass_ID;
-    this.productoModel.strMatClass_Desc=val.strMatClass_Desc;
-    this.productoModel.strExp_Acct=val.strExp_Cod_Loc;
-    this.productoModel.strAcc_Desc=val.strExp_Desc_Loc;
-    this.desclasematerial=val.strMatClass_Desc;
+    this.productoModel.strMaterial_Class=this.clasematerialSelectModel.strMatClass_Cod;
+    this.productoModel.intIdMatClass_ID=this.clasematerialSelectModel.intIdMatClass_ID;
+    this.productoModel.strMatClass_Desc=this.clasematerialSelectModel.strMatClass_Desc;
+    this.productoModel.strExp_Acct=this.clasematerialSelectModel.strExp_Cod_Loc;
+    this.productoModel.strAcc_Desc=this.clasematerialSelectModel.strExp_Desc_Loc;
+    this.desclasematerial=this.clasematerialSelectModel.strMatClass_Desc;
     this.dialogClaseMaterial=false;
   }
   SeleccionadoCategoriaCuenta(val){
@@ -930,6 +942,7 @@ export default class CrearMaterialComponent extends Vue {
   closeClaseMaterial(){
     debugger;
     this.btnactivarclasematerial=false;
+    this.dialogClaseMaterial=false;
     return false;
   }
   closeCentroCostos(){
@@ -1315,30 +1328,65 @@ export default class CrearMaterialComponent extends Vue {
     }
     console.log('select',selected);
   }
-
-  guardarTodo(val){
-    this.productoModel.intIdWHS_Stat_ID=1;
-    this.productoModel.intIdCommTax_ID=1;
-    this.productoModel.strStock_Type=this.tiporequisicion;
-    for(var i=0;i<this.tabletipoRequisicion.length;i++){
-      if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
-        this.productoModel.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
-      }
+  validador(){
+    debugger;
+    if(this.productoModel.intIdWHS_Stat_ID==undefined){
+      return true;
     }
-    productoService.saveProducto(this.productoModel)
-    .then(res=>{ 
-      debugger;
-      this.issave=true;
-      this.textosave='Se guardo correctamente.'
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo guardar producto'
-      });
-    })
+    if(this.tiporequisicion==""){
+      return true;
+    }
+    if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
+      return true;
+    }
+    if(this.productoModel.fltQtyLimit_Min<=0){
+      return true;
+    }
+    if(this.productoModel.intIdMatClass_ID==undefined){
+      return true;
+    }
+    if(this.productoModel.fltFactor<=0){
+      return true;
+    }
+    if(this.productoModel.intIdUnidadMedida==undefined){
+      return true;
+    }
+    if(this.productoModel.intIdVendor_ID==undefined){
+      return true;
+    }
+    return false;
   }
 
+  guardarTodo(val){
+debugger;
+    if(!this.validador()){
+      this.productoModel.intIdWHS_Stat_ID=1;
+      this.productoModel.intIdCommTax_ID=1;
+      this.productoModel.strStock_Type=this.tiporequisicion;
+      for(var i=0;i<this.tabletipoRequisicion.length;i++){
+        if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
+          this.productoModel.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
+        }
+      }
+      productoService.saveProducto(this.productoModel)
+      .then(res=>{ 
+        debugger;
+        this.issave=true;
+        this.textosave='Se guardo correctamente.'
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo guardar producto'
+        });
+      })
+    }
+    else{
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='No se pudo guardar. Revise los datos'
+    }
+  }
   data(){
     return{
       dialogTableVisible: false,

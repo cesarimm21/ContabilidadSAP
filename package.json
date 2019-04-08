@@ -2,7 +2,6 @@
   "name": "vue-test-ts",
   "version": "1.0.0",
   "description": "Template para vue",
-  "author": "Walter Béjar Chacón <wbejarch@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
