@@ -329,12 +329,13 @@
                             <label class="el-form-item__label col-md-2" >Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
+                                <el-input size ="small"   placeholder="" v-model="CodigoPO">
                                 <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
                             background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
                             background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
                             background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
+                                @click="searchPO()"
+                                > </el-button>
                                 </el-input>
                                 </div>
                             </div>

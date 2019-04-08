@@ -6,6 +6,14 @@ export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
   GetAllOrdenCompra(){      
     return axios.get(CONFIG.API_URL+'ordencompra')
+    .then(response =>{  
+      console.log(response +' cuantos tare');           
+        return JSON.parse(JSON.stringify(response.data));
+               
+    })
+  },
+  UpdateOrdenCompra(OrdenCompra){    
+    return axios.post(CONFIG.API_URL+'ordencompra/update',OrdenCompra)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -54,6 +62,18 @@ export default{
   },
   getPOId(code){
     return axios.get(CONFIG.API_URL+'ordencompra/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getPOCod(code){
+    return axios.get(CONFIG.API_URL+'ordencompraByCod/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getPOCodAll(code){
+    return axios.get(CONFIG.API_URL+'ordencompraByCodAll/'+code)
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })

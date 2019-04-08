@@ -10,26 +10,32 @@ import { RequisicionModel } from '@/modelo/maestro/requisicion';
 import { RequisicionDetalleModel } from '@/modelo/maestro/requisiciondetalle';
 import { ProveedorModel } from '@/modelo/maestro/proveedor';
 import { MonedaModel } from '@/modelo/maestro/moneda';
+import { AlmacenModel } from '@/modelo/maestro/almacen';
 import { OrdenCompraModel } from '@/modelo/maestro/ordencompra';
 import { OrdenCompraDetalleModel } from '@/modelo/maestro/ordencompradetalle';
 import ordenCompraService from '@/components/service/ordencompra.service';
 import requisicionService from '@/components/service/requisicion.service';
 import proveedorService from '@/components/service/proveedor.service';
+import almacenService from '@/components/service/almacen.service';
+import impuestoService from '@/components/service/impuesto.service';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
+import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
 import { CompaniaModel } from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
+import ordencompraService from '@/components/service/ordencompra.service';
 @Component({
     name: 'modificar-po',
     components: {
         'buttons-accions': ButtonsAccionsComponent,
         'bmoneda': BMonedaComponent,
         'quickaccessmenu': QuickAccessMenuComponent,
-        'bimpuesto': BImpuestoComponent
+        'bimpuesto': BImpuestoComponent,
+        'bprioridad':BPrioridadComponent,
     }
 })
 export default class ModificarPOComponent extends Vue {
@@ -45,8 +51,22 @@ export default class ModificarPOComponent extends Vue {
     codigoInput: any;
     textosave = '';
     valuem: number = 0;
-    totalItems: number;
-    totalPrice: number;
+    dialogPrioridad:boolean=false;
+    btnactivarprioridad:boolean=false;
+    /*bolean_tabla_dinamica*/
+      editing:any= {
+        row:'',
+        column:''
+    };
+    rowSelect:number;
+    //#region [BOTONES]
+    bln_tbl_cantidad:boolean=false;
+    bln_tbl_UnidadMedida:boolean=false;
+    bln_tbl_Precio:boolean=false;
+    bln_tbl_prioridad:boolean=false;
+    bln_tbl_factor:boolean=false;
+    bln_tbl_check:boolean=true;
+    //#endregion
     //**[IMPUESTO] */
     public Impuesto: ImpuestoModel = new ImpuestoModel();
     dialogImpuesto: boolean = false;
@@ -56,19 +76,21 @@ export default class ModificarPOComponent extends Vue {
     intIdTypeReq_ID:number=0;
     intIdCompany_ID:number=0;
     intIdWHS_ID:number=0;
-
+    public selectrow:OrdenCompraDetalleModel=new OrdenCompraDetalleModel();
+    //**[ALMACEN] */
+    public almacen: AlmacenModel = new AlmacenModel();
     //**[MONEDA] */
     dialogMoneda: boolean = false;
     btnactivarMoneda: boolean = false;
     dataMoneda: any[];
     public moneda: MonedaModel = new MonedaModel();
     //**[REQUISICION] */
-    requisicionData: Array<RequisicionModel>[];
-    requisicionDetalle: any[];
-    public requiSelect: RequisicionModel = new RequisicionModel();
-    public requiDetalle: RequisicionDetalleModel[];
-    public requiDetalle1: RequisicionDetalleModel[];
-    multipleSelection: RequisicionDetalleModel[];
+    // requisicionData: Array<RequisicionModel>[];
+    // requisicionDetalle: any[];
+    // public requiSelect: RequisicionModel = new RequisicionModel();
+    public poDetalle: OrdenCompraDetalleModel[];
+    public poDetalle1: OrdenCompraDetalleModel[];
+    multipleSelection: OrdenCompraDetalleModel[];
 
     //**[PROVEEDORES] */
     dialogProveedor: boolean = false;
@@ -77,8 +99,13 @@ export default class ModificarPOComponent extends Vue {
     public selectProo: ProveedorModel = new ProveedorModel();
 
     //**[ORDEN COMPRA] */
+    public OrdenCompraByCod: OrdenCompraModel = new OrdenCompraModel();
     public OrdenCompra: OrdenCompraModel = new OrdenCompraModel();
+    ordenCompraData: any[];
     ordencompraDetalle: any[];
+    ordencompraDetalleTemp: any[];
+    dialogOrdenCompra:boolean=false;
+    btnactivarordencompra:boolean=false;
     //* [COMPANIA]
     public compania: CompaniaModel = new CompaniaModel();
 
@@ -90,9 +117,7 @@ export default class ModificarPOComponent extends Vue {
     provData1: ProveedorModel[];
     constructor() {
         super();
-        Global.nameComponent = 'crear-po';
-        this.OrdenCompra.chrPO_Status = '00';
-        this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
+        Global.nameComponent = 'modificar-po';   
         setTimeout(() => {
             this.loadPO();
         }, 200)
@@ -107,82 +132,126 @@ export default class ModificarPOComponent extends Vue {
     }
 
     //#endregion
-    //#region [REQUISICION]
-    loadRequisicion() {
-        this.dialogRequisicion = true;
-        this.requisicionData = [];
-        this.codigoInput = '';
-    }
-    searchRequisicion() {
-        this.getRequisicion(this.codigoInput);
-    }
-    getRequisicion(codigo) {
-        debugger;
-        requisicionService.getRequisicionByCod(codigo)
-            .then(response => {
-                console.log(response);
-                this.requisicionData = response;
-            })
-    }
-    getReqDetalle(v) {
-        requisicionService.getRequiDetallById(v)
-            .then(response => {
-                this.requiDetalle = response;
-                this.requiDetalle1 = response;
-                for (var i = 0; i <= this.requiDetalle.length; i++) {
-                    if (this.requiDetalle[i].strVendor_Suggested != undefined) {
-                        proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                            .then(response => {
-                                this.provData.push(response);
-                            })
-                    }
-                }
-            })
-    }
-    closeDialogReq() {
-        this.dialogRequisicion = false;
-        this.requiSelect = new RequisicionModel();
-        this.OrdenCompra.strRequis_NO = this.requiSelect.strRequis_NO;
-    }
-    closeDialog() {
-        this.dialogRequisicion = false;
-    }
-    desactivar_requisicion() {
-        if (this.dialogRequisicion) {
-            this.btnactivarrequisicion = false;
-        }
-    }
-    checkSelectdbRequisicion(val) {
-
-        this.OrdenCompra.intIdTypeReq_ID = val.intIdTypeReq_ID.intIdTypeReq_ID;
-        this.OrdenCompra.intIdWHS_ID = val.intIdWHS_ID.intIdWHS_ID;
-        this.requiSelect = val;
-        this.getReqDetalle(this.requiSelect.intIdPurReqH_ID);
-        this.loadCompania(this.requiSelect.strCompany_Cod);
-
-        this.OrdenCompra.strCompany_Cod = this.requiSelect.strCompany_Cod;
-    }
-    checkSelectdbRequi() {
-        this.dialogRequisicion = false;
-        this.OrdenCompra.strRequis_NO = this.requiSelect.strRequis_NO;
-
-    }
-    checkSelectdb(val: RequisicionModel) {
-        this.requiSelect = val;
-        this.dialogRequisicion = false;
-        this.OrdenCompra.strRequis_NO = this.requiSelect.strRequis_NO;
-    }
-    activar_requisicion() {
-        setTimeout(() => {
-            this.btnactivarpro = false;
-            this.btnactivarrequisicion = true;
-            this.btnactivarMoneda = false;
-            this.btnactivarImpuesto = false;
-        }, 120)
-    }
     handleSelectionChange(val) {
         this.multipleSelection = val;
     }
+    //#endregion
+    //#region [ACCIONES TABLA]
+    clickcantidad(event,edit,column){
+        this.bln_tbl_Precio=false;
+        this.bln_tbl_cantidad=true;
+        this.bln_tbl_UnidadMedida=false;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      clickUnidadMedida(event,edit,column){
+        this.bln_tbl_Precio=false;
+        this.bln_tbl_cantidad=false;
+        this.bln_tbl_UnidadMedida=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      clickPrice(event,edit,column){
+        this.bln_tbl_Precio=true;
+        this.bln_tbl_cantidad=false;
+        this.bln_tbl_UnidadMedida=false;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      clickprioridad(event,edit,column){
+        this.bln_tbl_prioridad=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      clickFactor(event,edit,column){
+        this.bln_tbl_factor=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+    handleBlurImporte(event) {
+        debugger;
+        this.OrdenCompra.fltCURR_QTY_I=0;
+        this.OrdenCompra.fltTotal_Val=0;
+        for(var i=0;i< this.multipleSelection.length;i++){
+            if(this.multipleSelection[i].blnCheck==true){
+                
+                this.OrdenCompra.fltTotal_Val+=Number((this.multipleSelection[i].fltPO_Net_PR_I)*(this.multipleSelection[i].fltPO_QTY_I)*(this.multipleSelection[i].intConv_Factor));
+                this.OrdenCompra.fltCURR_QTY_I+=Number(this.multipleSelection[i].fltPO_QTY_I);
+            }               
+        }     
+      }
+      handleChangeCantidad(val){
+        for (let i = 0; i < this.ordencompraDetalle.length; i++) {
+          if(this.ordencompraDetalle[i].intIdPOD_ID == this.rowSelect){
+              this.ordencompraDetalle[i].fltCurr_Net_PR_P=val*this.ordencompraDetalle[i].fltPO_Net_PR_I*this.ordencompraDetalle[i].intConv_Factor;
+              this.ordencompraDetalleTemp=this.ordencompraDetalle; 
+              this.ordencompraDetalle=[];              
+              this.ordencompraDetalle=this.ordencompraDetalleTemp;  
+              this.ordencompraDetalleTemp=[];
+          }
+        }          
+    }
+    handleChangeValUni(val){
+      for (let i = 0; i < this.ordencompraDetalle.length; i++) {
+          if(this.ordencompraDetalle[i].intIdPOD_ID == this.rowSelect){
+              this.ordencompraDetalle[i].fltCurr_Net_PR_P=val*this.ordencompraDetalle[i].fltPO_QTY_I*this.ordencompraDetalle[i].intConv_Factor;
+              this.ordencompraDetalleTemp=this.ordencompraDetalle; 
+              this.ordencompraDetalle=[];              
+              this.ordencompraDetalle=this.ordencompraDetalleTemp;  
+              this.ordencompraDetalleTemp=[];
+          }
+        }  
+    }
+      handleChangeFactor(val){
+        for (let i = 0; i < this.ordencompraDetalle.length; i++) {
+            if(this.ordencompraDetalle[i].intIdPOD_ID == this.rowSelect){
+                this.ordencompraDetalle[i].fltCurr_Net_PR_P=val*this.ordencompraDetalle[i].fltPO_QTY_I*this.ordencompraDetalle[i].fltPO_Net_PR_I;
+                this.ordencompraDetalleTemp=this.ordencompraDetalle; 
+                this.ordencompraDetalle=[];              
+                this.ordencompraDetalle=this.ordencompraDetalleTemp;  
+                this.ordencompraDetalleTemp=[];
+            }
+          }  
+      }
+
+    clickCheck(event,edit,column){
+        debugger;
+      event.edit=!edit;
+      this.editing.row=event;
+      this.editing.column=column;
+      this.OrdenCompra.fltCURR_QTY_I=0;
+      this.OrdenCompra.fltTotal_Val=0;
+      for(var i=0;i< this.multipleSelection.length;i++){
+          if(this.multipleSelection[i].blnCheck==true){
+              
+              this.OrdenCompra.fltTotal_Val+=Number((this.multipleSelection[i].fltPO_Net_PR_I)*(this.multipleSelection[i].fltPO_QTY_I)*(this.multipleSelection[i].intConv_Factor));
+              this.OrdenCompra.fltCURR_QTY_I+=Number(this.multipleSelection[i].fltPO_QTY_I);
+          }               
+      }        
+    }
+    handleBlur(event) {
+        // this.bln_tbl_categoria_cuenta=false;
+        event.edit=false;
+        this.editing.row='';
+        this.editing.column='';
+      }
+      LoadPrioridad(row){
+        this.selectrow=row;
+        this.dialogPrioridad=true;      
+      }
+      closePrioridad(){
+        this.btnactivarprioridad=false;
+        return false;
+      }
+      SeleccionadoPrioridad(val){
+        this.selectrow.strPriority_Cod=val.strPriority_Cod;
+        this.dialogPrioridad=false;
+      }
     //#endregion
     //#region [PROVEEDORES]
     desactivar_pro() {
@@ -230,17 +299,17 @@ export default class ModificarPOComponent extends Vue {
         this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
         this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
         var code = val.strVendor_NO;
-        var temp = this.requiDetalle;
-        this.requiDetalle1 = [];
-        this.requiDetalle1 = temp.filter(function (hero) {
-            return hero.strVendor_Suggested == code;
+        var temp = this.poDetalle;
+        this.poDetalle1 = [];
+        this.poDetalle1 = temp.filter(function (hero) {
+            return hero.strVendor_NO == code;
         });
-        for (var i = 0; i < this.requiDetalle1.length; i++) {
-            this.totalItems = this.totalItems + this.requiDetalle1[i].fltQuantity;
-            this.totalPrice = this.totalPrice * this.requiDetalle1[i].fltValue_Total;
+        for (var i = 0; i < this.poDetalle1.length; i++) {
+            this.OrdenCompra.fltCURR_QTY_I += Number(this.poDetalle1[i].fltPO_QTY_I);
+            this.OrdenCompra.fltTotal_Val = this.OrdenCompra.fltTotal_Val * this.poDetalle1[i].fltCurr_Net_PR_P;
         }
         if (this.Impuesto.fltPorcent != undefined) {
-            this.totalPrice = this.Impuesto.fltPorcent;
+            this.OrdenCompra.fltTotal_Val = this.Impuesto.fltPorcent;
         }
     }
     //#endregion
@@ -248,7 +317,12 @@ export default class ModificarPOComponent extends Vue {
     loadImpuesto() {
         this.dialogImpuesto = true;
     }
-
+    loadImpuestoData(v){
+        impuestoService.GetOnlyOneImpuesto(v)
+        .then(response=>{
+            this.Impuesto=response;
+        })
+    }
     closeDialogImpuesto() {
         this.btnactivarImpuesto = false;
         this.dialogImpuesto = false;
@@ -268,80 +342,85 @@ export default class ModificarPOComponent extends Vue {
     }
     impuestoselecionado(val: ImpuestoModel) {
         this.Impuesto = val;
-        this.dialogImpuesto = false;
+        this.OrdenCompra.strWH_Cod=this.Impuesto.strWH_Cod;
+        this.OrdenCompra.strWH_Desc=this.Impuesto.strWH_Desc;
+        this.dialogImpuesto=false;
     }
     closeImpuesto() {
         this.Impuesto = new ImpuestoModel();
         this.dialogImpuesto = false;
     }
     impuestoClose() {
-        this.Impuesto = new ImpuestoModel();
         this.dialogImpuesto = false;
+        this.Impuesto = new ImpuestoModel();
+        
     }
     //#endregion
     //#region [ORDEN COMPRA]
-    guardarPO(val) {
+    loadOrdenCompra(){
+        ordencompraService.GetAllOrdenCompra()
+        .then(response=>{
+            this.ordenCompraData=response;
+            this.dialogOrdenCompra=true;
+        })
+        .catch(error=>{
+
+        })
+    }
+    closeOrdenC(){
+        this.dialogOrdenCompra=false;
+    }
+    checkSelectOC(){
+        this.dialogOrdenCompra=false;
+        this.fecha_ejecucion = Global.getParseDate(this.OrdenCompra.dtmProcess_Date);
+        this.loadImpuestoData(this.OrdenCompra.strWH_Cod);
+        ordencompraService.GetAllOrdenDetalle(this.OrdenCompra.intIdPOH_ID)
+        .then(response=>{
+            this.ordencompraDetalle=response;          
+        })
+    }
+    checkSelectOrdenCompra(val){
+        almacenService.GetOneAlmacen(val.intIdWHS_ID.intIdWHS_ID)
+        .then(response=>{
+            this.almacen=response;
+        })
+        this.OrdenCompra=val;
+        this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;
+    }
+    searchOrdenCompra(){
+
+    }
+    desactivar_ordencompra(){
+        if (this.dialogOrdenCompra) {
+            this.btnactivarordencompra = false;
+        }
+    }
+    activar_ordencompra(){
+        setTimeout(() => {
+            this.btnactivarpro = false;
+            this.btnactivarrequisicion = false;
+            this.btnactivarMoneda = false;
+            this.btnactivarImpuesto = false;
+            this.btnactivarordencompra=true;
+        }, 120)
+    }
+    guardarEditPO(val) {
         if (this.multipleSelection.length == 0) {
             this.$message({
                 showClose: true,
                 type: 'warning',
                 message: 'Debe seleccionar al menos 1 detalle'
             });
-        }
-
+        }        
         else {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
-                this.OrdenCompra.listaDetalle.push({
-                    intIdAcctCateg_ID: this.multipleSelection[i].intIdAcctCateg_ID,
-                    intIdCategLine_ID: this.multipleSelection[i].intIdCategLine_ID,
-                    intIdCurrency_ID: this.multipleSelection[i].intIdCurrency_ID,
-                    intIdCostCenter_ID: this.multipleSelection[i].intIdCostCenter_ID,
-                    intPO_Item_NO: 1,//falta de la cabecea
-                    strPO_Item_Desc: this.multipleSelection[i].strDescription,
-                    chrPO_Item_Status: this.multipleSelection[i].chrStatus,
-                    strPO_Curr: this.OrdenCompra.strRequis_NO,
-                    strRequis_NO: this.OrdenCompra.strRequis_NO,
-                    intRequis_Item_NO: this.requiSelect.intIdPurReqH_ID,//requis
-                    intChange_Count: 0,//0 cantidad de veces que cambia
-                    chrReceipt_Status: '00',//los codigos de aprobacion
-                    strMaterial_Group: this.multipleSelection[i].strMat_Group_Cod,//si hay
-                    strPreq_Stock_Cod: this.multipleSelection[i].strMaterial_Cod,
-                    intIdInvStock_ID: 2,//id  de stock
-                    dtmOrig_Due_Date: new Date(),
-                    strUnit_Of_Purch: this.multipleSelection[i].strUM,//unidad de medida
-                    fltPO_QTY_I: this.multipleSelection[i].fltQuantity,//cantidad
-                    fltPO_Net_PR_I: this.multipleSelection[i].fltUnitPrice,//precio unitario
-                    fltCurr_Net_PR_P: this.multipleSelection[i].fltValue_Total,//total por producto
-                    intConv_Factor: 1,//factor multiplica a la cantidad de productos/Editable
-                    strTax_Cod: this.Impuesto.strWH_Cod,
-                    strWH_Tax_Detraccion: this.Impuesto.strWH_Cod,
-                    strWH_Retention: this.Impuesto.fltPorcent,
-                    fltTax_Percent: this.Impuesto.fltPorcent,
-                    intIdWHS_ID: 4,//almacen id correlativo
-                    intInv_QTY_UOP: 0,//Inv_QTY //viene de la factura
-                    intInvoice_NO: 0,//numero de la factura
-                    fltInv_Pend_QTY_P: 0,//cantidad pendiente
-                    fltInv_Pend_Val_F: 0,//
-                    fltInv_Pend_Val_L: 0,
-                    fltInv_Pend_Val_S: 0,
-                    strDeliv_Location: '',//texto de la requisicion puede ser editado
-                    fltTot_PO_Item: 1,
-                    strAccount_Cod: '',//codigo de cuenta contable
-                    intIdCostCenter: 2,//
-                    strWBS_Project: '',//vacio
-                    strCreation_User: 'egaona'
-                });
+                this.OrdenCompra.listaDetalle.push(this.multipleSelection[i]);
             }
-            this.OrdenCompra.strAuthsd_By = 'egaona';
-            this.OrdenCompra.intChange_Count = 0;
-            this.OrdenCompra.dtmProcess_Date = new Date();
-            this.OrdenCompra.intIdPurReqH_ID = this.requiSelect.intIdPurReqH_ID;
-            this.OrdenCompra.strPO_Item_Type = 'C';
-            this.OrdenCompra.strAuthsd_Status = '00';
-            this.OrdenCompra.fltCURR_QTY_I = 0;
-            this.OrdenCompra.fltTotal_Val = 0;
-            this.OrdenCompra.strCreation_User = 'egaona';
+            this.OrdenCompra.intChange_Count = Number(this.OrdenCompra.intChange_Count)+1;
+            this.OrdenCompra.strModified_User = 'egaona';
+            this.OrdenCompra.dtmModified_Date=new Date();
+            
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guargando...',
@@ -349,16 +428,21 @@ export default class ModificarPOComponent extends Vue {
                 background: 'rgba(0, 0, 0, 0.8)'
             }
             );
-            if (val == 'crear-po') {
-                ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
+            if (val == 'modificar-po') {
+                console.log(this.OrdenCompra);
+                
+                ordenCompraService.UpdateOrdenCompra(this.OrdenCompra)
                     .then(response => {
                         loadingInstance.close();
                         this.issave = true;
                         this.iserror = false;
                         this.OrdenCompra = new OrdenCompraModel();
-                        this.requiSelect = new RequisicionModel();
                         this.Impuesto = new ImpuestoModel();
-                        this.requiDetalle1 = [];
+                        this.almacen=new AlmacenModel();
+                        this.fecha_ejecucion='';
+                        this.multipleSelection=[];
+                        this.ordencompraDetalle=[];
+                        this.poDetalle1 = [];
                         this.textosave = 'Se guardo correctamente.';
 
                     }).catch(error => {
@@ -371,15 +455,33 @@ export default class ModificarPOComponent extends Vue {
         }
 
     }
+    handleCurrentChange(val){
+        debugger;
+        this.rowSelect=val.intIdPOD_ID;         
+    }
+    // toggleSelection(rows) {
+    //     if (rows) {
+    //       rows.forEach(row => {
+    //         this.$refs.missionTable.toggleRowSelection(row);
+    //       });
+    //     } else {
+    //       this.$refs.missionTable.clearSelection();
+    //     }
+    //   }
     //#endregion
     //#region [MONEDA]
     loadMoneda() {
         this.dialogMoneda = true;
     }
     MonedaSeleccionado(val: MonedaModel) {
-        this.moneda = val
-        this.dialogMoneda = false;
-        this.OrdenCompra.strPO_Curr = this.moneda.strCurrency_Cod;
+        this.moneda=val
+        this.dialogMoneda=false;
+        this.OrdenCompra.strPO_Curr=this.moneda.strCurrency_Cod;
+        this.OrdenCompra.strCurrency_Cod=this.moneda.strCurrency_Cod;
+        this.OrdenCompra.strCurrency_Desc=this.moneda.strCurrency_Desc;
+        this.OrdenCompra.intIdAcctCont_ID=this.moneda.intIdAcctCont_ID;
+        this.OrdenCompra.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
+        this.OrdenCompra.strAcc_Corp_NO=this.moneda.strAcc_Corp_NO;
     }
     closeMoneda() {
         this.moneda = new MonedaModel();
@@ -406,24 +508,26 @@ export default class ModificarPOComponent extends Vue {
     //#region [LOAD GET]
     loadPO(){
         debugger;
-        var object = JSON.parse(this.$route.query.data);
-        console.log('data extra',object);
         var modulo = this.$route.query.vista;
-        if(modulo.toLowerCase()!='aprobar'){
+
+        if(modulo==undefined){
+            debugger;
           this.txtmodulo='Modificar Orden Compra';
           this.vifaprobarrechasar=false;
-          if(modulo.toLowerCase()!='visualizar'){
-            this.visualizar=true;
-          }
-          else{
-            this.visualizar=false;
-          }
+          this.visualizar=false;
+        //   if(modulo.toLowerCase()!='visualizar'){
+            
+        //   }
+        //   else{
+        //     this.visualizar=false;
+        //   }
         }
         else{
-            this.visualizar=true;
+            debugger;
+            var object = JSON.parse(this.$route.query.data); 
+            this.visualizar=false;
             this.vifaprobarrechasar=true;
             this.txtmodulo='Aprobar Orden Compra';
-            console.log(object.intIdPOH_ID);
             this.intIdVendor_ID=object.intIdVendor_ID;
             this.intIdTypeReq_ID=object.intIdTypeReq_ID;
             this.intIdPurReqH_ID=object.intIdPurReqH_ID;
@@ -435,20 +539,16 @@ export default class ModificarPOComponent extends Vue {
         ordenCompraService.getPOId(code)
         .then(res=>{
           if(res!=undefined){
-            console.log('cargarData1',res)
             ordenCompraService.getPODetalleId(res[0].intIdPOH_ID)
             .then(resd=>{
               this.OrdenCompra=res[0];
-              this.requiDetalle1=resd;
-              console.log('cargarData2',resd,this.requiDetalle1)
+              this.poDetalle1=resd;
             })
             .catch(error=>{
-              console.log('error',error)
             })     
           }
         })
         .catch(error=>{
-          console.log('error',error)
         })
       }
     async aprobar(){
@@ -457,10 +557,7 @@ export default class ModificarPOComponent extends Vue {
         this.OrdenCompra.intIdPurReqH_ID=this.intIdPurReqH_ID;
         this.OrdenCompra.intIdVendor_ID=this.intIdVendor_ID;
         this.OrdenCompra.intIdTypeReq_ID=this.intIdTypeReq_ID;
-        this.OrdenCompra.intIdPurReqH_ID=this.intIdPurReqH_ID;
-        this.OrdenCompra.intIdWHS_ID=this.intIdWHS_ID;
-        
-        console.log('aprobar',this.OrdenCompra);
+        this.OrdenCompra.intIdWHS_ID=this.intIdWHS_ID;        
         await setTimeout(() => {
             for(var i=0;i<100;i++){
             this.valuem++; 
@@ -468,20 +565,19 @@ export default class ModificarPOComponent extends Vue {
         }, 200)
         await ordenCompraService.aprobarPO(this.OrdenCompra)
         .then(res=>{
-            this.OrdenCompra.listaDetalle=this.requiDetalle1;
-            this.vifprogress=false;
-            this.issave=true;
-            this.textosave='Se aprobó correctamente. '+res.strPO_NO;
-            this.openMessage('Se aprobó correctamente '+res.strPO_NO);
-            // ordenCompraService.inventarioPO(this.OrdenCompra)
-            // .then(res=>{
-            //     setTimeout(() => {
-            //        
-            //     }, 600)
-            // })
-            // .catch(error=>{
-            //     this.textosave='Ocurrio un error inesperado. ';
-            // })
+            this.OrdenCompra.listaDetalle=this.poDetalle1;
+            ordenCompraService.inventarioPO(this.OrdenCompra)
+            .then(res=>{
+                setTimeout(() => {
+                    this.vifprogress=false;
+                    this.issave=true;
+                    this.textosave='Se aprobó correctamente. '+res.strPO_NO;
+                    this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+                }, 600)
+            })
+            .catch(error=>{
+                this.textosave='Ocurrio un error inesperado. ';
+            })
         })
         .catch(error=>{
             this.textosave='Ocurrio un error inesperado. ';
@@ -500,7 +596,7 @@ export default class ModificarPOComponent extends Vue {
         return {
             nameComponent: 'crear-po',
             codigoInput: '',
-            tableData: [],
+            tableData: [],  
             requisicionDetalle: [],
             requisicionData: [],
             provData: [],
@@ -510,8 +606,8 @@ export default class ModificarPOComponent extends Vue {
             requiDetalle1: [],
             multipleSelection: [],
             ordencompraDetalle: [],
-            totalItems: 0,
-            totalPrice: 0
+            fecha_ejecucion:'',
+            ordenCompraData:[]
         }
     }
 }

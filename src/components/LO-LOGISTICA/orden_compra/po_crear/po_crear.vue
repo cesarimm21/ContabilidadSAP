@@ -152,11 +152,13 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="requiDetalle1"
+                                        :row-class-name="tableRowClassName"
                                         highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @selection-change="handleSelectionChange"
-                                        @current-change="handleCurrentChange">
+                                        @current-change="handleCurrentChange"
+                                        >
                                         <el-table-column
                                             type="selection"
                                             width="45">
@@ -184,10 +186,10 @@
                                         <el-table-column 
                                             prop="blnCheck"
                                             width="100"
-                                            label="Costo">
+                                            label="Incluir Costo">
                                             <template scope="scope">
                                              <el-checkbox class="newCheckBox" v-if="(scope.row != editing.row)||(scope.row === editing.row)" v-focus size="small" v-model="scope.row.blnCheck" @change="clickCheck(scope.row,$event,scope.column.property)">
-                                                </el-checkbox>
+                                            </el-checkbox>
                                             <!-- <el-checkbox class="newCheckBox" v-else @change="clickCheck(scope.row,$event,scope.column.property)" v-model="scope.row.blnCheck"></el-checkbox> -->
                                                 <!-- <label  v-else @click="clickCheck(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.blnCheck }}</label> -->
                                             </template>
@@ -196,9 +198,9 @@
                                             prop="fltQuantity" sortable width="100"
                                             label="Cantidad">
                                             <template scope="scope">
-                                                <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltQuantity" :precision="2">
-                                                </el-input-number>
+                                                <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltQuantity" :precision="2">
+                                                </el-input>
                                                 <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
@@ -216,9 +218,9 @@
                                             prop="fltUnitPrice" sortable width="100"
                                             label="Valor Unitario">
                                             <template scope="scope">
-                                                <el-input-number  v-if="bln_tbl_Precio  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2">
-                                                </el-input-number>
+                                                <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2" :step="0.01">
+                                                </el-input>
                                                 <label style="width:100%"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
@@ -240,11 +242,15 @@
                                         <el-table-column prop="intConv_Factor" sortable width="100"
                                             label="Factor">
                                             <template scope="scope">
-                                                <el-input-number  v-if="bln_tbl_factor  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
-                                                </el-input-number>
+                                                <el-input  type="number" v-if="bln_tbl_factor  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
+                                                </el-input>
                                                 <label style="width:100%"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
                                             </template>
+                                        </el-table-column>
+                                        <el-table-column v-if="false"
+                                            prop="chrStatus" sortable width="40"
+                                            label="Estado">                                   
                                         </el-table-column>
 
                                     </el-table>
@@ -344,7 +350,7 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdbRequi()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdb()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDialogReq()">
@@ -396,7 +402,7 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdbProveedor()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkDoblePro()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
                 <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDialogProX()">
@@ -419,4 +425,5 @@ export default CrearPOComponent
 .el-table__body-wrapper{
     height: 50%;
 }
+
 </style>

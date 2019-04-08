@@ -10,7 +10,7 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-
+import Global from '@/Global';
 import { Notification } from 'element-ui';
 @Component({
   name: 'buttons-accions',
@@ -23,6 +23,9 @@ export default class ButtonsAccionsComponent extends Vue {
   } 
   BuscarSome(){
     this.$emit('handleClickInParent');
+    if(Global.nameComponent==='aprobar-hes'){
+      this.$emit('handleSearchHes',Global.nameComponent);
+    }
   }
   data(){
     return{
