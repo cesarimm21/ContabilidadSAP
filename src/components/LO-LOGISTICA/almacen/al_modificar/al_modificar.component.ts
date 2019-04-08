@@ -1318,21 +1318,57 @@ export default class ModificarMaterialComponent extends Vue {
     this.SendDocument=true;
   }
 
+
+  validador(){
+    debugger;
+    if(this.productoModel.intIdWHS_Stat_ID==undefined){
+      return true;
+    }
+    if(this.tiporequisicion==""){
+      return true;
+    }
+    if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
+      return true;
+    }
+    if(this.productoModel.fltQtyLimit_Min<=0){
+      return true;
+    }
+    if(this.productoModel.intIdMatClass_ID==undefined){
+      return true;
+    }
+    if(this.productoModel.fltFactor<=0){
+      return true;
+    }
+    if(this.productoModel.intIdUnidadMedida==undefined){
+      return true;
+    }
+    if(this.productoModel.intIdVendor_ID==undefined){
+      return true;
+    }
+    return false;
+  }
   guardarTodo(val){
-    this.productoModel.intIdWHS_Stat_ID=1;
-    this.productoModel.intIdCommTax_ID=1;
-    productoService.UpdateProducto(this.productoModel)
-    .then(res=>{ 
-      debugger;
-      this.issave=true;
-      this.textosave='Se guardo correctamente.'
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo guardar producto'
-      });
-    })
+    if(!this.validador()){
+      this.productoModel.intIdWHS_Stat_ID=1;
+      this.productoModel.intIdCommTax_ID=1;
+      productoService.UpdateProducto(this.productoModel)
+      .then(res=>{ 
+        debugger;
+        this.issave=true;
+        this.textosave='Se guardo correctamente.'
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo guardar producto'
+        });
+      })
+    }
+    else{
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='No se pudo guardar. Revise los datos'
+    }
   }
   clickable(){
     return false;

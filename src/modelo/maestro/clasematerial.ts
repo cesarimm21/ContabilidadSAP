@@ -23,4 +23,6 @@ export class ClaseMaterialModel {
     strMatClass_Desc: string;
     strMatClass_Name: string;
     strModified_User: string;
+    strExp_Cod_Loc:string;
+    strExp_Desc_Loc:string;
 }

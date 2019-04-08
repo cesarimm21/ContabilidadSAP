@@ -601,8 +601,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.selectrow.fltQuantity=val.fltQuantity_Virtual;
     this.selectrow.fltPrecUnit_Local=val.fltPrecUnit_Local;
     this.selectrow.fltPrecUnit_USD=val.fltPrecUnit_USD;
-    
     this.dialogMaterial=false;
+    
   }
   SeleccionadoUnidadMedida(val){
     debugger;

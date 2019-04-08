@@ -62,7 +62,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm-3" >
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Código Antiguo</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
@@ -70,11 +70,20 @@
                                             </el-input>
                                             </div>
                                         </div>
+                                    </div>  -->
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" >Numero Parte</label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strPart_NO"  placeholder="">
+                                            </el-input>
+                                            </div>
+                                        </div>
                                     </div> 
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Código Almacen</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Código Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
@@ -88,7 +97,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-3" >
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Numero Parte</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
@@ -96,11 +105,22 @@
                                             </el-input>
                                             </div>
                                         </div>
+                                    </div>  -->
+                                    <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>UM </label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" @blur="desactivar_unidad_medida" @focus="activar_unidad_medida" v-model="productoModel.strUM_Cod"   placeholder="" @keyup.enter.native="enterUnidadMedida(productoModel.strUM_Cod)"  @keyup.delete.native="borrarUnidadMedida()">
+                                                <el-button v-if="btnactivarunidadmedida && !dialogUnidadMedida" slot="append" class="boton" icon="fa fa-clone" @click="loadUnidadMedida()"></el-button> 
+                                            </el-input>
+                                            </div>
+                                        </div>
+                                        <!-- <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strUM_Desc}}</span> -->
                                     </div> 
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Tipo</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Tipo</label>
                                         <!--<div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
@@ -150,10 +170,10 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Cantidad Maxima</label>
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Cantidad Maxima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltQtyLimit_Max"  @focus="limpiarBotones"  type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltQtyLimit_Max" :min="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -161,11 +181,11 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Clase Material</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Clase Material</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_clase_material" @focus="activar_clase_material" v-model="productoModel.strMaterial_Class"  placeholder="" @keyup.enter.native="enterClaseMaterial(productoModel.strMaterial_Class)"  @keyup.delete.native="borrarClaseMaterial()">
-                                                <el-button v-if="btnactivarclasematerial && !dialogClaseMaterial" slot="append" class="boton" icon="fa fa-clone" @click="loadClaseMaterial()"></el-button> 
+                                            <el-input size ="small" @blur="desactivar_clase_material"  @focus="activar_clase_material" v-model="productoModel.strMaterial_Class"  placeholder="" @keyup.enter.native="enterClaseMaterial(productoModel.strMaterial_Class)"  @keyup.delete.native="borrarClaseMaterial()">
+                                                <el-button v-if="btnactivarclasematerial && !dialogClaseMaterial"  slot="append" class="boton" icon="fa fa-clone" @click="loadClaseMaterial()"></el-button> 
                                             </el-input>
                                             </div>
                                             <!-- <div class="input-group mb-3" >
@@ -186,10 +206,10 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Factor</label>
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Cantidad Minima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
+                                                <el-input size ="small" v-model="productoModel.fltQtyLimit_Min" :max="productoModel.fltQtyLimit_Max" :min="0" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -213,7 +233,17 @@
                             <div class="row">
                                 
                                 <div class="col-sm-3" >
+                                    
                                     <div class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Factor</label>
+                                        <div class="col-md-6 grupolabel">
+                                            <div class="input-group mb-3" >
+                                                <el-input size ="small" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
+                                                </el-input>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Cantidad</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
@@ -221,11 +251,11 @@
                                                 </el-input>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>  -->
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Proveedor</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Proveedor</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="productoModel.strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(productoModel.strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
@@ -238,17 +268,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Cantidad Minima</label>
-                                        <div class="col-md-6 grupolabel">
-                                            <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
-                                                </el-input>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </div>
+                                
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Cta. Gasto</label>
@@ -265,7 +285,7 @@
                                 
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >P. Unitario PEN</label>
                                         <div class="col-md-6 grupolabel">
@@ -275,7 +295,7 @@
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Categ. Material</label>
@@ -293,7 +313,7 @@
                             
                             <div class="row">
                                 
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >P. Unitario USD</label>
                                         <div class="col-md-6 grupolabel">
@@ -303,7 +323,7 @@
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Grupo Comprador</label>
@@ -322,7 +342,7 @@
                             
                             <div class="row">
                                 
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Importe_Actual USD</label>
                                         <div class="col-md-6 grupolabel">
@@ -332,7 +352,7 @@
                                             </div>
                                         </div>
                                     </div> 
-                                </div>
+                                </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Impuesto </label>
@@ -349,7 +369,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-3" >
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Importe Actual PEN </label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
@@ -357,20 +377,10 @@
                                                 </el-input>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>  -->
                                 </div>
                                 <div class="col-sm-9" >
-                                    <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >UM </label>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_unidad_medida" @focus="activar_unidad_medida" v-model="productoModel.strUM_Cod"   placeholder="" @keyup.enter.native="enterUnidadMedida(productoModel.strUM_Cod)"  @keyup.delete.native="borrarUnidadMedida()">
-                                                <el-button v-if="btnactivarunidadmedida && !dialogUnidadMedida" slot="append" class="boton" icon="fa fa-clone" @click="loadUnidadMedida()"></el-button> 
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strUM_Desc}}</span>
-                                    </div> 
+                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -386,7 +396,7 @@
                                     </div> 
                                 </div> -->
                                 <div class="col-sm-9" >
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Control Precio</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
@@ -396,7 +406,7 @@
                                             </div>
                                         </div>
                                         <span style="font-size: 11px;margin-top: 5px;">{{productoModel.strCtlPrec_Desc}}</span>
-                                    </div> 
+                                    </div>  -->
                                 </div>
                             </div>
                         </div>
@@ -410,7 +420,7 @@
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
                 <img src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/save.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>
             </div>
             <div class="col-sm-3">
@@ -521,10 +531,10 @@
                 </el-card>
                 <br/>
                 <footer class="modal-footer">
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="SeleccionadoClaseMaterial()">
                     <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                     </el-button>
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeClaseMaterial()">
                     <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                     </el-button>
                 </footer>
