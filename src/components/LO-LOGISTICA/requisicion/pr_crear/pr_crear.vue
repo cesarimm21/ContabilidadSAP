@@ -82,7 +82,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:EliminarItem="EliminarItem()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -96,6 +96,15 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="58">
                                         </el-table-column>
+                                        
+                                        <el-table-column
+                                            prop="intRequis_Item_NO" sortable width="200"
+                                            label="intRequis_Item_NO">
+                                            <template scope="scope">
+                                                <label style="width:100%" >&nbsp;{{ scope.row.intRequis_Item_NO }}</label>
+                                            </template>
+                                        </el-table-column>
+
                                         <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cta. cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
@@ -105,6 +114,7 @@
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCateg_Account }}</label>
                                             </template>
                                         </el-table-column>  
+                                        
                                         <el-table-column
                                             prop="strCateg_Line" sortable  min-width="80"
                                             label="Cat. linea">

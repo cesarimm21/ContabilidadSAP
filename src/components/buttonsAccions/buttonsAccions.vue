@@ -35,10 +35,16 @@
                                         <el-button class="buttonfilter btn btn-outline-secondary orange" >
                                             <img class="imagenfilter" src="../../images/informacion.png" alt="" >
                                         </el-button>
-                                    </el-tooltip>                                                                     
-                                    <el-tooltip  content="Habilitar Afecto/Inafecto" placement="right" effect="dark">
-                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="changeIcon()">
-                                            <img class="imagenfilter" src="../../images/check.png" >
+                                    </el-tooltip>      
+                                    <div class="v-separator"></div>                                                                 
+                                    <el-tooltip  content="" placement="right" effect="dark">
+                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
+                                            <img class="imagenfilter" src="../../images/siguiente.png" >
+                                        </el-button>                                        
+                                    </el-tooltip>
+                                       <el-tooltip  content="" placement="right" effect="dark">
+                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="anterior()">
+                                            <img class="imagenfilter" src="../../images/anterior.png" >
                                         </el-button>                                        
                                     </el-tooltip>
                                   </div>

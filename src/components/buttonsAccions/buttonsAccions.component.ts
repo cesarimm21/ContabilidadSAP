@@ -37,6 +37,12 @@ export default class ButtonsAccionsComponent extends Vue {
   EliminarItem(){
     this.$emit('EliminarItem');
   }
+  siguiente(){
+    this.$emit('siguiente');
+  }
+  anterior(){
+    this.$emit('anterior');
+  }
   data(){
     return{
       dialogTableVisible: false,

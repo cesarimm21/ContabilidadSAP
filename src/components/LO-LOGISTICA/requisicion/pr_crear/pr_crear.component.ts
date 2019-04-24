@@ -179,6 +179,13 @@ export default class CrearPRComponent extends Vue {
   strTypeMov_Cod:string='';
   strTypeMov_Desc:string='';
 
+  /*paginatio*/
+  
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<RequisicionDetalleModel>=[]; 
+
   constructor(){
     super();
     this.fecha_actual=(new Date()).toString();
@@ -197,23 +204,7 @@ export default class CrearPRComponent extends Vue {
   }
 
   load(){
-    categoriacuentaService.GetOnlyOneCategoriaCuenta("A")
-    .then(res=>{
-      this.categoriaCuentaModel=res[0];
-      console.log('Categoria-Cuenta',this.categoriaCuentaModel);
-      for(var i=0;i<10;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.strCateg_Account="A";
-        reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
-        this.tableData1.push(reqDetalle);
-      }
-      console.log(this.tableData1);
-
-    })
-    .catch(error=>{
-      console.log('error',error)
-    })
+    debugger;
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;
@@ -225,6 +216,27 @@ export default class CrearPRComponent extends Vue {
     .catch(error=>{
       console.log('error',error)
     })
+    categoriacuentaService.GetOnlyOneCategoriaCuenta("ST")
+    .then(res=>{
+      this.categoriaCuentaModel=res[0];
+      console.log('Categoria-Cuenta',this.categoriaCuentaModel);
+      debugger;
+      for(var i=0;i<this.totalRegistros;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+        reqDetalle.strCateg_Account="ST";
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
+        console.log('----sss----',reqDetalle);
+      }
+     
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+
+    })
+    .catch(error=>{
+      console.log('error',error)
+    })
+  
     maestroService.GetMaestro('VIEW','LA05') 
     .then(res=>{
       debugger;
@@ -344,6 +356,7 @@ export default class CrearPRComponent extends Vue {
         this.intlineaselect=val.intRequis_Item_NO-1;
       }
       this.currentRow = val;
+      console.log(this.currentRow);
       this.getDetalle(val);
     }
   }
@@ -518,7 +531,7 @@ export default class CrearPRComponent extends Vue {
       
       for(var i=0;i<10;i++){
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.strCateg_Account="A"
+        reqDetalle.strCateg_Account="ST"
         this.tableData1.push(reqDetalle);
       }
     }
@@ -696,7 +709,7 @@ export default class CrearPRComponent extends Vue {
     this.dialogCategoriaCuenta=false;
 
     setTimeout(() => {
-      if(val.strAcctCateg_Cod=='C'){
+      if(val.strAcctCateg_Cod=='CC'){
         this.dialogCentroCostos=true;
       }
     }, 300)
@@ -710,7 +723,7 @@ export default class CrearPRComponent extends Vue {
 
     setTimeout(() => {
       debugger;
-      if(this.selectrow.strCateg_Account=='C'){
+      if(this.selectrow.strCateg_Account=='CC'){
         if(this.selectrow.strCateg_Line=='B' || this.selectrow.strCateg_Line=='S'){
           this.dialogMaterial=true;
         }
@@ -882,7 +895,21 @@ export default class CrearPRComponent extends Vue {
   }
   
   EliminarItem(){
-    
+    console.log(this.currentRow.intRequis_Item_NO);
+    this.tableData1.splice(this.currentRow.intRequis_Item_NO-1, 1);
+    for(var i=this.currentRow.intRequis_Item_NO-1;i<this.tableData1.length;i++){
+      this.tableData1[i].intRequis_Item_NO=i+1;
+    }
+    console.log(this.tableData1);
+  }
+  siguiente(){
+    this.pagina++;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  }
+  anterior(){
+
+    this.pagina--;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
   }
   data(){
     return{
