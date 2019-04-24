@@ -162,8 +162,8 @@ export default class QuickAccessMenuComponent extends Vue {
   linksLogin(){
     router.push('/inicio')
   }
-  linkRoute(route){
-    router.push(route)
+  linkRoute(){
+    router.push('/barmenu/inicio')
   }
   redirectLogin(msg){
     Notification.warning(msg)
