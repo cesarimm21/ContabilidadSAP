@@ -880,6 +880,10 @@ export default class CrearPRComponent extends Vue {
   reloadpage(){
     window.location.reload();
   }
+  
+  EliminarItem(){
+    
+  }
   data(){
     return{
       dialogTableVisible: false,

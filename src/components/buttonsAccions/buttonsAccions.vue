@@ -8,7 +8,7 @@
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ValidarItem()">
                                         <img class="imagenfilter" src="../../images/buscar.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="EliminarItem()" >
                                         <img class="imagenfilter" src="../../images/tacho.png" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
