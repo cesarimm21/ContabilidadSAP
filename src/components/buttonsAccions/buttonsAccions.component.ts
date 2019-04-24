@@ -34,6 +34,9 @@ export default class ButtonsAccionsComponent extends Vue {
   ValidarItem(){
     this.$emit('validarView');
   }
+  EliminarItem(){
+    this.$emit('EliminarItem');
+  }
   data(){
     return{
       dialogTableVisible: false,
