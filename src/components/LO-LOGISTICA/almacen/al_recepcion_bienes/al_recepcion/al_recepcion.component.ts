@@ -602,6 +602,12 @@ export default class RecepcionMaterialComponent extends Vue {
         type: 'success'
         });
     }
+    backPage(){
+        window.history.back();
+      }
+      reloadpage(){
+        window.location.reload();
+      }
     //#endregion
     data() {
         return {

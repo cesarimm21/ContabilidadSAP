@@ -1,5 +1,8 @@
 <template>
   <div class="run-pagos">
+      <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
+      <quickaccessmenu v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+      </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard"  >
                 <span class="labelheadercard">Pagos automaticos</span>
@@ -204,7 +207,7 @@
                                 </div>
                             </div>
                              <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top:2px;" >
-                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" @click="viewProveedor()" >
+                                    <img class="imagenfilter" src="../../../../images/collapse_derecha.png" alt="" @click="viewProveedor()" >
                                 </el-button>
                         </div>
                         <div class="row bodycard" style="margin-top:0px;">
@@ -223,7 +226,7 @@
                                 </div>
                             </div>
                              <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top:2px;" >
-                                    <img class="imagenfilter" src="../../images/collapse_derecha.png" alt="" @click="viewProveedor()">
+                                    <img class="imagenfilter" src="../../../../images/collapse_derecha.png" alt="" @click="viewProveedor()">
                                 </el-button>
                         </div>
                         
@@ -279,8 +282,8 @@
                 </el-table>
           </el-card>
         <span slot="footer" class="dialog-footer">
-            <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
-            <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
         </span>
     </el-dialog>
     <el-dialog
@@ -323,8 +326,8 @@
                 </el-table>
           </el-card>
         <span slot="footer" class="dialog-footer">
-            <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
-            <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
         </span>
     </el-dialog>
     <el-dialog
@@ -367,15 +370,15 @@
                 </el-table>
           </el-card>
         <span slot="footer" class="dialog-footer">
-            <img src="../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
-            <img src="../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogVisible = false"/>
         </span>
     </el-dialog>
     </div>  
 </template>
 <script>
 
-import RunComponent from '@/components/run/run.component'
+import RunComponent from '@/components/FI-FINANZAS/Tesoreria/run/run.component'
 export default RunComponent
 </script>
 <style scoped>

@@ -1,7 +1,10 @@
 <template>
   <div class="top-menu">
     <div class="logo" style="align-items: center;justify-content: center;cursor: pointer;" >
-        <img src="../../../images/logo.png" style="width: 100px !important; height: 51px !important;" @click="linkRoute('/barmenu/inicio')"> 
+    <input class="buscadorbar" type="text"  v-if="ocultar" v-model="codigo" v-on:keyup.13="loadBarmenu" size ="small"  style="width: 50px;margin-left: 0.1rem;" placeholder=" " required :maxlength="4">
+    <img src="../../../images/collapse_left.png" v-if="ocultar" style="width:9px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+    <img src="../../../images/collapse_derecha.png" v-if="!ocultar" style="width:9px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+      <img src="../../../images/logo.png" style="width: 100px !important; height: 51px !important;" @click="linkRoute('/barmenu/inicio')"> 
     </div>
     <div class="side-toolbar bg-purple2">
       <el-tooltip class="item" effect="dark" content="Activar barmenu" placement="bottom">
@@ -10,8 +13,8 @@
       </div>
       </el-tooltip>
     </div>
-    <div class="brand" >Sistema de <span style="color:#d7803d">Gestión Empresarial</span></div>
-
+    <div class="brand" >Sistema de <span style="color:#d7803d">Gestión Empresarial </span>
+    <span >{{compania}}</span> </div>
    
     <el-tooltip class="item" effect="dark" :content="namecomplete" placement="bottom">
       <div class="user-container " style="line-height: 35px;"><i class="el-icon-fa-user" style="font-size: 16px;"></i> <span style="font-size: 14px;">{{nameuser}}</span>

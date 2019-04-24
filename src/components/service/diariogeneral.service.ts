@@ -9,6 +9,12 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetLastCodCorrelativo(){
+    return axios.get(CONFIG.API_URL+'correlativo')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

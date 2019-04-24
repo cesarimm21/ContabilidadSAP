@@ -23,6 +23,7 @@ import companiaService from '@/components/service/compania.service';
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import Global from '@/Global';
 import { Notification } from 'element-ui';
 @Component({
@@ -30,7 +31,8 @@ import { Notification } from 'element-ui';
   components:{
     'bdocumento':BDocumentoComponent,
     'bmoneda':BMonedaComponent,
-    'bimpuesto':BImpuestoComponent
+    'bimpuesto':BImpuestoComponent,
+    'quickaccessmenu':QuickAccessMenuComponent,
   }
 })
 export default class ModificarIngresoComprobanteComponent extends Vue {
@@ -278,6 +280,12 @@ closeMoneda(){
   this.moneda=new MonedaModel();
   this.factura.strPaid_Bank=this.moneda.strCurrency_Cod;
   this.dialogMoneda=false;
+}
+backPage(){
+  window.history.back();
+}
+reloadpage(){
+  window.location.reload();
 }
 //#endregion
   data(){

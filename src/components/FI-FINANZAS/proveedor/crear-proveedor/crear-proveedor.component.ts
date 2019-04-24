@@ -58,6 +58,7 @@ export default class CrearProveedorComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   vifprogress:boolean=true;
+  tipoDocDisabled:boolean=false;
 //   ****
   AddressNumero:string;
   AddressDprto:string;
@@ -106,6 +107,7 @@ export default class CrearProveedorComponent extends Vue {
   tipodocVisible:boolean=false;
   public selectTipoDoc:TipoDocIdentidadModel=new TipoDocIdentidadModel();
   btnactivarTipoDocumento:boolean=false;
+  TipoDoc:TipoDocIdentidadModel[];
   //**Departamento */
   public Departamento:DepartamentoModel=new DepartamentoModel();
   btnactivardepartamento:boolean=false;
@@ -140,6 +142,7 @@ export default class CrearProveedorComponent extends Vue {
     // this.GetAllProveedor();
     this.GetAllCategoria();
     this.GetAllCuentaContable();
+    this.GetAllTipoDocumento();
   }
 // [Cuenta contable]
   GetAllCuentaContable(){
@@ -631,6 +634,18 @@ export default class CrearProveedorComponent extends Vue {
     this.tipodocVisible=false;
     
   }
+  GetAllTipoDocumento(){      
+    tipodocidentidadService.GetAllTipoDocumento()
+    .then(response=>{        
+      this.TipoDoc=response;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se puede cargar lista de tipo de documento'
+      });
+    })
+  } 
   activar_TipoDocumento(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=true;
@@ -933,35 +948,52 @@ export default class CrearProveedorComponent extends Vue {
     categoriaService.GetAllCategoria()
     .then(response=>{
       this.Categoria=response;
-      this.value1=this.Categoria[0].strVenCateg_Desc;
-      
+      this.value1=this.Categoria[0].strVenCateg_Desc;      
       this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar lista categoria'
-      });
     })
   }
-
   selectCategoria(val){
-    console.log(val + ' aaaaaaaaaaaaaaa');
-    
       this.VisibleForName=true;
       if(val===1){
+        this.nameTipoJoN='Nombres';
+        this.RucOrDni='RUC';
+        this.ApellidosShow=true;
+        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.strCat_Person='Natural';
+        for(var i=0;i<this.TipoDoc.length;i++){
+          if(this.TipoDoc[i].strDocIdent_NO==='6'){
+            this.selectTipoDoc=this.TipoDoc[i];
+            this.Proveedor.intIdDocIdent_ID=this.selectTipoDoc.intIdDocIdent_ID;
+            this.Proveedor.strDocIdent_NO=this.selectTipoDoc.strDocIdent_NO;
+          }
+        }
+        this.tipoDocDisabled=true;
+      }
+      if(val===2){
         this.nameTipoJoN='Razon social';
         this.RucOrDni='RUC';
         this.ApellidosShow=false;
         this.Proveedor.intIdVenCateg_ID=val;
         this.Proveedor.strCat_Person='Jurídica';
+        for(var i=0;i<this.TipoDoc.length;i++){
+          if(this.TipoDoc[i].strDocIdent_NO==='6'){
+            this.selectTipoDoc=this.TipoDoc[i];
+            this.Proveedor.intIdDocIdent_ID=this.selectTipoDoc.intIdDocIdent_ID;
+            this.Proveedor.strDocIdent_NO=this.selectTipoDoc.strDocIdent_NO;
+          }
+        }
+        this.tipoDocDisabled=true;
       }
-      if(val===2){
+      if(val===3){
         this.nameTipoJoN='Nombres';
         this.RucOrDni='DNI';
         this.ApellidosShow=true;
         this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Natural';
+        this.Proveedor.strCat_Person='Persona';
+        this.tipoDocDisabled=false;
+        this.selectTipoDoc=new TipoDocIdentidadModel();
+        this.Proveedor.intIdDocIdent_ID=-1;
+        this.Proveedor.strDocIdent_NO='';
       }
   }
   SaveProveedor(val){
@@ -1030,6 +1062,12 @@ export default class CrearProveedorComponent extends Vue {
       message: 'validar proveedor'
     });
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       nameComponent:'crear-proveedor',
@@ -1051,51 +1089,7 @@ export default class CrearProveedorComponent extends Vue {
       FLAGBANCO:'',
       FLAGMONEDA:'',
       proDisabled:true,
-      tableData: [{
-        date: '0001',
-        name: 'Ferreyros'
-      }, {
-        date: '0002',
-        name: 'Yura SAC'
-      }, {
-        date: '0003',
-        name: 'Signal company'
-      }, {
-        date: '0004',
-        name: 'Cruz del Sur'
-      }
-      , {
-        date: '0005',
-        name: 'Tisur'
-      }, {
-        date: '0006',
-        name: 'Seguro'
-      }, {
-        date: '0007',
-        name: 'Cruz del Sur'
-      }, {
-        date: '0008',
-        name: 'Cruz del Sur'
-      }, {
-        date: '0009',
-        name: 'Cruz del Sur'
-      }, {
-        date: '0010',
-        name: 'Linea'
-      }, {
-        date: '0011',
-        name: 'Cruz del Sur'
-      }],
-      user: {
-        authenticated: false
-      },
-      categoria: [{
-        value: '1',
-        label: 'Juridica'
-      }, {
-        value: '2',
-        label: 'Natural'
-      }],
+      tipoDocDisabled:false,            
       value: '',
       value1:'',
       data:{

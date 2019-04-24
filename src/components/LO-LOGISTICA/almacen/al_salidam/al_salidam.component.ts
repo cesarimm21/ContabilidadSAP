@@ -1275,6 +1275,12 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     this.dialogAlmacen=false;
     //this.validate();
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

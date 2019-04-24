@@ -826,6 +826,12 @@ export default class AprobadorPRComponent extends Vue {
       
     })
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

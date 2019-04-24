@@ -362,7 +362,12 @@ export default class RecepcionBusquedaComponent extends Vue {
     this.btnbuscarb=true;
     this.cargarList();
   }
- 
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

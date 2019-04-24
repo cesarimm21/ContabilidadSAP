@@ -348,6 +348,12 @@ export default class ViewHesComponent extends Vue{
       type: 'success'
     });
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
     data(){
         return{
             nameComponent:'edit-hes',

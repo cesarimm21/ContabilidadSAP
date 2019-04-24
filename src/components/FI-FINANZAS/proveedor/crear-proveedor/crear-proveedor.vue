@@ -1,40 +1,10 @@
 <template>
   <div class="crear-proveedor">
       <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarProveedor="SaveProveedor($event)"/>
+        <quickaccessmenu v-on:guardarProveedor="SaveProveedor($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
       <div >
-          <el-card class="box-card">
-              <div slot="header" class="headercard">
-                 <span class="labelheadercard" > Crear proveedor</span>
-                 
-              </div>
-              <div class="row bodycard">
-                  <div class="col-md-6">
-                      <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Compañia</label>
-                            <div class="col-md-3 grupolabel">
-                                <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="codigoCompania"  placeholder="">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania('A')"></el-button> 
-                                    </el-input>
-                                </div>
-                            </div>
-                            <label class="sinLinea el-form-item__label col-md-3" >{{descripcionCompania}}</label>
-                        </div>
-                       <div class="form-group row Second" >
-                        <label class="el-form-item__label col-md-3" >Proveedor</label>
-                        <div class="col-md-3 grupolabel">
-                            <div class="input-group mb-3" >
-                                <el-input size ="small" @blur="desactivar_proveedor1" @focus="activar_proveedor1" v-model="gridSelectedProveedor.strVendor_NO"  placeholder="" :disabled="proDisabled">
-                                    <el-button v-if="btnactivarproveedor && !dialogVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedores()"></el-button> 
-                                </el-input>
-                            </div>
-                        </div>                        
-                        </div>
-                  </div>
-              </div>
-          </el-card>
+         
           <el-card class="box-card">
               <div slot="header" class="headercard">
                   <span class="labelheadercard" >Nuevo Proveedor</span>
@@ -48,11 +18,11 @@
                             <el-tab-pane label="Datos generales">
                                 <div class="container">
                                     <div class="row">
-                                         <div class="col-md-6">                       
+                                         <div class="col-md-12">                       
                                             <div class="form-group row" style="height: 40px;">
-                                                <label class="el-form-item__label col-md-3" >Compañia</label>
-                                                <div class="col-md-3 grupolabel">
-                                                    <div class="input-group mb-3" >
+                                                <label class="el-form-item__label col-md-1" >Compañia</label>
+                                                <div class="col-md-2 grupolabel">
+                                                    <div class="input-group mb-2" >
                                                         <el-input size ="small" @blur="desactivar_companiaB" @focus="activar_companiaB" v-model="Proveedor.strCompany_Cod"  placeholder="" >
                                                             <el-button v-if="btnactivarcompaniaB && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania('B')"></el-button> 
                                                         </el-input>
@@ -62,10 +32,10 @@
                                             
                                             </div>
                                             <div class="form-group row ">
-                                                <label class="el-form-item__label col-md-3" >Categoria</label>
-                                                <div class="col-md-3 grupolabel">
-                                                    <div class="input-group mb-3" >
-                                                    <el-select v-model="value1" class="selected"
+                                                <label class="el-form-item__label col-md-1" >Categoria</label>
+                                                <div class="col-md-2 grupolabel">
+                                                    <div class="input-group mb-2" >
+                                                    <el-select v-model="value1" class="selected" placeholder="Selecionar"
                                                     @change="selectCategoria($event)">
                                                         <el-option
                                                         class="opciones"
@@ -80,7 +50,7 @@
                                                 </div>
                                             </div>                      
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" style="margin-top: 6px;">
                                              <div class="form-group row " >
                                                 <label class="el-form-item__label col-md-1" >{{nameTipoJoN}}</label>
                                                 <div class="col-md-3 grupolabel">
@@ -122,8 +92,8 @@
                                                 <label class="el-form-item__label col-md-2" >Tipo documento</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
-                                                        <el-input size ="small" @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="Proveedor.strDocIdent_NO">                            
-                                                            <el-button v-if="btnactivarTipoDocumento && !tipodocVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDoc()"></el-button> 
+                                                        <el-input size ="small" @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="Proveedor.strDocIdent_NO" :disabled="tipoDocDisabled">                            
+                                                            <el-button v-if="btnactivarTipoDocumento && !tipodocVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDoc()" :disabled="tipoDocDisabled"></el-button> 
                                                         </el-input>
                                                     </div>
                                                 </div>
@@ -415,7 +385,37 @@
                     </div>
                 </div>
           </el-card>
-
+            <el-card class="box-card">
+              <div slot="header" class="headercard">
+                 <span class="labelheadercard" > Referencia Proveedor</span>
+                 
+              </div>
+              <div class="row bodycard">
+                  <div class="col-md-6">
+                      <div class="form-group row ">
+                            <label class="el-form-item__label col-md-3" >Compañia</label>
+                            <div class="col-md-3 grupolabel">
+                                <div class="input-group mb-3" >
+                                    <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="codigoCompania"  placeholder="">
+                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania('A')"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>
+                            <label class="sinLinea el-form-item__label col-md-3" >{{descripcionCompania}}</label>
+                        </div>
+                       <div class="form-group row Second" >
+                        <label class="el-form-item__label col-md-3" >Proveedor</label>
+                        <div class="col-md-3 grupolabel">
+                            <div class="input-group mb-3" >
+                                <el-input size ="small" @blur="desactivar_proveedor1" @focus="activar_proveedor1" v-model="gridSelectedProveedor.strVendor_NO"  placeholder="" :disabled="proDisabled">
+                                    <el-button v-if="btnactivarproveedor && !dialogVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadProveedores()"></el-button> 
+                                </el-input>
+                            </div>
+                        </div>                        
+                        </div>
+                  </div>
+              </div>
+          </el-card>
       </div>
       <div class="footer1">
         <div class="row">

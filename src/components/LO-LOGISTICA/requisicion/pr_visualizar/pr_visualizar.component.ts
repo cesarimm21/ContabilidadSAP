@@ -340,6 +340,12 @@ export default class VisualizarPRComponent extends Vue {
       this.currentRow = val;
     }
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

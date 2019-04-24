@@ -125,7 +125,7 @@ body {
 }
 .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active, .router-link {
     color: #000000 !important;
-    background-color: #a9c4d4 !important;
+    background-color: #396b88 !important;
 }
 .hamb-container {
    width: 48px;
@@ -501,8 +501,22 @@ body {
  .el-submenu.is-opened>.el-submenu__title .el-folder{
     content:url("images/folder-abrir.png");
     z-index: 10000;
- }
-
+  }
+  /* .el-submenu.is-opened{
+    color: #000000 !important;
+    background-color: #396b88 !important;
+  } */
+  .el-folder_last{
+    /* background-image: url("../../images/folder-cerrado.png"); */
+    width:17px;
+    height:15px; 
+    cursor: pointer;
+    margin-top: -5px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    /*background: url("../../images/guardar.png") no-repeat;*/
+    content: url("images/sheet.png") ;
+  }
 .el-submenu.is-opened>.el-submenu__title .fa-caret-right{
     transform: rotate(90deg);
  }
@@ -692,6 +706,25 @@ body {
     outline: 0;
     padding: 3px 4px;
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+}
+.buscadorbar{
+  -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #bfcbd9;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    font-size: inherit;
+    height: 36px;
+    line-height: 1;
+    outline: 0;c
+    padding: 3px 4px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    height: 22px;
+    font-size: 12px;
 }
 .boton{
     height: 20px;

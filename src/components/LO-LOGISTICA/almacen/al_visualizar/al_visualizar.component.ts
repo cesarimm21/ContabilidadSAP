@@ -363,6 +363,12 @@ export default class VisualizarMaterialComponent extends Vue {
   LoadProveedor(){
     this.dialogProveedor=true;      
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

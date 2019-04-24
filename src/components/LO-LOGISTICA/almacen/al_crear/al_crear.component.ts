@@ -1387,6 +1387,12 @@ debugger;
       this.textosave='No se pudo guardar. Revise los datos'
     }
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,
