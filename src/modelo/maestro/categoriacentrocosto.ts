@@ -1,5 +1,5 @@
 export class CategoriaCentroCostoModel {
-    intIdCCCategory_ID:number;
+    intCCCategory_ID:number;
     strCCCategory_Cod: string;
     strCCCategory_Desc:string;
     

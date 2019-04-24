@@ -243,17 +243,29 @@
                     <img class="el-folder"/>
                     <span slot="title">Contabilidad general</span>
                   </template>
-                  <el-menu-item index="1-5-3-1">
+                  <el-menu-item index="1-5-3-1" @click="linkCuentaContable()">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MG01-Crear Cuenta Contable</span>
                   </el-menu-item>
-                  <el-menu-item index="1-5-3-2">
+                  <el-menu-item index="1-5-3-2" @click="linkVisualizarModificarCuentaContable()">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MG02-Modificar Cuenta Contable</span>
                   </el-menu-item>
-                  <el-menu-item index="1-5-3-3">
+                  <el-menu-item index="1-5-3-3" @click="linkVisualizarCuentaContable()">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MG03-Visualizar Cuenta Contable</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-5-7-1" @click="linkCentroCostos()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span slot="title">MG01-Crear Centro Costos</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-5-7-2" @click="linkVisualizarModificarCentroCostos()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span slot="title">MG02-Modificar Centro Costos</span>
+                  </el-menu-item>
+                  <el-menu-item index="1-5-7-3" @click="linkVisualizarCentroCostos()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                    <span slot="title">MG03-Visualizar Centro Costos</span>
                   </el-menu-item>
                   <el-menu-item index="1-5-3-4">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -324,8 +336,8 @@
                     <img class="el-folder"/>
                     <span slot="title">Libro diario</span>
                   </template>
-                  <el-menu-item index="1-6-3-1">
-                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <el-menu-item index="1-6-3-1"  @click="linkLibroDiarioD()">
+                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;"/> 
                     <span>RD01-Libro diario</span>
                   </el-menu-item>
                   <el-menu-item index="1-6-3-2">
@@ -706,6 +718,51 @@
                     <span>MA04-Visualizar Material</span>
                   </el-menu-item>
                 </el-submenu>
+              </el-submenu>
+            </el-submenu>
+            <el-submenu index="7">
+              <template slot="title">
+                <i class="fa fa-caret-right" style="width:10px"></i>
+                <img class="el-folder"/>
+                <span >HR-Planilla</span>
+              </template>
+              <el-submenu index="7-1">
+                <template slot="title">
+                  <i class="fa fa-caret-right" style="width:10px"></i>
+                  <img class="el-folder"/>
+                  <span >Empleado</span>
+                </template>
+                <el-menu-item index="7-1-1" @click="linkCrearEmpleado">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>HR01-Crear Empleado</span>
+                </el-menu-item>
+                <el-menu-item index="7-1-2">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>HR02-Modificar Empleado</span>
+                </el-menu-item>
+                <el-menu-item index="7-1-3">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>HR03-Visualizar Empleado</span>
+                </el-menu-item>
+              </el-submenu>
+              <el-submenu index="7-2">
+                <template slot="title">
+                  <i class="fa fa-caret-right" style="width:10px"></i>
+                  <img class="el-folder"/>
+                  <span >Maestro Datos</span>
+                </template>
+                <el-menu-item index="7-2-1">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>HR04-Crear Conceptos</span>
+                </el-menu-item>
+                <el-menu-item index="7-2-2">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>HR05-Modificar Conceptos</span>
+                </el-menu-item>
+                <el-menu-item index="7-2-3">
+                  <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
+                  <span>HR06-Visualizar Conceptos</span>
+                </el-menu-item>
               </el-submenu>
             </el-submenu>
             <el-submenu index="3">

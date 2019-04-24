@@ -28,7 +28,7 @@
                 background: #4685b5;
                 border-color: transparent;
                 color: #f6f7f9;
-                padding: 4px 4px 4px 4px !important;" @click="ExportarPDF1()">
+                padding: 4px 4px 4px 4px !important;" @click="ExportarPDF()">
                 Imprimir
             </el-button>
             <!-- <el-button v-if="vifaprobarrechasar" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;

@@ -344,6 +344,11 @@ export default class ModificarSalidaMaterialComponent extends Vue {
         body: body,
         theme: 'grid'
     });
+    
+    var blob = doc.output('blob');
+    console.log('/////////////////////////////')
+    console.log(blob);
+    console.log('/////////////////////////////')
     doc.save('test.pdf');
 
   }
@@ -525,8 +530,10 @@ export default class ModificarSalidaMaterialComponent extends Vue {
       doc.text(90, tam-55, "Nombre y firma de quien recibe");
       doc.text(tamW/2+90, tam-55, "Nombre y firma de quien entrega");
       
-           
-      
+      var blob = doc.output('blob');
+      console.log('/////////////////////////////')
+      console.log(blob);
+      console.log('/////////////////////////////')
       doc.save('Vale Salida VAL0001.pdf');
 
       

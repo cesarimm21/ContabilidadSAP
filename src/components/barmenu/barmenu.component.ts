@@ -196,6 +196,31 @@ export default class BarmenuComponent extends Vue {
   linkDespachoSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidadespacho')
   }
+  
+  linkCrearEmpleado(){
+    router.push('/barmenu/HR-Planilla/empleado/empleado_crear')
+  }
+
+  linkVisualizarModificarCuentaContable(){
+    router.push('/barmenu/FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_modificar_cuenta_contable')
+  }
+  linkVisualizarModificarCentroCostos(){
+    router.push('/barmenu/FI-FINANZAS/maestro-datos/centro-costos/visualizar_modificar_centro_costos')
+  }
+  
+  linkVisualizarCuentaContable(){
+    router.push('/barmenu/FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_cuenta_contable')
+  }
+  linkVisualizarCentroCostos(){
+    router.push('/barmenu/FI-FINANZAS/maestro-datos/centro-costos/visualizar_centro_costos')
+  }  
+  linkCuentaContable(){
+    router.push('/barmenu/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable');
+  }
+  linkCentroCostos(){
+    router.push('/barmenu/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos');
+  }
+  
   linkAprobarSalidaAlmacen(){
     router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidaaprobar')
   }
@@ -312,6 +337,11 @@ export default class BarmenuComponent extends Vue {
     }
     linkVisualizarModificaRequisicion(){
       router.push('/barmenu/LO-LOGISTICA/requisicion/pr_visualizar_modificar')
+    }
+    
+    linkLibroDiarioD(){
+      console.log("entroclick")
+      router.push('/barmenu/FI-FINANZAS/libros-balance/librodiario')
     }
   data() {
     return {

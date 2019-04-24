@@ -30,7 +30,17 @@ import ModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_mo
 import VisualizarModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_visualizar_modificar/al_visualizar_modificar.vue'
 import VisualizarSalidaMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salida_visualizar/al_salida_visualizar.vue'
 import VisualizarSalidaModificarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salida_visualizar_modificar/al_salida_visualizar_modificar.vue'
+import VisualizarModificarCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_modificar_cuenta_contable/visualizar_modificar_cuenta_contable.vue';
+import VisualizarCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_cuenta_contable/visualizar_cuenta_contable.vue';
+
+import VisualizarCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/visualizar_centro_costos/visualizar_centro_costos.vue';
+import VisualizarModificarCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/visualizar_modificar_centro_costos/visualizar_modificar_centro_costos.vue';
+import ModificarCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/modificar_centro_costos/modificar_centro_costos.vue';
+
+import ModificarCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/modificar_cuenta_contable/modificar_cuenta_contable.vue';
 import ModificarSalidaMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salidam/al_salidam.vue'
+import CrearEmpleadoComponent from '../components/HR-Planilla/empleado/empleado_crear/empleado_crear.vue'
+import ModificarEmpleadoComponent from '../components/HR-Planilla/empleado/empleado_modificar/empleado_modificar.vue'
 
 import CrearPOComponent from '../components/LO-LOGISTICA/orden_compra/po_crear/po_crear.vue'
 import ModificarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.vue'
@@ -41,7 +51,9 @@ import AprobarSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al
 import RecepcionBusquedaComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda/al_recepcion_busqueda.vue'
 import RecepcionMaterialComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion/al_recepcion.vue'
 import DespachoSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidadespacho/al_salidadespacho.vue'
-
+import LibroDiarioDComponent from '../components/FI-FINANZAS/libros-balance/librodiario/librodiario.vue'
+import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
+import  CrearCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos/crear-centro-costos.vue';
 export default [
  
   {
@@ -78,12 +90,74 @@ export default [
         path:'FI-FINANZAS/proveedor/modificar-proveedor',
         component:ModificarProveedorComponent,
         name:'modificar-proveedor'
-      }, 
+      },
+      {
+        path:'FI-FINANZAS/libros-balance/librodiario',
+        component:LibroDiarioDComponent,
+        name:'libro-diario'
+      },
       {
         path:'FI-FINANZAS/proveedor/visualizar-proveedor',
         component:VisualizarProveedorComponent,
         name:'visualizar-proveedor'
       }, 
+      {
+        path:'HR-Planilla/empleado/empleado_crear',
+        component:CrearEmpleadoComponent,
+        name:'empleado_crear'
+      }, 
+      {
+        path:'HR-Planilla/empleado/empleado_modificar',
+        component:ModificarEmpleadoComponent,
+        name:'empleado_modificar'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_modificar_cuenta_contable',
+        component:VisualizarModificarCuentaContableComponent,
+        name:'visualizar-modificar-cuenta-contable'
+      }, 
+       
+      {
+        path:'FI-FINANZAS/maestro-datos/centro-costos/visualizar_modificar_centro_costos',
+        component:VisualizarModificarCentroCostosComponent,
+        name:'visualizar-modificar-centro-costos'
+      }, 
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/centro-costos/modificar_centro_costos',
+        component:ModificarCentroCostosComponent,
+        name:'modificar-centro-costos'
+      }, 
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/centro-costos/visualizar_centro_costos',
+        component:VisualizarCentroCostosComponent,
+        name:'visualizar-centro-costos'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_cuenta_contable',
+        component:VisualizarCuentaContableComponent,
+        name:'visualizar-cuenta-contable'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/modificar_cuenta_contable',
+        component:ModificarCuentaContableComponent,
+        name:'modificar-cuenta-contable'
+      }, 
+      
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable',
+        component:CrearCuentaContableComponent,
+        name:'crear-cuenta-contable'
+      }, 
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos',
+        component:CrearCentroCostosComponent,
+        name:'crear-centro-costos'
+      }, 
+      
       {
         path:'LO-LOGISTICA/orden_compra/po_crear',
         component:CrearPOComponent,
