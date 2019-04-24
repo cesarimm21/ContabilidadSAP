@@ -1,11 +1,15 @@
 export class CentroCostosModel {
-    intIdCostCenter_ID:number;
-    intIdProceccGrp_ID:number;
-    intIdCCGrpArea_ID:number;
-    intIdCCCategory_ID:number;
-    intIdCompany_ID:number;
-    intIdClase_ID:number;
+    intCCCategory_ID:any;
+    intIdCostCenter_ID:any;
+    intIdProceccGrp_ID:any;
+    intIdProccGrp_ID:any;
+    intIdCCGrpArea_ID:any;
+    intIdCCCategory_ID:any;
+    intIdCompany_ID:any;
+    intIdClase_ID:any;
     strCompany_Cod:string;
+    strCompany_Desc:string;
+    strlevel:string;
     strCostCenter_NO:string;
     strCostCenter_Name:string;
     strCostCenter_Desc:string;
@@ -14,14 +18,17 @@ export class CentroCostosModel {
     blnCostCenter_Level:boolean;
     dtmStart_Date:Date;
     dtmEnd_Date:Date;
+    strAcctDest_Debit:string;
     strCateg_Cod:string;
     strCateg_Desc:string;
     strProcGrp_Cod:string;
     strProcGrp_Desc:string;
     strAreaGrp_Cod:string;
     strAreaGrp_Desc:string;
-    strCodAcctDest_Debit:string;
     strAcctDest_Credit:string;
+    strCCGrpProc_Cod:string;
+    strCCCategory_Cod:string;
+    strCCGrpArea_Cod:string;
 
     strCreation_User:string;
     dtmCreation_Date:Date;
