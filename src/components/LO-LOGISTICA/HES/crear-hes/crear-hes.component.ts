@@ -481,6 +481,12 @@ export default class CrearHesComponent extends Vue {
     this.editing.column=column;
   }
   //#endregion
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       nameComponent:'crear-hes',

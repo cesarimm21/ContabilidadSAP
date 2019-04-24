@@ -191,6 +191,12 @@ export default class VisualizarPOComponent extends Vue {
         });
     }
     //#endregion
+    backPage(){
+        window.history.back();
+      }
+      reloadpage(){
+        window.location.reload();
+      }
     data(){
         return{
             ameComponent: 'crear-po',

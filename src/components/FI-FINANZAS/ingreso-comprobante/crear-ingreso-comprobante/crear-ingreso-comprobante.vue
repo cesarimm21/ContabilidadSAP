@@ -1,7 +1,7 @@
 <template>
     <div class="crear-ingreso-comprobante">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:SaveFactura="SaveFactura($event)"></quickaccessmenu>
+        <quickaccessmenu v-on:SaveFactura="SaveFactura($event)" v-on:backPage="backPage($event)" v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
@@ -77,7 +77,7 @@
                                 <label class="el-form-item__label col-md-3" >N. Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="factura.strDocument_NO" :maxlength="9">                            
+                                    <el-input size ="small" v-model="factura.strDocument_NO" :maxlength="15">                            
                                     </el-input>
                                     </div>
                                 </div>                               

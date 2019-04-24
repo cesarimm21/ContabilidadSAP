@@ -14,9 +14,13 @@ import 'element-ui/lib/theme-default/index.css';
 import {FacturaModel} from '@/modelo/maestro/factura';
 import facturaService from '@/components/service/factura.service';
 import Global from '@/Global';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 @Component({
-  name: 'ver-ingreso-comprobante'
+  name: 'ver-ingreso-comprobante',
+  components:{
+    'quickaccessmenu':QuickAccessMenuComponent,
+  }
 })
 export default class VerIngresoComprobanteComponent extends Vue {
   VerAll:boolean=false;
@@ -75,6 +79,12 @@ export default class VerIngresoComprobanteComponent extends Vue {
       })
     }
     
+  }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
   }
   data(){
     return{

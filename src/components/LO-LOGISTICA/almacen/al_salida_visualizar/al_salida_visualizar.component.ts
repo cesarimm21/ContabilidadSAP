@@ -333,7 +333,12 @@ export default class VisualizarSalidaMaterialComponent extends Vue {
       this.btnactivartipomovimiento=false;
     }
   }
-  
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

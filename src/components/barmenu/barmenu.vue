@@ -2,7 +2,7 @@
   <div id="app">
     <el-row style="box-shadow: rgb(53, 83, 105) 0px 1px 2px; z-index: 3;">
       <el-col :span="24">
-       <top-menu v-on:proveedorSeleccionado="proveedorSeleccionado()"/>
+       <top-menu v-on:proveedorSeleccionado="proveedorSeleccionado()" v-on:getLink="getLink($event)"/>
         <!-- <el-dialog title="Búsqueda Proveedor"  :visible.sync="busquedaProveedorVista" @close="busquedaProveedorVista=false" size="small" >
           <busquedaProveedor v-on:proveedorSeleccionado="proveedorSeleccionado($event)"></busquedaProveedor>
         </el-dialog> -->
@@ -12,8 +12,54 @@
     <el-row class="main-container">
       <div class="side-container">
        
-        <div class="grid-content bg-purple">         
+        <div class="grid-content bg-purple"> 
           <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+            <el-submenu
+              v-for="item in tableData"
+              @click="linkRoute(item.strLink)"
+              :index="item.strIndex"
+              :key="item.strLink">
+              <template slot="title">                
+                <i :class="item.strIcon_Name" style="width:10px"></i>
+                <img :class="item.strClase_file"/> 
+                <span slot="title">{{item.strDescription}}</span>
+              </template> 
+                <el-submenu 
+                v-for="item1 in item.childLevel1"
+                @click="linkRoute(item1.strLink)"
+                :index="item1.strIndex"
+                :key="item1.strLink">
+                  <template slot="title">                  
+                    <i :class="item1.strIcon_Name" style="width:10px"></i>
+                    <img :class="item1.strClase_file"/> 
+                    <span slot="title" @click="linkRoute(item1.strLink)">{{item1.strDescription}}</span>
+                  </template>
+                    <el-submenu 
+                      v-for="item2 in item1.childLevel1"
+                       @click="linkRoute(item2.strLink)"
+                      :index="item2.strIndex"
+                      :key="item2.strLink">
+                        <template slot="title" >                  
+                          <i :class="item2.strIcon_Name" style="width:10px"></i>
+                          <img :class="item2.strClase_file"/> 
+                          <span slot="title"  @click="linkRoute(item2.strLink)">{{item2.strDescription}}</span>
+                        </template>
+                        <el-menu-item 
+                          v-for="item3 in item2.childLevel1"
+                          @click="linkRoute(item3.strLink)"
+                          :index="item3.strIndex"
+                          :key="item3.strLink">
+                            <template slot="title">                  
+                              <i :class="item3.strIcon_Name" style="width:10px"></i>
+                              <img :class="item3.strClase_file"/> 
+                              <span slot="title">{{item3.strDescription}}</span>
+                            </template>
+                          </el-menu-item> 
+                      </el-submenu> 
+                </el-submenu>     
+            </el-submenu>  
+          </el-menu>        
+          <!-- <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
             <el-submenu index="1">
               <template slot="title">
                 <i class="fa fa-caret-right" style="width:10px"></i>
@@ -154,20 +200,20 @@
                   <span slot="title">Maestro datos</span>
                 </template>
                 <el-submenu index="1-5-1">
-                  <template slot="title">
+                  <template slot="title" >
                     <i class="fa fa-caret-right" style="width:10px"></i>
                     <img class="el-folder"/>
                     <span slot="title">Cuentas por pagar</span>
                   </template>
-                  <el-menu-item index="1-5-1-1">
+                  <el-menu-item index="1-5-1-1"  @click="linkCrearProveedor()">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MP01-Crear Proveedor</span>
                   </el-menu-item>
-                  <el-menu-item index="1-5-1-2">
+                  <el-menu-item index="1-5-1-2" @click="linkModificarProveedor()">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MP02-Modificar Proveedor</span>
                   </el-menu-item>
-                  <el-menu-item index="1-5-1-3">
+                  <el-menu-item index="1-5-1-3" @click="linkVisualizarProveedor()">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MP03-Visualizar Proveedor</span>
                   </el-menu-item>
@@ -233,25 +279,6 @@
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
                     <span slot="title">MG23-Visualizar Grupo Cuenta</span>
                   </el-menu-item>
-                </el-submenu>
-                 <el-submenu index="1-5-4">
-                  <template slot="title">
-                    <i class="fa fa-caret-right" style="width:10px"></i>
-                    <img class="el-folder"/>
-                    <span slot="title">Maestro proveedor</span>
-                  </template>
-                  <el-menu-item index="1-5-4-1" @click="linkCrearProveedor()">
-                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span> MP01-Crear Proveedor</span>
-                  </el-menu-item>
-                  <el-menu-item index="1-5-4-2" @click="linkModificarProveedor()">
-                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span> MP02-Modificar Proveedor</span>                    
-                    </el-menu-item>
-                  <el-menu-item index="1-5-4-3" @click="linkVisualizarProveedor()">
-                    <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span> MP03-Visualizar Proveedor</span>
-                   </el-menu-item>
                 </el-submenu>
               </el-submenu>
              
@@ -354,7 +381,7 @@
                     <span>RC03-Registro de compras simplificado</span>
                   </el-menu-item>
                 </el-submenu>
-                <el-submenu index="1-6-6">
+                <el-submenu index="1-6-7">
                   <template slot="title">
                     <i class="fa fa-caret-right" style="width:10px"></i>
                     <img class="el-folder"/>
@@ -1096,15 +1123,7 @@
                   </el-menu-item>                              
                 </el-submenu> 
             </el-submenu>
-            <!-- <el-menu-item
-              v-for="item in tableData"
-              @click="linkRoute(item.strLink)"
-              :index="item.strLink"
-              :key="item.strLink">
-              <span slot="title" >{{item.strName}}</span>
-              <i :class="item.strIcon_Name"></i>              
-            </el-menu-item>          -->
-          </el-menu>
+          </el-menu> -->
         </div>
       </div>
       <el-col :span="dimensionContent" style="padding: 0px 1%; overflow-y:auto; weight:100%; height:100%; background:#ffffff;">

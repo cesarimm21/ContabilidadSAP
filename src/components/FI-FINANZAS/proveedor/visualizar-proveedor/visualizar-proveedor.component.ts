@@ -398,20 +398,27 @@ export default class VisualizarProveedorComponent extends Vue {
   selectCategoria(val){
     
     this.VisibleForName=true;
-    if(val===1){
-      this.nameTipoJoN='Razon social';
-      this.RucOrDni='RUC';
-      this.ApellidosShow=false;
-      this.Proveedor.intIdVenCateg_ID=val;
-      this.Proveedor.strCat_Person='Jurídica';
-    }
-    if(val===2){
-      this.nameTipoJoN='Nombres';
-      this.RucOrDni='DNI';
-      this.ApellidosShow=true;
-      this.Proveedor.intIdVenCateg_ID=val;
-      this.Proveedor.strCat_Person='Natural';
-    }
+      if(val===1){
+        this.nameTipoJoN='Nombres';
+        this.RucOrDni='RUC';
+        this.ApellidosShow=true;
+        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.strCat_Person='Natural';        
+      }
+      if(val===2){
+        this.nameTipoJoN='Razon social';
+        this.RucOrDni='RUC';
+        this.ApellidosShow=false;
+        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.strCat_Person='Jurídica';
+      }
+      if(val===3){
+        this.nameTipoJoN='Nombres';
+        this.RucOrDni='DNI';
+        this.ApellidosShow=true;
+        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.strCat_Person='Persona';
+      }
     }
     activar_proveedor(){
       debugger;
@@ -432,6 +439,12 @@ export default class VisualizarProveedorComponent extends Vue {
       });
     }
 
+    backPage(){
+      window.history.back();
+    }
+    reloadpage(){
+      window.location.reload();
+    }
   data(){
     return{
       dialogTableVisible: false,

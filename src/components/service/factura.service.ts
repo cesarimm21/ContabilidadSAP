@@ -16,6 +16,13 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  GetFacturaDate(dtmDue_Date){ 
+    return axios.get(CONFIG.API_URL+'factura/payrun/'+dtmDue_Date+'T00:00:00.000Z')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+
 }
   

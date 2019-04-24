@@ -592,6 +592,12 @@ export default class ModificarPOComponent extends Vue {
         });
     }
     //#endregion
+    backPage(){
+        window.history.back();
+      }
+      reloadpage(){
+        window.location.reload();
+      }
     data() {
         return {
             nameComponent: 'crear-po',

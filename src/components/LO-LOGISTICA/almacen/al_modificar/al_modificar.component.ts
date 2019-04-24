@@ -1373,6 +1373,12 @@ export default class ModificarMaterialComponent extends Vue {
   clickable(){
     return false;
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

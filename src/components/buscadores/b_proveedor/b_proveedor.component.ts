@@ -1,11 +1,11 @@
 import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
-
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import proveedorService from '@/components/service/proveedor.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bproveedor'
 })
@@ -146,7 +146,11 @@ export default class  BProveedorComponent extends Vue {
   }
 
   seleccionar(row,index){
+    this.proveedorSelectModel=row;
     this.$emit('proveedorselecionado',row);
+    if(Global.nameComponent=='pagos-individual'){
+      this.$emit('proveedorselecionado',this.proveedorSelectModel);
+    }
   }
 
   handleCurrentChange(val:ProveedorModel){
@@ -155,6 +159,9 @@ export default class  BProveedorComponent extends Vue {
   checkPopup(){
     debugger;
     this.$emit('proveedorselecionado',this.proveedorSelectModel);
+    if(Global.nameComponent=='pagos-individual'){
+      this.$emit('proveedorselecionado',this.proveedorSelectModel);
+    }
   }
   closePopup(){
     this.$emit('proveedorClose');

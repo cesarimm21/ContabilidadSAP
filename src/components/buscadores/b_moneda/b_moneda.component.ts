@@ -6,6 +6,7 @@ import {MonedaModel} from '@/modelo/maestro/moneda';
 import monedaService from '@/components/service/moneda.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 
 @Component({
   name: 'bmoneda'
@@ -148,7 +149,10 @@ export default class  BMonedaComponent extends Vue {
     this.monedaSelectModel=val;
     this.$emit('MonedaSeleccionado',this.monedaSelectModel);
     
-    this.$emit('monedaselecionado',this.monedaSelectModel)
+    this.$emit('monedaselecionado',this.monedaSelectModel);
+    if(Global.nameComponent=='pagos-individual'){
+      this.$emit('monedaselecionado',this.monedaSelectModel);
+    }
   }
   handleCurrentChange(val:MonedaModel){
     this.monedaSelectModel=val;
@@ -157,6 +161,9 @@ export default class  BMonedaComponent extends Vue {
     this.$emit('MonedaSeleccionado',this.monedaSelectModel)
     
     this.$emit('monedaselecionado',this.monedaSelectModel)
+    if(Global.nameComponent=='pagos-individual'){
+      this.$emit('monedaselecionado',this.monedaSelectModel);
+    }
   }
   closeMoneda(){
     this.$emit('closeMoneda');

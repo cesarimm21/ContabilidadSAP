@@ -25,9 +25,12 @@ export default class TopMenu extends Vue {
   seconds:number;
   user:any;
   tiempoagotado:any;
+  compania:any;
   contador:any=0;
   _10min:boolean=false;
   ocultarConfig:boolean = true;
+  ocultar:boolean=false;
+  codigo:string;
   nameuser:string;
   namecomplete:string;
   accesosUser:any=[];
@@ -39,38 +42,49 @@ export default class TopMenu extends Vue {
     this.isCollapse=GLOBAL.isCollapse;
    // this.ChechAccess();
   this.nameuser='Andre';
-  this.namecomplete='Cordova';
-  // this.getAccesos();
+  this.namecomplete='Cordova';  
+  this.getAccesos();
   // this.update();
   }
   getAccesos(){ 
-    var test=localStorage.getItem('User_Cargo');
-    UsuarioService.GetUsuarioAccesos()
-    .then(response => {
-      for (var i=0; i< response.Data.length; i++){
-        if(response.Data[i].intNivel == 2){
-          this.accesosUser.push({
-            strNombre: response.Data[i].strNombre,
-            intIndex:response.Data[i].intIndex,
-            strClickName:response.Data[i].strClickName,
-            strIconName:response.Data[i].strIconName,
-            strEnlace:response.Data[i].strEnlace
-          });          
-        }
-      }
-      if(this.accesosUser.length === 0){
-        this.ocultarConfig = false;
-      }
-    })
-    .catch(e =>{
-      console.log(e);
-      if(e.response.status === 401){ // token no valido
-        this.redirectLogin(e.response.statusText+', Vuelva a Iniciar Sesion');
-      }
-      else{
-        this.openMessageError('Error al cargar accesos');
-      }
-    })
+    var data=localStorage.getItem('compania_name');
+    this.compania=data;
+    // var test=localStorage.getItem('User_Cargo');
+    // UsuarioService.GetUsuarioAccesos()
+    // .then(response => {
+    //   for (var i=0; i< response.Data.length; i++){
+    //     if(response.Data[i].intNivel == 2){
+    //       this.accesosUser.push({
+    //         strNombre: response.Data[i].strNombre,
+    //         intIndex:response.Data[i].intIndex,
+    //         strClickName:response.Data[i].strClickName,
+    //         strIconName:response.Data[i].strIconName,
+    //         strEnlace:response.Data[i].strEnlace
+    //       });          
+    //     }
+    //   }
+    //   if(this.accesosUser.length === 0){
+    //     this.ocultarConfig = false;
+    //   }
+    // })
+    // .catch(e =>{
+    //   console.log(e);
+    //   if(e.response.status === 401){ // token no valido
+    //     this.redirectLogin(e.response.statusText+', Vuelva a Iniciar Sesion');
+    //   }
+    //   else{
+    //     this.openMessageError('Error al cargar accesos');
+    //   }
+    // })
+  }
+  clickActive(){
+    if(this.codigo==''){
+    this.ocultar=!this.ocultar;
+    }
+    else{
+      //hace busqueda
+    }
+    
   }
   openMessage(newMsg : string) {
     this.$message({
@@ -114,6 +128,12 @@ export default class TopMenu extends Vue {
     else{
       return { verde: true, }
     }
+  }
+  fnOcultar(){
+    this.ocultar=!this.ocultar;
+  }
+  loadBarmenu(){
+    this.$emit('getLink',this.codigo);
   }
   // update(){
   //     if (this.contador == 0) {
@@ -192,7 +212,8 @@ export default class TopMenu extends Vue {
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      codigo:'',
     }
   }
   

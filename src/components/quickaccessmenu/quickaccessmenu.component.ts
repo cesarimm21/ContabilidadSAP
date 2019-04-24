@@ -48,6 +48,12 @@ export default class QuickAccessMenuComponent extends Vue {
     debugger;
   }
 
+  backPage(){
+    this.$emit('backPage',Global.nameComponent);
+  }
+  reloadpage(){
+    this.$emit('reloadpage',Global.nameComponent);
+  }
 
   fnOcultar(){
     this.ocultar=!this.ocultar;

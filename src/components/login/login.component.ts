@@ -12,6 +12,8 @@ import LogComponent from '@/components/log/log.component';
 import GLOBAL from '../../Global';
 import usuarioService from '@/components/service/usuario.service';
 import loginService from '@/components/service/login.service';
+import {CompaniaModel} from '@/modelo/maestro/compania';
+import companiaService from '@/components/service/compania.service';
 
 @Component({
    name: 'login'
@@ -22,8 +24,18 @@ export default class LoginComponent extends Vue {
   usuario:string;
   contrasenia:string;
   user:any;
+  companiaModel:CompaniaModel[];
+  value1:string;
+  public companiaSelectModel:CompaniaModel=new CompaniaModel();
   constructor(){
     super();    
+    this.loadCompania();
+  }
+  loadCompania(){
+    companiaService.GetAllCompania()
+    .then(response=>{
+      this.companiaModel=response;    
+    })
   }
   navegacion(){
       this.$router.push('/barmenu/inicio');
@@ -36,9 +48,12 @@ export default class LoginComponent extends Vue {
     //   background: 'rgba(0, 0, 0, 0.8)'
     //   }
     //   );
-    if(this.usuario=='egaona' && this.contrasenia=='12345'){
+    if(this.usuario=='egaona' && this.contrasenia=='12345' &&this.value1!=''){
       this.$router.push('/barmenu/inicio');
       localStorage.setItem('User_Usuario',this.usuario);
+    }
+    else{
+      this.$message('error login');
     }
     
     // axios.post(CONFIG.API_URL+'membership/login',FormLogin)
@@ -87,7 +102,17 @@ export default class LoginComponent extends Vue {
     // })
     
   }
-
+  selectCompania(event){
+    for(var i=0;i<=this.companiaModel.length;i++){
+      if(this.companiaModel[i].strCompany_Cod==event){
+        this.companiaSelectModel=this.companiaModel[i];
+        localStorage.setItem('compania_cod',this.companiaSelectModel.strCompany_Cod);
+        localStorage.setItem('compania_name',this.companiaSelectModel.strCompany_Name);
+      }
+    }
+    
+    
+  }
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
@@ -105,7 +130,9 @@ export default class LoginComponent extends Vue {
   data() {
     return {
       labelPosition: 'right',
+      value1:'',
       gridData: [],
+      companiaModel:[],
       user: {
         authenticated: false
       },
@@ -116,7 +143,9 @@ export default class LoginComponent extends Vue {
       formLabelAlign: {
         name: '',
         region: ''
-      }
+      },
+      usuario:'',
+      contrasenia:''
     };
   }
 }

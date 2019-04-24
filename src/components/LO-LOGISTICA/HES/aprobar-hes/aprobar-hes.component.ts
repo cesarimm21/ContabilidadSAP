@@ -158,6 +158,12 @@ export default class AprobarHesComponent extends Vue{
         .catch(error=>{          
         })
       }
+      backPage(){
+        window.history.back();
+      }
+      reloadpage(){
+        window.location.reload();
+      }
       data(){
         return{
                 

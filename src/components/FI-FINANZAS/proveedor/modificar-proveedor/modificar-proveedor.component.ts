@@ -56,6 +56,7 @@ export default class ModificarProveedorComponent extends Vue {
   ApellidosShow:boolean=false;
   nameTipoJoN:string='';
   FLAGBANCO:String;
+  tipoDocDisabled:boolean=false;
   //   ****
   AddressNumero:string;
   AddressDprto:string;
@@ -88,6 +89,7 @@ export default class ModificarProveedorComponent extends Vue {
   tipodocVisible:boolean=false;
   public selectTipoDoc:TipoDocIdentidadModel=new TipoDocIdentidadModel();
   btnactivarTipoDocumento:boolean=false;
+  TipoDoc:TipoDocIdentidadModel[];
   //**Departamento */
   public Departamento:DepartamentoModel=new DepartamentoModel();
   btnactivardepartamento:boolean=false;
@@ -948,18 +950,45 @@ export default class ModificarProveedorComponent extends Vue {
     
       this.VisibleForName=true;
       if(val===1){
+        this.nameTipoJoN='Nombres';
+        this.RucOrDni='RUC';
+        this.ApellidosShow=true;
+        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.strCat_Person='Natural';
+        for(var i=0;i<this.TipoDoc.length;i++){
+          if(this.TipoDoc[i].strDocIdent_NO==='6'){
+            this.selectTipoDoc=this.TipoDoc[i];
+            this.Proveedor.intIdDocIdent_ID=this.selectTipoDoc.intIdDocIdent_ID;
+            this.Proveedor.strDocIdent_NO=this.selectTipoDoc.strDocIdent_NO;
+          }
+        }
+        this.tipoDocDisabled=true;
+      }
+      if(val===2){
         this.nameTipoJoN='Razon social';
         this.RucOrDni='RUC';
         this.ApellidosShow=false;
         this.Proveedor.intIdVenCateg_ID=val;
         this.Proveedor.strCat_Person='Jurídica';
+        for(var i=0;i<this.TipoDoc.length;i++){
+          if(this.TipoDoc[i].strDocIdent_NO==='6'){
+            this.selectTipoDoc=this.TipoDoc[i];
+            this.Proveedor.intIdDocIdent_ID=this.selectTipoDoc.intIdDocIdent_ID;
+            this.Proveedor.strDocIdent_NO=this.selectTipoDoc.strDocIdent_NO;
+          }
+        }
+        this.tipoDocDisabled=true;
       }
-      if(val===2){
+      if(val===3){
         this.nameTipoJoN='Nombres';
         this.RucOrDni='DNI';
         this.ApellidosShow=true;
         this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Natural';
+        this.Proveedor.strCat_Person='Persona';
+        this.tipoDocDisabled=false;
+        this.selectTipoDoc=new TipoDocIdentidadModel();
+        this.Proveedor.intIdDocIdent_ID=-1;
+        this.Proveedor.strDocIdent_NO='';
       }
   }
   activar_proveedor(){
@@ -1044,6 +1073,12 @@ export default class ModificarProveedorComponent extends Vue {
         message: strMessage
       });
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,
@@ -1063,7 +1098,8 @@ export default class ModificarProveedorComponent extends Vue {
       codigoCompania:'',
       codigoCompaniaB:'',
       FLAGBANCO:'',
-      FLAGMONEDA:''
+      FLAGMONEDA:'',
+      tipoDocDisabled:false,  
     }
   }
   

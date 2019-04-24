@@ -379,7 +379,12 @@ export default class AprobarPOComponent extends Vue {
       
     })
   }
- 
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

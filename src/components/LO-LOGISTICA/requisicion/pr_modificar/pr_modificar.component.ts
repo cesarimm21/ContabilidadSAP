@@ -992,6 +992,12 @@ export default class ModificarPRComponent extends Vue {
       this.textosave='Ocurrio un error inesperado. ';
     })
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   
   data(){
     return{

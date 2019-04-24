@@ -4,21 +4,11 @@ import TopMenu from '../customs/top-menu/TopMenu.vue';
 import router from '../../router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
-import InfiniteScroll from 'vue-infinite-scroll';
-import Inicio from '@/components/inicio/inicio.vue';
-import DocComparador from '@components/docComparador/docComparador.vue'
-import DocNuevo from '@components/docNuevo/docNuevo.vue'
-import Jerarquia from '@components/jerarquia/jerarquia.vue'
-import PopUpOpcion from '@components/popUpOpcion/popUpOpcion.vue';
-import UsuarioService from '@/components/service/usuario.service';
 import '../../assets/css/barmenu.scss';
-import UsuarioComponent from '@/components/usuario/usuario.component';
 import InicioComponent from '@/components/inicio/inicio.component';
-import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import HeaderbuttosComponent from '@/components/headerbuttos/headerbuttos.vue'
 import { Notification } from 'element-ui';
 import { AccesoModel } from  'src/modelo/login/acceso';
+import AccesoService from '@/components/service/accesos.service';
 import GLOBAL from '../../Global';
 import Global from '../../Global';
 @Component({
@@ -26,8 +16,6 @@ import Global from '../../Global';
    components:{
      'top-menu':TopMenu,
      'inicio':InicioComponent,
-     'quickaccessmenu':QuickAccessMenuComponent,
-     'buttons-accions':ButtonsAccionsComponent
    }
 })
 export default class BarmenuComponent extends Vue {
@@ -37,12 +25,19 @@ export default class BarmenuComponent extends Vue {
   
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   UserData:any;
+  imagenLast:string;
   dimensionContent = 21;
   gridData:any;
   modelAcceso:AccesoModel[];
-  tableData:any[];
+  childrenItem1:AccesoModel=new AccesoModel();
+  childrenItem2:AccesoModel=new AccesoModel();
+  childrenItem3:AccesoModel=new AccesoModel();
+
+  dataRoute:AccesoModel=new AccesoModel();
+  tableData:AccesoModel[];
   constructor(){
     super()    
+    this.imagenLast="../../images/sheet.png";
     this.isActive=GLOBAL.isActive;
     this.isCollapse=GLOBAL.isCollapse;
     this.getAccesos(); 
@@ -51,13 +46,40 @@ export default class BarmenuComponent extends Vue {
     debugger;
     this.isActive=GLOBAL.getActive()
     this.isCollapse=GLOBAL.getCollapse()
-    // this.FormSearch.SUPPLIER_NO = val.SUPPLIER_NO;
-    // //this.formularioBusqueda.proveedorSeleccionado=val.id_articulo;
-    // this.busquedaProveedorVista=false;
   }
 
   getAccesos(){
-    // console.log(this.tableData);
+    AccesoService.GetAllAccesos()
+    .then(response=>{
+      this.modelAcceso=[];
+      this.modelAcceso=response;      
+      for (var j=0; j< this.modelAcceso.length; j++){
+        if(this.modelAcceso[j].intLevel === 0){ 
+           this.childrenItem1=this.modelAcceso[j]; 
+           this.childrenItem1.childLevel1=[];
+          for(var i=0; i< this.modelAcceso.length; i++){
+            if(this.modelAcceso[i].intFather===this.modelAcceso[j].intIdRolAcc_ID){
+                this.childrenItem2=this.modelAcceso[i]
+                this.childrenItem2.childLevel1=[];
+                for(var k=0; k< this.modelAcceso.length; k++){
+                  if(this.modelAcceso[k].intFather===response[i].intIdRolAcc_ID){
+                    this.childrenItem3=this.modelAcceso[k];
+                    this.childrenItem3.childLevel1=[];
+                    for(var l=0; l< this.modelAcceso.length; l++){
+                      if(this.modelAcceso[l].intFather===response[k].intIdRolAcc_ID){
+                        this.childrenItem3.childLevel1.push(this.modelAcceso[l]);
+                      }                      
+                    }
+                    this.childrenItem2.childLevel1.push(this.childrenItem3);
+                  }
+                }
+                this.childrenItem1.childLevel1.push(this.childrenItem2);
+              }
+            }             
+          this.tableData.push(this.childrenItem1);
+          } 
+        }        
+    })
       // for (var j=0; j< this.tableData.length; j++){
       //   if(this.tableData[j].intLevel == 1){
       //     this.accesosBarMenu.push({
@@ -98,11 +120,30 @@ export default class BarmenuComponent extends Vue {
     //   }
     // })
   }
+  getLink(code){
+    AccesoService.getRoute(code)
+    .then(res=>{
+      this.dataRoute=res;
+      if(this.dataRoute.strLink==undefined){
+        this.openMessageAlert('No hay ruta');
+      }
+      else{
+        this.linkRoute(this.dataRoute.strLink);
+      }
+    })
+  }
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
       message: newMsg,
       type: 'success'
+    });
+  }
+  openMessageAlert(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'info'
     });
   }
   openMessageError(strMessage:string){
@@ -128,10 +169,12 @@ export default class BarmenuComponent extends Vue {
   linkRouteVisualizar(){
     router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante')
   }
-  
-  linkRoute(){
-    router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
+  linkRoute(route){
+    router.push(route)
   }
+  // linkRoute(){
+  //   router.push('/barmenu/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante')
+  // }
   linkRouterunpagos(){
     router.push('/barmenu/run')
   }
@@ -226,6 +269,9 @@ export default class BarmenuComponent extends Vue {
     handleOpen (key, keyPath) {
       // console.log(key, keyPath)
     }
+    handleOpen1 (key, keyPath) {
+      // console.log(key, keyPath)
+    }
 
     handleClose (key, keyPath) {
       // console.log(key, keyPath)
@@ -270,73 +316,8 @@ export default class BarmenuComponent extends Vue {
   data() {
     return {
       accesosUser: [],
-      tableData: [
-        {        
-        intAccess_ID: '1',
-        strName: 'FI-FINANZAS',
-        strDescription: 'finanzas',
-        strLink: '/barmenu/finanzas',
-        intLevel: '1',
-        intLevel2: '0',
-        strIndex: '1',
-        intFather: '1',
-        strClick_Name: 'funcion',
-        strIcon_Name: 'fa fa-user',
-        strUser_ID: '10000'
-      },
-        {        
-        intAccess_ID: '1',
-        strName: 'LO-LOGISTICA',
-        strDescription: 'finanzas',
-        strLink: '/barmenu/finanzas',
-        intLevel: '1',
-        intLevel2: '0',
-        strIndex: '1',
-        intFather: '1',
-        strClick_Name: 'funcion',
-        strIcon_Name: 'fa fa-user',
-        strUser_ID: '10000'
-      },
-        {        
-        intAccess_ID: '1',
-        strName: 'CP-COSTOS Y PRESUPUESTOS',
-        strDescription: 'finanzas',
-        strLink: '/barmenu/finanzas',
-        intLevel: '1',
-        intLevel2: '0',
-        strIndex: '1',
-        intFather: '1',
-        strClick_Name: 'funcion',
-        strIcon_Name: 'fa fa-user',
-        strUser_ID: '10000'
-      },
-        {        
-        intAccess_ID: '1',
-        strName: 'CO-COMERCIAL',
-        strDescription: 'finanzas',
-        strLink: '/barmenu/finanzas',
-        intLevel: '1',
-        intLevel2: '0',
-        strIndex: '1',
-        intFather: '1',
-        strClick_Name: 'funcion',
-        strIcon_Name: 'fa fa-user',
-        strUser_ID: '10000'
-      },
-        {        
-        intAccess_ID: '1',
-        strName: 'XX-CONFIGURACIÓN',
-        strDescription: 'finanzas',
-        strLink: '/barmenu/finanzas',
-        intLevel: '1',
-        intLevel2: '0',
-        strIndex: '1',
-        intFather: '1',
-        strClick_Name: 'funcion',
-        strIcon_Name: 'fa fa-user',
-        strUser_ID: '10000'
-      },
-    ]
+      tableData:[],
+      imagenLast:'',
     }
   }
 }

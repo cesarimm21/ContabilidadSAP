@@ -1,7 +1,7 @@
 <template>
   <div class="crear-proveedor">
       <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:visualizarProveedor="okvisualizar($event)"/>
+        <quickaccessmenu v-on:visualizarProveedor="okvisualizar($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>     
        <div >
           <el-card class="box-card">

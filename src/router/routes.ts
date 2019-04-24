@@ -6,7 +6,9 @@ import TopMenu from '@/components/customs/top-menu/TopMenu.vue';
 import HeaderbuttosComponent from '@/components/views/reusables/headerbuttos/headerbuttos.vue';
 import UsuarioComponent from '@/components/usuario/usuario.vue'
 import LogComponent from '@/components/log/log.vue'
-import RunComponent from '../components/run/run.vue'
+import RunComponent from '../components/FI-FINANZAS/Tesoreria/run/run.vue'
+import PagosIndividualesComponent from '../components/FI-FINANZAS/Tesoreria/pagos_individual.vue'
+import PagosMasivoComponent from '../components/FI-FINANZAS/Tesoreria/pagos_masivo.vue'
 import CrearPRComponent from '../components/LO-LOGISTICA/requisicion/pr_crear/pr_crear.vue'
 import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
 import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes.vue'
@@ -223,6 +225,16 @@ export default [
         path:'FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante',
         component:VisualizarIngresoComprobanteComponent,
         name:'modificar'
+      },    
+      {
+        path:'FI-FINANZAS/Tesoreria/pagos_masivo',
+        component:PagosMasivoComponent,
+        name:'pagos'
+      },    
+      {
+        path:'FI-FINANZAS/Tesoreria/pagos_individual',
+        component:PagosIndividualesComponent,
+        name:'pagos'
       },    
       {
         path:'usuario',

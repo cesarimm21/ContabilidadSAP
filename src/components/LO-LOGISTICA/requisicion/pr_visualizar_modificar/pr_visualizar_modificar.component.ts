@@ -340,6 +340,12 @@ export default class VisualizarModificarPRComponent extends Vue {
       type: 'warning'
     });
   }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
+  }
   data(){
     return{
       dialogTableVisible: false,

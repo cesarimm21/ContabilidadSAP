@@ -48,7 +48,31 @@
                                         </div>
                                         <input type="password" class="form-control" style="font-size: 13px;height: calc(2.2rem + 0px) !important" placeholder="Contraseña" autocomplete="current-password" v-model="contrasenia" formControlName="strPassword">
                                     </div>
-                                    <div class="row" style="margin-top: 28px;margin-bottom: -16px;">
+                                    <div class="form-group input-group mb-4" style="font-size: 13px;margin-top:20px; margin-left:10px;">
+                                        <div class="form-group row ">
+                                            <label class="el-form-item__label mb-4">Compania</label>
+                                         </div> 
+                                        <div class="form-group row " style="margin-top: 18px;margin-left: -67px;width: 297px;">
+                                            <div class="col-md-12 grupolabel">
+                                                    <div class="input-group col-md-12" >
+                                                    <el-select v-model="value1" class="selected" placeholder="Selecionar"
+                                                    @change="selectCompania($event)"
+                                                   >
+                                                        <el-option
+                                                        class="opciones"
+                                                        v-for="item in companiaModel"
+                                                        :key="item.strCompany_Cod"
+                                                        :label="item.strCompany_Name"
+                                                        :value="item.strCompany_Cod"
+                                                        >
+                                                        </el-option>
+                                                    </el-select>
+                                                    </div>
+                                                </div>
+                                         </div> 
+
+                                    </div>
+                                    <div class="row" style="margin-top: 40px;">
                                         <div class="col-lg-4">
                                             <button type="submit" class="btn btn-primary px-4 " @click="loginUsuario">Iniciar</button>
                                         </div>

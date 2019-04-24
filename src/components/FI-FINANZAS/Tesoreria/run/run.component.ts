@@ -13,10 +13,12 @@ import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import MonedaService from '@/components/service/moneda.service'
 import {MonedaModel} from '@/modelo/maestro/moneda'
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 @Component({
   name: 'run-pagos',
-  components: { contextMenu, 'buttons-accions':ButtonsAccionsComponent}
+  components: { contextMenu, 'buttons-accions':ButtonsAccionsComponent,
+  'quickaccessmenu':QuickAccessMenuComponent,}
 })
 export default class RunComponent extends Vue {
     outerVisible:boolean=false;
@@ -113,6 +115,12 @@ export default class RunComponent extends Vue {
   handleCloseProveedor(){
     this.$message('cerrar el popup de proveedor');
     this.VisibleBanco=false;
+  }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
   }
   data(){
     return{

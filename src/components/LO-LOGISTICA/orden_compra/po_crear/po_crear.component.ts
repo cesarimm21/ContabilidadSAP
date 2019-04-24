@@ -493,6 +493,7 @@ export default class CrearPOComponent extends Vue {
                         this.moneda=new MonedaModel();
                         this.selectProo=new ProveedorModel();
                         this.requiDetalle1 = [];
+                        this.openMessageSuccess('Se guardo correctamente '+response);
                         this.textosave = 'Se guardo correctamente. '+response;
 
                     }).catch(error => {
@@ -500,10 +501,25 @@ export default class CrearPOComponent extends Vue {
                         this.issave = false;
                         this.iserror = true;
                         this.textosave = 'Error al guardar.';
+                        this.openMessageError('Error al guardar.');
                 })
             }
         }
     }
+    openMessageSuccess(strMessage:string){
+        this.$message({
+            showClose: true,
+            type: 'success',
+            message: strMessage
+          });
+      }
+      openMessageError(strMessage:string){
+        this.$message({
+            showClose: true,
+            type: 'error',
+            message: strMessage
+          });
+      }
     //#endregion
     //#region [MONEDA]
     loadMoneda(){
@@ -681,7 +697,12 @@ export default class CrearPOComponent extends Vue {
           }  
       }
     //#endregion
-    
+    backPage(){
+        window.history.back();
+      }
+      reloadpage(){
+        window.location.reload();
+      }
     data(){
         return{
             nameComponent:'crear-po',

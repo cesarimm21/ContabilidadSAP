@@ -1,7 +1,7 @@
 <template>
     <div class="crear-proveedor">
       <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:actualizarProveedor="SaveProveedor($event)"/>
+        <quickaccessmenu v-on:actualizarProveedor="SaveProveedor($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
       <div >
           <el-card class="box-card">
@@ -110,8 +110,8 @@
                                                 <label class="el-form-item__label col-md-2" >Tipo documento</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
-                                                        <el-input size ="small" @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="Proveedor.strDocIdent_NO">                            
-                                                            <el-button v-if="btnactivarTipoDocumento && !tipodocVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDoc()"></el-button> 
+                                                        <el-input size ="small" @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="Proveedor.strDocIdent_NO"  :disabled="tipoDocDisabled">                            
+                                                            <el-button v-if="btnactivarTipoDocumento && !tipodocVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDoc()"  :disabled="tipoDocDisabled"></el-button> 
                                                         </el-input>
                                                     </div>
                                                 </div>
