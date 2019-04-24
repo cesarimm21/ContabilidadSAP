@@ -149,7 +149,7 @@ export default class CrearCuentaContableComponent extends Vue {
     this.loadTipocambio();
   }
   loadTipocambio(){
-    tipocambioService.GetAllTipoCambio()
+    tipocambioService.GetAllTipoCambio1()
     .then(response=>{
       this.tipocambio=response;  
     }).catch(error=>{})

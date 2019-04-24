@@ -33,6 +33,13 @@ export class FacturaModel{
     fltNetValue_Doc_Local:number;//* fltValue_Doc+ fltValue_Tax+fltOperation_NoTax
     fltNetValue_Doc_Corp:number;//* fltValue_Doc+ fltValue_Tax+fltOperation_NoTax
     strTax_Cod:string;//*
+    fltValue_Tax:number;
+    strDaily_Cod:string;
+    strValue_Local:string;
+    strExchange_Rate:string;
+    strValue_Corp:string;
+    intValue_Doc:number;
+    intNetValue_Doc:number;
     fltValue_Tax_Local:number;//* TOTAL DEL IVG
     fltValue_Tax_Corp:number;//* TOTAL DEL IVG
     strWH_Detrac_Cod:string;//codigo 

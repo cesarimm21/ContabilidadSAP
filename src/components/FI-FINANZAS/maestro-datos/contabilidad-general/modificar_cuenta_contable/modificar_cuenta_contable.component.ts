@@ -230,7 +230,7 @@ export default class ModificarCuentaContableComponent extends Vue {
     })
   }
   loadTipocambio(){
-    tipocambioService.GetAllTipoCambio()
+    tipocambioService.GetAllTipoCambio1()
     .then(response=>{
       this.tipocambio=response;  
     }).catch(error=>{})

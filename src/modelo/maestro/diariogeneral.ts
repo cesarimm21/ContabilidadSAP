@@ -61,6 +61,7 @@ export class DiarioGeneralModel {
     dtmCreation_Date:Date;
     dmModified_Date:Date;
     chrStatus:string;
+    strPeriod_NO:string;
     constructor(){
         this.strCompany_Cod='';
         this.strCompany_Desc='';

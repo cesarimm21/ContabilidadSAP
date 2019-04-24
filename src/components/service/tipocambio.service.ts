@@ -9,5 +9,11 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetAllTipoCambio1(){
+    return axios.get(CONFIG.API_URL+'tipocambiotoday')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
