@@ -448,7 +448,7 @@ export default class CrearPOComponent extends Vue {
                 item.fltInv_Pend_Val_S=0
                 item.strDeliv_Location=this.OrdenCompra.strPO_Desc//texto de la requisicion puede ser editado
                 item.fltTot_PO_Item=this.multipleSelection[i].fltQuantity
-                item.strAccount_Cod=''//codigo de cuenta contable
+                item.strAccount_Cod=this.multipleSelection[i].strAccount_NO
                 item.strWBS_Project=''//vacio
                 item.blnCheck=this.multipleSelection[i].blnCheck//vacio
                 item.strMatClass_Cod=this.multipleSelection[i].strMatClass_Cod

@@ -16,8 +16,7 @@ import { Notification } from 'element-ui';
   name: 'buttons-accions',
   components: { contextMenu }
 })
-export default class ButtonsAccionsComponent extends Vue {
- 
+export default class ButtonsAccionsComponent extends Vue { 
   constructor(){
     super();
   } 
@@ -27,12 +26,18 @@ export default class ButtonsAccionsComponent extends Vue {
       this.$emit('handleSearchHes',Global.nameComponent);
     }
   }
+  changeIcon(){
+    if(Global.nameComponent=='factura'){      
+      this.$emit('changeIcon',Global.nameComponent);
+    }    
+  }
   data(){
     return{
       dialogTableVisible: false,
       user: {
         authenticated: false
       },
+      imagenLoad:'',
       data:{
         // Usuario:localStorage.getItem('User_Nombre'),
       },

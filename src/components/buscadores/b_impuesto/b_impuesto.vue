@@ -30,9 +30,11 @@
             highlight-current-row
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="strWH_Cod" label="Codigo" width="180">
+            <el-table-column   prop="strWH_Cod" label="Codigo" width="120">
             </el-table-column>  
-            <el-table-column  prop="fltPorcent" label="Descripción" style="width: 70% !important;">
+            <el-table-column   prop="fltPorcent" label="%" width="120">
+            </el-table-column>  
+            <el-table-column  prop="strWH_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

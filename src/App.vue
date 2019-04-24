@@ -158,7 +158,7 @@ body {
     background: #fff;
     border: 1px solid #d1dbe5;
     margin-left: -10px !important;
-    margin-right: 10px !important;
+    margin-right: -10px !important;
 }
 .el-card {
     cursor: initial !important;
@@ -673,6 +673,9 @@ body {
     padding-right: 17px;
     height: 22px !important;
 }
+.inputAling .el-input__inner{
+    text-align: right;
+}
 .el-input__inner {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -770,7 +773,7 @@ body {
     border-color: #308d33;
 }
 .el-checkbox__inner {
-    margin-top: 8px;
+    /* margin-top: 8px; */
     border-radius: 14px;
 }
 .el-input.is-disabled .el-input__inner {

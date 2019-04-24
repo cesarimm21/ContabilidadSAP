@@ -31,10 +31,16 @@
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" >
                                         <img class="imagenfilter" src="../../images/imprimir.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
-                                        <img class="imagenfilter" src="../../images/informacion.png" alt="" >
-                                    </el-button>
-
+                                    <el-tooltip  content="Ayuda?" placement="right" effect="dark">
+                                        <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                            <img class="imagenfilter" src="../../images/informacion.png" alt="" >
+                                        </el-button>
+                                    </el-tooltip>                                                                     
+                                    <el-tooltip  content="Habilitar Afecto/Inafecto" placement="right" effect="dark">
+                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="changeIcon()">
+                                            <img class="imagenfilter" src="../../images/check.png" >
+                                        </el-button>                                        
+                                    </el-tooltip>
                                   </div>
                               </div>
                         </div>                        

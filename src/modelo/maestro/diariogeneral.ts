@@ -1,41 +1,45 @@
 export class DiarioGeneralModel {
-    strCompany_Cod:string;
-    strCompany_Desc:string;
-    strPeriod_NO:string;
-    strYear:string;
-    dtmProcess_Date:Date;
+    strCompany_Cod:string;//*
+    strCompany_Desc:string;//*
+    strContable_Cod:string;//*
+    dtmPosting_Date:Date;//*   
+    strAccDocum_NO:string;//*
+    strYear:string;//*
+    dtmProcess_Date:Date;//*
     strTypeMov_Cod:string;
     strTypeMov_Desc:string;
     strDaily_Cod:string;
     strDaily_Desc:string;
-    strStatus_Account:string;
+    strStatus_Account:string;//*
     strAcctCateg_Cod:string;
-    strDocument_Number:string;
+    strDocument_Number:string;//*
     strAcc_NO_Local:string;
     strAcc_Desc:string;
     strCenCosWBS_Cod:string;
     strCenCosWBS_Desc:string;
-    strVendor_NO:string;
-    strVendor_Desc:string;
-    strRequis_NO:string;
-    intRequis_Item_NO:number;
-    dtmRequis_Date:Date;
+    strVendor_NO:string;//*
+    strVendor_Desc:string;//*
+    strRequis_NO:string;//*
+    intRequis_Item_NO:number;//*
+    dtmRequis_Date:Date;//*
     strWHS_Cod:string;
-    strPO_NO:string;
+    strPO_NO:string;//*
+    strPlant_Cod:string;        
     intPO_Item_NO:number;
-    dtmPO_Date:Date;
+    dtmPO_Date:Date;//*
+    dtmApproved_Date:Date;//*
     strLote_Nro:string;
     strIngreso_Alm_Nro:string;
-    fltIngreso_Cant:number;
+    fltIngreso_Cant:number;//*
     strSalida_Alm_Nro:string;
     fltSalida_Cant:number;
     strWO_Nro:string;
     dtmWO_Fecha:Date;
-    strVoucher_NO:string;
-    strType_Doc:string;
-    strSerie_Doc:string;
-    strDocument_NO:string;
-    dtmDoc_Date:Date;
+    strVoucher_NO:string;//*
+    strType_Doc:string;//*
+    strSerie_Doc:string;//*
+    strDocument_NO:string;//*
+    dtmDoc_Date:Date;//*
     strWH_Codigo:string;
     fltCantidad:number;
     strStock_Cod:string;
@@ -48,7 +52,7 @@ export class DiarioGeneralModel {
     strExchRate:string;
     strCta_Peru:string;
     strDescripcion_Cta_Peru:string;
-    strCurrency_Cod:string;
+    strCurrency_Cod:string;//*
     fltImporte_Origen:number;
     fltImporte_Local:number;
     fltImporte_USD:number;
@@ -60,7 +64,9 @@ export class DiarioGeneralModel {
     constructor(){
         this.strCompany_Cod='';
         this.strCompany_Desc='';
-        this.strPeriod_NO='';
+        this.strContable_Cod='';
+        this.dtmPosting_Date=new Date();
+        this.strAccDocum_NO='';
         this.strYear='';
         this.dtmProcess_Date=new Date();
         this.strTypeMov_Cod='';
@@ -81,6 +87,7 @@ export class DiarioGeneralModel {
         this.dtmRequis_Date=new Date();
         this.strWHS_Cod='';
         this.strPO_NO='';
+        this.strPlant_Cod='';
         this.intPO_Item_NO=0;
         this.dtmPO_Date=new Date();
         this.strLote_Nro='';

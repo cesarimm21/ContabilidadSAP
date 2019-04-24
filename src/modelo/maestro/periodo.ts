@@ -1,10 +1,10 @@
 export class PeriodoModel {
     intIdPayRun_Period: number;
-    dtmPeriod_NO:Date;
-    strPeriod_Name:string;
+    strPeriod_NO:string;
+    dtmPeriod:Date;
     strPeriod_Desc:string;
-    dtmPeriod_Start:string;
-    dtmPeriod_Final:string;
+    dtmPeriod_Start:Date;
+    dtmPeriod_End:Date;
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;
