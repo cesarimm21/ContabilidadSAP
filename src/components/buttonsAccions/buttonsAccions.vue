@@ -5,7 +5,7 @@
                         <div class="col-md-12">
                                 <div class="table-title" >
                                   <div style="margin-top: 4px;">   
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="BuscarSome()">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ValidarItem()">
                                         <img class="imagenfilter" src="../../images/buscar.png" alt="" >
                                     </el-button>
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" >

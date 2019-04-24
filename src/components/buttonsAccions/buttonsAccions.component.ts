@@ -31,6 +31,9 @@ export default class ButtonsAccionsComponent extends Vue {
       this.$emit('changeIcon',Global.nameComponent);
     }    
   }
+  ValidarItem(){
+    this.$emit('validarView');
+  }
   data(){
     return{
       dialogTableVisible: false,

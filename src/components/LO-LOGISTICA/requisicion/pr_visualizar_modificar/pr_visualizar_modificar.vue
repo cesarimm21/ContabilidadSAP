@@ -3,7 +3,7 @@
 
   <div class="pr-visualizar-modificar">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="validarView()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"  v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
 
     <el-card class="box-card">
@@ -53,7 +53,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
