@@ -12,10 +12,10 @@
                                         <img class="imagenfilter" src="../../images/tacho.png" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="AscItem()" >
                                         <img class="imagenfilter" src="../../images/ordenar_ascendente.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange"  @click="DscItem()">
                                         <img class="imagenfilter" src="../../images/ordenar_descendente.png" alt="" >
                                     </el-button>
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" >
@@ -37,16 +37,13 @@
                                         </el-button>
                                     </el-tooltip>      
                                     <div class="v-separator"></div>                                                                 
-                                    <el-tooltip  content="" placement="right" effect="dark">
-                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
-                                            <img class="imagenfilter" src="../../images/siguiente.png" >
+                                        <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
+                                            <img class="imagenfilter" src="../../images/siguiente2.png" >
                                         </el-button>                                        
-                                    </el-tooltip>
-                                       <el-tooltip  content="" placement="right" effect="dark">
                                          <el-button class="buttonfilter btn btn-outline-secondary orange" @click="anterior()">
                                             <img class="imagenfilter" src="../../images/anterior.png" >
                                         </el-button>                                        
-                                    </el-tooltip>
+                                   
                                   </div>
                               </div>
                         </div>                        

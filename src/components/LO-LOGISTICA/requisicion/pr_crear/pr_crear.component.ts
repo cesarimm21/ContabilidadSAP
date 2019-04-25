@@ -185,6 +185,21 @@ export default class CrearPRComponent extends Vue {
   RegistersForPage: number = 10;
   totalRegistros: number = 100;
   public CompleteData:Array<RequisicionDetalleModel>=[]; 
+  public CompleteData1:Array<RequisicionDetalleModel>=[]; 
+  clickColumn:string='';
+  blnilterdtmRequested_Date:boolean=false;
+  blnilterstrPriority_Cod:boolean=false;
+  blnilterstrCurr:boolean=false;
+  blnilterstrVendor_Suggested:boolean=false;
+  blnilterstrUM:boolean=false;
+  blnilterfltUnitPrice	:boolean=false;
+  blnilterfltQuantity:boolean=false;
+  blnilterstrDescription:boolean=false;
+  blnilterstrMaterial_Cod:boolean=false;
+  blnilterstrCostCenter:boolean=false;
+  blnilterstrAccount_NO:boolean=false;
+  blnilterstrCateg_Line:boolean=false;
+  blnilterstrCateg_Account :boolean=false;
 
   constructor(){
     super();
@@ -225,11 +240,15 @@ export default class CrearPRComponent extends Vue {
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
         reqDetalle.strCateg_Account="ST";
         reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.strDescription="";
         reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
         this.CompleteData.push(reqDetalle);
         console.log('----sss----',reqDetalle);
       }
      
+    this.CompleteData[5].strCateg_Account='A';
+    this.CompleteData[4].strCateg_Account='B';
+    this.CompleteData[7].strCateg_Account='C';
       this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
 
     })
@@ -730,6 +749,7 @@ export default class CrearPRComponent extends Vue {
       }
     }, 300)
   }
+ 
   SeleccionadoCentroCosto(val){
     debugger;
     this.selectrow.strCostCenter=val.strCostCenter_NO;
@@ -896,20 +916,492 @@ export default class CrearPRComponent extends Vue {
   
   EliminarItem(){
     console.log(this.currentRow.intRequis_Item_NO);
-    this.tableData1.splice(this.currentRow.intRequis_Item_NO-1, 1);
-    for(var i=this.currentRow.intRequis_Item_NO-1;i<this.tableData1.length;i++){
-      this.tableData1[i].intRequis_Item_NO=i+1;
+    this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+    for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+      this.CompleteData[i].intRequis_Item_NO=i+1;
     }
-    console.log(this.tableData1);
+    console.log(this.CompleteData);
   }
   siguiente(){
-    this.pagina++;
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  filterstrCateg_Account(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+
+    if(this.blnilterstrCateg_Account){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCateg_Line(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrCateg_Line){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAccount_NO(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrAccount_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCostCenter(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    
+    if(this.blnilterstrCostCenter){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+
+  filterstrMaterial_Cod(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrMaterial_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDescription(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrDescription){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltQuantity(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterfltQuantity){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltUnitPrice(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterfltUnitPrice){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrUM(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrUM){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrVendor_Suggested(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrVendor_Suggested){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCurr(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrCurr){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrPriority_Cod(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterstrPriority_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmRequested_Date(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+    
+    if(this.blnilterdtmRequested_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  
+  filterFirstname(h,{column,$index}){
+    debugger;
+    console.log('filterFirstname',column)
+ 
+    return h('span',{style: 'color: red !important;'}, column.label);
+    
+  }
+  headerclick(val){
+    if(val.property=="dtmRequested_Date"){
+      this.clickColumn="dtmRequested_Date";
+      this.blnilterdtmRequested_Date=true;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strPriority_Cod"){
+      this.clickColumn="strPriority_Cod";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=true;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strCurr"){
+      this.clickColumn="strCurr";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=true;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    
+    if(val.property=="strVendor_Suggested"){
+      this.clickColumn="strVendor_Suggested";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=true;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strUM"){
+      this.clickColumn="strUM";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=true;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="fltUnitPrice"){
+      this.clickColumn="fltUnitPrice";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=true;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="fltQuantity"){
+      this.clickColumn="fltQuantity";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=true;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strDescription"){
+      this.clickColumn="strDescription";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=true;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strMaterial_Cod"){
+      this.clickColumn="strMaterial_Cod";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=true;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCostCenter"){
+      this.clickColumn="strCostCenter";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=true;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strAccount_NO"){
+      this.clickColumn="strAccount_NO";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=true;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCateg_Line"){
+      this.clickColumn="strCateg_Line";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=true;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCateg_Account"){
+      this.clickColumn="strCateg_Account";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =true;
+    }
+   var object=[ { TagId: 1, TagName: "C#", }, 
+   { TagId: 3, TagName: "Visual Studio", },  
+   { TagId: 4, TagName: "Fakes", },
+   { TagId: 2, TagName: "Single Page Application", }, 
+    ]
+
+    console.log('headerclick',val)
+    console.log(val)
+    // this.CompleteData.sort(this.sortBy('intRequis_Item_NO',true));
+
+   
+  }
+  sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+          return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+       
+    });
+  }
+  sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        debugger;
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        
+    });
+  }
+  sortBy = (key, reverse) => {
+
+      const moveSmaller = reverse ? 1 : -1;
+  
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+  
+    return (a, b) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  };
+  async AscItem(){
+    debugger;
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    console.log("asc",this.clickColumn)
+    var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    await loading.close();
+  }
+  DscItem(){
+    debugger;
+    console.log("desc",this.clickColumn)
+    var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
   }
   anterior(){
-
+    if(this.pagina>1){
     this.pagina--;
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
   }
   headerclick(column,event){
     if(column.id){

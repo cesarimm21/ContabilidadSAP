@@ -82,7 +82,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions  v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             
                             <div class="col-md-12" >
@@ -92,21 +92,22 @@
                                         :max-height="sizeScreen"
                                         :data="tableData1" 
                                          highlight-current-row
+                                         @header-click="headerclick"
                                          @current-change="handleCurrentChange"
-                                        stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                                        stripe 
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="58">
-                                        </el-table-column>
+                                        <!-- <el-table-column type="index" width="58">
+                                        </el-table-column> -->
                                         
-                                        <el-table-column
-                                            prop="intRequis_Item_NO" sortable width="200"
-                                            label="intRequis_Item_NO">
+                                        <el-table-column :render-header="filterFirstname" 
+                                            prop="intRequis_Item_NO"  width="40"
+                                            >
                                             <template scope="scope">
                                                 <label style="width:100%" >&nbsp;{{ scope.row.intRequis_Item_NO }}</label>
                                             </template>
                                         </el-table-column>
 
-                                        <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cta. cuenta">
+                                        <el-table-column  :render-header="filterstrCateg_Account"   prop="strCateg_Account" min-width="80" label="Cta. cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" >
@@ -117,7 +118,7 @@
                                         </el-table-column>  
                                         
                                         <el-table-column
-                                            prop="strCateg_Line" sortable  min-width="80"
+                                            prop="strCateg_Line" :render-header="filterstrCateg_Line"    min-width="80"
                                             label="Cat. linea">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategorialinea && bln_tbl_categoria_linea  && (scope.row === editing.row) 
@@ -127,8 +128,8 @@
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCateg_Line }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strAccount_NO" sortable width="100"
+                                        <el-table-column :render-header="filterstrAccount_NO"
+                                            prop="strAccount_NO"   width="100"
                                             label="Cuenta contable">
                                             <template scope="scope">
                                                 <el-input  v-if="blncuentacontable && bln_tbl_cuenta_contable  && (scope.row === editing.row) 
@@ -138,8 +139,8 @@
                                                 <label style="width:100%" v-bind:style="{background:'#e4e2e2',width:'100%',margin: '0rem'}" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAccount_NO }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strCostCenter" sortable  
+                                        <el-table-column :render-header="filterstrCostCenter"
+                                            prop="strCostCenter"    
                                             label="Centro costos">
                                             <template scope="scope">
                                                 <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
@@ -149,8 +150,8 @@
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strMaterial_Cod" sortable 
+                                        <el-table-column :render-header="filterstrMaterial_Cod"
+                                            prop="strMaterial_Cod"   
                                             label="Material">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_material  && (scope.row === editing.row) 
@@ -160,18 +161,18 @@
                                                 <label style="width:100%" v-else @click="clickmaterial(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strMaterial_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strDescription" sortable width="200"
+                                        <el-table-column :render-header="filterstrDescription"
+                                            prop="strDescription"   width="200"
                                             label="Descripción">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDescription" >
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDescription }}</label>
+                                                <label style="width:100%" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDescription=="~"?"":scope.row.strDescription }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="fltQuantity" sortable width="100"
+                                        <el-table-column :render-header="filterfltQuantity"
+                                            prop="fltQuantity"   width="100"
                                             label="Cantidad">
                                             <template scope="scope">
                                                 <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
@@ -180,15 +181,15 @@
                                                 <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="fltUnitPrice" sortable width="100"
+                                        <el-table-column :render-header="filterfltUnitPrice"
+                                            prop="fltUnitPrice"   width="100"
                                             label="Precio">
                                             <template scope="scope">
                                                 <label>&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strUM" sortable  width="60"
+                                        <el-table-column :render-header="filterstrUM"
+                                            prop="strUM"    width="60"
                                             label="UM">
                                             <template scope="scope">
                                                 <el-input  v-if=" blnunidadmedida && bln_tbl_unidad_medida  && (scope.row === editing.row) 
@@ -198,8 +199,8 @@
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickunidadmedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strVendor_Suggested" sortable width="110"
+                                        <el-table-column :render-header="filterstrVendor_Suggested"
+                                            prop="strVendor_Suggested"   width="110"
                                             label="Proveedor">
                                             <template scope="scope">
                                                 <el-input  v-if="blnproveedor && bln_tbl_proveedor  && (scope.row === editing.row) 
@@ -209,8 +210,8 @@
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickproveedor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strVendor_Suggested }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strCurr" sortable 
+                                        <el-table-column :render-header="filterstrCurr"
+                                            prop="strCurr"   
                                             label="Moneda">
                                              <template scope="scope">
                                                 <el-input  v-if="bln_tbl_moneda  && (scope.row === editing.row) 
@@ -220,8 +221,8 @@
                                                 <label style="width:100%" v-else @click="clickmoneda(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCurr }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strPriority_Cod" sortable  
+                                        <el-table-column :render-header="filterstrPriority_Cod"
+                                            prop="strPriority_Cod"    
                                             label="Prioridad">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
@@ -231,8 +232,8 @@
                                                 <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="dtmRequested_Date" sortable  width="100"
+                                        <el-table-column :render-header="filterdtmRequested_Date"
+                                            prop="dtmRequested_Date"    width="100"
                                             label="Fecha Estimada">
                                             <template scope="scope">
                                                 <el-date-picker
@@ -321,7 +322,7 @@
                                                 <label class="el-form-item__label col-md-3" >Código</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" v-model="productoModel.strStock_Cod" placeholder="">
+                                                    <el-input size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -332,7 +333,7 @@
                                                 <label class="el-form-item__label col-md-4" >Descripción</label>
                                                 <div class="col-md-8 grupolabel">
                                                     <div class="input-group mb-8" >
-                                                    <el-input size ="small" v-model="productoModel.strStock_Desc" placeholder="">
+                                                    <el-input size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -345,7 +346,7 @@
                                                 <label class="el-form-item__label col-md-3" >Nombre</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-7" >
-                                                    <el-input size ="small" v-model="productoModel.strStock_Name" placeholder="">
+                                                    <el-input size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -696,6 +697,59 @@ export default CrearPRComponent
 <style scoped>
 .selected{
     background: red;
+}
+table {
+  overflow: hidden;
+}
+
+td, th {
+  padding: 10px;
+  position: relative;
+  outline: 0;
+}
+
+body:not(.nohover) tbody tr:hover {
+  background-color: #ffa;
+}
+
+td:hover::after,
+thead th:not(:empty):hover::after,
+td:focus::after,
+thead th:not(:empty):focus::after { 
+  content: '';  
+  height: 10000px;
+  left: 0;
+  position: absolute;  
+  top: -5000px;
+  width: 100%;
+  z-index: -1;
+}
+
+td:hover::after,
+th:hover::after {
+  background-color: #ffa;
+}
+
+td:focus::after,
+th:focus::after {
+  background-color: lightblue;
+}
+
+/* Focus stuff for mobile */
+td:focus::before,
+tbody th:focus::before {
+  background-color: lightblue;
+  content: '';  
+  height: 100%;
+  top: 0;
+  left: -5000px;
+  position: absolute;  
+  width: 10000px;
+  z-index: -1;
+}
+.el-table--enable-row-hover .el-table__header tr:hover>th {
+    background-color: black !important;
+    background-clip: padding-box;
 }
 
 </style>
