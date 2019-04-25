@@ -43,6 +43,12 @@ export default class ButtonsAccionsComponent extends Vue {
   anterior(){
     this.$emit('anterior');
   }
+  AscItem(){
+    this.$emit('AscItem');
+  }
+  DscItem(){
+    this.$emit('DscItem');
+  }
   data(){
     return{
       dialogTableVisible: false,
