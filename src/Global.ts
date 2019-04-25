@@ -6,6 +6,8 @@ export default {
     vmmaterial:'',
     codematerial:'',
     nameComponent:'',
+    routeInicio:'',
+    routeLogin:'',
     limpiarDatosSession(){
       this.token='';
     },

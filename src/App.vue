@@ -846,8 +846,15 @@ body {
 .zk-table__body-row {
     height: inherit !important;
     -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+    box-sizing: border-box;    
 }
+
+/* .el-table_1_column_2{
+    background: rgb(38, 142, 101) !important;
+}
+.el-table_1_column_2> div{
+    background: rgb(38, 142, 101) !important;
+} */
 /* .el-table .success-row td{
     background: #2e6610;
   } */

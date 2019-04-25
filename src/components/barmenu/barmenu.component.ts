@@ -10,7 +10,7 @@ import { Notification } from 'element-ui';
 import { AccesoModel } from  'src/modelo/login/acceso';
 import AccesoService from '@/components/service/accesos.service';
 import GLOBAL from '../../Global';
-import Global from '../../Global';
+import { API_URL } from '@/Config';
 @Component({
    name: 'barmenu',
    components:{
@@ -38,6 +38,7 @@ export default class BarmenuComponent extends Vue {
   constructor(){
     super()    
     this.imagenLast="../../images/sheet.png";
+    GLOBAL.routeInicio=document.URL
     this.isActive=GLOBAL.isActive;
     this.isCollapse=GLOBAL.isCollapse;
     this.getAccesos(); 
@@ -128,7 +129,9 @@ export default class BarmenuComponent extends Vue {
         this.openMessageAlert('No hay ruta');
       }
       else{
-        this.linkRoute(this.dataRoute.strLink);
+        var ruta:string=GLOBAL.routeLogin+this.dataRoute.strLink;
+        window.open(ruta);
+        // this.linkRoute(this.dataRoute.strLink);
       }
     })
   }
