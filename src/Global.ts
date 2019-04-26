@@ -6,13 +6,24 @@ export default {
     vmmaterial:'',
     codematerial:'',
     nameComponent:'',
+    filter:false,
+    columna:'',
     routeInicio:'',
     routeLogin:'',
     limpiarDatosSession(){
       this.token='';
     },
+    setColumna(val){
+      this.columna=val;
+    },
+    getColumna(){
+      return this.columna;
+    },
     getActive(){
       return this.isActive;
+    },
+    getFilter(){
+      return this.filter;
     },
     setActive(isActive){
       return this.isActive=isActive;

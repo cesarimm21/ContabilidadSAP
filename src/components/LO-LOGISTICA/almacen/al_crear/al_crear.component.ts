@@ -1336,9 +1336,9 @@ export default class CrearMaterialComponent extends Vue {
     if(this.tiporequisicion==""){
       return true;
     }
-    if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
-      return true;
-    }
+    // if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
+    //   return true;
+    // }
     if(this.productoModel.fltQtyLimit_Min<=0){
       return true;
     }
@@ -1372,7 +1372,7 @@ debugger;
       .then(res=>{ 
         debugger;
         this.issave=true;
-        this.textosave='Se guardo correctamente.'
+        this.textosave='Se guardo correctamente. '+ res.strStock_Cod;
       }).catch(error=>{
         this.$message({
           showClose: true,

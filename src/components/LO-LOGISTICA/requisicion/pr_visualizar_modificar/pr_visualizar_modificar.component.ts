@@ -64,7 +64,7 @@ export default class VisualizarModificarPRComponent extends Vue {
   vmaterial:string='';
   /*dialog*/
   dialogCompania:boolean=false;
- 
+  checkFecha:boolean=true;
   /*input*/
   btnactivarcompania:boolean=false;
    
@@ -106,6 +106,33 @@ export default class VisualizarModificarPRComponent extends Vue {
   cell_ocultar:string='transparent';
   vifprogress:boolean=true;
   valuem:number=0;
+
+  //#region button accion
+  
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<RequisicionDetalleModel>=[]; 
+  public CompleteData1:Array<RequisicionDetalleModel>=[]; 
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  blnilterdtmRequested_Date:boolean=false;
+  blnilterstrPriority_Cod:boolean=false;
+  blnilterstrCurr:boolean=false;
+  blnilterstrVendor_Suggested:boolean=false;
+  blnilterstrUM:boolean=false;
+  blnilterfltUnitPrice	:boolean=false;
+  blnilterfltQuantity:boolean=false;
+  blnilterstrDescription:boolean=false;
+  blnilterstrMaterial_Cod:boolean=false;
+  blnilterstrCostCenter:boolean=false;
+  blnilterstrAccount_NO:boolean=false;
+  blnilterstrCateg_Line:boolean=false;
+  blnilterstrCateg_Account :boolean=false;
+  dialogBusquedaFilter:boolean=false;
+
+  //#endregion
 
   constructor(){
     super();
@@ -271,6 +298,8 @@ export default class VisualizarModificarPRComponent extends Vue {
   }
   async cargar(){
     debugger;
+    this.fechaDesde=""
+    this.fechaHasta=""
     var data:any=this.formBusqueda;
     data.strRequis_NO='*'
     data.strDesc_Header='*'
@@ -299,7 +328,7 @@ export default class VisualizarModificarPRComponent extends Vue {
       
     })
   }
-  async Buscar(){
+  async BuscarRequisicion(){
     debugger;
     var data:any=this.formBusqueda;
     if(data.strRequis_NO==''){
@@ -346,6 +375,357 @@ export default class VisualizarModificarPRComponent extends Vue {
   reloadpage(){
     window.location.reload();
   }
+  
+  changeFecha(){
+    debugger;
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
+    else{
+      this.fechaDesde=new Date()
+      this.fechaHasta=new Date()
+    }
+  }
+
+  // #region Button Accion 
+  
+  headerclick(val){
+    
+    this.Column=val.label;
+    if(val.property=="dtmRequested_Date"){
+      this.clickColumn="dtmRequested_Date";
+      this.blnilterdtmRequested_Date=true;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strPriority_Cod"){
+      this.clickColumn="strPriority_Cod";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=true;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strCurr"){
+      this.clickColumn="strCurr";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=true;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    
+    if(val.property=="strVendor_Suggested"){
+      this.clickColumn="strVendor_Suggested";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=true;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strUM"){
+      this.clickColumn="strUM";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=true;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="fltUnitPrice"){
+      this.clickColumn="fltUnitPrice";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=true;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="fltQuantity"){
+      this.clickColumn="fltQuantity";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=true;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strDescription"){
+      this.clickColumn="strDescription";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=true;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strMaterial_Cod"){
+      this.clickColumn="strMaterial_Cod";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=true;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCostCenter"){
+      this.clickColumn="strCostCenter";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=true;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strAccount_NO"){
+      this.clickColumn="strAccount_NO";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=true;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCateg_Line"){
+      this.clickColumn="strCateg_Line";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=true;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCateg_Account"){
+      this.clickColumn="strCateg_Account";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =true;
+    }
+  }
+  sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+          return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+       
+    });
+  }
+  sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        debugger;
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        
+    });
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  Buscar(){
+    debugger;
+    if(this.Column!=""){
+      this.dialogBusquedaFilter=true;
+    }
+    else{
+      alert("Seleccione la columna");
+    }
+  }
+  btnBuscar(){
+    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    this.tableData1=data;
+    console.log('-----like-----',data)
+    this.dialogBusquedaFilter=false;
+  }
+  sortBy = (key, reverse) => {
+
+      const moveSmaller = reverse ? 1 : -1;
+  
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+  
+    return (a, b) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  };
+  async AscItem(){
+    debugger;
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    console.log("asc",this.clickColumn)
+    var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    await loading.close();
+  }
+  DscItem(){
+    debugger;
+    console.log("desc",this.clickColumn)
+    var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+  }
+  anterior(){
+    if(this.pagina>1){
+    this.pagina--;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  Limpiar(){
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  }
+  Print(){
+    window.print();
+  }
+  EliminarItem(){
+    console.log(this.currentRow.intRequis_Item_NO);
+    this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+    for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+      this.CompleteData[i].intRequis_Item_NO=i+1;
+    }
+    this.CompleteData1=this.CompleteData;
+    console.log(this.CompleteData);
+  }
+  siguiente(){
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  // #endregion
+
   data(){
     return{
       dialogTableVisible: false,

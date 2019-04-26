@@ -187,6 +187,8 @@ export default class CrearPRComponent extends Vue {
   public CompleteData:Array<RequisicionDetalleModel>=[]; 
   public CompleteData1:Array<RequisicionDetalleModel>=[]; 
   clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
   blnilterdtmRequested_Date:boolean=false;
   blnilterstrPriority_Cod:boolean=false;
   blnilterstrCurr:boolean=false;
@@ -200,6 +202,7 @@ export default class CrearPRComponent extends Vue {
   blnilterstrAccount_NO:boolean=false;
   blnilterstrCateg_Line:boolean=false;
   blnilterstrCateg_Account :boolean=false;
+  dialogBusquedaFilter:boolean=false;
 
   constructor(){
     super();
@@ -249,13 +252,13 @@ export default class CrearPRComponent extends Vue {
     this.CompleteData[5].strCateg_Account='A';
     this.CompleteData[4].strCateg_Account='B';
     this.CompleteData[7].strCateg_Account='C';
+    this.CompleteData1=this.CompleteData;
       this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
 
     })
     .catch(error=>{
       console.log('error',error)
     })
-  
     maestroService.GetMaestro('VIEW','LA05') 
     .then(res=>{
       debugger;
@@ -267,8 +270,6 @@ export default class CrearPRComponent extends Vue {
     .catch(error=>{
       console.log('error',error)
     });
-
-
   }
 
   fnOcultar(){
@@ -438,6 +439,7 @@ export default class CrearPRComponent extends Vue {
       this.btnactivarcompania=false;
     }
   }
+ 
   closeCompania(){
     debugger;
     this.btnactivarcompania=false;
@@ -914,28 +916,15 @@ export default class CrearPRComponent extends Vue {
     window.location.reload();
   }
   
-  EliminarItem(){
-    console.log(this.currentRow.intRequis_Item_NO);
-    this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
-    for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
-      this.CompleteData[i].intRequis_Item_NO=i+1;
-    }
-    console.log(this.CompleteData);
-  }
-  siguiente(){
-    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
-      this.pagina++;
-      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    }
-  }
   filterstrCateg_Account(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
-
+    
     if(this.blnilterstrCateg_Account){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-        , column.label)])
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
     }
     else{
       return h('span',{style: 'padding-left: 5px;'}, column.label);
@@ -943,11 +932,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrCateg_Line(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrCateg_Line){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -956,11 +945,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrAccount_NO(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrAccount_NO){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}), h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -969,12 +958,12 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrCostCenter(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     
     if(this.blnilterstrCostCenter){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -984,11 +973,11 @@ export default class CrearPRComponent extends Vue {
 
   filterstrMaterial_Cod(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrMaterial_Cod){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}), h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -997,11 +986,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrDescription(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrDescription){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1010,11 +999,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterfltQuantity(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterfltQuantity){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1023,11 +1012,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterfltUnitPrice(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterfltUnitPrice){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1036,11 +1025,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrUM(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrUM){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1049,11 +1038,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrVendor_Suggested(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrVendor_Suggested){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1062,11 +1051,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrCurr(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrCurr){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1075,11 +1064,11 @@ export default class CrearPRComponent extends Vue {
   }
   filterstrPriority_Cod(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterstrPriority_Cod){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}), h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1088,11 +1077,12 @@ export default class CrearPRComponent extends Vue {
   }
   filterdtmRequested_Date(h,{column,$index}){
     debugger;
-    console.log('filterFirstname',column)
+    
     
     if(this.blnilterdtmRequested_Date){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [ h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}
+      ),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
         , column.label)])
     }
     else{
@@ -1100,14 +1090,10 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   
-  filterFirstname(h,{column,$index}){
-    debugger;
-    console.log('filterFirstname',column)
- 
-    return h('span',{style: 'color: red !important;'}, column.label);
-    
-  }
   headerclick(val){
+    
+    this.Column=val.label;
+    Global.setColumna(this.Column);
     if(val.property=="dtmRequested_Date"){
       this.clickColumn="dtmRequested_Date";
       this.blnilterdtmRequested_Date=true;
@@ -1354,6 +1340,32 @@ export default class CrearPRComponent extends Vue {
         
     });
   }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+
+  Buscar(){
+    debugger;
+    if(this.Column!=""){
+      this.dialogBusquedaFilter=true;
+    }
+    else{
+      alert("Seleccione la columna");
+    }
+  }
+  btnBuscar(){
+    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    this.tableData1=data;
+    console.log('-----like-----',data)
+    this.dialogBusquedaFilter=false;
+  }
   sortBy = (key, reverse) => {
 
       const moveSmaller = reverse ? 1 : -1;
@@ -1403,6 +1415,31 @@ export default class CrearPRComponent extends Vue {
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     }
   }
+  Limpiar(){
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+    document.setCurrentRow(this.tableData1[this.intlineaselect]);
+  }
+  Print(){
+    window.print();
+  }
+  
+  EliminarItem(){
+    console.log(this.currentRow.intRequis_Item_NO);
+    this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+    for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+      this.CompleteData[i].intRequis_Item_NO=i+1;
+    }
+    this.CompleteData1=this.CompleteData;
+    console.log(this.CompleteData);
+  }
+  siguiente(){
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
   data(){
     return{
       dialogTableVisible: false,
@@ -1424,162 +1461,7 @@ export default class CrearPRComponent extends Vue {
         fecha_estimada:'',
         centrocosto:'',
       },
-      tableData: [{
-        date: '0001',
-        categoriacuenta: 'Ferreyros',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0002',
-        categoriacuenta: 'Yura SAC',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0003',
-        categoriacuenta: 'Signal company',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0004',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }
-      , {
-        date: '0005',
-        categoriacuenta: 'Tisur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0006',
-        categoriacuenta: 'Seguro',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0007',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0008',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0009',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0010',
-        categoriacuenta: 'Linea',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0011',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }],
+      
       user: {
         authenticated: false
       },
