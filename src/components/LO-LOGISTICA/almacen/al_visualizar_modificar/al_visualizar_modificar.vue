@@ -60,7 +60,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Código Material</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strPO_NO"  placeholder="">
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row ">
+                        <!-- <div class="form-group row ">
                             <label class="el-form-item__label col-md-2" >Proveedor</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
@@ -78,13 +78,14 @@
                                 </div>
                             </div>
                             <span style="font-size: 11px;margin-top: 5px;">{{strVendor_Desc}}</span>
-                        </div>
+                        </div> -->
                         
                         <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-2" >Fecha Desde</label>
+                            <label class="el-form-item__label col-md-2" >Fecha </label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                     <el-date-picker
+                                        :disabled="checkFecha"
                                         v-model="fechaDesde"
                                         size="mini"
                                         style="width:128px !important">
@@ -94,14 +95,16 @@
                             <label class="el-form-item__label col-md-1" >Hasta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                    <el-date-picker
+                                    <el-date-picker :disabled="checkFecha"
                                         v-model="fechaHasta"
                                         size="mini"
                                         style="width:128px !important"
                                        >
                                     </el-date-picker>
                                 </div>
-                            </div>                   
+                            </div>
+                            <el-checkbox class="newCheckBox" @change="changeFecha()" v-model="checkFecha">
+                            </el-checkbox>               
                         </div>    
                     </div>
                 </div>

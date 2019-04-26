@@ -697,6 +697,8 @@ body {
     text-align: right;
 }
 .el-input__inner {
+    font-size: 12px !important;
+    color: #48576a;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

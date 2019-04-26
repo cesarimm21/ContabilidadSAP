@@ -3,7 +3,7 @@
 
   <div class="pr-visualizar-modificar">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="Buscar()"  v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="BuscarRequisicion()"  v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
 
     <el-card class="box-card">
@@ -15,7 +15,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Código Requisición</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="formBusqueda.strRequis_NO"  placeholder="">
@@ -24,10 +24,10 @@
                             </div>
                         </div>
                         <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-2" >Fecha Desde</label>
+                            <label class="el-form-item__label col-md-2" >Fecha </label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                    <el-date-picker
+                                    <el-date-picker :disabled="checkFecha"
                                         v-model="fechaDesde"
                                         size="mini"
                                         style="width:128px !important">
@@ -37,14 +37,16 @@
                             <label class="el-form-item__label col-md-1" >Hasta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                    <el-date-picker
+                                    <el-date-picker :disabled="checkFecha"
                                         v-model="fechaHasta"
                                         size="mini"
                                         style="width:128px !important"
                                        >
                                     </el-date-picker>
                                 </div>
-                            </div>                   
+                            </div>
+                            <el-checkbox class="newCheckBox" @change="changeFecha()" v-model="checkFecha">
+                            </el-checkbox>                     
                         </div>    
                     </div>
                 </div>
@@ -53,7 +55,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar"  v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -61,11 +63,12 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
+                                        @header-click="headerclick"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column type="index" label="Linea" width="38">
                                         </el-table-column>
                                         <el-table-column  sortable prop="strRequis_NO" width="100" label="Código">
                                             <template scope="scope">

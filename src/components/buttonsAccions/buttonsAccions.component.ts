@@ -17,6 +17,7 @@ import { Notification } from 'element-ui';
   components: { contextMenu }
 })
 export default class ButtonsAccionsComponent extends Vue { 
+  filter:boolean=false;
   constructor(){
     super();
   } 
@@ -48,6 +49,21 @@ export default class ButtonsAccionsComponent extends Vue {
   }
   DscItem(){
     this.$emit('DscItem');
+  }
+  Buscar(){
+    this.filter=true;
+    this.$emit('Buscar');
+  }
+  Buscar2(){
+    this.filter=false;
+    alert('ddd')
+  }
+  Print(){
+    this.$emit('Print');
+  }
+  Limpiar(){
+    this.filter=false;
+    this.$emit('Limpiar');
   }
   data(){
     return{

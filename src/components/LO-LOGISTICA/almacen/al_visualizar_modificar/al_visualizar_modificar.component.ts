@@ -53,6 +53,7 @@ export default class VisualizarModificarMaterialComponent extends Vue {
   namecomplete:string;
   SendDocument:boolean=false;
   vmaterial:string='';
+  checkFecha:boolean=true;
   /*dialog*/
   dialogCompania:boolean=false;
  
@@ -103,6 +104,14 @@ export default class VisualizarModificarMaterialComponent extends Vue {
   }
   load(){
     this.cargarList();
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
+    else{
+      this.fechaDesde=new Date();
+      this.fechaHasta=new Date();
+    }
   }
   async cargarList(){
     debugger;
@@ -370,6 +379,13 @@ export default class VisualizarModificarMaterialComponent extends Vue {
   }
   reloadpage(){
     window.location.reload();
+  }
+  changeFecha(){
+    debugger;
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
   }
   data(){
     return{

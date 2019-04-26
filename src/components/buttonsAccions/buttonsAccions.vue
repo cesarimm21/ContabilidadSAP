@@ -18,24 +18,29 @@
                                     <el-button class="buttonfilter btn btn-outline-secondary orange"  @click="DscItem()">
                                         <img class="imagenfilter" src="../../images/ordenar_descendente.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Buscar()">
                                         <img class="imagenfilter" src="../../images/buscari.png" alt="" >
+                                    </el-button> -->
+                                     <el-button  v-if="!filter" class="buttonfilter btn btn-outline-secondary orange" @click="Buscar()">
+                                        <img class="imagenfilter" src="../../images/filters.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
-                                        <img class="imagenfilter" src="../../images/buscarimg.png" alt="" >
+                                    <el-button v-if="filter"  class="buttonfilter btn btn-outline-secondary orange" @click="Buscar()">
+                                        <img class="imagenfilter" src="../../images/filter2.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Limpiar()" >
+                                        <img class="imagenfilter" src="../../images/limpiar.png" alt="" >
+                                    </el-button> 
+                                    
+                                    <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" >
                                         <img class="imagenfilter" src="../../images/filtro.png" alt="" >
-                                    </el-button>
+                                    </el-button> -->
                                     <div class="v-separator"></div>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Print()">
                                         <img class="imagenfilter" src="../../images/imprimir.png" alt="" >
                                     </el-button>
-                                    <el-tooltip  content="Ayuda?" placement="right" effect="dark">
-                                        <el-button class="buttonfilter btn btn-outline-secondary orange" >
-                                            <img class="imagenfilter" src="../../images/informacion.png" alt="" >
-                                        </el-button>
-                                    </el-tooltip>      
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                        <img class="imagenfilter" src="../../images/informacion.png" alt="" >
+                                    </el-button>
                                     <div class="v-separator"></div>                                                                 
                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
                                             <img class="imagenfilter" src="../../images/siguiente2.png" >
