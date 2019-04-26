@@ -8,6 +8,8 @@ export default {
     nameComponent:'',
     filter:false,
     columna:'',
+    routeInicio:'',
+    routeLogin:'',
     limpiarDatosSession(){
       this.token='';
     },

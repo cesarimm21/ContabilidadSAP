@@ -84,10 +84,11 @@
                             <div slot="header" class="headercard" style="margin-top: -4px;">
                                 <buttons-accions v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar"  v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
-                            <div class="col-md-12">
+                            
+                            <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
-                                        ref="missionTable"
+                                        ref="missionTable"                                        
                                         :max-height="sizeScreen"
                                         :data="tableData1" 
                                          highlight-current-row

@@ -29,6 +29,7 @@ export default class LoginComponent extends Vue {
   public companiaSelectModel:CompaniaModel=new CompaniaModel();
   constructor(){
     super();    
+    GLOBAL.routeLogin=document.URL;
     this.loadCompania();
   }
   loadCompania(){

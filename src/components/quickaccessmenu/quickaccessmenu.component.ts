@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import Global from '@/Global';
+import GLOBAL from '@/Global';
 //**BUS */
 import {bus} from '../../main';
 
@@ -49,15 +49,18 @@ export default class QuickAccessMenuComponent extends Vue {
   }
 
   backPage(){
-    this.$emit('backPage',Global.nameComponent);
+    // this.$emit('backPage',GLOBAL.nameComponent);
+    window.history.back();
   }
   reloadpage(){
-    this.$emit('reloadpage',Global.nameComponent);
+    // this.$emit('reloadpage',GLOBAL.nameComponent);
+    window.location.reload();
   }
 
   fnOcultar(){
     this.ocultar=!this.ocultar;
   }
+  
   guardar(){
     this.dialogVisible=true;
     this.SendDocument=true;
@@ -131,26 +134,26 @@ export default class QuickAccessMenuComponent extends Vue {
   confirmaraceptar(){
     //alert("Excelente");
     this.SendDocument=false;
-    if(Global.nameComponent==='crear-po'){
-      this.$emit('guardarPO',Global.nameComponent);  
+    if(GLOBAL.nameComponent==='crear-po'){
+      this.$emit('guardarPO',GLOBAL.nameComponent);  
     }  
-    if(Global.nameComponent==='modificar-po'){
-      this.$emit('guardarEditPO',Global.nameComponent);  
+    if(GLOBAL.nameComponent==='modificar-po'){
+      this.$emit('guardarEditPO',GLOBAL.nameComponent);  
     }  
-    if(Global.nameComponent==='crear-hes'){
-      this.$emit('guardarHES',Global.nameComponent);
+    if(GLOBAL.nameComponent==='crear-hes'){
+      this.$emit('guardarHES',GLOBAL.nameComponent);
     }
-    if(Global.nameComponent==='edit-hes'){
-      this.$emit('guardarEditHES',Global.nameComponent);
+    if(GLOBAL.nameComponent==='edit-hes'){
+      this.$emit('guardarEditHES',GLOBAL.nameComponent);
     }
-    if(Global.nameComponent==='crear-proveedor'){
-      this.$emit('guardarProveedor',Global.nameComponent);
+    if(GLOBAL.nameComponent==='crear-proveedor'){
+      this.$emit('guardarProveedor',GLOBAL.nameComponent);
     }
-    if(Global.nameComponent==='modificar-proveedor'){
-      this.$emit('actualizarProveedor',Global.nameComponent);
+    if(GLOBAL.nameComponent==='modificar-proveedor'){
+      this.$emit('actualizarProveedor',GLOBAL.nameComponent);
     }
-    if(Global.nameComponent==='factura'){
-      this.$emit('SaveFactura',Global.nameComponent);
+    if(GLOBAL.nameComponent==='factura'){
+      this.$emit('SaveFactura',GLOBAL.nameComponent);
     }
     // this.$emit('guardarTodo','hola');
     this.$emit('guardarTodo');
@@ -165,6 +168,10 @@ export default class QuickAccessMenuComponent extends Vue {
   linkRoute(){
     router.push('/barmenu/inicio')
   }
+  linkOpenInOther(){
+    window.open(GLOBAL.routeInicio);
+  }
+  linkHelp(){}
   redirectLogin(msg){
     Notification.warning(msg)
     localStorage.clear();
@@ -181,14 +188,14 @@ export default class QuickAccessMenuComponent extends Vue {
   }
   ValidarItem(){
     this.$emit('validarView');
-    if(Global.nameComponent==='visualizar-proveedor'){
-      this.$emit('visualizarProveedor',Global.nameComponent);
+    if(GLOBAL.nameComponent==='visualizar-proveedor'){
+      this.$emit('visualizarProveedor',GLOBAL.nameComponent);
     }
-    if(Global.nameComponent==='view-hes'){
-      this.$emit('checkViewHES',Global.nameComponent);
+    if(GLOBAL.nameComponent==='view-hes'){
+      this.$emit('checkViewHES',GLOBAL.nameComponent);
     }
-    if(Global.nameComponent==='aprobar-hes'){
-      this.$emit('validarHes',Global.nameComponent);
+    if(GLOBAL.nameComponent==='aprobar-hes'){
+      this.$emit('validarHes',GLOBAL.nameComponent);
     }
   }
   // update(){

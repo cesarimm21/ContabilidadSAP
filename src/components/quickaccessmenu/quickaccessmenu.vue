@@ -9,7 +9,8 @@
     <img src="../../images/cancelar.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute()"/>
     <img src="../../images/nuevo.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="reloadpage()"/>
     
-    <!-- <img src="../../images/visualizar.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute()"/> -->
+    <img src="../../images/acceso_directo.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkOpenInOther()"/>
+    <img src="../../images/ayuda.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkHelp()"/>
    
     <b-modal ref="myModalRef" hide-footer title="Guardar" size="sm"  v-model="SendDocument" @keydown.native.enter="confirmaraceptar">
       <div style="height:85px">
