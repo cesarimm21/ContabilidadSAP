@@ -1403,14 +1403,6 @@ export default class CrearPRComponent extends Vue {
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     }
   }
-  headerclick(column,event){
-    if(column.id){
-      return column.id+'_1';
-    }
-    
-    console.log(column.id);
-    console.log(event);
-  }
   data(){
     return{
       dialogTableVisible: false,

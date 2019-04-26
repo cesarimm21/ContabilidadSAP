@@ -419,8 +419,8 @@
     <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
-                <img src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/save.png" v-if="issave" style="width:15px; height:14px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../images/error.png" v-if="iserror" style="width:15px; height:14px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>
             </div>
             <div class="col-sm-3">
