@@ -7,15 +7,11 @@ import * as CONFIG from '../../Config';
 import GLOBAL from '../../Global';
 import { Notification } from 'element-ui';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
 import '../../assets/css/excel-2007.scss';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
-import trumbowyg from 'vue-trumbowyg';
-import 'trumbowyg/dist/ui/trumbowyg.css';
-import Handsontable from 'handsontable-pro';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -25,10 +21,10 @@ var EditableColumn = {
   template: '#editable-column-content',
   props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
 }
-import VueChart from 'vue-chart-js';
+
 @Component({
    name: 'inicio',
-   components: { trumbowyg,VueChart,Handsontable,'editable-column-content': EditableColumn }
+   components: { 'editable-column-content': EditableColumn }
 })
 export default class InicioComponent extends Vue {
    msg: string;

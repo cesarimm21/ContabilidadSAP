@@ -12,7 +12,7 @@ import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 //**BUS */
-import {bus} from '../../../../main';
+
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
 import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
 import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';

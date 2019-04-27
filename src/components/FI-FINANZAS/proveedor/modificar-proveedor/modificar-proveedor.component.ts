@@ -9,7 +9,7 @@ import {ProveedorModel} from '../../../../modelo/maestro/proveedor';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import { Notification } from 'element-ui';
 import Global from '@/Global';
-import {bus} from '../../../../main';
+
 import paisService from '@/components/service/pais.service';
 import bancoService from '@/components/service/banco.service';
 import tipodocidentidadService from '@/components/service/tipodocidentidad.service';

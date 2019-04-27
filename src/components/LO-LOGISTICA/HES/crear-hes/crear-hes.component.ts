@@ -15,7 +15,7 @@ import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 //**BUS */
-import {bus} from '../../../../main';
+
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
 import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
 import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
@@ -326,20 +326,7 @@ export default class CrearHesComponent extends Vue {
     router.push('/barmenu/'+comand)
   }
   created(){
-    bus.$on('SaveHes',(data)=>{
-      if(data===this.nameComponent){
-        this.guardarHes();
-      }
-    })
-    bus.$on('ValidadHes',(data)=>{
-      if(data===this.nameComponent){
-          this.$message({
-              showClose:true,
-              type:'info',
-              message:'Validate hes'
-          })
-      }
-  })
+   
   }
 
   //#region [CATEGORIA LINEA]

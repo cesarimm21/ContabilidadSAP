@@ -68,7 +68,7 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Código" width="38">
                                         </el-table-column>
                                         <el-table-column  sortable prop="strRequis_NO" width="100" label="Código">
                                             <template scope="scope">

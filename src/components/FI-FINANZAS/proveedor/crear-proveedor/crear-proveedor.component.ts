@@ -24,7 +24,6 @@ import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vu
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
 import Global from '@/Global';
-import {bus} from '../../../../main';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import {PaisModel} from '@/modelo/maestro/pais';

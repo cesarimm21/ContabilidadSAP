@@ -172,7 +172,7 @@
                                             @page-change="pageChanged"
                                         >
                                     </vue-ads-table> -->
-                                    <zk-table
+                                    <!-- <zk-table
                                     ref="table"
                                     sum-text="sum"
                                     index-text="#"
@@ -190,7 +190,7 @@
                                     :expand-type="props.expandType"
                                     :selection-type="props.selectionType">
                                    
-                                    </zk-table>
+                                    </zk-table> -->
                                 </div>
                             </div>
                         </el-card>
