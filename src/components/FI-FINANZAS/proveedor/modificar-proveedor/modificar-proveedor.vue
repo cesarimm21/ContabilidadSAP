@@ -6,10 +6,46 @@
       <div >
           <el-card class="box-card">
               <div slot="header" class="headercard">
-                 <span class="labelheadercard" > Modificar Proveedor</span>
-                 
+                 <span class="labelheadercard" > Modificar Proveedor</span>                 
               </div>
-              <div class="row bodycard">
+            <div class="row">
+                    <div class="col-sm-12" >
+                        <el-card class="box-card" style="margin-left: -10px;">
+                            <div slot="header" class="headercard" style="margin-top: -4px;">
+                                <buttons-accions  ></buttons-accions>
+                            </div>
+                            
+                            <div class="col-md-12" >
+                                <div class="row bodycard" style="background: white;margin-top: 0px;">
+                                   <el-table
+                                    :data="gridProveedor"
+                                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                                    style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                                    highlight-current-row
+                                    height="250"
+                                    @row-dblclick="proveedorCheck"
+                                    @current-change="proveedorSelect">
+                                    <el-table-column   prop="strVendor_NO" label="Codigo" width="100">
+                                    </el-table-column> 
+                                    <el-table-column  prop="strVendor_Desc" label="Nombre proveedor" width="260">
+                                    </el-table-column> 
+                                    <el-table-column   prop="strTax_ID" label="RUC/DNI" width="180">
+                                    </el-table-column>  
+                                    <el-table-column   prop="strCat_Person" label="Categoria" width="180">
+                                    </el-table-column>  
+                                    <el-table-column  prop="strProvince" label="Provincia" style="width: 70% !important;">
+                                    </el-table-column> 
+                                    <el-table-column   prop="strDistrict" label="Distrito" width="180">
+                                    </el-table-column>  
+                                    <el-table-column  prop="strVendor_Desc" label="Dirección"  width="260">
+                                    </el-table-column> 
+                                    </el-table>
+                                </div>
+                            </div>
+                        </el-card>
+                    </div>
+                </div>
+              <!-- <div class="row bodycard">
                   <div class="col-md-6">
                       <div class="form-group row ">
                             <label class="el-form-item__label col-md-3" >Compañia</label>
@@ -33,9 +69,9 @@
                         </div>                        
                         </div>
                   </div>
-              </div>
+              </div> -->
           </el-card>
-          <el-card class="box-card">
+          <!-- <el-card class="box-card">
               <div class="row">
                     <div class="col-sm-12" style="margin-top: 10px;">
                         <el-tabs type="border-card">
@@ -402,7 +438,7 @@
                         </el-tabs>
                     </div>
                 </div>
-          </el-card>
+          </el-card> -->
 
       </div>
       <div class="footer1">

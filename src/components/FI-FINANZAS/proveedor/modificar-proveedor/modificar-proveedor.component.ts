@@ -31,6 +31,7 @@ import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
 import impuestoService from '@/components/service/impuesto.service';
 import cuentaContableService from '@/components/service/cuentaContable.service';
+import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import { Loading } from 'element-ui';
 @Component({
   name: 'modificar-proveedor',
@@ -38,9 +39,12 @@ import { Loading } from 'element-ui';
     'bdocumento':BDocumentoComponent,
     'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
+    'buttons-accions':ButtonsAccionsComponent,
   }
 })
 export default class ModificarProveedorComponent extends Vue {
+  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
   dialogVisible:boolean=false;
   btnactivarproveedor:boolean=false;
@@ -83,7 +87,7 @@ export default class ModificarProveedorComponent extends Vue {
   btnactivarbancoC:boolean=false;
   btnactivarbancoD:boolean=false;
   //**Proveedor */
-  public gridProveedor: ProveedorModel =new ProveedorModel();
+  gridProveedor: ProveedorModel[];
   gridSelectedProveedor:any;
   //***Tipo documento */
   tipodocVisible:boolean=false;
@@ -123,6 +127,8 @@ export default class ModificarProveedorComponent extends Vue {
     Global.nameComponent='modificar-proveedor';
     this.GetAllCategoria();
     this.GetAllCuentaContable();
+    this.GetProveedoresCompany(localStorage.getItem('compania_cod'));
+
   }
   // [Cuenta contable]
   GetAllCuentaContable(){
@@ -138,7 +144,7 @@ export default class ModificarProveedorComponent extends Vue {
   loadCompania(){
     this.dialogCompania=true;
     this.textosave='';
-    this.gridProveedor=new ProveedorModel();
+    // this.gridProveedor=new ProveedorModel();
   }
   companiaSeleccionado(val:CompaniaModel){
     this.companiaModel=val;
@@ -481,7 +487,17 @@ export default class ModificarProveedorComponent extends Vue {
   GetProveedoresCompany(strCompany_Cod){
     proveedorService.GetProveedoresCompany(strCompany_Cod)
     .then(response=>{
+      this.gridProveedor=[];
       this.gridProveedor=response;
+      for(var j=0;j<this.gridProveedor.length;j++){
+        if(this.gridProveedor[j].strLastName!=null){
+          this.gridProveedor[j].strVendor_Desc=this.gridProveedor[j].strVendor_Desc+', '+this.gridProveedor[j].strLastName+' '+this.gridProveedor[j].strSurName
+        }        
+      }
+      for(var i=0;i<100-this.gridProveedor.length;i++){
+        var modelpro:ProveedorModel=new ProveedorModel();
+        this.gridProveedor.push(modelpro);
+      }
       if(response.length>0){
         this.proDisabled=false;
       }          
@@ -1084,6 +1100,7 @@ export default class ModificarProveedorComponent extends Vue {
       dialogTableVisible: false,
       proDisabled:true,
       VisibleForName:true,
+      gridProveedor:[],
       value1:'',
       nameComponent:'modificar-proveedor',
       gridSelectedProveedor:'',
