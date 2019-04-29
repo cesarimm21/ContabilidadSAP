@@ -2,7 +2,7 @@
 <template>
   <div class="al-crear">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="validarView()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"  v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol> 
     <el-card class="box-card">
         <div slot="header" class="headercard">
@@ -41,7 +41,7 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Descripcion</label>
+                            <label class="el-form-item__label col-md-3" >Descripcion Material</label>
                             <div class="col-md-6 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" :disabled="visualizar" @focus="limpiarBotones" v-model="productoModel.strStock_Desc"  placeholder="">
@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Tipo</label>
+                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Tipo Requisicion</label>
                                         <!--<div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
@@ -253,7 +253,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Proveedor</label>
+                                        <label class="el-form-item__label col-md-2" >Proveedor</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" :disabled="visualizar" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="productoModel.strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(productoModel.strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
@@ -417,6 +417,9 @@
     <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
+                <div class="col-sm-2">
+                    <vm-progress v-if="vifprogress" status="success" :percentage="percentage" :text-inside="true" :stroke-width="18" :striped="true"></vm-progress>
+                </div>
                 <img src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>
@@ -538,10 +541,15 @@
                 </footer>
             </div>
     </el-dialog>
-     <!--DIALOG CATEGORIA MATERIAL-->
+     <!-- DIALOG CATEGORIA MATERIAL
     <el-dialog title="Busqueda Categoria Material"  :visible.sync="dialogCategoriaMaterial" @close="closeCategoriaMaterial" size="small" >
       <bcategoriamaterial v-on:categoriamaterialseleccionado="SeleccionadoCategoriaMaterial($event)" v-on:categoriamaterialClose="categoriamaterialClose($event)">
       </bcategoriamaterial>
+    </el-dialog> -->
+        <!--DIALOG BUSQUEDA CATEGORIA LINEA-->
+    <el-dialog title="Busqueda categoria material"  :visible.sync="dialogCategoriaMaterial" @close="closeCategoriaMaterial" size="small" >
+      <bcategorialinea v-on:categorialineaselecionado="SeleccionadoCategoriaMaterial($event)" v-on:categorialineaclose="closeCategoriaMaterial()">
+      </bcategorialinea>
     </el-dialog>
 </div>  
   

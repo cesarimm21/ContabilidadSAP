@@ -93,7 +93,10 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     'strVendor_NO':''
   }
   public tableData:Array<ProductoModel>=[]; 
-  valuem=50;
+  valuem:number=50;
+  striped=true;
+  per:number=3;
+  percentage:number;
   btnbuscarb:boolean=false;
   fechaHasta:any=new Date();
   strStock_Cod:string='';
@@ -154,6 +157,8 @@ export default class VisualizarModificarMaterialComponent extends Vue {
   }
   async cargarList(){
     debugger;
+    this.vifprogress=true;
+    this.percentage=0;
     var data:any=this.formBusqueda;
     this.tableData=[];
     if(this.strStock_Cod==''){
@@ -181,26 +186,30 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
+      this.per++;
     }
     await productoService.busquedaProducto(data)
     .then(res=>{
       debugger;
-      for(var i=0;i<50;i++){
-        this.valuem++; 
-      }
+     
       console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
+     // if(this.valuem>=100){
+        // setTimeout(() => {
+          for(var i=0;i<50;i++){
+            setTimeout(
+              () => {this.percentage++;},1  
+            )
+          }
           console.log('/****************Busqueda***************/')
           console.log(res)
-          this.CompleteData=res;
+         // }, 1200)
+        setTimeout(() => {    this.CompleteData=res;
           this.CompleteData1=this.CompleteData;
           this.totalRegistros=this.CompleteData1.length;
           this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    
-          //this.vifprogress=false;
-        }, 600)
-      }
+      this.vifprogress=false;}, 600)
+      //}
     })
     .catch(error=>{
       
@@ -803,6 +812,13 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     }
   }
   Limpiar(){
+    this.blnfilterstrWHS_Cod=false;
+    this.blnfilterstrWHS_Desc=false;
+    this.blnfilterstrStock_Cod=false;
+    this.blnfilterstrStock_Desc=false;
+    this.blnfilterstrUM_Cod=false;
+    this.blnfilterfltQuantity=false;
+    this.blnfilterfltPrecUnit_Local=false;
     this.CompleteData=this.CompleteData1;
     this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     var document:any = this.$refs.missionTable;
@@ -824,6 +840,7 @@ export default class VisualizarModificarMaterialComponent extends Vue {
   
   data(){
     return{
+      percentage: '0',
       dialogTableVisible: false,
       dialogVisible:false,
       tableDataServicio:[{}],

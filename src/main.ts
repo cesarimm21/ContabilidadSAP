@@ -28,7 +28,7 @@ Vue.use(InfiniteScroll)
 Vue.use(bootstrapvue);
 /*Vue.component('slider',Slider)*/
 Vue.component('login',LoginComponent)
-import { Progress } from 'bootstrap-vue/es/components'
+import Progress from 'vue-multiple-progress'
 Vue.use(Progress)
 Validator.extend('age', {
   getMessage: (field, [args]) => `The ${field} must be older than or equal to ${args}.`,

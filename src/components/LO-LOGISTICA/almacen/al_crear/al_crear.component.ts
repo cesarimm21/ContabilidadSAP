@@ -18,7 +18,7 @@ import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vu
 import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_unidad_medida.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 // import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
-// import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
+import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
 // import BMaterialComponent from '@/components/buscadores/b_material/b_material.vue';
 // import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 // import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
@@ -76,6 +76,7 @@ var EditableColumn = {
     'bcuentacontable':BCuentaContableComponent,
     'bclasematerial':BClaseMaterialComponent,
     'bcategoriamaterial':BCategoriaMaterialComponent,
+    'bcategorialinea':BCategoriaLineaComponent,
     'bcriticidad':BCriticidadComponent,
     'bgrupocomprador':BGrupoCompradorComponent,
     'bproveedor':BProveedorComponent,
@@ -234,6 +235,8 @@ export default class CrearMaterialComponent extends Vue {
   valboolunidadmedida:boolean=false;
   valboolproveedor:boolean=false;
 
+  vifprogress:boolean=true;
+  percentage:number;
 
   constructor(){
     super();
@@ -741,10 +744,10 @@ export default class CrearMaterialComponent extends Vue {
   }
   SeleccionadoCategoriaMaterial(val){
     debugger;
-    this.productoModel.strMaterial_Categ=val.strCategMat_Cod;
-    this.productoModel.intIdCategMat_ID=val.intIdCategMat_ID;
-    this.productoModel.strCategMat_Desc=val.strCategMat_Desc;
-    this.descategoriamaterial=val.strCategMat_Desc;
+    this.productoModel.strMaterial_Categ=val.strCategItem_Cod;
+    this.productoModel.intIdCategMat_ID=val.intIdCategLine_ID;
+    this.productoModel.strCategMat_Desc=val.strCategItem_Desc;
+    this.descategoriamaterial=val.strCategItem_Desc;
     this.dialogCategoriaMaterial=false;
   }
   SeleccionadoControlPrecio(val){
@@ -1330,7 +1333,7 @@ export default class CrearMaterialComponent extends Vue {
   }
   validador(){
     debugger;
-    if(this.productoModel.intIdWHS_Stat_ID==undefined){
+    if(this.productoModel.strUM_Cod==undefined){
       return true;
     }
     if(this.tiporequisicion==""){
@@ -1351,15 +1354,20 @@ export default class CrearMaterialComponent extends Vue {
     if(this.productoModel.intIdUnidadMedida==undefined){
       return true;
     }
-    if(this.productoModel.intIdVendor_ID==undefined){
-      return true;
-    }
     return false;
   }
 
   guardarTodo(val){
 debugger;
+    this.vifprogress=true;
+    this.issave=false;
+    this.iserror=false;
+    this.textosave=''
+    this.percentage=0;    
     if(!this.validador()){
+      for(var i=0;i<50;i++){
+        this.percentage++;
+      }
       this.productoModel.intIdWHS_Stat_ID=1;
       this.productoModel.intIdCommTax_ID=1;
       this.productoModel.strStock_Type=this.tiporequisicion;
@@ -1371,8 +1379,17 @@ debugger;
       productoService.saveProducto(this.productoModel)
       .then(res=>{ 
         debugger;
-        this.issave=true;
-        this.textosave='Se guardo correctamente. '+ res.strStock_Cod;
+        for(var i=0;i<50;i++){
+          setTimeout(
+            () => {this.percentage++;},1  
+          )
+        } 
+        setTimeout(() => {   
+          this.issave=true;
+          this.textosave='Se guardo correctamente. '+ res.strStock_Cod;
+          this.vifprogress=false;
+        }, 600)
+       
       }).catch(error=>{
         this.$message({
           showClose: true,
@@ -1588,7 +1605,8 @@ debugger;
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      percentage: '0',
     }
   }
   

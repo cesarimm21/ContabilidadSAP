@@ -223,6 +223,10 @@ export default class CrearPRComponent extends Vue {
 
   load(){
     debugger;
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.requisicionModel.strCompany_Cod=cod;
+    this.requisicionModel.strCompany_Desc=desc;
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;
