@@ -7,15 +7,13 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import { VueAdsTable } from 'vue-ads-table-tree';
-import ZkTable from 'vue-table-with-tree-grid'
+// import { VueAdsTable } from 'vue-ads-table-tree';
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
 
 //***Modelos */
 import {ProductoModel} from '@/modelo/maestro/producto';
@@ -45,8 +43,6 @@ var EditableColumn = {
     'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
     'bproveedor':BProveedorComponent,
-    'vue-ads-table':VueAdsTable,
-    'ZkTable':ZkTable,
   } ,
  
 })

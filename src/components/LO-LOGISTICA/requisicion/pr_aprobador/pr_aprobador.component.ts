@@ -25,7 +25,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
+
 // import '../../../../assets/css/excel-2007.scss';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
@@ -45,7 +45,7 @@ import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 
-import Handsontable from 'handsontable-pro';
+
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';

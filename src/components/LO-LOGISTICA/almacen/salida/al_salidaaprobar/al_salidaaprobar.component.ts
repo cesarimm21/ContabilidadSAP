@@ -19,14 +19,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
+
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
 import salidaService from '@/components/service/salida.service';
 
-import Handsontable from 'handsontable-pro';
+
 
 import {SalidaMaterialModel} from '@/modelo/maestro/salidamaterial';
 import { Notification } from 'element-ui';

@@ -5,6 +5,12 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import Global from '@/Global';
+
+import paisService from '@/components/service/pais.service';
+import bancoService from '@/components/service/banco.service';
+import tipodocidentidadService from '@/components/service/tipodocidentidad.service';
+import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
+import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import proveedorService from '@/components/service/proveedor.service';

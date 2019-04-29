@@ -3,7 +3,6 @@ import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import GLOBAL from '@/Global';
 //**BUS */
-import {bus} from '../../main';
 
 import Login from '@/components/login/login.vue';
 import Roles from '@/components/roles/roles.vue';

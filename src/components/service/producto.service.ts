@@ -60,9 +60,17 @@ export default{
     })
   },
   busquedaProducto(data){
-    return axios.get(CONFIG.API_URL+'busqueda/producto/'+data.strStock_Cod+'/'+data.desde+'/'+data.hasta)
+    return axios.get(CONFIG.API_URL+'busqueda/producto/'+data.strStock_Cod+'/'+data.desde+'/'+data.hasta+'/'+data.strWHS_Cod)
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  eliminarProducto(data){
+    debugger;
+    return axios.post(CONFIG.API_URL+'producto/eliminar',data)
+    .then(response => {
+      return response.data
+    })
+    
+  }
 }

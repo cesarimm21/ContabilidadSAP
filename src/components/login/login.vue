@@ -35,6 +35,8 @@
                                             <img src="../../images/logo_login.png" style="width: 100%;" class="img-fluid">
                                         </div>
                                     </div>
+                                    <b-progress  :max="100" >
+                                    </b-progress>
                                     <p class="text-muted text-center"><span style="font-size:13px;color:white">Iniciar sesión</span></p>
                                     <div class="form-group input-group mb-3" style="margin-left: 0px !important;">
                                         <div class="input-group-prepend">

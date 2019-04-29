@@ -2,6 +2,8 @@ import { Vue, Component } from 'vue-property-decorator';
 import Router from 'vue-router';
 
 
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '../../assets/css/login.scss';
 import 'font-awesome/css/font-awesome.css';
 import '../../assets/css/slider.scss';
@@ -14,6 +16,10 @@ import usuarioService from '@/components/service/usuario.service';
 import loginService from '@/components/service/login.service';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
+import BProgress from 'bootstrap-vue/es/components/progress/progress'
+import BProgress2 from 'bootstrap-vue/es/components/progress/progress-bar'
+Vue.component('b-progress', BProgress)
+Vue.component('b-progress-bar', BProgress2)
 
 @Component({
    name: 'login'

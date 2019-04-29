@@ -41,13 +41,14 @@
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" >
                                         <img class="imagenfilter" src="../../images/informacion.png" alt="" >
                                     </el-button>
-                                    <div class="v-separator"></div>                                                                 
-                                        <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
-                                            <img class="imagenfilter" src="../../images/siguiente2.png" >
-                                        </el-button>                                        
+                                    <div class="v-separator"></div>    
+                                                                         
                                          <el-button class="buttonfilter btn btn-outline-secondary orange" @click="anterior()">
-                                            <img class="imagenfilter" src="../../images/anterior.png" >
-                                        </el-button>                                        
+                                            <img class="imagenfilter" src="../../images/pagina_siguiente.png" >
+                                        </el-button>                                                               
+                                        <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
+                                            <img class="imagenfilter" src="../../images/pagina_anterior.png" >
+                                        </el-button>                                         
                                    
                                   </div>
                               </div>

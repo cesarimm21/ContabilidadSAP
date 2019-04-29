@@ -13,12 +13,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
+
 
 import salidaService from '@/components/service/salida.service';
 import libroBalanceService from '@/components/service/libroBalances.service';
 
-import Handsontable from 'handsontable-pro';
+
 
 //***Modelos */
 import {ProductoModel} from '@/modelo/maestro/producto';
@@ -29,7 +29,7 @@ import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
 
 import { SalidaModel } from '@/modelo/maestro/salida';
-import { saveAs } from 'file-saver';
+
 
 import jsPDF from 'jspdf'
 import { Base64 } from 'js-base64'; 

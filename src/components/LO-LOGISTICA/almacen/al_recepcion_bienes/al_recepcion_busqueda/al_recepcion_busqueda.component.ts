@@ -20,7 +20,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
+
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
@@ -30,7 +30,7 @@ import ordencompraService from '@/components/service/ordencompra.service';
 
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 
-import Handsontable from 'handsontable-pro';
+
 import proveedorService from '@/components/service/proveedor.service';
 import {SalidaMaterialModel} from '@/modelo/maestro/salidamaterial';
 import { Notification } from 'element-ui';

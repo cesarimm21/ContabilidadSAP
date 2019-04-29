@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import contextMenu from 'vue-context-menu';
+
 import Login from '@/components/login/login.vue';
 import Roles from '@/components/roles/roles.vue';
 import UsuarioService from '@/components/service/usuario.service';
@@ -17,7 +17,7 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import { Notification } from 'element-ui';
 @Component({
   name: 'run-pagos',
-  components: { contextMenu, 'buttons-accions':ButtonsAccionsComponent,
+  components: { 'buttons-accions':ButtonsAccionsComponent,
   'quickaccessmenu':QuickAccessMenuComponent,}
 })
 export default class RunComponent extends Vue {

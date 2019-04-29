@@ -25,7 +25,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
+
 // import '../../../../assets/css/excel-2007.scss';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
@@ -48,7 +48,7 @@ import tipoRequisicionService from '@/components/service/tipoRequisicion.service
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
 
-import Handsontable from 'handsontable-pro';
+
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';
@@ -223,6 +223,10 @@ export default class CrearPRComponent extends Vue {
 
   load(){
     debugger;
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.requisicionModel.strCompany_Cod=cod;
+    this.requisicionModel.strCompany_Desc=desc;
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;

@@ -33,7 +33,7 @@
                             <label class="el-form-item__label col-md-1" >Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="requisicionModel.strCompany_Cod"  placeholder="">
+                                <el-input size ="small" :disabled="true" @blur="desactivar_compania" @focus="activar_compania" v-model="requisicionModel.strCompany_Cod"  placeholder="">
                                     <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                 </el-input>
                                 </div>
@@ -256,7 +256,7 @@
                     <div class="col-sm-6" >
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-2" >Nº Linea</label>
-                            <div class="col-md-7 grupolabel" style="margin-right: -10px;">
+                            <div class="col-md-3 grupolabel" style="margin-right: -10px;">
                                 <div class="input-group mb-3" >
                                     <el-input type="text"  size ="small" v-model="txtnroline"   aria-describedby="basic-addon2">
                                     </el-input>
@@ -284,7 +284,7 @@
                 <div class="row">
                     <div class="col-sm-12" style="margin-top: 10px;">
                         <el-tabs type="border-card">
-                            <el-tab-pane label="Servicio">
+                            <!-- <el-tab-pane label="Servicio">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-sm-11">
@@ -313,7 +313,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </el-tab-pane>
+                            </el-tab-pane> -->
                            
                             <el-tab-pane label="Datos Material">
                                 <div class="container">

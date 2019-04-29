@@ -26,14 +26,14 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-import { mixin as focusMixin }  from 'vue-focus';
+
 // import '../../../../assets/css/excel-2007.scss';
 import documentService from '@/components/service/documents.service';
 import msmsendService from '@/components/service/msnSend.service';
 import historialService from '@/components/service/historial.service';
 import inicioService from '@/components/service/inicio.service';
 
-import Handsontable from 'handsontable-pro';
+
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';
@@ -50,7 +50,7 @@ import impuestoService from '@/components/service/impuesto.service';
 import unidadmedidaService from '@/components/service/unidadmedida.service';
 import productoService from '@/components/service/producto.service';
 import { ClaseMaterialModel } from '@/modelo/maestro/clasematerial';
-
+import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
 import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 
@@ -80,6 +80,7 @@ var EditableColumn = {
     'bunidadmedida':BUnidadMedidaComponent,
     'quickaccessmenu':QuickAccessMenuComponent,
     'alvisualizar':VisualizarMaterialComponent,
+    'bcategorialinea':BCategoriaLineaComponent,
   } ,
 })
 export default class ModificarMaterialComponent extends Vue {
@@ -208,7 +209,9 @@ export default class ModificarMaterialComponent extends Vue {
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
   
   tiporequisicionant:string='';
-  
+  vifprogress:boolean=true;
+  percentage:number;
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -258,6 +261,19 @@ export default class ModificarMaterialComponent extends Vue {
       debugger;
       if(response!=undefined){
         this.productoModel=response[0];
+        if(response[0].intIdUnidadMedida!=null){
+          var _unidadmedida=response[0].intIdUnidadMedida;
+          this.productoModel.intIdUnidadMedida=_unidadmedida.intUnit_Measure_ID;
+        }
+        if(response[0].intIdVendor_ID!=null){
+          var _vendor=response[0].intIdVendor_ID;
+          this.productoModel.intIdVendor_ID=_vendor.intIdVendor_ID;
+        }
+        if(response[0].intIdMatClass_ID!=null){
+          var _class=response[0].intIdMatClass_ID;
+          this.productoModel.intIdMatClass_ID=_class.intIdMatClass_ID;
+          
+        }
         console.log('cargar-Material:',response);
         loading.close();
         tipoRequisicionService.GetAllTipoRequisicion()
@@ -754,10 +770,10 @@ export default class ModificarMaterialComponent extends Vue {
   }
   SeleccionadoCategoriaMaterial(val){
     debugger;
-    this.productoModel.strMaterial_Categ=val.strCategMat_Cod;
-    this.productoModel.intIdCategMat_ID=val.intIdCategMat_ID;
-    this.productoModel.strCategMat_Desc=val.strCategMat_Desc;
-    this.descategoriamaterial=val.strCategMat_Desc;
+    this.productoModel.strMaterial_Categ=val.strCategItem_Cod;
+    this.productoModel.intIdCategMat_ID=val.intIdCategLine_ID;
+    this.productoModel.strCategMat_Desc=val.strCategItem_Desc;
+    this.descategoriamaterial=val.strCategItem_Desc;
     this.dialogCategoriaMaterial=false;
   }
   SeleccionadoControlPrecio(val){
@@ -797,7 +813,6 @@ export default class ModificarMaterialComponent extends Vue {
     debugger;
     console.log('traer',val);
     this.productoModel.strWHS_Cod=val.strWHS_Cod;
-    this.productoModel.intIdWHS_Stat_ID=val.intIdWHS_ID;
     this.desalmacen=val.strWHS_Desc;
     this.productoModel.strWHS_Desc=val.strWHS_Desc;
     this.dialogAlmacen=false;
@@ -1321,15 +1336,13 @@ export default class ModificarMaterialComponent extends Vue {
 
   validador(){
     debugger;
-    if(this.productoModel.intIdWHS_Stat_ID==undefined){
-      return true;
-    }
+    
     if(this.tiporequisicion==""){
       return true;
     }
-    if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
-      return true;
-    }
+    // if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
+    //   return true;
+    // }
     if(this.productoModel.fltQtyLimit_Min<=0){
       return true;
     }
@@ -1342,20 +1355,36 @@ export default class ModificarMaterialComponent extends Vue {
     if(this.productoModel.intIdUnidadMedida==undefined){
       return true;
     }
-    if(this.productoModel.intIdVendor_ID==undefined){
-      return true;
-    }
     return false;
   }
-  guardarTodo(val){
+  async guardarTodo(val){
+    debugger;
+    this.vifprogress=true;
+    this.issave=false;
+    this.iserror=false;
+    this.textosave=''
+    this.percentage=0;      
     if(!this.validador()){
+      for(var i=0;i<50;i++){
+        this.percentage++;
+      }
+      debugger;
       this.productoModel.intIdWHS_Stat_ID=1;
       this.productoModel.intIdCommTax_ID=1;
       productoService.UpdateProducto(this.productoModel)
       .then(res=>{ 
         debugger;
-        this.issave=true;
-        this.textosave='Se guardo correctamente.'
+        for(var i=0;i<50;i++){
+          setTimeout(
+            () => {this.percentage++;},1  
+          )
+        } 
+        setTimeout(() => {   
+          this.issave=true;
+          this.textosave='Se guardo correctamente.'
+          this.vifprogress=false;
+        }, 600)
+        
       }).catch(error=>{
         this.$message({
           showClose: true,
@@ -1367,7 +1396,7 @@ export default class ModificarMaterialComponent extends Vue {
     else{
       this.issave=false;
       this.iserror=true;
-      this.textosave='No se pudo guardar. Revise los datos'
+      this.textosave='No se pudo guardar. Revise los datos-Error'
     }
   }
   clickable(){
@@ -1573,7 +1602,8 @@ export default class ModificarMaterialComponent extends Vue {
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      percentage: '0',
     }
   }
   

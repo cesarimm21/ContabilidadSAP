@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import contextMenu from 'vue-context-menu';
+
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
@@ -21,7 +21,7 @@ import bancoService from '@/components/service/banco.service';
 import Global from '@/Global';
 @Component({
     name: 'pagos-individual',
-    components: { contextMenu,
+    components: { 
     'quickaccessmenu':QuickAccessMenuComponent,
     'bmoneda':BMonedaComponent,
     'bbanco':BBancoComponent,

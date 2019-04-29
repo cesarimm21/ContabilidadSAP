@@ -26,7 +26,6 @@ import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 
 import Global from '@/Global';
-import {bus} from '../../../../main';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import {PaisModel} from '@/modelo/maestro/pais';
