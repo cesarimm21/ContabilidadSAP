@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllDepartamentoByPais(cod){ 
+    return axios.get(CONFIG.API_URL+'pais/departamento/'+cod)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneDepartamento(code){
     return axios.get(CONFIG.API_URL+'departamento/'+code)
     .then(response =>{           

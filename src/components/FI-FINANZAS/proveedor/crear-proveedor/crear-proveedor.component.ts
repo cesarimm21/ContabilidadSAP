@@ -20,8 +20,10 @@ import impuestoService from '@/components/service/impuesto.service';
 import cuentaContableService from '@/components/service/cuentaContable.service';
 
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
-import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+import BBancoProveedor from '@/components/buscadores/b_banco/b_banco.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
+import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 
 import Global from '@/Global';
 import {bus} from '../../../../main';
@@ -39,8 +41,10 @@ import { FacturaModel } from '@/modelo/maestro/factura';
   name: 'crear-proveedor',
   components:{
     'bdocumento':BDocumentoComponent,
-    'bcompania':BCompaniaProveedor,
+    'bbanco':BBancoProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
+    'bmoneda':BMonedaComponent,
+    'bimpuesto':BImpuestoComponent,
   }
 })
 export default class CrearProveedorComponent extends Vue {
@@ -53,7 +57,7 @@ export default class CrearProveedorComponent extends Vue {
   nameTipoJoN:string='';
   VisibleForName:boolean=true;
   ApellidosShow:boolean=false;
-  valuem:number=0;
+  valuem:number=100;
   textosave='';
   issave:boolean=false;
   iserror:boolean=false;
@@ -71,13 +75,8 @@ export default class CrearProveedorComponent extends Vue {
 
   //**Compania */
   public Compania:CompaniaModel=new CompaniaModel();
-  codigoCompania:string;
-  descripcionCompania:string;
-  codigoCompaniaB:string;
-  descripcionCompaniaB:string;
-  btnactivarcompania:boolean=false;
-  btnactivarcompaniaB:boolean=false;
-  dialogCompania:boolean=false;
+  codigoCompania:any;
+  descripcionCompania:any;
   dataCompania:any[];
   public companiaModel:CompaniaModel=new CompaniaModel();
 
@@ -112,6 +111,7 @@ export default class CrearProveedorComponent extends Vue {
   public Departamento:DepartamentoModel=new DepartamentoModel();
   btnactivardepartamento:boolean=false;
   departVisible:Boolean=false;
+  departEnabled:boolean=true;
   public selectDepartamento:DepartamentoModel=new DepartamentoModel();
   //**Moneda */
   public Moneda:MonedaModel=new MonedaModel();
@@ -140,9 +140,17 @@ export default class CrearProveedorComponent extends Vue {
     super();
     Global.nameComponent='crear-proveedor';
     // this.GetAllProveedor();
+    setTimeout(() => {
+      this.load();
+    }, 200)
+  }
+  load(){
+    this.codigoCompania=localStorage.getItem('compania_cod');
+    this.descripcionCompania=localStorage.getItem('compania_name');
     this.GetAllCategoria();
     this.GetAllCuentaContable();
     this.GetAllTipoDocumento();
+    this.GetProveedoresCompany(this.codigoCompania);
   }
 // [Cuenta contable]
   GetAllCuentaContable(){
@@ -154,106 +162,6 @@ export default class CrearProveedorComponent extends Vue {
 
     })
   }
-  //#region [COMPAÑIA]
-  loadCompania(val:string){
-    this.flagCompania=val;
-    this.dialogCompania=true;
-    this.textosave='';
-    this.gridProveedor=new ProveedorModel();
-  }
-  companiaSeleccionado(val:CompaniaModel){
-    this.companiaModel=val;
-    if(this.flagCompania==='A'){
-      this.codigoCompania=this.companiaModel.strCompany_Cod;
-      this.descripcionCompania=this.companiaModel.strCompany_Desc;
-      this.GetProveedoresCompany(this.companiaModel.strCompany_Cod);      
-    }
-    if(this.flagCompania==='B'){
-      this.Proveedor.intIdCompany_ID=this.companiaModel.intIdCompany_ID;
-      this.Proveedor.strCompany_Cod=this.companiaModel.strCompany_Cod;
-      this.descripcionCompaniaB=this.companiaModel.strCompany_Desc;
-    }
-
-    
-    this.dialogCompania=false;    
-  }
-  companiaClose(){
-    if(this.flagCompania==='A'){
-      this.companiaModel=new CompaniaModel();
-      this.dialogCompania=false;
-      this.codigoCompania='';
-      this.descripcionCompania='';
-      this.proDisabled=true;
-    }
-    if(this.flagCompania==='B'){
-      this.companiaModel=new CompaniaModel();
-      this.dialogCompania=false;
-      this.codigoCompaniaB='';
-      this.descripcionCompaniaB='';
-    }
-    
-  }
-  dialogCompaniaClose(){
-    this.dialogCompania=false;
-    this.btnactivarcompania=false;
-  }
-  activar_compania(){
-    setTimeout(() => {
-      this.btnactivarcompania=true;
-      this.btnactivarcompaniaB=false;
-      this.btnactivarproveedor=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarpais=false;
-      this.btnactivardepartamento=false;
-      this.btnactivarbancoA=false;
-      this.btnactivarbancoB=false;
-      this.btnactivarbancoC=false;
-      this.btnactivarbancoD=false;
-      this.btnactivarmonedaA=false;
-      this.btnactivarmonedaB=false;
-      this.btnactivarmonedaC=false;
-      this.btnactivarmonedaD=false;
-      this.btnactivarimpuesto=false;
-
-    }, 120)
-  }
-  desactivar_compania(){
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;
-    }
-  }
-  activar_companiaB(){
-    setTimeout(() => {
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=true;
-      this.btnactivarproveedor=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarpais=false;
-      this.btnactivardepartamento=false;
-      this.btnactivarbancoA=false;
-      this.btnactivarbancoB=false;
-      this.btnactivarbancoC=false;
-      this.btnactivarbancoD=false;
-      this.btnactivarmonedaA=false;
-      this.btnactivarmonedaB=false;
-      this.btnactivarmonedaC=false;
-      this.btnactivarmonedaD=false;
-      this.btnactivarimpuesto=false;
-
-    }, 120)
-  }
-  desactivar_companiaB(){
-    if(this.dialogCompania){
-      this.btnactivarcompaniaB=false;
-    }
-  }
-  closeCompania(){
-    this.btnactivarcompania=false;
-    this.btnactivarcompaniaB=false;
-    this.dialogCompania=false;
-    return false;
-  }
-  //#endregion
   //#region [PAIS]
   //**Pais */
   loadPais(){
@@ -276,8 +184,6 @@ export default class CrearProveedorComponent extends Vue {
   }
   activar_Pais(){
     setTimeout(() => {
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarpais=true;
       this.btnactivarproveedor=false;
       this.btnactivarTipoDocumento=false;
@@ -307,13 +213,14 @@ export default class CrearProveedorComponent extends Vue {
     this.gridSelectPais=val;
     this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
+    this.departEnabled=false;
   }
   paisChosseCheck(){
     this.paisVisible=false;
+
   }
   paisChosseClose(){
     this.paisVisible=false;
-    this.gridSelectPais=new PaisModel();
   }
   //#endregion
 
@@ -338,25 +245,10 @@ export default class CrearProveedorComponent extends Vue {
   }
   handleCloseBanco(){ 
     this.bancoVisible=false;
-    if(this.FLAGBANCO==='A'){
-      this.selectBancoA=new BancoModel();
-    }
-    if(this.FLAGBANCO==='B'){
-      this.selectBancoB=new BancoModel();
-    }
-    if(this.FLAGBANCO==='C'){
-      this.selectBancoC=new BancoModel();
-    }
-    if(this.FLAGBANCO==='D'){
-      this.selectBancoD=new BancoModel();
-    }   
-    
   }
   activar_bancoA(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -379,8 +271,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_bancoB(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -403,8 +293,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_bancoC(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -427,8 +315,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_bancoD(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -448,14 +334,10 @@ export default class CrearProveedorComponent extends Vue {
       this.btnactivarbancoD=false;
     }
   }
-  bancoChosseCheck(){
-    this.bancoVisible=false;
-  }
   bancoChosseClose(){
-    this.selectBancoA=new BancoModel();
     this.bancoVisible=false;
   }
-  bancoSelect(val:BancoModel){
+  bancoselecionado(val:BancoModel){
     if(this.FLAGBANCO==='A'){
       this.selectBancoA=val;
       this.Proveedor.strBank_Cod=this.selectBancoA.strBank_Cod;
@@ -472,21 +354,10 @@ export default class CrearProveedorComponent extends Vue {
       this.selectBancoD=val;
       this.Proveedor.strFore_Branch_Cod=this.selectBancoD.strBank_Cod;
     }    
+    this.bancoVisible=false;
   }
   //#endregion
   //#region [Proveedor]
-  GetAllProveedor(){
-    proveedorService.GetAllProveedor()
-    .then(response=>{
-      this.gridProveedor=response;      
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar lista de proveedores'
-      })
-    })
-  }
   GetProveedoresCompany(strCompany_Cod){
     proveedorService.GetProveedoresCompany(strCompany_Cod)
     .then(response=>{
@@ -513,8 +384,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_proveedor1(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=true;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -649,8 +518,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_TipoDocumento(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=true;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -684,11 +551,12 @@ export default class CrearProveedorComponent extends Vue {
   //#endregion
 
   //#region  [Departamento]
-  GetAllDepartamento(){
-    departamentoService.GetAllDepartamento()
+  GetAllDepartamento(val){
+    departamentoService.GetAllDepartamentoByPais(val)
     .then(response=>{
       this.Departamento=response;
       this.departVisible=true;
+      
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -702,7 +570,6 @@ export default class CrearProveedorComponent extends Vue {
     setTimeout(() => {
       this.btnactivardepartamento=true;
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
       this.btnactivarpais=false;
       this.btnactivarTipoDocumento=false;
     }, 120)
@@ -729,7 +596,7 @@ export default class CrearProveedorComponent extends Vue {
     this.selectDepartamento=new DepartamentoModel();
   }
   departDialog(){
-    this.GetAllDepartamento();
+    this.GetAllDepartamento(this.gridSelectPais.intIdCountry_ID);
   }
   //#endregion
   //#region [MONEDA]
@@ -753,19 +620,6 @@ export default class CrearProveedorComponent extends Vue {
   }
   handleCloseMoneda(){
     this.monedaVisible=false;
-    if(this.FLAGMONEDA==='A'){
-      this.selectMonedaA=new MonedaModel();
-    }   
-    if(this.FLAGMONEDA==='B'){
-      this.selectMonedaB=new MonedaModel();
-    }   
-    if(this.FLAGMONEDA==='C'){
-      this.selectMonedaC=new MonedaModel();
-    }   
-    if(this.FLAGMONEDA==='D'){
-      this.selectMonedaD=new MonedaModel();
-    }   
-    
   }
   monedaSelect(val:MonedaModel){
     if(this.FLAGMONEDA==='A'){
@@ -784,6 +638,7 @@ export default class CrearProveedorComponent extends Vue {
       this.selectMonedaD=val;
       this.Proveedor.strFore_Curr_Cod=this.selectMonedaD.strCurrency_Cod;
     }   
+    this.monedaVisible=false;
   }
   monedaChosseCheck(){
     this.monedaVisible=false;
@@ -792,8 +647,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_monedaA(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -816,8 +669,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_monedaB(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -840,8 +691,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_monedaC(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -864,8 +713,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_monedaD(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -904,8 +751,6 @@ export default class CrearProveedorComponent extends Vue {
   activar_impuesto(){
     setTimeout(() => {
       this.btnactivarTipoDocumento=false;
-      this.btnactivarcompania=false;
-      this.btnactivarcompaniaB=false;
       this.btnactivarproveedor=false;
       this.btnactivarpais=false;
       this.btnactivardepartamento=false;
@@ -930,16 +775,13 @@ export default class CrearProveedorComponent extends Vue {
   }
   handleCloseImpuesto(){
     this.impuestoVisible=false;
-    this.selectImpuesto=new ImpuestoModel();
   }
   impuestoSelect(val:ImpuestoModel){
     this.selectImpuesto=val;
     this.Proveedor.strDetraccion_Cod=this.selectImpuesto.strWH_Cod;
     this.Proveedor.fltDetraccion_Porcen=this.selectImpuesto.fltPorcent;
     this.Proveedor.strRetention_Cod=this.selectImpuesto.strWH_Cod;
-    this.Proveedor.fltRetention_Porcen=this.selectImpuesto.fltPorcent; 
-  }
-  impuestoChosseCheck(){
+    this.Proveedor.fltRetention_Porcen=this.selectImpuesto.fltPorcent;
     this.impuestoVisible=false;
   }
   //#endregion
@@ -970,7 +812,7 @@ export default class CrearProveedorComponent extends Vue {
         this.tipoDocDisabled=true;
       }
       if(val===2){
-        this.nameTipoJoN='Razon social';
+        this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=false;
         this.Proveedor.intIdVenCateg_ID=val;
@@ -1026,7 +868,6 @@ export default class CrearProveedorComponent extends Vue {
       this.selectBancoB=new BancoModel();
       this.selectBancoC=new BancoModel();
       this.selectBancoD=new BancoModel();
-      this.descripcionCompaniaB='';
 
     })
     .catch(e =>{      
@@ -1083,9 +924,7 @@ export default class CrearProveedorComponent extends Vue {
       ApellidosShow:false,
       descripcionCompania:'',
       codigoCompania:'',
-      descripcionCompaniaB:'',
       gridSelectedProveedor:'',
-      codigoCompaniaB:'',
       FLAGBANCO:'',
       FLAGMONEDA:'',
       proDisabled:true,

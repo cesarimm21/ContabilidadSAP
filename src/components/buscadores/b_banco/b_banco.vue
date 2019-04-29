@@ -7,15 +7,13 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-1" >Código</label>
-                        <div class="col-md-2 grupolabel">
-                            <div class="input-group mb-3" >
-                            <el-input size ="small"   placeholder="">
-                            <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                        > </el-button>
+                        <label class="el-form-item__label col-md-3" >{{Column}}</label>
+                        <div class="col-md-4 grupolabel">
+                            <div class="input-group mb-4" >
+                            <el-input size ="small" v-model="inputAtributo">
+                            <el-button slot="append" class="boton" icon="fa fa-search" 
+                                @click="searchBanco()"
+                            > </el-button>
                             </el-input>
                             </div>
                         </div>
@@ -25,25 +23,26 @@
             <el-table
             :data="gridBanco"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-            style="width: 100%" class="ExcelTable2007"
+            style="width: 100%;cursor: pointer;" class="ExcelTable2007"
             height="250"
             highlight-current-row
+            @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"> 
-            <el-table-column  prop="strBank_Cod" label="Codigo" width="180" >
+            <el-table-column :render-header="filterstrBank_Cod" prop="strBank_Cod" label="Codigo" width="180" >
             </el-table-column>  
-            <el-table-column  prop="strBank_Name" label="Nombre del Banco" width="180">
+            <el-table-column :render-header="filterstrBank_Name" prop="strBank_Name" label="Nombre del Banco" width="180">
             </el-table-column> 
-            <el-table-column  prop="strBank_City" label="Ciudad" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrBank_City" prop="strBank_City" label="Ciudad" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkBanco()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="cursor: pointer;" @click="checkBanco()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeBanco()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;cursor: pointer;"  @click="closeBanco()">
             <img class="imagenfilter" src="../../../images/close.png" alt="" >
             </el-button>
         </footer>

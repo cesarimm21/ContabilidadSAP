@@ -23,8 +23,6 @@
                 <i :class="item.strIcon_Name" style="width:10px"></i>
                 <img v-if="item.strClase_file=='el-folder'" class="el-folder"/>
                 <img v-if="item.strClase_file=='el-folder_last'" class="el-folder_last"/>
-                 
-                <!-- <img :class="item.strClase_file"/>  -->
                 <span slot="title">{{item.strDescription}}</span>
               </template> 
                 <el-submenu 
@@ -32,11 +30,10 @@
                 @click="linkRoute(item1.strLink)"
                 :index="item1.strIndex"
                 :key="item1.strLink">
-                  <template slot="title">                  
-                    <i :class="item1.strIcon_Name" style="width:10px"></i>
+                  <template slot="title">               
                     <img v-if="item1.strClase_file=='el-folder'" class="el-folder"/>
                      <img v-if="item1.strClase_file=='el-folder_last'" class="el-folder_last"/>
-                    <!-- <img :class="item1.strClase_file"/>  -->
+                     <i :class="item1.strIcon_Name" style="width:10px"></i>
                     <span slot="title" @click="linkRoute(item1.strLink)">{{item1.strDescription}}</span>
                   </template>
                     <el-submenu 
@@ -49,7 +46,6 @@
                           <img v-if="item2.strClase_file=='el-folder_last'" class="el-folder_last"/>
                      
                           <i :class="item2.strIcon_Name" style="width:10px"></i>
-                          <!-- <img :class="item2.strClase_file"/>  -->
                           <span slot="title"  @click="linkRoute(item2.strLink)">{{item2.strDescription}}</span>
                         </template>
                         <el-menu-item 
@@ -60,9 +56,7 @@
                             <template slot="title">  
                               <img v-if="item3.strClase_file=='el-folder'" class="el-folder"/>
                               <img v-if="item3.strClase_file=='el-folder_last'" class="el-folder_last"/>
-                  
                               <i :class="item3.strIcon_Name" style="width:10px"></i>
-                              <!-- <img :class="item3.strClase_file"/>  -->
                               <span slot="title">{{item3.strDescription}}</span>
                             </template>
                           </el-menu-item> 

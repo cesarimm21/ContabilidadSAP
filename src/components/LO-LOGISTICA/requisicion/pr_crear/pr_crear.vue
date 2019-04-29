@@ -25,6 +25,7 @@
                                         type="date"
                                         style="width:128px !important"
                                         :disabled="true"
+                                        format="dd.MM.yyyy"
                                         size="small" v-model="fecha_actual" >
                                     </el-date-picker>
                                 </div>
