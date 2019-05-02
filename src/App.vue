@@ -126,6 +126,7 @@ body {
 .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active, .router-link {
     color: #000000 !important;
     background-color: #396b88 !important;
+    width: 100%;
 }
 .hamb-container {
    width: 48px;
@@ -260,6 +261,9 @@ body {
 .el-menu-item, .el-submenu__title {
     height: 29px !important;
     line-height: 30px !important;
+}
+.el-submenu .el-menu{
+  background:#d6dff2 !important;
 }
 .el-submenu .el-menu-item {
     height: 25px !important;

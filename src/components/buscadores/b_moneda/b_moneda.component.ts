@@ -148,8 +148,6 @@ export default class  BMonedaComponent extends Vue {
   seleccionar(val:MonedaModel){
     this.monedaSelectModel=val;
     this.$emit('MonedaSeleccionado',this.monedaSelectModel);
-    
-    this.$emit('monedaselecionado',this.monedaSelectModel);
     if(Global.nameComponent=='pagos-individual'){
       this.$emit('monedaselecionado',this.monedaSelectModel);
     }
@@ -159,8 +157,7 @@ export default class  BMonedaComponent extends Vue {
   }
   checkMoneda(){
     this.$emit('MonedaSeleccionado',this.monedaSelectModel)
-    
-    this.$emit('monedaselecionado',this.monedaSelectModel)
+
     if(Global.nameComponent=='pagos-individual'){
       this.$emit('monedaselecionado',this.monedaSelectModel);
     }

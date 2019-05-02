@@ -15,4 +15,22 @@ export class BancoModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    constructor(){
+        this.intBank_ID=-1;
+        this.strCountry='';
+        this.strBank_Cod='';
+        this.strBank_Type='';
+        this.strBank_Name='';
+        this.strBank_Curr='';
+        this.strBank_Address='';
+        this.strBank_City='';
+        this.strBranch_Cod='';
+        this.strSwift_Cod='';
+        this.strBank_Account='';
+        this.strCreation_User='';
+        this.dtmCreation_Date=new Date();
+        this.strModified_User='';
+        this.dtmModified_Date=new Date();
+        this.chrStatus='';
+    }
 }

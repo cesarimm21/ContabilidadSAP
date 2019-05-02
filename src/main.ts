@@ -9,7 +9,7 @@ import BarmenuComponent from '@/components/barmenu/barmenu.vue'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import bootstrapvue from 'bootstrap-vue'
+import BootstrapVue from 'bootstrap-vue'
 import InfiniteScroll from 'vue-infinite-scroll';
 import './assets/css/style.scss';
 import VueChart from 'vue-chart-js'
@@ -25,7 +25,7 @@ Vue.use(VueChart)
 Vue.use(ElementUI, { locale })
 Vue.use(ElementUI)
 Vue.use(InfiniteScroll)
-Vue.use(bootstrapvue);
+Vue.use(BootstrapVue);
 /*Vue.component('slider',Slider)*/
 Vue.component('login',LoginComponent)
 import Progress from 'vue-multiple-progress'

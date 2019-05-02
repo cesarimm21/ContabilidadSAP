@@ -51,8 +51,7 @@ var EditableColumn = {
     'buttons-accions':ButtonsAccionsComponent,
     'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
-  } ,
- 
+  } , 
 })
 export default class VisualizarModificarPRComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';

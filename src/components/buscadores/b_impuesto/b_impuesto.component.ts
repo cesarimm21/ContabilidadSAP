@@ -131,9 +131,7 @@ export default class  BImpuestoComponent extends Vue {
 
   }
 
-  seleccionar(row,index){
-    this.$emit('impuestoseleccionado',row);
-  }
+  
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
@@ -149,9 +147,10 @@ export default class  BImpuestoComponent extends Vue {
   handleCurrentChange(val:ImpuestoModel){
     this.impuestoSelectModel=val;
   }
+  seleccionar(row,index){
+    this.$emit('impuestoseleccionado',this.impuestoSelectModel);
+  }
   checkPopup(){
-    
-    debugger;
     this.$emit('impuestoseleccionado',this.impuestoSelectModel);
   }
   closePopup(){

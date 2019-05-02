@@ -16,7 +16,7 @@ export default class  BProveedorComponent extends Vue {
    pagina:number =1;
    RegistersForPage:number = 5;
    totalRegistros:number = this.RegistersForPage;
-
+   codigoCompania:any;
    CompleteData:any;
   //Busqueda
   formularioBusqueda:any={
@@ -41,12 +41,14 @@ export default class  BProveedorComponent extends Vue {
 
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   load(){
-    proveedorService.GetAllProveedor()
+    this.codigoCompania=localStorage.getItem('compania_cod');
+    proveedorService.GetProveedoresCompany(this.codigoCompania)
     .then(response=>{
-      console.log('proveedor',response);
       this.proveedorModel=response;       
     }).catch(error=>{
       this.$message({
@@ -78,40 +80,6 @@ export default class  BProveedorComponent extends Vue {
   }
 
   bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
   }
 
   CerrarVentana(){
@@ -169,49 +137,7 @@ export default class  BProveedorComponent extends Vue {
 
   data() {
     return {
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    
-    dataTable:[{
-      Vendor_NO :'4000003',
-      Vendor_Desc :'CARLOS VIAL GOMEZ',
-      Country:'CL'
-    },
-    {
-      Vendor_NO :'4009456',
-      Vendor_Desc :'JORVEX Y COMPAÑIA S.R.L.',
-      Country:'PE'
-    },
-    {
-      Vendor_NO :'4009457',
-      Vendor_Desc :'MANUFACTURAS ELECTRICAS S.A.',
-      Country:'PE'
-    },
-    {
-      Vendor_NO :'4009458',
-      Vendor_Desc :'MINAS Y CONCENTRADORAS S.A.',
-      Country:'PE'
-    },
-    ]
-
+      codigoCompania:'',   
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

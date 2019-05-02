@@ -20,6 +20,7 @@ import VisualizarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_vis
 import VisualizarModificarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.vue'
 import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/modificar-proveedor/modificar-proveedor.vue'
 import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
+import ViewAndEditProveedorComponent from '../components/FI-FINANZAS/proveedor/ViewAndEdit-proveedor/ViewAndEdit-proveedor.vue'
 import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
 import ModificarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante/modificar-ingreso-comprobante.vue'
 import VisualizarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante/ver-ingreso-comprobante.vue'
@@ -100,6 +101,11 @@ export default [
         path:'FI-FINANZAS/proveedor/visualizar-proveedor',
         component:VisualizarProveedorComponent,
         name:'visualizar-proveedor'
+      }, 
+      {
+        path:'FI-FINANZAS/proveedor/ViewAndEdit-proveedor',
+        component:ViewAndEditProveedorComponent,
+        name:'ViewAndEdit-proveedor'
       }, 
       {
         path:'HR-Planilla/empleado/empleado_crear',
