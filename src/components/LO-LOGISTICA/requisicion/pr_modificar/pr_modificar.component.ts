@@ -44,7 +44,7 @@ import {ProductoModel} from '@/modelo/maestro/producto';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
-
+import maestroService from '@/components/service/maestro.service';
 
 
 import { Notification } from 'element-ui';
@@ -82,7 +82,7 @@ export default class ModificarPRComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   currentRow:any;
-  txtnroline:string='';
+  txtnroline:any='';
   hours:number;
   minutos:number;
   seconds:number;
@@ -114,6 +114,7 @@ export default class ModificarPRComponent extends Vue {
   textosave:string='';
   iserror:boolean=false;
   issave:boolean=false;
+  percentage:number;
   /*input*/
   btnactivarcompania:boolean=false;
   btnactivarproveedor:boolean=false;
@@ -187,6 +188,44 @@ export default class ModificarPRComponent extends Vue {
   strVendor_NO:string='';
   strVendor_Desc:string='';
 
+    
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<RequisicionDetalleModel>=[]; 
+  public CompleteData1:Array<RequisicionDetalleModel>=[]; 
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  blnilterdtmRequested_Date:boolean=false;
+  blnilterstrPriority_Cod:boolean=false;
+  blnilterstrCurr:boolean=false;
+  blnilterstrVendor_Suggested:boolean=false;
+  blnilterstrUM:boolean=false;
+  blnilterfltUnitPrice	:boolean=false;
+  blnilterfltQuantity:boolean=false;
+  blnilterstrDescription:boolean=false;
+  blnilterstrMaterial_Cod:boolean=false;
+  blnilterstrCostCenter:boolean=false;
+  blnilterstrAccount_NO:boolean=false;
+  blnilterstrCateg_Line:boolean=false;
+  blnilterstrCateg_Account :boolean=false;
+  dialogBusquedaFilter:boolean=false;
+  el: '#app';
+  strDescripcion:any='';
+  strStockCod:any='';
+  fltQuantitys:any='';
+  dtmDelivery_Dates:any='';
+  dtmRequested_Dates:any='';
+  fltUnitPrices:any='';
+  fltValue_Totals:any='';
+  strAccount_NOs:any='';
+  strCostCenters:any='';
+  strVendor_NOs:any='';
+  strVendor_Descs:any='';
+  strTypeMov_Cod:string='';
+  strTypeMov_Desc:string='';
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -203,44 +242,72 @@ export default class ModificarPRComponent extends Vue {
     setTimeout(() => {
       this.load();
     }, 200)
+    setTimeout(() => {
+      this.cargarData()
+    }, 200)
   }
-  load(){
-    categoriacuentaService.GetOnlyOneCategoriaCuenta("A")
-    .then(res=>{
-      this.categoriaCuentaModel=res[0];
-      console.log('Categoria-Cuenta',this.categoriaCuentaModel);
-      for(var i=0;i<10;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.strCateg_Account="A";
-        reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
-        this.tableData1.push(reqDetalle);
-      }
-      console.log(this.tableData1);
+  // load(){
+  //   categoriacuentaService.GetOnlyOneCategoriaCuenta("ST")
+  //   .then(res=>{
+  //     this.categoriaCuentaModel=res[0];
+  //     console.log('Categoria-Cuenta',this.categoriaCuentaModel);
+  //     for(var i=0;i<10;i++){
+  //       // var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+  //       // reqDetalle.strCateg_Account="A";
+  //       // reqDetalle.intRequis_Item_NO=i+1;
+  //       // reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+  //       // this.tableData1.push(reqDetalle);
 
-      var object = JSON.parse(this.$route.query.data);
-      var modulo = this.$route.query.vista;
-      if(modulo.toLowerCase()!='aprobar'){
-        if(modulo.toLowerCase()!='modificar'){
-          this.visualizar=true;
-          this.txtmodulo='Visualizar Requisición';
-        }
-        else{
-          this.visualizar=false;
-          this.txtmodulo='Modificar Requisición';
-        }
-      }
-      else{
-        this.visualizar=true;
-        this.vifaprobarrechasar=true;
-        this.txtmodulo='Aprobar Requisición';
-      }
-      this.cargar(object.strRequis_NO);
-    })
-    .catch(error=>{
-      console.log('error',error)
-    })
-    tipoRequisicionService.GetAllTipoRequisicion()
+  //       var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+  //       reqDetalle.strCateg_Account="ST";
+  //       reqDetalle.intRequis_Item_NO=i+1;
+  //       reqDetalle.strDescription="";
+  //       reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+  //       this.tableData1.push(reqDetalle);
+  //     }
+  //     console.log(this.tableData1);
+
+  //     var object = JSON.parse(this.$route.query.data);
+  //     var modulo = this.$route.query.vista;
+  //     if(modulo.toLowerCase()!='aprobar'){
+  //       if(modulo.toLowerCase()!='modificar'){
+  //         this.visualizar=true;
+  //         this.txtmodulo='Visualizar Requisición';
+  //       }
+  //       else{
+  //         this.visualizar=false;
+  //         this.txtmodulo='Modificar Requisición';
+  //       }
+  //     }
+  //     else{
+  //       this.visualizar=true;
+  //       this.vifaprobarrechasar=true;
+  //       this.txtmodulo='Aprobar Requisición';
+  //     }
+  //     this.cargar(object.strRequis_NO);
+  //   })
+  //   .catch(error=>{
+  //     console.log('error',error)
+  //   })
+  //   tipoRequisicionService.GetAllTipoRequisicion()
+  //   .then(res=>{
+  //     debugger;
+  //     this.tabletipoRequisicion=res;
+  //     this.tiporequisicion="A";    
+  //     this.tiporequisicionant='A';
+  
+  //   })
+  //   .catch(error=>{
+  //     console.log('error',error)
+  //   })
+  // }
+  async load(){
+    debugger;
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.requisicionModel.strCompany_Cod=cod;
+    this.requisicionModel.strCompany_Desc=desc;
+    await tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;
       this.tabletipoRequisicion=res;
@@ -251,18 +318,78 @@ export default class ModificarPRComponent extends Vue {
     .catch(error=>{
       console.log('error',error)
     })
+    await categoriacuentaService.GetOnlyOneCategoriaCuenta("ST")
+    .then(res=>{
+      this.categoriaCuentaModel=res[0];
+      console.log('Categoria-Cuenta',this.categoriaCuentaModel);
+      debugger;
+      for(var i=0;i<this.totalRegistros;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+        reqDetalle.strCateg_Account="ST";
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.strDescription="";
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
+      }
+    })
+    .catch(error=>{
+      console.log('error',error)
+    })
+    await maestroService.GetMaestro('VIEW','LA05') 
+    .then(res=>{
+      debugger;
+      if(res!=undefined){
+        this.strTypeMov_Cod=res.strTypeMov_Cod;
+        this.strTypeMov_Desc=res.strTypeMov_Desc;
+      }
+    })
+    .catch(error=>{
+      console.log('error',error)
+    });
+   
+  
   }
-  cargar(codRequisicion){
+  async cargarData(){
+    var object = JSON.parse(this.$route.query.data);
+    var modulo = this.$route.query.vista;
+    if(modulo.toLowerCase()!='aprobar'){
+      if(modulo.toLowerCase()!='modificar'){
+        this.visualizar=true;
+        this.txtmodulo='Visualizar Requisición';
+      }
+      else{
+        this.visualizar=false;
+        this.txtmodulo='Modificar Requisición';
+      }
+    }
+    else{
+      this.visualizar=true;
+      this.vifaprobarrechasar=true;
+      this.txtmodulo='Aprobar Requisición';
+    }
+   await  this.cargar(object.strRequis_NO);
+  }
+  async cargar(codRequisicion){
     
-    requisicionService.getRequisicionByCod(codRequisicion)
+    await requisicionService.getRequisicionByCod(codRequisicion)
     .then(res=>{
       if(res!=undefined){
         console.log('cargarData1',res)
         requisicionService.getrequisiciondetalle(res[0].intIdPurReqH_ID)
         .then(resd=>{
-          this.requisicionModel=res[0];
-          this.tableData1=resd;
-          console.log('cargarData2',this.requisicionModel,resd)
+          if(resd!=undefined){
+            this.requisicionModel=res[0];
+            
+            for(var i=0;i<resd.length;i++){
+              console.log('detalle',resd);
+              if(resd[i].intRequis_Item_NO!=null){
+                this.CompleteData[resd[i].intRequis_Item_NO-1]=resd[i];
+              }
+            }
+            this.CompleteData1=this.CompleteData;
+            this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      
+          }
         })
         .catch(error=>{
           console.log('error',error)
@@ -579,11 +706,11 @@ export default class ModificarPRComponent extends Vue {
   /*tabla metodos*/
   handleBlur(event) {
     debugger;
-    this.bln_tbl_categoria_cuenta=false;
-    event.edit=false;
-    this.editing.row='';
-    this.editing.column='';
-    console.log('blur');
+    // this.bln_tbl_categoria_cuenta=false;
+    // event.edit=false;
+    // this.editing.row='';
+    // this.editing.column='';
+    // console.log('blur');
   }
   isEditing() {
     return this.editing !== null
@@ -858,15 +985,30 @@ export default class ModificarPRComponent extends Vue {
     }
     console.log('select',selected);
   }
+
+
+
   async guardarTodo(val){
     debugger;
-    
+      
+    this.vifprogress=true;
+    this.issave=false;
+    this.iserror=false;
+    this.textosave=''
+    this.percentage=0;  
+
     var tabla:Array<RequisicionDetalleModel>=[];
+    var tablan:Array<RequisicionDetalleModel>=[];
 
     for(var i=0;i<this.tableData1.length;i++){
-      if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!=""){
+      if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!="" && this.tableData1[i].intIdPurReqH_ID!=0){
         // this.tableData1[i].intRequis_Item_NO=i;
         tabla.push(this.tableData1[i]);
+      }
+      else{
+        if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!=""){
+          tablan.push(this.tableData1[i]);
+        }
       }
     }
     for(var i=0;i<50;i++){
@@ -880,69 +1022,30 @@ export default class ModificarPRComponent extends Vue {
       }
     }
     this.requisicionModel.listaDetalle=tabla;
+    this.requisicionModel.listaDetalleNuevo=tablan;
+    for(var i=0;i<50;i++){
+      this.percentage++;
+    }
     console.log('---***---',this.requisicionModel);
     requisicionService.updateRequisicion(this.requisicionModel)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
-      }
-      console.log(this.valuem);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          this.vifprogress=false;
-          this.issave=true;
-          
-          this.textosave='Se modifico correctamente. '+res.strRequis_NO;
-          this.openMessage('Se modifico correctamente '+res.strRequis_NO);
-        }, 600)
-      }
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
+      } 
+      setTimeout(() => {   
+        this.issave=true;
+        this.textosave='Se modifico correctamente. '+res.strRequis_NO;
+        this.openMessage('Se modifico correctamente '+res.strRequis_NO);
+        this.vifprogress=false;
+        
+      }, 600)
     })
     .catch(error=>{
       
     })
-
-    // var vcabecera=await this.validate();
-    // var vdetalle=await this.validateTabla(tabla,0);
-    // if(!vcabecera && !vdetalle){
-    //   this.salidaModel.listaDetalle=tabla;
-    //   let loading = Loading.service({
-    //     fullscreen: true,
-    //     text: 'Cargando...',
-    //     spinner: 'el-icon-loading',
-    //     background: 'rgba(0, 0, 0, 0.8)'
-    //     }
-    //   );
-    //   for(var i=0;i<50;i++){
-    //     this.valuem=this.valuem+1; 
-    //   }
-
-    //   salidaService.CrearSalida(this.salidaModel)
-    //   .then(res=>{
-    //     debugger;
-    //     for(var i=0;i<50;i++){
-    //       this.valuem++; 
-    //     }
-    //     console.log(this.valuem);
-    //     loading.close();
-    //     if(this.valuem>=100){
-    //       setTimeout(() => {
-    //         this.vifprogress=false;
-    //         this.issave=true;
-    //         this.textosave='Se guardo correctamente.'
-    //         this.openMessage('Se guardo correctamente');
-    //       }, 2000)
-    //     }
-    //   })
-    //   .catch(error=>{
-    //     loading.close();
-    //     this.$message({
-    //       showClose: true,
-    //       type: 'error',
-    //       message: 'No se pudo guardar salida'
-    //     });
-    //   })
-    // }
     
   }
   async aprobar(){
@@ -999,6 +1102,593 @@ export default class ModificarPRComponent extends Vue {
     window.location.reload();
   }
   
+  
+  filterstrCateg_Account(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrCateg_Account){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCateg_Line(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrCateg_Line){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAccount_NO(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrAccount_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}), h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCostCenter(h,{column,$index}){
+    debugger;
+    
+    
+    
+    if(this.blnilterstrCostCenter){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+
+  filterstrMaterial_Cod(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrMaterial_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}), h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDescription(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrDescription){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltQuantity(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterfltQuantity){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltUnitPrice(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterfltUnitPrice){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrUM(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrUM){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrVendor_Suggested(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrVendor_Suggested){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCurr(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrCurr){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrPriority_Cod(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterstrPriority_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}), h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmRequested_Date(h,{column,$index}){
+    debugger;
+    
+    
+    if(this.blnilterdtmRequested_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}
+      ),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  
+  headerclick(val){
+    
+    this.Column=val.label;
+    Global.setColumna(this.Column);
+    if(val.property=="dtmRequested_Date"){
+      this.clickColumn="dtmRequested_Date";
+      this.blnilterdtmRequested_Date=true;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strPriority_Cod"){
+      this.clickColumn="strPriority_Cod";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=true;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strCurr"){
+      this.clickColumn="strCurr";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=true;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    
+    if(val.property=="strVendor_Suggested"){
+      this.clickColumn="strVendor_Suggested";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=true;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strUM"){
+      this.clickColumn="strUM";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=true;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="fltUnitPrice"){
+      this.clickColumn="fltUnitPrice";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=true;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="fltQuantity"){
+      this.clickColumn="fltQuantity";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=true;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strDescription"){
+      this.clickColumn="strDescription";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=true;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+    if(val.property=="strMaterial_Cod"){
+      this.clickColumn="strMaterial_Cod";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=true;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCostCenter"){
+      this.clickColumn="strCostCenter";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=true;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strAccount_NO"){
+      this.clickColumn="strAccount_NO";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=true;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCateg_Line"){
+      this.clickColumn="strCateg_Line";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=true;
+      this.blnilterstrCateg_Account =false;
+    }
+
+    if(val.property=="strCateg_Account"){
+      this.clickColumn="strCateg_Account";
+      this.blnilterdtmRequested_Date=false;
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrCurr=false;
+      this.blnilterstrVendor_Suggested=false;
+      this.blnilterstrUM=false;
+      this.blnilterfltUnitPrice	=false;
+      this.blnilterfltQuantity=false;
+      this.blnilterstrDescription=false;
+      this.blnilterstrMaterial_Cod=false;
+      this.blnilterstrCostCenter=false;
+      this.blnilterstrAccount_NO=false;
+      this.blnilterstrCateg_Line=false;
+      this.blnilterstrCateg_Account =true;
+    }
+   var object=[ { TagId: 1, TagName: "C#", }, 
+   { TagId: 3, TagName: "Visual Studio", },  
+   { TagId: 4, TagName: "Fakes", },
+   { TagId: 2, TagName: "Single Page Application", }, 
+    ]
+
+    console.log('headerclick',val)
+    console.log(val)
+    // this.CompleteData.sort(this.sortBy('intRequis_Item_NO',true));
+
+   
+  }
+  sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+          return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+       
+    });
+  }
+  sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        debugger;
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        
+    });
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+
+  Buscar(){
+    debugger;
+    if(this.Column!=""){
+      this.dialogBusquedaFilter=true;
+    }
+    else{
+      alert("Seleccione la columna");
+    }
+  }
+  btnBuscar(){
+    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    this.tableData1=data;
+    console.log('-----like-----',data)
+    this.dialogBusquedaFilter=false;
+  }
+  sortBy = (key, reverse) => {
+
+      const moveSmaller = reverse ? 1 : -1;
+  
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+  
+    return (a, b) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  };
+  async AscItem(){
+    debugger;
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    console.log("asc",this.clickColumn)
+    var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    await loading.close();
+  }
+  DscItem(){
+    debugger;
+    console.log("desc",this.clickColumn)
+    var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+  }
+  anterior(){
+    if(this.pagina>1){
+    this.pagina--;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  
+  nroLineaSelect(){
+    debugger;
+    if(!isNaN(this.txtnroline)){
+      this.intlineaselect=parseInt(this.txtnroline)-1;
+      var res:any;
+      if(parseInt(this.txtnroline)>10){
+        var ss=parseInt(this.txtnroline)%10;
+        if(ss>0){
+          res=ss-1;
+          this.pagina=Math.floor(parseInt(this.txtnroline)/10)+1;
+        }
+        else{
+          res=9;
+          this.pagina=parseInt(this.txtnroline)/10;
+        }
+      }
+      else{
+        this.pagina=1;
+        res=this.intlineaselect;
+      }
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var document:any = this.$refs.missionTable;
+      
+      document.setCurrentRow(this.tableData1[res]);
+     
+      this.strStockCod=this.tableData1[this.intlineaselect].strMaterial_Cod==undefined?'':this.tableData1[this.intlineaselect].strMaterial_Cod;
+      this.strDescripcion=this.tableData1[this.intlineaselect].strDescription==undefined?'':this.tableData1[this.intlineaselect].strDescription;
+      this.fltQuantitys=this.tableData1[this.intlineaselect].fltQuantity==undefined?'':this.tableData1[this.intlineaselect].fltQuantity;
+      this.dtmDelivery_Dates=this.tableData1[this.intlineaselect].dtmDelivery_Date==undefined?'':this.tableData1[this.intlineaselect].dtmDelivery_Date;
+      this.dtmRequested_Dates=this.tableData1[this.intlineaselect].dtmRequested_Date==undefined?'':this.tableData1[this.intlineaselect].dtmRequested_Date;
+      this.fltUnitPrices=this.tableData1[this.intlineaselect].fltUnitPrice==undefined?'':this.tableData1[this.intlineaselect].fltUnitPrice;
+      this.fltValue_Totals=this.tableData1[this.intlineaselect].fltValue_Total==undefined?'':this.tableData1[this.intlineaselect].fltValue_Total;
+      this.strAccount_NOs=this.tableData1[this.intlineaselect].strAccount_NO==undefined?'':this.tableData1[this.intlineaselect].strAccount_NO;
+      this.strCostCenters=this.tableData1[this.intlineaselect].strCostCenter==undefined?'':this.tableData1[this.intlineaselect].strCostCenter;
+      this.strVendor_NOs=this.tableData1[this.intlineaselect].strVendor_NO==undefined?'':this.tableData1[this.intlineaselect].strVendor_NO;
+      this.strVendor_Descs=this.tableData1[this.intlineaselect].strVendor_Desc==undefined?'':this.tableData1[this.intlineaselect].strVendor_Desc;
+      this.txtnroline="["+this.tableData1[this.intlineaselect].intRequis_Item_NO+"] "+this.tableData1[this.intlineaselect].strDescription;
+    
+    }
+
+  }
+
+  Limpiar(){
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+    document.setCurrentRow(this.tableData1[this.intlineaselect]);
+
+    this.blnilterdtmRequested_Date=false;
+    this.blnilterstrPriority_Cod=false;
+    this.blnilterstrCurr=false;
+    this.blnilterstrVendor_Suggested=false;
+    this.blnilterstrUM=false;
+    this.blnilterfltUnitPrice	=false;
+    this.blnilterfltQuantity=false;
+    this.blnilterstrDescription=false;
+    this.blnilterstrMaterial_Cod=false;
+    this.blnilterstrCostCenter=false;
+    this.blnilterstrAccount_NO=false;
+    this.blnilterstrCateg_Line=false;
+    this.blnilterstrCateg_Account =false;
+    
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+    //document.setCurrentRow(this.tableData[this.intlineaselect]);
+  }
+  Print(){
+    window.print();
+  }
+  
+  EliminarItem(){
+    console.log(this.currentRow.intRequis_Item_NO);
+    this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+    for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+      this.CompleteData[i].intRequis_Item_NO=i+1;
+    }
+    this.CompleteData1=this.CompleteData;
+    console.log(this.CompleteData);
+  }
+  siguiente(){
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
   data(){
     return{
       dialogTableVisible: false,
@@ -1194,7 +1884,8 @@ export default class ModificarPRComponent extends Vue {
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      percentage: '0',
     }
   }
   

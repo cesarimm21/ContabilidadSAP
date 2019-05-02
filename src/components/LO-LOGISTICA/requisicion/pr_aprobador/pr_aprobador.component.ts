@@ -19,6 +19,7 @@ import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad
 import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
+import companiaService from '@/components/service/compania.service';
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -78,73 +79,32 @@ var EditableColumn = {
   } ,
 })
 export default class AprobadorPRComponent extends Vue {
-  timer=0;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
-  currentRow:any;
-  txtnroline:string='';
-  hours:number;
-  minutos:number;
-  seconds:number;
-  user:any;
-  tiempoagotado:any;
-  contador:any=0;
-  _10min:boolean=false;
-  ocultarConfig:boolean = true;
+  
   nameuser:string;
   namecomplete:string;
-  accesosUser:any=[];
-  ocultar:boolean=false;
-  dialogVisible:boolean=false;
   SendDocument:boolean=false;
-  fechaHasta:any=new Date();
-  fechaDesde:any=new Date();
+  vmaterial:string='';
   /*dialog*/
   dialogCompania:boolean=false;
-  dialogProveedor:boolean=false;
-  dialogAlmacen:boolean=false;
-  dialogCategoriaCuenta:boolean=false;
-  dialogCategoriaLinea:boolean=false;
-  dialogCuentaContable:boolean=false;
-  dialogMaterial:boolean=false;
-  dialogUnidadMedida:boolean=false;
-  dialogMoneda:boolean=false;
-  dialogPrioridad:boolean=false;
-  dialogCentroCostos:boolean=false;
-  vifprogress:boolean=true;
-  textosave:string='';
-  iserror:boolean=false;
-  issave:boolean=false;
+  checkFecha:boolean=true;
   /*input*/
   btnactivarcompania:boolean=false;
-  btnactivarproveedor:boolean=false;
-  btnactivaralmacen:boolean=false;
-  btnactivarmaterial:boolean=false;
-  btnactivarunidadmedida:boolean=false;
-  btnactivarmoneda:boolean=false;
-  btnactivarprioridad:boolean=false;
-  btnactivarcentrocosto:boolean=false;
-
-  /*bolean_tabla_dinamica*/
-  bln_tbl_categoria_cuenta:boolean=false;
-  bln_tbl_categoria_linea:boolean=false;
-  bln_tbl_cuenta_contable:boolean=false;
-  bln_tbl_material:boolean=false;
-  bln_tbl_material_descripcion:boolean=false;
-  bln_tbl_cantidad:boolean=false;
-  bln_tbl_unidad_medida:boolean=false;
-  bln_tbl_proveedor:boolean=false;
-  bln_tbl_moneda:boolean=false;
-  bln_tbl_prioridad:boolean=false;
-  bln_tbl_fecha_estimada:boolean=false;
-  bln_tbl_centro_costo:boolean=false;
+   
+  percentage:number;
+  /*Model*/
 
   descompania:string='';
   code_compania:string='';
-  desalmacen:string='';
-  code_almacen:string='';
-  cell_ocultar:string='transparent';
-  value: string='';
+
+  fecha_actual:string;
+  selectcolumn:any;
+  blntiporequisicion:boolean=true;
+  tiporequisicion:string='';
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
   formBusqueda:any={
     'strRequis_NO':'',
     'desde':new Date(),
@@ -162,75 +122,50 @@ export default class AprobadorPRComponent extends Vue {
   public categoriaCuentaModel:CategoriaCuentaModel=new CategoriaCuentaModel();
   public tipoRequisicionModel:TipoRequisicionModel=new TipoRequisicionModel();
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
-  
+  fechaHasta:any=new Date();
+  fechaDesde:any=new Date();
   getTotals:number=0;
-  
-  /*tabla*/
-  editing:any= {
-    row:'',
-    column:''
-  };
-  fecha_actual:string;
-
-  selectcolumn:any;
-  blntiporequisicion:boolean=true;
-  blncategorialinea:boolean=true;
-  blncuentacontable:boolean=false;
-  blncentrocosto:boolean=true;
-  blnunidadmedida:boolean=true;
-  blnproveedor:boolean=true;
+  txtnroline:string='';
   intlineaselect:number=-1;
+  currentRow:any;
+  cell_ocultar:string='transparent';
+  vifprogress:boolean=true;
   valuem:number=0;
 
-  tiporequisicion:string='';
-  
-  tiporequisicionant:string='';
+  //#region button accion
+  dialogEliminar:boolean=false;
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<RequisicionModel>=[]; 
+  public CompleteData1:Array<RequisicionModel>=[]; 
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  dialogBusquedaFilter:boolean=false;
+
+  blnfilterstrRequis_NO:boolean=false;
+  blnfilterstrTipReq_Desc:boolean=false;
+  blnfilterstrWHS_Desc:boolean=false;
+  blnfilterstrDesc_Header:boolean=false;
+  blnfilterdtmRequested_Date:boolean=false;
+  blnfilterstrWHS_Cod:boolean=false;
+  //#endregion
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
-   
-    //this.cell_ocultar='#e4e2e2';        
-    this.blntiporequisicion=false;
-    this.blncategorialinea=false;
-    this.blncuentacontable=false;
-    this.blncentrocosto=false;
-    this.blnunidadmedida=false;
-    this.blnproveedor=false;
-    this.load();
+    this.tiporequisicion="A";
+    setTimeout(() => {
+      this.cargar();
+    }, 200)
   }
-
-  load(){
-      debugger;
-      setTimeout(() => {
-        for(var i=0;i<10;i++){
-          var requesicion:RequisicionModel=new RequisicionModel();
-          this.tableData.push(requesicion);
-        }
-        this.cargar();
-      }, 120)
-      
-  }
-
-  fnOcultar(){
-    this.ocultar=!this.ocultar;
-  }
-  guardar(){
-    this.SendDocument=true;
-  }
-  
   openMessage(newMsg : string) {
     this.$message({
       showClose: true,
       message: newMsg,
       type: 'success'
-    });
-  }
-  warningMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'warning'
     });
   }
   openMessageError(strMessage:string){
@@ -262,49 +197,8 @@ export default class AprobadorPRComponent extends Vue {
     localStorage.clear();
     router.push('/')
   }
-  calcular(temp){
-    if(temp < 600){
-      return { rojo: true,}
-    }
-    else{
-      return { verde: true, }
-    }
-  }
   loadCompania(){
     this.dialogCompania=true;
-  }
-  
-  loadAlmacen(){
-    this.dialogAlmacen=true;
-  }
-  handleClose(){
-    // this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
-    //     confirmButtonText: 'OK',
-    //     cancelButtonText: 'Cancel',
-    //     type: 'warning'
-    //   }).then(() => {
-    //     this.$message({
-    //       type: 'success',
-    //       message: 'Delete completed'
-    //     });
-    //   }).catch(() => {
-    //     this.$message({
-    //       type: 'info',
-    //       message: 'Delete canceled'
-    //     });          
-    //   });
-  }
-  tableRowClassName(row, rowIndex) {
-      debugger;
-    // if (row === undefined || row.EstadoAprobacion === undefined) return '';
-    // if (row.EstadoAprobacion === 'R'){
-    //   return 'rechazado-row';
-    // } else if (row.EstadoAprobacion === 'A') {
-    //   return 'aprobado-row';
-    // } else if (row.EstadoAprobacion === 'M'){
-    //   return 'modificado-row';
-    // }
-    // return '';
   }
   handleCurrentChange(val) {
     debugger;
@@ -320,34 +214,11 @@ export default class AprobadorPRComponent extends Vue {
       this.currentRow = val;
     }
   }
-
-
-  nextTable(){
-    debugger;
-    if(this.intlineaselect<this.tableData1.length-1){
-      this.intlineaselect++;
-    }
-    var document:any = this.$refs.missionTable;
-    this.txtnroline="["+this.tableData1[this.intlineaselect].intRequis_Item_NO+"] "+this.tableData1[this.intlineaselect].strDescription;
-    document.setCurrentRow(this.tableData1[this.intlineaselect]);
-    
-  }
-  backTable(){
-    debugger;
-    if(this.intlineaselect>0){
-      this.intlineaselect--;
-    }
-    var document:any = this.$refs.missionTable;
-    this.txtnroline="["+this.tableData1[this.intlineaselect].intRequis_Item_NO+"] "+this.tableData1[this.intlineaselect].strDescription;
-    document.setCurrentRow(this.tableData1[this.intlineaselect]);
- 
-  }
   /*Compania imput*/
   activar_compania(){
     setTimeout(() => {
+      this.limpiarBotones();
       this.btnactivarcompania=true;
-      this.btnactivaralmacen=false;
-      this.btnactivarproveedor=false;
     }, 120)
   }
   desactivar_compania(){
@@ -361,381 +232,64 @@ export default class AprobadorPRComponent extends Vue {
     this.btnactivarcompania=false;
     return false;
   }
-  closePrioridad(){
-    this.btnactivarprioridad=false;
-    return false;
-  }
-  closeUnidadMedida(){
-    this.btnactivarunidadmedida=false;
-    return false;
-  }
-
-  /*Proveedor imput*/
-  activar_proveedor(){
-    setTimeout(() => {
-      this.btnactivarproveedor=true;
-      this.btnactivarcompania=false;
-      this.btnactivaralmacen=false;
-    }, 120)
-  }
-  desactivar_proveedor(){
-    debugger;
-    if(this.dialogProveedor){
-      this.btnactivarproveedor=false;
-    }
-  }
-  closeProveedor(){
-    debugger;
-    this.btnactivarproveedor=false;
-    return false;
-  }
-  closeMaterial(){
-    debugger;
-    this.btnactivarmaterial=false;
-    return false;
-  }
-  closeCuentaContable(){
-    
-    return false;
-  }
-  closeCategoriaLinea(){
-    return false;
-  }
-  closeCentroCostos(){
-    return false;
-  }
-  closeCategoriaCuenta(){
-    return false;
-  }
-  closeMoneda(){
-    return false;
-  }
-
-  /*Almacen imput*/
-  activar_almacen(){
-    setTimeout(() => {
-      console.log("activar_almacen");
-      this.btnactivaralmacen=true;
-      this.btnactivarcompania=false;
-      this.btnactivarproveedor=false;
-    }, 120)
-  }
-  desactivar_almacen(){
-    debugger;
-    if(this.dialogAlmacen){
-      this.btnactivaralmacen=false;
-    }
-  }
-  closeAlmacen(){
-    debugger;
-    console.log("closeAlmacen");
-    this.btnactivaralmacen=false;
-    return false;
-  }
-  activar_descripcion(){
-    this.btnactivaralmacen=false;
-    this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
-  }
-  activar_tipo_requisicion(value){
-    debugger;
-    console.log("activar_tipo_requisicion");
-    if(this.tiporequisicionant!=value){
-    this.tiporequisicionant=value;
-    if(value=='N'){
-      this.cell_ocultar='transparent';
-      this.blntiporequisicion=true;
-      this.blncategorialinea=true;
-      
-      this.blncentrocosto=true;
-      this.blnunidadmedida=true;
-      this.blnproveedor=true;
-      this.tableData1=[];
-      
-      for(var i=0;i<10;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.intRequis_Item_NO=i+1;
-        this.tableData1.push(reqDetalle);
-      }
-    }
-    else{
-      this.cell_ocultar='#e4e2e2';        
-      this.blntiporequisicion=false;
-      this.blncategorialinea=false;
-      this.blncuentacontable=false;
-      this.blncentrocosto=false;
-      this.blnunidadmedida=false;
-      this.blnproveedor=false;
-      this.tableData1=[];
-      
-      for(var i=0;i<10;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.strCateg_Account="A"
-        this.tableData1.push(reqDetalle);
-      }
-    }
-    // this.btnactivaralmacen=false;
-    // this.btnactivarproveedor=false;
-    // this.btnactivarcompania=false
-  }
-}
-
-  /*tabla metodos*/
-  handleBlur(event) {
-    debugger;
-    this.bln_tbl_categoria_cuenta=false;
-    event.edit=false;
-    this.editing.row='';
-    this.editing.column='';
-    console.log('blur');
-  }
-  isEditing() {
-    return this.editing !== null
-  }
-  onCellBlur(row, column, cell, event) {
-    debugger;
-    this.editing = null
-    console.log('onCellBlur',row, column, cell, event);
-  }
-  onCellClick(row, column, cell, event) {
-    this.editing = {
-      row,
-      column,
-      cell
-    }
-  }  
-  LoadCategoriaCuenta(row,column){
-    this.selectrow=row;
-    this.selectcolumn=column;
-    console.log(row);
-    this.dialogCategoriaCuenta=true;
-  }
-  LoadCategoriaLinea(row){
-    this.selectrow=row;
-    this.dialogCategoriaLinea=true;
-  }
-  LoadCuentaContable(row){
-    this.selectrow=row;
-    this.dialogCuentaContable=true;
-  }
-  LoadMaterial(row){
-    this.selectrow=row;
-    this.dialogMaterial=true;
-  }
-  LoadUnidadMedida(row){
-    this.selectrow=row;
-    this.dialogUnidadMedida=true;
-  }
-  LoadProveedor(row){
-    this.selectrow=row;
-    this.dialogProveedor=true;      
-  }
-  LoadMoneda(row){
-    this.selectrow=row;
-    this.dialogMoneda=true;      
-  }
-  LoadPrioridad(row){
-    this.selectrow=row;
-    this.dialogPrioridad=true;      
-  }
-  LoadCentroCosto(row){
-    this.selectrow=row;
-    this.dialogCentroCostos=true;
-  }
-  alerta(event,edit,column){
-    debugger;
-    this.bln_tbl_categoria_cuenta=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickcategorialinea(event,edit,column){
-    debugger;
-    this.bln_tbl_categoria_linea=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickcuentacontable(event,edit,column){
-    debugger;
-    this.bln_tbl_cuenta_contable=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickmaterial(event,edit,column){
-    debugger;
-    this.bln_tbl_material=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickmaterialdescripcion(event,edit,column){
-    debugger;
-    this.bln_tbl_material_descripcion=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickcantidad(event,edit,column){
-    debugger;
-    this.bln_tbl_cantidad=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickunidadmedida(event,edit,column){
-    debugger;
-    this.bln_tbl_unidad_medida=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickproveedor(event,edit,column){
-    debugger;
-    this.bln_tbl_proveedor=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickmoneda(event,edit,column){
-    debugger;
-    this.bln_tbl_moneda=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickprioridad(event,edit,column){
-    debugger;
-    this.bln_tbl_prioridad=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickfechaestimada(event,edit,column){
-    debugger;
-    this.bln_tbl_fecha_estimada=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickcentrocosto(event,edit,column){
-    debugger;
-    this.bln_tbl_centro_costo=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
+ 
+  
   getParseDate(fecha){
     return Global.getParseDate(fecha);
   }
   companiaSeleccionado(val){
+    debugger;
     console.log('traer',val);
-    this.requisicionModel.strCompany_Cod=val.strCompany_Cod;
-    this.requisicionModel.strCompany_Desc=val.strCompany_Desc;
+    this.productoModel.strCompany_Cod=val.strCompany_Cod
+    this.descompania=val.strCompany_Desc;
+   
     this.dialogCompania=false;
   }
-  SeleccionadoAlmacen(val){
-    console.log('traer',val);
-    this.requisicionModel.strWHS_Cod=val.strWHS_Cod;
-    this.requisicionModel.strWHS_Desc=val.strWHS_Desc;
-    this.requisicionModel.intIdWHS_ID=val.intIdWHS_ID;
-    
-    this.dialogAlmacen=false;
+  companiaClose(val){
+    this.dialogCompania=false;
   }
-  cambioTipoRequisicion(selected){
-    if(this.tiporequisicion!=selected){
-      this.tiporequisicion=selected;
-    }
-    console.log('select',selected);
+  limpiarBotones(){
+      this.btnactivarcompania=false;     
   }
-  async guardarTodo(val){
+  borrarCompania(){
+    this.descompania='';
+    this.dialogCompania=false;
+    this.btnactivarcompania=false;
+  }
+  enterCompania(code){
+    //alert('Bien'+code);
     debugger;
-    
-    var tabla:Array<RequisicionDetalleModel>=[];
-
-    for(var i=0;i<this.tableData1.length;i++){
-      if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!=""){
-        // this.tableData1[i].intRequis_Item_NO=i;
-        tabla.push(this.tableData1[i]);
+    console.log('compania_enter_1',code);
+    companiaService.GetOnlyOneCompania(code)
+    .then(response=>{
+      if(response!=undefined){
+        if(response.length>0){
+          this.productoModel.strCompany_Cod=response[0].strCompany_Cod
+          this.descompania=response[0].strCompany_Desc;
+          this.dialogCompania=false;
+          this.btnactivarcompania=false;
+        }
       }
-    }
-    for(var i=0;i<50;i++){
-      this.valuem=this.valuem+1; 
-    }
-    this.requisicionModel.strTypeReq_Cod=this.tiporequisicion;
-    for(var i=0;i<this.tabletipoRequisicion.length;i++){
-      if(this.tiporequisicion==this.tabletipoRequisicion[i].strTypeReq_Cod){
-        this.requisicionModel.strTipReq_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
-        this.requisicionModel.intIdTypeReq_ID=this.tabletipoRequisicion[i].intIdTypeReq_ID;
-      }
-    }
-    this.requisicionModel.listaDetalle=tabla;
-    console.log('---***---',this.requisicionModel);
-    requisicionService.crearRequisicion(this.requisicionModel)
-    .then(res=>{
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar compañia'
+      });
+    })
+  }
+  // validarView(){
+  //   Global.codematerial=this.productoModel.strStock_Cod;
+  //   router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'visualizar' }  })
+  // }
+  created() {
+    debugger;
+    if(typeof window != 'undefined') {
+      // this.getAccesos();
       debugger;
-      for(var i=0;i<50;i++){
-        this.valuem++; 
-      }
-      console.log(this.valuem);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          this.vifprogress=false;
-          this.issave=true;
-          
-          this.textosave='Se guardo correctamente.'+res.strRequis_NO;
-          this.openMessage('Se guardo correctamente'+res.strRequis_NO);
-        }, 600)
-      }
-    })
-    .catch(error=>{
-      
-    })
-
-    // var vcabecera=await this.validate();
-    // var vdetalle=await this.validateTabla(tabla,0);
-    // if(!vcabecera && !vdetalle){
-    //   this.salidaModel.listaDetalle=tabla;
-    //   let loading = Loading.service({
-    //     fullscreen: true,
-    //     text: 'Cargando...',
-    //     spinner: 'el-icon-loading',
-    //     background: 'rgba(0, 0, 0, 0.8)'
-    //     }
-    //   );
-    //   for(var i=0;i<50;i++){
-    //     this.valuem=this.valuem+1; 
-    //   }
-
-    //   salidaService.CrearSalida(this.salidaModel)
-    //   .then(res=>{
-    //     debugger;
-    //     for(var i=0;i<50;i++){
-    //       this.valuem++; 
-    //     }
-    //     console.log(this.valuem);
-    //     loading.close();
-    //     if(this.valuem>=100){
-    //       setTimeout(() => {
-    //         this.vifprogress=false;
-    //         this.issave=true;
-    //         this.textosave='Se guardo correctamente.'
-    //         this.openMessage('Se guardo correctamente');
-    //       }, 2000)
-    //     }
-    //   })
-    //   .catch(error=>{
-    //     loading.close();
-    //     this.$message({
-    //       showClose: true,
-    //       type: 'error',
-    //       message: 'No se pudo guardar salida'
-    //     });
-    //   })
-    // }
-    
+      this.vmaterial=Global.vmmaterial;
+    }
   }
   async validarView(){
     debugger;
@@ -762,35 +316,40 @@ export default class AprobadorPRComponent extends Vue {
   }
   async cargar(){
     debugger;
+    this.fechaDesde=""
+    this.fechaHasta=""
     var data:any=this.formBusqueda;
     data.strRequis_NO='*'
     data.strDesc_Header='*'
     data.desde='*'
     data.hasta= '*'
+    this.vifprogress=true;
+    this.percentage=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
     }
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
       }
-      console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      setTimeout(() => {    
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;}, 600)
+
     })
     .catch(error=>{
       
     })
   }
-  async Buscar(){
+  async BuscarRequisicion(){
     debugger;
     var data:any=this.formBusqueda;
     if(data.strRequis_NO==''){
@@ -799,32 +358,51 @@ export default class AprobadorPRComponent extends Vue {
     if(data.strDesc_Header==''){
       data.strDesc_Header='*'
     }
-    var hdate=new Date(this.fechaHasta);
-    hdate.setDate(hdate.getDate()+1)
-    data.desde=await Global.getDateString(this.fechaDesde)
-    data.hasta= await Global.getDateString(hdate)
+    if(this.fechaDesde!=undefined){
+      data.desde=await Global.getDateString(this.fechaDesde)
+    }
+    else{
+      data.desde='*';
+    }
+    if( this.fechaHasta!=undefined){
+      data.hasta= await Global.getDateString(this.fechaHasta)
+    }
+    else{
+      data.hasta='*';
+    }
+    this.vifprogress=true;
+    this.percentage=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
     }
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
       }
       console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      
+      setTimeout(() => {    
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;}, 600)
     })
     .catch(error=>{
       
     })
+  }
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
   }
   backPage(){
     window.history.back();
@@ -832,204 +410,345 @@ export default class AprobadorPRComponent extends Vue {
   reloadpage(){
     window.location.reload();
   }
+  
+  changeFecha(){
+    debugger;
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
+    else{
+      this.fechaDesde=new Date()
+      this.fechaHasta=new Date()
+    }
+  }
+
+  // #region Button Accion 
+  
+  filterstrRequis_NO(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrRequis_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrTipReq_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrTipReq_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWHS_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrWHS_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDesc_Header(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrDesc_Header){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmRequested_Date(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterdtmRequested_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWHS_Cod(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrWHS_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+
+  headerclick(val){
+    
+    this.Column=val.label;
+    this.clickColumn=val.property;
+    if(val.property=="strRequis_NO"){
+      this.blnfilterstrRequis_NO=true;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    if(val.property=="strTipReq_Desc"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=true;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    if(val.property=="strWHS_Desc"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=true;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    
+    if(val.property=="strDesc_Header"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=true;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    if(val.property=="dtmRequested_Date"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=true;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    
+    if(val.property=="strWHS_Cod"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=true;
+    }
+  }
+  sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+          return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+       
+    });
+  }
+  sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        debugger;
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        
+    });
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+        }
+      }
+    }
+    return responsearr
+
+  }
+  Buscar(){
+    debugger;
+    if(this.Column!=""){
+      this.dialogBusquedaFilter=true;
+    }
+    else{
+      alert("Seleccione la columna");
+    }
+  }
+  btnBuscar(){
+    debugger;
+    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    this.tableData=data;
+    console.log('-----like-----',data)
+    this.dialogBusquedaFilter=false;
+  }
+  sortBy = (key, reverse) => {
+
+      const moveSmaller = reverse ? 1 : -1;
+  
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+  
+    return (a, b) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  };
+  async AscItem(){
+    debugger;
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    console.log("asc",this.clickColumn)
+    var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    await loading.close();
+  }
+  DscItem(){
+    debugger;
+    console.log("desc",this.clickColumn)
+    var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+  }
+  anterior(){
+    if(this.pagina>1){
+    this.pagina--;
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  Limpiar(){
+
+    this.blnfilterstrRequis_NO=false;
+    this.blnfilterstrTipReq_Desc=false;
+    this.blnfilterstrWHS_Desc=false;
+    this.blnfilterstrDesc_Header=false;
+    this.blnfilterdtmRequested_Date=false;
+    this.blnfilterstrWHS_Cod=false;
+    this.CompleteData=this.CompleteData1;
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+
+  }
+  Print(){
+    window.print();
+  }
+  // EliminarItem(){
+  //   console.log(this.currentRow.intRequis_Item_NO);
+  //   this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+  //   for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+  //     this.CompleteData[i].intRequis_Item_NO=i+1;
+  //   }
+  //   this.CompleteData1=this.CompleteData;
+  //   console.log(this.CompleteData);
+  // }
+  
+  EliminarItem(){
+    debugger;
+    if(this.selectrow!=undefined){
+      this.dialogEliminar=true;
+    }
+    else{
+      alert('Debe de seleccionar una fila!!!');
+    }
+    
+  }
+  siguiente(){
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  
+  async btnEliminar(){
+    await requisicionService.eliminarRequisicion(this.currentRow)
+    .then(response=>{
+      debugger;
+      console.log('eliminar',response);
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.' + response.strRequis_NO;
+         this.issave=true;
+         this.iserror=false;
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.dialogEliminar=false;
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar almacen'
+      });
+    })
+    await this.BuscarRequisicion();
+  }
+  // #endregion
+
   data(){
     return{
       dialogTableVisible: false,
       dialogVisible:false,
-      currentRow: null,
       tableDataServicio:[{}],
-      formBusqueda:{},
-
-      item:{
-        date: '',
-        categoriacuenta: '',
-        categorialinea: '',
-        cuentacontable: '',
-        material:'',
-        material_descripcion:'',
-        cantidad:0,
-        unidad_medida:'',
-        proveedor:'',
-        moneda:'',
-        prioridad:'',
-        fecha_estimada:'',
-        centrocosto:'',
-      },
-      tableData: [{
-        date: '0001',
-        categoriacuenta: 'Ferreyros',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0002',
-        categoriacuenta: 'Yura SAC',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0003',
-        categoriacuenta: 'Signal company',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0004',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }
-      , {
-        date: '0005',
-        categoriacuenta: 'Tisur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0006',
-        categoriacuenta: 'Seguro',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0007',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0008',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0009',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0010',
-        categoriacuenta: 'Linea',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0011',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }],
       user: {
         authenticated: false
       },
-      data:{
-        Usuario:localStorage.getItem('User_Nombre'),
-      },
-      options: [{
-        value: 'A',
-        label: 'Almacenable'
-      }, {
-        value: 'N',
-        label: 'No Almacenable'
-      }
-      ],
-      value: '',
-      accesosUser: [],
-      hours: 0,
-      minutos:0,
-      seconds:0
+      percentage: '0',
     }
   }
   

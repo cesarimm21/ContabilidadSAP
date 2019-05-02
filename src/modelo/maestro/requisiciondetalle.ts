@@ -24,6 +24,7 @@ export class RequisicionDetalleModel {
     strMat_Group_Cod:string ;
     strWHS_Cod:string;        
     strVendor_Suggested:string; 
+    strVendor_NO:string;
     strAccount_NO:string ;
     strCostCenter:string ;
     dtmCompleted_Date:Date;
