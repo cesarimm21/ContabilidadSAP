@@ -22,6 +22,9 @@
                     </div>
                 </div>
             </div>
+            <div slot="header" class="headercard" style="margin-top: -4px;">
+                <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+            </div>
             <el-table
             :data="productoModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"

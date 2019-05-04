@@ -53,6 +53,8 @@ import RecepcionBusquedaComponent from '../components/LO-LOGISTICA/almacen/al_re
 import RecepcionMaterialComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion/al_recepcion.vue'
 import DespachoSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidadespacho/al_salidadespacho.vue'
 import LibroDiarioDComponent from '../components/FI-FINANZAS/libros-balance/librodiario/librodiario.vue'
+import LibroRegistroComprasComponent from '../components/FI-FINANZAS/libros-balance/libroregistrocompras/libroregistrocompras.vue'
+
 import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
 import  CrearCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos/crear-centro-costos.vue';
 export default [
@@ -96,6 +98,11 @@ export default [
         path:'FI-FINANZAS/libros-balance/librodiario',
         component:LibroDiarioDComponent,
         name:'libro-diario'
+      },
+      {
+        path:'FI-FINANZAS/libros-balance/libroregistrocompras',
+        component:LibroRegistroComprasComponent,
+        name:'libro-registro-compras'
       },
       {
         path:'FI-FINANZAS/proveedor/visualizar-proveedor',

@@ -5,6 +5,7 @@ import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 
+
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
@@ -25,6 +26,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
+import XLSX from 'xlsx';
 
 // import '../../../../assets/css/excel-2007.scss';
 import documentService from '@/components/service/documents.service';
@@ -47,8 +49,7 @@ import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
 import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
-
-
+import JsonExcel from '@/components/vue-json-excel/JsonExcel.vue';
 
 import { Notification } from 'element-ui';
 import Global from '@/Global';
@@ -77,7 +78,7 @@ var EditableColumn = {
     'bprioridad':BPrioridadComponent,
     'bcentrocosto':BCentroCostoComponent,
     'quickaccessmenu':QuickAccessMenuComponent,
-    
+    'download-excel' : JsonExcel
   } ,
 })
 export default class CrearPRComponent extends Vue {
@@ -86,6 +87,8 @@ export default class CrearPRComponent extends Vue {
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   currentRow:any;
   txtnroline:any='';
+  titleExcel:string ='Comercial_.xls';
+  
   hours:number;
   minutos:number;
   seconds:number;
@@ -181,14 +184,7 @@ export default class CrearPRComponent extends Vue {
 
   /*paginatio*/
   
-  pagina: number =1;
-  RegistersForPage: number = 10;
-  totalRegistros: number = 100;
-  public CompleteData:Array<RequisicionDetalleModel>=[]; 
-  public CompleteData1:Array<RequisicionDetalleModel>=[]; 
-  clickColumn:string='';
-  txtbuscar:string='';
-  Column:string='';
+
   blnilterdtmRequested_Date:boolean=false;
   blnilterstrPriority_Cod:boolean=false;
   blnilterstrCurr:boolean=false;
@@ -202,6 +198,14 @@ export default class CrearPRComponent extends Vue {
   blnilterstrAccount_NO:boolean=false;
   blnilterstrCateg_Line:boolean=false;
   blnilterstrCateg_Account :boolean=false;
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<RequisicionDetalleModel>=[]; 
+  public CompleteData1:Array<RequisicionDetalleModel>=[]; 
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
   dialogBusquedaFilter:boolean=false;
   el: '#app';
   strDescripcion:any='';
@@ -1633,29 +1637,60 @@ export default class CrearPRComponent extends Vue {
   }
 
   Limpiar(){
-    this.CompleteData=this.CompleteData1;
-    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    var document:any = this.$refs.missionTable;
-    document.setCurrentRow(this.tableData1[this.intlineaselect]);
-
-    this.blnilterdtmRequested_Date=false;
-    this.blnilterstrPriority_Cod=false;
-    this.blnilterstrCurr=false;
-    this.blnilterstrVendor_Suggested=false;
-    this.blnilterstrUM=false;
-    this.blnilterfltUnitPrice	=false;
-    this.blnilterfltQuantity=false;
-    this.blnilterstrDescription=false;
-    this.blnilterstrMaterial_Cod=false;
-    this.blnilterstrCostCenter=false;
-    this.blnilterstrAccount_NO=false;
-    this.blnilterstrCateg_Line=false;
-    this.blnilterstrCateg_Account =false;
+    debugger;
     
-    this.CompleteData=this.CompleteData1;
-    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    var document:any = this.$refs.missionTable;
-    //document.setCurrentRow(this.tableData[this.intlineaselect]);
+      var range = {s: {c:0, r:0}, e: {c:0, r:0 }};
+      var wb2 = XLSX.utils.table_to_book(document.getElementById('out-table'));
+      var cell_ref = XLSX.utils.encode_cell({c:1,r:1});
+      var ws = {}
+      var wb:any={};
+      wb.Sheets = {};
+      wb.SheetNames = [];
+      
+      var ws_name = "Sheet1";
+      ws=wb2.Sheets["Sheet1"] 
+
+      var cell =ws["B3"];
+      cell.t = 's';
+      cell.s= {
+        alignment: {textRotation: 90 },
+        font: {sz: 14, bold: true, color: '#FF00FF' }
+      
+      }
+
+        
+      ws["B3"]=cell;
+      //ws['!ref'] = XLSX.utils.encode_range(range);
+
+  
+      wb.SheetNames.push(ws_name);
+      wb.Sheets[ws_name] = ws;
+
+      XLSX.writeFile(wb, "sheetjs2.xlsx");
+      
+    // this.CompleteData=this.CompleteData1;
+    // this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    // var document:any = this.$refs.missionTable;
+    // document.setCurrentRow(this.tableData1[this.intlineaselect]);
+
+    // this.blnilterdtmRequested_Date=false;
+    // this.blnilterstrPriority_Cod=false;
+    // this.blnilterstrCurr=false;
+    // this.blnilterstrVendor_Suggested=false;
+    // this.blnilterstrUM=false;
+    // this.blnilterfltUnitPrice	=false;
+    // this.blnilterfltQuantity=false;
+    // this.blnilterstrDescription=false;
+    // this.blnilterstrMaterial_Cod=false;
+    // this.blnilterstrCostCenter=false;
+    // this.blnilterstrAccount_NO=false;
+    // this.blnilterstrCateg_Line=false;
+    // this.blnilterstrCateg_Account =false;
+    
+    // this.CompleteData=this.CompleteData1;
+    // this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    // var document:any = this.$refs.missionTable;
+    
   }
   Print(){
     window.print();
@@ -1668,6 +1703,8 @@ export default class CrearPRComponent extends Vue {
       this.CompleteData[i].intRequis_Item_NO=i+1;
     }
     this.CompleteData1=this.CompleteData;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+   
     console.log(this.CompleteData);
   }
   siguiente(){
@@ -1731,6 +1768,27 @@ export default class CrearPRComponent extends Vue {
       strVendor_Descs:'',
       strDescription:'',
       percentage: '0',
+      json_fields : {
+        "dtmRequested_Date":"dtmRequested_Date",
+        "strPriority_Cod":"strPriority_Cod",
+        "strCurr":"strCurr",
+        "strVendor_Suggested":"strVendor_Suggested",
+        "strUM":"strUM",
+        "fltUnitPrice":"fltUnitPrice",	
+        "fltQuantity":"fltQuantity",
+        "strDescription":"strDescription",
+        "strMaterial_Cod":"strMaterial_Cod",
+        "strCostCenter":"strCostCenter",
+        "strAccount_NO":"strAccount_NO",
+        "strCateg_Line":"strCateg_Line",
+        "strCateg_Account":"strCateg_Account", 
+      },
+      json_meta:[
+        [{
+          "key": "charset",
+          "value": "utf-8"
+        }]
+      ]
     }
   }
   

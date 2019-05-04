@@ -85,9 +85,10 @@
                             <div slot="header" class="headercard" style="margin-top: -4px;">
                                 <buttons-accions v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar"  v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
-                            
+                            <download-excel :data="tableData1" :fields = "json_fields" :meta = "json_meta" :name = "titleExcel">
+                            </download-excel>
                             <div class="col-md-12" >
-                                <div class="row bodycard" id="app" style="background: white;margin-top: 0px;">
+                                <div class="row bodycard" id="out-table" style="background: white;margin-top: 0px;">
                                     <el-table
                                         ref="missionTable"  
                                         id="container"                                      
@@ -108,7 +109,7 @@
                                                 <label style="width:100%;    margin: 0rem;" >&nbsp;{{ scope.row.intRequis_Item_NO }}</label>
                                             </template>
                                         </el-table-column>
-
+                                        <el-table-column label="Información de entrega">
                                         <el-table-column  :render-header="filterstrCateg_Account"   prop="strCateg_Account" min-width="80" label="Cta. Cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
@@ -140,6 +141,7 @@
                                                 </el-input>
                                                 <label style="width:100%;    margin: 0rem;" v-bind:style="{background:'#e4e2e2',width:'100%',margin: '0rem'}" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAccount_NO }}</label>
                                             </template>
+                                        </el-table-column>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrCostCenter"
                                             prop="strCostCenter"    
