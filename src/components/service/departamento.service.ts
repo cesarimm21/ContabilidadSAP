@@ -21,6 +21,12 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  searchDepartamento(data){
+    return axios.post(CONFIG.API_URL+'departamento/search',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 
 }

@@ -20,8 +20,6 @@ import almacenService from '@/components/service/almacen.service';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
-import {CompaniaModel} from '@/modelo/maestro/compania';
-import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
@@ -103,7 +101,8 @@ export default class CrearPOComponent extends Vue {
     public OrdenCompra: OrdenCompraModel = new OrdenCompraModel();
     ordencompraDetalle: any[];
     //* [COMPANIA]
-    public compania:CompaniaModel=new CompaniaModel();
+    codigoCompania:any;
+    descripcionCompania:any;
     //**[PRODUCTO] */
     valorSelectCodStock:any[];
     provData:ProveedorModel[];
@@ -114,27 +113,23 @@ export default class CrearPOComponent extends Vue {
         this.OrdenCompra.chrPO_Status = 'A';
         this.OrdenCompra.strRequis_Item_NO="0";
         this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
+        setTimeout(() => {
+            this.load();
+          }, 200)
     }
-    //#region [COMPANIA]
-    loadCompania(v) {
-        companiaService.GetOnlyOneCompania(v)
-        .then(response=>{
-            this.compania=response;   
-            this.OrdenCompra.intIdCompany_ID=this.compania.intIdCompany_ID; 
-            this.OrdenCompra.strCompany_Desc=this.compania.strCompany_Desc;                                
-        })
-    }
-
-    //#endregion
     //#region [REQUISICION]
-    loadRequisicion(){
-        this.dialogRequisicion=true;
-        this.requisicionData=[];
+    load(){
+        this.codigoCompania=localStorage.getItem('compania_cod');
+        this.descripcionCompania=localStorage.getItem('compania_name');            
         this.codigoInput='';
-        requisicionService.getAllRequisicion()
+        requisicionService.GetRequisicionCompany(this.codigoCompania)
         .then(response=>{
+            this.requisicionData=[];
             this.requisicionData=response;
         })
+    }
+    loadRequisicion(){
+        this.dialogRequisicion=true;
     }
     searchRequisicion() {
         this.getRequisicion(this.codigoInput);
@@ -216,18 +211,18 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
+        this.OrdenCompra.intIdCompany_ID=val.strCompany_Cod; 
+        this.OrdenCompra.strCompany_Desc=val.strCompany_Desc;
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;  
         this.OrdenCompra.strPO_Desc=val.strDesc_Header;
         this.OrdenCompra.strTypeMov_Cod=val.strTypeMov_Cod;    
         this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
-        this.requiSelect=val;  
-        
+        this.requiSelect=val;          
     }
     checkSelectdb(){        
         this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
-        this.getReqDetalle(this.requiSelect.intIdPurReqH_ID); 
-        this.loadCompania(this.requiSelect.strCompany_Cod); 
+        this.getReqDetalle(this.requiSelect.intIdPurReqH_ID);
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
         this.OrdenCompra.strCompany_Cod=this.requiSelect.strCompany_Cod;
         this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
@@ -707,6 +702,7 @@ export default class CrearPOComponent extends Vue {
         return{
             nameComponent:'crear-po',
             codigoInput:'',
+            codigoCompania:'',
             tableData:[],
             requisicionDetalle:[],
             requisicionData:[],

@@ -732,7 +732,7 @@ body {
     font-size: inherit;
     height: 36px;
     line-height: 1;
-    outline: 0;c
+    outline: 0;
     padding: 3px 4px;
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
     height: 22px;

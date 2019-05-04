@@ -10,4 +10,11 @@ export class PaisModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    constructor(){
+        this.intIdCountry_ID=0;
+        this.strCountry_Cod='';
+        this.strCountry_Name='';
+        this.strLanguage='';
+        this.strCountry_Curr='';        
+    }
 }

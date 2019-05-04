@@ -34,11 +34,18 @@ export default class  BMonedaComponent extends Vue {
 
   //Modelos
   articulos:any =[];
-
+  blnilterstrCurrency_Cod:boolean=true;
+  blnilterstrCurrency_Desc:boolean=false;
+  blnilterstrCountry:boolean=false;
+  public searchMoneda:MonedaModel=new MonedaModel();
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
-  public monedaModel:Array<MonedaModel>=[];
+  public monedaData:Array<MonedaModel>=[];
+  public monedaData1:Array<MonedaModel>=[];
   public monedaSelectModel:MonedaModel=new MonedaModel();
 
   constructor() {
@@ -48,7 +55,10 @@ export default class  BMonedaComponent extends Vue {
   load(){
     monedaService.GetAllMoneda()
     .then(response=>{
-      this.monedaModel=response;       
+      this.monedaData=[];
+      this.monedaData1=[];
+      this.monedaData=response;       
+      this.monedaData1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -74,47 +84,105 @@ export default class  BMonedaComponent extends Vue {
     this.$emit('cartaSelecionado',rows[index]);
   }
 
+  // buscarProveedor(){
+  //   if(this.clickColumn=="strCurrency_Cod"){  this.searchMoneda.strCurrency_Cod=this.inputAtributo; }
+  //   if(this.clickColumn=="strCurrency_Desc"){ this.searchMoneda.strCurrency_Desc=this.inputAtributo; }
+  //   if(this.clickColumn=="strCountry"){ this.searchMoneda.strCountry=this.inputAtributo; }
+  //   console.log(this.searchMoneda);
+    
+  //   monedaService.searchMoneda(this.searchMoneda)
+  //   .then(resp=>{
+  //     this.monedaData=[];
+  //     this.monedaData=resp;     
+  //   })
+  // }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
   buscarProveedor(){
-    this.bind();
+    var data=this.like(this.monedaData1,this.clickColumn,this.inputAtributo)
+    this.monedaData=[];
+    this.monedaData=data;
   }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strCurrency_Cod"){
+      this.clickColumn=val.property;  
+      this.searchMoneda=new MonedaModel();  
+      this.inputAtributo='';  
+      this.blnilterstrCurrency_Cod=true;
+      this.blnilterstrCurrency_Desc=false;
+      this.blnilterstrCountry=false;
+    }
+    if(val.property=="strCurrency_Desc"){
+      this.clickColumn=val.property;
+      this.searchMoneda=new MonedaModel();
+      this.inputAtributo='';
+      this.blnilterstrCurrency_Cod=false;
+      this.blnilterstrCurrency_Desc=true;
+      this.blnilterstrCountry=false;
+    }
+    if(val.property=="strCountry"){
+      this.clickColumn=val.property;
+      this.searchMoneda=new MonedaModel();
+      this.inputAtributo='';
+      this.blnilterstrCurrency_Cod=false;
+      this.blnilterstrCurrency_Desc=false;
+      this.blnilterstrCountry=true;
+    }
   }
-
+  filterstrCurrency_Cod(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnilterstrCurrency_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.searchMoneda=new MonedaModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCurrency_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrCurrency_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCountry(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrCountry){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -167,7 +235,8 @@ export default class  BMonedaComponent extends Vue {
   }
   data() {
     return {
-      monedaData:[]
+      monedaData:[],
+      monedaData1:[]
     };
   }
 }

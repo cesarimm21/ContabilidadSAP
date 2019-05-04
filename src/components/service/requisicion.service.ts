@@ -10,6 +10,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetRequisicionCompany(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'requisicionByCompany/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   updateRequisicion(data){
     return axios.post(CONFIG.API_URL+'requisicion/update', data)
     .then(response =>{

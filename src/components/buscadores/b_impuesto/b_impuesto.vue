@@ -32,10 +32,11 @@
             @current-change="handleCurrentChange">
             <el-table-column   prop="strWH_Cod" label="Codigo" width="120">
             </el-table-column>  
-            <el-table-column   prop="fltPorcent" label="%" width="120">
-            </el-table-column>  
-            <el-table-column  prop="strWH_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column  prop="strWH_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
+            <el-table-column   prop="fltPorcent" label="Tasa %" width="120">
+            </el-table-column>  
+            
             </el-table>
         </el-card>
         <br/>

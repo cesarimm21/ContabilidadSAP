@@ -8,6 +8,30 @@
               <div slot="header" class="headercard">
                  <span class="labelheadercard" > Modificar Proveedor</span>                 
               </div>
+               <div class="row bodycard" style="margin-top:-6px;">
+                  <div class="col-md-8">
+                      <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                    <el-input size ="small" v-model="codigoCompania" disabled>
+                                    </el-input>
+                                </div>
+                            </div>
+                            <label class="sinLinea el-form-item__label col-md-4" >{{descripcionCompania}}</label>
+                        </div>
+                       <div class="form-group row " style="margin-top:8px;">
+                        <label class="el-form-item__label col-md-2" >Codigo Proveedor</label>
+                        <div class="col-md-2 grupolabel">
+                            <div class="input-group mb-2" >
+                                <el-input size ="small" v-model="gridSelectedProveedor.strVendor_NO" >                                   
+                                </el-input>
+                            </div>
+                        </div>                        
+                        </div>
+                  </div>
+              </div>
+              <br>
             <div class="row">
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
@@ -27,12 +51,10 @@
                                     @current-change="proveedorSelect">
                                     <el-table-column   prop="strVendor_NO" label="Codigo" width="100">
                                     </el-table-column> 
-                                    <el-table-column  prop="strVendor_Desc" label="Nombre proveedor" width="260">
-                                    </el-table-column> 
                                     <el-table-column   prop="strTax_ID" label="RUC/DNI" width="180">
-                                    </el-table-column>  
-                                    <el-table-column   prop="strCat_Person" label="Categoria" width="180">
-                                    </el-table-column>  
+                                    </el-table-column> 
+                                    <el-table-column  prop="strVendor_Desc" label="Nombre proveedor" width="260">
+                                    </el-table-column>                                      
                                     <el-table-column  prop="strProvince" label="Provincia" style="width: 70% !important;">
                                     </el-table-column> 
                                     <el-table-column   prop="strDistrict" label="Distrito" width="180">

@@ -10,7 +10,6 @@ import {ProveedorModel} from '../../../../modelo/maestro/proveedor';
 import { Notification } from 'element-ui';
 import proveedorService from '@/components/service/proveedor.service'
 import companiaService from '@/components/service/compania.service';
-import paisService from '@/components/service/pais.service';
 import bancoService from '@/components/service/banco.service';
 import tipodocidentidadService from '@/components/service/tipodocidentidad.service';
 import departamentoService from '@/components/service/departamento.service';
@@ -24,6 +23,7 @@ import BBancoProveedor from '@/components/buscadores/b_banco/b_banco.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
+import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 
 import Global from '@/Global';
 import {CompaniaModel} from '@/modelo/maestro/compania';
@@ -44,6 +44,7 @@ import { FacturaModel } from '@/modelo/maestro/factura';
     'quickaccessmenu':QuickAccessMenuComponent,
     'bmoneda':BMonedaComponent,
     'bimpuesto':BImpuestoComponent,
+    'bpais':BPaisComponent,
   }
 })
 export default class CrearProveedorComponent extends Vue {
@@ -80,7 +81,6 @@ export default class CrearProveedorComponent extends Vue {
   public companiaModel:CompaniaModel=new CompaniaModel();
 
   //**Pais */
-  public Pais:PaisModel=new PaisModel();
   public gridSelectPais:PaisModel=new PaisModel();
   paisVisible:boolean=false;
   btnactivarpais:boolean=false;
@@ -107,11 +107,17 @@ export default class CrearProveedorComponent extends Vue {
   btnactivarTipoDocumento:boolean=false;
   TipoDoc:TipoDocIdentidadModel[];
   //**Departamento */
-  public Departamento:DepartamentoModel=new DepartamentoModel();
+  public DepartamentoGrid:Array<DepartamentoModel>[];
   btnactivardepartamento:boolean=false;
   departVisible:Boolean=false;
   departEnabled:boolean=true;
   public selectDepartamento:DepartamentoModel=new DepartamentoModel();
+  public searchDepartamento:DepartamentoModel=new DepartamentoModel();
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
+  blnilterstrRegión_Cod:boolean=true;
+  blnilterstrRegión_Desc:boolean=false;
   //**Moneda */
   public Moneda:MonedaModel=new MonedaModel();
   monedaVisible:boolean=false;
@@ -163,23 +169,8 @@ export default class CrearProveedorComponent extends Vue {
   }
   //#region [PAIS]
   //**Pais */
-  loadPais(){
-    paisService.GetAllPais()
-    .then(response=>{
-      this.Pais=response.data;
-      this.paisVisible=true;
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar lista de paises'
-      });
-      this.paisVisible=false;
-    })
-  }
-
   paisDialog(){
-    this.loadPais();
+    this.paisVisible=true;
   }
   activar_Pais(){
     setTimeout(() => {
@@ -206,19 +197,12 @@ export default class CrearProveedorComponent extends Vue {
   }
   handleClosePais(){
     this.paisVisible=false;
-    this.gridSelectPais=new PaisModel();
   }
   paisSelect(val:PaisModel){
     this.gridSelectPais=val;
     this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
     this.departEnabled=false;
-  }
-  paisChosseCheck(){
-    this.paisVisible=false;
-
-  }
-  paisChosseClose(){
     this.paisVisible=false;
   }
   //#endregion
@@ -553,7 +537,8 @@ export default class CrearProveedorComponent extends Vue {
   GetAllDepartamento(val){
     departamentoService.GetAllDepartamentoByPais(val)
     .then(response=>{
-      this.Departamento=response;
+      this.DepartamentoGrid=[];
+      this.DepartamentoGrid=response;
       this.departVisible=true;
       
     }).catch(error=>{
@@ -596,6 +581,66 @@ export default class CrearProveedorComponent extends Vue {
   }
   departDialog(){
     this.GetAllDepartamento(this.gridSelectPais.intIdCountry_ID);
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strRegión_Cod"){
+      this.clickColumn=val.property;  
+      this.searchDepartamento=new DepartamentoModel();  
+      this.inputAtributo='';  
+      this.blnilterstrRegión_Cod=true;
+      this.blnilterstrRegión_Desc=false;
+    }
+    if(val.property=="strRegión_Desc"){
+      this.clickColumn=val.property;
+      this.searchDepartamento=new DepartamentoModel();
+      this.inputAtributo='';
+      this.blnilterstrRegión_Cod=false;
+      this.blnilterstrRegión_Desc=true;
+    }
+  }
+  filterstrRegión_Cod(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnilterstrRegión_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.searchDepartamento=new DepartamentoModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrRegión_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrRegión_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  searchDepa(){
+    this.searchDepartamento.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
+    if(this.clickColumn=="strRegión_Cod"){  this.searchDepartamento.strRegión_Cod=this.inputAtributo; }
+    if(this.clickColumn=="strRegión_Desc"){ this.searchDepartamento.strRegión_Desc=this.inputAtributo; }
+        
+    departamentoService.searchDepartamento(this.searchDepartamento)
+    .then(resp=>{
+      this.DepartamentoGrid=[];
+      this.DepartamentoGrid=resp; 
+    })
+
   }
   //#endregion
   //#region [MONEDA]
@@ -930,10 +975,12 @@ export default class CrearProveedorComponent extends Vue {
       tipoDocDisabled:false,            
       value: '',
       value1:'',
+      inputAtributo:'',
       data:{
         Usuario:localStorage.getItem('User_Nombre'),
       },
       accesosUser: [],
+      DepartamentoGrid:[],
       hours: 0,
       minutos:0,
       seconds:0

@@ -495,56 +495,11 @@
             <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="proveedorClose()"/>
         </span>
         </el-dialog>
-
-    <el-dialog
-        title="Paises"
-        :visible.sync="paisVisible"
-        width="30%"
-        :before-close="handleClosePais">
-        <el-card class="box-card">
-              <div slot="header" class="headercard">
-                  <span class="labelheadercard" >Buscar Paises</span>
-              </div>
-              <div class="row bodycard">
-                  <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Paises Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-              </div>
-              <el-table
-                :data="Pais"
-                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                highlight-current-row
-                @row-dblclick="paisChosseCheck"
-                @current-change="paisSelect"
-                height="250">
-                <el-table-column  prop="strCountry_Cod" label="Codigo" width="180">
-                </el-table-column>  
-                <el-table-column  prop="strCountry_Name" label="Nombre del Pais" width="180">
-                </el-table-column> 
-                <el-table-column  prop="strLanguage" label="Idioma" style="width: 70% !important;">
-                </el-table-column> 
-                </el-table>
-          </el-card>
-        <span slot="footer" class="dialog-footer">
-            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="paisChosseCheck()"/>
-            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="paisChosseClose()"/>
-        </span>
-        </el-dialog>
-
+    <!--DIALOG BUSQUEDA PAIS-->
+    <el-dialog title="Busqueda Pais" :visible.sync="paisVisible" @close="handleClosePais" size="small" >
+      <bpais v-on:PaisSeleccionado="paisSelect($event)" v-on:closePais="handleClosePais()">
+      </bpais>
+    </el-dialog>
       <!--DIALOG BUSQUEDA BANCO-->
     <el-dialog title="Busqueda Banco"  :visible.sync="bancoVisible" @close="handleCloseBanco" size="small" >
       <bbanco v-on:bancoselecionado="bancoselecionado($event)" v-on:closeBanco="bancoChosseClose()">
@@ -567,15 +522,13 @@
               <div class="row bodycard">
                   <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Departamento Codigo</label>
+                            <label class="el-form-item__label col-md-3" >{{Column}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
+                                <el-input size ="small"   v-model="inputAtributo">
+                                <el-button slot="append" class="boton" icon="fa fa-search" 
+                                    @click="searchDepa()"
+                                > </el-button>
                                 </el-input>
                                 </div>
                             </div>
@@ -583,15 +536,17 @@
                   </div>
               </div>
               <el-table
-                :data="Departamento"
+                :data="DepartamentoGrid"
                 stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                 style="width: 100%; cursor: pointer;" class="ExcelTable2007"
                 height="200"
                 highlight-current-row
+                @header-click="headerclick"
+                @row-dblclick="departChosseCheck"
                 @current-change="departSelect">
-                <el-table-column  prop="strRegión_Cod" label="Codigo" width="180" >
+                <el-table-column :render-header="filterstrRegión_Cod"  prop="strRegión_Cod" label="Codigo" width="180" >
                 </el-table-column>  
-                <el-table-column  prop="strRegión_Desc" label="Nombre Departamento" style="width: 70% !important;">
+                <el-table-column :render-header="filterstrRegión_Desc" prop="strRegión_Desc" label="Nombre Departamento" style="width: 70% !important;">
                 </el-table-column> 
                 </el-table>
           </el-card>
