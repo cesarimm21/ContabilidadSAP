@@ -127,7 +127,7 @@
                                 <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{selectProo.strVendor_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{}}</label>
                             </div>
                             <div class="form-group row ">
                                 <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>

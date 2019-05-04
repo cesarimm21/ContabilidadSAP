@@ -31,7 +31,7 @@ export default class TopMenu extends Vue {
   ocultarConfig:boolean = true;
   ocultar:boolean=false;
   codigo:string;
-  nameuser:string;
+  nameuser:any;
   namecomplete:string;
   accesosUser:any=[];
   isActive:boolean=false;
@@ -41,12 +41,12 @@ export default class TopMenu extends Vue {
     this.isActive=GLOBAL.isActive;
     this.isCollapse=GLOBAL.isCollapse;
    // this.ChechAccess();
-  this.nameuser='Andre';
   this.namecomplete='Cordova';  
   this.getAccesos();
   // this.update();
   }
   getAccesos(){ 
+    this.nameuser=localStorage.getItem('User_Usuario');
     var data=localStorage.getItem('compania_name');
     this.compania=data;
     // var test=localStorage.getItem('User_Cargo');
