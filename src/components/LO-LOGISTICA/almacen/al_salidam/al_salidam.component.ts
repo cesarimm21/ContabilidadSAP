@@ -318,40 +318,6 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     ]
   }
 
-  ExportarPDF1(){
-    var doc = new jsPDF('p', 'pt');
-    doc.setFontSize(12);
-    doc.setTextColor(0);
-    doc.setFontStyle('bold');
-    doc.text('Rowspan and colspan', 40, 50);
-
-    let body = this.bodyRows(40);
-    for (var i = 0; i < body.length; i++) {
-        var row = body[i];
-        if (i % 5 === 0) {
-            row['id'] = {rowSpan: 5, content: i / 5 + 1, styles: {valign: 'middle', halign: 'center'}};
-        }
-    }
-    console.log(body);
-
-    // }
-    let head = this.headRows();
-    // head[0]['id'] = {content: 'People', colSpan: 5, styles: {halign: 'center', fillColor: [22, 160, 133]}};
-    
-    doc.autoTable({
-        startY: 60,
-        head: head,
-        body: body,
-        theme: 'grid'
-    });
-    
-    var blob = doc.output('blob');
-    console.log('/////////////////////////////')
-    console.log(blob);
-    console.log('/////////////////////////////')
-    doc.save('test.pdf');
-
-  }
   ExportarPDF(){
     let doc = new jsPDF('p', 'pt');
     let marginleft=30;
@@ -374,7 +340,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     doc.text(marginleft, comienzo+55, 'Fecha:');
     doc.setFontType('normal');
     doc.text(marginleft+80, comienzo+40, this.salidaModel.strIssueAjust_NO);
-    doc.text(marginleft+40, comienzo+55, this.salidaModel.dtmApproved_Date);
+    doc.text(marginleft+40, comienzo+55, this.salidaModel.dtmApproved_Date==null?'':this.salidaModel.dtmApproved_Date);
     
     var mitad=tam/2;
     
@@ -392,9 +358,9 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     for(var i=0 ;i<this.tableData1.length;i++){
       this.tableData1[i].index=i+1;
     }
-    for(var i=0 ;i<10;i++){
-      this.tableData1.push(this.tableData1[i])
-    }
+    // for(var i=0 ;i<10;i++){
+    //   this.tableData1.push(this.tableData1[i])
+    // }
     doc.autoTable(columns, this.tableData1,{
       theme: 'striped',
       startY: 100,
@@ -479,7 +445,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     doc.text(marginleft, comienzo+55, 'Fecha:');
     doc.setFontType('normal');
     doc.text(marginleft+80, comienzo+40, this.salidaModel.strIssueAjust_NO);
-    doc.text(marginleft+40, comienzo+55, this.salidaModel.dtmApproved_Date);
+    doc.text(marginleft+40, comienzo+55, this.salidaModel.dtmApproved_Date==null?'':this.salidaModel.dtmApproved_Date);
    
     doc.autoTable(columns, this.tableData1,{
       theme: 'striped',

@@ -65,7 +65,8 @@
     "vue-table-with-tree-grid": "^0.2.4",
     "vue-tinymce": "^1.0.5",
     "vue-trumbowyg": "^1.0.3",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "xlsx": "^0.14.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.4",

@@ -91,6 +91,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  percentage:number;
 
   hours:number;
   minutos:number;
@@ -179,13 +180,35 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   vtipomovimiento:boolean=false;
   vcompania:boolean=false;
 
+  blnfilterstrStock_Cod:boolean=false;
+  blnfilterstrStock_Desc:boolean=false;
+  blnfilterfltQuantity:boolean=false;
+  blnfilterfltIssueRequest_QTY:boolean=false;
+  blnfilterstrUM_Cod:boolean=false;
+  blnfilterstrCostCenter_NO:boolean=false;
+  blnfilterstrAcc_NO_Local:boolean=false;
+  blnfilterstrDelivery_Place:boolean=false;
+  blnfilterdtmDelivery_Date:boolean=false;
+  blnfilterstrPriority_Cod:boolean=false;
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<SalidaDetalleModel>=[]; 
+  public CompleteData1:Array<SalidaDetalleModel>=[]; 
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  dialogBusquedaFilter:boolean=false;
+  el: '#app';
+  txtnroline:any='';
+  intlineaselect:number=-1;
 
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
-    for(var i=0;i<10;i++){
+    for(var i=0;i<this.totalRegistros;i++){
       var items:SalidaDetalleModel=new SalidaDetalleModel();
       items.intIssueAjust_Item=i+1;
       items.strStock_Cod='';
@@ -202,9 +225,11 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       items.errorCentroCosto=false;
       items.errorLugarEntrega=false;
       items.errorPrioridad=false;
-
-      this.tableData1.push(items);
+      this.CompleteData.push(items);
     }
+    this.CompleteData1=this.CompleteData;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+
     console.log(this.tableData1);
   }
   fnOcultar(){
@@ -289,12 +314,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       debugger;
       return 'rechazado-row';
     
-  }
-  handleCurrentChange(val) {
-    debugger;
-    if(val.date){
-        return 'selected-row';
-    }
   }
   /*Compania imput*/
   activar_compania(){
@@ -410,11 +429,11 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   /*tabla metodos*/
   handleBlur(event) {
     debugger;
-    this.bln_tbl_categoria_cuenta=false;
-    event.edit=false;
-    this.editing.row='';
-    this.editing.column='';
-    console.log('blur');
+    // this.bln_tbl_categoria_cuenta=false;
+    // event.edit=false;
+    // this.editing.row='';
+    // this.editing.column='';
+    // console.log('blur');
   }
   isEditing() {
     return this.editing !== null
@@ -602,6 +621,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.selectrow.fltPrecUnit_Local=val.fltPrecUnit_Local;
     this.selectrow.fltPrecUnit_USD=val.fltPrecUnit_USD;
     this.dialogMaterial=false;
+    console.log('SeleccionadoMaterial',this.selectrow)
     
   }
   SeleccionadoUnidadMedida(val){
@@ -763,8 +783,37 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.btnactivartipomovimiento=false;
     this.btnactivarcompania=false;
   }
+  nuevoRegistro(){
+    this.tableData1=[];
+    for(var i=0;i<10;i++){
+      var items:SalidaDetalleModel=new SalidaDetalleModel();
+      items.intIssueAjust_Item=i+1;
+      items.strStock_Cod='';
+      items.strStock_Desc='';
+      items.fltIssueRequest_QTY=0;
+      items.fltAjust_QTY=0;
+      items.fltIssueDelivery_QTY=0;
+      items.strUM_Cod='';
+      items.strCostCenter_NO='';
+      items.strAcc_NO_Local='';
+      items.strDelivery_Place='';
+      items.dtmDelivery_Date=new Date();
+      items.strPriority_Cod='';
+      items.errorCentroCosto=false;
+      items.errorLugarEntrega=false;
+      items.errorPrioridad=false;
+
+      this.tableData1.push(items);
+    }
+    this.salidaModel=new SalidaModel();
+  }
   async guardarTodo(val){
     debugger;
+    this.vifprogress=true;
+    this.issave=false;
+    this.iserror=false;
+    this.textosave=''
+    this.percentage=0;  
     
     var tabla:Array<SalidaDetalleModel>=[];
 
@@ -792,23 +841,46 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       console.log('salida',this.salidaModel);
       this.salidaModel.strPlant_Cod=this.code_planta;
       this.salidaModel.strPlan_Desc=this.desplanta;
+      for(var i=0;i<50;i++){
+        this.percentage++;
+      }
 
       salidaService.CrearSalida(this.salidaModel)
       .then(res=>{
         debugger;
+        // for(var i=0;i<50;i++){
+        //   this.valuem++; 
+        // }
+        // console.log(this.valuem);
+        // loading.close();
+        // if(this.valuem>=100){
+        //   setTimeout(() => {
+        //     this.vifprogress=false;
+        //     this.issave=true;
+        //     this.txtSave='';
+        //     this.blntxtSave=false;
+        //     this.textosave='Se guardo correctamente.'
+        //     this.openMessage('Se guardo correctamente');
+        //   }, 2000)
+        // }
         for(var i=0;i<50;i++){
-          this.valuem++; 
-        }
-        console.log(this.valuem);
-        loading.close();
-        if(this.valuem>=100){
-          setTimeout(() => {
-            this.vifprogress=false;
-            this.issave=true;
-            this.textosave='Se guardo correctamente.'
-            this.openMessage('Se guardo correctamente');
-          }, 2000)
-        }
+          setTimeout(
+            () => {this.percentage++;},1  
+          )
+        } 
+        setTimeout(() => {   
+          this.issave=true;
+          this.vifprogress=false;
+          this.vifprogress=false;
+          this.issave=true;
+          this.txtSave='';
+          this.blntxtSave=false;
+          this.textosave='Se guardo correctamente. '+res.strIssueAjust_NO;
+          this.openMessage('Se guardo correctamente '+res.strIssueAjust_NO);
+          loading.close();
+          this.nuevoRegistro();
+          //window.location.reload();  
+        }, 600)
       })
       .catch(error=>{
         loading.close();
@@ -826,6 +898,472 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   reloadpage(){
     window.location.reload();
+  }
+
+  filterstrStock_Cod(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrStock_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrStock_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrStock_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltQuantity(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterfltQuantity){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltIssueRequest_QTY(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterfltIssueRequest_QTY){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrUM_Cod(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrUM_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCostCenter_NO(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrCostCenter_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcc_NO_Local(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrAcc_NO_Local){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDelivery_Place(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrDelivery_Place){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmDelivery_Date(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterdtmDelivery_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrPriority_Cod(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrPriority_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  headerclick(val){
+    debugger;
+    this.Column=val.label;
+    this.clickColumn=val.property;
+    Global.setColumna(this.Column);
+    if(val.property=="strStock_Cod"){
+      this.blnfilterstrStock_Cod=true;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="strStock_Desc"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=true;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="fltQuantity"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=true;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    
+    if(val.property=="fltIssueRequest_QTY"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=true;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="strUM_Cod"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=true;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="strCostCenter_NO"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=true;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="strAcc_NO_Local"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=true;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="strDelivery_Place"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=true;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=false;
+    }
+    if(val.property=="dtmDelivery_Date"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=true;
+      this.blnfilterstrPriority_Cod=false;
+    }
+
+    if(val.property=="strPriority_Cod"){
+      this.blnfilterstrStock_Cod=false;
+      this.blnfilterstrStock_Desc=false;
+      this.blnfilterfltQuantity=false;
+      this.blnfilterfltIssueRequest_QTY=false;
+      this.blnfilterstrUM_Cod=false;
+      this.blnfilterstrCostCenter_NO=false;
+      this.blnfilterstrAcc_NO_Local=false;
+      this.blnfilterstrDelivery_Place=false;
+      this.blnfilterdtmDelivery_Date=false;
+      this.blnfilterstrPriority_Cod=true;
+    }
+
+   var object=[ { TagId: 1, TagName: "C#", }, 
+   { TagId: 3, TagName: "Visual Studio", },  
+   { TagId: 4, TagName: "Fakes", },
+   { TagId: 2, TagName: "Single Page Application", }, 
+    ]
+
+    console.log('headerclick',val)
+    console.log(val)
+    // this.CompleteData.sort(this.sortBy('intRequis_Item_NO',true));
+
+   
+  }
+  sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+          return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+       
+    });
+  }
+  sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        debugger;
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        
+    });
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+
+  Buscar(){
+    debugger;
+    if(this.Column!=""){
+      this.dialogBusquedaFilter=true;
+    }
+    else{
+      alert("Seleccione la columna");
+    }
+  }
+  btnBuscar(){
+    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    this.tableData1=data;
+    console.log('-----like-----',data)
+    this.dialogBusquedaFilter=false;
+  }
+  sortBy = (key, reverse) => {
+
+      const moveSmaller = reverse ? 1 : -1;
+  
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+  
+    return (a, b) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  };
+  async AscItem(){
+    debugger;
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    console.log("asc",this.clickColumn)
+    var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    await loading.close();
+  }
+  DscItem(){
+    debugger;
+    console.log("desc",this.clickColumn)
+    var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+  }
+  anterior(){
+    if(this.pagina>1){
+    this.pagina--;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  
+  nroLineaSelect(){
+    debugger;
+    if(!isNaN(this.txtnroline)){
+      this.intlineaselect=parseInt(this.txtnroline)-1;
+      var res:any;
+      if(parseInt(this.txtnroline)>10){
+        var ss=parseInt(this.txtnroline)%10;
+        if(ss>0){
+          res=ss-1;
+          this.pagina=Math.floor(parseInt(this.txtnroline)/10)+1;
+        }
+        else{
+          res=9;
+          this.pagina=parseInt(this.txtnroline)/10;
+        }
+      }
+      else{
+        this.pagina=1;
+        res=this.intlineaselect;
+      }
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var document:any = this.$refs.missionTable;
+      
+      document.setCurrentRow(this.tableData1[res]);
+    }
+
+  }
+
+  Limpiar(){
+    debugger;
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+    document.setCurrentRow(-1);
+
+    this.blnfilterstrStock_Cod=false;
+    this.blnfilterstrStock_Desc=false;
+    this.blnfilterfltQuantity=false;
+    this.blnfilterfltIssueRequest_QTY=false;
+    this.blnfilterstrUM_Cod=false;
+    this.blnfilterstrCostCenter_NO=false;
+    this.blnfilterstrAcc_NO_Local=false;
+    this.blnfilterstrDelivery_Place=false;
+    this.blnfilterdtmDelivery_Date=false;
+    this.blnfilterstrPriority_Cod=false;
+    
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+    //document.setCurrentRow(this.tableData[this.intlineaselect]);
+  }
+  Print(){
+    window.print();
+  }
+  
+  EliminarItem(){
+    debugger;
+    console.log(this.selectrow.intIssueAjust_Item);
+    var item_nro=this.selectrow.intIssueAjust_Item-1;
+    alert(item_nro);
+    this.CompleteData.splice(item_nro, 1);
+    for(var i=this.selectrow.intIssueAjust_Item-1;i<this.CompleteData.length;i++){
+      this.CompleteData[i].intIssueAjust_Item=i+1;
+    }
+    this.CompleteData1=this.CompleteData;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+   
+    console.log(this.CompleteData);
+  }
+  siguiente(){
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  handleCurrentChange(val) {
+    debugger;
+    if(val!=undefined){
+      if(val.intIssueAjust_Item==0){
+        this.intlineaselect=0;  
+      }
+      else{
+        this.intlineaselect=val.intIssueAjust_Item-1;
+      }
+      this.selectrow = val;
+      
+    }
   }
   data(){
     return{
@@ -1021,7 +1559,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      percentage: '0',
     }
   }
   
