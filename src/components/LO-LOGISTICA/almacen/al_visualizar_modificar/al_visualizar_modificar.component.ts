@@ -744,8 +744,10 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     
     var responsearr:any = []
     for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
         if(array[i][key].toString().indexOf(keyword) > -1 ) {
           responsearr.push(array[i])
+        }
       }
     }
     return responsearr

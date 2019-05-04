@@ -48,6 +48,7 @@ export default {
       }
     },
     getParseDate(fecha){
+      debugger;
       if(fecha!=undefined){
         var Datef=new Date(fecha);
         var dia = Datef.getDate();

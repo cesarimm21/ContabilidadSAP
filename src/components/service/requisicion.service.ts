@@ -69,7 +69,13 @@ export default{
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  eliminarRequisicion(data){
+    debugger;
+    return axios.post(CONFIG.API_URL+'requisicion/eliminar',data)
+    .then(response => {
+      return response.data
+    })
   }
-
 
 }

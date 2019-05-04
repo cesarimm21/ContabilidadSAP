@@ -64,10 +64,11 @@ export default class VisualizarPRComponent extends Vue {
   vmaterial:string='';
   /*dialog*/
   dialogCompania:boolean=false;
- 
+  checkFecha:boolean=true;
   /*input*/
   btnactivarcompania:boolean=false;
    
+  percentage:number;
   /*Model*/
 
   descompania:string='';
@@ -106,6 +107,27 @@ export default class VisualizarPRComponent extends Vue {
   cell_ocultar:string='transparent';
   vifprogress:boolean=true;
   valuem:number=0;
+
+  //#region button accion
+  dialogEliminar:boolean=false;
+  pagina: number =1;
+  RegistersForPage: number = 10;
+  totalRegistros: number = 100;
+  public CompleteData:Array<RequisicionModel>=[]; 
+  public CompleteData1:Array<RequisicionModel>=[]; 
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  dialogBusquedaFilter:boolean=false;
+
+  blnfilterstrRequis_NO:boolean=false;
+  blnfilterstrTipReq_Desc:boolean=false;
+  blnfilterstrWHS_Desc:boolean=false;
+  blnfilterstrDesc_Header:boolean=false;
+  blnfilterdtmRequested_Date:boolean=false;
+  blnfilterstrWHS_Cod:boolean=false;
+  //#endregion
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -154,7 +176,20 @@ export default class VisualizarPRComponent extends Vue {
   loadCompania(){
     this.dialogCompania=true;
   }
-  
+  handleCurrentChange(val) {
+    debugger;
+    if(val!=null){
+      this.selectrow=val;
+      this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
+      if(val.intRequis_Item_NO==0){
+        this.intlineaselect=0;  
+      }
+      else{
+        this.intlineaselect=val.intRequis_Item_NO-1;
+      }
+      this.currentRow = val;
+    }
+  }
   /*Compania imput*/
   activar_compania(){
     setTimeout(() => {
@@ -257,35 +292,40 @@ export default class VisualizarPRComponent extends Vue {
   }
   async cargar(){
     debugger;
+    this.fechaDesde=""
+    this.fechaHasta=""
     var data:any=this.formBusqueda;
     data.strRequis_NO='*'
     data.strDesc_Header='*'
     data.desde='*'
     data.hasta= '*'
+    this.vifprogress=true;
+    this.percentage=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
     }
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
       }
-      console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      setTimeout(() => {    
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;}, 600)
+
     })
     .catch(error=>{
       
     })
   }
-  async Buscar(){
+  async BuscarRequisicion(){
     debugger;
     var data:any=this.formBusqueda;
     if(data.strRequis_NO==''){
@@ -294,26 +334,40 @@ export default class VisualizarPRComponent extends Vue {
     if(data.strDesc_Header==''){
       data.strDesc_Header='*'
     }
-    data.desde=await Global.getDateString(this.fechaDesde)
-    data.hasta= await Global.getDateString(this.fechaHasta)
+    if(this.fechaDesde!=undefined){
+      data.desde=await Global.getDateString(this.fechaDesde)
+    }
+    else{
+      data.desde='*';
+    }
+    if( this.fechaHasta!=undefined){
+      data.hasta= await Global.getDateString(this.fechaHasta)
+    }
+    else{
+      data.hasta='*';
+    }
+    this.vifprogress=true;
+    this.percentage=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
     }
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
       }
       console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      
+      setTimeout(() => {    
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;}, 600)
     })
     .catch(error=>{
       
@@ -326,26 +380,342 @@ export default class VisualizarPRComponent extends Vue {
       type: 'warning'
     });
   }
-  handleCurrentChange(val) {
-    debugger;
-    if(val!=null){
-      this.selectrow=val;
-      this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
-      if(val.intRequis_Item_NO==0){
-        this.intlineaselect=0;  
-      }
-      else{
-        this.intlineaselect=val.intRequis_Item_NO-1;
-      }
-      this.currentRow = val;
-    }
-  }
   backPage(){
     window.history.back();
   }
   reloadpage(){
     window.location.reload();
   }
+  
+  changeFecha(){
+    debugger;
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
+    else{
+      this.fechaDesde=new Date()
+      this.fechaHasta=new Date()
+    }
+  }
+
+  // #region Button Accion 
+  
+  filterstrRequis_NO(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrRequis_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrTipReq_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrTipReq_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWHS_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrWHS_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDesc_Header(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrDesc_Header){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmRequested_Date(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterdtmRequested_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWHS_Cod(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrWHS_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+
+  headerclick(val){
+    
+    this.Column=val.label;
+    this.clickColumn=val.property;
+    if(val.property=="strRequis_NO"){
+      this.blnfilterstrRequis_NO=true;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    if(val.property=="strTipReq_Desc"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=true;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    if(val.property=="strWHS_Desc"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=true;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    
+    if(val.property=="strDesc_Header"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=true;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    if(val.property=="dtmRequested_Date"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=true;
+      this.blnfilterstrWHS_Cod=false;
+    }
+    
+    if(val.property=="strWHS_Cod"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=true;
+    }
+  }
+  sortByKeyDesc(array, key) {
+    return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+          return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+       
+    });
+  }
+  sortByKeyAsc(array, key) {
+    return array.sort(function (a, b) {
+        debugger;
+        var x = a[key]; var y = b[key];
+        if(x === "" || y === null) return 1;
+        if(x === "" || y === null) return -1;
+        if(x === y) return 0;
+         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        
+    });
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+        }
+      }
+    }
+    return responsearr
+
+  }
+  Buscar(){
+    debugger;
+    if(this.Column!=""){
+      this.dialogBusquedaFilter=true;
+    }
+    else{
+      alert("Seleccione la columna");
+    }
+  }
+  btnBuscar(){
+    debugger;
+    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    this.tableData=data;
+    console.log('-----like-----',data)
+    this.dialogBusquedaFilter=false;
+  }
+  sortBy = (key, reverse) => {
+
+      const moveSmaller = reverse ? 1 : -1;
+  
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+  
+    return (a, b) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  };
+  async AscItem(){
+    debugger;
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    console.log("asc",this.clickColumn)
+    var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    await loading.close();
+  }
+  DscItem(){
+    debugger;
+    console.log("desc",this.clickColumn)
+    var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
+    this.CompleteData=data;
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+  }
+  anterior(){
+    if(this.pagina>1){
+    this.pagina--;
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  Limpiar(){
+
+    this.blnfilterstrRequis_NO=false;
+    this.blnfilterstrTipReq_Desc=false;
+    this.blnfilterstrWHS_Desc=false;
+    this.blnfilterstrDesc_Header=false;
+    this.blnfilterdtmRequested_Date=false;
+    this.blnfilterstrWHS_Cod=false;
+    this.CompleteData=this.CompleteData1;
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+
+  }
+  Print(){
+    window.print();
+  }
+  // EliminarItem(){
+  //   console.log(this.currentRow.intRequis_Item_NO);
+  //   this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+  //   for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+  //     this.CompleteData[i].intRequis_Item_NO=i+1;
+  //   }
+  //   this.CompleteData1=this.CompleteData;
+  //   console.log(this.CompleteData);
+  // }
+  
+  EliminarItem(){
+    debugger;
+    if(this.selectrow!=undefined){
+      this.dialogEliminar=true;
+    }
+    else{
+      alert('Debe de seleccionar una fila!!!');
+    }
+    
+  }
+  siguiente(){
+    if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+      this.pagina++;
+      this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    }
+  }
+  
+  async btnEliminar(){
+    await requisicionService.eliminarRequisicion(this.currentRow)
+    .then(response=>{
+      debugger;
+      console.log('eliminar',response);
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.' + response.strRequis_NO;
+         this.issave=true;
+         this.iserror=false;
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.dialogEliminar=false;
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar almacen'
+      });
+    })
+    await this.BuscarRequisicion();
+  }
+  // #endregion
+
   data(){
     return{
       dialogTableVisible: false,
@@ -354,6 +724,7 @@ export default class VisualizarPRComponent extends Vue {
       user: {
         authenticated: false
       },
+      percentage: '0',
     }
   }
   

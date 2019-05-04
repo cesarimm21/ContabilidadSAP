@@ -67,6 +67,7 @@ export default class VisualizarModificarPRComponent extends Vue {
   /*input*/
   btnactivarcompania:boolean=false;
    
+  percentage:number;
   /*Model*/
 
   descompania:string='';
@@ -107,30 +108,23 @@ export default class VisualizarModificarPRComponent extends Vue {
   valuem:number=0;
 
   //#region button accion
-  
+  dialogEliminar:boolean=false;
   pagina: number =1;
   RegistersForPage: number = 10;
   totalRegistros: number = 100;
-  public CompleteData:Array<RequisicionDetalleModel>=[]; 
-  public CompleteData1:Array<RequisicionDetalleModel>=[]; 
+  public CompleteData:Array<RequisicionModel>=[]; 
+  public CompleteData1:Array<RequisicionModel>=[]; 
   clickColumn:string='';
   txtbuscar:string='';
   Column:string='';
-  blnilterdtmRequested_Date:boolean=false;
-  blnilterstrPriority_Cod:boolean=false;
-  blnilterstrCurr:boolean=false;
-  blnilterstrVendor_Suggested:boolean=false;
-  blnilterstrUM:boolean=false;
-  blnilterfltUnitPrice	:boolean=false;
-  blnilterfltQuantity:boolean=false;
-  blnilterstrDescription:boolean=false;
-  blnilterstrMaterial_Cod:boolean=false;
-  blnilterstrCostCenter:boolean=false;
-  blnilterstrAccount_NO:boolean=false;
-  blnilterstrCateg_Line:boolean=false;
-  blnilterstrCateg_Account :boolean=false;
   dialogBusquedaFilter:boolean=false;
 
+  blnfilterstrRequis_NO:boolean=false;
+  blnfilterstrTipReq_Desc:boolean=false;
+  blnfilterstrWHS_Desc:boolean=false;
+  blnfilterstrDesc_Header:boolean=false;
+  blnfilterdtmRequested_Date:boolean=false;
+  blnfilterstrWHS_Cod:boolean=false;
   //#endregion
 
   constructor(){
@@ -304,24 +298,27 @@ export default class VisualizarModificarPRComponent extends Vue {
     data.strDesc_Header='*'
     data.desde='*'
     data.hasta= '*'
+    this.vifprogress=true;
+    this.percentage=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
     }
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
       }
-      console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      setTimeout(() => {    
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;}, 600)
+
     })
     .catch(error=>{
       
@@ -336,26 +333,40 @@ export default class VisualizarModificarPRComponent extends Vue {
     if(data.strDesc_Header==''){
       data.strDesc_Header='*'
     }
-    data.desde=await Global.getDateString(this.fechaDesde)
-    data.hasta= await Global.getDateString(this.fechaHasta)
+    if(this.fechaDesde!=undefined){
+      data.desde=await Global.getDateString(this.fechaDesde)
+    }
+    else{
+      data.desde='*';
+    }
+    if( this.fechaHasta!=undefined){
+      data.hasta= await Global.getDateString(this.fechaHasta)
+    }
+    else{
+      data.hasta='*';
+    }
+    this.vifprogress=true;
+    this.percentage=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
+      this.percentage++;
     }
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
-        this.valuem++; 
+        setTimeout(
+          () => {this.percentage++;},1  
+        )
       }
       console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      
+      setTimeout(() => {    
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;}, 600)
     })
     .catch(error=>{
       
@@ -389,221 +400,144 @@ export default class VisualizarModificarPRComponent extends Vue {
 
   // #region Button Accion 
   
+  filterstrRequis_NO(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrRequis_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrTipReq_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrTipReq_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWHS_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrWHS_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDesc_Header(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrDesc_Header){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmRequested_Date(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterdtmRequested_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWHS_Cod(h,{column,$index}){
+    debugger;
+    
+    if(this.blnfilterstrWHS_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+
   headerclick(val){
     
     this.Column=val.label;
-    if(val.property=="dtmRequested_Date"){
-      this.clickColumn="dtmRequested_Date";
-      this.blnilterdtmRequested_Date=true;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
+    this.clickColumn=val.property;
+    if(val.property=="strRequis_NO"){
+      this.blnfilterstrRequis_NO=true;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
     }
-    if(val.property=="strPriority_Cod"){
-      this.clickColumn="strPriority_Cod";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=true;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
+    if(val.property=="strTipReq_Desc"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=true;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
     }
-    if(val.property=="strCurr"){
-      this.clickColumn="strCurr";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=true;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
+    if(val.property=="strWHS_Desc"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=true;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
     }
     
-    if(val.property=="strVendor_Suggested"){
-      this.clickColumn="strVendor_Suggested";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=true;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
+    if(val.property=="strDesc_Header"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=true;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=false;
     }
-    if(val.property=="strUM"){
-      this.clickColumn="strUM";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=true;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
+    if(val.property=="dtmRequested_Date"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=true;
+      this.blnfilterstrWHS_Cod=false;
     }
-    if(val.property=="fltUnitPrice"){
-      this.clickColumn="fltUnitPrice";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=true;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
-    }
-    if(val.property=="fltQuantity"){
-      this.clickColumn="fltQuantity";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=true;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
-    }
-    if(val.property=="strDescription"){
-      this.clickColumn="strDescription";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=true;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
-    }
-    if(val.property=="strMaterial_Cod"){
-      this.clickColumn="strMaterial_Cod";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=true;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
-    }
-
-    if(val.property=="strCostCenter"){
-      this.clickColumn="strCostCenter";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=true;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
-    }
-
-    if(val.property=="strAccount_NO"){
-      this.clickColumn="strAccount_NO";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=true;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =false;
-    }
-
-    if(val.property=="strCateg_Line"){
-      this.clickColumn="strCateg_Line";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=true;
-      this.blnilterstrCateg_Account =false;
-    }
-
-    if(val.property=="strCateg_Account"){
-      this.clickColumn="strCateg_Account";
-      this.blnilterdtmRequested_Date=false;
-      this.blnilterstrPriority_Cod=false;
-      this.blnilterstrCurr=false;
-      this.blnilterstrVendor_Suggested=false;
-      this.blnilterstrUM=false;
-      this.blnilterfltUnitPrice	=false;
-      this.blnilterfltQuantity=false;
-      this.blnilterstrDescription=false;
-      this.blnilterstrMaterial_Cod=false;
-      this.blnilterstrCostCenter=false;
-      this.blnilterstrAccount_NO=false;
-      this.blnilterstrCateg_Line=false;
-      this.blnilterstrCateg_Account =true;
+    
+    if(val.property=="strWHS_Cod"){
+      this.blnfilterstrRequis_NO=false;
+      this.blnfilterstrTipReq_Desc=false;
+      this.blnfilterstrWHS_Desc=false;
+      this.blnfilterstrDesc_Header=false;
+      this.blnfilterdtmRequested_Date=false;
+      this.blnfilterstrWHS_Cod=true;
     }
   }
   sortByKeyDesc(array, key) {
@@ -631,11 +565,14 @@ export default class VisualizarModificarPRComponent extends Vue {
     
     var responsearr:any = []
     for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
         if(array[i][key].toString().indexOf(keyword) > -1 ) {
           responsearr.push(array[i])
+        }
       }
     }
     return responsearr
+
   }
   Buscar(){
     debugger;
@@ -647,8 +584,9 @@ export default class VisualizarModificarPRComponent extends Vue {
     }
   }
   btnBuscar(){
+    debugger;
     var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
-    this.tableData1=data;
+    this.tableData=data;
     console.log('-----like-----',data)
     this.dialogBusquedaFilter=false;
   }
@@ -684,7 +622,7 @@ export default class VisualizarModificarPRComponent extends Vue {
     console.log("asc",this.clickColumn)
     var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
     this.CompleteData=data;
-    this.tableData1 = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    this.tableData = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     await loading.close();
   }
   DscItem(){
@@ -692,36 +630,88 @@ export default class VisualizarModificarPRComponent extends Vue {
     console.log("desc",this.clickColumn)
     var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
     this.CompleteData=data;
-    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
   
   }
   anterior(){
     if(this.pagina>1){
     this.pagina--;
-    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     }
   }
   Limpiar(){
+
+    this.blnfilterstrRequis_NO=false;
+    this.blnfilterstrTipReq_Desc=false;
+    this.blnfilterstrWHS_Desc=false;
+    this.blnfilterstrDesc_Header=false;
+    this.blnfilterdtmRequested_Date=false;
+    this.blnfilterstrWHS_Cod=false;
     this.CompleteData=this.CompleteData1;
-    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+
   }
   Print(){
     window.print();
   }
+  // EliminarItem(){
+  //   console.log(this.currentRow.intRequis_Item_NO);
+  //   this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
+  //   for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
+  //     this.CompleteData[i].intRequis_Item_NO=i+1;
+  //   }
+  //   this.CompleteData1=this.CompleteData;
+  //   console.log(this.CompleteData);
+  // }
+  
   EliminarItem(){
-    console.log(this.currentRow.intRequis_Item_NO);
-    this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
-    for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
-      this.CompleteData[i].intRequis_Item_NO=i+1;
+    debugger;
+    if(this.selectrow!=undefined){
+      this.dialogEliminar=true;
     }
-    this.CompleteData1=this.CompleteData;
-    console.log(this.CompleteData);
+    else{
+      alert('Debe de seleccionar una fila!!!');
+    }
+    
   }
   siguiente(){
     if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
       this.pagina++;
-      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     }
+  }
+  
+  async btnEliminar(){
+    await requisicionService.eliminarRequisicion(this.currentRow)
+    .then(response=>{
+      debugger;
+      console.log('eliminar',response);
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.' + response.strRequis_NO;
+         this.issave=true;
+         this.iserror=false;
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.dialogEliminar=false;
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar almacen'
+      });
+    })
+    await this.BuscarRequisicion();
   }
   // #endregion
 
@@ -733,6 +723,7 @@ export default class VisualizarModificarPRComponent extends Vue {
       user: {
         authenticated: false
       },
+      percentage: '0',
     }
   }
   

@@ -15,6 +15,7 @@ export class RequisicionModel {
     chrAuthsd_Status:string ;
     strTypeMov_Desc:string;
     listaDetalle: Array<RequisicionDetalleModel> = new Array();  
+    listaDetalleNuevo: Array<RequisicionDetalleModel> = new Array();  
     strCompany_Cod:string;
     strCompany_Desc:string;
     strWHS_Cod:string;
