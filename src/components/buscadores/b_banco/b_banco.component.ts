@@ -21,7 +21,6 @@ export default class  BBancoComponent extends Vue {
     inputAtributo:any;
     blnilterstrBank_Cod:boolean=true;
     blnilterstrBank_Name:boolean=false;
-    blnilterstrBank_City:boolean=false;
     public banco:BancoModel=new BancoModel();
     public bancoSearch:BancoModel=new BancoModel();
   constructor() {
@@ -61,10 +60,15 @@ export default class  BBancoComponent extends Vue {
   }
   searchBanco(){
     if(this.clickColumn=="strBank_Cod"){  this.bancoSearch.strBank_Cod=this.inputAtributo; }
-    if(this.clickColumn=="strBank_Name"){  this.bancoSearch.strBank_Name=this.inputAtributo; }
-    if(this.clickColumn=="strBank_City"){  this.bancoSearch.strBank_City=this.inputAtributo; }
-    console.log(this.bancoSearch);
-    }
+    if(this.clickColumn=="strBank_Name"){  
+      this.bancoSearch.strBank_Name=this.inputAtributo; }
+    bancoService.searchBanco(this.bancoSearch)
+    .then(resp=>{
+      this.gridBanco=[];
+      this.gridBanco=resp;     
+    })
+
+  }
   headerclick(val){
     this.Column=val.label;
     if(val.property=="strBank_Cod"){
@@ -73,7 +77,6 @@ export default class  BBancoComponent extends Vue {
       this.inputAtributo='';  
       this.blnilterstrBank_Cod=true;
       this.blnilterstrBank_Name=false;
-      this.blnilterstrBank_City=false;
     }
     if(val.property=="strBank_Name"){
       this.clickColumn=val.property;
@@ -81,15 +84,6 @@ export default class  BBancoComponent extends Vue {
       this.inputAtributo='';
       this.blnilterstrBank_Cod=false;
       this.blnilterstrBank_Name=true;
-      this.blnilterstrBank_City=false;
-    }
-    if(val.property=="strBank_City"){
-      this.clickColumn=val.property;
-      this.bancoSearch=new BancoModel();
-      this.inputAtributo='';
-      this.blnilterstrBank_Cod=false;
-      this.blnilterstrBank_Name=false;
-      this.blnilterstrBank_City=true;
     }
   }
   filterstrBank_Cod(h,{column,$index}){
@@ -113,20 +107,6 @@ export default class  BBancoComponent extends Vue {
     debugger;
     
     if(this.blnilterstrBank_Name){
-      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
-        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-        , column.label),
-       ])
-    }
-    else{
-      return h('span',{style: 'padding-left: 5px;'}, column.label);
-    } 
-  }
-  filterstrBank_City(h,{column,$index}){
-    debugger;
-    
-    if(this.blnilterstrBank_City){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}

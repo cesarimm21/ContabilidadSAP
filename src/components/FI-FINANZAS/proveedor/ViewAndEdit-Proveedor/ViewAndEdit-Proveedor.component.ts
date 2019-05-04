@@ -8,7 +8,6 @@ import 'element-ui/lib/theme-default/index.css';
 import {ProveedorModel} from '../../../../modelo/maestro/proveedor';
 import { Notification } from 'element-ui';
 import Global from '@/Global';
-import {bus} from '../../../../main';
 import paisService from '@/components/service/pais.service';
 import bancoService from '@/components/service/banco.service';
 import tipodocidentidadService from '@/components/service/tipodocidentidad.service';

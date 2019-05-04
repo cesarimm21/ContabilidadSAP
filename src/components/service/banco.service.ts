@@ -15,7 +15,13 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  searchBanco(data){
+    return axios.post(CONFIG.API_URL+'banco/search',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 
 }
   

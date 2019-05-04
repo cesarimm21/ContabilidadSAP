@@ -13,4 +13,14 @@ export class MonedaModel {
     strModified_User:string ;
     dtmModified_Date:Date ;
     chrStatus:string ;
+    constructor(){
+        this.intIdCurrency_ID=-1;
+        this.intIdAcctCont_ID=-1;
+        this.strAcc_Local_NO='';
+        this.strAcc_Corp_NO='';
+        this.strCurrency_Cod='';
+        this.strCurrency_Desc='';
+        this.strReference='';
+        this.strCountry='';
+    }
 }

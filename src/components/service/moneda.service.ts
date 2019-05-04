@@ -15,6 +15,12 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  searchMoneda(data){
+    return axios.post(CONFIG.API_URL+'moneda/search',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

@@ -9,4 +9,10 @@ export class DepartamentoModel {
     dtmModified_Date:Date;
     chrStatus:string;
     intIdCountry_ID:number;
+    constructor(){
+        this.intIdRegion_ID=-1;
+        this.strRegión_Cod='';
+        this.strRegión_Desc='';
+        this.intIdCountry_ID=-1;
+    }
  }

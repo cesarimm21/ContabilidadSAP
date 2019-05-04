@@ -7,7 +7,7 @@ export default{
   GetAllPais(){    
     return axios.get(CONFIG.API_URL+'pais')
     .then(response =>{            
-        return JSON.parse(JSON.stringify(response));
+        return JSON.parse(JSON.stringify(response.data));
     })
   },
   GetOnlyOnePais(code){
@@ -15,5 +15,11 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  searchPais(data){
+    return axios.post(CONFIG.API_URL+'pais/search',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

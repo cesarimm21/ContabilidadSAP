@@ -12,6 +12,12 @@ export default{
                
     })
   },
+  GetOrdenCompraCompany(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'ordencompraByCompany/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   UpdateOrdenCompra(OrdenCompra){    
     return axios.post(CONFIG.API_URL+'ordencompra/update',OrdenCompra)
     .then(response =>{            

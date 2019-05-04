@@ -108,8 +108,108 @@
                                 </div>
                             </div>                          
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-sm-6">
                             <div class="form-group row " style="margin-top:10px;">
+                                <label class="sinLinea el-form-item__label col-md-6" ></label>
+                            </div>
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-sm-3" >Cantidad</label>
+                                    <div class="col-sm-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                            <el-input  size ="small" style="font-size:11px;" type="text" class="inputAling" v-model="factura.intQuantity_Doc" disabled></el-input>
+                                        </div>
+                                    </div>
+                                        <label class="el-form-item__label col-sm-3" >Valor PO</label>
+                                    <div class="col-sm-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                            <el-input  size ="small" style="font-size:11px;" type="text" class="inputAling"  v-model="factura.fltValue_Doc" disabled></el-input>
+                                        </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="el-form-item__label col-sm-3" >Valor Afecto S/.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltValue_Local" disabled></el-input>
+                                                </div>
+                                            </div>
+                                            <label class="el-form-item__label col-sm-3" >Valor Afecto $.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input 
+                                                type="text"   
+                                                size ="small" 
+                                                style="font-size:11px;" 
+                                                class="inputAling"
+                                                v-model="factura.fltValue_Corp"
+                                                :precision="2"
+                                                disabled
+                                                ></el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="el-form-item__label col-sm-3" >Valor IGV S/.</label>
+                                            <div class="col-sm-3 grupolabel">   
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltValue_Tax_Local" disabled></el-input>
+                                                </div>
+                                            </div>
+                                            <label class="el-form-item__label col-sm-3" >Valor IGV $.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input 
+                                                type="text"   
+                                                size ="small" 
+                                                style="font-size:11px;" 
+                                                class="inputAling"
+                                                v-model="factura.fltValue_Tax_Corp"
+                                                :precision="2"
+                                                disabled
+                                                ></el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto S/.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltOperation_NoTax_Local" disabled></el-input>
+                                                </div>
+                                            </div>
+                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto $.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input 
+                                                type="text"  
+                                                size ="small" 
+                                                style="font-size:11px;" 
+                                                class="inputAling"
+                                                v-model="factura.fltOperation_NoTax_Corp"
+                                                :precision="2"
+                                                disabled
+                                                ></el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="el-form-item__label col-sm-3" >Total S.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltNetValue_Doc_Local" disabled></el-input>
+                                                </div>
+                                            </div>
+                                            <label class="el-form-item__label col-sm-3" >Total $.</label>
+                                            <div class="col-sm-3 grupolabel">
+                                                <div class="input-group mb-3" >
+                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltNetValue_Doc_Corp" disabled></el-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        <!-- <div class="col-md-6"> -->
+
+                            <!-- <div class="form-group row " style="margin-top:10px;">
                                 <label class="sinLinea el-form-item__label col-md-6" ></label>
                             </div>
                             <div class="form-group row " style="margin-top:10px;">
@@ -126,8 +226,8 @@
                             </div>
                             <div class="form-group row " style="margin-top:10px;">
                                 <label class="sinLinea el-form-item__label col-md-6" >{{moneda.strCurrency_Desc}}</label>
-                            </div>                                          
-                        </div>
+                            </div>                                           -->
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
@@ -202,99 +302,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Cantidad</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input  size ="small" style="font-size:11px;" type="text" class="inputAling" v-model="factura.intQuantity_Doc"></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor PO</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input  size ="small" style="font-size:11px;" type="text" class="inputAling"  v-model="factura.fltValue_Doc" ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Valor Afecto S/.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltValue_Local" ></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor Afecto $.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input 
-                                                type="text"   
-                                                size ="small" 
-                                                style="font-size:11px;" 
-                                                class="inputAling"
-                                                v-model="factura.fltValue_Corp"
-                                                :precision="2"
-                                                ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Valor IGV S/.</label>
-                                            <div class="col-sm-3 grupolabel">   
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltValue_Tax_Local" ></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor IGV $.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input 
-                                                type="text"   
-                                                size ="small" 
-                                                style="font-size:11px;" 
-                                                class="inputAling"
-                                                v-model="factura.fltValue_Tax_Corp"
-                                                :precision="2"
-                                                ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto S/.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltOperation_NoTax_Local" ></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto $.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input 
-                                                type="text"  
-                                                size ="small" 
-                                                style="font-size:11px;" 
-                                                class="inputAling"
-                                                v-model="factura.fltOperation_NoTax_Corp"
-                                                :precision="2"
-                                                ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Total S.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltNetValue_Doc_Local"></el-input>
-                                                </div>
-                                            </div>
-                                            <label class="el-form-item__label col-sm-3" >Total $.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltNetValue_Doc_Corp" ></el-input>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>  
                             <br>
@@ -386,8 +394,8 @@
                         </div>  
                     <!-- </el-card>           -->
                 </el-tab-pane>
-                <el-tab-pane >
-                    <span slot="label"><i class="el-icon-date"></i>Importante</span>
+                <!-- <el-tab-pane > -->
+                    <!-- <span slot="label"><i class="el-icon-date"></i>Importante</span> -->
                     <!-- <div class="col-md-6">
                         <div class="form-group row">
                             <label class="el-form-item__label col-sm-3" >Factura creada:</label>
@@ -427,7 +435,7 @@
                     </div>
                     <div class="col-md-6">                                
                     </div> -->
-                </el-tab-pane>
+                <!-- </el-tab-pane> -->
             </el-tabs>
         </el-card>
         <div class="footer1">

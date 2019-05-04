@@ -22,15 +22,20 @@ import {ProveedorModel} from '../../../../modelo/maestro/proveedor';
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
     selectrowCod:string;
+    codigoCompania:any;
+    descripcionCompania:any;
     public gridSelectedProveedor:ProveedorModel=new ProveedorModel;
     constructor(){
         super();
         Global.nameComponent='ViewAndEdit-Proveedor';
-        this.GetProveedoresCompany(localStorage.getItem('compania_cod'));
-    
+        setTimeout(() => {
+          this.load();
+        }, 200)
       }
-      GetProveedoresCompany(strCompany_Cod){
-        proveedorService.GetProveedoresCompany(strCompany_Cod)
+      load(){
+        this.codigoCompania=localStorage.getItem('compania_cod');
+        this.descripcionCompania=localStorage.getItem('compania_name');
+        proveedorService.GetProveedoresCompany(this.codigoCompania)
         .then(response=>{
           this.gridProveedor=[];
           this.gridProveedor=response;
