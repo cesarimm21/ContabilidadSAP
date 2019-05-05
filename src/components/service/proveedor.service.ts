@@ -27,12 +27,6 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
-  DeleteProveedor(id){
-    return axios.delete(CONFIG.API_URL+'proveedor/delete/'+id)
-    .then(response => {
-      return response.data
-    })
-  },
   GetOnlyOneProveedor(code){
     return axios.get(CONFIG.API_URL+'proveedor/'+code)
     .then(response =>{
@@ -41,6 +35,12 @@ export default{
   },
   GetProveedoresCompany(strCompany_cod){
     return axios.get(CONFIG.API_URL+'proveedorByCompania/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  DeleteProveedores(strCod,strUser){
+    return axios.get(CONFIG.API_URL+'proveedor/delete/'+strCod+'/'+strUser)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })

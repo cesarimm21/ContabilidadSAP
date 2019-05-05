@@ -62,7 +62,7 @@
                                     <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
-                                        :data="tableData" 
+                                        :data="tableData"
                                         @header-click="headerclick"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
