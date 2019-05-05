@@ -267,6 +267,12 @@ export default class CrearMaterialComponent extends Vue {
     }, 200)
   }
   load(){
+    
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.productoModel.strCompany_Cod=cod;
+    this.productoModel.strCompany_Desc=desc;
+
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;

@@ -82,80 +82,296 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column   label=" ">
-                                            <el-table-column type="index" label="linea" width="38">
+                                        <el-table-column align="center"   label=" ">
+                                            <el-table-column align="center" type="index" label="linea" width="38">
                                             </el-table-column>
-                                            <el-table-column  sortable prop="periodo" width="100" label="Tipo Compra">
+                                            <el-table-column align="center"   prop="periodo" width="100" label="T.Compra">
                                                 <template scope="scope">
                                                 <label  >&nbsp;{{ scope.row.periodo }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column
+                                            <el-table-column align="center"
                                                 prop="item_strAccDocum_NO" sortable  min-width="120"
-                                                label="Número Correlativo Del Registro O Código Unico De La Operación  ">
+                                                label="Nro. Vocuher">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{ scope.row.correlativo }}</label>
                                                 </template>
                                             </el-table-column>  
-                                            <el-table-column
+                                            <el-table-column align="center" 
+                                                prop="strReferDocum_NO" sortable  width="180" style="padding-left: 5px !important;"
+                                                label="Fecha Emision">
+                                                <template scope="scope">
+                                                    <label >&nbsp;{{ scope.row.strReferDocum_NO }}</label>
+                                                </template>
+                                            </el-table-column>  
+                                                <el-table-column align="center"
                                                 prop="strReferDocum_NO" sortable  width="180"
-                                                label="Fecha De Vencimient O Fecha De Pago">
+                                                label="Fecha Vencim">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{ scope.row.strReferDocum_NO }}</label>
                                                 </template>
                                             </el-table-column>  
                                         </el-table-column>
-                                        <el-table-column   label="Comprobante De Pago o Documento">
-                                            <el-table-column
+                                        <el-table-column align="center"   label="Comprobante De Pago o Documento">
+                                            <el-table-column align="center"
                                                 prop="item_strAcc_Local_NO" sortable  width="120"
-                                                label="Tipo">
+                                                label="Tipo Doc.">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{ scope.row.item_strAcc_Local_NO }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column
+                                            <el-table-column align="center"
                                                 prop="item_strCurrency_Cod" sortable width="100"
-                                                label="Serie O Código De La Dependencia Aduanera">
+                                                label="Serie_Doc">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{ scope.row.item_strCurrency_Cod }}</label>
                                                 </template>
                                             </el-table-column>                                       
-                                            <el-table-column
+                                            <el-table-column align="center"
                                                 prop="item_dtmPosting_Date" sortable width="100"
-                                                label="Año De Emisión De La Dua O Dsi">
+                                                label="Año DAM">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{ getParseDate(scope.row.item_dtmPosting_Date) }}</label>
                                                 </template>
                                             </el-table-column>
                                         </el-table-column>
-                                        <el-table-column
+                                        <el-table-column align="center"
                                             prop="item_dtmDoc_Date" sortable width="100"
-                                            label="Fecha de Registro">
+                                            label="Nro. Documento">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ getParseDate(scope.row.item_dtmDoc_Date) }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
+                                        <el-table-column align="center"
                                             prop="item_strDaily_Desc" sortable width="100"
-                                            label="Glosa o Descripción de la Operación">
+                                            label="Descripcion Documento">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.item_strDaily_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
+                                        <el-table-column align="center"
                                             prop="debe" sortable width="100"
-                                            label="Movimientos del Debe">
+                                            label="Cod. Proveedor">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.debe }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
+                                        <el-table-column align="center" label="Documento de Identidad">
+                                            <el-table-column align="center"
+                                                prop="haber" sortable width="100"
+                                                label="Tipo Proveedor">
+                                                <template scope="scope">
+                                                    <label >&nbsp;{{ scope.row.haber }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            
+                                            <el-table-column align="center"
+                                                prop="haber" sortable width="100"
+                                                label="Ruc Proveedor">
+                                                <template scope="scope">
+                                                    <label >&nbsp;{{ scope.row.haber }}</label>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table-column>
+                                        
+                                        <el-table-column align="center"
                                             prop="haber" sortable width="100"
-                                            label="Movimientos del Haber">
+                                            label="Descripcion Proveedor">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.haber }}</label>
                                             </template>
                                         </el-table-column>
+                                        
+                                        <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Moneda">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Base Imponible">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="IGV">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="No Gravadas">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="ISC">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Otros">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Importe Total">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Nro. Documento ND">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Cod. Detraccion">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Nro. Detraccion">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Fecha Detraccion">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Nro. Lote">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Importe Detraccion">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Tipo Cambio">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Fecha Doc. Original">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Tipo Doc. Original">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Serie Doc. Original">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Nro. Doc. Original">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Base Imp. Doc. Original">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="IGV. Doc. Original">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Afecto Retencion">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="RUN Pago">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="PO">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Moneda Pago">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Banco">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Banco Nombre">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column align="center"
+                                            prop="haber" sortable width="100"
+                                            label="Estado SUNAT">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.haber }}</label>
+                                            </template>
+                                        </el-table-column>
+
                                     </el-table>
                                 </div>
                             </div>

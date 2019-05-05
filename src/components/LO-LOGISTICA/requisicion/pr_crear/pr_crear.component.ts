@@ -4,7 +4,7 @@ import 'font-awesome/css/font-awesome.css';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
-
+import FileSaver from 'file-saver';
 
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
@@ -1638,59 +1638,39 @@ export default class CrearPRComponent extends Vue {
 
   Limpiar(){
     debugger;
-    
-      var range = {s: {c:0, r:0}, e: {c:0, r:0 }};
-      var wb2 = XLSX.utils.table_to_book(document.getElementById('out-table'));
-      var cell_ref = XLSX.utils.encode_cell({c:1,r:1});
-      var ws = {}
-      var wb:any={};
-      wb.Sheets = {};
-      wb.SheetNames = [];
       
-      var ws_name = "Sheet1";
-      ws=wb2.Sheets["Sheet1"] 
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
+    document.setCurrentRow(this.tableData1[this.intlineaselect]);
 
-      var cell =ws["B3"];
-      cell.t = 's';
-      cell.s= {
-        alignment: {textRotation: 90 },
-        font: {sz: 14, bold: true, color: '#FF00FF' }
-      
-      }
-
-        
-      ws["B3"]=cell;
-      //ws['!ref'] = XLSX.utils.encode_range(range);
-
-  
-      wb.SheetNames.push(ws_name);
-      wb.Sheets[ws_name] = ws;
-
-      XLSX.writeFile(wb, "sheetjs2.xlsx");
-      
-    // this.CompleteData=this.CompleteData1;
-    // this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    // var document:any = this.$refs.missionTable;
-    // document.setCurrentRow(this.tableData1[this.intlineaselect]);
-
-    // this.blnilterdtmRequested_Date=false;
-    // this.blnilterstrPriority_Cod=false;
-    // this.blnilterstrCurr=false;
-    // this.blnilterstrVendor_Suggested=false;
-    // this.blnilterstrUM=false;
-    // this.blnilterfltUnitPrice	=false;
-    // this.blnilterfltQuantity=false;
-    // this.blnilterstrDescription=false;
-    // this.blnilterstrMaterial_Cod=false;
-    // this.blnilterstrCostCenter=false;
-    // this.blnilterstrAccount_NO=false;
-    // this.blnilterstrCateg_Line=false;
-    // this.blnilterstrCateg_Account =false;
+    this.blnilterdtmRequested_Date=false;
+    this.blnilterstrPriority_Cod=false;
+    this.blnilterstrCurr=false;
+    this.blnilterstrVendor_Suggested=false;
+    this.blnilterstrUM=false;
+    this.blnilterfltUnitPrice	=false;
+    this.blnilterfltQuantity=false;
+    this.blnilterstrDescription=false;
+    this.blnilterstrMaterial_Cod=false;
+    this.blnilterstrCostCenter=false;
+    this.blnilterstrAccount_NO=false;
+    this.blnilterstrCateg_Line=false;
+    this.blnilterstrCateg_Account =false;
     
-    // this.CompleteData=this.CompleteData1;
-    // this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    // var document:any = this.$refs.missionTable;
+    this.CompleteData=this.CompleteData1;
+    this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    var document:any = this.$refs.missionTable;
     
+  }
+  EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  EXCEL_EXTENSION = '.xlsx';
+
+  saveAsExcelFile(buffer: any, fileName: string){
+    const data: Blob = new Blob([buffer], {
+      type: this.EXCEL_TYPE
+      });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + this.EXCEL_EXTENSION);
   }
   Print(){
     window.print();

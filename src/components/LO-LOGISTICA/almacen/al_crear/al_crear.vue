@@ -18,8 +18,8 @@
                             <label class="el-form-item__label col-md-3" >Compañia</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strCompany_Cod"  @keyup.enter.native="enterCompania(productoModel.strCompany_Cod)"  @keyup.delete.native="borrarCompania()" placeholder="">
-                                    <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                <el-input :disabled="true" size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strCompany_Cod"  @keyup.enter.native="enterCompania(productoModel.strCompany_Cod)"  @keyup.delete.native="borrarCompania()" placeholder="">
+                                    <el-button :disabled="true" v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                 </el-input>
                                 </div>
                             </div>
@@ -83,10 +83,10 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Código Almacen</label>
+                                        <label class="el-form-item__label col-md-2" >Código Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
+                                            <el-input class="validador" size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
                                                 <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="loadAlmacen()"></el-button> 
                                             </el-input>
                                             </div>
@@ -107,10 +107,10 @@
                                         </div>
                                     </div>  -->
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>UM </label>
+                                        <label class="el-form-item__label col-md-6" >UM </label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_unidad_medida" @focus="activar_unidad_medida" v-model="productoModel.strUM_Cod"   placeholder="" @keyup.enter.native="enterUnidadMedida(productoModel.strUM_Cod)"  @keyup.delete.native="borrarUnidadMedida()">
+                                            <el-input class="validador" size ="small" @blur="desactivar_unidad_medida" @focus="activar_unidad_medida" v-model="productoModel.strUM_Cod"   placeholder="" @keyup.enter.native="enterUnidadMedida(productoModel.strUM_Cod)"  @keyup.delete.native="borrarUnidadMedida()">
                                                 <el-button v-if="btnactivarunidadmedida && !dialogUnidadMedida" slot="append" class="boton" icon="fa fa-clone" @click="loadUnidadMedida()"></el-button> 
                                             </el-input>
                                             </div>
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Tipo Requisicion</label>
+                                        <label class="el-form-item__label col-md-2" >Tipo Requisicion</label>
                                         <!--<div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
@@ -130,7 +130,7 @@
                                         </div>-->
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-select v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
+                                                <el-select class="validador" v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
                                                     <el-option style="font-size:13px"
                                                     v-for="item in tabletipoRequisicion"
                                                     :key="item.strTypeReq_Cod"
@@ -170,10 +170,10 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Cantidad Maxima</label>
+                                        <label class="el-form-item__label col-md-6" >Cantidad Maxima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltQtyLimit_Max" :min="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
+                                                <el-input class="validador" size ="small" v-model="productoModel.fltQtyLimit_Max" :min="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -181,10 +181,10 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" ><span style="color:red">* </span>Clase Material</label>
+                                        <label class="el-form-item__label col-md-2" >Clase Material</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_clase_material"  @focus="activar_clase_material" v-model="productoModel.strMaterial_Class"  placeholder="" @keyup.enter.native="enterClaseMaterial(productoModel.strMaterial_Class)"  @keyup.delete.native="borrarClaseMaterial()">
+                                            <el-input class="validador" size ="small" @blur="desactivar_clase_material"  @focus="activar_clase_material" v-model="productoModel.strMaterial_Class"  placeholder="" @keyup.enter.native="enterClaseMaterial(productoModel.strMaterial_Class)"  @keyup.delete.native="borrarClaseMaterial()">
                                                 <el-button v-if="btnactivarclasematerial && !dialogClaseMaterial"  slot="append" class="boton" icon="fa fa-clone" @click="loadClaseMaterial()"></el-button> 
                                             </el-input>
                                             </div>
@@ -206,10 +206,10 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Cantidad Minima</label>
+                                        <label class="el-form-item__label col-md-6" >Cantidad Minima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltQtyLimit_Min" :max="productoModel.fltQtyLimit_Max" :min="0" @focus="limpiarBotones"  type="number">                            
+                                                <el-input class="validador" size ="small" v-model="productoModel.fltQtyLimit_Min" :max="productoModel.fltQtyLimit_Max" :min="0" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -235,10 +235,10 @@
                                 <div class="col-sm-3" >
                                     
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" ><span style="color:red">* </span>Factor</label>
+                                        <label class="el-form-item__label col-md-6" >Factor</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input size ="small" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
+                                                <el-input class="validador" size ="small" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -255,7 +255,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Proveedor</label>
+                                        <label class="el-form-item__label col-md-2" >Proveedor Sugerido</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="productoModel.strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(productoModel.strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
