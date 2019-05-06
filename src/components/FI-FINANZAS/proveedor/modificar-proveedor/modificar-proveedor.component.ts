@@ -198,7 +198,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
       .then(response=>{
         console.log('eliminar',response);
         if(response!=undefined){
-           this.textosave='Se elimino correctamento.' + response;
+           this.textosave='Se elimino correctamento ' + response;
            this.issave=true;
            this.iserror=false;
         }
@@ -215,7 +215,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         this.iserror=true;
         this.textosave='Ocurrio un error al eliminar.';
       })
-      await this.load();
+      await this.load();  
     }
     Limpiar(){
 

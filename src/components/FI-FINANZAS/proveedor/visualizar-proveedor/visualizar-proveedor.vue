@@ -6,7 +6,7 @@
      <div >
           <el-card class="box-card">
               <div slot="header" class="headercard">
-                 <span class="labelheadercard" >Visualizar Proveedor</span>                 
+                 <span class="labelheadercard" > {{titleDescripcion}}</span>                 
               </div>
                <div class="row bodycard" style="margin-top:-6px;">
                   <div class="col-md-8">
@@ -27,7 +27,15 @@
                                 <el-input size ="small" v-model="gridSelectedProveedor.strVendor_NO" >                                   
                                 </el-input>
                             </div>
-                        </div>                        
+                        </div>  
+                        <label class="el-form-item__label col-md-2" >Pais</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-2" >
+                                    <el-input size ="small" @blur="desactivar_Pais" @focus="activar_Pais">                            
+                                        <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
+                                    </el-input>
+                                </div>
+                            </div>                      
                         </div>
                   </div>
               </div>
@@ -36,32 +44,35 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions  v-on:validarView="EditarProveedor()"></buttons-accions>
+                                <buttons-accions  v-on:validarView="EditarProveedor()" v-on:Limpiar="Limpiar" v-on:Buscar="Buscar" v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:EliminarItem="EliminarItem()"></buttons-accions>
                             </div>
                             
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                    <el-table
-                                    :data="gridProveedor"
+                                    :data="tableData"
                                     :max-height="sizeScreen"
                                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                     style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                                    @header-click="headerclick"
                                     highlight-current-row
                                     height="250"
                                     @current-change="proveedorSelect">
-                                    <el-table-column   prop="strVendor_NO" label="Codigo" width="100">
+                                    <el-table-column type="index" label="Linea" width="38">                                        
+                                    </el-table-column>
+                                    <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="100">
                                     </el-table-column> 
-                                    <el-table-column  prop="strVendor_Desc" label="Nombre proveedor" width="260">
+                                    <el-table-column  :render-header="filterstrTax_ID" prop="strTax_ID" label="RUC/DNI" width="180">
                                     </el-table-column> 
-                                    <el-table-column   prop="strTax_ID" label="RUC/DNI" width="180">
-                                    </el-table-column>  
-                                    <el-table-column   prop="strCat_Person" label="Categoria" width="180">
-                                    </el-table-column>  
-                                    <el-table-column  prop="strProvince" label="Provincia" style="width: 70% !important;">
+                                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre proveedor" width="260">
+                                    </el-table-column>                                      
+                                    <el-table-column :render-header="filterintIdCountry_ID" prop="intIdCountry_ID.strCountry_Name" label="Pais" width="100">
                                     </el-table-column> 
-                                    <el-table-column   prop="strDistrict" label="Distrito" width="180">
+                                    <el-table-column :render-header="filterstrProvince" prop="strProvince" label="Provincia" style="width: 70% !important;">
+                                    </el-table-column> 
+                                    <el-table-column  :render-header="filterstrDistrict" prop="strDistrict" label="Distrito" width="180">
                                     </el-table-column>  
-                                    <el-table-column  prop="strVendor_Desc" label="Dirección"  width="260">
+                                    <el-table-column :render-header="filterstrAddress" prop="strAddress" label="Dirección"  width="260">
                                     </el-table-column> 
                                     </el-table>
                                 </div>
@@ -70,7 +81,6 @@
                     </div>
                 </div>
           </el-card>
-
       </div>
       <div class="footer1">
         <div class="row">
@@ -95,6 +105,56 @@
         </div>
 
     </div>
+    <!--DIALOG BUSQUEDA PAIS-->
+    <el-dialog title="Busqueda Pais" :visible.sync="paisVisible" @close="handleClosePais" size="small" >
+      <bpais v-on:PaisSeleccionado="paisSelect($event)" v-on:closePais="handleClosePais()">
+      </bpais>
+    </el-dialog>
+
+     <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="btnBuscar">
+        <div style="height:85px">
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="el-form-item__label col-md-2" >Columna</label>
+                    <div class="col-md-7 grupolabel">
+                        <div class="input-group mb-3" >
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="el-form-item__label col-md-2" >Buscar</label>
+                    <div class="col-md-7 grupolabel">
+                        <div class="input-group mb-3" >
+                            <el-input size ="small" v-model="txtbuscar"  placeholder="">
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
+      </footer>
+    </b-modal>
+    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
+      <div style="height:85px"> 
+        <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
     </div>
 </template>
 <script>

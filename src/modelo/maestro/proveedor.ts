@@ -39,7 +39,7 @@ export class ProveedorModel {
     fltRetention_Porcen:number;//
     strDetraccion_Cod:string;//
     fltDetraccion_Porcen:number;//
-    intAcc_NO_Local:number;//
+    strAcc_Local_NO:string;//
     strCreation_User:string;
     dtmCreation_Date:Date ;
     strModified_User:string 
@@ -80,6 +80,6 @@ export class ProveedorModel {
         this.fltRetention_Porcen=0;
         this.strDetraccion_Cod='';
         this.fltDetraccion_Porcen=0;
-        this.intAcc_NO_Local=0;        
+        this.strAcc_Local_NO='';        
     }    
 }

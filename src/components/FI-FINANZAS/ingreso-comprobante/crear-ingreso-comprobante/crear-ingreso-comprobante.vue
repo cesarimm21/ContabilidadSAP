@@ -17,26 +17,12 @@
                                     <div class="input-group mb-3" >
                                     <el-input  
                                     size ="small" 
-                                    @blur="desactivar_compania" 
-                                    @focus="activar_compania" 
-                                    v-model="factura.strCompany_Cod">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                    v-model="codigoCompania" disabled>                                       
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="sinLinea el-form-item__label col-md-4" >{{factura.strCompany_Desc}}</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-md-3" >Tipo Documento</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="factura.strType_Doc" >                            
-                                         <el-button v-if="btnactivarTipoDocumento && !dialogTipoDocumento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDocumento()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <label class="sinLinea el-form-item__label col-md-6" >{{comprobantePago.strDocType_Desc}}</label>                                   
-                            </div>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
+                            </div>                           
                             
                             <div class="form-group row">
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
@@ -47,22 +33,35 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Proveedor</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="factura.strVendor_NO"  disabled>                            
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div>
-                            <div  class="form-group row " >
                                 <label class="el-form-item__label col-md-3" >Periodo</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" type="text"  placeholder="" v-model="fecha_actual" disabled>                            
                                     </el-input>
                                     </div>
-                                </div>                               
+                                </div>   
+                                
+                            </div>
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-md-3" >Proveedor</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" v-model="factura.strVendor_NO"  disabled>                            
+                                    </el-input>
+                                    </div>
+                                </div>  
+                                <label class="sinLinea el-form-item__label col-md-6" >{{factura.strVendor_Desc}}</label>                                                                 
+                            </div>
+                            <div  class="form-group row " >
+                               <label class="el-form-item__label col-md-3" >Tipo Documento</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="factura.strType_Doc" >                            
+                                         <el-button v-if="btnactivarTipoDocumento && !dialogTipoDocumento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDocumento()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{comprobantePago.strDocType_Desc}}</label>                              
                                 
                             </div>
                             
@@ -86,7 +85,12 @@
                                 <label class="el-form-item__label col-sm-3" >Fecha Emisión</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input type="date"  size ="small" style="font-size:11px;" v-model="factura.dtmDoc_Date"  @change="DateforGetChanceDolar()"></el-input>
+                                        <el-input type="date"  
+                                        size ="small" 
+                                        style="font-size:11px;" 
+                                        v-model="factura.dtmDoc_Date"  
+                                        @change="DateforGetChanceDolar()">
+                                        </el-input>
                                     </div>
                                 </div>
                                  <label class="el-form-item__label col-sm-3" >Moneda</label>
@@ -108,11 +112,26 @@
                                 </div>
                             </div>                          
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row " style="margin-top:10px;">
-                                <label class="sinLinea el-form-item__label col-md-6" ></label>
+                        <div class="col-sm-6" >
+                            <div class="form-group row" style="margin-top:3px;">
+                                <label class=" sinLinea el-form-item__label col-md-3" ></label>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row" style="margin-top:6px;">
+                                <label class="el-form-item__label col-md-3" >Diario</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-2" >
+                                    <el-input size ="small" @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" >                            
+                                         <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{factura.strDaily_Desc}}</label>                              
+                                
+                            </div>
+                            <!-- <div class="form-group row" style="margin-top:10px;">
+                                <label class=" sinLinea el-form-item__label col-md-3" ></label>
+                            </div> -->
+                            <div class="form-group row" style="margin-top:6px;">
                                 <label class="el-form-item__label col-sm-3" >Cantidad</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
@@ -127,13 +146,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Valor Afecto S/.</label>
+                                            <label class="el-form-item__label col-sm-3" >Valor Afecto S/</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltValue_Local" disabled></el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor Afecto $.</label>
+                                            <label class="el-form-item__label col-sm-3" >Valor Afecto US$</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input 
@@ -149,13 +168,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Valor IGV S/.</label>
+                                            <label class="el-form-item__label col-sm-3" >Valor IGV S/</label>
                                             <div class="col-sm-3 grupolabel">   
                                                 <div class="input-group mb-3" >
                                                 <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltValue_Tax_Local" disabled></el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor IGV $.</label>
+                                            <label class="el-form-item__label col-sm-3" >Valor IGV US$</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input 
@@ -171,13 +190,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto S/.</label>
+                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto S/</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltOperation_NoTax_Local" disabled></el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto $.</label>
+                                            <label class="el-form-item__label col-sm-3" >Valor Inafecto US$</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input 
@@ -193,13 +212,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="el-form-item__label col-sm-3" >Total S.</label>
+                                            <label class="el-form-item__label col-sm-3" >Total S/</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltNetValue_Doc_Local" disabled></el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-sm-3" >Total $.</label>
+                                            <label class="el-form-item__label col-sm-3" >Total US$</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltNetValue_Doc_Corp" disabled></el-input>
@@ -277,30 +296,6 @@
                                                 </div>
                                             </div> -->
                                         </div>
-                                        <div class="form-group row" >
-                                            <label class="sinLinea el-form-item__label col-sm-3" ></label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >                                                
-                                                </div>
-                                            </div>
-                                            <label class="sinLinea el-form-item__label col-sm-3" ></label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row"  style="margin-top: 6px;">
-                                            <label class="sinLinea el-form-item__label col-sm-3" ></label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >                                                
-                                                </div>
-                                            </div>
-                                            <label class="sinLinea el-form-item__label col-sm-3" ></label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     
                                 </div>
@@ -310,9 +305,8 @@
                                 <div class="col-md-12">
                                     <el-card class="box-card" >
                                         <div slot="header" class="headercard" style="margin-top: -4px;">
-                                            <buttons-accions v-on:changeIcon="changeIcon($event)"></buttons-accions>
+                                            <buttons-accions v-on:ActivaCheck="changeIcon()"></buttons-accions>
                                         </div>
-                                        <br>
                                         <div class="col-md-12" style="margin-top: 6px;">
                                             <div class="row bodycard" style="background: white;    margin-top: -11px;">
                                                 <el-table
@@ -330,11 +324,11 @@
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="intPO_Item_NO" sortable min-width="50"
-                                                        label="Codigo">
+                                                        label="Item">
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="strPO_NO" sortable min-width="100"
-                                                        label="Orden Compra">
+                                                        label="PO">
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="strDesc_Item" sortable  min-width="200"
@@ -363,7 +357,7 @@
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="strUM" sortable  min-width="100"
-                                                        label="Unidad Medida">
+                                                        label="U.M.">
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="intQuantity" sortable width="100"
@@ -383,6 +377,10 @@
                                                         prop="fltValue_Local" sortable 
                                                         label="Total">
                                                     </el-table-column>
+                                                    <el-table-column
+                                                        prop="strCreation_User" sortable 
+                                                        label="Usuario">
+                                                    </el-table-column>
                                                 </el-table>
                                             </div>
                                         </div>
@@ -394,57 +392,59 @@
                         </div>  
                     <!-- </el-card>           -->
                 </el-tab-pane>
-                <!-- <el-tab-pane > -->
-                    <!-- <span slot="label"><i class="el-icon-date"></i>Importante</span> -->
-                    <!-- <div class="col-md-6">
+                <el-tab-pane >
+                    <span slot="label"><i class="fa fa-university" aria-hidden="true"></i>Impuesto</span>
+                    <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-sm-3" >Factura creada:</label>
-                            <label class="el-form-item__label col-sm-2" >{{fecha_ejecucion}}</label>
-                        </div>
-                        <div class="form-group row" style="margin-top:10px;">
-                            <label class="el-form-item__label col-sm-3" >Numero de Voucher:</label>
-                            <div class="col-sm-3 grupolabel">
+                            <div class="form-group row margint">
+                                <label class="el-form-item__label col-md-3" >Retención</label>
+                                    <div class="col-md-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                            <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strWH_Reten_Cod">                            
+                                                <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto('B')"></el-button> 
+                                            </el-input>
+                                        </div>
+                                    </div>  
+                                <label class="el-form-item__label col-md-3" >% Retención</label>
+                                <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input type="text"  size ="small" style="font-size:11px;" v-model="voucher"></el-input>
+                                    <el-input type="number" size ="small" v-model="factura.fltValue_WH_Retention"  placeholder="">
+                                
+                                    </el-input>
                                     </div>
-                                </div>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="form-group row" style="margin-top:15px;">
+                            <div class="form-group row margint">
+                                <label class="el-form-item__label col-md-3" >Detracción</label>
+                                    <div class="col-md-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                            <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strDetrac_Cod">                            
+                                                <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto('C')"></el-button> 
+                                            </el-input>
+                                        </div>
+                                    </div>  
+                                    <label class="el-form-item__label col-md-3" >%Detracción</label>
+                                    <div class="col-md-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                            <el-input type="number" size ="small" v-model="factura.fltDetraccion_Porcen"  placeholder="">
+                                        </el-input>
+                                    </div>
+                                </div>  
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <div class="col-sm-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                       
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-sm-3" >Total Pagar S.</label>
-                                <div class="col-sm-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input type="text"  size ="small" style="font-size:11px;" v-model="TotalPagarS"></el-input>
-                                    </div>
-                                </div>
-                            <label class="el-form-item__label col-sm-3" >Total Pagar $.</label>
-                                <div class="col-sm-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input type="text"  size ="small" style="font-size:11px;" v-model="TotalPagarD"></el-input>
-                                    </div>
-                                </div>
-                        </div>                  
-                    </div>
-                    <div class="col-md-6">                                
-                    </div> -->
-                <!-- </el-tab-pane> -->
+                </el-tab-pane>
             </el-tabs>
         </el-card>
         <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
                 <div class="col-sm-2">
-                    <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
+                    <!-- <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
                          <b-progress-bar :value="valuem" :label="valuem + '%'" />
-                    </b-progress>
+                    </b-progress> -->
                 </div>
                 <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
@@ -466,10 +466,7 @@
         </div>
 
     </div>
-        <el-dialog title="Busqueda compañia"  :visible.sync="dialogCompania" @close="dialogCompaniaClose" size="small" >
-            <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)" v-on:companiaClose="companiaClose()">
-            </bcompania>
-        </el-dialog>
+    <!--DIALOG BUSQUEDA DETRACCION-->
         <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeDialogImpuesto" size="small" >
             <bimpuesto v-on:impuestoseleccionado="ImpuestoSeleccionado($event)" v-on:impuestoClose="closeImpuesto()">
             </bimpuesto>
@@ -505,12 +502,17 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
-                    @row-dblclick="selectOrdenCompra"
+                    @row-dblclick="checkOrdenCompra"
                     @current-change="selectOrdenCompra">
-                    <el-table-column  prop="strPO_NO" label="Codigo" width="180">
+                    <el-table-column  prop="strPO_NO" label="PO" width="100">
                     </el-table-column>  
                     <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
-                    </el-table-column> 
+                    </el-table-column>
+                    <el-table-column prop="strVendor_NO"  label="Codigo Proveedor" width="100">
+                    </el-table-column>  
+                    <el-table-column  prop="strVendor_Desc" label="Nombre Proveedor" style="width: 70% !important;">
+                    </el-table-column>
+                    
                 </el-table>
             </el-card>
             <br/>

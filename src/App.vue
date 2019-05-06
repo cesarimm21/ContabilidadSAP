@@ -835,6 +835,13 @@ body {
     margin-top: 8px;
     border-radius: 4px;
 }
+.CheckBoxPro .el-checkbox__input.is-checked .el-checkbox__inner{
+    background-color:#6ca5da;
+    border-color: #6ca5da;
+}
+.CheckBoxPro .el-checkbox__inner{
+    border-radius: 4px;
+}
 .el-table .cell {
     white-space: normal;
     word-break: break-all;

@@ -21,6 +21,10 @@ import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+import BUnidadMedidaComponent from '@/components/buscadores/b_unidad_medida/b_unidad_medida.vue';
+import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
+import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
+import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
@@ -32,6 +36,10 @@ import Global from '@/Global';
         'quickaccessmenu':QuickAccessMenuComponent,
         'bimpuesto':BImpuestoComponent,
         'bprioridad':BPrioridadComponent,
+        'bunidadmedida':BUnidadMedidaComponent,
+        'bcategoriacuenta':BCategoriaCuentaComponent,
+        'bcategorialinea':BCategoriaLineaComponent,
+        'bcentrocosto':BCentroCostoComponent,
     }
 })
 export default class CrearPOComponent extends Vue {
@@ -45,6 +53,8 @@ export default class CrearPOComponent extends Vue {
     issave:boolean=false;
     iserror:boolean=false;
     codigoInput:any;
+    checked:boolean=false;
+    nochancePro:boolean=true;
     textosave='';
     valuem:number=0;
     totalItems:number;
@@ -52,6 +62,21 @@ export default class CrearPOComponent extends Vue {
     dialogPrioridad:boolean=false;
     btnactivarprioridad:boolean=false;
     public selectrow:RequisicionDetalleModel=new RequisicionDetalleModel();
+    cell_ocultar:string='transparent';
+
+    disabledRow:boolean=false;
+    blncategorialinea:boolean=true;
+    blncategoriacuenta:boolean=true;
+    blncentrocosto:boolean=true;
+    
+    bln_tbl_categoria_cuenta:boolean=false;
+    bln_tbl_categoria_linea:boolean=false;
+    bln_tbl_centro_costo:boolean=false;
+
+    dialogCategoriaCuenta:boolean=false;
+    dialogCategoriaLinea:boolean=false;
+    dialogCentroCostos:boolean=false;
+    selectcolumn:any;
   /*bolean_tabla_dinamica*/
     editing:any= {
         row:'',
@@ -96,6 +121,10 @@ export default class CrearPOComponent extends Vue {
     btnactivarpro: boolean = false;
     valueProvee: Array<ProveedorModel>[];
     public selectProo: ProveedorModel = new ProveedorModel();
+    gridProveedor:ProveedorModel[];
+    provData:ProveedorModel[];
+    provData1:ProveedorModel[];
+    tempGrid:ProveedorModel[];
 
     //**[ORDEN COMPRA] */
     public OrdenCompra: OrdenCompraModel = new OrdenCompraModel();
@@ -105,8 +134,9 @@ export default class CrearPOComponent extends Vue {
     descripcionCompania:any;
     //**[PRODUCTO] */
     valorSelectCodStock:any[];
-    provData:ProveedorModel[];
-    provData1:ProveedorModel[];
+    //**[unidad medidad] */
+    dialogUnidadMedida:boolean=false;
+    btnactivarunidadmedida:boolean=false;
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
@@ -127,6 +157,11 @@ export default class CrearPOComponent extends Vue {
             this.requisicionData=[];
             this.requisicionData=response;
         })
+        proveedorService.GetProveedoresCompany(this.codigoCompania)
+        .then(resp=>{
+            this.gridProveedor=[];
+            this.gridProveedor=resp;            
+        })
     }
     loadRequisicion(){
         this.dialogRequisicion=true;
@@ -141,9 +176,11 @@ export default class CrearPOComponent extends Vue {
         })
     }
     getReqDetalle(v) {
+        
         requisicionService.getRequiDetallById(v)
         .then(response=>{
             this.requiDetalle=response;  
+            
             this.requiDetalle1=[];     
             this.provData=[]; 
             for(var i=0;i<this.requiDetalle.length;i++){ 
@@ -191,6 +228,7 @@ export default class CrearPOComponent extends Vue {
             this.requiDetalle=[];
             this.requiDetalle=this.requiDetalle1;                       
         })
+        this.tempGrid=this.provData;
     }
     tableRowClassName(val,row) {
         if (val.chrStatus === "B") {    
@@ -211,7 +249,8 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
-        this.OrdenCompra.intIdCompany_ID=val.strCompany_Cod; 
+        var comId:any=localStorage.getItem('compania_ID');
+        this.OrdenCompra.intIdCompany_ID=parseInt(comId); 
         this.OrdenCompra.strCompany_Desc=val.strCompany_Desc;
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;  
@@ -220,13 +259,19 @@ export default class CrearPOComponent extends Vue {
         this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
         this.requiSelect=val;          
     }
-    checkSelectdb(){        
-        this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
+    checkSelectdb(){                
+        this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;        
         this.getReqDetalle(this.requiSelect.intIdPurReqH_ID);
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
         this.OrdenCompra.strCompany_Cod=this.requiSelect.strCompany_Cod;
         this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
         this.dialogRequisicion=false;
+        if(this.requiSelect.strTypeReq_Cod=='A'){
+            this.disabledRow=true;
+        }
+        else{
+            this.disabledRow=false;
+        }
     }
     activar_requisicion(){
         setTimeout(() => {
@@ -275,6 +320,16 @@ export default class CrearPOComponent extends Vue {
       }
     //#endregion
     //#region [PROVEEDORES]
+    handleCheckAllChange(val){
+        if(this.checked==false){
+            this.tempGrid=[];
+            this.tempGrid.push(this.selectProo);
+        }
+        if(this.checked==true){
+            this.tempGrid=[];
+            this.tempGrid=this.gridProveedor;
+        }        
+    }
     desactivar_pro() {
         if (this.dialogProveedor) {
             this.btnactivarpro = false;
@@ -290,45 +345,67 @@ export default class CrearPOComponent extends Vue {
     }
     loadPro() {
         this.dialogProveedor = true;
-        this.provData1=this.provData;
-        this.provData=[];
-        var temp=0;
-        if(this.provData1.length>0){
-            for(var i=0;i<this.provData1.length;i++){
-                if(this.provData.length>0){
-                    for(var j=0;j<this.provData.length;j++){
-                        if(this.provData[j].strVendor_NO===this.provData1[i].strVendor_NO){
-                            temp=1;                     
+        if(this.checked==false){
+            this.provData1=this.provData;
+            this.provData=[];
+            var temp=0;
+            if(this.provData1.length>0){
+                for(var i=0;i<this.provData1.length;i++){
+                    if(this.provData.length>0){
+                        for(var j=0;j<this.provData.length;j++){
+                            if(this.provData[j].strVendor_NO===this.provData1[i].strVendor_NO){
+                                temp=1;                     
+                            }
+                        }
+                        if(temp==0){
+                            
+                            this.provData.push(this.provData1[i]);
                         }
                     }
-                    if(temp==0){
-                        
+                    else{
                         this.provData.push(this.provData1[i]);
                     }
-                }
-                else{
-                    this.provData.push(this.provData1[i]);
-                }
-            }          
+                }          
+            }
+            this.tempGrid=[];
+            this.tempGrid=this.provData;
         }
+        if(this.checked==true){
+            this.tempGrid=[];
+            this.tempGrid=this.gridProveedor;
+        }
+        
+        
     }
     searchProo() {
         proveedorService.GetOnlyOneProveedor(this.valueProvee)
             .then(response => {
                 this.provData = response;
+                this.tempGrid=[];
+                this.tempGrid=this.provData;
             })
     }
-    checkDoblePro() {        
-        this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
-        this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
-        this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
-        var code=this.selectProo.strVendor_NO;
-        var temp=this.requiDetalle;
-        this.requiDetalle1=[];
-        this.requiDetalle1 = temp.filter(function(hero) {
-            return hero.strVendor_Suggested == code;
-        });  
-        this.dialogProveedor = false;  
+    checkDoblePro() {     
+        if(this.checked==false){
+            this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+            this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
+            this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
+            var code=this.selectProo.strVendor_NO;
+            var temp=this.requiDetalle;
+            this.requiDetalle1=[];
+            this.requiDetalle1 = temp.filter(function(hero) {
+                return hero.strVendor_Suggested == code;
+            });  
+            this.dialogProveedor = false; 
+            this.nochancePro=false; 
+        }   
+        else{
+            this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+            this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
+            this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
+            this.dialogProveedor = false; 
+        }
+        
     }
     closeDialogPro() {
         this.dialogProveedor = false;
@@ -390,24 +467,25 @@ export default class CrearPOComponent extends Vue {
                 var IdAcctCateg_ID=this.multipleSelection[i].intIdAcctCateg_ID;
                 item.intIdAcctCateg_ID= parseInt(IdAcctCateg_ID.intIdAcctCateg_ID)
                 item.intIdCategLine_ID=this.multipleSelection[i].intIdCategLine_ID
-                item.intIdCurrency_ID=this.multipleSelection[i].intIdCurrency_ID
+                item.intIdCurrency_ID=this.moneda.intIdCurrency_ID
                 item.intIdCostCenter_ID=this.multipleSelection[i].intIdCostCenter_ID
                 item.intPO_Item_NO=i+1;
                 item.strAcctCateg_Cod=this.valorSelectCodStock[i].intIdAcctCateg_ID.strAcctCateg_Cod
                 if(this.valorSelectCodStock[i].intIdCategLine_ID!=null){
-                    item.strCategItem_Cod=this.valorSelectCodStock[i].intIdCategLine_ID.strCategItem_Cod;    
+                    item.strCategItem_Cod=this.valorSelectCodStock[i].strCateg_Line;    
                 }
                 else {
                     item.strCategItem_Cod='';
                 }
                 if(this.valorSelectCodStock[i].intIdCostCenter_ID){
-                    item.strCostCenter_NO=this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_NO,
-                    item.strCostCenter_Desc=this.valorSelectCodStock[i].intIdCostCenter_ID.strCostCenter_Desc
+                    item.intIdCostCenter_ID=this.valorSelectCodStock[i].intIdCostCenter_ID,   
+                    item.strCostCenter_NO=this.valorSelectCodStock[i].strCostCenter_NO,
+                    item.strCostCenter_Desc=this.valorSelectCodStock[i].strCostCenter_Desc
                 }
                 else{
                     item.strCostCenter_NO='';
                     item.strCostCenter_Desc='';
-                }                
+                }              
                 item.strStock_Cod=this.valorSelectCodStock[i].intIdInvStock_ID.strStock_Cod
                 item.strUM_Cod=this.valorSelectCodStock[i].intIdInvStock_ID.strUM_Cod
                 item.strVendor_NO=this.OrdenCompra.strVendor_NO
@@ -468,6 +546,7 @@ export default class CrearPOComponent extends Vue {
             this.OrdenCompra.fltTot_Rec_Value=0;
             this.OrdenCompra.fltTot_Inv_QTY=0;
             this.OrdenCompra.fltTot_Inv_Value=0;
+            
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guargando...',
@@ -565,26 +644,6 @@ export default class CrearPOComponent extends Vue {
             }               
         }
         this.totalPrice=inttotal;
-        // this.montoaceptado=Math.round(inttotal*100)/100;
-        // if(Number(this.ordencompraDetalleSelect.fltCurr_Net_PR_P)>=Number(this.montoaceptado)){
-        //   this.montopendiente=Math.round((Number(this.ordencompraDetalleSelect.fltCurr_Net_PR_P)-Number(this.montoaceptado))*100)/100;
-          
-        // }
-        // else{
-        //   this.montopendiente=-1;
-        //   this.$message({
-        //     showClose:true,
-        //     type:'warning',
-        //     message:'valor aceptado debe ser menor que el Importe total'
-        // })
-        // }
-        // var Tabletemp:Array<HesDetalleModel>=[];
-        // Tabletemp=this.TableIngreso;
-        // this.TableIngreso=[];
-        // for(var i=0;i<10;i++){
-        //   Tabletemp[i].fltNet_Value=Number(Tabletemp[i].intQuantity)*Number(Tabletemp[i].fltGross_Price);      
-        // }
-        // this.TableIngreso=Tabletemp;        
       }
     //#endregion
     //#region [ACCIONES TABLA]
@@ -603,7 +662,7 @@ export default class CrearPOComponent extends Vue {
         event.edit=!edit;
         this.editing.row=event;
         this.editing.column=column;
-      }
+    }
     clickPrice(event,edit,column){
         this.bln_tbl_Precio=true;
         this.bln_tbl_cantidad=false;
@@ -632,8 +691,7 @@ export default class CrearPOComponent extends Vue {
         this.totalPrice=0;
         this.totalItems=0;
         for(var i=0;i< this.multipleSelection.length;i++){
-            if(this.multipleSelection[i].blnCheck==true){
-                
+            if(this.multipleSelection[i].blnCheck==true){                
                 this.totalPrice+=Number((this.multipleSelection[i].fltUnitPrice)*(this.multipleSelection[i].fltQuantity)*(this.multipleSelection[i].intConv_Factor));
                 this.totalItems+=Number(this.multipleSelection[i].fltQuantity);
             }               
@@ -692,6 +750,90 @@ export default class CrearPOComponent extends Vue {
           }  
       }
     //#endregion
+
+    //#region [Categoria cuenta]
+    LoadCategoriaCuenta(row,column){
+        this.selectrow=row;
+        this.selectcolumn=column;
+        this.dialogCategoriaCuenta=true;
+      }
+      alerta(event,edit,column){
+        debugger;
+        this.bln_tbl_categoria_cuenta=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      SeleccionadoCategoriaCuenta(val){
+        this.selectrow.strCateg_Account=val.strAcctCateg_Cod;
+        this.selectrow.intIdAcctCateg_ID=val.intIdAcctCateg_ID;        
+        this.dialogCategoriaCuenta=false;       
+      }
+      closeCategoriaCuenta(){
+        this.dialogCategoriaCuenta=false;   
+      }
+    //#endregion
+    //#region [CATEGORIA LINEA]
+    LoadCategoriaLinea(row,column){
+        this.selectrow=row;
+        this.selectcolumn=column;
+        this.dialogCategoriaLinea=true;
+      }
+      clickcategorialinea(event,edit,column){
+        debugger;
+        this.bln_tbl_categoria_linea=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      SeleccionadoCategoriaLinea(val){
+        debugger;
+        this.selectrow.strCateg_Line=val.strCategItem_Cod;
+        this.selectrow.intIdCategLine_ID=val.intIdCategLine_ID;
+        this.dialogCategoriaLinea=false;
+      }
+      closeCategoriaLinea(){
+        this.dialogCategoriaLinea=false;
+      }
+    //#endregion
+    //#region [Cuenta Contable]
+    LoadCentroCosto(row){
+        this.selectrow=row;
+        this.dialogCentroCostos=true;
+      }
+      clickcentrocosto(event,edit,column){
+        debugger;
+        this.bln_tbl_centro_costo=true;
+        event.edit=!edit;
+        this.editing.row=event;
+        this.editing.column=column;
+      }
+      SeleccionadoCentroCosto(val){
+        debugger;
+        this.selectrow.strCostCenter=val.strCostCenter_NO;
+        this.selectrow.strCostCenter_Desc=val.strCostCenter_Desc;
+        this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
+        this.dialogCentroCostos=false;        
+      }
+      closeCentroCostos(){
+        this.dialogCentroCostos=false;     
+      }
+    //#endregion
+    //#region [Unidad Medida]
+    LoadUnidadMedida(row){
+        this.selectrow=row;
+        this.dialogUnidadMedida=true;
+      }
+      closeUnidadMedida(){
+        this.btnactivarunidadmedida=false;
+        return false;
+      }
+      SeleccionadoUnidadMedida(val){
+        debugger;
+        this.selectrow.strUM=val.strUM_Cod; 
+        this.dialogUnidadMedida=false;
+      }
+    //#endregion
     backPage(){
         window.history.back();
       }
@@ -716,8 +858,13 @@ export default class CrearPOComponent extends Vue {
             totalItems:0,
             totalPrice:0,
             valorSelectCodStock:[],
-            checked: true,
-            bln_tbl_check:true
+            checked: false,
+            nochancePro:true,
+            bln_tbl_check:true,
+            descripcionCompania:'',
+            gridProveedor:[],
+            tempGrid:[]
+
         }
     }
 }

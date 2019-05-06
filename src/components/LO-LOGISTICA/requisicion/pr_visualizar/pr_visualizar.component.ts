@@ -133,6 +133,7 @@ export default class VisualizarPRComponent extends Vue {
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     this.tiporequisicion="A";
+    Global.nameComponent="requisicion"
     setTimeout(() => {
       this.cargar();
     }, 200)

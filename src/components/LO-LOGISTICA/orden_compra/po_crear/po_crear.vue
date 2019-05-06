@@ -11,7 +11,17 @@
                 <div class="container">
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-6">
-                            <div class="form-group row ">
+                            <div class="form-group row ">                                
+                                <label class="el-form-item__label col-md-3" >Compañia</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" type="text" v-model="codigoCompania" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
+                            </div>
+                            <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Codigo Requisición</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -23,18 +33,6 @@
                                         <el-button v-if="btnactivarrequisicion && !dialogRequisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadRequisicion()"></el-button>
                                     </el-input>
                                     </div>
-                                </div>
-                                <label class="el-form-item__label col-md-3" >Compañia</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small" type="text" v-model="codigoCompania" disabled>
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div>
-                            <div  class="form-group row ">
-                                <div class="col-md-6 grupolabel">
-                                    <!-- <div class="input-group mb-3" > -->
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Almacén</label>
                                 <div class="col-md-3 grupolabel">
@@ -50,8 +48,13 @@
                                 <label class="el-form-item__label col-md-3" >Fecha Docum.</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  type="date" v-model="fecha_ejecucion" disabled>
-                                    </el-input>
+                                        <el-date-picker
+                                        type="date"
+                                        style="width:128px !important"
+                                        :disabled="true"
+                                        format="dd.MM.yyyy"
+                                        size="small" v-model="fecha_ejecucion" >
+                                    </el-date-picker>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
@@ -87,7 +90,7 @@
                              <div  class="form-group row ">
                                  <label class="el-form-item__label col-md-3" >Valor documento</label>
                                 <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
+                                    <div class="input-group mb-3">
                                     <el-input size ="small"  type="number" v-model="totalPrice" disabled>
                                     </el-input>
                                     </div>
@@ -120,14 +123,19 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
+                            <div class="form-group row " >
+                                <label class="sinLinea el-form-item__label col-md-6"></label>
                             </div>
                             <div class="form-group row ">
                                 <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
                             </div>
-                            <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{}}</label>
+                            <div class="form-group row "  style="margin-top:12px;">
+                                <template>
+                                    <el-checkbox class="CheckBoxPro" v-model="checked" @change="handleCheckAllChange" :disabled="nochancePro">
+                                        <span style=" font-size:10px;">Modificar </span>
+                                        </el-checkbox>
+                                </template>
+                                <label class="sinLinea el-form-item__label col-md-6" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
                                 <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>
@@ -161,17 +169,38 @@
                                             type="selection"
                                             width="45">
                                         </el-table-column>
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cta. cuenta">
+                                            <template scope="scope">
+                                                <el-input  v-if="blncategoriacuenta && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" :disabled="disabledRow">
+                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaCuenta(scope.row,scope.column.property)" :disabled="disabledRow"></el-button>  
+                                                </el-input> 
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  v-else @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCateg_Account }}</label>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCateg_Line" sortable  min-width="80"
                                             label="Cat. linea">
+                                            <template scope="scope">
+                                                <el-input  v-if="blncategorialinea && bln_tbl_categoria_linea  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Line" :disabled="disabledRow">
+                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaLinea(scope.row)" :disabled="disabledRow"></el-button>  
+                                                </el-input>
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCateg_Line }}</label>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCostCenter" sortable
                                             label="Centro costos">
+                                            <template scope="scope">
+                                                <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter" :disabled="disabledRow">
+                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCentroCosto(scope.row)" :disabled="disabledRow"></el-button>  
+                                                </el-input>
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter }}</label>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strMaterial_Cod" sortable
@@ -181,15 +210,24 @@
                                             prop="strDescription" sortable width="200"
                                             label="Descripción">
                                         </el-table-column>
-                                        <el-table-column 
+                                        <!-- <el-table-column 
                                             prop="blnCheck"
                                             width="100"
                                             label="Incluir Costo">
                                             <template scope="scope">
                                              <el-checkbox class="newCheckBox" v-if="(scope.row != editing.row)||(scope.row === editing.row)" v-focus size="small" v-model="scope.row.blnCheck" @change="clickCheck(scope.row,$event,scope.column.property)">
                                             </el-checkbox>
-                                            <!-- <el-checkbox class="newCheckBox" v-else @change="clickCheck(scope.row,$event,scope.column.property)" v-model="scope.row.blnCheck"></el-checkbox> -->
-                                                <!-- <label  v-else @click="clickCheck(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.blnCheck }}</label> -->
+                                           </template>
+                                        </el-table-column> -->
+                                        <el-table-column
+                                            prop="strUM" sortable  width="100"
+                                            label="UM">
+                                            <template scope="scope">
+                                                <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" :disabled="disabledRow">
+                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadUnidadMedida(scope.row)" :disabled="disabledRow"></el-button> 
+                                                </el-input>
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickUnidadMedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -202,16 +240,7 @@
                                                 <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strUM" sortable  width="100"
-                                            label="UM">
-                                            <template scope="scope">
-                                                <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" >
-                                                </el-input>
-                                                <label style="width:100%" v-else @click="clickUnidadMedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
-                                            </template>
-                                        </el-table-column>
+                                        
                                         <el-table-column
                                             prop="fltUnitPrice" sortable width="100"
                                             label="Valor Unitario">
@@ -303,6 +332,28 @@
       <bprioridad v-on:prioridadselecionado="SeleccionadoPrioridad($event)">
       </bprioridad>
     </el-dialog>
+
+    <!--DIALOG BUSQUEDA CATEGORIA CUENTA-->
+        <el-dialog title="Busqueda categoria cuenta"  :visible.sync="dialogCategoriaCuenta" @close="closeCategoriaCuenta" size="small" >
+        <bcategoriacuenta v-on:categoriacuentaselecionado="SeleccionadoCategoriaCuenta($event)" v-on:categoriacuentaclose="closeCategoriaCuenta()">
+        </bcategoriacuenta>
+        </el-dialog>
+        <!--DIALOG BUSQUEDA CATEGORIA LINEA-->
+        <el-dialog title="Busqueda categoria linea"  :visible.sync="dialogCategoriaLinea" @close="closeCategoriaLinea" size="small" >
+        <bcategorialinea v-on:categorialineaselecionado="SeleccionadoCategoriaLinea($event)" v-on:categorialineaclose="closeCategoriaLinea()">
+        </bcategorialinea>
+        </el-dialog>
+        <!--DIALOG BUSQUEDA CENTRO COSTOS-->
+    <el-dialog title="Busqueda centro de costos"  :visible.sync="dialogCentroCostos" @close="closeCentroCostos" size="small" >
+      <bcentrocosto v-on:centrocostoselecionado="SeleccionadoCentroCosto($event)" v-on:centrocostosclose="closeCentroCostos()">
+      </bcentrocosto>
+    </el-dialog>
+    <!--DIALOG BUSQUEDA UNIDAD MEDIDA-->
+    <el-dialog title="Busqueda unidad medida"  :visible.sync="dialogUnidadMedida" @close="closeUnidadMedida" size="small" >
+      <bunidadmedida v-on:unidadmedidaselecionado="SeleccionadoUnidadMedida($event)">
+      </bunidadmedida>
+    </el-dialog>
+
         <el-dialog title="Requisicion" :visible.sync="dialogRequisicion" @close="closeDialog" size="small" >
             <div>
                 <el-card class="box-card">
@@ -336,13 +387,13 @@
                     highlight-current-row
                     @row-dblclick="checkSelectdb"
                     @current-change="checkSelectdbRequisicion">
-                    <el-table-column  prop="strRequis_NO" label="Codigo" width="180">
+                    <el-table-column  prop="strRequis_NO" label="Codigo" width="100">
                     </el-table-column>
                     <el-table-column  prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
                     </el-table-column>
-                    <el-table-column  prop="strTipReq_Desc" label="Tipo requisición" width="180">
+                    <el-table-column  prop="strTipReq_Desc" label="Tipo requisición" width="120">
                     </el-table-column>
-                    <el-table-column  prop="strWHS_Desc" label="Almacen" width="180">
+                    <el-table-column  prop="strWHS_Desc" label="Almacen" width="120">
                     </el-table-column>
                 </el-table>
             </el-card>
@@ -385,17 +436,19 @@
                     </div>
                 </div>
                 <el-table
-                    :data="provData"
+                    :data="tempGrid"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
                     @row-dblclick="checkDoblePro"
                     @current-change="checkSelectdbProveedor">
-                    <el-table-column  prop="strVendor_NO" label="Codigo" width="180">
-                    </el-table-column>
-                    <el-table-column  prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
-                    </el-table-column>
+                    <el-table-column  prop="strVendor_NO" label="Codigo" width="150">
+                    </el-table-column>  
+                    <el-table-column  prop="strVendor_Desc" label="Descripción" width="310">
+                    </el-table-column> 
+                    <el-table-column  prop="strCountry" label="Pais" width="150">
+                    </el-table-column> 
                 </el-table>
             </el-card>
             <br/>

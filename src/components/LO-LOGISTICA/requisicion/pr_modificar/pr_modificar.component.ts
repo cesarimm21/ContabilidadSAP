@@ -231,7 +231,7 @@ export default class ModificarPRComponent extends Vue {
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     
-   
+    Global.nameComponent="requisicion"
     this.cell_ocultar='#e4e2e2';        
     this.blntiporequisicion=false;
     this.blncategorialinea=false;

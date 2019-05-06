@@ -14,6 +14,7 @@ import tipodocidentidadService from '@/components/service/tipodocidentidad.servi
 import proveedorService from '@/components/service/proveedor.service'
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import {PaisModel} from '@/modelo/maestro/pais';
 import {BancoModel} from '@/modelo/maestro/banco';
@@ -36,6 +37,7 @@ import { Loading } from 'element-ui';
     'bdocumento':BDocumentoComponent,
     'quickaccessmenu':QuickAccessMenuComponent,
     'buttons-accions':ButtonsAccionsComponent,
+    'bpais':BPaisComponent,
   }
 })
 export default class ViewAndEditProveedorComponent extends Vue {
@@ -105,7 +107,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   FLAGMONEDA:String;
   //**Categoria */
 
-  public Categoria: CategoriaModel=new CategoriaModel();
+  public Categoria: CategoriaModel[];
 
   //**Impuesto */
   public Impuesto:ImpuestoModel=new ImpuestoModel();
@@ -133,6 +135,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     if(vista=='visualizar'){
       this.namepage='Visualizar Proveedor';
       this.proDisabled=true;
+      alert(vista)
     }
     proveedorService.GetOnlyOneProveedor(codigPr)
     .then(response=>{
@@ -141,7 +144,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     }).catch(error=>{
       this.$message('No se cargaron los datos')
     })
-    // this.GetAllCategoria();
+    this.GetAllCategoria();
     // this.GetAllCuentaContable();
     // this.GetProveedoresCompany(localStorage.getItem('compania_cod'));
   }
@@ -150,30 +153,15 @@ export default class ViewAndEditProveedorComponent extends Vue {
     cuentaContableService.GetAllCuentaContable()
     .then(response=>{
       this.cuenta=response;
-      this.Proveedor.intAcc_NO_Local=this.cuenta[0].intAcc_NO_Local;      
+      this.Proveedor.strAcc_Local_NO=this.cuenta[0].strAcc_Local_NO;      
     }).catch(error=>{
       this.openMessageError('No hay datos proveedor')
     })
   }
   //#region [PAIS]
   //**Pais */
-  loadPais(){
-    paisService.GetAllPais()
-    .then(response=>{
-      this.Pais=response.data;
-      this.paisVisible=true;
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar lista de paises'
-      });
-      this.paisVisible=false;
-    })
-  }
-
   paisDialog(){
-    this.loadPais();
+    this.paisVisible=true;
   }
   activar_Pais(){
     setTimeout(() => {
@@ -199,12 +187,12 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   handleClosePais(){
     this.paisVisible=false;
-    this.gridSelectPais=new PaisModel();
   }
   paisSelect(val:PaisModel){
     this.gridSelectPais=val;
     this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
+    this.paisVisible=false;
   }
   paisChosseCheck(){
     this.paisVisible=false;
@@ -410,7 +398,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   proveedorCheck(){
     this.Proveedor.intIdVendor_ID=this.gridSelectedProveedor.intIdVendor_ID;
-    this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID.intIdCompany_ID;
+    this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID;
     this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
     this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
     this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
@@ -446,7 +434,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     this.Proveedor.fltRetention_Porcen=this.gridSelectedProveedor.fltRetention_Porcen;
     this.Proveedor.strDetraccion_Cod=this.gridSelectedProveedor.strDetraccion_Cod;
     this.Proveedor.fltDetraccion_Porcen=this.gridSelectedProveedor.fltDetraccion_Porcen;
-    this.Proveedor.intAcc_NO_Local=this.gridSelectedProveedor.intAcc_NO_Local;
+    this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
     this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
     this.loadTipoDocumento(this.Proveedor.strDocIdent_NO);
     this.GetOnlyOneDepartamento(this.Proveedor.strRegión_Cod);
@@ -465,12 +453,18 @@ export default class ViewAndEditProveedorComponent extends Vue {
       this.ApellidosShow=true;
       this.value1=this.Proveedor.strCat_Person;
     }
+    if(this.Proveedor.strCat_Person==='Persona'){
+      this.nameTipoJoN='Nombres';
+      this.RucOrDni='DNI';
+      this.ApellidosShow=true;
+      this.value1=this.Proveedor.strCat_Person;
+    }
     if(this.Proveedor.strCat_Person==='Jurídica'){
       this.nameTipoJoN='Razon social';
       this.RucOrDni='RUC';
       this.ApellidosShow=false;
       this.value1=this.Proveedor.strCat_Person;
-    }    
+    }
   }
   //#endregion
   
@@ -793,10 +787,11 @@ export default class ViewAndEditProveedorComponent extends Vue {
   GetAllCategoria(){
     categoriaService.GetAllCategoria()
     .then(response=>{
+      this.Categoria=[];
       this.Categoria=response;
-      this.value1=this.Categoria[0].strVenCateg_Desc;
-      
-      this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
+      console.log(this.Categoria);      
+      this.value1=this.Categoria[0].strVenCateg_Desc;      
+      // this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -807,7 +802,6 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
 
   selectCategoria(val){
-    
       this.VisibleForName=true;
       if(val===1){
         this.nameTipoJoN='Nombres';
@@ -922,6 +916,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
       dialogTableVisible: false,
       companiaCod:'',
       companiaDesc:'',
+      Categoria:[],
       proDisabled:false,
       VisibleForName:true,
       value1:'',

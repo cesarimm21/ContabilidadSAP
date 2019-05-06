@@ -9,8 +9,8 @@ export class FacturaModel{
     dtmPeriod:Date;//*
     strVendor_NO:string;//*
     strVendor_Desc:string;//*
-    // strDaily_Cod:string;//*
-    // strDaily_Desc:string;//*
+    strDaily_Cod:string;//*
+    strDaily_Desc:string;//*
     dtmDoc_Acc_Date:Date;//falta
     strDesc_Doc:string;//*
     dtmDoc_Date:Date;//fecha del documento a insertar, no hoy dia// para jalar el tipo de documento "fecha de emision"
@@ -18,6 +18,10 @@ export class FacturaModel{
     strType_Doc:string;//*tblTipocomprobantepago strDocType_Cod
     strSerie_Doc:string;//*
     strDocument_NO:string;//*
+    strType_Doc2:string;//*tblTipocomprobantepago strDocType_Cod
+    strSerie_Doc2:string;//*
+    strDocument_NO2:string;//*
+    strDocument_NO_ND:string;//*
     strCurrency_Doc:string;//*
     fltExchange_Rate:number;//*tipo de cambio de venta/ de acuerdo a la fecha de emision de la factura
     intQuantity_Doc:number;//*
@@ -34,7 +38,6 @@ export class FacturaModel{
     fltNetValue_Doc_Corp:number;//* fltValue_Doc+ fltValue_Tax+fltOperation_NoTax
     strTax_Cod:string;//*
     fltValue_Tax:number;
-    strDaily_Cod:string;
     strValue_Local:string;
     strExchange_Rate:string;
     strValue_Corp:string;
@@ -49,7 +52,8 @@ export class FacturaModel{
     dtmDetrac_Date:Date;//fecha del pago de la detraccion
     strDetrac_Lote_NO:string;//cuando pagaste a la sunat
     strWH_Reten_Cod:string;//codigo de impuesto
-    strValue_WH_Retention:string;//valor de impuesto
+    fltDetraccion_Porcen:number;//codigo de impuesto
+    fltValue_WH_Retention:number;//valor de impuesto
     dtmDoc_Date_Ref:Date;//notas de credito y debito 7 y 8
     strType_Doc_Ref:string;
     strSerie_Doc_Ref:string;
@@ -83,8 +87,8 @@ export class FacturaModel{
         this.dtmPeriod=new Date;
         this.strVendor_NO='';
         this.strVendor_Desc='';
-        // this.strDaily_Cod='';
-        // this.strDaily_Desc='';
+        this.strDaily_Cod='';
+        this.strDaily_Desc='';
         this.dtmDoc_Acc_Date= new Date;
         this.strDesc_Doc='';
         this.dtmDoc_Date=new Date;
@@ -92,6 +96,10 @@ export class FacturaModel{
         this.strType_Doc='';
         this.strSerie_Doc='';
         this.strDocument_NO='';
+        this.strType_Doc2='';
+        this.strSerie_Doc2='';
+        this.strDocument_NO2='';
+        this.strDocument_NO_ND='';
         this.strCurrency_Doc='';
         this.fltExchange_Rate=0;
         this.intQuantity_Doc=0;
@@ -116,7 +124,8 @@ export class FacturaModel{
         this.dtmDetrac_Date=new Date;
         this.strDetrac_Lote_NO='';
         this.strWH_Reten_Cod='';
-        this.strValue_WH_Retention='';
+        this.fltDetraccion_Porcen=0;
+        this.fltValue_WH_Retention=0;
         this.dtmDoc_Date_Ref=new Date;
         this.strType_Doc_Ref='';
         this.strSerie_Doc_Ref='';

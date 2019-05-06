@@ -10,6 +10,7 @@ export default {
     columna:'',
     routeInicio:'',
     routeLogin:'',
+    falseortrue:false,
     limpiarDatosSession(){
       this.token='';
     },

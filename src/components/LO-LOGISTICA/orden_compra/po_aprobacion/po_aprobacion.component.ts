@@ -290,7 +290,7 @@ export default class AprobarPOComponent extends Vue {
         this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
         console.log('----,,,',this.selectrow);
         if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPOH_ID!=-1){
-          router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_modificar`, query: { vista: 'aprobar',data:JSON.stringify(this.selectrow) }  })
+          router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_viewandedit`, query: { vista: 'aprobar',data:JSON.stringify(this.selectrow) }  })
         }
       }, 600)
     }
