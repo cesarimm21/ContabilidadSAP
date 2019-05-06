@@ -267,6 +267,12 @@ export default class CrearMaterialComponent extends Vue {
     }, 200)
   }
   load(){
+    
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.productoModel.strCompany_Cod=cod;
+    this.productoModel.strCompany_Desc=desc;
+
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;
@@ -793,6 +799,7 @@ export default class CrearMaterialComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
+    debugger;
     this.productoModel.strMaterial_Class=this.clasematerialSelectModel.strMatClass_Cod;
     this.productoModel.intIdMatClass_ID=this.clasematerialSelectModel.intIdMatClass_ID;
     this.productoModel.strMatClass_Desc=this.clasematerialSelectModel.strMatClass_Desc;

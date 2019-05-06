@@ -22,7 +22,7 @@ export default{
       })
   },
   UpdateProducto(Producto){
-    return axios.put(CONFIG.API_URL+'producto/'+Producto.strStock_Cod, Producto)
+    return axios.post(CONFIG.API_URL+'update/producto', Producto)
     .then(response =>{
         return response.data;
       })

@@ -55,6 +55,9 @@ import RecepcionMaterialComponent from '../components/LO-LOGISTICA/almacen/al_re
 import DespachoSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidadespacho/al_salidadespacho.vue'
 import LibroDiarioDComponent from '../components/FI-FINANZAS/libros-balance/librodiario/librodiario.vue'
 import LibroRegistroComprasComponent from '../components/FI-FINANZAS/libros-balance/libroregistrocompras/libroregistrocompras.vue'
+import CrearClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/crear_clase_material/crear_clase_material.vue'
+import VisualizarClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/visualizar_clase_material/visualizar_clase_material.vue'
+import ModificarVisualizarClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_visualizar_clase_material/modificar_visualizar_clase_material.vue'
 
 import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
 import  CrearCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos/crear-centro-costos.vue';
@@ -177,6 +180,21 @@ export default [
         component:CrearPOComponent,
         name:'crear-po'
       }, 
+      {
+        path:'LO-LOGISTICA/maestro_datos/almacen/clase_material/crear_clase_material',
+        component:CrearClaseMaterialComponent,
+        name:'crear_clase_material'
+      }, 
+      {
+        path:'LO-LOGISTICA/maestro_datos/almacen/clase_material/visualizar_clase_material',
+        component:VisualizarClaseMaterialComponent,
+        name:'visualizar_clase_material'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_visualizar_clase_material',
+        component:ModificarVisualizarClaseMaterialComponent,
+        name:'visualizar_clase_material'
+      },
       {
         path:'LO-LOGISTICA/orden_compra/po_modificar',
         component:ModificarPOComponent,

@@ -177,9 +177,9 @@ body {
 .el-table_1_column_1{
     background-color: #E4ECF7 !important;
     text-align: center !important;
-    border: 1px solid #9EB6CE !important;
+    /* border: 1px solid #9EB6CE !important;
     border-width: 0px 1px 1px 0px !important;
-    border-bottom: 1px solid #9eb6ce !important;
+    border-bottom: 1px solid #9eb6ce !important; */
 }
 .el-table td, .el-table th.is-leaf {
     border-bottom: 1px solid rgba(158, 182, 206, 0.6784313725490196) !important; 
@@ -545,9 +545,9 @@ body {
 .el-table_1_column_1 {
     background-color: #fbfcfd !important;
     text-align: center !important;
-    border: 1px solid #9EB6CE !important;
+    /* border: 1px solid #9EB6CE !important;
     border-width: 0px 1px 1px 0px !important;
-    border-bottom: 1px solid #9eb6ce !important;
+    border-bottom: 1px solid #9eb6ce !important; */
 }
 .el-table td, .el-table th {
     height: 20px;
@@ -880,6 +880,12 @@ body {
     bottom: 9px;
     border-top: 5px solid transparent !important;
     border-bottom: none;
+}
+.validador {
+    font-size: 12px;
+}
+.validador input{
+    border-color:#ff9da4;
 }
 /* .el-table .success-row td{
     background: #2e6610;
