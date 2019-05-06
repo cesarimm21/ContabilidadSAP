@@ -573,7 +573,7 @@
 
     <!--DIALOG BUSQUEDA MONEDA-->
     <el-dialog title="Busqueda moneda"  :visible.sync="dialogMoneda" @close="closeMoneda" size="small" >
-      <bmoneda v-on:monedaselecionado="SeleccionadoMoneda($event)">
+      <bmoneda v-on:MonedaSeleccionado="SeleccionadoMoneda($event)">
       </bmoneda>
     </el-dialog>
 

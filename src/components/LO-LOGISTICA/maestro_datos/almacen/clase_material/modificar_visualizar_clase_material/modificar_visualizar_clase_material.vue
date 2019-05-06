@@ -135,7 +135,7 @@
                                         </el-table-column>
                                         
                                         <el-table-column 
-                                            prop="strWHS_Cod"  
+                                            prop="strMatClass_Cod"  
                                             label="Cod. Clase Material">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Cod }}</label>

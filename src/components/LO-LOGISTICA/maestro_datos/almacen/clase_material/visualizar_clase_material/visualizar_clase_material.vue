@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Clase Material</span>
+            <span class="labelheadercard" >Visualizar Clase Material</span>
         </div>
         <!--<div class="row bodycard">
             <div class="container">
@@ -74,7 +74,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Codigo Material</label>
+                            <label class="el-form-item__label col-md-2" >Codigo Clase Material</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strStock_Cod"  placeholder="">
@@ -83,17 +83,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Codigo Almacen</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
-                                    <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="loadAlmacen()"></el-button> 
-                                </el-input>
-                                </div>
-                            </div>
-                            <span style="font-size: 11px;margin-top: 5px;">{{strWHS_Desc}}</span>
-                        </div> 
 
                         <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha </label>
@@ -130,8 +119,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView"  v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar"  v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
-                        
+                              
                                 <!-- <buttons-accions v-on:EliminarItem="EliminarItem" v-on:validarView="validarView"  v-on:handleClickInParent="handleClickInParent()"></buttons-accions> -->
                             </div>
                             <div class="col-md-12" >
@@ -141,58 +129,44 @@
                                         :max-height="sizeScreen"
                                         :data="tableData" 
                                          highlight-current-row
-                                         @header-click="headerclick"
-                                         @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Linea" width="38">
                                         </el-table-column>
                                         
-                                        <el-table-column :render-header="filterstrWHS_Cod"
-                                            prop="strWHS_Cod"   width="80"
-                                            label="Cod Almacen">
+                                        <el-table-column 
+                                            prop="strMatClass_Cod"  
+                                            label="Cod. Clase Material">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strWHS_Cod }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterstrWHS_Desc"
-                                            prop="strWHS_Desc"  width="150" 
-                                            label="Descripcion Almacen">
+                                        <el-table-column 
+                                            prop="strMatClass_Desc"  
+                                            label="Descripcion Clase Material">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strWHS_Desc }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterstrStock_Cod"  prop="strStock_Cod" width="100" label="Codigo Material">
+                                         <el-table-column 
+                                          prop="strStock_Type_Desc" label="Descripcion Tipo">
                                             <template scope="scope">
-                                            <label >&nbsp;{{ scope.row.strStock_Cod }}</label>
-                                            </template>
-                                        </el-table-column>  
-                                         <el-table-column :render-header="filterstrStock_Desc" 
-                                          prop="strStock_Desc" label="Descripcion Material">
-                                            <template scope="scope">
-                                            <label >&nbsp;{{ scope.row.strStock_Desc }}</label>
+                                            <label >&nbsp;{{ scope.row.strStock_Type_Desc }}</label>
                                             </template>
                                         </el-table-column>  
                                           
-                                        <el-table-column :render-header="filterstrUM_Cod" 
-                                            prop="strUM_Cod"  width="50"
-                                            label="UM">
+                                        <el-table-column 
+                                            prop="strAcct_Loc"  
+                                            label="Cuenta Contable">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strUM_Cod }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strAcct_Loc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterfltQuantity" 
-                                            prop="fltQuantity"  align="right"  width="100"
-                                            label="Cantidad ">
+                                        <el-table-column  
+                                            prop="strExp_Cod_Loc"  align="right"  
+                                            label="Cuenta Gastos">
                                             <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltTotal_Val }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column :render-header="filterfltPrecUnit_Local" 
-                                            prop="fltPrecUnit_Local" align="right"  width="100"
-                                            label="Importe">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltPrecUnit_Local}}</label>
+                                                <label style="width:100%"  >&nbsp;{{ scope.row.strExp_Cod_Loc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -299,16 +273,6 @@
     </el-dialog>
 
 
-     <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
-      <div style="height:85px"> 
-        <img src="../../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
-      </div>
-      <footer class="modal-footer">
-        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
-        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
-      </footer>
-    </b-modal>
 </div>  
   
 </template>
