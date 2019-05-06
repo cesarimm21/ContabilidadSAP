@@ -63,6 +63,8 @@ export default class CrearProveedorComponent extends Vue {
   iserror:boolean=false;
   vifprogress:boolean=true;
   tipoDocDisabled:boolean=false;
+
+  cardView:boolean=true;
 //   ****
   AddressNumero:string;
   AddressDprto:string;
@@ -139,6 +141,9 @@ export default class CrearProveedorComponent extends Vue {
   impuestoVisible:boolean=false;
   public selectImpuesto:ImpuestoModel=new ImpuestoModel();
   btnactivarimpuesto:boolean=false;
+  btnactivardetraccion:boolean=false;
+  detraccionVisible:boolean=false;
+
   //**cuenta contable */
   cuenta:CuentaContableModel[];
   constructor(){
@@ -152,17 +157,26 @@ export default class CrearProveedorComponent extends Vue {
   load(){
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');
+    this.Proveedor.strCompany_Cod=this.codigoCompania;
     this.GetAllCategoria();
     this.GetAllCuentaContable();
     this.GetAllTipoDocumento();
     this.GetProveedoresCompany(this.codigoCompania);
+  }
+  handleClick(tab, event) {
+    console.log(tab.label); 
+    if(tab.label=='Datos generales'){ this.cardView=true;}   
+    if(tab.label=='Dirección'){ this.cardView=false;}   
+    if(tab.label=='Cuentas Bancarias'){ this.cardView=false;}   
+    
   }
 // [Cuenta contable]
   GetAllCuentaContable(){
     cuentaContableService.GetAllCuentaContable()
     .then(response=>{
       this.cuenta=response;
-      this.Proveedor.intAcc_NO_Local=this.cuenta[0].intAcc_NO_Local;      
+      this.Proveedor.strAcc_Local_NO=this.cuenta[0].strAcc_Local_NO;  
+      debugger;    
     }).catch(error=>{
 
     })
@@ -390,12 +404,10 @@ export default class CrearProveedorComponent extends Vue {
     this.dialogVisible=true;
   }
   proveedorSelect(val){
-    this.gridSelectedProveedor=val;  
-    console.log(this.gridSelectedProveedor);      
+    this.gridSelectedProveedor=val;     
   }
   proveedorClose(){
     this.dialogVisible=false;
-    this.gridSelectedProveedor='';
   }
   proveedorCheck(){
     this.dialogVisible=false;
@@ -404,6 +416,7 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
     this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
     this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
+    this.gridSelectPais.strCountry_Name=this.gridSelectedProveedor.intIdCountry_ID.strCountry_Name;
     this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
     this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
     this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
@@ -435,7 +448,9 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.fltRetention_Porcen=this.gridSelectedProveedor.fltRetention_Porcen;
     this.Proveedor.strDetraccion_Cod=this.gridSelectedProveedor.strDetraccion_Cod;
     this.Proveedor.fltDetraccion_Porcen=this.gridSelectedProveedor.fltDetraccion_Porcen;
-    this.Proveedor.intAcc_NO_Local=this.gridSelectedProveedor.intAcc_NO_Local;
+    this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
+    this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
+    this.departEnabled=false;
   }
   checkDoblePro(){
     this.dialogVisible=false;
@@ -475,7 +490,9 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.fltRetention_Porcen=this.gridSelectedProveedor.fltRetention_Porcen;
     this.Proveedor.strDetraccion_Cod=this.gridSelectedProveedor.strDetraccion_Cod;
     this.Proveedor.fltDetraccion_Porcen=this.gridSelectedProveedor.fltDetraccion_Porcen;
-    this.Proveedor.intAcc_NO_Local=this.gridSelectedProveedor.intAcc_NO_Local;
+    this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
+    this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
+    this.departEnabled=false;
   }
   //#endregion
   //#region [Tipo Documento]
@@ -822,14 +839,61 @@ export default class CrearProveedorComponent extends Vue {
   }
   impuestoSelect(val:ImpuestoModel){
     this.selectImpuesto=val;
-    this.Proveedor.strDetraccion_Cod=this.selectImpuesto.strWH_Cod;
-    this.Proveedor.fltDetraccion_Porcen=this.selectImpuesto.fltPorcent;
     this.Proveedor.strRetention_Cod=this.selectImpuesto.strWH_Cod;
     this.Proveedor.fltRetention_Porcen=this.selectImpuesto.fltPorcent;
     this.impuestoVisible=false;
   }
-  //#endregion
-  
+  //#region [Retencion]
+  GetAllDetraccion(){
+    impuestoService.GetAllImpuesto()
+    .then(response=>{
+      this.Impuesto=response;
+      this.detraccionVisible=true;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar lista Impuestos'
+      });
+      this.detraccionVisible=false;
+    })
+  }
+  activar_detraccion(){
+    setTimeout(() => {
+      this.btnactivarTipoDocumento=false;
+      this.btnactivarproveedor=false;
+      this.btnactivarpais=false;
+      this.btnactivardepartamento=false;
+      this.btnactivarbancoA=false;
+      this.btnactivarbancoB=false;
+      this.btnactivarbancoC=false;
+      this.btnactivarbancoD=false;
+      this.btnactivarmonedaA=false;
+      this.btnactivarmonedaB=false;
+      this.btnactivarmonedaC=false;
+      this.btnactivarmonedaD=false;
+      this.btnactivarimpuesto=false;
+      this.btnactivardetraccion=true;
+    }, 120)
+  }
+  desactivar_detraccion(){
+    if(this.detraccionVisible){
+      this.btnactivarimpuesto=false;
+    }
+  }  
+  detraccionDialog(){
+    this.GetAllDetraccion();
+  }
+  handleCloseImp(){
+    this.detraccionVisible=false;
+  }
+  detraccionSelect(val:ImpuestoModel){
+    this.selectImpuesto=val;
+    this.Proveedor.strDetraccion_Cod=this.selectImpuesto.strWH_Cod;
+    this.Proveedor.fltDetraccion_Porcen=this.selectImpuesto.fltPorcent;
+    this.detraccionVisible=false;
+  }
+  //#endregion  
   GetAllCategoria(){
     categoriaService.GetAllCategoria()
     .then(response=>{
@@ -883,9 +947,10 @@ export default class CrearProveedorComponent extends Vue {
       }
   }
   SaveProveedor(val){
-    this.Proveedor.strCreation_User='egaona';
-    console.log(this.Proveedor);
-    
+    var idCompany:any=localStorage.getItem('compania_ID');
+    var USERLOGIN:any=localStorage.getItem('User_Usuario');
+    this.Proveedor.intIdCompany_ID=parseInt(idCompany);
+    this.Proveedor.strCreation_User=USERLOGIN;    
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guargando...',
@@ -896,7 +961,7 @@ export default class CrearProveedorComponent extends Vue {
     proveedorService.putProveedor(this.Proveedor)
     .then(response=>{
       loadingInstance.close();
-      this.openMessageSuccess('Se guardo correctamente'+response);
+      this.openMessageSuccess('Se guardo correctamente '+response);
       this.textosave = 'Se guardo correctamente '+response;
       this.issave=true;
       this.iserror=false;
@@ -917,7 +982,7 @@ export default class CrearProveedorComponent extends Vue {
     .catch(e =>{      
       this.openMessageError('Error guardar proveedor');
       loadingInstance.close();
-      this.textosave = 'Se guardo correctamente.';
+      this.textosave = 'No se guardo proveedor.';
       this.issave=false;
       this.iserror=true;
     })    

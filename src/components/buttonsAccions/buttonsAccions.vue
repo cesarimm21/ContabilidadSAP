@@ -48,7 +48,10 @@
                                         </el-button>                                                               
                                         <el-button class="buttonfilter btn btn-outline-secondary orange" @click="siguiente()">
                                             <img class="imagenfilter" src="../../images/pagina_anterior.png" >
-                                        </el-button>                                         
+                                        </el-button>   
+                                         <el-button v-if="falseortrue" class="buttonfilter btn btn-outline-secondary orange" @click="ActivaCheck()">
+                                            <img class="imagenfilter" src="../../images/check.png" >
+                                        </el-button>                                          
                                    
                                   </div>
                               </div>

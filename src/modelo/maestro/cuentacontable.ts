@@ -3,7 +3,7 @@ export class CuentaContableModel {
     intIdCompany_ID: number;
     intAcc_NO_Local:number;
     intIdChartAcct_L_ID:number;
-    strAcc_Local_NO:number;
+    strAcc_Local_NO:string;
     intIdChartAcct_C_ID:number;
     strAcc_Corp_NO:string;
     strAcc_Local_Name:string;

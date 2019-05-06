@@ -2,7 +2,6 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import { Loading } from 'element-ui';
-import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 import BComprobantepagoComponent from '@/components/buscadores/b_comprobante_pago/b_comprobante_pago.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
@@ -14,6 +13,7 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 import ordencompraService from '@/components/service/ordencompra.service';
 import diarioService from '@/components/service/diario.service'; 
 import diariogeneralService from '@/components/service/diariogeneral.service'; 
+import movimientoService from '@/components/service/movinventario.service'; 
 import tipocambioService from '@/components/service/tipocambio.service';
 import facturaService from '@/components/service/factura.service';
 import prooveedorService from '@/components/service/proveedor.service';
@@ -22,7 +22,6 @@ import periodoService from '@/components/service/periodo.service';
 import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
 import {TipoComprobantePagoModel} from '@/modelo/maestro/tipocomprobantepago';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
-import {CompaniaModel} from '@/modelo/maestro/compania';
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
 import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
 import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
@@ -46,7 +45,6 @@ import { Alert } from '@/types';
   'buttons-accions':ButtonsAccionsComponent,
   'bproveedor':BProveedorComponent,
   'quickaccessmenu':QuickAccessMenuComponent,
-  'bcompania':BCompaniaProveedor,
   'bcomprobantepago':BComprobantepagoComponent,
   'bmoneda':BMonedaComponent,
   'bimpuesto':BImpuestoComponent
@@ -64,8 +62,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
 };
   CodigoGeneral:string;
   rowSelect:number;
-  codigoCompania:string;
-  descripcionCompania:string;
+  codigoCompania:any;
+  descripcionCompania:any;
   sizeScreen:string = (window.innerHeight - 420).toString();
   TableIngreso:any[];  
   totalDolars:string;
@@ -79,7 +77,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   valuem:number=0;
   public periodo:PeriodoModel=new PeriodoModel();
   public tipocambio:TipoCambioModel=new TipoCambioModel();
-
   //Movimiento Invetario []
   movimientoInven:MovimientoInventarioModel[];
   //#region [BOTONES]
@@ -89,16 +86,14 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   arrayTemp:any[];
   //**Compania */
   btnactivarcompania:boolean=false;
-  dialogCompania:boolean=false;
   dataCompania:any[];
-  public companiaModel:CompaniaModel=new CompaniaModel();
   //**Orden compra */
   dialogOrdenCompra:boolean=false;
   btnactivarOrdenCompra:boolean=false;
   dataOrdenCompra:any[];
   selectData:string;
   public ordencompraDetalle:OrdenCompraDetalleModel[];
-  public ordencompra:OrdenCompraModel=new OrdenCompraModel();
+  ordencompra:OrdenCompraModel[];
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
   //**Proveedor */
   public proveedor:ProveedorModel=new ProveedorModel();
@@ -128,10 +123,13 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   diarioInput:DiarioGeneralModel[];
   //**impuesto */
   public Impuesto:ImpuestoModel=new ImpuestoModel();
+  public ImpuestoB:ImpuestoModel=new ImpuestoModel();
+  public ImpuestoC:ImpuestoModel=new ImpuestoModel();
   dialogImpuesto:boolean=false;
   btnactivarImpuesto:boolean=false;
   columnView:boolean=false;
   ImpuestoDisabled:boolean=true;
+
   constructor(){    
     super();
     this.cell_ocultar='#e4e2e2';  
@@ -141,6 +139,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   }
   
   GetAllPeriodoLast(){
+    this.codigoCompania=localStorage.getItem('compania_cod');
+    this.descripcionCompania=localStorage.getItem('compania_name');    
     periodoService.GetAllPeriodoLast()
     .then(response=>{
       this.periodo=response;
@@ -167,6 +167,10 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       var date1=Global.getDateVencida(this.factura.dtmDoc_Date,this.proveedor.intDayToPay);
       this.fecha_vencida=Global.getDateVencidaForView(date1);
       this.factura.dtmDue_Date=new Date(this.fecha_vencida);    
+      this.factura.strWH_Reten_Cod=this.proveedor.strRetention_Cod;
+      this.factura.fltValue_WH_Retention=this.proveedor.fltRetention_Porcen;
+      this.factura.strDetrac_Cod=this.proveedor.strDetraccion_Cod;
+      this.factura.fltDetraccion_Porcen=this.proveedor.fltDetraccion_Porcen;
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -198,6 +202,9 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   handleBlurImporte(event) {
     debugger;
     var inttotal=0;       
+  }
+  handleBlur(){
+
   }
   clickcantidad(event,edit,column){
     this.bln_tbl_cantidad=true;
@@ -278,50 +285,13 @@ handleChangeCantidad(val){
 
 }
 //#endregion
-  //#region [COMPANIA]
-  loadCompania(){
-    this.dialogCompania=true;
-  }
-  companiaSeleccionado(val:CompaniaModel,dialog:boolean){
-    this.companiaModel=val;
-    this.factura.strCompany_Cod=this.companiaModel.strCompany_Cod;
-    this.factura.strCompany_Desc=this.companiaModel.strCompany_Desc;
-    this.dialogCompania=false;    
-  }
-  companiaClose(){
-    this.companiaModel=new CompaniaModel();
-    this.dialogCompania=false;
-  }
-  dialogCompaniaClose(){
-    this.dialogCompania=false;
-    this.btnactivarcompania=false;
-  }
-  activar_compania(){
-    setTimeout(() => {
-      this.btnactivarcompania=true;
-      this.btnactivarMoneda=false;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
-    }, 120)
-  }
-  desactivar_compania(){
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;      
-    }
-  }
-  closeCompania(){
-    this.btnactivarcompania=false;
-    this.dialogCompania=false;
-    return false;
-  }
-  //#endregion
   //#region [ORDEN COMPRA]
   loadOrdenCompra(){
     ordencompraService.GetAllOrdenCompra()
     .then(respose=>{
+      this.ordencompra=[];
       this.ordencompra=respose;
+
       this.dialogOrdenCompra=true;      
     }).catch(error=>{
       this.$message({
@@ -361,7 +331,7 @@ handleChangeCantidad(val){
         item.dtmCreation_Date=new Date();
         item.chrStatus='A';
         this.facturadetalle.push(item);
-        this.factura.fltValue_Doc+=Number(this.ordencompraDetalle[i].fltPO_Net_PR_I);
+        this.factura.fltValue_Doc+=Number(this.ordencompraDetalle[i].fltCurr_Net_PR_P);
         this.factura.intQuantity_Doc+=Number(this.ordencompraDetalle[i].fltPO_QTY_I);
       }     
     })    
@@ -369,7 +339,6 @@ handleChangeCantidad(val){
   closeOrdenCompra(){
     this.btnactivarOrdenCompra=false;
     this.dialogOrdenCompra=false;
-    this.ordencompraSelect=new OrdenCompraModel();
     return false;
   }
   activar_OrdenCompra(){
@@ -397,6 +366,7 @@ handleChangeCantidad(val){
     this.factura.strDesc_Doc=this.ordencompraSelect.strPO_Desc;
     this.dialogOrdenCompra=false;    
     this.loadOrdenCompraDetalle(this.ordencompraSelect.intIdPOH_ID);
+    this.factura.strTax_Cod=this.ordencompraSelect.strWH_Cod;
   }
   //#endregion
  
@@ -503,6 +473,8 @@ handleChangeCantidad(val){
   }
   checkSelectdbDiario(val:DiarioModel){
     this.dialogDiario=false;
+    this.factura.strDaily_Cod=this.diarioSelect.strDaily_Cod;
+    this.factura.strDaily_Desc=this.diarioSelect.strDaily_Desc;
   }
   checkSelectDiario(val:DiarioModel){
     this.diarioSelect=val;
@@ -543,7 +515,7 @@ handleChangeCantidad(val){
   ImpuestoSeleccionado(val:ImpuestoModel){
     if(this.Flag=='A'){
       this.Impuesto=val
-      this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
+      // this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
       this.dialogImpuesto=false;  
       for(var i=0;i<this.facturadetalle.length;i++){
         this.facturadetalle[i].strTax_Cod=this.factura.strTax_Cod;
@@ -554,6 +526,16 @@ handleChangeCantidad(val){
       this.facturadetalle=[];
       this.facturadetalle=temp;
     }
+    if(this.Flag=='B'){
+      this.ImpuestoB=val;
+      this.factura.strWH_Reten_Cod=this.ImpuestoB.strWH_Cod;
+      this.factura.fltValue_WH_Retention=this.ImpuestoB.fltPorcent;
+    }
+    if(this.Flag=='C'){
+      this.ImpuestoC=val;
+      this.factura.strDetrac_Cod=this.ImpuestoC.strWH_Cod
+      this.factura.fltDetraccion_Porcen=this.ImpuestoC.fltPorcent;
+    }    
     else{
       this.Impuesto=val;
       for (let i = 0; i < this.facturadetalle.length; i++) {
@@ -609,10 +591,13 @@ handleChangeCantidad(val){
     }
     else
     {
+      this.factura.strCompany_Cod=this.codigoCompania;
+      this.factura.strCompany_Desc=this.descripcionCompania;
       diariogeneralService.GetLastCodCorrelativo()
       .then(res=>{
         this.CodigoGeneral=res;
         this.diarioInput=[];
+        this.movimientoInven=[];
         this.factura.dtmDoc_Acc_Date=new Date(this.fecha_ejecucion);
         this.factura.dtmDoc_Date=new Date();
         this.factura.strDoc_Status="00";
@@ -770,6 +755,10 @@ handleChangeCantidad(val){
               diariogeneralService.createDiarioGeneral(this.diarioInput[i])
               .then(response1=>{}).catch(ex=>{alert('error ingresar diario')})
             }
+            for(var i=0;i<this.movimientoInven.length;i++){
+              movimientoService.updateMovimiento(this.movimientoInven[i])
+              .then(response1=>{}).catch(ex=>{alert('movimiento inventario')})
+            }
             this.factura=new FacturaModel();
             this.factura.fltValue_Doc=0;
             this.factura.fltOperation_NoTax_Corp=0;  
@@ -824,6 +813,7 @@ handleChangeCantidad(val){
       selectData:'',
       selectType:'',
       dataProveedor:[],
+      ordencompra:[],
       ordencompraDetalle:[],
       facturadetalle:[],
       codigoCompania:'001',

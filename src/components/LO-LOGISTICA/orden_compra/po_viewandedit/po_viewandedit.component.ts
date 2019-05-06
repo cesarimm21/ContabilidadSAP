@@ -507,6 +507,8 @@ export default class ViewandeditPOComponent extends Vue {
     //#region [LOAD GET]
     loadPO(){
         debugger;
+        var codigPr = this.$route.query.data;
+        var vista=this.$route.query.vista;
         var modulo = this.$route.query.vista;
 
         if(modulo==undefined){
@@ -541,7 +543,7 @@ export default class ViewandeditPOComponent extends Vue {
             ordenCompraService.getPODetalleId(res[0].intIdPOH_ID)
             .then(resd=>{
               this.OrdenCompra=res[0];
-              this.poDetalle1=resd;
+              this.ordencompraDetalle=resd;
             })
             .catch(error=>{
             })     
@@ -564,7 +566,7 @@ export default class ViewandeditPOComponent extends Vue {
         }, 200)
         await ordenCompraService.aprobarPO(this.OrdenCompra)
         .then(res=>{
-            this.OrdenCompra.listaDetalle=this.poDetalle1;
+            this.OrdenCompra.listaDetalle=this.ordencompraDetalle;
             ordenCompraService.inventarioPO(this.OrdenCompra)
             .then(res=>{
                 setTimeout(() => {
@@ -572,6 +574,7 @@ export default class ViewandeditPOComponent extends Vue {
                     this.issave=true;
                     this.textosave='Se aprobó correctamente. '+res.strPO_NO;
                     this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+                    router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
                 }, 600)
             })
             .catch(error=>{

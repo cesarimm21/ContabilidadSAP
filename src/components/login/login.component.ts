@@ -115,6 +115,7 @@ export default class LoginComponent extends Vue {
         this.companiaSelectModel=this.companiaModel[i];
         localStorage.setItem('compania_cod',this.companiaSelectModel.strCompany_Cod);
         localStorage.setItem('compania_name',this.companiaSelectModel.strCompany_Name);
+        localStorage.setItem('compania_ID',this.companiaSelectModel.intIdCompany_ID.toString());
       }
     }
     

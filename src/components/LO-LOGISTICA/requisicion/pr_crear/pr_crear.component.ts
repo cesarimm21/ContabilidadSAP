@@ -224,7 +224,7 @@ export default class CrearPRComponent extends Vue {
     super();
     this.fecha_actual=(new Date()).toString();
     debugger;
-   
+    Global.nameComponent="requisicion"
     this.cell_ocultar='#e4e2e2';        
     this.blntiporequisicion=false;
     this.blncategorialinea=false;

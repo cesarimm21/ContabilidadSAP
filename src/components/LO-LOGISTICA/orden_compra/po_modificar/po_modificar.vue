@@ -21,6 +21,15 @@
                                 </div>
                                 <label class="sinLinea el-form-item__label col-md-8" >{{descripcionCompania}}</label>
                             </div>
+                            <div class="form-group row " style="margin-top:6px;">
+                                <label class="el-form-item__label col-md-2" >Codigo PO</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-2">
+                                        <el-input size ="small" type="text">
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <br/>
@@ -39,27 +48,38 @@
                                         highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
+                                        @header-click="headerclick"
                                         @current-change="handleCurrentChange" >          
-                                        <el-table-column  sortable prop="strPO_NO" min-width="60" label="Codigo PO">
+                                        <el-table-column  
+                                        :render-header="filterstrPO_NO"
+                                        sortable prop="strPO_NO" min-width="60" label="Codigo PO">
                                         </el-table-column>
                                         <el-table-column
+                                            :render-header="filterstrRequis_NO"
                                             prop="strRequis_NO" sortable  min-width="60"
                                             label="Codigo Requisicion">
                                         </el-table-column>
                                         <el-table-column
+                                            :render-header="filterstrPO_Desc"
                                             prop="strPO_Desc" sortable min-width="160"
                                             label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
+                                            :render-header="filterstrVendor_Desc"
                                             prop="strVendor_Desc" sortable
                                             label="Proveedor">
                                         </el-table-column>
                                         <el-table-column
+                                            :render-header="filterdtmProcess_Date"
                                             prop="dtmProcess_Date" sortable width="200"
                                             label="Fecha ejecucion">
+                                             <template scope="scope">
+                                                <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
+                                            </template>
                                         </el-table-column>   
                                         <el-table-column
-                                            prop="fltTot_Rec_QYT" sortable width="100"
+                                            :render-header="filterfltTotal_Val"
+                                            prop="fltTotal_Val" sortable width="100"
                                             label="Valor total" >
                                         </el-table-column>
 

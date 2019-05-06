@@ -14,8 +14,8 @@
               </div>
               <div class="row">
                     <div class="col-sm-12" style="margin-top: 10px;">
-                        <el-tabs type="border-card">
-                            <el-tab-pane label="Datos generales">
+                        <el-tabs type="border-card" @tab-click="handleClick">
+                            <el-tab-pane label="Datos generales" >
                                 <div class="container">
                                     <div class="row">
                                          <div class="col-md-12">                       
@@ -325,7 +325,7 @@
                         </el-tabs>
                     </div>
                   </div>
-                <div class="row">
+                <div class="row" v-if="cardView">
                     <div class="col-sm-12" style="margin-top: 10px; ">
                         <el-tabs type="border-card" style="margin-right:100px;">
                             <el-tab-pane label="Retención">
@@ -362,8 +362,8 @@
                                                 <label class="el-form-item__label col-md-1" >Detracción</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
-                                                    <el-input size ="small" v-model="Proveedor.strDetraccion_Cod"  placeholder="">
-                                        
+                                                    <el-input size ="small" @blur="desactivar_detraccion" @focus="activar_detraccion" v-model="Proveedor.strDetraccion_Cod">                            
+                                                        <el-button v-if="btnactivardetraccion && !detraccionVisible" slot="append" class="boton" icon="fa fa-clone" @click="detraccionDialog()"></el-button> 
                                                     </el-input>
                                                     </div>
                                                 </div>  
@@ -384,7 +384,7 @@
                     </div>
                 </div>
           </el-card>
-            <el-card class="box-card">
+            <el-card class="box-card" v-if="cardView">
               <div slot="header" class="headercard">
                  <span class="labelheadercard" > Referencia Proveedor</span>
                  
@@ -564,6 +564,11 @@
     <!--DIALOG BUSQUEDA IMPUESTO-->
     <el-dialog title="Busqueda Impuesto"  :visible.sync="impuestoVisible" @close="handleCloseImpuesto" size="small" >
         <bimpuesto v-on:impuestoseleccionado="impuestoSelect($event)" v-on:impuestoClose="handleCloseImpuesto()">
+        </bimpuesto>
+    </el-dialog>
+    <!--DIALOG BUSQUEDA DETRACCION-->
+    <el-dialog title="Busqueda Impuesto"  :visible.sync="detraccionVisible" @close="handleCloseImp" size="small" >
+        <bimpuesto v-on:impuestoseleccionado="detraccionSelect($event)" v-on:impuestoClose="handleCloseImp()">
         </bimpuesto>
     </el-dialog>
   </div>  

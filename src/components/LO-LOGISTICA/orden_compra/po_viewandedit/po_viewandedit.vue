@@ -169,11 +169,12 @@
                                         @selection-change="handleSelectionChange"
                                         @current-change="handleCurrentChange"
                                         >
-                                        <el-table-column
-                                            type="selection"
-                                            width="45">
-                                        </el-table-column>
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column 
+                                            prop="intPO_Item_NO" label="item" width="40"
+                                            >
+                                            <template scope="scope">
+                                                <label style="width:100%;    margin: 0rem;" >&nbsp;{{ scope.row.intPO_Item_NO }}</label>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column  sortable prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
                                         </el-table-column>
@@ -192,17 +193,6 @@
                                         <el-table-column
                                             prop="strPO_Item_Desc" sortable width="200"
                                             label="Descripción">
-                                        </el-table-column>
-                                        <el-table-column 
-                                            prop="blnCheck"
-                                            width="100"
-                                            label="Incluir Costo">
-                                            <template scope="scope">
-                                             <el-checkbox class="newCheckBox" v-if="(scope.row != editing.row)||(scope.row === editing.row)" v-focus size="small" v-model="scope.row.blnCheck" @change="clickCheck(scope.row,$event,scope.column.property)">
-                                            </el-checkbox>
-                                            <!-- <el-checkbox class="newCheckBox" v-else @change="clickCheck(scope.row,$event,scope.column.property)" v-model="scope.row.blnCheck"></el-checkbox> -->
-                                                <!-- <label  v-else @click="clickCheck(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.blnCheck }}</label> -->
-                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltPO_QTY_I" sortable width="100"
@@ -277,11 +267,11 @@
         <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
-                <div class="col-sm-2">
+                <!-- <div class="col-sm-2">
                     <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
                          <b-progress-bar :value="valuem" :label="valuem + '%'" />
                     </b-progress>
-                </div>
+                </div> -->
                 <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>

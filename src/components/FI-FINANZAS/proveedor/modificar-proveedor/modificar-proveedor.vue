@@ -74,6 +74,15 @@
                                     </el-table-column>  
                                     <el-table-column :render-header="filterstrAddress" prop="strAddress" label="Dirección"  width="260">
                                     </el-table-column> 
+                                     <el-table-column 
+                                            prop="chrStatus" align="center"  width="70"
+                                            label="Estado">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.chrStatus === 'A' ? 'success' : 'danger'"
+                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                            </template>
+                                        </el-table-column>
                                     </el-table>
                                 </div>
                             </div>
@@ -145,10 +154,10 @@
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal>
-    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
+    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
       <div style="height:85px"> 
         <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
+        <span style="font-size:13px">¿Desea Eliminar el documento ?</span>
       </div>
       <footer class="modal-footer">
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>

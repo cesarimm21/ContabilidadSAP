@@ -18,9 +18,17 @@ import { Notification } from 'element-ui';
 })
 export default class ButtonsAccionsComponent extends Vue { 
   filter:boolean=false;
+  falseortrue:boolean;
   constructor(){
     super();
+    if(Global.nameComponent=='factura'){
+      this.falseortrue=true;
+    }
+    else{
+      this.falseortrue=false;
+    }
   } 
+  
   BuscarSome(){
     this.$emit('handleClickInParent');
     if(Global.nameComponent==='aprobar-hes'){
@@ -31,6 +39,9 @@ export default class ButtonsAccionsComponent extends Vue {
     if(Global.nameComponent=='factura'){      
       this.$emit('changeIcon',Global.nameComponent);
     }    
+  }
+  ActivaCheck(){
+    this.$emit('ActivaCheck');
   }
   ValidarItem(){
     this.$emit('validarView');
@@ -71,6 +82,7 @@ export default class ButtonsAccionsComponent extends Vue {
       user: {
         authenticated: false
       },
+      // falseortrue:Global.falseortrue,
       imagenLoad:'',
       data:{
         // Usuario:localStorage.getItem('User_Nombre'),
