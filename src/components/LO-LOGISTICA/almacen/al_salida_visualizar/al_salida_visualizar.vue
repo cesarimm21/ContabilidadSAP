@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Visualizar Material</span>
+            <span class="labelheadercard" >Visualizar Salida Material</span>
         </div>
         <!-- <div class="row bodycard">
             <div class="container">

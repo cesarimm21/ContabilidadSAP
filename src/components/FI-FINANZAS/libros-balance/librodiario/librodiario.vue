@@ -73,7 +73,7 @@
                                 <!-- <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions> -->
                             </div>
                             <div class="col-md-12" >
-                                <div class="row bodycard" style="background: white;margin-top: 0px;">
+                                <div class="row bodycard" id="out-table" style="background: white;margin-top: 0px;">
                                     <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
@@ -82,8 +82,6 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="38">
-                                        </el-table-column>
                                         <el-table-column  sortable prop="periodo" width="100" label="Periodo">
                                             <template scope="scope">
                                             <label  >&nbsp;{{ scope.row.periodo }}</label>

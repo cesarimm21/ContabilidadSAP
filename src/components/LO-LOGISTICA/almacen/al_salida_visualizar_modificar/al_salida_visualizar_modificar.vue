@@ -8,9 +8,9 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Material</span>
+            <span class="labelheadercard" >Modificar Salida Material</span>
         </div>
-        <!-- <div class="row bodycard">
+        <!--<div class="row bodycard">
             <div class="container">
                  <div class="row">
                     <div class="col-sm-6" >

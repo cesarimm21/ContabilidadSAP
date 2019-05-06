@@ -27,7 +27,7 @@ import { Notification } from 'element-ui';
 import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
-
+import XLSX from 'xlsx';
 import { SalidaModel } from '@/modelo/maestro/salida';
 
 
@@ -332,6 +332,12 @@ export default class LibroDiarioComponent extends Vue {
   
 
   ExportarExcel(){
+       /* generate workbook object from table */
+			var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
+      /* generate file and force a download*/
+      
+      XLSX.writeFile(wb, "Libro_Diario_"+ this.getParseDate(new Date())+".xlsx");
+      
     // var animals= [
     //   {"name": "cat", "category": "animal"}
     //   ,{"name": "dog", "category": "animal"}

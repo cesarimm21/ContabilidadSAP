@@ -641,12 +641,18 @@ export default class CrearPRComponent extends Vue {
       this.blncentrocosto=true;
       this.blnunidadmedida=true;
       this.blnproveedor=true;
+      this.CompleteData=[];
       this.tableData1=[];
-      
-      for(var i=0;i<10;i++){
+      for(var i=0;i<this.totalRegistros;i++){
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        this.tableData1.push(reqDetalle);
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.strDescription="";
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
       }
+      this.CompleteData1=this.CompleteData;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
     }
     else{
       this.cell_ocultar='#e4e2e2';        
@@ -658,11 +664,19 @@ export default class CrearPRComponent extends Vue {
       this.blnproveedor=false;
       this.tableData1=[];
       
-      for(var i=0;i<10;i++){
+      this.CompleteData=[];
+      this.tableData1=[];
+      for(var i=0;i<this.totalRegistros;i++){
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.strCateg_Account="ST"
-        this.tableData1.push(reqDetalle);
+        reqDetalle.strCateg_Account="ST";
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.strDescription="";
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
       }
+      this.CompleteData1=this.CompleteData;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
     }
     // this.btnactivaralmacen=false;
     // this.btnactivarproveedor=false;

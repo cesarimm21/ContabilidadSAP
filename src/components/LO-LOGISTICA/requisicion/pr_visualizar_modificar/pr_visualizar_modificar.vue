@@ -15,6 +15,17 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input :disabled="true" size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="requisicionModel.strCompany_Cod"  @keyup.enter.native="enterCompania(productoModel.strCompany_Cod)"  @keyup.delete.native="borrarCompania()" placeholder="">
+                                    <el-button :disabled="true" v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{requisicionModel.strCompany_Desc}}</span>
+                        </div> 
+                        <div class="form-group row ">
                             <label class="el-form-item__label col-md-2" >Código Requisición</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
@@ -84,7 +95,7 @@
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrWHS_Cod"
                                             prop="strWHS_Cod"  width="100"
-                                            label="Codigo Almacen">
+                                            label="Cod Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>

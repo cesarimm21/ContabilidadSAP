@@ -799,6 +799,7 @@ export default class CrearMaterialComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
+    debugger;
     this.productoModel.strMaterial_Class=this.clasematerialSelectModel.strMatClass_Cod;
     this.productoModel.intIdMatClass_ID=this.clasematerialSelectModel.intIdMatClass_ID;
     this.productoModel.strMatClass_Desc=this.clasematerialSelectModel.strMatClass_Desc;
