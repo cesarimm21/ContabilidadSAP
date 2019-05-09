@@ -1,7 +1,7 @@
 <template>
     <div class="crear-po">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarEditPO="guardarPO($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        <quickaccessmenu v-on:guardarTodo="guardarPO($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
@@ -47,7 +47,7 @@
                                     <div class="input-group mb-3" >
                                     <el-input
                                     size ="small"
-                                    v-model="OrdenCompra.strRequis_NO" :disabled="impDisabled">
+                                    v-model="OrdenCompra.strRequis_NO" disabled>
                                     </el-input>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
                                     @focus="activar_pro"
                                     v-model="OrdenCompra.strVendor_NO"
                                     :disabled="impDisabled">
-                                     <el-button v-if="btnactivarpro && !dialogRequisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadPro()" :disabled="impDisabled"></el-button>
+                                     <el-button v-if="btnactivarpro && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="loadPro()" :disabled="impDisabled"></el-button>
                                     </el-input>
                                     </div>
                                 </div>
