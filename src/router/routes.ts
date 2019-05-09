@@ -24,6 +24,7 @@ import ViewAndEditProveedorComponent from '../components/FI-FINANZAS/proveedor/V
 import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
 import ModificarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante/modificar-ingreso-comprobante.vue'
 import VisualizarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante/ver-ingreso-comprobante.vue'
+import ViewAndEditICComponent from '../components/FI-FINANZAS/ingreso-comprobante/viewandedit_ic/viewandedit_ic.vue'
 import CrearSalidaAlmacenComponent from '../components/LO-LOGISTICA/almacen/al_salida/al_salida.vue'
 import CrearMaterialComponent from '../components/LO-LOGISTICA/almacen/al_crear/al_crear.vue'
 import VisualizarMaterialComponent from '../components/LO-LOGISTICA/almacen/al_visualizar/al_visualizar.vue'
@@ -46,7 +47,7 @@ import ModificarEmpleadoComponent from '../components/HR-Planilla/empleado/emple
 import CrearPOComponent from '../components/LO-LOGISTICA/orden_compra/po_crear/po_crear.vue'
 import ModificarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.vue'
 import VisualizarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_visualizar/po_visualizar.vue'
-import ViewandeditPOComponent from '../components/LO-LOGISTICA/orden_compra/po_viewandedit/po_viewandedit.vue'
+import ViewAndEditPOComponent from '../components/LO-LOGISTICA/orden_compra/po_viewandedit/po_viewandedit.vue'
 import AprobarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_aprobacion/po_aprobacion.vue'
 import AprobadorPRComponent from '../components/LO-LOGISTICA/requisicion/pr_aprobador/pr_aprobador.vue'
 import AprobarSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidaaprobar/al_salidaaprobar.vue'
@@ -60,6 +61,15 @@ import ModificarClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_
 
 import VisualizarClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/visualizar_clase_material/visualizar_clase_material.vue'
 import ModificarVisualizarClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_visualizar_clase_material/modificar_visualizar_clase_material.vue'
+import CrearImpuestoComponent from '../components/XX-CONFI/maestro_datos/impuesto/crear_impuesto/crear_impuesto.vue'
+import ModificarImpuestoComponent from '../components/XX-CONFI/maestro_datos/impuesto/modif_impuesto/modif_impuesto.vue'
+import VisualizarImpuestoComponent from '../components/XX-CONFI/maestro_datos/impuesto/visua_impuesto/visua_impuesto.vue'
+import ViewAndEditImpuestoComponent from '../components/XX-CONFI/maestro_datos/impuesto/viewandedit_impuesto/viewandedit_i.vue'
+
+import CrearTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/crear_tcambio/crear_tcambio.vue'
+import ModificarTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/edit_tcambio/edit_tcambio.vue'
+import VisualizarTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/visua_tcambio/visua_tcambio.vue'
+import ViewAndEditTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/viewandedit_tcambio/viewandedit_t.vue'
 
 import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
 import  CrearCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos/crear-centro-costos.vue';
@@ -204,6 +214,46 @@ export default [
         name:'visualizar_clase_material'
       },
       {
+        path:'XX-CONFI/maestro_datos/tipo_cambio/crear_tcambio',
+        component:CrearTipoCambioComponent,
+        name:'crear-tipo-cambio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_cambio/edit_tcambio',
+        component:ModificarTipoCambioComponent,
+        name:'modificars-tipo-cambio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_cambio/visua_tcambio',
+        component:VisualizarTipoCambioComponent,
+        name:'visualizar-tipo-cambio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_cambio/viewandedit_t',
+        component:ViewAndEditTipoCambioComponent,
+        name:'viewandedit-tipo-cambio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/impuesto/crear_impuesto/crear_impuesto',
+        component:CrearImpuestoComponent,
+        name:'crear-impuesto'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/impuesto/modif_impuesto/modif_impuesto',
+        component:ModificarImpuestoComponent,
+        name:'modificar-impuesto'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/impuesto/visua_impuesto',
+        component:VisualizarImpuestoComponent,
+        name:'modificar-impuesto'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/impuesto/viewandedit_impuesto',
+        component:ViewAndEditImpuestoComponent,
+        name:'viewandedit-impuesto'
+      }, 
+      {
         path:'LO-LOGISTICA/orden_compra/po_modificar',
         component:ModificarPOComponent,
         name:'modificar-po'
@@ -215,7 +265,7 @@ export default [
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_viewandedit',
-        component:ViewandeditPOComponent,
+        component:ViewAndEditPOComponent,
         name:'viewandedit-po'
       }, 
       {
@@ -343,6 +393,11 @@ export default [
       {
         path:'FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante',
         component:VisualizarIngresoComprobanteComponent,
+        name:'modificar'
+      },    
+      {
+        path:'FI-FINANZAS/ingreso-comprobante/viewandedit_ic',
+        component:ViewAndEditICComponent,
         name:'modificar'
       },    
       {

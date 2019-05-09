@@ -40,7 +40,7 @@ import {MovimientoInventarioModel} from '@/modelo/maestro/movimientoinventario';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Alert } from '@/types';
 @Component({
-  name: 'crear-ingreso-comprobante',
+  name: 'viewandedit-ingreso-comprobante',
   components:{
   'buttons-accions':ButtonsAccionsComponent,
   'bproveedor':BProveedorComponent,
@@ -50,7 +50,7 @@ import { Alert } from '@/types';
   'bimpuesto':BImpuestoComponent
   }
 })
-export default class CrearIngresoComprobanteComponent extends Vue {
+export default class ViewAndEditICComponent extends Vue {
   nameComponent:string;
   habilitar:boolean=false;
   habilitarPane:boolean=true;
@@ -130,25 +130,36 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarImpuesto:boolean=false;
   columnView:boolean=false;
   ImpuestoDisabled:boolean=true;
-
+  nameFuncion:string;
+  impDisabled:boolean=false;
   constructor(){    
     super();
     this.cell_ocultar='#e4e2e2';  
     Global.nameComponent='factura';      
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
     this.fecha_ejecucion1=Global.getParseDate(new Date().toDateString());  
-    this.GetAllPeriodoLast()
+    setTimeout(() => {
+        this.load();
+      }, 200)
   }
   
-  GetAllPeriodoLast(){
+  load(){
+        this.factura= JSON.parse(this.$route.query.data);    
+        var vista=this.$route.query.vista;       
+        if(vista=='Modificar'){
+            this.nameFuncion='Modificar Ingreso Comprobante';
+            this.impDisabled=false;
+        }
+        if(vista=='Visualizar'){
+            this.nameFuncion='Visualizar Ingreso Comprobante';
+            this.impDisabled=true;
+        }           
+
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');    
-    periodoService.GetAllPeriodoLast()
+    facturaService.GetFacturaDetalle(this.factura.strVoucher_NO)
     .then(response=>{
-      this.periodo=response;
-      this.factura.strPeriod_NO=this.periodo.strPeriod_NO;
-      this.factura.dtmPeriod=this.periodo.dtmPeriod;
-      this.fecha_actual=Global.getDate(this.factura.dtmPeriod); 
+      this.facturadetalle=response;
     })
   }
   DateforGetChanceDolar(){    
@@ -829,7 +840,8 @@ handleChangeCantidad(val){
       habilitar:false,
       habilitarPane:true,
       multipleSelection:[],
-      CodigoGeneral:''
+      CodigoGeneral:'',
+      nameFuncion:''
     }
   }
   

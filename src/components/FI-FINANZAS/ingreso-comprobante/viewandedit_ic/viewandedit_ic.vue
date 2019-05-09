@@ -1,11 +1,11 @@
 <template>
     <div class="crear-ingreso-comprobante">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:SaveFactura="SaveFactura($event)" v-on:backPage="backPage($event)" v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        <quickaccessmenu  v-on:backPage="backPage($event)" v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear ingreso comprobante</span>
+                <span class="labelheadercard" > {{nameFuncion}}</span>
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -25,11 +25,21 @@
                             </div>                           
                             
                             <div class="form-group row">
+                                <label class="el-form-item__label col-md-3" >Voucher</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input class="validador" size ="small" v-model="factura.strVoucher_NO" type="text" disabled>  
+                                    </el-input>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group row">
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_OrdenCompra" @focus="activar_OrdenCompra" v-model="factura.strPO_NO" type="text">  
-                                        <el-button v-if="btnactivarOrdenCompra && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenCompra()"></el-button>                           
+                                    <el-input class="validador" size ="small" @blur="desactivar_OrdenCompra" @focus="activar_OrdenCompra" v-model="factura.strPO_NO" type="text" disabled>  
+                                        <el-button v-if="btnactivarOrdenCompra && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenCompra()" disabled></el-button>                           
                                     </el-input>
                                     </div>
                                 </div>
@@ -56,8 +66,8 @@
                                <label class="el-form-item__label col-md-3" >Tipo Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="factura.strType_Doc" >                            
-                                         <el-button v-if="btnactivarTipoDocumento && !dialogTipoDocumento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDocumento()"></el-button> 
+                                    <el-input class="validador" size ="small"   @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="factura.strType_Doc" :disabled="impDisabled">                            
+                                         <el-button v-if="btnactivarTipoDocumento && !dialogTipoDocumento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoDocumento()" :disabled="impDisabled"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -69,14 +79,14 @@
                                 <label class="el-form-item__label col-md-3" >Serie</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small"   v-model="factura.strSerie_Doc" :maxlength="4"><!-- maxlength="4" type="text">-->                            
+                                    <el-input class="validador" size ="small"   v-model="factura.strSerie_Doc" :maxlength="4" :disabled="impDisabled"><!-- maxlength="4" type="text">-->                            
                                     </el-input>
                                     </div>
                                 </div> 
                                 <label class="el-form-item__label col-md-3" >N. Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="factura.strDocument_NO" :maxlength="15">                            
+                                    <el-input class="validador" size ="small" v-model="factura.strDocument_NO" :maxlength="15" :disabled="impDisabled">                            
                                     </el-input>
                                     </div>
                                 </div>                               
@@ -97,15 +107,16 @@
                                                     style="width:128px !important"
                                                     format="dd.MM.yyyy"
                                                     size="small" v-model="fecha_ejecucion1" 
-                                                    @change="DateforGetChanceDolar()">
+                                                    @change="DateforGetChanceDolar()"
+                                                    :disabled="impDisabled">
                                         </el-date-picker>
                                     </div>
                                 </div>
                                  <label class="el-form-item__label col-sm-3" >Moneda</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strCurrency_Doc">                            
-                                            <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
+                                        <el-input class="validador" size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="factura.strCurrency_Doc" :disabled="impDisabled">                            
+                                            <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()" :disabled="impDisabled"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
@@ -114,7 +125,7 @@
                                 <label class="el-form-item__label col-md-3">Descripción</label>
                                 <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9">
-                                        <el-input size ="small" v-model="factura.strDesc_Doc"  type="text">                            
+                                        <el-input size ="small" v-model="factura.strDesc_Doc"  type="text" :disabled="impDisabled">                            
                                         </el-input>
                                     </div>
                                 </div>
@@ -128,8 +139,8 @@
                                 <label class="el-form-item__label col-md-3" >Diario</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" >                            
-                                         <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
+                                    <el-input class="validador" size ="small" @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" :disabled="impDisabled">                            
+                                         <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()" :disabled="impDisabled"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -285,7 +296,7 @@
                                             <label class="el-form-item__label col-sm-3" >Fecha Vencimiento</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input class="validador" type="date"  size ="small" style="font-size:11px;" v-model="fecha_vencida" @change="DateVencida()"></el-input>
+                                                <el-input class="validador" type="date"  size ="small" style="font-size:11px;" v-model="fecha_vencida" @change="DateVencida()" :disabled="impDisabled"></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -293,8 +304,8 @@
                                             <label class="el-form-item__label col-sm-3" >Impuesto(IGV)</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                 <el-input class="validador" size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strTax_Cod"  :disabled="columnView">
-                                                    <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto('A')"></el-button> 
+                                                 <el-input class="validador" size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strTax_Cod"  :disabled="impDisabled" >
+                                                    <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto('A')" :disabled="impDisabled"></el-button> 
                                                 </el-input>
                                                 </div>
                                             </div>
@@ -604,8 +615,8 @@
 </template>
 <script>
 
-import CrearIngresoComprobanteComponent from '@/components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.component'
-export default CrearIngresoComprobanteComponent
+import ViewAndEditICComponent from '@/components/FI-FINANZAS/ingreso-comprobante/viewandedit_ic/viewandedit_ic.component'
+export default ViewAndEditICComponent
 </script>
 <style scoped>
 .sinLinea{

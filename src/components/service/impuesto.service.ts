@@ -15,6 +15,24 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  CreateImpuesto(impuesto){
+    return axios.post(CONFIG.API_URL+'impuesto/create', impuesto)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  UpdateImpuesto(impuesto){
+    return axios.post(CONFIG.API_URL+'impuesto/update', impuesto)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  DeleteImpuesto(intIdWH_ID,strModified_User){
+    return axios.get(CONFIG.API_URL+'impuesto/delete/'+intIdWH_ID+'/'+strModified_User)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

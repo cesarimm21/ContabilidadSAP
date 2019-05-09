@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" >{{textTitle}}</span>
+                <span class="labelheadercard" >Visualizar PO</span>
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -37,7 +37,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions ></buttons-accions>
+                                <buttons-accions  v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Buscar="Buscar" v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:EliminarItem="EliminarItem()" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -52,26 +52,26 @@
                                         @current-change="handleCurrentChange" >          
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                        sortable prop="strPO_NO" min-width="60" label="Codigo PO">
+                                         prop="strPO_NO" min-width="60" label="Codigo PO">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO" sortable  min-width="60"
+                                            prop="strRequis_NO"   min-width="60"
                                             label="Codigo Requisicion">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrPO_Desc"
-                                            prop="strPO_Desc" sortable min-width="160"
+                                            prop="strPO_Desc"  min-width="160"
                                             label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrVendor_Desc"
-                                            prop="strVendor_Desc" sortable
+                                            prop="strVendor_Desc" 
                                             label="Proveedor">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterdtmProcess_Date"
-                                            prop="dtmProcess_Date" sortable width="200"
+                                            prop="dtmProcess_Date"  width="200"
                                             label="Fecha ejecucion">
                                              <template scope="scope">
                                                 <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
@@ -79,7 +79,7 @@
                                         </el-table-column>   
                                         <el-table-column
                                             :render-header="filterfltTotal_Val"
-                                            prop="fltTotal_Val" sortable width="100"
+                                            prop="fltTotal_Val"  width="100"
                                             label="Valor total" >
                                         </el-table-column>
 

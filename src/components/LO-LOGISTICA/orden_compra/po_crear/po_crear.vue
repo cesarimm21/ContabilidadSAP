@@ -26,6 +26,7 @@
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
+                                    class="validador"
                                     size ="small"
                                     @blur="desactivar_requisicion"
                                     @focus="activar_requisicion"
@@ -60,7 +61,9 @@
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"
+                                    <el-input 
+                                    class="validador"
+                                    size ="small"
                                     @blur="desactivar_pro"
                                     @focus="activar_pro"
                                     v-model="OrdenCompra.strVendor_NO">
@@ -81,7 +84,9 @@
                                 <label class="el-form-item__label col-md-3" >Moneda</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr">
+                                        <el-input
+                                        class="validador"
+                                         size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr">
                                             <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button>
                                         </el-input>
                                     </div>

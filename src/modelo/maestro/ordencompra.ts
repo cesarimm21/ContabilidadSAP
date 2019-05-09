@@ -24,6 +24,8 @@ export class OrdenCompraModel {
     dtmProcess_Date:Date ;
     strRequis_NO:string ;
     strRequis_Item_NO:string;
+    strWHS_Cod:string;
+    strWHS_Desc:string;
     strPO_Item_Type:string;
     strVendor_NO:string;
     intChange_Count:number;

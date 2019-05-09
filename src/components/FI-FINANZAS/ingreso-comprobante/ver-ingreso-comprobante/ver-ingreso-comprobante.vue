@@ -1,93 +1,177 @@
 <template>
-    <div class="modificar-ingreso-comprobante">
-      <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-      <quickaccessmenu v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
-      </ol>
-    <el-card class="box-card">
-      <div slot="header" class="headercard">
-        <span class="labelheadercard" > Visualizar ingreso comprobante</span>
-      </div>   
-      <div class="row bodycard">
-          <div class="container">
-            <div class="row" style="margin-top: 3px;">
-              <div class="col-sm-6">
-                <div class="form-group row ">
-                  <label class="el-form-item__label col-md-3" >Ingreso comprobante</label>
-                    <div class="col-md-3 grupolabel">
-                      <div class="input-group mb-3" >
-                        <el-input  
-                          size ="small" 
-                          @blur="desactivar_ingreso" 
-                          @focus="activar_ingreso"
-                          v-model="ingresoSelect.strVoucher_NO"
-                          :maxlength="8" >
-                          <el-button v-if="btnactivaringreso && !dialogingreso" slot="append" class="boton" icon="fa fa-clone" @click="loadIngreso()"></el-button> 
-                        </el-input>
-                      </div>
-                    </div>
-                  <label class="el-form-item__label col-md-4" ></label>
-                </div>
-              </div>
+    <div class="modificar-po">
+        <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
+        <quickaccessmenu v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        </ol>
+        <el-card class="box-card">
+            <div slot="header" class="headercard">
+                <span class="labelheadercard" >Visualizar Ingreso Comprobante</span>
             </div>
-          </div>
-      </div>
-    </el-card>
-    <el-dialog title="Busqueda Ingreso comprobante"  :visible.sync="dialogingreso" size="small" >
-            <div>
-                <el-card class="box-card">
-                <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar ingreso</span>
-                </div>
-                <div class="row bodycard">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-2" >Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="" v-model="codigoInput" :maxlength="8">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            @click="loadIngresoByCod()"
-                                            > </el-button>
-                                </el-input>
+            <div class="row bodycard">
+                <div class="container">
+                    <div class="row" style="margin-top: 3px;">
+                        <div class="col-sm-8">
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Compañia</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-2">
+                                    <el-input size ="small" type="text" v-model="companyCod" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-8" >{{companyName}}</label>
+                            </div>
+                            <div class="form-group row " style="margin-top:6px;">
+                                <label class="el-form-item__label col-md-2" >Voucher</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-2">
+                                        <el-input size ="small" type="text" v-model="Factura.strVoucher_NO">
+                                        </el-input>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <div class="row">
+                    <div class="col-sm-12" >
+                        <el-card class="box-card" style="margin-left: -10px;">
+                            <div slot="header" class="headercard" style="margin-top: -4px;">
+                                <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                            </div>
+                            <div class="col-md-12" >
+                                <div class="row bodycard" style="background: white;margin-top: 0px;">
+                                    <el-table
+                                        :max-height="sizeScreen"
+                                        :data="gridFactura"
+                                        highlight-current-row
+                                        class="ExcelTable2007"
+                                        @header-click="headerclick"
+                                        @current-change="handleCurrentChange" >          
+                                        <el-table-column  
+                                         type="index" min-width="50" label="Item">
+                                        </el-table-column>
+                                        <el-table-column  
+                                        :render-header="filterstrVoucher_NO"
+                                         prop="strVoucher_NO" min-width="100" label="Voucher">
+                                        </el-table-column>
+                                         <el-table-column
+                                            :render-header="filterstrSerie_Doc"
+                                            prop="strSerie_Doc"  width="100"
+                                            label="Serie">
+                                        </el-table-column>   
+                                        <el-table-column
+                                            :render-header="filterstrDocument_NO"
+                                            prop="strDocument_NO"  width="100"
+                                            label="Nro. Documento" >
+                                        </el-table-column>
+                                        <el-table-column  
+                                        :render-header="filterstrPO_NO"
+                                         prop="strPO_NO" min-width="100" label="PO">
+                                        </el-table-column>
+                                        <el-table-column
+                                            :render-header="filterstrDesc_Doc"
+                                            prop="strDesc_Doc"   min-width="350"
+                                            label="Descripcion">
+                                        </el-table-column>
+                                        <el-table-column
+                                            :render-header="filtersdtmDoc_Date"
+                                            prop="dtmDoc_Date"  min-width="100"
+                                            label="Fecha emision">
+                                        </el-table-column>
+                                        <el-table-column
+                                            :render-header="filtersstrVendor_Desc"
+                                            prop="strVendor_Desc" 
+                                            label="Proveedor">
+                                        </el-table-column>                                       
+
+                                    </el-table>
+                                </div>
+                            </div>
+                        </el-card>
+                    </div>
                 </div>
-                <el-table
-                    :data="ingresoData"
-                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                    height="250"
-                    highlight-current-row
-                    @row-dblclick="selectOrdenCompra"
-                    @current-change="selectOrdenCompra">
-                    <el-table-column  prop="strVoucher_NO" label="Codigo" width="180">
-                    </el-table-column>  
-                    <el-table-column  prop="strDesc_Doc" label="Descripción" style="width: 70% !important;">
-                    </el-table-column> 
-                </el-table>
-            </el-card>
-            <br/>
-            <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkIngreso()">
-                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
-                </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeIngreso()">
-                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
-                </el-button>
-            </footer>
+
+
+                </div>
             </div>
-        </el-dialog>
-  </div>   
+        </el-card>
+        <div class="footer1">
+        <div class="row">
+            <div class="col-sm-9" style="text-align:left" >
+                <!-- <div class="col-sm-2">
+                    <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
+                         <b-progress-bar :value="valuem" :label="valuem + '%'" />
+                    </b-progress>
+                </div>
+                <img  src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <span class="footertext2" style="" >{{textosave}}</span> -->
+            </div>
+            <div class="col-sm-3">
+                <div style="text-align:right">
+                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">SQV1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">PQM1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <span class="footertext2">OVR1</span>
+                    <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+                    <i class="fa fa-unlock" aria-hidden="true" style="margin-left: 0.3rem;margin-right: 1rem;color:#7b7b7b"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+      <div style="height:85px">
+        <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
+        <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="el-form-item__label col-md-2" >Columna</label>
+                    <div class="col-md-7 grupolabel">
+                        <div class="input-group mb-3" >
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="el-form-item__label col-md-2" >Buscar</label>
+                    <div class="col-md-7 grupolabel">
+                        <div class="input-group mb-3" >
+                            <el-input size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">
+                                
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
+      </footer>
+    </b-modal>
+    </div>
 </template>
 <script>
-
 import VerIngresoComprobanteComponent from '@/components/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante/ver-ingreso-comprobante.component'
 export default VerIngresoComprobanteComponent
 </script>
 <style scoped>
+.sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+}
+.el-table__body-wrapper{
+    height: 50%;
+}
 </style>

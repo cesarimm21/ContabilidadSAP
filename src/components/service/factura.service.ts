@@ -23,6 +23,18 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetFacturaAll(strCompany_Cod){ 
+    return axios.get(CONFIG.API_URL+'factura/'+strCompany_Cod)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetFacturaDetalle(strVoucher_NO){ 
+    return axios.get(CONFIG.API_URL+'facturadetalle/'+strVoucher_NO)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 
 }
   
