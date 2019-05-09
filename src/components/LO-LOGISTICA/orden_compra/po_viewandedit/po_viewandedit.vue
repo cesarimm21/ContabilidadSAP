@@ -1,11 +1,20 @@
 <template>
     <div class="crear-po">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarPO="guardarPO($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        <quickaccessmenu v-on:guardarEditPO="guardarPO($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
                 <span class="labelheadercard" > {{nameFuncion}}</span>
+               <el-button v-if="vifaprobarrechasar" class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -2px;
+                    width: inherit;
+                    background: #4685b5;
+                    border-color: transparent;
+                    color: #f6f7f9;
+                    padding: 4px 4px 4px 4px !important;" @click="aprobar()">
+                    Aprobar
+                </el-button>
+                 
             </div>
             <div class="row bodycard">
                 <div class="container">

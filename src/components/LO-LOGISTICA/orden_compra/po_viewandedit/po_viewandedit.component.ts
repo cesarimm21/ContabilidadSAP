@@ -134,6 +134,15 @@ export default class ViewAndEditPOComponent extends Vue {
     //**[unidad medidad] */
     dialogUnidadMedida:boolean=false;
     btnactivarunidadmedida:boolean=false;
+    txtmodulo:string='';
+    vifaprobarrechasar:boolean=false;
+    visualizar:boolean=false;
+    intIdPurReqH_ID:number=0;
+    intIdVendor_ID:number=0;
+    intIdTypeReq_ID:number=0;
+    intIdCompany_ID:number=0;
+    intIdWHS_ID:number=0;
+
     constructor(){
         super();
         Global.nameComponent = 'viewandedit-po';
@@ -164,6 +173,16 @@ export default class ViewAndEditPOComponent extends Vue {
             this.impDisabled=true;
             this.disabledRow=true;
             this.checked=false;
+        }
+        if(vista=='aprobar'){
+            var object = JSON.parse(this.$route.query.data); 
+            this.visualizar=false;
+            this.vifaprobarrechasar=true;
+            this.nameFuncion='Aprobar Orden Compra';
+            this.intIdVendor_ID=object.intIdVendor_ID;
+            this.intIdTypeReq_ID=object.intIdTypeReq_ID;
+            this.intIdPurReqH_ID=object.intIdPurReqH_ID;
+            this.intIdWHS_ID=object.intIdWHS_ID;
         }
         this.codigoCompania=localStorage.getItem('compania_cod');
         this.descripcionCompania=localStorage.getItem('compania_name');            
@@ -334,6 +353,7 @@ export default class ViewAndEditPOComponent extends Vue {
   //#endregion
     //#region [ORDEN COMPRA]
     guardarPO(val) {
+        debugger;
         if(this.$route.query.vista=='Modificar'){
             if (this.multipleSelection.length == 0) {
                 this.$message({
