@@ -403,11 +403,14 @@ export default class ModificarMaterialComponent extends Vue {
     // }
     // return '';
   }
-  handleCurrentChange(val) {
-    debugger;
-    if(val.date){
-        return 'selected-row';
-    }
+  // handleCurrentChange(val) {
+  //   debugger;
+  //   if(val.date){
+  //       return 'selected-row';
+  //   }
+  // }
+  handleCurrentChangeM(val){
+    this.clasematerialSelectModel=val;
   }
   /*Compania imput*/
   activar_compania(){
@@ -818,11 +821,14 @@ export default class ModificarMaterialComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
-    this.productoModel.strMaterial_Class=val.strMatClass_Cod;
-    this.productoModel.strMatClass_Desc=val.strMatClass_Desc;
-    this.productoModel.intIdMatClass_ID=val.intIdMatClass_ID;
-    this.desclasematerial=val.strMatClass_Desc;
-    this.dialogClaseMaterial=false;
+  debugger;
+    this.productoModel.strMaterial_Class=this.clasematerialSelectModel.strMatClass_Cod;
+    this.productoModel.strMatClass_Desc=this.clasematerialSelectModel.strMatClass_Desc;
+    this.productoModel.intIdMatClass_ID=this.clasematerialSelectModel.intIdMatClass_ID;
+    this.desclasematerial=this.clasematerialSelectModel.strMatClass_Desc;
+    this.productoModel.strExp_Acct=this.clasematerialSelectModel.strExp_Cod_Loc;
+    this.productoModel.strAcc_Desc=this.clasematerialSelectModel.strExp_Desc_Loc;
+   this.dialogClaseMaterial=false;
   }
   SeleccionadoCategoriaCuenta(val){
     this.selectrow.categoriacuenta=val.CODIGO;

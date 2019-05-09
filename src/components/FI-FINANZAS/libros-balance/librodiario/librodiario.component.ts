@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
+import FileSaver from 'file-saver';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -299,9 +300,13 @@ export default class LibroDiarioComponent extends Vue {
   }
   async Buscar(){
     debugger;
+    this.tableData=[];
     var data:any=this.formBusqueda;
-    data.feci=await Global.getDateString(this.fechaDesde)
+    var primerDia = new Date(this.fechaDesde.getFullYear(), this.fechaDesde.getMonth(), 1);
     var ultimoDia = new Date(this.fechaHasta.getFullYear(), this.fechaHasta.getMonth() + 1, 0);
+    
+    ultimoDia.setDate(ultimoDia.getDate()+1)
+    data.feci=await Global.getDateString(primerDia)
     data.fecf= await Global.getDateString(ultimoDia)
  
     data.cod_company='*'
@@ -329,7 +334,36 @@ export default class LibroDiarioComponent extends Vue {
     })
 
   }
-  
+  ExportarTxt(){
+    var texto='';
+    for(var i=0;i<this.tableData.length;i++){
+      texto+=this.tableData[i].periodo==undefined?'':this.tableData[i].periodo+"\t|"
+      texto+=this.tableData[i].correlativo==undefined?'':this.tableData[i].correlativo+"\t|"
+      texto+=this.tableData[i].strReferDocum_NO==undefined?'':this.tableData[i].strReferDocum_NO+"\t|"
+      texto+=this.tableData[i].item_strAcc_Local_NO==undefined?'':this.tableData[i].item_strAcc_Local_NO+"\t|"
+      texto+="|"
+      texto+="|"
+      texto+=this.tableData[i].item_strCurrency_Cod==undefined?'':this.tableData[i].item_strCurrency_Cod+"\t|"
+      texto+=this.tableData[i].pro_strDocIdent_NO==undefined?'':this.tableData[i].pro_strDocIdent_NO+"\t|"
+      texto+=this.tableData[i].pro_strDocIdent_Name==undefined?'':this.tableData[i].pro_strDocIdent_Name+"\t|"
+      
+      texto+=this.tableData[i].item_strType_Doc==undefined?'':this.tableData[i].item_strType_Doc+"\t|"
+      texto+=this.tableData[i].item_strSerie_Doc==undefined?'':this.tableData[i].item_strSerie_Doc+"\t|"
+      texto+=this.tableData[i].item_strDocument_NO==undefined?'':this.tableData[i].item_strDocument_NO+"\t|"
+      texto+=this.tableData[i].item_dtmPosting_Date==undefined?'':this.tableData[i].item_dtmPosting_Date+"\t|"
+      texto+="|"
+      texto+=this.tableData[i].item_dtmDoc_Date==undefined?'':this.tableData[i].item_dtmDoc_Date+"\t|"
+      texto+=this.tableData[i].item_strDaily_Desc==undefined?'':this.tableData[i].item_strDaily_Desc+"\t|"
+      texto+="|"
+      texto+=this.tableData[i].debe==undefined?'':this.tableData[i].debe+"\t|"
+      texto+=this.tableData[i].haber==undefined?'':this.tableData[i].haber+"\t|"
+      texto+="|"
+      
+      texto+="\r\n"
+    }
+    var blob = new Blob([texto], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "Diario_PLE_"+this.getParseDate(new Date())+".txt");
+  }
 
   ExportarExcel(){
        /* generate workbook object from table */
@@ -634,7 +668,7 @@ export default class LibroDiarioComponent extends Vue {
     //   doc.setFontSize(7);
     //   doc.text(90, mitad-55, "Nombre y firma de quien recibe");
     //   doc.text(tamW/2+90, mitad-55, "Nombre y firma de quien entrega");
-    doc.save('libro.pdf');
+    doc.save("Libro_Diario_"+ this.getParseDate(new Date())+".pdf");
 
   }
   tipomovimientoSelecionado(val){

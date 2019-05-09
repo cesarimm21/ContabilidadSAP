@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -299,47 +300,15 @@ export default class LibroRegistroCompraComponent extends Vue {
   }
   async Buscar(){
     debugger;
-
-//     strPO_NO
-// strVoucher_NO
-// strVendor_NO
-// strVendor_Desc
-// strDesc_Doc
-// dtmDoc_Date
-// dtmDue_Date
-// strType_Doc
-// strDocument_NO
-// strCurrency_Doc
-// fltExchange_Rate
-// fltValue_Local
-// fltOperation_NoTax_Local
-// fltISC_Local
-// fltOther_WH_Local
-// fltNetValue_Doc_Local
-// strTax_Cod
-// fltValue_Tax_Local
-// strValue_WH_Detrac
-// strDetrac_Cod
-// fltDetrac_NO
-// dtmDetrac_Date
-// strDetrac_Lote_NO
-// strWH_Reten_Cod
-// dtmDoc_Date_Ref
-// strType_Doc_Ref
-// strSerie_Doc_Ref
-// fltDocument_NO_Ref
-// fltValue_Doc_Ref
-// fltValue_Tax_Ref
-// strPurch_Type
-// strPayRun_NO
-// strPaid_Bank
-// strPaid_Curr_Bank
-// pro_strCat_Person
+    this.tableData=[];
     var data:any=this.formBusqueda;
-    data.feci=await Global.getDateString(this.fechaDesde)
+    var primerDia = new Date(this.fechaDesde.getFullYear(), this.fechaDesde.getMonth(), 1);
     var ultimoDia = new Date(this.fechaHasta.getFullYear(), this.fechaHasta.getMonth() + 1, 0);
+    
+    ultimoDia.setDate(ultimoDia.getDate()+1)
+    data.feci=await Global.getDateString(primerDia)
     data.fecf= await Global.getDateString(ultimoDia)
- 
+
     data.cod_company='*'
     for(var i=0;i<50;i++){
       this.valuem++; 
@@ -374,6 +343,56 @@ export default class LibroRegistroCompraComponent extends Vue {
 			/* generate file and force a download*/
       XLSX.writeFile(wb, "Libro_Registro_Compras_"+ this.getParseDate(new Date())+".xlsx");
     
+  }
+  ExportarTxt(){
+    var texto='';
+    for(var i=0;i<this.tableData.length;i++){
+      texto+=this.tableData[i].periodo==undefined?'':this.tableData[i].periodo+"\t|"
+      texto+=this.tableData[i].item_strVoucher_NO==undefined?'':this.tableData[i].item_strVoucher_NO+"\t|"
+      //texto+=this.tableData[i].cuo+"\t|"
+      texto+="|"
+      texto+=this.tableData[i].item_dtmDoc_Date==undefined?'':this.tableData[i].item_dtmDoc_Date+"\t|"
+      texto+=this.tableData[i].item_dtmDue_Date==undefined?'':this.tableData[i].item_dtmDue_Date+"\t|"
+      texto+=this.tableData[i].item_strType_Doc==undefined?'':this.tableData[i].item_strType_Doc+"\t|"
+      texto+=this.tableData[i].item_strSerie_Doc==undefined?'':this.tableData[i].item_strSerie_Doc+"\t|"
+      //texto+=this.tableData[i].year+"\t|"
+      texto+="|"
+      texto+=this.tableData[i].item_strDocument_NO==undefined?'':this.tableData[i].item_strDocument_NO+"\t|"
+      texto+="|"
+      texto+=this.tableData[i].pro_strCat_Person==undefined?'':this.tableData[i].pro_strCat_Person+"\t|"
+      texto+=this.tableData[i].pro_strTax_ID==undefined?'':this.tableData[i].pro_strTax_ID+"\t|"
+      texto+=this.tableData[i].item_strVendor_Desc==undefined?'':this.tableData[i].item_strVendor_Desc+"\t|"
+      texto+=this.tableData[i].item_fltValue_Local==undefined?'':this.tableData[i].item_fltValue_Local+"\t|"
+      texto+=this.tableData[i].item_fltValue_Tax_Local==undefined?'':this.tableData[i].item_fltValue_Tax_Local+"\t|"
+      texto+="|"
+      texto+="|"
+      texto+="|"
+      texto+="|"
+      texto+=this.tableData[i].item_fltOperation_NoTax_Local==undefined?'':this.tableData[i].item_fltOperation_NoTax_Local+"\t|"
+      texto+=this.tableData[i].item_fltISC_Local==undefined?'':this.tableData[i].item_fltISC_Local+"\t|"
+      texto+=this.tableData[i].item_fltOther_WH_Local==undefined?'':this.tableData[i].item_fltOther_WH_Local+"\t|"
+      texto+=this.tableData[i].item_fltNetValue_Doc_Local==undefined?'':this.tableData[i].item_fltNetValue_Doc_Local+"\t|"
+      texto+=this.tableData[i].item_strCurrency_Doc==undefined?'':this.tableData[i].item_strCurrency_Doc+"\t|"
+      texto+=this.tableData[i].item_fltExchange_Rate==undefined?'':this.tableData[i].item_fltExchange_Rate+"\t|"
+      texto+=this.tableData[i].item_dtmDoc_Date_Ref==undefined?'':this.tableData[i].item_dtmDoc_Date_Ref+"\t|"
+      texto+=this.tableData[i].item_strType_Doc_Ref==undefined?'':this.tableData[i].item_strType_Doc_Ref+"\t|"
+      texto+=this.tableData[i].item_strSerie_Doc_Ref==undefined?'':this.tableData[i].item_strSerie_Doc_Ref+"\t|"
+      texto+="|"
+      texto+=this.tableData[i].item_fltDocument_NO_Ref==undefined?'':this.tableData[i].item_fltDocument_NO_Ref+"\t|"
+      texto+=this.tableData[i].item_dtmDetrac_Date==undefined?'':this.tableData[i].item_dtmDetrac_Date+"\t|"
+      texto+=this.tableData[i].item_strDetrac_Cod==undefined?'':this.tableData[i].item_strDetrac_Cod+"\t|"
+      texto+=this.tableData[i].Affected_Reten==undefined?'':this.tableData[i].Affected_Reten+"\t|"
+      texto+="|"
+      texto+="|"
+      texto+="|"
+      texto+="|"
+      texto+="|"
+      texto+="|"
+      texto+=this.tableData[i].sunat==undefined?'':this.tableData[i].sunat+"\t|"
+      texto+="\r\n"
+    }
+    var blob = new Blob([texto], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "RC_PLE_"+this.getParseDate(new Date())+".txt");
   }
 
   ExportarPDF(){

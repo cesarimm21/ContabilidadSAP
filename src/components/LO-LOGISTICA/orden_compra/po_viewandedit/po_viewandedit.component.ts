@@ -567,19 +567,27 @@ export default class ViewandeditPOComponent extends Vue {
         await ordenCompraService.aprobarPO(this.OrdenCompra)
         .then(res=>{
             this.OrdenCompra.listaDetalle=this.ordencompraDetalle;
-            ordenCompraService.inventarioPO(this.OrdenCompra)
-            .then(res=>{
-                setTimeout(() => {
-                    this.vifprogress=false;
-                    this.issave=true;
-                    this.textosave='Se aprobó correctamente. '+res.strPO_NO;
-                    this.openMessage('Se aprobó correctamente '+res.strPO_NO);
-                    router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
-                }, 600)
-            })
-            .catch(error=>{
-                this.textosave='Ocurrio un error inesperado. ';
-            })
+            if(this.OrdenCompra.listaDetalle.length>0){
+                ordenCompraService.inventarioPO(this.OrdenCompra)
+                .then(res=>{
+                    setTimeout(() => {
+                        this.vifprogress=false;
+                        this.issave=true;
+                        this.textosave='Se aprobó correctamente. '+res.strPO_NO;
+                        this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+                        router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+                    }, 600)
+                })
+                .catch(error=>{
+                    this.textosave='Ocurrio un error inesperado. ';
+                })
+            }
+            else{
+                this.textosave='Se aprobó correctamente. '+res.strPO_NO;
+                this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+                router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+            }
+           
         })
         .catch(error=>{
             this.textosave='Ocurrio un error inesperado. ';

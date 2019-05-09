@@ -109,7 +109,7 @@
                                                 <label style="width:100%;    margin: 0rem;" >&nbsp;{{ scope.row.intRequis_Item_NO }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column  :render-header="filterstrCateg_Account"   prop="strCateg_Account" min-width="80" label="Cta. Cuenta">
+                                        <el-table-column  :render-header="filterstrCateg_Account"   prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" >

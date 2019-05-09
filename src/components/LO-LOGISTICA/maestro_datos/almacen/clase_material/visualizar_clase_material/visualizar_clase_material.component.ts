@@ -17,13 +17,13 @@ import { Loading } from 'element-ui';
 
 
 //***Modelos */
-import {ProductoModel} from '@/modelo/maestro/producto';
+import {ClaseMaterialModel} from '@/modelo/maestro/clasematerial';
 
 import almacenService from '@/components/service/almacen.service';
 import { Notification } from 'element-ui';
 import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
-import productoService from '@/components/service/producto.service';
+import clasematerialService from '@/components/service/clasematerial.service';
 import proveedorService from '@/components/service/proveedor.service';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 import {OrdenCompraModel } from '@/modelo/maestro/ordencompra';
@@ -66,7 +66,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
   btnactivarcompania:boolean=false;
    
   /*Model*/
-  public productoModel:ProductoModel=new ProductoModel();
+  public clasematerialmodel:ClaseMaterialModel=new ClaseMaterialModel();
 
   descompania:string='';
   code_compania:string='';
@@ -92,7 +92,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
     'strWHS_Cod':'',
     'strVendor_NO':''
   }
-  public tableData:Array<ProductoModel>=[]; 
+  public tableData:Array<ClaseMaterialModel>=[]; 
   valuem:number=50;
   striped=true;
   per:number=3;
@@ -122,8 +122,8 @@ export default class VisualizarClaseMaterialComponent extends Vue {
   blnfilterfltQuantity:boolean=false;
   blnfilterfltPrecUnit_Local:boolean=false;
   dialogBusquedaFilter:boolean=false;
-  public CompleteData:Array<ProductoModel>=[]; 
-  public CompleteData1:Array<ProductoModel>=[]; 
+  public CompleteData:Array<ClaseMaterialModel>=[]; 
+  public CompleteData1:Array<ClaseMaterialModel>=[]; 
   clickColumn:string='';
   txtbuscar:string='';
   Column:string='';
@@ -189,7 +189,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
       this.percentage++;
       this.per++;
     }
-    await productoService.busquedaProducto(data)
+    await clasematerialService.busquedaProducto(data.strStock_Cod,data.desde,data.hasta)
     .then(res=>{
       debugger;
      
@@ -293,7 +293,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
   companiaSeleccionado(val){
     debugger;
     console.log('traer',val);
-    this.productoModel.strCompany_Cod=val.strCompany_Cod
+    this.clasematerialmodel.strCompany_Cod=val.strCompany_Cod
     this.descompania=val.strCompany_Desc;
    
     this.dialogCompania=false;
@@ -314,7 +314,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
     .then(response=>{
       if(response!=undefined){
         if(response.length>0){
-          this.productoModel.strCompany_Cod=response[0].strCompany_Cod
+          this.clasematerialmodel.strCompany_Cod=response[0].strCompany_Cod
           this.descompania=response[0].strCompany_Desc;
           this.dialogCompania=false;
           this.btnactivarcompania=false;
@@ -345,7 +345,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
   }
   async validarView(){
     debugger;
-    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
+    if(this.selectrow!=undefined && this.selectrow!=null ){
       this.vifprogress=true;
       this.valuem=0;
       await setTimeout(() => {
@@ -360,14 +360,14 @@ export default class VisualizarClaseMaterialComponent extends Vue {
         // this.selectrow.intIdTypeReq_ID=this.selectrow.intIdTypeReq_ID.intIdTypeReq_ID;
         // this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
         console.log('----,,,',this.selectrow);
-        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
-          router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_modificar`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
+        if(this.selectrow!=undefined && this.selectrow!=null ){
+          router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_clase_material`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
         }
       }, 600)
     }
     else{
       this.vifprogress=false;
-      this.textosave='Seleccione alguna salida. ';
+      this.textosave='Seleccione algun item. ';
     }
   }
   desactivar_proveedor(){
@@ -459,39 +459,7 @@ export default class VisualizarClaseMaterialComponent extends Vue {
     this.btnactivaralmacen=false;
     return false;
   }
-  enterAlmacen(code){
-    //alert('Bien'+code);
-    debugger;
-    almacenService.GetOnlyOneAlmacen(code)
-    .then(response=>{
-      debugger;
-      if(response!=undefined){
-        if(response.length>0){
-          this.strWHS_Cod=response[0].strWHS_Cod
-          this.strWHS_Desc=response[0].strWHS_Desc;;
-          this.productoModel.intIdWHS_Stat_ID=response[0].intIdWHS_Stat_ID;
-          this.productoModel.strWHS_Desc=response[0].strWHS_Desc;
-          this.desalmacen=response[0].strWHS_Desc;
-          this.dialogAlmacen=false;
-          this.btnactivaralmacen=false;
-        }
-      }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar almacen'
-      });
-    })
-  }
   
-  borrarAlmacen(){
-    this.desalmacen='';
-    this.productoModel.strWHS_Desc='';
-    this.dialogAlmacen=false;
-    this.btnactivaralmacen=false;
-  }
   
   loadAlmacen(){
     this.dialogAlmacen=true;
@@ -515,37 +483,37 @@ export default class VisualizarClaseMaterialComponent extends Vue {
     }
     
   }
-  async btnEliminar(){
-    await productoService.eliminarProducto(this.selectrow)
-    .then(response=>{
-      debugger;
-      console.log('eliminar',response);
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strStock_Cod;
-         this.issave=true;
-         this.iserror=false;
-      }
-      else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
-      }
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
+//   async btnEliminar(){
+//     await productoService.eliminarProducto(this.selectrow)
+//     .then(response=>{
+//       debugger;
+//       console.log('eliminar',response);
+//       if(response!=undefined){
+//          this.textosave='Se elimino correctamento.' + response.strStock_Cod;
+//          this.issave=true;
+//          this.iserror=false;
+//       }
+//       else{
+//         this.issave=false;
+//         this.iserror=true;
+//         this.textosave='Ocurrio un error al eliminar.';
+//       }
+//       this.dialogEliminar=false;
+//       //this.unidadmedidaModel=response;       
+//     }).catch(error=>{
       
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar almacen'
-      });
-    })
-    await this.cargarList();
-  }
+//       this.dialogEliminar=false;
+//       this.issave=false;
+//       this.iserror=true;
+//       this.textosave='Ocurrio un error al eliminar.';
+//       this.$message({
+//         showClose: true,
+//         type: 'error',
+//         message: 'No se pudo cargar almacen'
+//       });
+//     })
+//     await this.cargarList();
+//   }
 
   ///#region  button accion
   filterstrWHS_Cod(h,{column,$index}){

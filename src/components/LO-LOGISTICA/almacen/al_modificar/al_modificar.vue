@@ -520,7 +520,7 @@
                     height="250"
                     highlight-current-row
                     @row-dblclick="SeleccionadoClaseMaterial"
-                    @current-change="handleCurrentChange">
+                    @current-change="handleCurrentChangeM">
                     <!-- @current-change="handleCurrentChange"> -->
                     <el-table-column   prop="strMatClass_Cod" label="Codigo" width="100" >
                     </el-table-column>  

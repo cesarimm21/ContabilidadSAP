@@ -120,12 +120,13 @@
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
                               
-                                <!-- <buttons-accions v-on:EliminarItem="EliminarItem" v-on:validarView="validarView"  v-on:handleClickInParent="handleClickInParent()"></buttons-accions> -->
+                                <buttons-accions v-on:EliminarItem="EliminarItem" v-on:validarView="validarView"  v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
                                         ref="missionTable"
+                                        @current-change="handleCurrentChange"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
                                          highlight-current-row

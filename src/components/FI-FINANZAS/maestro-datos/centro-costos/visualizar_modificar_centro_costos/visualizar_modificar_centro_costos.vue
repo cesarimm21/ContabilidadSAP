@@ -123,43 +123,7 @@
                                             </template>
                                         </el-table-column>
                                     </el-table>
-                                    <el-table
-                                        :data="tableData"
-                                        style="width: 100%;margin-bottom: 20px;"
-                                        border
-                                        row-key="id">
-                                        <el-table-column
-                                        prop="date"
-                                        label="日期"
-                                        sortable
-                                        width="180">
-                                        </el-table-column>
-                                        <el-table-column
-                                        prop="name"
-                                        label="name"
-                                        sortable
-                                        width="180">
-                                        </el-table-column>
-                                    </el-table>
-                                    <el-table
-                                        :data="tableData1"
-                                        style="width: 100%"
-                                        row-key="id"
-                                        border
-                                        lazy
-                                        :load="loadT"
-                                        >
-                                        <el-table-column
-                                        prop="date"
-                                        label="date"
-                                        width="180">
-                                        </el-table-column>
-                                        <el-table-column
-                                        prop="name"
-                                        label="name"
-                                        width="180">
-                                        </el-table-column>
-                                    </el-table>
+                                   
                                     <!-- <vue-ads-table
                                             :stripe="true"
                                             class="ExcelTable2007"

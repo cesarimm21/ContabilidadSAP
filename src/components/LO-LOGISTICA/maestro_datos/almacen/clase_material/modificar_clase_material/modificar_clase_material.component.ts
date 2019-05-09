@@ -44,6 +44,8 @@ import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {ClaseMaterialModel} from '@/modelo/maestro/clasematerial';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import { Notification } from 'element-ui';
 import clasematerialService from '@/components/service/clasematerial.service';
 @Component({
@@ -64,6 +66,10 @@ import clasematerialService from '@/components/service/clasematerial.service';
   }
 })
 export default class ModificarClaseMaterialComponent extends Vue {
+  public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
+  
+  tiporequisicion:string='';
+  tiporequisicionant:string='';
   nameComponent:string;
   habilitar:boolean=false;
   habilitarPane:boolean=true;
@@ -147,6 +153,9 @@ export default class ModificarClaseMaterialComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  txtviewmodulo:string;
+  txtmodulo:string;
+  visualizar:boolean=false;
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
@@ -157,6 +166,59 @@ export default class ModificarClaseMaterialComponent extends Vue {
     var cod:any=localStorage.getItem('compania_cod');
     this.clasematerial.strCompany_Cod=cod;
     this.clasematerial.strCompany_Desc=desc;
+    setTimeout(() => {
+      this.load();
+    }, 200)
+  }
+  load(){
+    tipoRequisicionService.GetAllTipoRequisicion()
+    .then(res=>{
+      debugger;
+      this.tabletipoRequisicion=res;
+      this.tiporequisicion="A";    
+      this.tiporequisicionant='A';
+    })
+    .catch(error=>{})
+    var object = JSON.parse(this.$route.query.data);
+    var modulo = this.$route.query.vista;
+    this.txtviewmodulo=modulo;
+    if(modulo.toLowerCase()!='aprobar'){
+      if(modulo.toLowerCase()!='despacho'){
+        if(modulo.toLowerCase()!='visualizar'){
+          this.txtmodulo='Modificar Salida';
+          this.visualizar=false;
+        }
+        else{
+          this.txtmodulo='Visualizar Salida';
+          this.visualizar=true;
+        }
+      }
+      else{
+        this.txtmodulo='Despacho Material';
+        this.visualizar=true;
+      }
+      
+    }
+    else{
+        this.visualizar=true;
+        this.txtmodulo='Aprobar Salida';
+        console.log('Aprobar',object.strIssueAjust_NO);
+        
+    }
+    this.cargar(object.strMatClass_Cod);
+  }
+  cargar(code){
+    clasematerialService.GetOnlyOneClaseMaterial(code)
+    .then(respose=>{
+      this.clasematerial=respose[0];
+      this.tiporequisicion=respose[0].strStock_Type_Cod;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'no se pudo cargar orden compra detalle '+error
+      });
+    })
   }
   loadTipocambio(){
     tipocambioService.GetAllTipoCambio1()
@@ -694,16 +756,22 @@ export default class ModificarClaseMaterialComponent extends Vue {
     this.clasematerial.strCompany_Desc=desc;
   }
   guardarTodo(){
-    clasematerialService.CreateClaseMaterial(this.clasematerial)
+    this.clasematerial.strStock_Type_Cod=this.tiporequisicion;
+    for(var i=0;i<this.tabletipoRequisicion.length;i++){
+      if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
+        this.clasematerial.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
+      }
+    }
+    clasematerialService.update(this.clasematerial)
     .then(response=>{
       this.issave=true;
-      this.textosave='Se guardo correctamente.'+response.strMatClass_Cod
+      this.textosave='Se actualizo correctamente.'+response.strMatClass_Cod
       this.limpiar();
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo guardar producto'
+        message: 'No se pudo actualizar producto'
       });
     })
   }

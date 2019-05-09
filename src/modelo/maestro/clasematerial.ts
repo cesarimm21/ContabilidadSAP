@@ -27,4 +27,6 @@ export class ClaseMaterialModel {
     strExp_Desc_Loc:string;
     strCompany_Cod:string;
     strCompany_Desc:string;
+    strStock_Type_Cod:string;
+    strStock_Type_Desc:string;
 }

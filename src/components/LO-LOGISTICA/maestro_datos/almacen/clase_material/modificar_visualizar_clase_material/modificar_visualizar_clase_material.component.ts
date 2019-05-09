@@ -345,7 +345,7 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
   }
   async validarView(){
     debugger;
-    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
+    if(this.selectrow!=undefined && this.selectrow!=null ){
       this.vifprogress=true;
       this.valuem=0;
       await setTimeout(() => {
@@ -360,14 +360,14 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
         // this.selectrow.intIdTypeReq_ID=this.selectrow.intIdTypeReq_ID.intIdTypeReq_ID;
         // this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
         console.log('----,,,',this.selectrow);
-        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
-          router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_modificar`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
+        if(this.selectrow!=undefined && this.selectrow!=null ){
+          router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_clase_material`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
         }
       }, 600)
     }
     else{
       this.vifprogress=false;
-      this.textosave='Seleccione alguna salida. ';
+      this.textosave='Seleccione alguna item. ';
     }
   }
   desactivar_proveedor(){

@@ -38,10 +38,22 @@
                             </div>   
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion Tipo</label>
-                                <div class="col-md-2 grupolabel">
+                                <!-- <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small"  v-model="clasematerial.strStock_Type_Desc" type="text">  
                                     </el-input>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-select  v-model="tiporequisicion" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                            <el-option style="font-size:13px"
+                                            v-for="item in tabletipoRequisicion"
+                                                :key="item.strTypeReq_Cod"
+                                                :label="item.strTipReq_Desc"
+                                            :value="item.strTypeReq_Cod">
+                                            </el-option>
+                                        </el-select>
                                     </div>
                                 </div>
                             </div>  

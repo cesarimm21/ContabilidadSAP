@@ -3,15 +3,15 @@
 
   <div class="al-crear">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="validarView()"/>
+        <quickaccessmenu v-on:validarView="Buscar()"/>
     </ol>
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
             <span class="labelheadercard" >Libro Diario</span>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
+            <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
                 <img class="imagenfilter" src="../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
-            </el-button>
+            </el-button> -->
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -66,7 +66,7 @@
                                         <img class="imagenfilter" src="../../../../images/excel.png" style="width: 100%;height: 100%;" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarTxt()">
                                         <img class="imagenfilter" src="../../../../images/txt.png" style="width: 100%;height: 100%;" alt="" >
                                     </el-button>
                                 </div>

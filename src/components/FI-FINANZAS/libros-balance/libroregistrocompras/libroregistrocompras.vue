@@ -3,15 +3,15 @@
 
   <div class="al-crear">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="Buscar()"/>
+        <quickaccessmenu  v-on:validarView="Buscar()"/>
     </ol>
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
             <span class="labelheadercard" >Libro Registro Compras</span>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
+            <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
                 <img class="imagenfilter" src="../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
-            </el-button>
+            </el-button> -->
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -66,7 +66,7 @@
                                         <img class="imagenfilter" src="../../../../images/excel.png" style="width: 100%;height: 100%;" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarTxt()">
                                         <img class="imagenfilter" src="../../../../images/txt.png" style="width: 100%;height: 100%;" alt="" >
                                     </el-button>
                                 </div>
@@ -84,6 +84,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column align="center"   label=" ">
                                           
+                                            
                                             <el-table-column align="center"   prop="item_strPurch_Type" width="100" label="T.Compra">
                                                 <template scope="scope">
                                                 <label  >&nbsp;{{ scope.row.item_strPurch_Type }}</label>
@@ -209,21 +210,21 @@
                                                 <label >&nbsp;{{ scope.row.item_fltOperation_NoTax_Local }}</label>
                                             </template>
                                         </el-table-column>
-                                         <el-table-column align="center"
+                                        <el-table-column align="center"
                                             prop="item_fltISC_Local" sortable width="100"
                                             label="ISC">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.item_fltISC_Local }}</label>
                                             </template>
                                         </el-table-column>
-                                         <el-table-column align="center"
-                                            prop="item_fltOther_WH_Local" sortable width="100"
+                                        <el-table-column align="center"
+                                            prop="  " sortable width="100"
                                             label="Otros">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.item_fltOther_WH_Local }}</label>
                                             </template>
                                         </el-table-column>
-                                         <el-table-column align="center"
+                                        <el-table-column align="center"
                                             prop="item_fltNetValue_Doc_Local" sortable width="100"
                                             label="Importe Total">
                                             <template scope="scope">
@@ -237,14 +238,14 @@
                                                 <label >&nbsp;{{ scope.row.haber }}</label>
                                             </template>
                                         </el-table-column> -->
-                                         <el-table-column align="center"
+                                        <el-table-column align="center"
                                             prop="item_strDetrac_Cod" sortable width="100"
                                             label="Cod. Detraccion">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.item_strDetrac_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                         <el-table-column align="center"
+                                        <el-table-column align="center"
                                             prop="item_fltDetrac_NO" sortable width="100"
                                             label="Nro. Detraccion">
                                             <template scope="scope">
@@ -286,14 +287,14 @@
                                                 <label >&nbsp;{{ scope.row.item_dtmDoc_Date_Ref }}</label>
                                             </template>
                                         </el-table-column>
-                                         <el-table-column align="center"
+                                        <el-table-column align="center"
                                             prop="item_strType_Doc_Ref" sortable width="100"
                                             label="Tipo Doc. Original">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.item_strType_Doc_Ref }}</label>
                                             </template>
                                         </el-table-column>
-                                         <el-table-column align="center"
+                                        <el-table-column align="center"
                                             prop="item_strSerie_Doc_Ref" sortable width="100"
                                             label="Serie Doc. Original">
                                             <template scope="scope">

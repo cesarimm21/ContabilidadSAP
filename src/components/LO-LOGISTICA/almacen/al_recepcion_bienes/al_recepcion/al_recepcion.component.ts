@@ -350,7 +350,6 @@ export default class RecepcionMaterialComponent extends Vue {
             }
             );
            
-            // loadingInstance.close();
             console.log(this.OrdenCompra)
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
@@ -366,6 +365,7 @@ export default class RecepcionMaterialComponent extends Vue {
                     }, 600)
                 })
                 .catch(error=>{
+                    loadingInstance.close();
                     this.textosave='Ocurrio un error inesperado. ';
                 })
             }).catch(error => {
@@ -374,25 +374,6 @@ export default class RecepcionMaterialComponent extends Vue {
                 this.iserror = true;
                 this.textosave = 'Error al guardar.';
             })
-            // if (val == 'crear-po') {
-            //     ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
-            //         .then(response => {
-            //             loadingInstance.close();
-            //             this.issave = true;
-            //             this.iserror = false;
-            //             this.OrdenCompra = new OrdenCompraModel();
-            //             this.requiSelect = new RequisicionModel();
-            //             this.Impuesto = new ImpuestoModel();
-            //             this.requiDetalle1 = [];
-            //             this.textosave = 'Se guardo correctamente.';
-
-            //         }).catch(error => {
-            //             loadingInstance.close();
-            //             this.issave = false;
-            //             this.iserror = true;
-            //             this.textosave = 'Error al guardar.';
-            //         })
-            // }
         }
 
     }

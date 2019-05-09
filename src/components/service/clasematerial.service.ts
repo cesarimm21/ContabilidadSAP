@@ -35,5 +35,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  update(data)
+  {
+    return axios.post(CONFIG.API_URL+'update/clasematerial',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  }
 }
   

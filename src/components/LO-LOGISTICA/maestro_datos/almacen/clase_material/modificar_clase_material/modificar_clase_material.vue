@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Clase Material</span>
+                <span class="labelheadercard" > {{txtmodulo}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -40,17 +40,29 @@
                                 <label class="el-form-item__label col-md-2" >Descripcion Clase</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  v-model="clasematerial.strMatClass_Desc" type="text">  
+                                    <el-input :disabled="visualizar" size ="small"  v-model="clasematerial.strMatClass_Desc" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>   
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion Tipo</label>
+                                <!-- <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input :disabled="visualizar" size ="small"  v-model="clasematerial.strStock_Type_Desc" type="text">  
+                                    </el-input>
+                                    </div>
+                                </div> -->
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  v-model="clasematerial.strStock_Type_Desc" type="text">  
-                                    </el-input>
+                                        <el-select :disabled="visualizar"  v-model="tiporequisicion" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                            <el-option style="font-size:13px"
+                                            v-for="item in tabletipoRequisicion"
+                                                :key="item.strTypeReq_Cod"
+                                                :label="item.strTipReq_Desc"
+                                            :value="item.strTypeReq_Cod">
+                                            </el-option>
+                                        </el-select>
                                     </div>
                                 </div>
                             </div>  
@@ -59,16 +71,16 @@
                                 <label class="el-form-item__label col-sm-2" >Cuenta Contable</label>
                                 <div class="col-sm-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber" v-model="clasematerial.strAcct_Loc"  placeholder="">
-                                        <el-button v-if="btnactivarCuentaContableHaber && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber()"></el-button> 
+                                    <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber" v-model="clasematerial.strAcct_Loc"  placeholder="">
+                                        <el-button :disabled="visualizar" v-if="btnactivarCuentaContableHaber && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-sm-2" >Cuenta Gasto</label>
                                 <div class="col-sm-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input size ="small" @blur="desactivar_CuentaContableDebe" @focus="activar_CuentaContableDebe" v-model="clasematerial.strExp_Cod_Loc"  placeholder="">
-                                            <el-button v-if="btnactivarCuentaContableDebe && !dialogCuentaContableDebe" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableDebe()"></el-button> 
+                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableDebe" @focus="activar_CuentaContableDebe" v-model="clasematerial.strExp_Cod_Loc"  placeholder="">
+                                            <el-button :disabled="visualizar" v-if="btnactivarCuentaContableDebe && !dialogCuentaContableDebe" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableDebe()"></el-button> 
                                         </el-input> 
                                     </div>
                                 </div>

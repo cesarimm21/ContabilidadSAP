@@ -44,6 +44,8 @@ import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {ClaseMaterialModel} from '@/modelo/maestro/clasematerial';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
+import tipoRequisicionService from '@/components/service/tipoRequisicion.service';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import { Notification } from 'element-ui';
 import clasematerialService from '@/components/service/clasematerial.service';
 @Component({
@@ -89,7 +91,7 @@ export default class CrearClaseMaterialComponent extends Vue {
   dialogCompania:boolean=false;
   dataCompania:any[];
   public companiaModel:CompaniaModel=new CompaniaModel();
-
+  public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
   dialogGrupoProceso:boolean=false;
   btnactivarGrupoProceso:boolean=false;
   dialogGrupoArea:boolean=false;
@@ -147,6 +149,8 @@ export default class CrearClaseMaterialComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  tiporequisicion:string='';
+  tiporequisicionant:string='';
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
@@ -157,6 +161,20 @@ export default class CrearClaseMaterialComponent extends Vue {
     var cod:any=localStorage.getItem('compania_cod');
     this.clasematerial.strCompany_Cod=cod;
     this.clasematerial.strCompany_Desc=desc;
+    
+    setTimeout(() => {
+      this.load();
+    }, 200)
+  }
+  load(){
+    tipoRequisicionService.GetAllTipoRequisicion()
+    .then(res=>{
+      debugger;
+      this.tabletipoRequisicion=res;
+      this.tiporequisicion="A";    
+      this.tiporequisicionant='A';
+    })
+    .catch(error=>{})
   }
   loadTipocambio(){
     tipocambioService.GetAllTipoCambio1()
@@ -694,6 +712,14 @@ export default class CrearClaseMaterialComponent extends Vue {
     this.clasematerial.strCompany_Desc=desc;
   }
   guardarTodo(){
+    this.clasematerial.strStock_Type_Cod=this.tiporequisicion;
+    
+    for(var i=0;i<this.tabletipoRequisicion.length;i++){
+      if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
+        this.clasematerial.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
+      }
+    }
+
     clasematerialService.CreateClaseMaterial(this.clasematerial)
     .then(response=>{
       this.issave=true;
