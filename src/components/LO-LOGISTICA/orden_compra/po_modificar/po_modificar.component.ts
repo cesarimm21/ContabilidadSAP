@@ -43,23 +43,34 @@ export default class ModificarPOComponent extends Vue {
     codigoCompania:any;
     descripcionCompania:any;
     options = {  day: '2-digit',month: '2-digit', year: 'numeric' };
-
+    valuem:number=0;
+    intlineaselect:number=-1;
+    textosave:string='';
     clickColumn:string='';
     txtbuscar:string='';
     Column:string='';
+    pagina: number =1;
+    RegistersForPage: number = 10;
+    totalRegistros: number = 100;
+    vifprogress:boolean=false;
+    issave:boolean=false;
+    iserror:boolean=false;
     blnilterstrPO_NO:boolean=false;
     blnilterstrRequis_NO:boolean=false;
     blnilterstrPO_Desc:boolean=false;
     blnilterstrVendor_Desc:boolean=false;
     blnilterdtmProcess_Date:boolean=false;
     blnilterfltTotal_Val:boolean=false;
+
+    dialogBusquedaFilter:boolean=false;
     //**[ORDEN COMPRA] */
     public OrdenCompra: Array<OrdenCompraModel>;
-    public ocSelect: OrdenCompraModel=new OrdenCompraModel();
+    public OrdenCompra1: Array<OrdenCompraModel>;
+    public OrdenCompra2: Array<OrdenCompraModel>;
+    public opSelect: OrdenCompraModel=new OrdenCompraModel();
     constructor() {
         super();
-        Global.nameComponent = 'modificar-po';   
-        this.textTitle='Modificar Orden de Compra'
+        Global.nameComponent = 'modificar-po';           
         setTimeout(() => {
             this.loadPO();
         }, 200)
@@ -67,21 +78,162 @@ export default class ModificarPOComponent extends Vue {
    loadPO(){
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');
+    this.textTitle='Modificar'
     ordencompraService.GetOrdenCompraCompany(this.codigoCompania)
     .then(resp=>{
         this.OrdenCompra=[];
+        this.OrdenCompra1=[];
+        this.OrdenCompra2=[];
         this.OrdenCompra=resp;
+        this.OrdenCompra1=resp;
+        this.OrdenCompra2=resp;
     })
    }
    handleCurrentChange(val:OrdenCompraModel){
-    this.ocSelect=val;
+    this.opSelect=val;    
    }
    getDateString(fecha:string){
-    var dateString = new Date(fecha).toLocaleDateString('es-PE', this.options)
-    return dateString;
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
     }
+    async validarView(){
+      if(this.opSelect.strPO_NO!=undefined && this.opSelect.intIdPOH_ID!=undefined){
+          // this.vifprogress=true;
+          // this.valuem=0;
+          await setTimeout(() => {
+            for(var i=0;i<100;i++){
+              this.valuem++; 
+            }
+          }, 200)
+          await setTimeout(() => {
+            debugger;
+            if(this.opSelect.strPO_NO!=undefined && this.opSelect.intIdPOH_ID!=undefined){
+              router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_viewandedit`, query: { vista:this.textTitle ,data:JSON.stringify(this.opSelect) }  })
+            }
+          }, 600)
+        }
+        else{
+          // this.vifprogress=false;
+          this.textosave='Seleccione la PO. ';
+          this.warningMessage('Seleccione la PO. ');
+        }
+      }
+      validad(){
+        
+      }
+      warningMessage(newMsg : string) {
+        this.$message({
+          showClose: true,
+          message: newMsg,
+          type: 'warning'
+        });
+      }
+      Limpiar(){
+        this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        var document:any = this.$refs.missionTable;
+        document.setCurrentRow(this.OrdenCompra[this.intlineaselect]);    
+        this.blnilterstrPO_NO=false;
+        this.blnilterstrRequis_NO=false;
+        this.blnilterstrPO_Desc=false;
+        this.blnilterstrVendor_Desc=false;
+        this.blnilterdtmProcess_Date=false;
+        this.blnilterfltTotal_Val=false;
+        this.OrdenCompra2=this.OrdenCompra1;
+        this.OrdenCompra = this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        var document:any = this.$refs.missionTable;
+      }
+      Buscar(){
+        debugger;
+        if(this.Column!=""){
+          this.dialogBusquedaFilter=true;
+          this.txtbuscar='';
+        }
+        else{
+          this.$message('Seleccione columna')
+        }
+      }
+      async AscItem(){
+        debugger;
+        let loading = Loading.service({
+          fullscreen: true,
+          text: 'Cargando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );
+        console.log("asc",this.clickColumn)
+        var data=await this.sortByKeyAsc(this.OrdenCompra1,this.clickColumn) 
+        this.OrdenCompra2=[];
+        this.OrdenCompra2=data;
+        this.OrdenCompra = await this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        await loading.close();
+      }
+      DscItem(){
+        debugger;
+        console.log("desc",this.clickColumn)
+        var data=this.sortByKeyDesc(this.OrdenCompra1,this.clickColumn) 
+        this.OrdenCompra2=[];
+        this.OrdenCompra2=data;
+        this.OrdenCompra = this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      
+      }
+      btnBuscar(){
+        var data=this.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
+        this.OrdenCompra=[];
+        this.OrdenCompra=data;
+        this.dialogBusquedaFilter=false;
+      }
+      siguiente(){
+        if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+          this.pagina++;
+          this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        }
+      }
+      anterior(){
+        if(this.pagina>1){
+        this.pagina--;
+        this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        }
+      }
+      EliminarItem(){
 
+      }
+      like(array, key,keyword) {
     
+        var responsearr:any = []
+        for(var i=0;i<array.length;i++) {
+            if(array[i][key].toString().indexOf(keyword) > -1 ) {
+              responsearr.push(array[i])
+          }
+        }
+        return responsearr
+      }
+      sortByKeyDesc(array, key) {
+        return array.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            if(x === "" || y === null) return 1;
+            if(x === "" || y === null) return -1;
+            if(x === y) return 0;
+              return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+           
+        });
+      }
+      sortByKeyAsc(array, key) {
+        return array.sort(function (a, b) {
+            debugger;
+            var x = a[key]; var y = b[key];
+            if(x === "" || y === null) return 1;
+            if(x === "" || y === null) return -1;
+            if(x === y) return 0;
+             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            
+        });
+      }
     headerclick(val){    
         this.Column=val.label;
         Global.setColumna(this.Column);
@@ -204,6 +356,7 @@ export default class ModificarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
+
     backPage(){
         window.history.back();
       }
@@ -214,7 +367,11 @@ export default class ModificarPOComponent extends Vue {
         return {
             nameComponent: 'crear-po',
             textTitle:'',
-            OrdenCompra:[]
+            OrdenCompra:[],
+            OrdenCompra1:[],
+            OrdenCompra2:[],
+            codigoCompania:'',
+            descripcionCompania:''
         }
     }
 }

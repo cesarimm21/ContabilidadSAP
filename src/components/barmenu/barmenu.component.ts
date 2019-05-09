@@ -53,8 +53,7 @@ export default class BarmenuComponent extends Vue {
     AccesoService.GetAllAccesos()
     .then(response=>{
       this.modelAcceso=[];
-      this.modelAcceso=response;
-      console.log(this.modelAcceso);        
+      this.modelAcceso=response;    
       for (var j=0; j< this.modelAcceso.length; j++){
         if(this.modelAcceso[j].intLevel === 0){ 
            this.childrenItem1=this.modelAcceso[j]; 
@@ -305,7 +304,6 @@ export default class BarmenuComponent extends Vue {
     }
     
     linkLibroDiarioD(){
-      console.log("entroclick")
       router.push('/barmenu/FI-FINANZAS/libros-balance/librodiario')
     }
   data() {

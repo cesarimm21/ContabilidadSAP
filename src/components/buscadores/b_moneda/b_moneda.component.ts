@@ -236,7 +236,8 @@ export default class  BMonedaComponent extends Vue {
   data() {
     return {
       monedaData:[],
-      monedaData1:[]
+      monedaData1:[],
+      inputAtributo:''
     };
   }
 }

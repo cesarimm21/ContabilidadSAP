@@ -257,6 +257,8 @@ export default class CrearPOComponent extends Vue {
         this.OrdenCompra.strPO_Desc=val.strDesc_Header;
         this.OrdenCompra.strTypeMov_Cod=val.strTypeMov_Cod;    
         this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
+        this.OrdenCompra.strWHS_Cod=val.strWHS_Cod;
+        this.OrdenCompra.strWHS_Desc=val.strWHS_Desc;
         this.requiSelect=val;          
     }
     checkSelectdb(){                

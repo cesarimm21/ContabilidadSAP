@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" >Modificar PO</span>
+                <span class="labelheadercard" >Modificar Tipo Cambio</span>
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -15,21 +15,21 @@
                                 <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
-                                    <el-input size ="small" type="text" v-model="codigoCompania" disabled>
+                                    <el-input size ="small" type="text" v-model="companyCod" disabled>
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="sinLinea el-form-item__label col-md-8" >{{descripcionCompania}}</label>
+                                <label class="sinLinea el-form-item__label col-md-8" >{{companyName}}</label>
                             </div>
-                            <div class="form-group row " style="margin-top:6px;">
-                                <label class="el-form-item__label col-md-2" >Codigo PO</label>
+                            <!-- <div class="form-group row " style="margin-top:6px;">
+                                <label class="el-form-item__label col-md-2" >Codigo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
-                                        <el-input size ="small" type="text">
+                                        <el-input size ="small" type="text" v-model="Impuesto.strWH_Cod">
                                         </el-input>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <br/>
@@ -37,52 +37,57 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions  v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:EliminarItem="EliminarItem()" ></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
-                                        ref="missionTable"
                                         :max-height="sizeScreen"
-                                        :data="OrdenCompra"
+                                        :data="gridTipoDocumento"
                                         highlight-current-row
-                                        stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @header-click="headerclick"
-                                        @current-change="handleCurrentChange" >    
-                                         <el-table-column type="index" label="Linea" width="38">   </el-table-column>   
+                                        @current-change="handleCurrentChange" >          
                                         <el-table-column  
-                                        :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="60" label="Codigo PO">
+                                         type="index" min-width="50" label="Item">
+                                        </el-table-column>
+                                        <el-table-column  
+                                        :render-header="filterstrExchRate_OF"
+                                         prop="strExchRate_OF" min-width="100" label="Moneda de">
                                         </el-table-column>
                                         <el-table-column
-                                            :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="60"
-                                            label="Codigo Requisicion">
+                                            :render-header="filterstrExchRate_TO"
+                                            prop="strExchRate_TO"  min-width="100"
+                                            label="Moneda a">
                                         </el-table-column>
                                         <el-table-column
-                                            :render-header="filterstrPO_Desc"
-                                            prop="strPO_Desc"  min-width="220"
-                                            label="Descripcion">
+                                            :render-header="filterintExchRate_Year"
+                                            prop="intExchRate_Year" 
+                                            label="Año">
                                         </el-table-column>
                                         <el-table-column
-                                            :render-header="filterstrVendor_Desc"
-                                            prop="strVendor_Desc" 
-                                            label="Proveedor">
-                                        </el-table-column>
-                                        <el-table-column
-                                            :render-header="filterdtmProcess_Date"
-                                            prop="dtmProcess_Date"  width="100"
-                                            label="Fecha ejecucion">
+                                            :render-header="filterdtmExchRate_Date"
+                                            prop="dtmExchRate_Date"  min-width="100"
+                                            label="Fecha">
                                              <template scope="scope">
-                                                <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
+                                                <span>{{ getDateString(scope.row.dtmExchRate_Date) }}</span>
                                             </template>
                                         </el-table-column>   
                                         <el-table-column
-                                            :render-header="filterfltTotal_Val"
-                                            prop="fltTotal_Val"  width="100"
-                                            label="Valor total" >
+                                            :render-header="filterfltExchRate_Buy"
+                                            prop="fltExchRate_Buy"  min-width="100"
+                                            label="Compra" >
                                         </el-table-column>
+                                        <el-table-column
+                                            :render-header="filterfltExchRate_Sale"
+                                            prop="fltExchRate_Sale"  min-width="100"
+                                            label="Venta" >
+                                        </el-table-column>
+                                        <el-table-column
+                                            :render-header="filterfltExchRate_Agrem"
+                                            prop="fltExchRate_Agrem"  min-width="100"
+                                            label="Pactado" >
+                                        </el-table-column>                                       
 
                                     </el-table>
                                 </div>
@@ -98,18 +103,18 @@
         <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
-                <div class="col-sm-2">
+                <!-- <div class="col-sm-2">
                     <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
                          <b-progress-bar :value="valuem" :label="valuem + '%'" />
                     </b-progress>
                 </div>
-                <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                <span class="footertext2" style="" >{{textosave}}</span>
+                <img  src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <img src="../../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                <span class="footertext2" style="" >{{textosave}}</span> -->
             </div>
             <div class="col-sm-3">
                 <div style="text-align:right">
-                    <img src="../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                    <img src="../../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
                     <span class="footertext2">SQV1</span>
                     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
@@ -145,8 +150,21 @@
                     <label class="el-form-item__label col-md-2" >Buscar</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">
-                                
+                            <el-input v-if="inputNormal" size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">  
+                            </el-input>
+                            <el-date-picker v-if="inputAño"
+                                        v-model="txtbuscar"
+                                        size ="small" 
+                                        type="year"
+                                        @change="changeyear">
+                            </el-date-picker>
+                            <el-date-picker v-if="inputfecha"
+                                        v-model="txtbuscar"
+                                        type="date"
+                                        format="dd.MM.yyyy">
+                            </el-date-picker>
+                            <el-input v-if="inputNumber" type="number" size="small" v-model="txtbuscar"  :precision="3" :min="0.000" :step="0.001">
+
                             </el-input>
                         </div>
                     </div>
@@ -155,15 +173,15 @@
         </div>
       </div>
       <footer class="modal-footer">
-        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
-        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
+        <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
+        <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal>
     </div>
 </template>
 <script>
-import ModificarPOComponent from '@/components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.component'
-export default ModificarPOComponent
+import ModificarTipoCambioComponent from '@/components/XX-CONFI/maestro_datos/tipo_cambio/edit_tcambio/edit_tcambio.component'
+export default ModificarTipoCambioComponent
 </script>
 <style scoped>
 .sinLinea{
