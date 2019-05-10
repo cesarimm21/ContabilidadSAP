@@ -39,6 +39,7 @@ import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {MovimientoInventarioModel} from '@/modelo/maestro/movimientoinventario';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Alert } from '@/types';
+import impuestoService from '@/components/service/impuesto.service';
 @Component({
   name: 'crear-ingreso-comprobante',
   components:{
@@ -134,13 +135,16 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   constructor(){    
     super();
     this.cell_ocultar='#e4e2e2';  
-    Global.nameComponent='factura';      
-    this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
-    this.fecha_ejecucion1=Global.getParseDate(new Date().toDateString());  
-    this.GetAllPeriodoLast()
+    Global.nameComponent='factura';     
+    
+    setTimeout(() => {
+      this.load();
+    }, 200)
   }
   
-  GetAllPeriodoLast(){
+  load(){
+    this.fecha_ejecucion=(new Date()).toString(); 
+    this.fecha_ejecucion1=(new Date()).toString();  
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');    
     periodoService.GetAllPeriodoLast()
@@ -150,8 +154,12 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       this.factura.dtmPeriod=this.periodo.dtmPeriod;
       this.fecha_actual=Global.getDate(this.factura.dtmPeriod); 
     })
+    this.factura.dtmDoc_Date=new Date();
+    this.DateforGetChanceDolar();
+    
   }
-  DateforGetChanceDolar(){    
+  DateforGetChanceDolar(){
+    this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);    
     tipocambioService.GetAllTipoCambio(this.factura.dtmDoc_Date)
     .then(response=>{
       this.tipocambio=response;  
@@ -180,6 +188,27 @@ export default class CrearIngresoComprobanteComponent extends Vue {
         message: 'no se pudo cargar proveedor '+error
       });
     })    
+
+    if(this.multipleSelection.length>0){
+      this.factura.fltValue_Local=0;
+      this.factura.fltValue_Corp=0;
+      this.factura.fltValue_Tax_Local=0;
+      this.factura.fltValue_Tax_Corp=0;
+      this.factura.fltNetValue_Doc_Local=0;
+      this.factura.fltNetValue_Doc_Corp=0;
+      for (let i = 0; i < this.multipleSelection.length; i++) {
+        this.factura.fltValue_Local+=Number(this.multipleSelection[i].fltValue_Local);
+      }
+      var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      this.factura.fltValue_Corp=parseFloat(dat1); 
+      var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
+      this.factura.fltValue_Tax_Local=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
+      var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+      this.factura.fltNetValue_Doc_Local=Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local);
+      var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      this.factura.fltNetValue_Doc_Corp=parseFloat(dat1); 
+    }
   }
   DateVencida(){this.factura.dtmDue_Date=new Date(this.fecha_vencida);}
   fnOcultar(){
@@ -202,7 +231,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   }
   //#region [ACCIONES DE TABLA]
   handleBlurImporte(event) {
-    debugger;
     var inttotal=0;       
   }
   handleBlur(){
@@ -232,7 +260,6 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.factura.fltValue_Tax_Corp=0;
     this.factura.fltNetValue_Doc_Local=0;
     this.factura.fltNetValue_Doc_Corp=0;
-    debugger;
     for (let i = 0; i < this.multipleSelection.length; i++) {
       this.factura.fltValue_Local+=Number(this.multipleSelection[i].fltValue_Local);
     }
@@ -247,11 +274,9 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
   }
   handleCurrentChange(val){
-    debugger;
     this.rowSelect=val.intIdPOD_ID;         
 }
 handleChangeCantidad(val){
-  debugger;
   this.factura.fltValue_Local=0;
     this.factura.fltValue_Corp=0;
     this.factura.fltValue_Tax_Local=0;
@@ -369,6 +394,11 @@ handleChangeCantidad(val){
     this.dialogOrdenCompra=false;    
     this.loadOrdenCompraDetalle(this.ordencompraSelect.intIdPOH_ID);
     this.factura.strTax_Cod=this.ordencompraSelect.strWH_Cod;
+    impuestoService.GetOnlyOneImpuesto(this.factura.strTax_Cod)
+    .then(respo=>{
+      this.Impuesto=respo;
+
+    })
   }
   //#endregion
  
@@ -523,7 +553,7 @@ handleChangeCantidad(val){
         this.facturadetalle[i].strTax_Cod=this.factura.strTax_Cod;
         this.facturadetalle[i].fltValue_Tax=this.Impuesto.fltPorcent;
       }
-      this.columnView=true;
+      // this.columnView=true;
       var temp=this.facturadetalle;
       this.facturadetalle=[];
       this.facturadetalle=temp;
@@ -810,6 +840,7 @@ handleChangeCantidad(val){
   data(){
     return{
       nameComponent:'factura',
+      descripcionCompania:'',
       fecha_actual:'',
       fecha_vencida:'',
       dialogTableVisible: false,
@@ -819,7 +850,7 @@ handleChangeCantidad(val){
       ordencompra:[],
       ordencompraDetalle:[],
       facturadetalle:[],
-      codigoCompania:'001',
+      codigoCompania:'',
       totalDinero:0,
       totalUnidad:0,
       salidaUnidad:'',
@@ -829,7 +860,9 @@ handleChangeCantidad(val){
       habilitar:false,
       habilitarPane:true,
       multipleSelection:[],
-      CodigoGeneral:''
+      CodigoGeneral:'',
+      fecha_ejecucion:'',
+      fecha_ejecucion1:''
     }
   }
   

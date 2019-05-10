@@ -10,7 +10,7 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllTipoCambio(date){    
+  GetAllTipoCambio(date){   
     return axios.get(CONFIG.API_URL+'tipocambioByDate/'+date)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));

@@ -16,7 +16,7 @@ export class TipoCambioModel {
     chrStatus:string;
     constructor(){
         this.intExchRate_ID=-1;
-        // this.intExchRate_Year=new Date().getFullYear();
+        this.intExchRate_Year=new Date().getFullYear();
         this.dtmExchRate_Date=new Date();
         this.strExchRate_OF='';
         this.strExchRate_OF_desc='';

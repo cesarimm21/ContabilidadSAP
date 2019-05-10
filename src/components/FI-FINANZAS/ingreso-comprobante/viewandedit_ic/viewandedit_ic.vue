@@ -1,7 +1,7 @@
 <template>
     <div class="crear-ingreso-comprobante">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu  v-on:backPage="backPage($event)" v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        <quickaccessmenu v-on:guardarTodo="guardarTodo()" v-on:backPage="backPage($event)" v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
@@ -341,13 +341,12 @@
                                                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                                     class="ExcelTable2007"
                                                     highlight-current-row
-                                                    @selection-change="handleSelectionChange"
                                                     @current-change="handleCurrentChange"
                                                     >
-                                                    <el-table-column
+                                                    <!-- <el-table-column
                                                     type="selection"
                                                     width="50" >
-                                                    </el-table-column>
+                                                    </el-table-column> -->
                                                     <el-table-column
                                                         prop="intPO_Item_NO" sortable min-width="50"
                                                         label="Item">
