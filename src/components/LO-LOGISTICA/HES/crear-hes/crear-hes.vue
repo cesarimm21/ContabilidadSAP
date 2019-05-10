@@ -12,6 +12,16 @@
                 <div class="container">
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-md-3" >Compañia</label>
+                                    <div class="col-md-3 grupolabel">
+                                        <div class="input-group mb-3" >
+                                         <el-input size ="small" v-model="codigoCompania" disabled>  
+                                        </el-input>
+                                    </div>
+                                </div>   
+                                 <label class="sinLinea el-form-item__label col-md-5" >{{descripcionCompania}}</label>
+                            </div>
                             <div class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                     <div class="col-md-3 grupolabel">
@@ -20,14 +30,7 @@
                                             <el-button v-if="btnactivarOrdenC && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenC()"></el-button> 
                                         </el-input>
                                     </div>
-                                </div>     
-                                <label class="el-form-item__label col-md-3" >Compañia</label>
-                                    <div class="col-md-3 grupolabel">
-                                        <div class="input-group mb-3" >
-                                         <el-input size ="small" v-model="hesModel.strCompany_Cod" disabled>  
-                                        </el-input>
-                                    </div>
-                                </div>                                                      
+                                </div>                                             
                             </div>
                             
                             <div class="form-group row" >                                
@@ -61,7 +64,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group row">
-                                <label class="sinLinea el-form-item__label col-md-3" >{{ordencompraSelect.strCompany_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-3" ></label>
                                 <!-- <div class="col-md-3 grupolabel">{{ordencompraSelect.strCompany_Desc}}</div> -->
                                 <div class="col-sm-3"></div>
                                 <div class="col-md-4" style="margin-top:5px;">
@@ -98,7 +101,13 @@
                                             <label class="el-form-item__label col-sm-3"  >Fecha Docum.</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="fecha_ejecucion"></el-input>
+                                                    <el-date-picker
+                                                        type="date"
+                                                        style="width:128px !important"
+                                                        :disabled="true"
+                                                        format="dd.MM.yyyy"
+                                                        size="small" v-model="fecha_ejecucion" >
+                                                    </el-date-picker>
                                                 </div>
                                             </div>
                                         </div>                                        
@@ -123,7 +132,13 @@
                                             <label class="el-form-item__label col-sm-3" >Fecha.</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="hesModel.dtmSince_Date"></el-input>
+                                                    <el-date-picker
+                                                        type="date"
+                                                        style="width:128px !important"
+                                                        :disabled="true"
+                                                        format="dd.MM.yyyy"
+                                                        size="small" v-model="fecha_since" >
+                                                    </el-date-picker>                                                
                                                 </div>
                                             </div>
                                             <div class="col-sm-3" style="text-aling:center;">
@@ -135,7 +150,13 @@
                                             </div>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="date"  size ="small" style="font-size:11px;" v-model="hesModel.dtmUntil_Date"></el-input>
+                                                    <el-date-picker
+                                                        type="date"
+                                                        style="width:128px !important"
+                                                        :disabled="true"
+                                                        format="dd.MM.yyyy"
+                                                        size="small" v-model="fecha_until" >
+                                                    </el-date-picker>                                                     
                                                 </div>
                                             </div>                                            
                                         </div>

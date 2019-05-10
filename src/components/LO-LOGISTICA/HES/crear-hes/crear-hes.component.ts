@@ -37,10 +37,13 @@ export default class CrearHesComponent extends Vue {
   CodigoPO:string;
   timer=0;
   valueSwtch:boolean=true;
-  codigoCompania:string;
+  codigoCompania:any;
+  descripcionCompania:any;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   fecha_ejecucion:string;
+  fecha_since:string;
+  fecha_until:string;
   vifprogress:boolean=true;
   valuem:number=0;
   issave:boolean=false;
@@ -101,13 +104,22 @@ export default class CrearHesComponent extends Vue {
     // this.cell_ocultar='#e4e2e2';  
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString()); 
     // this.TableIngreso=[];
-    for(var i=0;i<10;i++){
-      var reqDetalle:HesDetalleModel=new HesDetalleModel();
-      reqDetalle.chrStatus="A";
-      this.TableIngreso.push(reqDetalle);
-    }    
+    setTimeout(() => {
+      for(var i=0;i<10;i++){
+        var reqDetalle:HesDetalleModel=new HesDetalleModel();
+        reqDetalle.chrStatus="A";
+        this.TableIngreso.push(reqDetalle);
+      }    
+      this.load();
+    }, 200)
+   
   }
-
+  load(){
+    this.codigoCompania=localStorage.getItem('compania_cod');
+    this.descripcionCompania=localStorage.getItem('compania_name');
+    this.fecha_since=(new Date()).toString();
+    this.fecha_until=(new Date()).toString(); 
+  }
   //#region [ORDEN COMPRA]
   searchPO(){
     if(this.CodigoPO==''){
@@ -479,6 +491,7 @@ export default class CrearHesComponent extends Vue {
       nameComponent:'crear-hes',
       dialogTableVisible: false,
       codigoCompania:'',
+      descripcionCompania:'',
       value:'',
       dataOrdenCompra:[],
       valueSwtch:true,
