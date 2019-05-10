@@ -28,7 +28,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strCompany_Desc}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo Clase Material</label>
+                                <label class="el-form-item__label col-md-2" >Clase</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="true" size ="small"  v-model="clasematerial.strMatClass_Cod" type="text">  
@@ -37,7 +37,7 @@
                                 </div>
                             </div> 
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Descripcion Clase</label>
+                                <label class="el-form-item__label col-md-2" >Descripcion </label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small"  v-model="clasematerial.strMatClass_Desc" type="text">  
@@ -46,7 +46,7 @@
                                 </div>
                             </div>   
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Descripcion Tipo</label>
+                                <label class="el-form-item__label col-md-2" >Tipo</label>
                                 <!-- <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small"  v-model="clasematerial.strStock_Type_Desc" type="text">  
@@ -66,25 +66,131 @@
                                     </div>
                                 </div>
                             </div>  
-        
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Cuenta Contable</label>
-                                <div class="col-sm-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber" v-model="clasematerial.strAcct_Loc"  placeholder="">
-                                        <el-button :disabled="visualizar" v-if="btnactivarCuentaContableHaber && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <label class="el-form-item__label col-sm-2" >Cuenta Gasto</label>
-                                <div class="col-sm-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableDebe" @focus="activar_CuentaContableDebe" v-model="clasematerial.strExp_Cod_Loc"  placeholder="">
-                                            <el-button :disabled="visualizar" v-if="btnactivarCuentaContableDebe && !dialogCuentaContableDebe" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableDebe()"></el-button> 
-                                        </el-input> 
-                                    </div>
-                                </div>
-                            </div>                       
+          
+                            <div class="row">
+                                <div class="col-sm-12" style="margin-top: 10px;">
+                                    <el-tabs type="border-card">
+                                        <el-tab-pane label="Detalle">
+                                            <div class="container">
+                                                 <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta. Contable</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strAcct_Loc')" v-model="clasematerial.strAcct_Loc"  placeholder="">
+                                                                    <el-button v-if="blnstrAcct_Loc && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strAcct_Loc')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strAcct_Loc_Desc}}</span>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Contable Corporativo</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strAcct_Corp')" v-model="clasematerial.strAcct_Corp"  placeholder="">
+                                                                    <el-button v-if="btnstrAcct_Corp && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strAcct_Corp')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strAcct_Corp_Desc}}</span>
+                                                        </div>    
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Gasto</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strExp_Cod_Loc')" v-model="clasematerial.strExp_Cod_Loc"  placeholder="">
+                                                                    <el-button v-if="btnstrExp_Cod_Loc && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strExp_Cod_Loc')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strExp_Cod_Loc_Desc}}</span>
+                                                        </div>    
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Gasto Corporativo</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strExp_Cod_Corp')" v-model="clasematerial.strExp_Cod_Corp"  placeholder="">
+                                                                    <el-button v-if="btnstrExp_Cod_Corp && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strExp_Cod_Corp')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strExp_Cod_Corp_Desc }}</span>
+                                                        </div>    
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Compra Debe</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strRecep_Deb')" v-model="clasematerial.strRecep_Deb"  placeholder="">
+                                                                    <el-button v-if="btnstrRecep_Deb && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strRecep_Deb')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strRecep_Deb_Desc }}</span>
+                                                        </div>                       
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Compra Haber</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strRecep_Cred')" v-model="clasematerial.strRecep_Cred"  placeholder="">
+                                                                    <el-button v-if="btnstrRecep_Cred && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strRecep_Cred')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strRecep_Cred_Desc }}</span>
+                                                        </div>                       
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Ingreso Almacen Debe</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strInvoice_Deb')" v-model="clasematerial.strInvoice_Deb"  placeholder="">
+                                                                    <el-button v-if="btnstrInvoice_Deb && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strInvoice_Deb')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strInvoice_Deb_Desc }}</span>
+                                                        </div>                       
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Ingreso Almacen Haber</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strInvoice_Cred')" v-model="clasematerial.strInvoice_Cred"  placeholder="">
+                                                                    <el-button v-if="btnstrInvoice_Cred && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strInvoice_Cred')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strInvoice_Cred_Desc }}</span>
+                                                        </div>                       
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Salida Almacen Debe</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strIssue_Deb')" v-model="clasematerial.strIssue_Deb"  placeholder="">
+                                                                    <el-button v-if="btnstrIssue_Deb && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strIssue_Deb')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strIssue_Deb_Desc }}</span>
+                                                        </div>                       
+                                                        <div class="form-group row">
+                                                            <label class="el-form-item__label col-sm-3" >Cuenta Salida Almacen Haber</label>
+                                                            <div class="col-sm-2 grupolabel">
+                                                                <div class="input-group mb-3" >
+                                                                <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strIssue_Cred')" v-model="clasematerial.strIssue_Cred"  placeholder="">
+                                                                    <el-button v-if="btnstrIssue_Cred && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber('strIssue_Cred')"></el-button> 
+                                                                </el-input>
+                                                                </div>
+                                                            </div>
+                                                            <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strIssue_Cred_Desc }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                       
+                                        </el-tab-pane>
+                                    </el-tabs>
+                                </div>    
+                            </div>                   
                         </div>
                     </div>
                 </div>
