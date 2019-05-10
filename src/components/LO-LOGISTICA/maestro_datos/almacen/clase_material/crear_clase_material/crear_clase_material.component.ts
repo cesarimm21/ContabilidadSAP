@@ -151,6 +151,19 @@ export default class CrearClaseMaterialComponent extends Vue {
   textosave:string='';
   tiporequisicion:string='';
   tiporequisicionant:string='';
+  cuentacontable:string='';
+
+  btnstrIssue_Cred:boolean=false;
+  btnstrIssue_Deb:boolean=false;
+  btnstrInvoice_Cred:boolean=false;
+  btnstrInvoice_Deb:boolean=false;
+  btnstrRecep_Cred:boolean=false;
+  btnstrRecep_Deb:boolean=false;
+  btnstrExp_Cod_Corp:boolean=false;
+  btnstrExp_Cod_Loc:boolean=false;
+  btnstrAcct_Corp:boolean=false;
+  blnstrAcct_Loc:boolean=false;
+
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
@@ -230,7 +243,7 @@ export default class CrearClaseMaterialComponent extends Vue {
   closeDialogGrupoArea(){
     this.dialogGrupoArea=false;
   }
-  activar_CuentaContableHaber(){
+  activar_CuentaContableHaber(atrib){
     setTimeout(() => {
       this.btnactivarCuentaContableHaber=true;
       this.btnactivarMoneda=false;
@@ -238,6 +251,7 @@ export default class CrearClaseMaterialComponent extends Vue {
       this.btnactivarTipoDocumento=false;
       this.btnactivarDiario=false;
       this.btnactivarImpuesto=false;
+      this.limpiarBotones(atrib);
     }, 120)
   }
   desactivar_CuentaContableHaber (){
@@ -246,15 +260,102 @@ export default class CrearClaseMaterialComponent extends Vue {
       this.btnactivarCuentaContableHaber=false;      
     }
   }
-  loadCuentaContableHaber()
+  limpiarBotones(boton){
+    
+    this.btnstrIssue_Cred=false;
+    this.btnstrIssue_Deb=false;
+    this.btnstrInvoice_Cred=false;
+    this.btnstrInvoice_Deb=false;
+    this.btnstrRecep_Cred=false;
+    this.btnstrRecep_Deb=false;
+    this.btnstrExp_Cod_Corp=false;
+    this.btnstrExp_Cod_Loc=false;
+    this.btnstrAcct_Corp=false;
+    this.blnstrAcct_Loc=false;
+    if(boton=="strIssue_Cred"){
+      this.btnstrIssue_Cred=true;
+    }
+    if(boton=="strIssue_Deb"){
+      this.btnstrIssue_Deb=true;
+    }
+    if(boton=="strInvoice_Cred"){
+      this.btnstrInvoice_Cred=true;
+    }
+    if(boton=="strInvoice_Deb"){
+      this.btnstrInvoice_Deb=true;
+    }
+    if(boton=="strRecep_Cred"){
+      this.btnstrRecep_Cred=true;
+    }
+    if(boton=="strRecep_Deb"){
+      this.btnstrRecep_Deb=true;
+    }
+    if(boton=="strExp_Cod_Corp"){
+      this.btnstrExp_Cod_Corp=true;
+    }
+    if(boton=="strExp_Cod_Loc"){
+      this.btnstrExp_Cod_Loc=true;
+    }
+    if(boton=="strAcct_Corp"){
+      this.btnstrAcct_Corp=true;
+    }
+    if(boton=="strAcct_Loc"){
+      this.blnstrAcct_Loc=true;
+    }
+  }
+  loadCuentaContableHaber(cuenta)
   {
+    debugger;
+    this.cuentacontable=cuenta;
     this.dialogCuentaContableHaber=true;
+    console.log('asdas',this.cuentacontable);
   }
   closeDialogCuentaContableHaber(){
     this.dialogCuentaContableHaber=false;
   }
   cuentacontableselecionadohaber(val,dialog:boolean){
-    this.clasematerial.strAcct_Loc=val.strAcc_Local_NO;
+    if(this.cuentacontable=="strAcct_Loc"){
+      console.log(val);
+      this.clasematerial.strAcct_Loc=val.strAcc_Local_NO;
+      this.clasematerial.strAcct_Loc_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strAcct_Corp"){
+      this.clasematerial.strAcct_Corp=val.strAcc_Local_NO;
+      this.clasematerial.strAcct_Corp_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strExp_Cod_Loc"){
+      this.clasematerial.strExp_Cod_Loc=val.strAcc_Local_NO;
+      this.clasematerial.strExp_Cod_Loc_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strExp_Cod_Corp"){
+      this.clasematerial.strExp_Cod_Corp=val.strAcc_Local_NO;
+      this.clasematerial.strExp_Cod_Corp_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strRecep_Deb"){
+      this.clasematerial.strRecep_Deb=val.strAcc_Local_NO;
+      this.clasematerial.strRecep_Deb_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strRecep_Cred"){
+      this.clasematerial.strRecep_Cred=val.strAcc_Local_NO;
+      this.clasematerial.strRecep_Cred_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strInvoice_Deb"){
+      this.clasematerial.strInvoice_Deb=val.strAcc_Local_NO;
+      this.clasematerial.strInvoice_Deb_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strInvoice_Cred"){
+      this.clasematerial.strInvoice_Cred=val.strAcc_Local_NO;
+      this.clasematerial.strInvoice_Cred_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strIssue_Deb"){
+      this.clasematerial.strIssue_Deb=val.strAcc_Local_NO;
+      this.clasematerial.strIssue_Deb_Desc=val.strAcc_Corp_Name;
+    }
+    if(this.cuentacontable=="strIssue_Cred"){
+      this.clasematerial.strIssue_Cred=val.strAcc_Local_NO;
+      this.clasematerial.strIssue_Cred_Desc=val.strAcc_Corp_Name;
+    }
+    
     this.dialogCuentaContableHaber=false;  
   }
 
@@ -705,6 +806,7 @@ export default class CrearClaseMaterialComponent extends Vue {
     
   }
   limpiar(){
+    debugger;
     this.clasematerial=new ClaseMaterialModel();
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');

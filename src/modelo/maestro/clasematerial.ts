@@ -29,4 +29,21 @@ export class ClaseMaterialModel {
     strCompany_Desc:string;
     strStock_Type_Cod:string;
     strStock_Type_Desc:string;
+    strExp_Cod_Corp:string;
+    strExp_Cod_Corp_Desc:string;
+    strRecep_Deb:string;
+    strRecep_Deb_Desc:string;
+    strRecep_Cred:string;
+    strRecep_Cred_Desc:string;
+    strInvoice_Deb:string;
+    strInvoice_Deb_Desc:string;	
+    strInvoice_Cred:string;
+    strInvoice_Cred_Desc:string;
+    strIssue_Deb:string;
+    strIssue_Deb_Desc:string;
+    strIssue_Cred:string;
+    strIssue_Cred_Desc:string;
+    strAcct_Loc_Desc:string;
+    strAcct_Corp_Desc:string;
+    strExp_Cod_Loc_Desc:string;
 }
