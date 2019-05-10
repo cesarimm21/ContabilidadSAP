@@ -330,7 +330,6 @@
                                                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                                     class="ExcelTable2007"
                                                     highlight-current-row
-                                                    @selection-change="handleSelectionChange"
                                                     @current-change="handleCurrentChange"
                                                     >
                                                     <el-table-column

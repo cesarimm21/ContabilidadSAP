@@ -48,7 +48,7 @@ export default class CrearTipoCambioComponent extends Vue {
         var date=new Date();
         var yyyy = date.getFullYear();
         this.fecha_año= (this.TipoCambio.intExchRate_Year+1).toString();
-        
+        console.log(this.fecha_año);
     }
     changeyear(val){
         this.TipoCambio.intExchRate_Year=val;
