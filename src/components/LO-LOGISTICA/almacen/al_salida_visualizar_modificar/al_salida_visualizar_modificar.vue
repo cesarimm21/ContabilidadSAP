@@ -83,7 +83,28 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small" v-model="company_cod" :disabled="true">
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{company_desc}}</span>
+                        </div> 
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Almacen</label>
+                             <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
+                                    <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="loadAlmacen()"></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{strWHS_Desc}}</span>
+                        </div> 
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Vale Salida</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="formBusqueda.strIssueAjust_NO"  placeholder="">
@@ -118,10 +139,10 @@
                             </div>
                         </div>  -->
                         <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-2" >Fecha Desde</label>
+                            <label class="el-form-item__label col-md-2" >Fecha</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                    <el-date-picker
+                                    <el-date-picker :disabled="checkFecha"
                                         v-model="fechaDesde"
                                         size="mini"
                                         style="width:128px !important">
@@ -131,14 +152,16 @@
                             <label class="el-form-item__label col-md-2" >Hasta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                    <el-date-picker
+                                    <el-date-picker :disabled="checkFecha"
                                         v-model="fechaHasta"
                                         size="mini"
                                         style="width:128px !important"
                                        >
                                     </el-date-picker>
                                 </div>
-                            </div>                   
+                            </div> 
+                              <el-checkbox class="newCheckBox" @change="changeFecha()" v-model="checkFecha">
+                            </el-checkbox>                    
                         </div>    
                     </div>
                 </div>
@@ -249,11 +272,20 @@
         </div>
         
     </div>
-   
+    <!--DIALOG BUSQUEDA ALMACEN-->
+    <el-dialog title="Busqueda Almacen"  :visible.sync="dialogAlmacen"  size="small" >
+      <balmacen v-on:almacenseleccionado="almacenseleccionado($event)" >
+      </balmacen>
+    </el-dialog>
     <!--DIALOG BUSQUEDA COMPAÑIA-->
     <el-dialog title="Busqueda Compañia" :visible.sync="dialogCompania" @close="closeCompania" size="small" >
       <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event);" v-on:companiaClose="companiaClose($event);" >
       </bcompania>
+    </el-dialog>
+       <!--DIALOG BUSQUEDA TIPO MOVIMIENTO-->
+    <el-dialog title="Busqueda Tipo Movimiento"  :visible.sync="dialogTipoMovimiento"  size="small" >
+      <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
+      </btipomovimiento>
     </el-dialog>
 </div>  
   

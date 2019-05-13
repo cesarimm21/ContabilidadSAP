@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
-
+import BTipoMovimientoComponent from '@/components/buscadores/b_tipo_movimiento/b_tipo_movimiento.vue';
 
 //***Modelos */
 import {ProductoModel} from '@/modelo/maestro/producto';
@@ -24,6 +24,8 @@ import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
 import { SalidaModel } from '@/modelo/maestro/salida';
 import salidaService from '@/components/service/salida.service';
+import BAlmacenComponent from '@/components/buscadores/b_almacen/b_almacen.vue';
+
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -38,7 +40,9 @@ var EditableColumn = {
   components:{
     'buttons-accions':ButtonsAccionsComponent,
     'bcompania':BCompaniaProveedor,
-    'quickaccessmenu':QuickAccessMenuComponent,
+    'quickaccessmenu':QuickAccessMenuComponent,    
+    'btipomovimiento':BTipoMovimientoComponent,
+    'balmacen':BAlmacenComponent,
   } ,
  
 })
@@ -55,12 +59,16 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
  
   /*input*/
   btnactivarcompania:boolean=false;
-   
+  btnactivaralmacen:boolean=false;
+  dialogAlmacen:boolean=false;
   /*Model*/
   public productoModel:ProductoModel=new ProductoModel();
 
   descompania:string='';
   code_compania:string='';
+  company_cod:any='';
+  checkFecha:boolean=true;
+  company_desc:any='';
 
   fecha_actual:string;
   selectrow:any;
@@ -79,6 +87,8 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
   dialogTipoMovimiento:boolean=false;
   btnactivartipomovimiento:boolean=false;
   strTypeMov_Cod:string='';
+  strWHS_Cod:string;
+  strWHS_Desc:string;
   formBusqueda:any={
     'strIssueAjust_NO':'',
     'desde':new Date(),
@@ -108,6 +118,13 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
         type: 'error',
         message: strMessage
       });
+  }
+  changeFecha(){
+    debugger;
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
   }
   linkLogout(){
    localStorage.clear();
@@ -249,6 +266,17 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
     }
   }
   async cargar(){
+    if(this.checkFecha){
+      this.fechaDesde=""
+      this.fechaHasta=""
+    }
+    else{
+      this.fechaDesde=new Date();
+      this.fechaHasta=new Date();
+    }
+    this.company_desc=localStorage.getItem('compania_name');
+    this.company_cod=localStorage.getItem('compania_cod');
+
     var data:any=this.formBusqueda;
     data.strIssueAjust_NO='*'
     data.desde='*'
@@ -282,8 +310,14 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
     if(data.strIssueAjust_NO==''){
       data.strIssueAjust_NO='*'
     }
-    data.desde=await Global.getDateString(this.fechaDesde)
-    data.hasta= await Global.getDateString(this.fechaHasta)
+    if(!this.checkFecha){
+      data.desde=await Global.getDateString(this.fechaDesde)
+      data.hasta= await Global.getDateString(this.fechaHasta)
+    }
+    else{
+      data.desde="*";
+      data.hasta="*";
+    }
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
@@ -331,6 +365,36 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
   }
   reloadpage(){
     window.location.reload();
+  }
+  
+  /*Almacen imput*/
+  activar_almacen(){
+    setTimeout(() => {
+      console.log("activar_almacen");
+      this.btnactivaralmacen=true;
+      this.btnactivarcompania=false;
+    }, 120)
+  }
+  desactivar_almacen(){
+    debugger;
+    if(this.dialogAlmacen){
+      this.btnactivaralmacen=false;
+    }
+  }
+  closeAlmacen(){
+    debugger;
+    console.log("closeAlmacen");
+    this.btnactivaralmacen=false;
+    return false;
+  }
+  loadAlmacen(){
+    this.dialogAlmacen=true;
+  }
+  almacenseleccionado(val){
+    this.strWHS_Cod=val.strWHS_Cod;
+    this.strWHS_Desc=val.strWHS_Desc;
+    this.dialogAlmacen=false;
+    //this.validate();
   }
   data(){
     return{
