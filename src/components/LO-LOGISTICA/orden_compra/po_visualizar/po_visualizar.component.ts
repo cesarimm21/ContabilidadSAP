@@ -81,8 +81,13 @@ export default class VisualizarPOComponent extends Vue {
     this.opSelect=val;    
    }
    getDateString(fecha:string){
-    var dateString = new Date(fecha).toLocaleDateString('es-PE', this.options)
-    return dateString;
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
     }
     async validarView(){
       if(this.opSelect.strPO_NO!='' && this.opSelect.intIdPOH_ID!=-1){

@@ -36,7 +36,6 @@ export default {
       this.isCollapse=isCollapse;
     },
     setToken(token){
-      debugger;
       this.token=token;
       window.sessionStorage.setItem('usuario_token',token);
     },
@@ -49,7 +48,6 @@ export default {
       }
     },
     getParseDate(fecha){
-      debugger;
       if(fecha!=undefined){
         var Datef=new Date(fecha);
         var dia = Datef.getDate();

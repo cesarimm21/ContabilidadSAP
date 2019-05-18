@@ -49,8 +49,8 @@ export default class CrearHesComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave='';
-  montoaceptado:number;
-  montopendiente:number;
+  // montoaceptado:number;
+  // montopendiente:number;
   /*bolean_tabla_dinamica*/
   editing:any= {
     row:'',
@@ -83,8 +83,8 @@ export default class CrearHesComponent extends Vue {
   dialogOrdenD:boolean=false;
   dataOrdenCompra:any[];
   public ordenCompraModel:OrdenCompraModel =new OrdenCompraModel();
-  public ordenCompraDetalle:OrdenCompraDetalleModel =new OrdenCompraDetalleModel();
-  public ordencompraDetalleSelect:OrdenCompraDetalleModel =new OrdenCompraDetalleModel();
+  public ordenCompraDetalle:OrdenCompraDetalleModel[];
+  // public ordencompraDetalleSelect:OrdenCompraDetalleModel =new OrdenCompraDetalleModel();
   public ordencompra:OrdenCompraModel[];
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
 
@@ -98,6 +98,10 @@ export default class CrearHesComponent extends Vue {
   public hesDetalleModel:HesDetalleModel=new HesDetalleModel();
   public TableIngreso:Array<HesDetalleModel>=[];
 
+  multipleSelectionItem:any[];
+  multipleSelectionAcept:any[];
+  rowSelect:any;
+  requiTemp:any[];
   constructor(){
     super();
     Global.nameComponent='crear-hes';
@@ -105,11 +109,7 @@ export default class CrearHesComponent extends Vue {
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString()); 
     // this.TableIngreso=[];
     setTimeout(() => {
-      for(var i=0;i<10;i++){
-        var reqDetalle:HesDetalleModel=new HesDetalleModel();
-        reqDetalle.chrStatus="A";
-        this.TableIngreso.push(reqDetalle);
-      }    
+       
       this.load();
     }, 200)
    
@@ -119,6 +119,11 @@ export default class CrearHesComponent extends Vue {
     this.descripcionCompania=localStorage.getItem('compania_name');
     this.fecha_since=(new Date()).toString();
     this.fecha_until=(new Date()).toString(); 
+    for(var i=0;i<10;i++){
+      var reqDetalle:HesDetalleModel=new HesDetalleModel();
+      reqDetalle.chrStatus="A";
+      this.TableIngreso.push(reqDetalle);
+    }   
   }
   //#region [ORDEN COMPRA]
   searchPO(){
@@ -147,9 +152,7 @@ export default class CrearHesComponent extends Vue {
       );   
     ordencompraService.getOrdenCompraTypeRequisicion()
     .then(respose=>{
-      this.ordencompra=respose;
-      console.log(this.ordencompra);
-      
+      this.ordencompra=respose;      
       loadingInstance.close();
       this.dialogOrdenCompra=true;
     }).catch(error=>{
@@ -169,7 +172,7 @@ export default class CrearHesComponent extends Vue {
   selectOrdenCompra(val:OrdenCompraModel){    
     this.ordencompraSelect=val;
     this.hesModel.strDesc_Header=this.ordencompraSelect.strPO_Desc;
-    this.hesModel.intIdHESH_ID=this.ordencompraSelect.intIdPOH_ID;
+    this.hesModel.intIdPOH_ID=this.ordencompraSelect.intIdPOH_ID;
     this.hesModel.strPO_NO=this.ordencompraSelect.strPO_NO;
     this.hesModel.strCompany_Cod=this.ordencompraSelect.strCompany_Cod;
   }
@@ -231,61 +234,140 @@ export default class CrearHesComponent extends Vue {
   desactivar(){
     this.btnactivarOrdenC=false;
   }
-  handleCurrentChange(val:OrdenCompraDetalleModel){
-    this.ordencompraDetalleSelect=val;
-  }
+  // handleCurrentChangeItem(val:OrdenCompraDetalleModel){
+  //   this.ordencompraDetalleSelect=val;
+  // }
+  handleCurrentChange(val){
+    this.rowSelect=val.strService_NO;         
+}
   dbclickSelect(){
     this.dialogOrdenC=false;
   }
   loadOrdenDet(id){    
     ordencompraService.GetAllOrdenDetalle(id)
     .then(response=>{
-      this.ordenCompraDetalle=response;           
+      this.ordenCompraDetalle=[];
+      this.ordenCompraDetalle=response;
+      console.log( this.ordenCompraDetalle);
+      this.TableIngreso=[];
+      for(var i=0;i<this.ordenCompraDetalle.length;i++){
+        var reqDetalle:HesDetalleModel=new HesDetalleModel();
+        reqDetalle.strService_NO=this.ordenCompraDetalle[i].intPO_Item_NO.toString();
+        reqDetalle.strDesc_Detail=this.ordenCompraDetalle[i].strPO_Item_Desc;
+        reqDetalle.strUM=this.ordenCompraDetalle[i].strUM_Cod;
+        reqDetalle.intQuantity=this.ordenCompraDetalle[i].fltPO_QTY_I;
+        reqDetalle.fltGross_Price=this.ordenCompraDetalle[i].fltPO_Net_PR_I;
+        reqDetalle.fltNet_Value=this.ordenCompraDetalle[i].fltCurr_Net_PR_P;
+        reqDetalle.strCurrency=this.ordenCompraDetalle[i].strCurrency_Cod;
+        reqDetalle.intIdCostCenter_ID=this.ordenCompraDetalle[i].intIdCostCenter_ID;
+        reqDetalle.strCostCenter_NO=this.ordenCompraDetalle[i].strCostCenter_NO;
+        reqDetalle.chrStatus="A";
+        this.TableIngreso.push(reqDetalle);
+      }  
+      // var num=this.TableIngreso.length;
+      // for(var i=0;i<50-num;i++){
+      //   var reqDetalle:HesDetalleModel=new HesDetalleModel();
+      //   reqDetalle.chrStatus="A";
+      //   this.TableIngreso.push(reqDetalle);
+      // }    
+      
     })
   }
   closeServicios(){
+    this.TableIngreso=[];
+      for(var i=0;i<this.ordenCompraDetalle.length;i++){
+        var reqDetalle:HesDetalleModel=new HesDetalleModel();
+        reqDetalle.strService_NO=this.ordenCompraDetalle[i].intPO_Item_NO.toString();
+        reqDetalle.strDesc_Detail=this.ordenCompraDetalle[i].strPO_Item_Desc;
+        reqDetalle.strUM=this.ordenCompraDetalle[i].strUM_Cod;
+        reqDetalle.intQuantity=this.ordenCompraDetalle[i].fltPO_QTY_I;
+        reqDetalle.fltGross_Price=this.ordenCompraDetalle[i].fltPO_Net_PR_I;
+        reqDetalle.fltNet_Value=this.ordenCompraDetalle[i].fltCurr_Net_PR_P;
+        reqDetalle.strCurrency=this.ordenCompraDetalle[i].strCurrency_Cod;
+        reqDetalle.intIdCostCenter_ID=this.ordenCompraDetalle[i].intIdCostCenter_ID;
+        reqDetalle.strCostCenter_NO=this.ordenCompraDetalle[i].strCostCenter_NO;
+        reqDetalle.chrStatus="A";
+        this.TableIngreso.push(reqDetalle);
+      }  
     this.dialogOrdenD=false;
   }
   CheckServicios(){
-    this.dialogOrdenD=false;
+    if(this.multipleSelectionItem.length==0){
+      this.$message({
+        showClose:true,
+        type:'info',
+        message:'Debe seleccionar al menos un detalle'
+    });    
+    }
+    else{
+      this.TableIngreso=[];
+      for(var i=0;i<this.multipleSelectionItem.length;i++){
+        var reqDetalle:HesDetalleModel=new HesDetalleModel();
+        reqDetalle.strService_NO=this.multipleSelectionItem[i].intPO_Item_NO.toString();
+        reqDetalle.strDesc_Detail=this.multipleSelectionItem[i].strPO_Item_Desc;
+        reqDetalle.strUM=this.multipleSelectionItem[i].strUM_Cod;
+        reqDetalle.intQuantity=this.multipleSelectionItem[i].fltPO_QTY_I;
+        reqDetalle.fltGross_Price=this.multipleSelectionItem[i].fltPO_Net_PR_I;
+        reqDetalle.fltNet_Value=this.multipleSelectionItem[i].fltCurr_Net_PR_P;
+        reqDetalle.strCurrency=this.multipleSelectionItem[i].strCurrency_Cod;
+        reqDetalle.intIdCostCenter_ID=this.multipleSelectionItem[i].intIdCostCenter_ID;
+        reqDetalle.strCostCenter_NO=this.multipleSelectionItem[i].strCostCenter_NO;
+        reqDetalle.chrStatus="A";
+        this.TableIngreso.push(reqDetalle);
+      }  
+    this.dialogOrdenD=false;   
+    }
+     
   }
   loadOrdenD(){
     this.dialogOrdenD=true;
+  }
+  handleSelectionChangeItem(val){
+    this.multipleSelectionItem=val;
+  }
+  handleSelectionChangeDet(val){
+    this.multipleSelectionAcept=val;
+    this.hesModel.fltTot_QTY=0;
+    for(var i=0;i< this.multipleSelectionAcept.length;i++){
+      this.hesModel.fltTot_QTY+=Number(this.multipleSelectionAcept[i].fltNet_Value);
+    }
   }
 //#endregion
   //#region [GUARDAR HES]
   guardarHes(){    
     this.hesModel.strHES_Status='00';
     this.hesModel.intChange_Count=0;
+    this.hesModel.chrStatus='A';
     this.hesModel.dtmProcess_Date=new Date();
     this.hesModel.dtmAuthsd_Date=this.ordencompraSelect.dtmProcess_Date;
     this.hesModel.strCurrency=this.ordencompraSelect.strCurrency_Cod;
-    this.hesModel.fltTot_QTY=this.ordencompraDetalleSelect.fltCurr_Net_PR_P;
-    this.hesModel.strPO_Item_NO=this.ordencompraDetalleSelect.intIdPOD_ID.toString();
-    this.hesModel.intIdPOD_ID=this.ordencompraDetalleSelect.intIdPOD_ID;
-    this.hesModel.strPO_Item_Desc=this.ordencompraDetalleSelect.strPO_Item_Desc;
+    // this.hesModel.fltTot_QTY=this.ordencompraDetalleSelect.fltCurr_Net_PR_P;
+    // this.hesModel.strPO_Item_NO=this.ordencompraDetalleSelect.intIdPOD_ID.toString();
+    // this.hesModel.intIdPOD_ID=this.ordencompraDetalleSelect.intIdPOD_ID;
+    // this.hesModel.strPO_Item_Desc=this.ordencompraDetalleSelect.strPO_Item_Desc;
     this.hesModel.strCreation_User='egaona';
-    this.hesModel.fltTot_Value=this.montoaceptado;
-    this.hesModel.fltTot_Peding_Value=this.montopendiente;
+    this.hesModel.dtmSince_Date=new Date(this.fecha_since);
+    this.hesModel.dtmUntil_Date=new Date(this.fecha_until);
     this.hesModel.listaDetalle=[];
-    for(var i=0;i< this.TableIngreso.length;i++){
-      if(this.TableIngreso[i].strCostCenter_NO!=''&&this.TableIngreso[i].strDesc_Detail!=''&&this.TableIngreso[i].strService_NO!=''){
-        this.hesModel.listaDetalle.push({
-          intHES_Item_NO:i+1,
-          strService_NO:this.TableIngreso[i].strService_NO,
-          strDesc_Detail:this.TableIngreso[i].strDesc_Detail,
-          strHES_Status:'00',
-          intQuantity:this.TableIngreso[i].intQuantity,
-          strUM:this.TableIngreso[i].strUM,
-          strCurrency:this.TableIngreso[i].strCurrency,
-          intIdCostCenter_ID:-1,
-          strCostCenter_NO:this.TableIngreso[i].strCostCenter_NO,
-          fltGross_Price:this.TableIngreso[i].fltGross_Price,
-          fltNet_Value:this.TableIngreso[i].fltNet_Value,
-          chrStatus:'A'
-        })
-      }      
-    }
+    this.hesModel.listaDetalle=this.multipleSelectionAcept;
+    // for(var i=0;i< this.TableIngreso.length;i++){
+    //   if(this.TableIngreso[i].strCostCenter_NO!=''&&this.TableIngreso[i].strDesc_Detail!=''&&this.TableIngreso[i].strService_NO!=''){
+    //     this.hesModel.listaDetalle.push({
+    //       intHES_Item_NO:i+1,
+    //       strService_NO:this.TableIngreso[i].strService_NO,
+    //       strDesc_Detail:this.TableIngreso[i].strDesc_Detail,
+    //       strHES_Status:'00',
+    //       intQuantity:this.TableIngreso[i].intQuantity,
+    //       strUM:this.TableIngreso[i].strUM,
+    //       strCurrency:this.TableIngreso[i].strCurrency,
+    //       intIdCostCenter_ID:-1,
+    //       strCostCenter_NO:this.TableIngreso[i].strCostCenter_NO,
+    //       fltGross_Price:this.TableIngreso[i].fltGross_Price,
+    //       fltNet_Value:this.TableIngreso[i].fltNet_Value,
+    //       chrStatus:'A'
+    //     })
+    //   }      
+    // }
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guargando...',
@@ -294,6 +376,8 @@ export default class CrearHesComponent extends Vue {
       }
       );
       if(this.hesModel.listaDetalle.length>0){
+        console.log(this.hesModel);
+        
         hesService.CreateHes(this.hesModel)
         .then(response=>{
           loadingInstance.close();
@@ -306,21 +390,19 @@ export default class CrearHesComponent extends Vue {
             reqDetalle.chrStatus="A";
             this.TableIngreso.push(reqDetalle);
           } 
-          this.ordencompraDetalleSelect=new OrdenCompraDetalleModel();
+          this.multipleSelectionAcept=[];
           this.categoriaSelect=new CategoriaLineaModel();
           this.ordencompraSelect=new OrdenCompraModel();
-          this.ordenCompraDetalle=new OrdenCompraDetalleModel();
-          this.montoaceptado=0;
-          this.montopendiente=0;
-          this.ordencompraDetalleSelect.fltCurr_Net_PR_P=0;
           this.hesModel.dtmSince_Date=new Date();
           this.hesModel.dtmUntil_Date=new Date();
+          this.openMessageSuccess('Se guardo correctamente '+response.strHES_NO);
           this.textosave = 'Se guardo correctamente '+response.strHES_NO;
         }).catch(error=>{
           loadingInstance.close();
           this.issave = false;
           this.iserror = true;
           this.textosave = 'Error al guardar.';
+          this.openMessageError('Error al guardar.');
         })    
       }
       else{
@@ -332,7 +414,20 @@ export default class CrearHesComponent extends Vue {
       });      
       }
     }
-      
+    openMessageSuccess(strMessage:string){
+      this.$message({
+          showClose: true,
+          type: 'success',
+          message: strMessage
+        });
+    }
+    openMessageError(strMessage:string){
+      this.$message({
+          showClose: true,
+          type: 'error',
+          message: strMessage
+        });
+    }
   //#endregion
   linksUser(comand){
     router.push('/barmenu/'+comand)
@@ -402,36 +497,14 @@ export default class CrearHesComponent extends Vue {
     this.editing.column='';
   }
   handleBlurImporte(event) {
-    var inttotal=0; 
-    for(var i=0;i< this.TableIngreso.length;i++){
-      if(this.TableIngreso[i].intQuantity>0){
-        inttotal+=Number((this.TableIngreso[i].fltGross_Price)*this.TableIngreso[i].intQuantity);
-      }
-      else{
-        inttotal+=Number(this.TableIngreso[i].fltGross_Price);    
-      }
-           
+    debugger;
+    var inttotal=0;   
+    // this.totalItems=0;
+    for(var i=0;i< this.multipleSelectionAcept.length;i++){
+      inttotal+=Number((this.multipleSelectionAcept[i].intQuantity)*(this.multipleSelectionAcept[i].fltGross_Price));            
     }
-    this.montoaceptado=Math.round(inttotal*100)/100;
-    if(Number(this.ordencompraDetalleSelect.fltCurr_Net_PR_P)>=Number(this.montoaceptado)){
-      this.montopendiente=Math.round((Number(this.ordencompraDetalleSelect.fltCurr_Net_PR_P)-Number(this.montoaceptado))*100)/100;
-      
-    }
-    else{
-      this.montopendiente=-1;
-      this.$message({
-        showClose:true,
-        type:'warning',
-        message:'valor aceptado debe ser menor que el Importe total'
-    })
-    }
-    var Tabletemp:Array<HesDetalleModel>=[];
-    Tabletemp=this.TableIngreso;
-    this.TableIngreso=[];
-    for(var i=0;i<10;i++){
-      Tabletemp[i].fltNet_Value=Number(Tabletemp[i].intQuantity)*Number(Tabletemp[i].fltGross_Price);      
-    }
-    this.TableIngreso=Tabletemp;        
+    this.hesModel.fltTot_QTY=Math.round(inttotal*100)/100;
+    // this.totalPrice=inttotal;
   }
   clickDescripcion(event,edit,column){
     this.bln_tbl_Descripcion=true;
@@ -479,6 +552,41 @@ export default class CrearHesComponent extends Vue {
     this.editing.row=event;
     this.editing.column=column;
   }
+  handleChangeCantidad(val){
+    
+    for (let i = 0; i < this.TableIngreso.length; i++) {
+      if(this.TableIngreso[i].strService_NO == this.rowSelect){
+          this.TableIngreso[i].fltNet_Value=Math.round(val*this.TableIngreso[i].fltGross_Price*100)/100;
+          this.requiTemp=this.TableIngreso; 
+          this.TableIngreso=[];              
+          this.TableIngreso=this.requiTemp;  
+          this.requiTemp=[];
+      }
+    }          
+}
+handleChangeValUni(val){
+  for (let i = 0; i < this.TableIngreso.length; i++) {
+      if(this.TableIngreso[i].strService_NO == this.rowSelect){
+          this.TableIngreso[i].fltNet_Value=Math.round(val*this.TableIngreso[i].intQuantity*100)/100;
+          this.requiTemp=this.TableIngreso; 
+          this.TableIngreso=[];              
+          this.TableIngreso=this.requiTemp;  
+          this.requiTemp=[];
+      }
+    }  
+}
+  changeAcepte(val){
+    if(this.hesModel.fltTot_QTY<this.hesModel.fltTot_Value){
+        this.$message({
+          showClose:true,
+          type:'warning',
+          message:'valor aceptado debe ser menor que el Importe total'
+      })
+    }
+    else{
+      this.hesModel.fltTot_Peding_Value=Math.round((Number(this.hesModel.fltTot_QTY)-Number(this.hesModel.fltTot_Value))*100)/100;
+    }
+  }
   //#endregion
   backPage(){
     window.history.back();
@@ -490,15 +598,21 @@ export default class CrearHesComponent extends Vue {
     return{
       nameComponent:'crear-hes',
       dialogTableVisible: false,
+      TableIngreso:[],
       codigoCompania:'',
       descripcionCompania:'',
       value:'',
       dataOrdenCompra:[],
+      ordenCompraDetalle:[],
       valueSwtch:true,
       montoaceptado:0,
       montopendiente:0,
       CodigoPO:'',
-      ordencompra:[]
+      ordencompra:[],
+      multipleSelectionItem: [],
+      multipleSelectionAcept:[],
+      fecha_since:'',
+      fecha_until:''
     }
   }
   

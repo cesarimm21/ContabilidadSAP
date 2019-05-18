@@ -23,8 +23,8 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetFacturaDate(dtmDue_Date){ 
-    return axios.get(CONFIG.API_URL+'factura/payrun/'+dtmDue_Date+'T00:00:00.000Z')
+  GetFacturaDate(dtmDue_Date,strCurrency_Cod){ 
+    return axios.get(CONFIG.API_URL+'factura/payrun/'+dtmDue_Date+'T00:00:00.000Z/'+strCurrency_Cod)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

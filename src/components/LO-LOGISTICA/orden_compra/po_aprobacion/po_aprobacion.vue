@@ -42,6 +42,7 @@
                                     <el-date-picker
                                         v-model="fechaDesde"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                 </div>
@@ -52,6 +53,7 @@
                                     <el-date-picker
                                         v-model="fechaHasta"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important"
                                        >
                                     </el-date-picker>

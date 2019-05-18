@@ -40,6 +40,8 @@ export default class AprobarHesComponent extends Vue{
     selectrow:any;
     currentRow:any;
     visualizar:boolean;
+    codigoCompania:any;
+    descripcionCompania:any;
     public tableData:Array<HESModel>=[]; 
     public newHes:HESModel=new HESModel();
     tableData1:any=[
@@ -72,6 +74,8 @@ export default class AprobarHesComponent extends Vue{
         }, 200)
     }
     load(){
+      this.codigoCompania=localStorage.getItem('compania_cod');
+      this.descripcionCompania=localStorage.getItem('compania_name');
       var view = this.$route.query.vista;
       if(view==="visualizar"){
         this.visualizar=true;
@@ -83,19 +87,28 @@ export default class AprobarHesComponent extends Vue{
         console.log('B');
         
       }
-      hesService.GetAllHes()
+      hesService.GetAllHes(this.codigoCompania)
       .then(response=>{
         this.tableData=response;
         
         var cont=this.tableData.length;        
         for(var i=0;i<this.tableData.length;i++){
-          this.tableData[i].strModified_User=Global.getParseDate(this.tableData[i].dtmProcess_Date);
+          this.tableData[i].strModified_User=this.getDateString(this.tableData[i].dtmProcess_Date);
         }
         for(var i=0;i<10-cont;i++){
           this.tableData.push(this.newHes);
         }
       })
     }
+    getDateString(fecha){
+      var dateString = new Date(fecha);
+      var dia = dateString.getDate();
+          var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+          var yyyy = dateString.getFullYear();
+          var dd = (dia<10) ? '0'+dia : dd=dia;
+          var mm = (mes<10) ? '0'+mes : mm=mes;
+          return dd+'.'+mm+'.'+yyyy;
+      }
     handleCurrentChange(val) {
         if(val!=null){
           this.selectrow=val;
@@ -115,7 +128,7 @@ export default class AprobarHesComponent extends Vue{
           await setTimeout(() => {
             console.log('----,,,',this.selectrow);
             if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdHESH_ID!=undefined){
-              router.push({ path: `/barmenu/LO-LOGISTICA/HES/view-hes`, query: { vista: 'aprobar',data:JSON.stringify(this.selectrow) }  })
+              router.push({ path: `/barmenu/LO-LOGISTICA/HES/viewandedit_hes`, query: { vista: 'Aprobar',data:JSON.stringify(this.selectrow) }  })
             }
           }, 600)
         }
@@ -166,7 +179,8 @@ export default class AprobarHesComponent extends Vue{
       }
       data(){
         return{
-                
+          codigoCompania:'',
+          descripcionCompania:''
         }
     }    
 }
