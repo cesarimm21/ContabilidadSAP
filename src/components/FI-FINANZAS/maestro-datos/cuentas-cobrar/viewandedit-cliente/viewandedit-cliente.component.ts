@@ -397,18 +397,18 @@ export default class ViewAndEditClienteComponent extends Vue {
     })
   }
   clienteCheck(){
-    this.Cliente.intIdVendor_ID=this.gridSelectedCliente.intIdVendor_ID;
+    this.Cliente.intIdCliente_ID=this.gridSelectedCliente.intIdCliente_ID;
     this.Cliente.intIdCompany_ID=this.gridSelectedCliente.intIdCompany_ID;
     this.Cliente.intIdRegion_ID=this.gridSelectedCliente.intIdRegion_ID;
     this.Cliente.intIdDocIdent_ID=this.gridSelectedCliente.intIdDocIdent_ID.intIdDocIdent_ID;
     this.Cliente.intIdVenCateg_ID=this.gridSelectedCliente.intIdVenCateg_ID.intIdVenCateg_ID;
     this.Cliente.intIdCountry_ID=this.gridSelectedCliente.intIdCountry_ID.intIdCountry_ID;
     this.Cliente.strCompany_Cod=this.gridSelectedCliente.strCompany_Cod;
-    this.Cliente.strVendor_NO=this.gridSelectedCliente.strVendor_NO;
+    this.Cliente.strCliente_NO=this.gridSelectedCliente.strCliente_NO;
     this.Cliente.strCountry=this.gridSelectedCliente.strCountry;
     this.Cliente.strCat_Person=this.gridSelectedCliente.strCat_Person;
     this.Cliente.strTax_ID=this.gridSelectedCliente.strTax_ID;
-    this.Cliente.strVendor_Desc=this.gridSelectedCliente.strVendor_Desc;
+    this.Cliente.strCliente_Desc=this.gridSelectedCliente.strCliente_Desc;
     this.Cliente.strLastName=this.gridSelectedCliente.strLastName;
     this.Cliente.strSurName=this.gridSelectedCliente.strSurName;
     this.Cliente.strAddress=this.gridSelectedCliente.strAddress;
@@ -846,7 +846,7 @@ export default class ViewAndEditClienteComponent extends Vue {
       }
   }
   SaveCliente(val){
-    if(this.Cliente.strVendor_NO===''){
+    if(this.Cliente.strCliente_NO===''){
       this.$message({
         showClose: true,
         type: 'warning',

@@ -54,7 +54,7 @@
                                                 <label class="el-form-item__label col-md-1" >{{nameTipoJoN}}</label>
                                                 <div class="col-md-3 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" v-model="Cliente.strVendor_Desc"  placeholder="">
+                                                    <el-input class="validador" size ="small" v-model="Cliente.strCliente_Desc"  placeholder="">
                                         
                                                     </el-input>
                                                     </div>
@@ -82,7 +82,7 @@
                                                 <label class="el-form-item__label col-md-1" >{{RucOrDni}}</label>
                                                 <div class="col-md-2 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" v-model="Cliente.strTax_ID"  placeholder="">
+                                                    <el-input class="validador" size ="small" v-model="Cliente.strTax_ID"  placeholder="">
                                         
                                                     </el-input>
                                                     </div>
@@ -110,7 +110,7 @@
                                             <label class="el-form-item__label col-md-1" >Pais</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="Cliente.strCountry">                            
+                                                    <el-input class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="Cliente.strCountry">                            
                                                         <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                                     </el-input>
                                                 </div>
@@ -405,7 +405,7 @@
                         <label class="el-form-item__label col-md-2" >Cliente</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-2" >
-                                <el-input size ="small" @blur="desactivar_cliente1" @focus="activar_cliente1" v-model="gridSelectedCliente.strVendor_NO"  placeholder="" :disabled="proDisabled">
+                                <el-input size ="small" @blur="desactivar_cliente1" @focus="activar_cliente1" v-model="gridSelectedCliente.strCliente_NO"  placeholder="" :disabled="proDisabled">
                                     <el-button v-if="btnactivarcliente && !dialogVisible" slot="append" class="boton" icon="fa fa-clone" @click="loadClientes()"></el-button> 
                                 </el-input>
                             </div>
@@ -482,9 +482,9 @@
                 height="250"
                 @row-dblclick="checkDoblePro"
                 @current-change="clienteSelect">
-                <el-table-column   prop="strVendor_NO" label="Codigo" width="180">
+                <el-table-column   prop="strCliente_NO" label="Codigo" width="180">
                 </el-table-column>  
-                <el-table-column  prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
+                <el-table-column  prop="strCliente_Desc" label="Descripción" style="width: 70% !important;">
                 </el-table-column> 
                 <el-table-column  prop="strCountry" label="Pais" style="width: 70% !important;">
                 </el-table-column> 

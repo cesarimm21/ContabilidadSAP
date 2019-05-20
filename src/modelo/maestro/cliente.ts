@@ -1,5 +1,5 @@
 export class ClienteModel {
-    intIdVendor_ID:number;//*
+    intIdCliente_ID:number;//*
     intIdRegion_ID:number ;//*
     intIdDocIdent_ID:number;//*
     intIdCompany_ID:number;//
@@ -8,11 +8,11 @@ export class ClienteModel {
     strDocIdent_Name:string;
     strRegión_Cod:string;
     strCompany_Cod:string;//
-    strVendor_NO:string ;//*
+    strCliente_NO:string ;//*
     strCountry:string;//    
     strCat_Person:string;//
     strTax_ID:string;//
-    strVendor_Desc:string;//
+    strCliente_Desc:string;//
     strLastName:string;//
     strSurName:string;//
     strAddress:string;//
@@ -45,7 +45,7 @@ export class ClienteModel {
     dtmModified_Date:Date ;        
     chrStatus:string ;  
     constructor(){
-        this.intIdVendor_ID=-1;
+        this.intIdCliente_ID=-1;
         this.intIdRegion_ID=-1;
         this.intIdDocIdent_ID=-1;
         this.intIdCompany_ID=-1;
@@ -54,11 +54,11 @@ export class ClienteModel {
         this.strDocIdent_Name='';
         this.strCompany_Cod='';
         this.strRegión_Cod='';
-        this.strVendor_NO='';
+        this.strCliente_NO='';
         this.strCountry='';
         this.strCat_Person='';
         this.strTax_ID='';
-        this.strVendor_Desc='';
+        this.strCliente_Desc='';
         this.strLastName='';
         this.strSurName='';
         this.strAddress='';

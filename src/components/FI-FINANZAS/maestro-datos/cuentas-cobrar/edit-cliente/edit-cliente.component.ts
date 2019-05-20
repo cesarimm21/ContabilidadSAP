@@ -50,7 +50,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
     dialogEliminar:boolean=false;
     blnfilterstrRequis_NO:boolean=false;
     blnfilterstrTax_ID:boolean=false;
-    blnfilterstrVendor_Desc:boolean=false;
+    blnfilterstrCliente_Desc:boolean=false;
     blnfilterstrCountry_Name:boolean=false;
     blnfilterstrProvince:boolean=false;
     blnfilterstrDistrict:boolean=false;
@@ -71,7 +71,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
           this.gridCliente=response;   
           for(var j=0;j<this.gridCliente.length;j++){
             if(this.gridCliente[j].strLastName!=null){
-              this.gridCliente[j].strVendor_Desc=this.gridCliente[j].strVendor_Desc+', '+this.gridCliente[j].strLastName+' '+this.gridCliente[j].strSurName              
+              this.gridCliente[j].strCliente_Desc=this.gridCliente[j].strCliente_Desc+', '+this.gridCliente[j].strLastName+' '+this.gridCliente[j].strSurName              
             }        
           }
           this.gridCliente1=this.gridCliente;
@@ -118,7 +118,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
     }
       clienteSelect(val){
         this.gridSelectedCliente=val;  
-        this.selectrowCod=this.gridSelectedCliente.strVendor_NO;   
+        this.selectrowCod=this.gridSelectedCliente.strCliente_NO;   
       }
       async EditarCliente(val){
         await setTimeout(() => {
@@ -215,7 +215,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 
       this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=false;
@@ -229,11 +229,11 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
     
       this.Column=val.label;
       this.clickColumn=val.property;
-      if(val.property=="strVendor_NO"){
+      if(val.property=="strCliente_NO"){
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=true;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=false;
@@ -243,17 +243,17 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=true;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=false;
         this.blnfilterstrAddress=false;
       }
-      if(val.property=="strVendor_Desc"){
+      if(val.property=="strCliente_Desc"){
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=true;
+        this.blnfilterstrCliente_Desc=true;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=false;
@@ -264,7 +264,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=true;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=false;
@@ -274,7 +274,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=true;
         this.blnfilterstrDistrict=false;
@@ -285,7 +285,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=true;
@@ -295,7 +295,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         this.txtbuscar='';
         this.blnfilterstrRequis_NO=false;
         this.blnfilterstrTax_ID=false;
-        this.blnfilterstrVendor_Desc=false;
+        this.blnfilterstrCliente_Desc=false;
         this.blnfilterstrCountry_Name=false;
         this.blnfilterstrProvince=false;
         this.blnfilterstrDistrict=false;
@@ -304,7 +304,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
     }
     // #region Button Accion 
   
-    filterstrVendor_NO(h,{column,$index}){
+    filterstrCliente_NO(h,{column,$index}){
     if(this.blnfilterstrRequis_NO){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -328,8 +328,8 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrVendor_Desc(h,{column,$index}){
-    if(this.blnfilterstrVendor_Desc){
+  filterstrCliente_Desc(h,{column,$index}){
+    if(this.blnfilterstrCliente_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
