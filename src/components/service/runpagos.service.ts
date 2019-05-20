@@ -8,6 +8,12 @@ export default{
         .then(response=>{
             return JSON.parse(JSON.stringify(response.data));
         })
+  },
+  CreateRunPagos(pago){    
+    return axios.post(CONFIG.API_URL+'runpagos',pago)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 
 }

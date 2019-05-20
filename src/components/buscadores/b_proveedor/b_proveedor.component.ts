@@ -114,11 +114,11 @@ export default class  BProveedorComponent extends Vue {
   }
 
   seleccionar(row,index){
-    this.proveedorSelectModel=row;
-    this.$emit('proveedorselecionado',row);
-    if(Global.nameComponent=='pagos-individual'){
-      this.$emit('proveedorselecionado',this.proveedorSelectModel);
-    }
+    // this.proveedorSelectModel=row;
+    this.$emit('proveedorselecionado',this.proveedorSelectModel);
+    // if(Global.nameComponent=='pagos-individual'){
+    //   this.$emit('proveedorselecionado',this.proveedorSelectModel);
+    // }
   }
 
   handleCurrentChange(val:ProveedorModel){
@@ -127,9 +127,9 @@ export default class  BProveedorComponent extends Vue {
   checkPopup(){
     debugger;
     this.$emit('proveedorselecionado',this.proveedorSelectModel);
-    if(Global.nameComponent=='pagos-individual'){
-      this.$emit('proveedorselecionado',this.proveedorSelectModel);
-    }
+    // if(Global.nameComponent=='pagos-individual'){
+    //   this.$emit('proveedorselecionado',this.proveedorSelectModel);
+    // }
   }
   closePopup(){
     this.$emit('proveedorClose');

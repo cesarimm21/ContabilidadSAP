@@ -135,11 +135,11 @@
                                 <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row "  style="margin-top:12px;">
-                                <template>
+                                <!-- <template>
                                     <el-checkbox class="CheckBoxPro" v-model="checked" @change="handleCheckAllChange" :disabled="nochancePro">
                                         <span style=" font-size:10px;">Modificar </span>
                                         </el-checkbox>
-                                </template>
+                                </template> -->
                                 <label class="sinLinea el-form-item__label col-md-6" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
@@ -176,7 +176,7 @@
                                         </el-table-column>
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cta. cuenta">
+                                        <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategoriacuenta && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" :disabled="disabledRow">
@@ -187,7 +187,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCateg_Line" sortable  min-width="80"
-                                            label="Cat. linea">
+                                            label="Cat. Linea">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategorialinea && bln_tbl_categoria_linea  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Line" :disabled="disabledRow">
@@ -198,7 +198,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCostCenter" sortable
-                                            label="Centro costos">
+                                            label="Centro Costos">
                                             <template scope="scope">
                                                 <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter" :disabled="disabledRow">
@@ -214,6 +214,10 @@
                                         <el-table-column
                                             prop="strDescription" sortable width="200"
                                             label="Descripción">
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="strVendor_Desc" sortable width="200"
+                                            label="Proveedor Sugerido">
                                         </el-table-column>
                                         <!-- <el-table-column 
                                             prop="blnCheck"
@@ -258,7 +262,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltValue_Total" sortable width="100"
-                                            label="Valor total" >
+                                            label="Valor Total" >
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPriority_Cod" sortable width="130"

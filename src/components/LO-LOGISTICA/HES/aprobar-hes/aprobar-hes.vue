@@ -51,7 +51,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:handleSearchHes="Buscar()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:handleSearchHes="Buscar()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -67,16 +67,16 @@
                                         <el-table-column type="index" width="38">
                                         </el-table-column>
                                         <el-table-column  
-                                        sortable prop="strHES_NO" width="100" label="Código HES">
+                                        sortable prop="strHES_NO" width="100" label="HES">
                                             
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCompany_Cod" sortable  width="120"
-                                            label="Cod. Compañia">
+                                            label="Compañia">
                                         </el-table-column>   
                                         <el-table-column
                                             prop="strPO_NO" sortable  width="120"
-                                            label="Codigo PO">
+                                            label="Orden Compra">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCategItem_Cod" sortable width="150"

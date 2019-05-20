@@ -268,10 +268,18 @@ export default class AprobarPOComponent extends Vue {
       cell
     }
   }  
-  getParseDate(fecha){
-    return Global.getParseDate(fecha);
-  }
-  
+  // getParseDate(fecha){
+  //   return Global.getParseDate(fecha);
+  // }
+  getParseDate(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
+    }
   async validarView(){
     debugger;
     if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPOH_ID!=-1){

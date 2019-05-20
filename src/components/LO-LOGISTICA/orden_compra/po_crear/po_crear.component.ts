@@ -160,7 +160,8 @@ export default class CrearPOComponent extends Vue {
         proveedorService.GetProveedoresCompany(this.codigoCompania)
         .then(resp=>{
             this.gridProveedor=[];
-            this.gridProveedor=resp;            
+            this.gridProveedor=resp;  
+            this.tempGrid=this.gridProveedor;          
         })
     }
     loadRequisicion(){
@@ -179,7 +180,9 @@ export default class CrearPOComponent extends Vue {
         
         requisicionService.getRequiDetallById(v)
         .then(response=>{
-            this.requiDetalle=response;  
+            this.requiDetalle=response; 
+            console.log(this.requiDetalle);
+             
             
             this.requiDetalle1=[];     
             this.provData=[]; 
@@ -220,15 +223,15 @@ export default class CrearPOComponent extends Vue {
                     intConv_Factor:1,
                     chrStatus:this.requiDetalle[i].chrStatus
                 })
-                proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
-                .then(response=>{
-                    this.provData.push(response);                       
-                })
+                // proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
+                // .then(response=>{
+                //     this.provData.push(response);                       
+                // })
             }
             this.requiDetalle=[];
             this.requiDetalle=this.requiDetalle1;                       
         })
-        this.tempGrid=this.provData;
+        // this.tempGrid=this.provData;
     }
     tableRowClassName(val,row) {
         if (val.chrStatus === "B") {    
@@ -249,6 +252,8 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
+      console.log(val);
+      
         var comId:any=localStorage.getItem('compania_ID');
         this.OrdenCompra.intIdCompany_ID=parseInt(comId); 
         this.OrdenCompra.strCompany_Desc=val.strCompany_Desc;
@@ -323,14 +328,15 @@ export default class CrearPOComponent extends Vue {
     //#endregion
     //#region [PROVEEDORES]
     handleCheckAllChange(val){
-        if(this.checked==false){
-            this.tempGrid=[];
-            this.tempGrid.push(this.selectProo);
-        }
-        if(this.checked==true){
-            this.tempGrid=[];
-            this.tempGrid=this.gridProveedor;
-        }        
+      this.tempGrid=this.gridProveedor;
+        // if(this.checked==false){
+        //     this.tempGrid=[];
+        //     this.tempGrid.push(this.selectProo);
+        // }
+        // if(this.checked==true){
+        //     this.tempGrid=[];
+        //     this.tempGrid=this.gridProveedor;
+        // }        
     }
     desactivar_pro() {
         if (this.dialogProveedor) {
@@ -347,35 +353,35 @@ export default class CrearPOComponent extends Vue {
     }
     loadPro() {
         this.dialogProveedor = true;
-        if(this.checked==false){
-            this.provData1=this.provData;
-            this.provData=[];
-            var temp=0;
-            if(this.provData1.length>0){
-                for(var i=0;i<this.provData1.length;i++){
-                    if(this.provData.length>0){
-                        for(var j=0;j<this.provData.length;j++){
-                            if(this.provData[j].strVendor_NO===this.provData1[i].strVendor_NO){
-                                temp=1;                     
-                            }
-                        }
-                        if(temp==0){
+        // if(this.checked==false){
+        //     this.provData1=this.provData;
+        //     this.provData=[];
+        //     var temp=0;
+        //     if(this.provData1.length>0){
+        //         for(var i=0;i<this.provData1.length;i++){
+        //             if(this.provData.length>0){
+        //                 for(var j=0;j<this.provData.length;j++){
+        //                     if(this.provData[j].strVendor_NO===this.provData1[i].strVendor_NO){
+        //                         temp=1;                     
+        //                     }
+        //                 }
+        //                 if(temp==0){
                             
-                            this.provData.push(this.provData1[i]);
-                        }
-                    }
-                    else{
-                        this.provData.push(this.provData1[i]);
-                    }
-                }          
-            }
-            this.tempGrid=[];
-            this.tempGrid=this.provData;
-        }
-        if(this.checked==true){
-            this.tempGrid=[];
-            this.tempGrid=this.gridProveedor;
-        }
+        //                     this.provData.push(this.provData1[i]);
+        //                 }
+        //             }
+        //             else{
+        //                 this.provData.push(this.provData1[i]);
+        //             }
+        //         }          
+        //     }
+        //     this.tempGrid=[];
+        //     this.tempGrid=this.provData;
+        // }
+        // if(this.checked==true){
+        //     this.tempGrid=[];
+        //     this.tempGrid=this.gridProveedor;
+        // }
         
         
     }
@@ -388,25 +394,29 @@ export default class CrearPOComponent extends Vue {
             })
     }
     checkDoblePro() {     
-        if(this.checked==false){
-            this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
-            this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
-            this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
-            var code=this.selectProo.strVendor_NO;
-            var temp=this.requiDetalle;
-            this.requiDetalle1=[];
-            this.requiDetalle1 = temp.filter(function(hero) {
-                return hero.strVendor_Suggested == code;
-            });  
-            this.dialogProveedor = false; 
-            this.nochancePro=false; 
-        }   
-        else{
-            this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
-            this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
-            this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
-            this.dialogProveedor = false; 
-        }
+      this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+      this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
+      this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
+      this.dialogProveedor = false; 
+        // if(this.checked==false){
+        //     this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+        //     this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
+        //     this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
+        //     var code=this.selectProo.strVendor_NO;
+        //     var temp=this.requiDetalle;
+        //     this.requiDetalle1=[];
+        //     this.requiDetalle1 = temp.filter(function(hero) {
+        //         return hero.strVendor_Suggested == code;
+        //     });  
+        //     this.dialogProveedor = false; 
+        //     this.nochancePro=false; 
+        // }   
+        // else{
+        //     this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
+        //     this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
+        //     this.OrdenCompra.strVendor_Desc=this.selectProo.strVendor_Desc;
+        //     this.dialogProveedor = false; 
+        // }
         
     }
     closeDialogPro() {
@@ -414,7 +424,6 @@ export default class CrearPOComponent extends Vue {
     }
     closeDialogProX() {
         this.dialogProveedor = false;
-        this.selectProo = new ProveedorModel();
     }
     checkSelectdbProveedor(val:ProveedorModel){
         this.selectProo=val;                
@@ -557,6 +566,8 @@ export default class CrearPOComponent extends Vue {
             }
             );
             if (val == 'crear-po') {
+              console.log(this.OrdenCompra);
+              
                 ordenCompraService.CreateOrdenCompra(this.OrdenCompra)
                     .then(response => {
                         loadingInstance.close();
@@ -847,6 +858,7 @@ export default class CrearPOComponent extends Vue {
             nameComponent:'crear-po',
             codigoInput:'',
             codigoCompania:'',
+            descripcionCompania:'',
             tableData:[],
             requisicionDetalle:[],
             requisicionData:[],
@@ -862,8 +874,7 @@ export default class CrearPOComponent extends Vue {
             valorSelectCodStock:[],
             checked: false,
             nochancePro:true,
-            bln_tbl_check:true,
-            descripcionCompania:'',
+            bln_tbl_check:true,            
             gridProveedor:[],
             tempGrid:[]
 

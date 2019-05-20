@@ -1,441 +1,390 @@
 import Vue from 'vue';
-import {Component } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import { Notification } from 'element-ui';
-import hesService from '@/components/service/hes.service';
-import BCategoriaLineaComponent from '@/components/buscadores/b_categoria_linea/b_categoria_linea.vue';
+import { HESModel } from '@/modelo/maestro/hes';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
-//**BUS */
-
-import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
-import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
-import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
-import {HESModel} from '@/modelo/maestro/hes';
-import {HesDetalleModel} from '@/modelo/maestro/hesDetalle';
-import {CentroCostosModel} from '@/modelo/maestro/centrocostos';
-import Global from '@/Global';
 import { Loading } from 'element-ui';
-
+import Global from '@/Global';
+import ordencompraService from '@/components/service/ordencompra.service';
+import hesService from '@/components/service/hes.service';
+import { Alert } from '@/types';
 @Component({
-    name:'edit-hes',
-    components:{'buttons-accions':ButtonsAccionsComponent,
-    'bcategorialinea':BCategoriaLineaComponent,
-    'quickaccessmenu':QuickAccessMenuComponent,
-    'bcentrocosto':BCentroCostoComponent,}
+    name: 'modificar-po',
+    components: {
+        'buttons-accions': ButtonsAccionsComponent,
+        'quickaccessmenu': QuickAccessMenuComponent,
+    }
 })
-export default class EditHesComponent extends Vue{
-    nameComponent:string;
-  timer=0;
-  valueSwtch:boolean=true;
-  codigoCompania:string;
-  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
-  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
-  fecha_ejecucion:string;
-  fecha_since:string;
-  fecha_until:string;
-  vifprogress:boolean=true;
-  valuem:number=0;
-  issave:boolean=false;
-  iserror:boolean=false;
-  textosave='';
-  montoaceptado:number;
-  montopendiente:number;
-  /*bolean_tabla_dinamica*/
-  editing:any= {
-    row:'',
-    column:''
-  };
-  //#region [BOTONES]
-  bln_tbl_Descripcion:boolean=false;
-  bln_tbl_cantidad:boolean=false;
-  bln_tbl_total:boolean=false;
-  bln_tbl_Servicio:boolean=false;
-  bln_tbl_Unidad:boolean=false;
-  //#endregion
-
-  //**CENTRO COSTO */
-  dialogOrdenC:boolean=false;
-  dialogCentroCostos:boolean=false;
-  blncentrocosto:boolean=true;
-  bln_tbl_centro_costo:boolean=false;
-  cell_ocultar:string='transparent';
-  public centrocosto:CentroCostosModel=new CentroCostosModel();
-  //**CATEGORIA LINEA */
-  dialogCategoriaLinea:boolean=false;
-  btnactivarcategoria:boolean=false;
-  public categoriaSelect:CategoriaLineaModel=new CategoriaLineaModel();
-  //**ORDEN COMPRA */
-  dialogHES:boolean=false;
-  btnactivarHES:boolean=false;
-  dialogOrdenD:boolean=false;
-  dataOrdenCompra:any[];
-  public ordenCompraModel:OrdenCompraModel =new OrdenCompraModel();
-
-  //activar colores
-  isactivered:boolean=false;
-  isactiveyellow:boolean=false;
-  isactivegreen:boolean=false;
-
-  //HES
-  public hesModel:HESModel =new HESModel();
-  public gridhesModel:HESModel =new HESModel();
-  hesDetalleModel:any[];
-  public TableIngreso:Array<HesDetalleModel>=[];
-
-    constructor(){
+export default class EditHesComponent extends Vue {
+    nameComponent: string = 'modificar-po';
+    sizeScreen: string = (window.innerHeight - 420).toString();//'0';
+    sizeScreenwidth: string = (window.innerWidth - 288).toString();//'0';
+    textTitle:string;
+    codigoCompania:any;
+    descripcionCompania:any;
+    options = {  day: '2-digit',month: '2-digit', year: 'numeric' };
+    valuem:number=0;
+    intlineaselect:number=-1;
+    textosave:string='';
+    clickColumn:string='';
+    txtbuscar:string='';
+    Column:string='';
+    pagina: number =1;
+    RegistersForPage: number = 10;
+    totalRegistros: number = 100;
+    vifprogress:boolean=false;
+    issave:boolean=false;
+    iserror:boolean=false;
+    blnilterstrHES_NO:boolean=false;
+    blnilterstrDesc_Header:boolean=false;
+    blnilterstrPO_NO:boolean=false;
+    blnilterstrPO_Item_Desc:boolean=false;
+    blnilterstrCategItem_Cod:boolean=false;
+    blnilterstrPO_Item_NO:boolean=false;
+    blnilterdtmAuthsd_Date:boolean=false;
+    dialogBusquedaFilter:boolean=false;
+    //**[ORDEN COMPRA] */
+    public GridHes: Array<HESModel>;
+    public GridHes1: Array<HESModel>;
+    public GridHes2: Array<HESModel>;
+    public hesSelect: HESModel=new HESModel();
+    constructor() {
         super();
-        Global.nameComponent='edit-hes';
-        for(var i=0;i<10;i++){
-        var reqDetalle:HesDetalleModel=new HesDetalleModel();
-        reqDetalle.chrStatus="A";
-        this.TableIngreso.push(reqDetalle);
-        }    
+        Global.nameComponent = 'modificar-po';           
+        setTimeout(() => {
+            this.loadPO();
+        }, 200)
     }
-     //#region [HES]
-  loadAllHES(){
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guargando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );   
-      hesService.GetAllHes()
-    .then(respose=>{
-      this.gridhesModel=respose;      
-      loadingInstance.close();
-      this.dialogHES=true;
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'no se pudo cargar aceptación servicio'
-      });
-      loadingInstance.close();
-      this.dialogHES=false;
+   loadPO(){
+    this.codigoCompania=localStorage.getItem('compania_cod');
+    this.descripcionCompania=localStorage.getItem('compania_name');
+    this.textTitle='Modificar';
+    hesService.GetAllHes(this.codigoCompania)
+    .then(resp=>{
+        this.GridHes=[];
+        this.GridHes1=[];
+        this.GridHes2=[];
+        console.log(resp);        
+        this.GridHes=resp;
+        this.GridHes1=resp;
+        this.GridHes2=resp;
     })
-  }
-  selectdbOrdenCompra(){
-    this.dialogHES=false;
-  }
-  selectHES(val:HESModel){    
-    this.hesModel=val;    
-    this.fecha_ejecucion=Global.getParseDate(this.hesModel.dtmProcess_Date);
-    this.fecha_since=Global.getParseDate(this.hesModel.dtmSince_Date);
-    this.fecha_until=Global.getParseDate(this.hesModel.dtmUntil_Date);
-    this.montoaceptado=this.hesModel.fltTot_Value;
-    this.montopendiente=this.hesModel.fltTot_Peding_Value;
-    if(this.hesModel.strHES_Status=='00'){
-      this.isactivered=true;
+   }
+   handleCurrentChange(val:HESModel){
+    this.hesSelect=val;    
+   }
+   getDateString(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
     }
-    if(this.hesModel.strHES_Status=='30'){
-      this.isactiveyellow=true;
-    }
-    if(this.hesModel.strHES_Status=='50'){
-      this.isactivegreen=true;
-    }
-    this.hesModel.intChange_Count=Number(this.hesModel.intChange_Count)+1;
-  }
-  checkHES(){    
-    this.dialogHES=false;
-    this.loadHESDet(this.hesModel.intIdHESH_ID); 
-    
-  } 
-  closehes(){    
-    this.btnactivarHES=false;
-    this.dialogHES=false;
-    this.hesModel=new HESModel();
-    return false;
-  }
-  loadHES(){
-    this.loadAllHES();
-  }
-  checkOrdenC(){
-    this.dialogOrdenC=false;
-    this.btnactivarHES=false;
-  }
-  activar_HES(){
-    setTimeout(() => {
-      this.btnactivarHES=true;
-      this.btnactivarcategoria=false;
-    }, 120)
-  }
-  desactivar_HES(){
-    if(this.dialogOrdenC){
-      this.btnactivarHES=false;
-    }
-  }
-  desactivar(){
-    this.btnactivarHES=false;
-  }
-  dbclickSelect(){
-    this.dialogOrdenC=false;
-  }
-  loadHESDet(id){    
-    hesService.GetHesDetalle(id)
-    .then(response=>{
-        this.hesDetalleModel=[];
-        this.hesDetalleModel=response; 
-        this.TableIngreso=[];
-        var total=this.hesDetalleModel.length;
-        var dataadd=10-total;
-        for(var i=0;i<total;i++){
-            this.TableIngreso.push(this.hesDetalleModel[i]); 
+    async validarView(){
+      if(this.hesSelect.strHES_NO!='' && this.hesSelect.intIdHESH_ID!=-1){
+          // this.vifprogress=true;
+          // this.valuem=0;
+          await setTimeout(() => {
+            for(var i=0;i<100;i++){
+              this.valuem++; 
+            }
+          }, 200)
+          await setTimeout(() => {
+            debugger;
+            if(this.hesSelect.strHES_NO!='' && this.hesSelect.intIdHESH_ID!=-1){
+              router.push({ path: `/barmenu/LO-LOGISTICA/HES/viewandedit_hes`, query: { vista:'Modificar' ,data:JSON.stringify(this.hesSelect) }  })
+            }
+          }, 600)
         }
-        for(var i=0;i<dataadd;i++){
-            var reqDetalle:HesDetalleModel=new HesDetalleModel();
-            reqDetalle.chrStatus="A";
-            reqDetalle.strCurrency=this.hesModel.strCurrency;
-            this.TableIngreso.push(reqDetalle);   
-        }        
-    })
-  }
-  datesince(){
-    let datenuevo=this.fecha_since;
-    this.hesModel.dtmSince_Date=new Date(datenuevo); 
-  }
-  dateuntil(){
-    let datenuevo=this.fecha_since;
-    this.hesModel.dtmUntil_Date=new Date(datenuevo); 
-  }
-//#endregion
-  //#region [GUARDAR HES]
-  guardarEditHES(){   
-    this.hesModel.strModified_User='egaona';
-    this.hesModel.dtmModified_Date=new Date();
-    this.hesModel.fltTot_Value=this.montoaceptado;
-    this.hesModel.fltTot_Peding_Value=this.montopendiente;
-    this.hesModel.listaDetalle=[];
-    for(var i=0;i< this.TableIngreso.length;i++){
-      if(this.TableIngreso[i].strCostCenter_NO!=''&&this.TableIngreso[i].strDesc_Detail!=''&&this.TableIngreso[i].strService_NO!=''){
-        this.hesModel.listaDetalle.push({
-          intIdHESD_ID:this.TableIngreso[i].intIdHESD_ID,
-          intIdHESH_ID:this.hesModel.intIdHESH_ID,
-          intHES_Item_NO:this.TableIngreso[i].intHES_Item_NO,
-          strService_NO:this.TableIngreso[i].strService_NO,
-          strDesc_Detail:this.TableIngreso[i].strDesc_Detail,
-          strHES_NO:this.TableIngreso[i].strHES_NO,
-          intQuantity:this.TableIngreso[i].intQuantity,
-          strUM:this.TableIngreso[i].strUM,
-          strCurrency:this.TableIngreso[i].strCurrency,
-          intIdCostCenter_ID:-1,
-          dtmCreation_Date:this.TableIngreso[i].dtmCreation_Date,
-          strCostCenter_NO:this.TableIngreso[i].strCostCenter_NO,
-          fltGross_Price:this.TableIngreso[i].fltGross_Price,
-          fltNet_Value:this.TableIngreso[i].fltNet_Value,
-          chrStatus:'A',
-
-        })
-      }      
-    }
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guargando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
+        else{
+          // this.vifprogress=false;
+          this.textosave='Seleccione la HES. ';
+          this.warningMessage('Seleccione la HES. ');
+        }
       }
-      );
-      if(this.hesModel.listaDetalle.length>0){
-        hesService.UpdateHes(this.hesModel)
-        .then(response=>{
-          loadingInstance.close();
-          this.issave = true;
-          this.iserror = false;
-          this.hesModel=new HESModel();
-          this.TableIngreso=[];
-          for(var i=0;i<10;i++){
-            var reqDetalle:HesDetalleModel=new HesDetalleModel();
-            reqDetalle.chrStatus="A";
-            this.TableIngreso.push(reqDetalle);
-          } 
-          this.categoriaSelect=new CategoriaLineaModel();
-          this.hesModel=new HESModel();
-          this.montoaceptado=0;
-          this.montopendiente=0;
-          this.textosave = 'Se actualizó correctamente '+response;
-        }).catch(error=>{
-          loadingInstance.close();
-          this.issave = false;
-          this.iserror = true;
-          this.textosave = 'Error al actualizar.';
-        })    
+      validad(){
+        
       }
-      else{
-        loadingInstance.close();
+      warningMessage(newMsg : string) {
         this.$message({
-          showClose:true,
-          type:'info',
-          message:'Debe ingresar al menos un detalle'
-      });      
+          showClose: true,
+          message: newMsg,
+          type: 'warning'
+        });
       }
-    }
+      Limpiar(){
+        this.GridHes = this.GridHes1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        var document:any = this.$refs.missionTable;
+        document.setCurrentRow(this.GridHes[this.intlineaselect]);    
+        // this.blnilterstrPO_NO=false;
+        // this.blnilterstrRequis_NO=false;
+        // this.blnilterstrPO_Desc=false;
+        // this.blnilterstrVendor_Desc=false;
+        // this.blnilterdtmProcess_Date=false;
+        // this.blnilterfltTotal_Val=false;
+        this.GridHes2=this.GridHes1;
+        this.GridHes = this.GridHes2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        var document:any = this.$refs.missionTable;
+      }
+      Buscar(){
+        debugger;
+        if(this.Column!=""){
+          this.dialogBusquedaFilter=true;
+          this.txtbuscar='';
+        }
+        else{
+          this.$message('Seleccione columna')
+        }
+      }
+      async AscItem(){
+        debugger;
+        let loading = Loading.service({
+          fullscreen: true,
+          text: 'Cargando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );
+        console.log("asc",this.clickColumn)
+        var data=await this.sortByKeyAsc(this.GridHes1,this.clickColumn) 
+        this.GridHes2=[];
+        this.GridHes2=data;
+        this.GridHes = await this.GridHes2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        await loading.close();
+      }
+      DscItem(){
+        debugger;
+        console.log("desc",this.clickColumn)
+        var data=this.sortByKeyDesc(this.GridHes1,this.clickColumn) 
+        this.GridHes2=[];
+        this.GridHes2=data;
+        this.GridHes = this.GridHes2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       
-  //#endregion
-  linksUser(comand){
-    router.push('/barmenu/'+comand)
-  }
-  //#region [CATEGORIA LINEA]
-  loadCategoria(){
-    this.dialogCategoriaLinea=true;
-  }
-  closeCategoriaLinea(){
-    this.dialogCategoriaLinea=false;
-  }
-  SeleccionadoCategoriaLinea(val:CategoriaLineaModel){
-    this.categoriaSelect=val;
-    this.hesModel.intIdCategLine_ID=this.categoriaSelect.intIdCategLine_ID;
-    this.hesModel.strCategItem_Cod=this.categoriaSelect.strCategItem_Cod;
-    this.dialogCategoriaLinea=false;      
-  }
-  activar_categoria(){
-    setTimeout(() => {
-      this.btnactivarHES=false;
-      this.btnactivarcategoria=true;
-    }, 120)
-  }
-  desactivar_categoria(){
-    if(this.dialogCategoriaLinea){
-      this.btnactivarcategoria=false;
-    }
-  }
-  //#endregion
-  //#region [CENTRO COSTO]
-  LoadCentroCosto(row){    
-    this.centrocosto=row;
-    this.dialogCentroCostos=true;
-  }
-  clickcentrocosto(event,edit,column){
-    this.bln_tbl_centro_costo=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  SeleccionadoCentroCosto(val){
-    this.centrocosto.strCostCenter_NO=val.strCostCenter_NO;
-    this.centrocosto.intIdCostCenter_ID=val.intIdCostCenter_ID;
-    this.dialogCentroCostos=false;
-  }
-  Centrocostoclose(){
-    this.dialogCentroCostos=false;
-    this.centrocosto=new CentroCostosModel();
-  }
-  closeCentroCostos(){
-    return false;
-  }
-  //#endregion
-  //#region [ACCIONES BOTON]
-  handleBlur(event) {
-    // this.bln_tbl_categoria_cuenta=false;
-    event.edit=true;
-    this.editing.row='';
-    this.editing.column='';
-  }
-  handleBlurImporte(event) {
-    var inttotal=0;
-    for(var i=0;i< this.TableIngreso.length;i++){
-      if(this.TableIngreso[i].intQuantity>0){
-        inttotal+=Number((this.TableIngreso[i].fltGross_Price)*this.TableIngreso[i].intQuantity);
       }
-      else{
-        inttotal+=Number(this.TableIngreso[i].fltGross_Price);    
+      btnBuscar(){
+        var data=this.like(this.GridHes1,this.clickColumn,this.txtbuscar)
+        this.GridHes=[];
+        this.GridHes=data;
+        this.dialogBusquedaFilter=false;
       }
+      siguiente(){
+        if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+          this.pagina++;
+          this.GridHes = this.GridHes1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        }
+      }
+      anterior(){
+        if(this.pagina>1){
+        this.pagina--;
+        this.GridHes = this.GridHes1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        }
+      }
+      EliminarItem(){
+
+      }
+      like(array, key,keyword) {
+    
+        var responsearr:any = []
+        for(var i=0;i<array.length;i++) {
+            if(array[i][key].toString().indexOf(keyword) > -1 ) {
+              responsearr.push(array[i])
+          }
+        }
+        return responsearr
+      }
+      sortByKeyDesc(array, key) {
+        return array.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            if(x === "" || y === null) return 1;
+            if(x === "" || y === null) return -1;
+            if(x === y) return 0;
+              return ((x > y) ? -1 : ((x < y) ? 1 : 0));
            
-    }
-    this.montoaceptado=Math.round(inttotal*100)/100;
-    if(Number(this.hesModel.fltTot_QTY)>=Number(this.montoaceptado)){
-      this.montopendiente=Math.round((Number(this.hesModel.fltTot_QTY)-Number(this.montoaceptado))*100)/100;
-      
-    }
-    else{
-      this.montopendiente=-1;
-      this.$message({
-        showClose:true,
-        type:'warning',
-        message:'valor aceptado debe ser menor que el Importe total'
-    })
-    }
-    var Tabletemp:Array<HesDetalleModel>=[];
-    Tabletemp=this.TableIngreso;
-    this.TableIngreso=[];
-    for(var i=0;i<10;i++){
-      Tabletemp[i].fltNet_Value=Number(Tabletemp[i].intQuantity)*Number(Tabletemp[i].fltGross_Price);      
-    }
-    this.TableIngreso=Tabletemp;    
-  }
-  clickDescripcion(event,edit,column){
-    this.bln_tbl_Descripcion=true;
-    this.bln_tbl_total=false;
-    this.bln_tbl_cantidad=false;
-    this.bln_tbl_Servicio=false;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickcantidad(event,edit,column){
-    this.bln_tbl_cantidad=true;
-    this.bln_tbl_Descripcion=false;
-    this.bln_tbl_total=false;
-    this.bln_tbl_Servicio=false;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickTtotal(event,edit,column){
-    this.bln_tbl_cantidad=false;
-    this.bln_tbl_Descripcion=false;
-    this.bln_tbl_total=true;
-    this.bln_tbl_Servicio=false;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickServicio(event,edit,column){
-    this.bln_tbl_cantidad=false;
-    this.bln_tbl_Descripcion=false;
-    this.bln_tbl_total=false;
-    this.bln_tbl_Servicio=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  clickUnidad(event,edit,column){
-    this.bln_tbl_cantidad=false;
-    this.bln_tbl_Descripcion=false;
-    this.bln_tbl_total=false;
-    this.bln_tbl_Servicio=false;
-    this.bln_tbl_Unidad=true;
-    event.edit=!edit;
-    this.editing.row=event;
-    this.editing.column=column;
-  }
-  //#endregion
-  backPage(){
-    window.history.back();
-  }
-  reloadpage(){
-    window.location.reload();
-  }
-    data(){
-        return{
-            nameComponent:'edit-hes',
-            dialogTableVisible: false,
-            codigoCompania:'',
-            value:'',
-            dataOrdenCompra:[],
-            valueSwtch:true,
-            montoaceptado:0,
-            montopendiente:0,
-            hesDetalleModel:[],
-            fecha_ejecucion:'',
-            fecha_since:'',
-            fecha_until:''
+        });
+      }
+      sortByKeyAsc(array, key) {
+        return array.sort(function (a, b) {
+            debugger;
+            var x = a[key]; var y = b[key];
+            if(x === "" || y === null) return 1;
+            if(x === "" || y === null) return -1;
+            if(x === y) return 0;
+             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            
+        });
+      }
+    headerclick(val){    
+        this.Column=val.label;
+        Global.setColumna(this.Column);
+        if(val.property=="strHES_NO"){
+            this.clickColumn="strHES_NO";
+            this.blnilterstrHES_NO=true;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strDesc_Header"){
+            this.clickColumn="strDesc_Header";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=true;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strPO_NO"){
+            this.clickColumn="strPO_NO";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=true;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strAuthsd_BYInt"){
+            this.clickColumn="strAuthsd_BYInt";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=true;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strCategItem_Cod"){
+            this.clickColumn="strCategItem_Cod";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=true;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strPO_Item_NO"){
+            this.clickColumn="strPO_Item_NO";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=true;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="dtmAuthsd_Date"){
+            this.clickColumn="dtmAuthsd_Date";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=true;
         }
     }
+    filterstrHES_NO(h,{column,$index}){
+        if(this.blnilterstrHES_NO){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrDesc_Header(h,{column,$index}){
+        
+        if(this.blnilterstrDesc_Header){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrPO_NO(h,{column,$index}){
+        
+        if(this.blnilterstrPO_NO){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrPO_Item_Desc(h,{column,$index}){
+        if(this.blnilterstrPO_Item_Desc){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrCategItem_Cod(h,{column,$index}){
+        
+        if(this.blnilterstrCategItem_Cod){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrPO_Item_NO(h,{column,$index}){
+        
+        if(this.blnilterstrPO_Item_NO){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterdtmAuthsd_Date(h,{column,$index}){
+        
+        if(this.blnilterdtmAuthsd_Date){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
 
+    backPage(){
+        window.history.back();
+      }
+      reloadpage(){
+        window.location.reload();
+      }
+    data() {
+        return {
+            nameComponent: 'crear-po',
+            textTitle:'',
+            GridHes:[],
+            GridHes1:[],
+            GridHes2:[],
+            codigoCompania:'',
+            descripcionCompania:''
+        }
+    }
 }

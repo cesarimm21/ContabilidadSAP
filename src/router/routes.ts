@@ -10,17 +10,22 @@ import RunComponent from '../components/FI-FINANZAS/Tesoreria/run/run.vue'
 import PagosIndividualesComponent from '../components/FI-FINANZAS/Tesoreria/pagos_individual.vue'
 import PagosMasivoComponent from '../components/FI-FINANZAS/Tesoreria/pagos_masivo.vue'
 import CrearPRComponent from '../components/LO-LOGISTICA/requisicion/pr_crear/pr_crear.vue'
-import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
 import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes.vue'
 import EditHesComponent from '@/components/LO-LOGISTICA/HES/edit-hes/edit-hes.vue'
 import ViewHesComponent from '@/components/LO-LOGISTICA/HES/view-hes/view-hes.vue'
+import ViewAndEditHesComponent from '@/components/LO-LOGISTICA/HES/viewandedit_hes/viewandedit_hes.vue'
 import AprobarHesComponent from '@/components/LO-LOGISTICA/HES/aprobar-hes/aprobar-hes.vue'
 import ModificarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_modificar/pr_modificar.vue'
 import VisualizarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_visualizar/pr_visualizar.vue'
 import VisualizarModificarPRComponent from '../components/LO-LOGISTICA/requisicion/pr_visualizar_modificar/pr_visualizar_modificar.vue'
+import CrearProveedorComponent from '../components/FI-FINANZAS/proveedor/crear-proveedor/crear-proveedor.vue'
 import ModificarProveedorComponent from '../components/FI-FINANZAS/proveedor/modificar-proveedor/modificar-proveedor.vue'
 import VisualizarProveedorComponent from '../components/FI-FINANZAS/proveedor/visualizar-proveedor/visualizar-proveedor.vue'
 import ViewAndEditProveedorComponent from '../components/FI-FINANZAS/proveedor/ViewAndEdit-proveedor/ViewAndEdit-proveedor.vue'
+import CrearClienteComponent from '../components/FI-FINANZAS/maestro-datos/cuentas-cobrar/crear-cliente/crear-cliente.vue'
+import ModificarClienteComponent from '../components/FI-FINANZAS/maestro-datos/cuentas-cobrar/edit-cliente/edit-cliente.vue'
+import VisualizarClienteComponent from '../components/FI-FINANZAS/maestro-datos/cuentas-cobrar/view-cliente/view-cliente.vue'
+import ViewAndEditClienteComponent from '../components/FI-FINANZAS/maestro-datos/cuentas-cobrar/viewandedit-cliente/viewandedit-cliente.vue'
 import CrearIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/crear-ingreso-comprobante/crear-ingreso-comprobante.vue'
 import ModificarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante/modificar-ingreso-comprobante.vue'
 import VisualizarIngresoComprobanteComponent from '../components/FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante/ver-ingreso-comprobante.vue'
@@ -158,6 +163,16 @@ export default [
         name:'libro-registro-compras'
       },
       {
+        path:'FI-FINANZAS/proveedor/crear-proveedor',
+        component:CrearProveedorComponent,
+        name:'crear-proveedor'
+      }, 
+      {
+        path:'FI-FINANZAS/proveedor/modificar-proveedor',
+        component:ModificarProveedorComponent,
+        name:'modificar-proveedor'
+      },
+      {
         path:'FI-FINANZAS/proveedor/visualizar-proveedor',
         component:VisualizarProveedorComponent,
         name:'visualizar-proveedor'
@@ -166,6 +181,26 @@ export default [
         path:'FI-FINANZAS/proveedor/ViewAndEdit-proveedor',
         component:ViewAndEditProveedorComponent,
         name:'ViewAndEdit-proveedor'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/cuentas-cobrar/crear-cliente',
+        component:CrearClienteComponent,
+        name:'crear-cliente'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/cuentas-cobrar/edit-cliente',
+        component:ModificarClienteComponent,
+        name:'modificar-cliente'
+      },
+      {
+        path:'FI-FINANZAS/maestro-datos/cuentas-cobrar/view-cliente',
+        component:VisualizarClienteComponent,
+        name:'visualizar-cliente'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/cuentas-cobrar/viewandedit-cliente',
+        component:ViewAndEditClienteComponent,
+        name:'ViewAndEdit-cliente'
       }, 
       {
         path:'HR-Planilla/empleado/empleado_crear',
@@ -323,6 +358,11 @@ export default [
       {
         path:'LO-LOGISTICA/HES/edit-hes',
         component:EditHesComponent,
+        name:'hes'
+      },  
+      {
+        path:'LO-LOGISTICA/HES/viewandedit_hes',
+        component:ViewAndEditHesComponent,
         name:'hes'
       },  
       

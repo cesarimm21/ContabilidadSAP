@@ -4,8 +4,8 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllHes(){      
-    return axios.get(CONFIG.API_URL+'hes')
+  GetAllHes(strCompany_Cod){      
+    return axios.get(CONFIG.API_URL+'hes/'+strCompany_Cod)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

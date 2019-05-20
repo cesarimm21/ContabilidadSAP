@@ -22,7 +22,7 @@
                                 <label class="sinLinea el-form-item__label col-md-8" >{{descripcionCompania}}</label>
                             </div>
                             <div class="form-group row " style="margin-top:6px;">
-                                <label class="el-form-item__label col-md-2" >Codigo PO</label>
+                                <label class="el-form-item__label col-md-2" >Orden Compra</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
                                         <el-input size ="small" type="text">
@@ -53,12 +53,12 @@
                                          <el-table-column type="index" label="Linea" width="38">   </el-table-column>   
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="60" label="Codigo PO">
+                                         prop="strPO_NO" min-width="60" label="Orden Compra">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
                                             prop="strRequis_NO"   min-width="60"
-                                            label="Codigo Requisicion">
+                                            label="Requisicion">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrPO_Desc"
