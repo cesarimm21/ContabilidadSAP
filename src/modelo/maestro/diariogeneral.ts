@@ -1,10 +1,11 @@
 export class DiarioGeneralModel {
+    intDailyG_ID:number;
     strCompany_Cod:string;//*
     strCompany_Desc:string;//*
     strAccDocum_NO:string;//*
     dtmPosting_Date:Date;//*   
     strPosting_Status:string;  //*
-    dtmPeriod:Date;//*
+    dtmPeriod:any;//*
     strYear:string;//*
     dtmProcess_Date:Date;//*
     strTypeMov_Cod:string;//se agrega de la tabla maestro de acuerdo a que ventana estoy
@@ -66,13 +67,22 @@ export class DiarioGeneralModel {
     dmModified_Date:Date;
     chrStatus:string;
     strPeriod_NO:string;
+    strAcctCateg_Cod:string;
+    strDetail_Desc:string;
+    fltQuantityDebe:number;
+    fltQuantityHaber:number;
+    blnAutoreverse:any;
+    strDoc_Trans_Cod:string;
+    strHeader_Desc:string;
+    strDoc_Status:string;
+    strUser_Status:string;
+    dtmDate_Status:Date;
     constructor(){
         this.strCompany_Cod='';
         this.strCompany_Desc='';
         this.strAccDocum_NO='';
         this.dtmPosting_Date=new Date();
         this.strPosting_Status='';
-        this.dtmPeriod=new Date();
         this.strYear='';
         this.dtmProcess_Date=new Date();
         this.strTypeMov_Cod='';
@@ -134,5 +144,8 @@ export class DiarioGeneralModel {
         this.dtmCreation_Date=new Date();
         this.dmModified_Date=new Date();
         this.chrStatus='';
+        this.fltQuantityDebe=0;
+        this.fltQuantityHaber=0;
+        this.blnAutoreverse=false;
     }
 }

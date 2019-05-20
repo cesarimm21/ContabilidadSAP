@@ -76,8 +76,15 @@ import ModificarTipoCambioComponent from '../components/XX-CONFI/maestro_datos/t
 import VisualizarTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/visua_tcambio/visua_tcambio.vue'
 import ViewAndEditTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/viewandedit_tcambio/viewandedit_t.vue'
 
+import  CrearContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/crear-contabilidad/crear-contabilidad.vue';
 import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
 import  CrearCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos/crear-centro-costos.vue';
+import  VisualizarModificarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/visualizar-modificar-contabilidad/visualizar-modificar-contabilidad.vue';
+import  ModificarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/modificar-contabilidad/modificar-contabilidad.vue';
+import  VisualizarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/visualizar-contabilidad/visualizar-contabilidad.vue'
+import  AprobarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/aprobar-contabilidad/aprobar-contabilidad.vue';
+import  CrearBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/crear-banco/crear-banco.vue';
+
 export default [
  
   {
@@ -105,6 +112,46 @@ export default [
         component: Inicio,
         name: 'Inicio',
       },  
+      {
+        path:'FI-FINANZAS/proveedor/crear-proveedor',
+        component:CrearProveedorComponent,
+        name:'crear-proveedor'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/crear-banco',
+        component:CrearBancoComponent,
+        name:'crear-banco'
+      }, 
+      {
+        path:'FI-FINANZAS/contabilidad-general/crear-contabilidad',
+        component:CrearContabilidadComponent,
+        name:'crear-contabilidad'
+      }, 
+      {
+        path:'FI-FINANZAS/contabilidad-general/modificar-contabilidad',
+        component:ModificarContabilidadComponent,
+        name:'modificar-contabilidad'
+      }, 
+      {
+        path:'FI-FINANZAS/contabilidad-general/visualizar-modificar-contabilidad',
+        component:VisualizarModificarContabilidadComponent,
+        name:'visualizar-modificar-contabilidad'
+      }, 
+      {
+        path:'FI-FINANZAS/contabilidad-general/aprobar-contabilidad',
+        component:AprobarContabilidadComponent,
+        name:'aprobar-contabilidad'
+      }, 
+      {
+        path:'FI-FINANZAS/contabilidad-general/visualizar-contabilidad',
+        component:VisualizarContabilidadComponent,
+        name:'visualizar-contabilidad'
+      }, 
+      {
+        path:'FI-FINANZAS/proveedor/modificar-proveedor',
+        component:ModificarProveedorComponent,
+        name:'modificar-proveedor'
+      },
       {
         path:'FI-FINANZAS/libros-balance/librodiario',
         component:LibroDiarioDComponent,
