@@ -39,20 +39,22 @@ export default class  BBancoComponent extends Vue {
   } 
   seleccionar(val:BancoModel){
     this.banco=val;
-    if(Global.nameComponent=='pagos-individual'){
-      this.$emit('bancoselecionado',this.banco);
-    }
-    if(Global.nameComponent=='crear-proveedor'){
-      this.$emit('bancoselecionado',this.banco);
-    }
+    this.$emit('bancoselecionado',this.banco);
+    // if(Global.nameComponent=='pagos-individual'){
+    //   this.$emit('bancoselecionado',this.banco);
+    // }
+    // if(Global.nameComponent=='crear-proveedor'){
+    //   this.$emit('bancoselecionado',this.banco);
+    // }
   }
   checkBanco(){
-    if(Global.nameComponent=='pagos-individual'){
-        this.$emit('bancoselecionado',this.banco);
-      }
-      if(Global.nameComponent=='crear-proveedor'){
-        this.$emit('bancoselecionado',this.banco);
-      }
+    this.$emit('bancoselecionado',this.banco);
+    // if(Global.nameComponent=='pagos-individual'){
+    //     this.$emit('bancoselecionado',this.banco);
+    //   }
+    //   if(Global.nameComponent=='crear-proveedor'){
+    //     this.$emit('bancoselecionado',this.banco);
+    //   }
   }
 
   closeBanco(){

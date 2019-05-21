@@ -21,7 +21,7 @@
                     </div>
                     <div class="form-group row">
                     <label class="el-form-item__label col-sm-3" >Fecha ejecución:</label>
-                    <div class="col-sm-4 grupolabel">
+                    <div class="col-sm-4 grupolabel" style="height: 38px;">
                         <div class="input-group mb-4" >
                          <el-date-picker
                             type="date"

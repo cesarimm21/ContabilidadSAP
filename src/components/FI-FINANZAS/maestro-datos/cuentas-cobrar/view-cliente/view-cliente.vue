@@ -24,7 +24,7 @@
                         <label class="el-form-item__label col-md-2" >Codigo Cliente</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-2" >
-                                <el-input size ="small" v-model="gridSelectedCliente.strVendor_NO" >                                   
+                                <el-input size ="small" v-model="gridSelectedCliente.strCliente_NO" >                                   
                                 </el-input>
                             </div>
                         </div>  
@@ -60,11 +60,11 @@
                                     @current-change="clienteSelect">
                                     <el-table-column type="index" label="Linea" width="38">                                        
                                     </el-table-column>
-                                    <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="100">
+                                    <el-table-column  :render-header="filterstrCliente_NO" prop="strCliente_NO" label="Codigo" width="100">
                                     </el-table-column> 
                                     <el-table-column  :render-header="filterstrTax_ID" prop="strTax_ID" label="RUC/DNI" width="180">
                                     </el-table-column> 
-                                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre cliente" width="260">
+                                    <el-table-column :render-header="filterstrCliente_Desc" prop="strCliente_Desc" label="Nombre cliente" width="260">
                                     </el-table-column>                                      
                                     <el-table-column :render-header="filterintIdCountry_ID" prop="intIdCountry_ID.strCountry_Name" label="Pais" width="100">
                                     </el-table-column> 

@@ -25,7 +25,7 @@
                             <label class="el-form-item__label col-md-2" >Codigo Cliente</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-2" >
-                                    <el-input size ="small" v-model="Cliente.strVendor_NO" placeholder="" disabled>
+                                    <el-input size ="small" v-model="Cliente.strCliente_NO" placeholder="" disabled>
                                     </el-input>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                                 <label class="el-form-item__label col-md-1" >{{nameTipoJoN}}</label>
                                                 <div class="col-md-3 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" v-model="Cliente.strVendor_Desc"  :disabled="proDisabled">
+                                                    <el-input size ="small" v-model="Cliente.strCliente_Desc"  :disabled="proDisabled">
                                         
                                                     </el-input>
                                                     </div>

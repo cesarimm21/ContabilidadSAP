@@ -412,11 +412,11 @@ export default class CrearClienteComponent extends Vue {
     this.Cliente.intIdCountry_ID=this.gridSelectedCliente.intIdCountry_ID.intIdCountry_ID;
     this.gridSelectPais.strCountry_Name=this.gridSelectedCliente.intIdCountry_ID.strCountry_Name;
     this.Cliente.strCompany_Cod=this.gridSelectedCliente.strCompany_Cod;
-    this.Cliente.strVendor_NO=this.gridSelectedCliente.strVendor_NO;
+    this.Cliente.strCliente_NO=this.gridSelectedCliente.strCliente_NO;
     this.Cliente.strCountry=this.gridSelectedCliente.strCountry;
     this.Cliente.strCat_Person=this.gridSelectedCliente.strCat_Person;
     this.Cliente.strTax_ID=this.gridSelectedCliente.strTax_ID;
-    this.Cliente.strVendor_Desc=this.gridSelectedCliente.strVendor_Desc;
+    this.Cliente.strCliente_Desc=this.gridSelectedCliente.strCliente_Desc;
     this.Cliente.strLastName=this.gridSelectedCliente.strLastName;
     this.Cliente.strSurName=this.gridSelectedCliente.strSurName;
     this.Cliente.strAddress=this.gridSelectedCliente.strAddress;
@@ -454,11 +454,11 @@ export default class CrearClienteComponent extends Vue {
     this.Cliente.intIdVenCateg_ID=this.gridSelectedCliente.intIdVenCateg_ID.intIdVenCateg_ID;
     this.Cliente.intIdCountry_ID=this.gridSelectedCliente.intIdCountry_ID.intIdCountry_ID;
     this.Cliente.strCompany_Cod=this.gridSelectedCliente.strCompany_Cod;
-    this.Cliente.strVendor_NO=this.gridSelectedCliente.strVendor_NO;
+    this.Cliente.strCliente_NO=this.gridSelectedCliente.strCliente_NO;
     this.Cliente.strCountry=this.gridSelectedCliente.strCountry;
     this.Cliente.strCat_Person=this.gridSelectedCliente.strCat_Person;
     this.Cliente.strTax_ID=this.gridSelectedCliente.strTax_ID;
-    this.Cliente.strVendor_Desc=this.gridSelectedCliente.strVendor_Desc;
+    this.Cliente.strCliente_Desc=this.gridSelectedCliente.strCliente_Desc;
     this.Cliente.strLastName=this.gridSelectedCliente.strLastName;
     this.Cliente.strSurName=this.gridSelectedCliente.strSurName;
     this.Cliente.strAddress=this.gridSelectedCliente.strAddress;
@@ -941,45 +941,54 @@ export default class CrearClienteComponent extends Vue {
       }
   }
   SaveCliente(val){
-    var idCompany:any=localStorage.getItem('compania_ID');
-    var USERLOGIN:any=localStorage.getItem('User_Usuario');
-    this.Cliente.intIdCompany_ID=parseInt(idCompany);
-    this.Cliente.strCreation_User=USERLOGIN;    
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guargando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );     
-    clienteService.putCliente(this.Cliente)
-    .then(response=>{
-      loadingInstance.close();
-      this.openMessageSuccess('Se guardo correctamente '+response);
-      this.textosave = 'Se guardo correctamente '+response;
-      this.issave=true;
-      this.iserror=false;
-      this.Cliente=new ClienteModel();
-      this.gridSelectPais=new PaisModel();
-      this.selectDepartamento=new DepartamentoModel();
-      this.selectTipoDoc=new TipoDocIdentidadModel();
-      this.selectMonedaA=new MonedaModel();
-      this.selectMonedaB=new MonedaModel();
-      this.selectMonedaC=new MonedaModel();
-      this.selectMonedaD=new MonedaModel();
-      this.selectBancoA=new BancoModel();
-      this.selectBancoB=new BancoModel();
-      this.selectBancoC=new BancoModel();
-      this.selectBancoD=new BancoModel();
-
-    })
-    .catch(e =>{      
-      this.openMessageError('Error guardar cliente');
-      loadingInstance.close();
-      this.textosave = 'No se guardo cliente.';
-      this.issave=false;
-      this.iserror=true;
-    })    
+    if(this.Cliente.strTax_ID!=''&&this.Cliente.strCliente_Desc!=''&&this.Cliente.strCountry!=''){
+      var idCompany:any=localStorage.getItem('compania_ID');
+      var USERLOGIN:any=localStorage.getItem('User_Usuario');
+      this.Cliente.intIdCompany_ID=parseInt(idCompany);
+      this.Cliente.strCreation_User=USERLOGIN;    
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guargando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        );     
+      clienteService.putCliente(this.Cliente)
+      .then(response=>{
+        loadingInstance.close();
+        this.openMessageSuccess('Se guardo correctamente '+response);
+        this.textosave = 'Se guardo correctamente '+response;
+        this.issave=true;
+        this.iserror=false;
+        this.Cliente=new ClienteModel();
+        this.gridSelectPais=new PaisModel();
+        this.selectDepartamento=new DepartamentoModel();
+        this.selectTipoDoc=new TipoDocIdentidadModel();
+        this.selectMonedaA=new MonedaModel();
+        this.selectMonedaB=new MonedaModel();
+        this.selectMonedaC=new MonedaModel();
+        this.selectMonedaD=new MonedaModel();
+        this.selectBancoA=new BancoModel();
+        this.selectBancoB=new BancoModel();
+        this.selectBancoC=new BancoModel();
+        this.selectBancoD=new BancoModel();
+  
+      })
+      .catch(e =>{      
+        this.openMessageError('Error guardar cliente');
+        loadingInstance.close();
+        this.textosave = 'No se guardo cliente.';
+        this.issave=false;
+        this.iserror=true;
+      })    
+    }   
+    else{
+      this.$message({
+        showClose: true,
+        type: 'info',
+        message: 'Ingrese datos obligatorios'
+      });
+    }
       
   }
   openMessageError(strMessage:string){
