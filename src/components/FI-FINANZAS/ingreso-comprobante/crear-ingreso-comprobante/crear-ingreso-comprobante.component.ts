@@ -790,7 +790,7 @@ handleChangeCantidad(val){
             }
             for(var i=0;i<this.movimientoInven.length;i++){
               movimientoService.updateMovimiento(this.movimientoInven[i])
-              .then(response1=>{}).catch(ex=>{alert('movimiento inventario')})
+              .then(response1=>{}).catch(ex=>{})
             }
             this.factura=new FacturaModel();
             this.factura.fltValue_Doc=0;
