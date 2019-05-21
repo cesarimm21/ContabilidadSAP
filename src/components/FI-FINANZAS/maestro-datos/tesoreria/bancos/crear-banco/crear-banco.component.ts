@@ -9,6 +9,7 @@ import BGrupoProcesoComponent from '@/components/buscadores/b_grupo_proceso/b_gr
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 import BGrupoAreaComponent from '@/components/buscadores/b_grupo_area/b_grupo_area.vue';
+import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 import BCentroCostoComponent from '@/components/buscadores/b_centro_costo/b_centro_costo.vue';
 import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
 import BDiarioComponent from '@/components/buscadores/b_diario/b_diario.vue';
@@ -45,13 +46,16 @@ import {DiarioGeneralModel} from '@/modelo/maestro/diariogeneral';
 import {TipoCambioModel} from '@/modelo/maestro/tipocambio';
 import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {CentroCostosModel} from '@/modelo/maestro/centrocostos';
+import {BancoModel} from '@/modelo/maestro/banco';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import BDocumentoTransaccionComponent from '@/components/buscadores/b_documento_transaccion/b_documento_transaccion.vue';
 import { Notification } from 'element-ui';
 import centrocostosService from '@/components/service/centrocostos.service';
 import diariogeneralService from '@/components/service/diariogeneral.service';
 import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
-
+import {DepartamentoModel} from '@/modelo/maestro/departamento';
+import departamentoService from '@/components/service/departamento.service';
+import bancoService from '@/components/service/banco.service';
 @Component({
   name: 'crear-ingreso-comprobante',
   components:{
@@ -69,7 +73,8 @@ import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuent
   'bcuentacontable':BCuentaContableComponent,
   'bcentrocosto':BCentroCostoComponent,
   'bdiario':BDiarioComponent,
-  'bdocumentotransaccion':BDocumentoTransaccionComponent
+  'bdocumentotransaccion':BDocumentoTransaccionComponent,
+  'bpais':BPaisComponent
   }
 })
 export default class CrearBancoComponent extends Vue {
@@ -92,9 +97,14 @@ export default class CrearBancoComponent extends Vue {
   voucher:string;
   fechavencida:string;
   public tipocambio:TipoCambioModel=new TipoCambioModel();
+  public bancoModel:BancoModel=new BancoModel();
   public centrocosto:CentroCostosModel=new CentroCostosModel();
+  
   //**Compania */
   btnactivarcompania:boolean=false;
+  btnactivarpais:boolean=false;
+  strpais_Cod:string='';
+  strpais_Desc:string='';
   btndocumentotransaccion:boolean=false;
   dialogCompania:boolean=false;
   dialogDocumentoTransaccion:boolean=false;
@@ -104,6 +114,7 @@ export default class CrearBancoComponent extends Vue {
   dialogGrupoProceso:boolean=false;
   btnactivarGrupoProceso:boolean=false;
   dialogGrupoArea:boolean=false;
+  dialogPais:boolean=false;
   btnactivarGrupoArea:boolean=false;
   dialogCategoriaCentroCosto:boolean=false;
   btnactivarCategoriaCentroCosto:boolean=false;
@@ -179,7 +190,7 @@ export default class CrearBancoComponent extends Vue {
   Currency_Cod_Desc:any;
   OrigenDocum_NO:any;
   Desc_Header:any;
-  
+  intIdCountry_ID:any;
   strDaily_Cod_Desc:any;
   Doc_Trans_Cod_Desc:any;
   cell_ocultar:string='transparent';
@@ -198,8 +209,24 @@ export default class CrearBancoComponent extends Vue {
     row:'',
     column:''
   };
+
+  //**Departamento */
+  public DepartamentoGrid:Array<DepartamentoModel>[];
+  btnactivardepartamento:boolean=false;
+  departVisible:Boolean=false;
+  departEnabled:boolean=true;
+  public selectDepartamento:DepartamentoModel=new DepartamentoModel();
+  public searchDepartamento:DepartamentoModel=new DepartamentoModel();
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
+  blnilterstrRegión_Cod:boolean=true;
+  blnilterstrRegión_Desc:boolean=false;
+  Departamento_Desc:string='';
+
   constructor(){    
     super();
+    
     Global.nameComponent='crear-ingreso-comprobante';
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
@@ -280,6 +307,9 @@ closeCategoriaCuenta(){
   //#region [COMPANIA]
   loadCompania(){
     this.dialogCompania=true;
+  }
+  loadPais(){
+    this.dialogPais=true;
   }
   companiaSeleccionado(val:CompaniaModel,dialog:boolean){
     this.companiaModel=val;
@@ -508,6 +538,51 @@ closeCategoriaCuenta(){
       this.btnactivarDiario=false;
       this.btnactivarImpuesto=false;
     }, 120)
+  }
+  
+  activar_pais(){
+    setTimeout(() => {
+      this.btnactivarpais=true;
+    }, 120)
+  }
+  desactivar_pais(){
+    debugger;
+    if(this.dialogPais){
+      this.btnactivarpais=false;   
+      this.departEnabled=false; 
+    }
+  }
+  activar_Departamento(){
+    setTimeout(() => {
+      this.btnactivardepartamento=true;
+      this.btnactivarTipoDocumento=false;
+      this.btnactivarpais=false;
+      this.btnactivarTipoDocumento=false;
+    }, 120)
+  }
+  desactivar_Departamento(){
+    if(this.departVisible){
+      this.btnactivardepartamento=false;
+    }
+  }
+  departDialog(){
+    this.GetAllDepartamento(this.intIdCountry_ID);
+  }
+  GetAllDepartamento(val){
+    departamentoService.GetAllDepartamentoByPais(val)
+    .then(response=>{
+      this.DepartamentoGrid=[];
+      this.DepartamentoGrid=response;
+      this.departVisible=true;
+      
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se puede cargar lista de departamento'
+      });
+      this.departVisible=false;
+    })
   }
   desactivar_compania(){
     debugger;
@@ -873,73 +948,30 @@ closeCategoriaCuenta(){
       background: 'rgba(0, 0, 0, 0.8)'
       }
       );  
-    correlativoService.GetCorrelativoId('PFI006') .then(resp=>{
-    for(var i=0;i<this.totalRegistros;i++){
-      if(this.CompleteData[i].strAcctCateg_Cod!=undefined){
-        var nuevo:DiarioGeneralModel=new DiarioGeneralModel();
-        nuevo.strCompany_Cod=this.strCompany_Cod;
-        nuevo.strCompany_Desc=this.strCompany_Desc;
-        nuevo.strDaily_Cod=this.strDaily_Cod;
-        nuevo.strDaily_Desc=this.strDaily_Cod_Desc;
-        nuevo.strDoc_Trans_Cod=this.Doc_Trans_Cod;
-        nuevo.strPeriod_NO=this.Period.getFullYear().toString()+this.Period.getMonth().toString();
-        nuevo.dtmPeriod=this.Period;
-        nuevo.dtmDoc_Date=this.Doc_Date;
-        nuevo.strCurrency_Cod=this.Currency_Cod;
-        nuevo.strOrigenDocum_NO=this.OrigenDocum_NO;
-        nuevo.strHeader_Desc=this.Desc_Header;
-        nuevo.blnAutoreverse=this.Autoreverse;
-        nuevo.strAcctCateg_Cod=this.CompleteData[i].strAcctCateg_Cod;
-        nuevo.strCenCosWBS_Cod=this.CompleteData[i].strCenCosWBS_Cod;
-        nuevo.strAcc_Local_NO=this.CompleteData[i].strAcc_Local_NO;
-        nuevo.strDetail_Desc=this.CompleteData[i].strDetail_Desc;
-        if(this.CompleteData[i].fltQuantityDebe>0){
-          nuevo.fltAmount_Local=this.CompleteData[i].fltQuantityDebe;
-        }else{
-          if(this.CompleteData[i].fltQuantityHaber>0){
-            nuevo.fltAmount_Local=this.CompleteData[i].fltQuantityHaber*-1;
-          }
-          else{
-            nuevo.fltAmount_Local=0;
-          }
-        }
-      
-       
-          debugger;
-          if(resp!=undefined){
-            nuevo.strAccDocum_NO=resp;
-            diariogeneralService.createDiarioGeneral(nuevo) .then(response=>{
-              this.voucher=response;
-              this.habilitarPane=false;
-              loadingInstance.close();
-              this.openMessageSuccess('Se guardo correctamente '+response.strAccDocum_NO);
-             
-              this.strDaily_Cod='';
-              this.strDaily_Cod_Desc='';
-              this.Currency_Cod='';
-              this.OrigenDocum_NO='';
-              this.Desc_Header='';
-              this.Autoreverse=false;
-              this.CompleteData=[];
-            })
-            .catch(e =>{
-              debugger;
-              console.log(e);
-              
-              this.openMessageError('Error guardar contabilidad ');
-              loadingInstance.close();
-            })  
-          }
-        }
-      }
-    })
-    .catch(e =>{
-      debugger;
-      console.log(e);
-      
-      this.openMessageError('Error guardar correlativo ');
+    this.bancoModel.strCountry=this.strpais_Cod;
+    this.bancoModel.strCountry_Desc=this.strpais_Desc;
+    this.bancoModel.strBank_Region_Desc=this.Departamento_Desc;
+    this.bancoModel.strBank_Curr_Desc=this.Currency_Cod_Desc;
+    this.bancoModel.strCompany_Cod=this.strCompany_Cod;
+    this.bancoModel.strCompany_Desc=this.strCompany_Desc;
+    this.bancoModel.strBank_Type=this.strlevel;
+    this.bancoModel.strBank_Curr=this.Currency_Cod;
+    
+    bancoService.crearBanco(this.bancoModel)
+    .then(response=>{
       loadingInstance.close();
-    })  
+      this.openMessageSuccess('Se guardo correctamente ');
+      this.textosave = 'Se guardo correctamente ';
+      this.issave=true;
+      this.iserror=false;
+    })
+    .catch(e =>{      
+      this.openMessageError('Error guardar cliente');
+      loadingInstance.close();
+      this.textosave = 'No se guardo cliente.';
+      this.issave=false;
+      this.iserror=true;
+    })    
   }
   cambiarCantidadHaber(val){
     this.selectrow.fltQuantityDebe=0;
@@ -962,6 +994,90 @@ closeCategoriaCuenta(){
       });
   }
   //#endregion
+
+  PaisSeleccionado(val){
+    this.intIdCountry_ID=val.intIdCountry_ID;
+    this.strpais_Cod=val.strCountry_Cod;
+    this.strpais_Desc=val.strCountry_Name;
+    this.dialogPais=false;
+    this.departEnabled=false;
+  }
+  handleCloseDepart(){
+    this.departVisible=false;
+    this.selectDepartamento=new DepartamentoModel();
+  }
+  searchDepa(){
+    this.searchDepartamento.intIdCountry_ID=this.intIdCountry_ID;
+    if(this.clickColumn=="strRegión_Cod"){  this.searchDepartamento.strRegión_Cod=this.inputAtributo; }
+    if(this.clickColumn=="strRegión_Desc"){ this.searchDepartamento.strRegión_Desc=this.inputAtributo; }
+        
+    departamentoService.searchDepartamento(this.searchDepartamento)
+    .then(resp=>{
+      this.DepartamentoGrid=[];
+      this.DepartamentoGrid=resp; 
+    })
+
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strRegión_Cod"){
+      this.clickColumn=val.property;  
+      this.searchDepartamento=new DepartamentoModel();  
+      this.inputAtributo='';  
+      this.blnilterstrRegión_Cod=true;
+      this.blnilterstrRegión_Desc=false;
+    }
+    if(val.property=="strRegión_Desc"){
+      this.clickColumn=val.property;
+      this.searchDepartamento=new DepartamentoModel();
+      this.inputAtributo='';
+      this.blnilterstrRegión_Cod=false;
+      this.blnilterstrRegión_Desc=true;
+    }
+  }
+  departChosseCheck(){
+    this.departVisible=false;
+  }
+  departSelect(val:DepartamentoModel){
+    this.selectDepartamento=val;
+    this.bancoModel.strBank_Region=this.selectDepartamento.strRegión_Cod;
+    this.Departamento_Desc=this.selectDepartamento.strRegión_Desc;
+  } 
+  filterstrRegión_Cod(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnilterstrRegión_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.searchDepartamento=new DepartamentoModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrRegión_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrRegión_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  departChosseClose(){
+    this.departVisible=false;
+    this.selectDepartamento=new DepartamentoModel();
+  }
   data(){
     return{
       nameComponent:'crear-ingreso-comprobante',
@@ -972,12 +1088,12 @@ closeCategoriaCuenta(){
       selectType:'',
       dataProveedor:[],
       tabletipo:[{
-        strType_Cod:"T",
-        strType_Desc:"Titulo"
+        strType_Cod:"P",
+        strType_Desc:"Pagador"
       },
       {
-        strType_Cod:"D",
-        strType_Desc:"Detalle"
+        strType_Cod:"N",
+        strType_Desc:"No Pagador"
       }],
       
       ordencompraDetalle:[],
@@ -991,8 +1107,9 @@ closeCategoriaCuenta(){
       TotalPagarD:'',
       voucher:'',
       habilitar:false,
-      habilitarPane:true
-     
+      habilitarPane:true,
+      inputAtributo:'',
+      DepartamentoGrid:[],
     }
   }
   

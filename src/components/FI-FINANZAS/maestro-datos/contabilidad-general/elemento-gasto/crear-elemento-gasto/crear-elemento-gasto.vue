@@ -5,10 +5,10 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear cuenta contable</span>
+                <span class="labelheadercard" > Crear Elemento Gasto</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
-            <div class="row bodycard">
+            <div class="row bodycard">  
                 <div class="container">
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-9">
@@ -16,7 +16,7 @@
                                 <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input   :disabled="true"
+                                    <el-input :disabled="true" 
                                     size ="small" 
                                     @blur="desactivar_compania" 
                                     @focus="activar_compania" 
@@ -67,7 +67,7 @@
             <div class="row">
                 <div class="col-sm-12" >
                     <el-tabs type="border-card"  style="margin-left: -10px;">
-                          <el-tab-pane>
+                        <el-tab-pane>
                             <span slot="label"><i class="el-icon-date"></i> Datos General</span>
                             <el-card class="box-card">
                                 <div class="row bodycard">
@@ -342,13 +342,13 @@
         <div class="footer1">
             <div class="row">
                 <div class="col-sm-9" style="text-align:left" >
-                    <img src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
-                    <img src="../../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                    <img src="../../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
+                    <img src="../../../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                     <span class="footertext2" style="" >{{textosave}}</span>
                 </div>
                 <div class="col-sm-3">
                     <div style="text-align:right">
-                        <img src="../../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
+                        <img src="../../../../../../images/collapse_derecha.png"  style="width:8px; height:10px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="fnOcultar()"/>
                         <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
                         <span class="footertext2">SQV1</span>
                         <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
@@ -402,8 +402,8 @@
 </template>
 <script>
 
-import CrearCuentaContableComponent from '@/components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.component'
-export default CrearCuentaContableComponent
+import CrearElementoGastoComponent from '@/components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/crear-elemento-gasto/crear-elemento-gasto.component'
+export default CrearElementoGastoComponent
 </script>
 <style scoped>
     

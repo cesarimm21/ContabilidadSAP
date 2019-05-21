@@ -22,6 +22,24 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-
+  busquedaBanco(data){
+    return axios.get(CONFIG.API_URL+'busqueda/banco/'+data.strCompany_Cod+'/'+data.strCountry+'/'+data.strBank_Cod+'/'+data.strBank_Curr,data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  crearBanco(data){
+    return axios.post(CONFIG.API_URL+'banco',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  updateBanco(data){
+    return axios.post(CONFIG.API_URL+'banco/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  }
+  
 }
   

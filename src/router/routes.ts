@@ -40,10 +40,15 @@ import VisualizarSalidaModificarMaterialComponent from '../components/LO-LOGISTI
 import VisualizarModificarCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_modificar_cuenta_contable/visualizar_modificar_cuenta_contable.vue';
 import VisualizarCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_cuenta_contable/visualizar_cuenta_contable.vue';
 
+import VisualizarModificarElementoGastoComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/visualizar_modificar-elemento-gasto/visualizar_modificar-elemento-gasto.vue';
+import VisualizarElementoGastoComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/visualizar-elemento-gasto/visualizar-elemento-gasto.vue';
+
+
 import VisualizarCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/visualizar_centro_costos/visualizar_centro_costos.vue';
 import VisualizarModificarCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/visualizar_modificar_centro_costos/visualizar_modificar_centro_costos.vue';
 import ModificarCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/modificar_centro_costos/modificar_centro_costos.vue';
 
+import ModificarElementoGastoComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/modificar-elemento-gasto/modificar-elemento-gasto.vue';
 import ModificarCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/modificar_cuenta_contable/modificar_cuenta_contable.vue';
 import ModificarSalidaMaterialComponent from '../components/LO-LOGISTICA/almacen/al_salidam/al_salidam.vue'
 import CrearEmpleadoComponent from '../components/HR-Planilla/empleado/empleado_crear/empleado_crear.vue'
@@ -78,12 +83,16 @@ import ViewAndEditTipoCambioComponent from '../components/XX-CONFI/maestro_datos
 
 import  CrearContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/crear-contabilidad/crear-contabilidad.vue';
 import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
+import  CrearElementoGastoComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/crear-elemento-gasto/crear-elemento-gasto.vue';
 import  CrearCentroCostosComponent from '../components/FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos/crear-centro-costos.vue';
 import  VisualizarModificarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/visualizar-modificar-contabilidad/visualizar-modificar-contabilidad.vue';
 import  ModificarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/modificar-contabilidad/modificar-contabilidad.vue';
 import  VisualizarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/visualizar-contabilidad/visualizar-contabilidad.vue'
 import  AprobarContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/aprobar-contabilidad/aprobar-contabilidad.vue';
 import  CrearBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/crear-banco/crear-banco.vue';
+import  VisualizarModificarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-modificar-banco/visualizar-modificar-banco.vue';
+import  VisualizarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-banco/visualizar-banco.vue';
+import  ModificarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/modificar-banco/modificar-banco.vue';
 
 export default [
  
@@ -121,6 +130,21 @@ export default [
         path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/crear-banco',
         component:CrearBancoComponent,
         name:'crear-banco'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-modificar-banco',
+        component:VisualizarModificarBancoComponent,
+        name:'visualizar-modificar-banco'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-banco',
+        component:VisualizarBancoComponent,
+        name:'visualizar-banco'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/modificar-banco/modificar-banco',
+        component:ModificarBancoComponent,
+        name:'modificar-banco'
       }, 
       {
         path:'FI-FINANZAS/contabilidad-general/crear-contabilidad',
@@ -216,8 +240,18 @@ export default [
         path:'FI-FINANZAS/maestro-datos/contabilidad-general/visualizar_modificar_cuenta_contable',
         component:VisualizarModificarCuentaContableComponent,
         name:'visualizar-modificar-cuenta-contable'
-      }, 
-       
+      },
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/visualizar_modificar-elemento-gasto',
+        component:VisualizarModificarElementoGastoComponent,
+        name:'visualizar-modificar-elemento-gasto'
+      },
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/visualizar-elemento-gasto',
+        component:VisualizarElementoGastoComponent,
+        name:'visualizar-elemento-gasto'
+      },
       {
         path:'FI-FINANZAS/maestro-datos/centro-costos/visualizar_modificar_centro_costos',
         component:VisualizarModificarCentroCostosComponent,
@@ -245,13 +279,23 @@ export default [
         component:ModificarCuentaContableComponent,
         name:'modificar-cuenta-contable'
       }, 
-      
-      
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/modificar-elemento-gasto',
+        component:ModificarElementoGastoComponent,
+        name:'modificar-elemento-gasto'
+      },
       {
         path:'FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable',
         component:CrearCuentaContableComponent,
         name:'crear-cuenta-contable'
       }, 
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/crear-elemento-gasto',
+        component:CrearElementoGastoComponent,
+        name:'crear-elemento-gasto'
+      }, 
+      
       
       {
         path:'FI-FINANZAS/maestro-datos/centro-costos/crear-centro-costos',

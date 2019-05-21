@@ -62,7 +62,7 @@ import cuentaContableService from '@/components/service/cuentaContable.service';
   'bplancontablelocal':BPlanContableLocalComponent,
   }
 })
-export default class ModificarCuentaContableComponent extends Vue {
+export default class ModificarElementoGastoComponent extends Vue {
   nameComponent:string;
   habilitar:boolean=false;
   habilitarPane:boolean=true;
@@ -143,7 +143,6 @@ export default class ModificarCuentaContableComponent extends Vue {
   textosave:string='';
   txtviewmodulo:string='';
   txtmodulo:string='';
-  
   tabletipo:any=[{}];
   strlevel:string='';
   constructor(){    
@@ -438,13 +437,13 @@ export default class ModificarCuentaContableComponent extends Vue {
     } 
   }
   guardarTodo(){
-    console.log('guardarTodo',this.cuentacontable);
     this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
     for(var i=0;i<this.tabletipo.length;i++){
       if(this.tabletipo[i].strType_Cod=='this.strlevel'){
         this.cuentacontable.strAcc_Categ_Desc=this.tabletipo[i].strType_Desc;
       }
     }
+    console.log('guardarTodo',this.cuentacontable);
     cuentaContableService.UpdateCuentaContableID(this.cuentacontable)
     .then(response=>{
       

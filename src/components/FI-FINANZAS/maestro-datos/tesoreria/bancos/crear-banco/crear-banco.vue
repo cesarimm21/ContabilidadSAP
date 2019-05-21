@@ -28,66 +28,37 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{strCompany_Desc}}</span>
                             </div>
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Diario</label>
+                                <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input  
-                                    size ="small" 
-                                    @blur="desactivar_Diario" 
-                                    @focus="activar_Diario" 
-                                    v-model="strDaily_Cod">
-                                        <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
+                                        size ="small" 
+                                        @blur="desactivar_pais" 
+                                        @focus="activar_pais" 
+                                        v-model="strpais_Cod">
+                                        <el-button  v-if="btnactivarpais && !dialogPais" slot="append" class="boton" icon="fa fa-clone" @click="loadPais()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{strDaily_Cod_Desc}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{strpais_Desc}}</span>
                             </div>
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Periodo</label>
+                                <label class="el-form-item__label col-md-2" >Banco</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-date-picker
-                                            v-model="Period"
-                                            size="mini"
-                                            style="width:128px !important">
-                                        </el-date-picker>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Tipo Transaccion</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input  
-                                    size ="small" 
-                                    @blur="desactivar_documentoTransacional" 
-                                    @focus="activar_documentoTransacional" 
-                                    v-model="Doc_Trans_Cod">
-                                        <el-button v-if="btndocumentotransaccion && !dialogDocumentoTransaccion" slot="append" class="boton" icon="fa fa-clone" @click="loadDocumentoTransaccion()"></el-button> 
+                                    <el-input   size ="small" 
+                                        v-model="bancoModel.strBank_Cod">
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{Doc_Trans_Cod_Desc}}</span>
-                            </div>                          
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Fecha Contabilizacion</label>
-                                <div class="col-md-2 grupolabel">
+                            </div>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Descripcion</label>
+                                <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                     <el-date-picker
-                                        v-model="Posting_Date"
-                                        size="mini"
-                                        style="width:128px !important">
-                                    </el-date-picker>
-                                    </div>
-                                </div>
-                                <label class="el-form-item__label col-md-2" >Fecha Documento</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                     <el-date-picker
-                                        v-model="Doc_Date"
-                                        size="mini"
-                                        style="width:128px !important">
-                                    </el-date-picker>
+                                        <el-input   size ="small"  
+                                            v-model="bancoModel.strBank_Name">
+                                        </el-input>
                                     </div>
                                 </div>
                             </div>
@@ -105,119 +76,95 @@
                                     </div>
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{Currency_Cod_Desc}}</span>
-                            </div>   
-                            
+                            </div> 
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Referencia</label>
+                                <label class="el-form-item__label col-md-2" >Tipo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  
-                                    size ="small" 
-                                    v-model="OrigenDocum_NO">
-                                    </el-input>
+                                        <el-select  v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                            <el-option style="font-size:13px"
+                                            v-for="item in tabletipo"
+                                            :key="item.strType_Cod"
+                                            :label="item.strType_Desc"
+                                            :value="item.strType_Cod">
+                                            </el-option>
+                                        </el-select>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{centrocosto.strCompany_Desc}}</span>
-                                <label class="el-form-item__label col-md-1" >Autoreverse</label>
-                                <el-checkbox class="newCheckBox" @change="changeFecha()"  v-model="Autoreverse">
-                                </el-checkbox> 
-                            </div>   
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Descripción</label>
-                                <div class="col-sm-3 grupolabel">
+                            </div> 
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Cuenta Contable</label>
+                                <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input   size ="small" style="font-size:11px;" v-model="Desc_Header" ></el-input>
+                                        <el-input   size ="small" 
+                                            v-model="bancoModel.strAcc_Cont">
+                                        </el-input>
                                     </div>
                                 </div>
-                            </div>    
-                            <br/>
-                            <div class="row">
-                                <div class="col-sm-12" >
-                                    <el-card class="box-card" style="margin-left: -10px;">
-                                        <div slot="header" class="headercard" style="margin-top: -4px;">
-                                            <!-- <buttons-accions v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar"  v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()"  v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:handleClickInParent="handleClickInParent()"></buttons-accions> -->
-                                        </div>
-                                        <div class="col-md-12" >
-                                            <div class="row bodycard" id="out-table" style="background: white;margin-top: 0px;">
-                                                <el-table
-                                                    ref="missionTable"  
-                                                    id="container"                                      
-                                                    :max-height="sizeScreen"
-                                                    :data="CompleteData" 
-                                                    highlight-current-row
-                                                    @current-change="handleCurrentChange"
-                                                    stripe 
-                                                    class="ExcelTable2007">
-                                                    <el-table-column type="index" label="Item" width="40" >
-                                                    </el-table-column>
-                                                    <el-table-column   prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
-                                                        <template scope="scope">
-                                                            <el-input    v-if="bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strAcctCateg_Cod" >
-                                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCategoriaCuenta(scope.row,scope.column.property)"></el-button>  
-                                                            </el-input> 
-                                                            <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  v-else @click="clickcategoriacuenta(scope.row,scope.row.edit,scope.column.property)" >&nbsp;{{ scope.row.strAcctCateg_Cod }}</label>
-                                                        </template>
-                                                    </el-table-column>  
-                                                    
-                                                    <el-table-column
-                                                        prop="strCuentaContable" min-width="80"
-                                                        label="Cta. Contable">
-                                                        <template scope="scope">
-                                                            <!-- <el-input  v-if="bln_tbl_cuenta_contable  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strAcc_Local_NO" >
-                                                            <el-button slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContable(scope.row)"></el-button>   
-                                                            </el-input> -->
-                                                            <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
-                                                        </template>
-                                                    </el-table-column>  
-                                                    <el-table-column :render-header="filterstrCostCenter"
-                                                        prop="strCostCenter"    
-                                                        label="Centro Costos">
-                                                        <template scope="scope">
-                                                            <!-- <el-input  v-if="bln_tbl_centro_costo  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strCenCosWBS_Cod" >
-                                                            <el-button slot="append" class="boton" icon="fa fa-clone" @click="loadCentroCosto(scope.row)"></el-button>  
-                                                            </el-input> -->
-                                                            <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCenCosWBS_Cod }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column 
-                                                        prop="strDescription"   width="200"
-                                                        label="Descripción">
-                                                        <template scope="scope">
-                                                            <el-input  v-if="bln_tbl_descripcion  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strDetail_Desc" >
-                                                            </el-input>
-                                                            <label style="width:100%;    margin: 0rem;" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDetail_Desc=="~"?"":scope.row.strDetail_Desc }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column  align="right"
-                                                        prop="fltQuantityDebe"   width="100"
-                                                        label="Debe">
-                                                        <template scope="scope">
-                                                            <el-input-number @change="cambiarCantidadDebe(scope.row)"   v-if="bln_tbl_cantidad_debe  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)"  v-focus size="small"  v-model="scope.row.fltQuantityDebe" >
-                                                            </el-input-number> 
-                                                            <label style="width:100%;margin-top: 4px;"  v-else @click="clickcantidadDebe(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantityDebe }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column  align="right"
-                                                        prop="fltQuantityHaber"   width="100"
-                                                        label="Haber">
-                                                        <template scope="scope">
-                                                            <el-input-number  @change="cambiarCantidadHaber(scope.row)"  v-if="bln_tbl_cantidad_haber  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)"  v-focus size="small"  v-model="scope.row.fltQuantityHaber" >
-                                                            </el-input-number> 
-                                                            <label style="width:100%;margin-top: 4px;"  v-else @click="clickcantidadHaber(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantityHaber }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                </el-table>
-                                            </div>
-                                        </div>
-                                    </el-card>
+                            </div>                         
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Cuenta Bancaria</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input   size ="small" 
+                                            v-model="bancoModel.strBank_Account">
+                                        </el-input>
+                                    </div>
                                 </div>
-                            </div>                   
+                            </div>                         
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Cuenta CCI</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input   size ="small" 
+                                            v-model="bancoModel.strBank_Account_CCI">
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>                         
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Branch Code</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input   size ="small" 
+                                            v-model="bancoModel.strBranch_Cod">
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>                      
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Swift Code</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input   size ="small" 
+                                            v-model="bancoModel.strSwift_Cod">
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>     
+                             <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Region</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input size ="small" :disabled="departEnabled" @blur="desactivar_Departamento" @focus="activar_Departamento" 
+                                        v-model="bancoModel.strBank_Region" >                            
+                                            <el-button v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
+                                        </el-input>
+                                    </div>
+                                </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{Departamento_Desc}}</span>
+                                  
+                            </div>  
+                             <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Direccion</label>
+                                <div class="col-md-6 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input   size ="small" 
+                                            v-model="bancoModel.strBank_Address">
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>                    
                         </div>
                     </div>
                 </div>
@@ -259,7 +206,51 @@
             <bimpuesto v-on:ImpuestoSeleccionado="ImpuestoSeleccionado($event)" v-on:companiaClose="closeImpuesto()">
             </bimpuesto>
         </el-dialog>
-    
+        <el-dialog
+            title="Departamentos"
+            :visible.sync="departVisible"
+            width="30%"
+            :before-close="handleCloseDepart">
+            <el-card class="box-card">
+                <div slot="header" class="headercard">
+                    <span class="labelheadercard" >Buscar Departamento</span>
+                </div>
+                <div class="row bodycard">
+                    <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-md-3" >{{Column}}</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small"   v-model="inputAtributo">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                        @click="searchDepa()"
+                                    > </el-button>
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <el-table
+                    :data="DepartamentoGrid"
+                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                    style="width: 100%; cursor: pointer;" class="ExcelTable2007"
+                    height="200"
+                    highlight-current-row
+                    @header-click="headerclick"
+                    @row-dblclick="departChosseCheck"
+                    @current-change="departSelect">
+                    <el-table-column :render-header="filterstrRegión_Cod"  prop="strRegión_Cod" label="Codigo" width="180" >
+                    </el-table-column>  
+                    <el-table-column :render-header="filterstrRegión_Desc" prop="strRegión_Desc" label="Nombre Departamento" style="width: 70% !important;">
+                    </el-table-column> 
+                    </el-table>
+            </el-card>
+            <span slot="footer" class="dialog-footer">
+                <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="departChosseCheck()"/>
+                <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="departChosseClose()"/>
+            </span>
+        </el-dialog>
          <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
             <div>
                 <el-card class="box-card">
@@ -312,6 +303,10 @@
         <el-dialog title="Moneda"  :visible.sync="dialogMoneda" @close="closeDialogMoneda" size="small" >
             <bmoneda v-on:MonedaSeleccionado="MonedaSeleccionado($event)" v-on:closeMoneda="closeMoneda()">
             </bmoneda>
+        </el-dialog> 
+        <el-dialog title="Pais"  :visible.sync="dialogPais" @close="closePais" size="small" >
+            <bpais v-on:PaisSeleccionado="PaisSeleccionado($event)" v-on:closePais="closePais()">
+            </bpais>
         </el-dialog> 
         <el-dialog title="Grupo Proceso"  :visible.sync="dialogGrupoProceso" @close="closeDialogGrupoProceso" size="small" >
             <bgrupoproceso v-on:grupoprocesoseleccionado="grupoprocesoseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoProceso()">

@@ -6,7 +6,7 @@ export class BancoModel {
     strBank_Name:string;
     strBank_Curr:string;
     strBank_Address:string;
-    strBank_City:string;
+    strBank_Region:string;
     strBranch_Cod:string;
     strSwift_Cod:string;
     strBank_Account:string;
@@ -15,6 +15,12 @@ export class BancoModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    strBank_Account_CCI:string;
+    strCompany_Cod:string;
+    strCompany_Desc:string;
+    strCountry_Desc:string;
+    strBank_Curr_Desc:string;
+    strBank_Region_Desc:string;
     constructor(){
         this.intBank_ID=-1;
         this.strCountry='';
@@ -23,7 +29,8 @@ export class BancoModel {
         this.strBank_Name='';
         this.strBank_Curr='';
         this.strBank_Address='';
-        this.strBank_City='';
+        this.strBank_Account_CCI='';
+        this.strBank_Region='';
         this.strBranch_Cod='';
         this.strSwift_Cod='';
         this.strBank_Account='';
