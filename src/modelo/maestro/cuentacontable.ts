@@ -26,6 +26,9 @@ export class CuentaContableModel {
     blnAcc_Status_Open:boolean;
     strChartAcct_L_Cod:string;
     strChartAcct_C_Cod:string;
+    strAcc_Categ_Cod:string;
+    strAcc_Categ_Desc:string;
+    
     intIdWH_ID:number;
     blnAcc_cc:boolean;
     blnAcc_GL:boolean;

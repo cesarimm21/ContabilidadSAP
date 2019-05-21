@@ -62,7 +62,7 @@ import cuentaContableService from '@/components/service/cuentaContable.service';
   'bplancontablelocal':BPlanContableLocalComponent,
   }
 })
-export default class ModificarCuentaContableComponent extends Vue {
+export default class CrearElementoGastoComponent extends Vue {
   nameComponent:string;
   habilitar:boolean=false;
   habilitarPane:boolean=true;
@@ -139,100 +139,29 @@ export default class ModificarCuentaContableComponent extends Vue {
 
   issave:boolean=false;
   iserror:boolean=false;
-  visualizar:boolean=false;
   textosave:string='';
-  txtviewmodulo:string='';
-  txtmodulo:string='';
-  
   tabletipo:any=[{}];
   strlevel:string='';
+
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
-    this.loadTipocambio();
+    
     setTimeout(() => {
-      this.load();
+      this.loadTipocambio();
     }, 100)
   }
-  load(){
-    debugger;
-    var object = JSON.parse(this.$route.query.data);
-    var modulo = this.$route.query.vista;
-    this.txtviewmodulo=modulo;
-    if(modulo.toLowerCase()!='visualizar'){
-      this.txtmodulo='Modificar Salida';
-      this.visualizar=false;
-    }
-    else{
-      this.txtmodulo='Visualizar Salida';
-      this.visualizar=true;
-    }
-    this.cargar(object.strAcc_Local_NO);
-  }
-  cargar(code){
-    cuentaContableService.GetCuentaContableID(code)
-    .then(res=>{
-      if(res!=undefined){
-        console.log('cargarData1',res)
-        // this.cuentacontable.blnAcc_AP=res[0].tdi_blnAcc_AP;
-        // this.cuentacontable.blnAcc_AR=res[0].tdi_blnAcc_AR;
-        // this.cuentacontable.blnAcc_CC=res[0].tdi_blnAcc_CC;
-        // this.cuentacontable.blnAcc_DI=res[0].tdi_blnAcc_DI;
-        // this.cuentacontable.blnAcc_Destino=res[0].tdi_blnAcc_Destino;
-        // this.cuentacontable.blnAcc_FA=res[0].tdi_blnAcc_FA;
-        // this.cuentacontable.blnAcc_GL=res[0].tdi_blnAcc_GL;
-        // this.cuentacontable.blnAcc_LO=res[0].tdi_blnAcc_LO;
-        // this.cuentacontable.blnAcc_PY=res[0].tdi_blnAcc_PY;
-        // this.cuentacontable.blnAcc_ST=res[0].tdi_blnAcc_ST;
-        // this.cuentacontable.blnAcc_Status_Open=res[0].tdi_blnAcc_Status_Open;
-        // this.cuentacontable.blnAcc_cc=res[0].tdi_blnAcc_cc;
-        // this.cuentacontable.chrStatus=res[0].tdi_chrStatus;
-        // this.cuentacontable.dtmCreation_Date=res[0].tdi_dtmCreation_Date;
-        // this.cuentacontable.dtmModified_Date=res[0].tdi_dtmModified_Date;
-        // this.cuentacontable.fltCredit_AcctDest=res[0].tdi_fltCredit_AcctDest;
-        // this.cuentacontable.fltDebit_AccDest=res[0].tdi_fltDebit_AccDest;
-        // this.cuentacontable.intIdAcctCont_ID=res[0].tdi_intIdAcctCont_ID;
-        // this.cuentacontable.intIdAcctItem_ID=res[0].tdi_intIdAcctItem_ID;
-        // this.cuentacontable.intIdCompany_ID=res[0].tdi_intIdCompany_ID;
-        // this.cuentacontable.intIdExpGroup_ID=res[0].tdi_intIdExpGroup_ID;
-        // this.cuentacontable.intIdGrpCta_ID=res[0].tdi_intIdGrpCta_ID;
-        // this.cuentacontable.intIdWH_ID=res[0].tdi_intIdWH_ID;
-        // this.cuentacontable.strAcc_Corp_NO=res[0].tdi_strAcc_Corp_NO;
-        // this.cuentacontable.strAcc_Corp_Name=res[0].tdi_strAcc_Corp_Name;
-        // this.cuentacontable.strAcc_Level=res[0].tdi_strAcc_Level;
-        // this.cuentacontable.strAcc_Local_NO=res[0].tdi_strAcc_Local_NO;
-        // this.cuentacontable.strAcc_Local_Name=res[0].tdi_strAcc_Local_Name;
-        // this.cuentacontable.strAcc_Type=res[0].tdi_strAcc_Type;
-        // this.cuentacontable.strChartAcct_C_Cod=res[0].tdi_strChartAcct_C_Cod;
-        // this.cuentacontable.strChartAcct_L_Cod=res[0].tdi_strChartAcct_L_Cod;
-        // this.cuentacontable.strCreation_User=res[0].tdi_strCreation_User;
-        // this.cuentacontable.strCurrency_Cod=res[0].tdi_strCurrency_Cod;
-        // this.cuentacontable.strModified_User=res[0].tdi_strModified_User;
-        // this.cuentacontable.strCompany_Cod=res[0].tblCompania_strCompany_Cod;
-        this.cuentacontable=res[0]
-        this.cuentacontable.strCompany_Cod=res[0].intIdCompany_ID.strCompany_Cod;
-        this.cuentacontable.strCompany_Name=res[0].intIdCompany_ID.strCompany_Desc;
-        this.cuentacontable.strGrpAcctCont_Cod=res[0].intIdGrpCta_ID.strGrpAcctCont_Cod;
-        this.cuentacontable.strExpGroup_Cod=res[0].intIdExpGroup_ID.strExpGroup_Cod;
-        this.cuentacontable.strWH_Cod=res[0].intIdWH_ID.strWH_Cod;
-        this.cuentacontable.strAcctItem_Cod=res[0].intIdAcctItem_ID.strAcctItem_Cod;
-        
-        
-        // this.cuentacontable.strCompany_Name=res[0].tblCompania_strCompany_Name;
-        // this.cuentacontable.strGrpAcctCont_Cod=res[0].tblGrupoCuentaContable_strGrpAcctCont_Cod;
-        // this.cuentacontable.strWH_Cod=res[0].tblImpuesto_strWH_Cod;
-        // this.cuentacontable.strExpGroup_Cod=res[0].tblGrupoGastos_strExpGroup_Cod;
-        // this.cuentacontable.strAcctItem_Cod=res[0].tblRubroCuentaContable_strAcctItem_Cod; 
-        console.log('cargarData2',this.cuentacontable)
-      }
-    })
-    .catch(error=>{
-      console.log('error',error)
-    })
-  }
   loadTipocambio(){
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.cuentacontable.strCompany_Name=desc; 
+    this.cuentacontable.strCompany_Cod=cod;
+    this.strlevel='20';
+    var id:any=localStorage.getItem('compania_ID');
+    this.cuentacontable.intIdCompany_ID=id;
+
     tipocambioService.GetAllTipoCambio1()
     .then(response=>{
       this.tipocambio=response;  
@@ -438,14 +367,14 @@ export default class ModificarCuentaContableComponent extends Vue {
     } 
   }
   guardarTodo(){
-    console.log('guardarTodo',this.cuentacontable);
+    debugger;
     this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
     for(var i=0;i<this.tabletipo.length;i++){
-      if(this.tabletipo[i].strType_Cod=='this.strlevel'){
+      if(this.tabletipo[i].strType_Cod.toString()==this.strlevel){
         this.cuentacontable.strAcc_Categ_Desc=this.tabletipo[i].strType_Desc;
       }
     }
-    cuentaContableService.UpdateCuentaContableID(this.cuentacontable)
+    cuentaContableService.CreateCuentaContable(this.cuentacontable)
     .then(response=>{
       
       this.issave=true;

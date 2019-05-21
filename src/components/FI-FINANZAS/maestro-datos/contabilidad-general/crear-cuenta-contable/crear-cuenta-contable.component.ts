@@ -71,6 +71,8 @@ export default class CrearCuentaContableComponent extends Vue {
   descripcionCompania:string;
   sizeScreen:string = (window.innerHeight - 420).toString();
   TableIngreso:any[];
+  tabletipo:any=[{}];
+  strlevel:string='';
   periodoData:Date;
   totalUnidad:number;
   totalDinero:number;
@@ -146,9 +148,19 @@ export default class CrearCuentaContableComponent extends Vue {
     Global.nameComponent='crear-ingreso-comprobante';
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
-    this.loadTipocambio();
+    setTimeout(() => {
+      this.loadTipocambio();
+    }, 100)
   }
   loadTipocambio(){
+    this.strlevel='10';
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    var id:any=localStorage.getItem('compania_ID');
+    this.cuentacontable.strCompany_Name=desc; 
+    this.cuentacontable.strCompany_Cod=cod;
+    this.cuentacontable.intIdCompany_ID=id;
+
     tipocambioService.GetAllTipoCambio1()
     .then(response=>{
       this.tipocambio=response;  
@@ -354,6 +366,15 @@ export default class CrearCuentaContableComponent extends Vue {
     } 
   }
   guardarTodo(){
+    this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
+    
+
+    for(var i=0;i<this.tabletipo.length;i++){
+      if(this.tabletipo[i].strType_Cod==this.strlevel){
+        this.cuentacontable.strAcc_Categ_Desc=this.tabletipo[i].strType_Desc;
+      }
+    }
+
     cuentaContableService.CreateCuentaContable(this.cuentacontable)
     .then(response=>{
       
@@ -474,8 +495,16 @@ export default class CrearCuentaContableComponent extends Vue {
       TotalPagarD:'',
       voucher:'',
       habilitar:false,
-      habilitarPane:true
+      habilitarPane:true,
      
+      tabletipo:[{
+        strType_Cod:"10",
+        strType_Desc:"Cuenta Balance"
+      },
+      {
+        strType_Cod:"20",
+        strType_Desc:"Elemento Gasto"
+      }],
     }
   }
   
