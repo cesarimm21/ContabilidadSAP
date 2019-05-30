@@ -65,6 +65,8 @@ import RecepcionBusquedaComponent from '../components/LO-LOGISTICA/almacen/al_re
 import RecepcionMaterialComponent from '../components/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion/al_recepcion.vue'
 import DespachoSalidaComponent from '../components/LO-LOGISTICA/almacen/salida/al_salidadespacho/al_salidadespacho.vue'
 import LibroDiarioDComponent from '../components/FI-FINANZAS/libros-balance/librodiario/librodiario.vue'
+import BalanceCuentasComponent from '../components/FI-FINANZAS/libros-balance/balance-cuentas/balance-cuentas.vue'
+
 import LibroRegistroComprasComponent from '../components/FI-FINANZAS/libros-balance/libroregistrocompras/libroregistrocompras.vue'
 import CrearClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/crear_clase_material/crear_clase_material.vue'
 import ModificarClaseMaterialComponent from '../components/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_clase_material/modificar_clase_material.vue'
@@ -93,6 +95,14 @@ import  CrearBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesore
 import  VisualizarModificarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-modificar-banco/visualizar-modificar-banco.vue';
 import  VisualizarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-banco/visualizar-banco.vue';
 import  ModificarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/modificar-banco/modificar-banco.vue';
+import ModificarGrupoCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/modificar-grupo-cuenta-contable/modificar-grupo-cuenta-contable.vue';
+import CrearGrupoCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/crear-grupo-cuenta-contable/crear-grupo-cuenta-contable.vue';
+import VisualizarModificarGrupoCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/visualizar-modificar-grupo-cuenta-contable/visualizar-modificar-grupo-cuenta-contable.vue';
+import VisualizarGrupoCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/visualizar-grupo-cuenta-contable/visualizar-grupo-cuenta-contable.vue';
+import CrearCostitemComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/crear-costitem/crear-costitem.vue';
+import VisualizarModificarCostitemComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/visualizar-modificar-costitem/visualizar-modificar-costitem.vue';
+import ModificarCostitemComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/modificar-costitem/modificar-costitem.vue';
+import VisualizarCostitemComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/visualizar-costitem/visualizar-costitem.vue';
 
 export default [
  
@@ -157,6 +167,50 @@ export default [
         name:'modificar-contabilidad'
       }, 
       {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/visualizar-modificar-grupo-cuenta-contable',
+        component:VisualizarModificarGrupoCuentaContableComponent,
+        name:'visualizar-grupo-contabilidad'
+      },  
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/visualizar-grupo-cuenta-contable',
+        component:VisualizarGrupoCuentaContableComponent,
+        name:'visualizar-grupo-contabilidad'
+      },  
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/costitem/crear-costitem',
+        component:CrearCostitemComponent,
+        name:'crear-costitem'
+      },  
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/costitem/visualizar-modificar-costitem',
+        component:VisualizarModificarCostitemComponent,
+        name:'VisualizarModificarCostitemComponent'
+      },  
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/costitem/modificar-costitem',
+        component:ModificarCostitemComponent,
+        name:'ModificarCostitemComponent'
+      },  
+      
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/costitem/visualizar-costitem',
+        component:VisualizarCostitemComponent,
+        name:'VisualizarCostitemComponent'
+      },  
+      
+
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/modificar-grupo-cuenta-contable',
+        component:ModificarGrupoCuentaContableComponent,
+        name:'modificar-contabilidad'
+      }, 
+      {
+        path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/crear-grupo-cuenta-contable',
+        component:CrearGrupoCuentaContableComponent,
+        name:'crear-contabilidad'
+      }, 
+      {
         path:'FI-FINANZAS/contabilidad-general/visualizar-modificar-contabilidad',
         component:VisualizarModificarContabilidadComponent,
         name:'visualizar-modificar-contabilidad'
@@ -180,6 +234,11 @@ export default [
         path:'FI-FINANZAS/libros-balance/librodiario',
         component:LibroDiarioDComponent,
         name:'libro-diario'
+      },
+      {
+        path:'FI-FINANZAS/libros-balance/balance-cuentas',
+        component:BalanceCuentasComponent,
+        name:'balance-cuentas'
       },
       {
         path:'FI-FINANZAS/libros-balance/libroregistrocompras',

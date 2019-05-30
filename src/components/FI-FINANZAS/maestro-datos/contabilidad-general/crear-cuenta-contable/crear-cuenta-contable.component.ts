@@ -3,15 +3,22 @@ import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import { Loading } from 'element-ui';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+import BTipoCuentaContableProveedor from '@/components/buscadores/b_tipo_cuenta_contable/b_tipo_cuenta_contable.vue';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 import BGrupoCuentaContableComponent from '@/components/buscadores/b_grupo_cuentacontable/b_grupo_cuentacontable.vue';
+import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
 import BGrupoGastosComponent from '@/components/buscadores/b_grupo_gastos/b_grupo_gastos.vue';
 import BRubroComponent from '@/components/buscadores/b_rubro/b_rubro.vue';
+import BCostItemComponent from '@/components/buscadores/b_costitem/b_costitem.vue';
 import BPlanContableLocalComponent from '@/components/buscadores/b_plan_contable_local/b_plan_contable_local.vue';
+import BTipoAdquisicionComponent from '@/components/buscadores/b_tipo_adquisicion/b_tipo_adquisicion.vue';
 
+import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
+
+import cuentaContableService from '@/components/service/cuentaContable.service';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
@@ -30,7 +37,6 @@ import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
 import {CompaniaModel} from '@/modelo/maestro/compania';
 import {OrdenCompraModel} from '@/modelo/maestro/ordencompra';
-import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
 import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
 import {CategoriaCuentaModel} from '@/modelo/maestro/categoriacuenta';
@@ -45,7 +51,6 @@ import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
 import { Notification } from 'element-ui';
-import cuentaContableService from '@/components/service/cuentaContable.service';
 @Component({
   name: 'crear-ingreso-comprobante',
   components:{
@@ -57,9 +62,13 @@ import cuentaContableService from '@/components/service/cuentaContable.service';
   'bimpuesto':BImpuestoComponent,
   'quickaccessmenu':QuickAccessMenuComponent,
   'bgrupocuentacontable':BGrupoCuentaContableComponent,
+  'bcuentacontable':BCuentaContableComponent,
   'bgrupogastos':BGrupoGastosComponent,
   'brubro':BRubroComponent,
   'bplancontablelocal':BPlanContableLocalComponent,
+  'btipocuentacontable':BTipoCuentaContableProveedor,
+  'bcostitem':BCostItemComponent,
+  'btipoadquisicion':BTipoAdquisicionComponent
   }
 })
 export default class CrearCuentaContableComponent extends Vue {
@@ -72,7 +81,10 @@ export default class CrearCuentaContableComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 420).toString();
   TableIngreso:any[];
   tabletipo:any=[{}];
+  tabletipo1:any=[{}];
+  tableAbierto:any=[{}];
   strlevel:string='';
+  strlevelTipo:string='';
   periodoData:Date;
   totalUnidad:number;
   totalDinero:number;
@@ -86,6 +98,7 @@ export default class CrearCuentaContableComponent extends Vue {
   public tipocambio:TipoCambioModel=new TipoCambioModel();
   //**Compania */
   btnactivarcompania:boolean=false;
+  dialogTipoAquisicion:boolean=false;
   dialogCompania:boolean=false;
   dataCompania:any[];
   public companiaModel:CompaniaModel=new CompaniaModel();
@@ -112,7 +125,11 @@ export default class CrearCuentaContableComponent extends Vue {
   dialogGrupoCuentaContable:boolean=false;
   dialogRubro:boolean=false;
   dialogGrupoGastos:boolean=false;
+  dialogCuentaContablePadre:boolean=false;
+  dialogCuentaContablePadreCorp:boolean=false;
+
   btnactivarMoneda:boolean=false;
+  btnactivarTipoCuentaContable:boolean=false;
   btnactivarGrupo:boolean=false;
   btnactivarRubro:boolean=false;
   btnactivarGrupoGastos:boolean=false;
@@ -138,10 +155,23 @@ export default class CrearCuentaContableComponent extends Vue {
   dialogplancontablecorporativo:boolean=false;
   btnactivarPlanCuentaLocal:boolean=false;
   btnactivarPlanCuentaCorporativo:boolean=false;
+  btnactivarCostItem:boolean=false;
 
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  ctaPadre:boolean=true;
+  strAcc_Status_Open:string='';
+  strAccFth_Local_Desc:string='';
+
+  btnactivarCuentaContablePadre:boolean=false;
+  dialogTipoCuentaContable:boolean=false;
+  dialogCostItem:boolean=false;
+
+  public cuentacontableModel:Array<CuentaContableModel>=[];
+  public cuentacontableSelectModel:CuentaContableModel=new CuentaContableModel();
+  btntipoadquisicion:boolean=false;
+
 
   constructor(){    
     super();
@@ -154,10 +184,11 @@ export default class CrearCuentaContableComponent extends Vue {
   }
   loadTipocambio(){
     this.strlevel='10';
+    this.strAcc_Status_Open='A';
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
     var id:any=localStorage.getItem('compania_ID');
-    this.cuentacontable.strCompany_Name=desc; 
+    this.cuentacontable.strCompany_Desc=desc; 
     this.cuentacontable.strCompany_Cod=cod;
     this.cuentacontable.intIdCompany_ID=id;
 
@@ -190,8 +221,20 @@ export default class CrearCuentaContableComponent extends Vue {
     this.companiaModel=val;
     this.cuentacontable.intIdCompany_ID=this.companiaModel.intIdCompany_ID;
     this.cuentacontable.strCompany_Cod=this.companiaModel.strCompany_Cod;
-    this.cuentacontable.strCompany_Name=this.companiaModel.strCompany_Name;
+    this.cuentacontable.strCompany_Desc=this.companiaModel.strCompany_Name;
     this.dialogCompania=false;    
+  }
+  cuentacontableselecionadoPadre(val){
+    // this.cuentacontable.intIdCompany_ID=this.companiaModel.intIdCompany_ID;
+    // this.cuentacontable.strCompany_Cod=this.companiaModel.strCompany_Cod;
+    // this.cuentacontable.strCompany_Name=this.companiaModel.strCompany_Name;
+    this.cuentacontable.strAccFth_Local=val.strAcc_Local_NO;
+    this.strAccFth_Local_Desc=val.strAcc_Local_Name;
+    this.dialogCuentaContablePadre=false; 
+  }
+  cuentacontableselecionadoPadreCorp(val){
+    this.cuentacontable.strAccFth_Corp=val.strAcc_Local_NO;
+    this.dialogCuentaContablePadreCorp=false; 
   }
   plancuentacontableselecionado(val,dialog:boolean){
     debugger;
@@ -221,30 +264,53 @@ export default class CrearCuentaContableComponent extends Vue {
       this.btnactivarcompania=false;      
     }
   }
+  activar_TipoCuentaContable(){
+    setTimeout(() => {
+      this.desactivarBtn();
+      this.btnactivarTipoCuentaContable=true;
+    }, 120)
+  }
+  desactivarBtn(){
+    this.btnactivarcompania=false;
+    this.btnactivarOrdenCompra=false;
+    this.btnactivarTipoDocumento=false;
+    this.btnactivarMoneda=false;
+    this.btnactivarTipoCuentaContable=false;
+    this.btnactivarGrupo=false;
+    this.btnactivarRubro=false;
+    this.btnactivarGrupoGastos=false;
+    this.btnactivarDiario=false;
+    this.btnactivarImpuesto=false;
+    this.btnactivarPlanCuentaLocal=false;
+    this.btnactivarPlanCuentaCorporativo=false;
+    this.btnactivarCostItem=false;
+    this.btnactivarCuentaContablePadre=false;
+  }
   activar_PlanCuentaLocal(){
     setTimeout(() => {
+      this.desactivarBtn();
       this.btnactivarPlanCuentaLocal=true;
-      this.btnactivarMoneda=false;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
     //this.dialogplancontablelocal=true;
   }
+  activar_CostItem(){
+    setTimeout(() => {
+      this.desactivarBtn();
+      this.btnactivarCostItem=true;
+    }, 120)
+  }
   activar_PlanCuentaCorporativo(){
     setTimeout(() => {
+      this.desactivarBtn();
       this.btnactivarPlanCuentaCorporativo=true;
-      this.btnactivarMoneda=false;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
     //this.dialogplancontablelocal=true;
   }
   loadPlanCuentaLocal(){
     this.dialogplancontablelocal=true;
+  }
+  loadCostItem(){
+    this.dialogCostItem=true;
   }
   loadPlanCuentaCorporativo()
   {
@@ -272,12 +338,8 @@ export default class CrearCuentaContableComponent extends Vue {
   }
   activar_compania(){
     setTimeout(() => {
+      this.desactivarBtn();
       this.btnactivarcompania=true;
-      this.btnactivarMoneda=false;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_compania(){
@@ -285,9 +347,12 @@ export default class CrearCuentaContableComponent extends Vue {
     if(this.dialogCompania){
       this.btnactivarcompania=false;      
     }
-    // if(this.factura.strCompany_Cod===undefined){
-    //   // alert('aaaaa');
-    // }
+  }
+  desactivar_CostItem(){
+    debugger;
+    if(this.dialogCostItem){
+      this.btnactivarCostItem=false;      
+    }
   }
   closeCompania(){
     this.btnactivarcompania=false;
@@ -299,6 +364,9 @@ export default class CrearCuentaContableComponent extends Vue {
   //#region [MONEDA]
   loadMoneda(){
     this.dialogMoneda=true;
+  }
+  loadTipoCuentaContable(){
+    this.dialogTipoCuentaContable=true;
   }
   loadGrupo(){
     this.dialogGrupoCuentaContable=true;
@@ -314,50 +382,48 @@ export default class CrearCuentaContableComponent extends Vue {
     this.btnactivarMoneda=false;
     this.dialogMoneda=false;
   }
+  closeDialogCuentaContablePadre(){
+    //this.btnactivarMoneda=false;
+    this.dialogCuentaContablePadre=false;
+  }
+  
+  closeDialogCuentaContablePadreCorp(){
+    this.dialogCuentaContablePadreCorp=false;    
+  }
+
   activar_Moneda(){
     setTimeout(() => {
-      this.btnactivarcompania=false;
+      this.desactivarBtn();
       this.btnactivarMoneda=true;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
   }
   
   activar_Rubro(){
     setTimeout(() => {
-      this.btnactivarcompania=false;
+      this.desactivarBtn();
       this.btnactivarRubro=true;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
   }
   activar_Grupo(){
     setTimeout(() => {
-      this.btnactivarcompania=false;
+      this.desactivarBtn();
       this.btnactivarGrupo=true;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
   }
   activar_GrupoGastos(){
     setTimeout(() => {
-      this.btnactivarcompania=false;
+      this.desactivarBtn();
       this.btnactivarGrupoGastos=true;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
-      this.btnactivarImpuesto=false;
     }, 120)
   }
   desactivar_Moneda(){
     if(this.dialogMoneda){
       this.btnactivarMoneda=false;
+    }
+  }
+  desactivar_TipoCuentaContable(){
+    if(this.dialogTipoCuentaContable){
+      this.btnactivarTipoCuentaContable=false;
     }
   }
   desactivar_Grupo(){
@@ -366,8 +432,12 @@ export default class CrearCuentaContableComponent extends Vue {
     } 
   }
   guardarTodo(){
-    this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
     
+    this.issave=false;
+    this.textosave='';
+    this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
+    this.cuentacontable.strAcc_Level=this.strlevelTipo;
+    this.cuentacontable.blnAcc_Status_Open=this.strAcc_Status_Open=='A'?true:false;
 
     for(var i=0;i<this.tabletipo.length;i++){
       if(this.tabletipo[i].strType_Cod==this.strlevel){
@@ -407,6 +477,7 @@ export default class CrearCuentaContableComponent extends Vue {
     this.moneda=val
     this.cuentacontable.strCurrency_Cod=this.moneda.strCurrency_Cod;
     this.dialogMoneda=false;
+    
   }
 
   closeMoneda(){
@@ -426,11 +497,7 @@ export default class CrearCuentaContableComponent extends Vue {
   }
   activar_Impuesto(){
     setTimeout(() => {
-      this.btnactivarcompania=false;
-      this.btnactivarMoneda=false;
-      this.btnactivarOrdenCompra=false;
-      this.btnactivarTipoDocumento=false;
-      this.btnactivarDiario=false;
+      this.desactivarBtn();
       this.btnactivarImpuesto=true;
     }, 120)
   }
@@ -474,7 +541,79 @@ export default class CrearCuentaContableComponent extends Vue {
         message: strMessage
       });
   }
-  
+  desactivar_CuentaContablePadre (){
+    debugger;
+    if(this.dialogCuentaContablePadre){
+      this.btnactivarCuentaContablePadre=false;      
+    } 
+  }
+  activar_CuentaContablePadre(){
+    setTimeout(() => {
+      this.desactivarBtn();
+      this.btnactivarCuentaContablePadre=true;
+    }, 120)
+  }
+  loadCuentaContablePadre()
+  {
+    debugger;
+    var code=this.cuentacontable.strAcc_Local_NO.substr(0,2);
+    cuentaContableService.GetAllCuentaContableLike(code)
+    .then(response=>{
+      debugger
+      console.log('cuentacontable',response);
+      this.cuentacontableModel=response;       
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar los almacenes'
+      });
+    })
+    this.dialogCuentaContablePadre=true;
+  }
+  activarpadre(val){
+    debugger;
+    if(val.length>=2){
+      this.ctaPadre=false;
+    }
+    else{
+      this.ctaPadre=true;
+    }
+  }
+  handleCurrentChangeCCPadre(val:CuentaContableModel){
+    this.cuentacontableSelectModel=val;
+  }
+  tipocuentacontableSeleccionado(val){
+    this.cuentacontable.strAcc_Type=val.strAcc_Type_Cod;
+    this.dialogTipoCuentaContable=false;
+  }
+  costitemselecionado(val){
+    this.cuentacontable.strCost_Item_Cod=val.strCost_Item_Cod;
+    this.dialogCostItem=false;
+  }
+  tipoadquisicionSeleccionado(val){
+    this.cuentacontable.strTypeAdq_PDB=val.intTypeAdq_PDB_Cod;
+    this.dialogTipoAquisicion=false;
+  }
+  closeDialogTipoAdquisicion(){
+    this.dialogTipoAquisicion=false;
+  }
+
+  activar_TipoAdquisicion(){
+    setTimeout(() => {
+      this.desactivarBtn();
+      this.btntipoadquisicion=true;
+    }, 120)
+  }
+  desactivar_TipoAdquisicion (){
+    debugger;
+    if(this.dialogTipoAquisicion){
+      this.btntipoadquisicion=false;      
+    } 
+  }
+  loadTipoAdquisicion(){
+    this.dialogTipoAquisicion=true;
+  }
   data(){
     return{
       nameComponent:'crear-ingreso-comprobante',
@@ -504,6 +643,22 @@ export default class CrearCuentaContableComponent extends Vue {
       {
         strType_Cod:"20",
         strType_Desc:"Elemento Gasto"
+      }],
+      tabletipo1:[{
+        strType_Cod:"T",
+        strType_Desc:"Titulo"
+      },
+      {
+        strType_Cod:"D",
+        strType_Desc:"Detalle"
+      }],
+      tableAbierto:[{
+        strType_Cod:"A",
+        strType_Desc:"Abierto"
+      },
+      {
+        strType_Cod:"C",
+        strType_Desc:"Cerrado"
       }],
     }
   }

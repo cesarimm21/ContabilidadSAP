@@ -1,6 +1,6 @@
 <template>
     <div>
-       <el-card class="box-card">
+        <el-card class="box-card">
             <div slot="header" class="headercard">
                 <span class="labelheadercard" >Hola Mundo</span>
             </div>
@@ -30,12 +30,12 @@
             highlight-current-row
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="strAcc_Local_NO" label="Cuenta Local" width="180">
-            </el-table-column>  
-            <el-table-column  prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
-            </el-table-column>  
-            <el-table-column  prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
-            </el-table-column> 
+                <el-table-column   prop="strAcc_Local_NO" label="Cuenta Local" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
+                </el-table-column>  
+                <el-table-column  prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
+                </el-table-column> 
             </el-table>
         </el-card>
         <br/>

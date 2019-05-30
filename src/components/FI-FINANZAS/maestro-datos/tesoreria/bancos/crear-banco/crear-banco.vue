@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                             </div> 
-                            <div class="form-group row ">
+                            <!--<div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Cuenta Contable</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
@@ -141,7 +141,7 @@
                                         </el-input>
                                     </div>
                                 </div>
-                            </div>     
+                            </div>      -->
                              <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Region</label>
                                 <div class="col-md-2 grupolabel">
@@ -165,6 +165,91 @@
                                     </div>
                                 </div>
                             </div>                    
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-sm-9" >
+                            <el-card class="box-card" style="margin-left: -10px;">
+                                <div slot="header" class="headercard" style="margin-top: -4px;">
+                                    <buttons-accions v-on:validarView="validarView()"></buttons-accions>
+                                </div>
+                                <div class="col-md-12" >
+                                    <div class="row bodycard" style="background: white;margin-top: 0px;">
+                                        <el-table
+                                            ref="missionTable"
+                                            :max-height="sizeScreen"
+                                            :data="tableDataBancaria" 
+                                            highlight-current-row
+                                            stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                                            class="ExcelTable2007">
+                                            <el-table-column type="index" label="Linea" width="58">
+                                            </el-table-column>
+                                           
+                                            <el-table-column 
+                                            prop="strAcc_Local_NO"   width="100"
+                                            label="Cta Contable">
+                                                <template scope="scope">
+                                                    <el-input  v-if=" bln_tbl_cuenta_contable  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strAcc_Local_NO" >
+                                                    <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCuentaContable(scope.row)"></el-button>  
+                                                    </el-input>
+                                                    <label style="width:100%;    margin: 0rem;" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strBank_Account" sortable  width="120"
+                                                label="Cta. Bancaria">
+                                                <template scope="scope">
+                                                    <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account }}</label>
+                                                </template>
+                                            </el-table-column>   
+                                            <el-table-column
+                                                prop="strBank_Account_CCI" sortable  width="120"
+                                                label="Cta. CCI">
+                                                <template scope="scope">
+                                                    <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account_CCI }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <!-- <el-table-column
+                                                prop="strBankAcct_IntBan" sortable width="150"
+                                                label="Moneda">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
+                                                </template>
+                                            </el-table-column> -->
+                                            <el-table-column
+                                                prop="strBranch_Cod" sortable width="150"
+                                                label="Branch Code">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBranch_Cod }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strSwift_Cod" sortable 
+                                                label="Swift Code">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strSwift_Cod }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <!-- <el-table-column
+                                                prop="strBankAcct_IntBan" sortable width="150"
+                                                label="Ciudad">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
+                                                </template>
+                                            </el-table-column> -->
+                                            <!-- <el-table-column
+                                                prop="strBankAcct_IntBan" sortable width="150"
+                                                label="Direccion">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
+                                                </template>
+                                            </el-table-column> -->
+                                        </el-table>
+                                    </div>
+                                </div>
+                            </el-card>
                         </div>
                     </div>
                 </div>
