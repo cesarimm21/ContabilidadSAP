@@ -460,7 +460,7 @@
                     </div>
                 </div>
                 <el-table
-                    :data="diarioModel"
+                    :data="griddiarioModel"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"

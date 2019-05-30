@@ -33,7 +33,7 @@ export default class  BCuentaContableComponent extends Vue {
   //Modelos
   articulos:any =[];
 
-  public cuentacontableModel:Array<CuentaContableModel>=[];
+  gridCuenta:CuentaContableModel[];
   public cuentacontableSelectModel:CuentaContableModel=new CuentaContableModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
@@ -46,12 +46,10 @@ export default class  BCuentaContableComponent extends Vue {
     }, 500)
   }
   load(){     
-    debugger
     cuentacontableService.GetAllCuentaContable()
-    .then(response=>{
-      debugger
-      console.log('cuentacontable',response);
-      this.cuentacontableModel=response;       
+    .then(response=>{      
+      this.gridCuenta=[];
+      this.gridCuenta=response;   
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -107,7 +105,6 @@ export default class  BCuentaContableComponent extends Vue {
     //   loadingInstancePdf.close();
     // })
     // .catch(e =>{
-    //   console.log(e);
     //   if(e.response.status === 404){ // token no valido
     //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
     //   }
@@ -149,7 +146,7 @@ export default class  BCuentaContableComponent extends Vue {
       });
   }
   seleccionar(row,index){
-    this.$emit('cuentacontableselecionado',row);
+    this.$emit('cuentacontableselecionado',this.cuentacontableSelectModel);
   }
   handleCurrentChange(val:CuentaContableModel){
     this.cuentacontableSelectModel=val;
@@ -163,7 +160,7 @@ export default class  BCuentaContableComponent extends Vue {
   }
   data() {
     return {
-      cuentacontableModel:[],
+      gridCuenta:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',
@@ -202,12 +199,5 @@ export default class  BCuentaContableComponent extends Vue {
     ]
 
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      setTimeout(() => {
-        this.load();
-      }, 600)
-    }
   }
 }

@@ -18,7 +18,7 @@ import BTipoAdquisicionComponent from '@/components/buscadores/b_tipo_adquisicio
 
 import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 
-import cuentaContableService from '@/components/service/cuentaContable.service';
+// import cuentaContableService from '@/components/service/cuentaContable.service';
 import router from '@/router';
 import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';

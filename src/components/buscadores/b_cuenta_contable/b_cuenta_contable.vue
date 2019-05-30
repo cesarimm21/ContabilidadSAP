@@ -2,7 +2,7 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" >Hola Mundo</span>
+                <!-- <span class="labelheadercard" >Hola Mundo</span> -->
             </div>
             <div class="row bodycard">
                 <div class="col-md-12">
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <el-table
-            :data="cuentacontableModel"
+            :data="gridCuenta"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
             height="250"

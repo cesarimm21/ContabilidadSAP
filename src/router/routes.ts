@@ -169,12 +169,12 @@ export default [
       {
         path:'FI-FINANZAS/contabilidad-general/modificar-contabilidad',
         component:ModificarContabilidadComponent,
-        name:'modificar-contabilidad'
+        name:'modifica-contabilidad'
       }, 
       {
         path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/visualizar-modificar-grupo-cuenta-contable',
         component:VisualizarModificarGrupoCuentaContableComponent,
-        name:'visualizar-grupo-contabilidad'
+        name:'visualizar y modificar-grupo-contabilidad'
       },  
       {
         path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/visualizar-grupo-cuenta-contable',
@@ -213,7 +213,7 @@ export default [
       {
         path:'FI-FINANZAS/maestro-datos/contabilidad-general/grupo-cuenta-contable/crear-grupo-cuenta-contable',
         component:CrearGrupoCuentaContableComponent,
-        name:'crear-contabilidad'
+        name:'crear-grupo-cuenta-contabilidad'
       }, 
       {
         path:'FI-FINANZAS/contabilidad-general/visualizar-modificar-contabilidad',

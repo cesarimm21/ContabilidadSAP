@@ -23,7 +23,7 @@
                 </div>
             </div>
             <el-table
-            :data="diarioModel"
+            :data="gridModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
             height="250"
@@ -49,6 +49,6 @@
 </template>
 
 <script>
-    import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.component'
-    export default BCuentaContableComponent
+    import BDiarioComponent from '@/components/buscadores/b_diario/b_diario.component'
+    export default BDiarioComponent
 </script>

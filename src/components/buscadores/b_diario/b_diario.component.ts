@@ -10,7 +10,7 @@ import router from '@/router';
   name: 'bdiario'
 })
 
-export default class  BCuentaContableComponent extends Vue {
+export default class  BDiarioComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
@@ -33,7 +33,7 @@ export default class  BCuentaContableComponent extends Vue {
   //Modelos
   articulos:any =[];
 
-  public diarioModel:Array<DiarioModel>=[];
+  gridModel:DiarioModel[];
   public diarioSelectModel:DiarioModel=new DiarioModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
@@ -51,7 +51,8 @@ export default class  BCuentaContableComponent extends Vue {
     .then(response=>{
       debugger
       console.log('diario',response);
-      this.diarioModel=response;       
+      this.gridModel=[];
+      this.gridModel=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -164,6 +165,7 @@ export default class  BCuentaContableComponent extends Vue {
   data() {
     return {
       cuentacontableModel:[],
+      gridModel:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

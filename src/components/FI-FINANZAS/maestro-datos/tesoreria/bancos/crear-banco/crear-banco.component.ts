@@ -164,7 +164,7 @@ export default class CrearBancoComponent extends Vue {
   public factura:FacturaModel=new FacturaModel();
 
   //**Diario */
-  public diarioModel:DiarioModel=new DiarioModel();
+  griddiarioModel:DiarioModel[];
   dialogDiario:boolean=false;
   btnactivarDiario:boolean=false;
   public diarioSelect:DiarioModel=new DiarioModel();
@@ -206,7 +206,7 @@ export default class CrearBancoComponent extends Vue {
   bln_tbl_cantidad_debe:boolean=false;
   bln_tbl_cantidad_haber:boolean=false;
   blncuentacontable:boolean=false;
-  public tableDataBancaria:Array<CuentaBancariaModel>=[];
+  tableDataBancaria:CuentaBancariaModel[];
 
   editing:any= {
     row:'',
@@ -236,8 +236,8 @@ export default class CrearBancoComponent extends Vue {
     this.loadTipocambio();
     this.strCompany_Cod=localStorage.getItem('compania_cod');
     this.strCompany_Desc=localStorage.getItem('compania_name'); 
+    this.tableDataBancaria=[];
     setTimeout(() => {
-      debugger;
       for(var i=0;i<this.totalRegistros;i++){
         var diario:DiarioGeneralModel=new DiarioGeneralModel();
         var item:CuentaBancariaModel=new CuentaBancariaModel();
@@ -267,7 +267,6 @@ LoadCategoriaCuenta(row,column){
 }
 
 clickmaterialdescripcion(event,edit,column){
-  debugger;
   this.bln_tbl_descripcion=true;
   event.edit=!edit;
   this.editing.row=event;
@@ -275,14 +274,12 @@ clickmaterialdescripcion(event,edit,column){
 }
 
 clickcantidadDebe(event,edit,column){
-  debugger;
   this.bln_tbl_cantidad_debe=true;
   event.edit=!edit;
   this.editing.row=event;
   this.editing.column=column;
 }
 clickcantidadHaber(event,edit,column){
-  debugger;
   this.bln_tbl_cantidad_haber=true;
   event.edit=!edit;
   this.editing.row=event;
@@ -290,7 +287,6 @@ clickcantidadHaber(event,edit,column){
 }
 
 loadDocumentoTransaccion(){
-  debugger;
   this.dialogDocumentoTransaccion=true;
 }
 
@@ -299,7 +295,6 @@ SeleccionadoCategoriaCuenta(val){
   this.dialogCategoriaCuenta=false;
   this.selectrow.strCenCosWBS_Cod='';
   this.selectrow.strAcc_Local_NO='';
-  debugger;
   if(val.strAcctCateg_Cod=="CC"){
     this.dialogCentroCosto=true;
   }
@@ -343,7 +338,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_GrupoArea(){
-    debugger;
     if(this.dialogGrupoArea){
       this.btnactivarGrupoArea=false;      
     }
@@ -371,7 +365,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_CuentaContableHaber (){
-    debugger;
     if(this.dialogCuentaContableHaber){
       this.btnactivarCuentaContableHaber=false;      
     }
@@ -382,10 +375,13 @@ closeCategoriaCuenta(){
   }
   closeDialogCuentaContableHaber(){
     this.dialogCuentaContableHaber=false;
+    this.dialogCuentaContable=false;
   }
   cuentacontableselecionadohaber(val,dialog:boolean){
+    console.log(val);    
     this.centrocosto.strAcctDest_Credit=val.strAcc_Local_NO;
-    this.dialogCuentaContableHaber=false;  
+    this.dialogCuentaContableHaber=false; 
+    this.dialogCuentaContable=false; 
   }
 
   activar_CuentaContableDebe(){
@@ -399,7 +395,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_CuentaContableDebe (){
-    debugger;
     if(this.dialogCuentaContableDebe){
       this.btnactivarCuentaContableDebe=false;      
     }
@@ -427,7 +422,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_CategoriaCentroCosto(){
-    debugger;
     if(this.dialogCategoriaCentroCosto){
       this.btnactivarCategoriaCentroCosto=false;      
     }
@@ -457,7 +451,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_CentroCosto(){
-    debugger;
     if(this.dialogCentroCosto){
       this.btnactivarCentroCosto=false;      
     }
@@ -468,7 +461,6 @@ closeCategoriaCuenta(){
   }
   
   clickcentrocosto(event,edit,column){
-    debugger;
     this.bln_tbl_centro_costo=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -493,7 +485,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_GrupoProceso(){
-    debugger;
     if(this.dialogGrupoProceso){
       this.btnactivarGrupoProceso=false;      
     }
@@ -522,7 +513,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_documentoTransacional(){
-    debugger;
     if(this.dialogDocumentoTransaccion){
       this.btndocumentotransaccion=false;      
     }
@@ -553,7 +543,6 @@ closeCategoriaCuenta(){
     }, 120)
   }
   desactivar_pais(){
-    debugger;
     if(this.dialogPais){
       this.btnactivarpais=false;   
       this.departEnabled=false; 
@@ -592,7 +581,6 @@ closeCategoriaCuenta(){
     })
   }
   desactivar_compania(){
-    debugger;
     if(this.dialogCompania){
       this.btnactivarcompania=false;      
     }
@@ -800,7 +788,8 @@ closeCategoriaCuenta(){
   loadDiario(){
     diarioService.GetAllDiarios()
     .then(response=>{
-      this.diarioModel=response;
+      this.griddiarioModel=[];
+      this.griddiarioModel=response;
       this.dialogDiario=true;
     }).catch(error=>{
       this.$message({
@@ -832,7 +821,6 @@ closeCategoriaCuenta(){
     this.dialogDiario=false;
   }
   handleCurrentChange(val) {
-    debugger;
     if(val!=undefined){
       this.selectrow=val;
     }
@@ -841,14 +829,12 @@ closeCategoriaCuenta(){
     this.diarioSelect=val;
   }
   clickcategoriacuenta (event,edit,column){
-      debugger;
       this.bln_tbl_categoria_cuenta=true;
       event.edit=!edit;
       this.editing.row=event;
       this.editing.column=column;
   }
   clickcuentacontable(event,edit,column){
-    debugger;
     this.bln_tbl_cuenta_contable=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -1051,7 +1037,6 @@ closeCategoriaCuenta(){
     this.Departamento_Desc=this.selectDepartamento.strRegión_Desc;
   } 
   filterstrRegión_Cod(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnilterstrRegión_Cod){
       this.Column=column1;
@@ -1068,8 +1053,6 @@ closeCategoriaCuenta(){
     } 
   }
   filterstrRegión_Desc(h,{column,$index}){
-    debugger;
-    
     if(this.blnilterstrRegión_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1100,6 +1083,7 @@ closeCategoriaCuenta(){
       selectData:'',
       selectType:'',
       dataProveedor:[],
+      griddiarioModel:[],
       tabletipo:[{
         strType_Cod:"P",
         strType_Desc:"Pagador"
@@ -1110,6 +1094,7 @@ closeCategoriaCuenta(){
       }],
       tableData:[],
       ordencompraDetalle:[],
+      
       codigoCompania:'001',
       totalDinero:0,
       totalUnidad:0,

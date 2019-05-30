@@ -18,7 +18,7 @@
   
   import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
   
-  import cuentaContableService from '@/components/service/cuentaContable.service';
+  import cuentaContableService from '@/components/service/cuentacontable.service';
   import router from '@/router';
   import ElementUI from 'element-ui';
   import InfiniteScroll from 'vue-infinite-scroll';
