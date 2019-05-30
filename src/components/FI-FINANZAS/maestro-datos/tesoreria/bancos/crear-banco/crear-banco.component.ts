@@ -56,6 +56,7 @@ import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuent
 import {DepartamentoModel} from '@/modelo/maestro/departamento';
 import departamentoService from '@/components/service/departamento.service';
 import bancoService from '@/components/service/banco.service';
+import { CuentaBancariaModel } from '@/modelo/maestro/cuentaBancaria';
 @Component({
   name: 'crear-ingreso-comprobante',
   components:{
@@ -204,6 +205,8 @@ export default class CrearBancoComponent extends Vue {
   bln_tbl_descripcion:boolean=false;
   bln_tbl_cantidad_debe:boolean=false;
   bln_tbl_cantidad_haber:boolean=false;
+  blncuentacontable:boolean=false;
+  public tableDataBancaria:Array<CuentaBancariaModel>=[];
 
   editing:any= {
     row:'',
@@ -233,11 +236,15 @@ export default class CrearBancoComponent extends Vue {
     this.loadTipocambio();
     this.strCompany_Cod=localStorage.getItem('compania_cod');
     this.strCompany_Desc=localStorage.getItem('compania_name'); 
-
-    for(var i=0;i<this.totalRegistros;i++){
-      var diario:DiarioGeneralModel=new DiarioGeneralModel();
-      this.CompleteData.push(diario);
-    }
+    setTimeout(() => {
+      debugger;
+      for(var i=0;i<this.totalRegistros;i++){
+        var diario:DiarioGeneralModel=new DiarioGeneralModel();
+        var item:CuentaBancariaModel=new CuentaBancariaModel();
+        this.tableDataBancaria.push(item);
+        this.CompleteData.push(diario);
+      }
+    }, 500)
   }
   loadTipocambio(){
     tipocambioService.GetAllTipoCambio1()
@@ -369,8 +376,8 @@ closeCategoriaCuenta(){
       this.btnactivarCuentaContableHaber=false;      
     }
   }
-  loadCuentaContable()
-  {
+  LoadCuentaContable(row){
+    this.selectrow=row;
     this.dialogCuentaContable=true;
   }
   closeDialogCuentaContableHaber(){
@@ -1078,6 +1085,12 @@ closeCategoriaCuenta(){
     this.departVisible=false;
     this.selectDepartamento=new DepartamentoModel();
   }
+  closePais(){
+
+  }
+  documentotransaccionClose(){
+    
+  }
   data(){
     return{
       nameComponent:'crear-ingreso-comprobante',
@@ -1095,7 +1108,7 @@ closeCategoriaCuenta(){
         strType_Cod:"N",
         strType_Desc:"No Pagador"
       }],
-      
+      tableData:[],
       ordencompraDetalle:[],
       codigoCompania:'001',
       totalDinero:0,
@@ -1110,6 +1123,8 @@ closeCategoriaCuenta(){
       habilitarPane:true,
       inputAtributo:'',
       DepartamentoGrid:[],
+      Currency_Cod:'',
+      Currency_Cod_Desc:''
     }
   }
   

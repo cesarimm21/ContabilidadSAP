@@ -70,86 +70,86 @@
                         </div>
                     </div>
                     
-                            <br/>
-                            <div class="row">
-                                <div class="col-sm-12" >
-                                    <el-card class="box-card" style="margin-left: -10px;">
-                                        <div slot="header" class="headercard" style="margin-top: -4px;">
-                                            <buttons-accions v-on:validarView="validarView"></buttons-accions>
-                                        </div>
-                                        <div class="col-md-12" >
-                                            <div class="row bodycard" style="background: white;margin-top: 0px;">
-                                                <el-table
-                                                    ref="missionTable"
-                                                    :max-height="sizeScreen"
-                                                    :data="tableData" 
-                                                    highlight-current-row
-                                                    @current-change="handleCurrentChange"
-                                                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                                                    class="ExcelTable2007">
-                                                    <el-table-column type="index" label="Item" width="38">
-                                                    </el-table-column>
-                                                    <el-table-column  sortable prop="strCountry" width="100" label="Pais">
-                                                        <template scope="scope">
-                                                        <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCountry }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column
-                                                        prop="strBank_Cod" sortable  width="120"
-                                                        label="Banco">
-                                                        <template scope="scope">
-                                                            <label v-bind:style="{width:'100%',margin: '0rem'}">&nbsp;{{ scope.row.strBank_Cod }}</label>
-                                                        </template>
-                                                    </el-table-column>   
-                                                    <el-table-column
-                                                        prop="strBank_Name" sortable  
-                                                        label="Descripcion">
-                                                        <template scope="scope">
-                                                            <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strBank_Name }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column
-                                                        prop="strBank_Curr" sortable width="150"
-                                                        label="Moneda">
-                                                        <template scope="scope">
-                                                            <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strBank_Curr }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column
-                                                        prop="strBank_Type" sortable width="100"
-                                                        label="Tipo">
-                                                        <template scope="scope">
-                                                            <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strBank_Type }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column
-                                                        prop="strBank_Account" sortable width="150"
-                                                        label="cta. Bancaria">
-                                                        <template scope="scope">
-                                                            <label style="width:100%" >&nbsp;{{ scope.row.strBank_Account }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    
-                                                    <el-table-column
-                                                        prop="dtmCreation_Date" sortable width="100"
-                                                        label="Fecha">
-                                                        <template scope="scope">
-                                                            <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmCreation_Date) }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                    <el-table-column
-                                                        prop="strCreation_User" sortable width="100"
-                                                        label="Usuario">
-                                                        <template scope="scope">
-                                                            <label style="width:100%"  >&nbsp;{{ scope.row.strCreation_User }}</label>
-                                                        </template>
-                                                    </el-table-column>
-                                                </el-table>
-                                            </div>
-                                        </div>
-                                    </el-card>
+                    <br/>
+                    <div class="row">
+                        <div class="col-sm-12" >
+                            <el-card class="box-card" style="margin-left: -10px;">
+                                <div slot="header" class="headercard" style="margin-top: -4px;">
+                                    <buttons-accions v-on:validarView="validarView"></buttons-accions>
                                 </div>
-                            </div>    
+                                <div class="col-md-12" >
+                                    <div class="row bodycard" style="background: white;margin-top: 0px;">
+                                        <el-table
+                                            ref="missionTable"
+                                            :max-height="sizeScreen"
+                                            :data="tableData" 
+                                            highlight-current-row
+                                            @current-change="handleCurrentChange"
+                                            stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                                            class="ExcelTable2007">
+                                            <el-table-column type="index" label="Item" width="38">
+                                            </el-table-column>
+                                            <el-table-column  sortable prop="strCountry" width="100" label="Pais">
+                                                <template scope="scope">
+                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCountry }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strBank_Cod" sortable  width="120"
+                                                label="Banco">
+                                                <template scope="scope">
+                                                    <label v-bind:style="{width:'100%',margin: '0rem'}">&nbsp;{{ scope.row.strBank_Cod }}</label>
+                                                </template>
+                                            </el-table-column>   
+                                            <el-table-column
+                                                prop="strBank_Name" sortable  
+                                                label="Descripcion">
+                                                <template scope="scope">
+                                                    <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strBank_Name }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strBank_Curr" sortable width="150"
+                                                label="Moneda">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strBank_Curr }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strBank_Type" sortable width="100"
+                                                label="Tipo">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strBank_Type }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strBank_Account" sortable width="150"
+                                                label="cta. Bancaria">
+                                                <template scope="scope">
+                                                    <label style="width:100%" >&nbsp;{{ scope.row.strBank_Account }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            
+                                            <el-table-column
+                                                prop="dtmCreation_Date" sortable width="100"
+                                                label="Fecha">
+                                                <template scope="scope">
+                                                    <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmCreation_Date) }}</label>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                prop="strCreation_User" sortable width="100"
+                                                label="Usuario">
+                                                <template scope="scope">
+                                                    <label style="width:100%"  >&nbsp;{{ scope.row.strCreation_User }}</label>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </div>
+                    </div>    
                 </div>
             </div>
         </el-card>

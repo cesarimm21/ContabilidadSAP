@@ -10,7 +10,7 @@ export class CuentaContableModel {
     strAcc_Corp_Name:string;
     strCompany_Cod:string;
     strAcctItem_Cod:string;
-    strCompany_Name:string;
+    strCompany_Desc:string;
     strAcc_Level:string;
     strAcc_Type:string;
     intIdGrpCta_ID:number;
@@ -28,7 +28,11 @@ export class CuentaContableModel {
     strChartAcct_C_Cod:string;
     strAcc_Categ_Cod:string;
     strAcc_Categ_Desc:string;
-    
+    strAccFth_Local:string;
+    strAccFth_Corp:string;
+    strTypeAdq_PDB:string;
+    strCost_Item_Cod:string;
+
     intIdWH_ID:number;
     blnAcc_cc:boolean;
     blnAcc_GL:boolean;

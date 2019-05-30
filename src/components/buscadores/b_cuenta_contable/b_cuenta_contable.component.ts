@@ -43,9 +43,9 @@ export default class  BCuentaContableComponent extends Vue {
     super();
     setTimeout(() => {
       this.load();
-    }, 200)
+    }, 500)
   }
-  load(){
+  load(){     
     debugger
     cuentacontableService.GetAllCuentaContable()
     .then(response=>{
@@ -205,7 +205,9 @@ export default class  BCuentaContableComponent extends Vue {
   }
   created() {
     if(typeof window != 'undefined') {
-      this.bind();
+      setTimeout(() => {
+        this.load();
+      }, 600)
     }
   }
 }

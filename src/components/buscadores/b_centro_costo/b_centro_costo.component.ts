@@ -42,7 +42,7 @@ export default class  BCentroCostoComponent extends Vue {
   
   constructor() {
     super();
-    this.load();
+    this.load();    
   }
   load(){
     centrocostoService.GetAllCentroCostos()

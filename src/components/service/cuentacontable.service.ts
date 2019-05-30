@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCuentaContableLike(codigo){  
+    return axios.get(CONFIG.API_URL+'busqueda/cuentacontablelike/'+codigo)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateCuentaContable(data:any){
     return axios.post(CONFIG.API_URL+'cuentacontable',data)
     .then(response =>{           
@@ -35,7 +41,7 @@ export default {
     })
   },
   UpdateCuentaContableID(data:any){
-    return axios.put(CONFIG.API_URL+'cuentacontable/'+data.intIdAcctCont_ID, data)
+    return axios.post(CONFIG.API_URL+'cuentacontable/update', data)
     .then(response =>{
         return response.data;
       })
