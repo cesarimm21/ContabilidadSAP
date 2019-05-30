@@ -151,19 +151,23 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     .then(response=>{
       this.periodo=response;
       this.factura.strPeriod_NO=this.periodo.strPeriod_NO;
-      this.factura.dtmPeriod=this.periodo.dtmPeriod;
+      this.factura.dtmPeriod=new Date(this.periodo.strPeriod);
       this.fecha_actual=Global.getDate(this.factura.dtmPeriod); 
     })
     this.factura.dtmDoc_Date=new Date();
-    this.DateforGetChanceDolar();
+    this.factura.fltExchange_Rate=0;
     
   }
   DateforGetChanceDolar(){
     this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);    
     tipocambioService.GetAllTipoCambio(this.factura.dtmDoc_Date)
     .then(response=>{
-      this.tipocambio=response;  
-      this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale;       
+      this.tipocambio=response;
+      this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale; 
+      if(this.factura.fltExchange_Rate==undefined){
+        this.factura.fltExchange_Rate=0;
+      } 
+      this.loadSecond();
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -171,45 +175,34 @@ export default class CrearIngresoComprobanteComponent extends Vue {
         message: 'no se pudo cargar tipocambio '+error
       });
     })
-    prooveedorService.getProveedorID(this.factura.strVendor_NO)
-    .then(response=>{
-      this.proveedor=response;  
-      var date1=Global.getDateVencida(this.factura.dtmDoc_Date,this.proveedor.intDayToPay);
-      this.fecha_vencida=Global.getDateVencidaForView(date1);
-      this.factura.dtmDue_Date=new Date(this.fecha_vencida);    
-      this.factura.strWH_Reten_Cod=this.proveedor.strRetention_Cod;
-      this.factura.fltValue_WH_Retention=this.proveedor.fltRetention_Porcen;
-      this.factura.strDetrac_Cod=this.proveedor.strDetraccion_Cod;
-      this.factura.fltDetraccion_Porcen=this.proveedor.fltDetraccion_Porcen;
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'no se pudo cargar proveedor '+error
-      });
-    })    
-
-    if(this.multipleSelection.length>0){
-      this.factura.fltValue_Local=0;
-      this.factura.fltValue_Corp=0;
-      this.factura.fltValue_Tax_Local=0;
-      this.factura.fltValue_Tax_Corp=0;
-      this.factura.fltNetValue_Doc_Local=0;
-      this.factura.fltNetValue_Doc_Corp=0;
-      for (let i = 0; i < this.multipleSelection.length; i++) {
-        this.factura.fltValue_Local+=Number(this.multipleSelection[i].fltValue_Local);
-      }
-      var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-      this.factura.fltValue_Corp=parseFloat(dat1); 
-      var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-      this.factura.fltValue_Tax_Local=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-      var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-      this.factura.fltValue_Tax_Corp=parseFloat(dat2);
-      this.factura.fltNetValue_Doc_Local=Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local);
-      var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-      this.factura.fltNetValue_Doc_Corp=parseFloat(dat1); 
+    
     }
-  }
+    loadSecond(){
+      
+      if(this.multipleSelection.length>0){
+        this.factura.fltValue_Local=0;
+        this.factura.fltValue_Corp=0;
+        this.factura.fltValue_Tax_Local=0;
+        this.factura.fltValue_Tax_Corp=0;
+        this.factura.fltNetValue_Doc_Local=0;
+        this.factura.fltNetValue_Doc_Corp=0;
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
+        }
+        var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
+        this.factura.fltValue_Tax_Local=Math.round(Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100)* 100)/100;
+        this.factura.fltNetValue_Doc_Local=Math.round(Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local)* 100)/100;
+        if(this.factura.fltExchange_Rate>0){
+          var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltValue_Corp=parseFloat(dat1);
+          var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+          var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltNetValue_Doc_Corp=parseFloat(dat1); 
+        }       
+      }
+    }
+    
   DateVencida(){this.factura.dtmDue_Date=new Date(this.fecha_vencida);}
   fnOcultar(){
     
@@ -222,7 +215,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.factura.fltOperation_NoTax_Corp=0;
     for(var i=0;i< this.facturadetalle.length;i++){
       if(this.facturadetalle[i].blnCheck==false){
-        this.factura.fltOperation_NoTax_Local+=Number(this.facturadetalle[i].intUnit_Price);
+        this.factura.fltOperation_NoTax_Local= Math.round((this.factura.fltOperation_NoTax_Local+Number(this.facturadetalle[i].intUnit_Price))* 100)/100;
       }
     }
     var corp=(Number(this.factura.fltOperation_NoTax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
@@ -261,17 +254,22 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.factura.fltNetValue_Doc_Local=0;
     this.factura.fltNetValue_Doc_Corp=0;
     for (let i = 0; i < this.multipleSelection.length; i++) {
-      this.factura.fltValue_Local+=Number(this.multipleSelection[i].fltValue_Local);
+      this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
     }
-    var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-    this.factura.fltValue_Corp=parseFloat(dat1); 
     var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-    this.factura.fltValue_Tax_Local=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-    var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-    this.factura.fltValue_Tax_Corp=parseFloat(dat2);
-    this.factura.fltNetValue_Doc_Local=Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local);
-    var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-    this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
+    this.factura.fltValue_Tax_Local=Math.round((Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100))* 100)/100;
+    
+    this.factura.fltNetValue_Doc_Local=Math.round((Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local))* 100)/100;
+    
+    if(this.factura.fltExchange_Rate>0){
+      var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      this.factura.fltValue_Corp=parseFloat(dat1); 
+      var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+      var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      this.factura.fltNetValue_Doc_Corp=parseFloat(dat1); 
+    }   
+    
   }
   handleCurrentChange(val){
     this.rowSelect=val.intIdPOD_ID;         
@@ -285,7 +283,7 @@ handleChangeCantidad(val){
     this.factura.fltNetValue_Doc_Corp=0;
   for (let i = 0; i < this.facturadetalle.length; i++) {
     if(this.facturadetalle[i].intIdPOD_ID == this.rowSelect){
-        this.facturadetalle[i].fltValue_Local=val*this.facturadetalle[i].intUnit_Price;
+        this.facturadetalle[i].fltValue_Local=Math.round(val*this.facturadetalle[i].intUnit_Price* 100)/100;
         this.arrayTemp=this.facturadetalle; 
         this.facturadetalle=[];              
         this.facturadetalle=this.arrayTemp;  
@@ -294,27 +292,28 @@ handleChangeCantidad(val){
   }
   for (let i = 0; i < this.multipleSelection.length; i++) {
     if(this.multipleSelection[i].intIdPOD_ID == this.rowSelect){
-        this.multipleSelection[i].fltValue_Local=val*this.facturadetalle[i].intUnit_Price;
+        this.multipleSelection[i].fltValue_Local=Math.round(val*this.facturadetalle[i].intUnit_Price* 100)/100;
     }
   }
   for (let i = 0; i < this.multipleSelection.length; i++) {
-    this.factura.fltValue_Local+=Number(this.multipleSelection[i].fltValue_Local);
+    this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
   }
-  var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-  this.factura.fltValue_Corp=parseFloat(dat1); 
   var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-  this.factura.fltValue_Tax_Local=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-  var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-  this.factura.fltValue_Tax_Corp=parseFloat(dat2);
-  this.factura.fltNetValue_Doc_Local=Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local);
-  var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-  this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
-
+  this.factura.fltValue_Tax_Local=Math.round((Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100))* 100)/100;
+  this.factura.fltNetValue_Doc_Local=Math.round((Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local))* 100)/100;
+  if(this.factura.fltExchange_Rate>0){
+    var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+    this.factura.fltValue_Corp=parseFloat(dat1); 
+    var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+    this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+    var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+    this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
+  }
 }
 //#endregion
   //#region [ORDEN COMPRA]
   loadOrdenCompra(){
-    ordencompraService.GetAllOrdenCompra()
+    ordencompraService.GetOrdenCompraCompany(this.codigoCompania)
     .then(respose=>{
       this.ordencompra=[];
       this.ordencompra=respose;
@@ -399,6 +398,27 @@ handleChangeCantidad(val){
       this.Impuesto=respo;
 
     })
+    if(this.factura.strVendor_NO!=''){
+      prooveedorService.getProveedorID(this.factura.strVendor_NO)
+      .then(response=>{
+        this.proveedor=response;
+        var date1=Global.getDateVencida(this.factura.dtmDoc_Date,this.proveedor.intDayToPay);
+        this.fecha_vencida=Global.getDateVencidaForView(date1);
+        
+        this.factura.dtmDue_Date=new Date(this.fecha_vencida);    
+        this.factura.strWH_Reten_Cod=this.proveedor.strRetention_Cod;
+        this.factura.fltValue_WH_Retention=this.proveedor.fltRetention_Porcen;
+        this.factura.strDetrac_Cod=this.proveedor.strDetraccion_Cod;
+        this.factura.fltDetraccion_Porcen=this.proveedor.fltDetraccion_Porcen;
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'no se pudo cargar proveedor '+error
+        });
+      })    
+    }
+    
   }
   //#endregion
  
@@ -589,23 +609,28 @@ handleChangeCantidad(val){
 
         for (let i = 0; i < this.multipleSelection.length; i++) {
           if(this.multipleSelection[i].strTax_Cod==this.factura.strTax_Cod){
-            this.factura.fltValue_Local+=Number(this.multipleSelection[i].fltValue_Local);
+            this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))*100)/100;
           }
           else{
-            this.factura.fltOperation_NoTax_Local+=Number(this.multipleSelection[i].fltValue_Local);
+            this.factura.fltOperation_NoTax_Local=Math.round((this.factura.fltOperation_NoTax_Local+Number(this.multipleSelection[i].fltValue_Local))*100)/100;
           }          
         }
-        var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-        this.factura.fltValue_Corp=parseFloat(dat1); 
+        if(this.factura.fltExchange_Rate>0){
+          var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltValue_Corp=parseFloat(dat1); 
+          var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+          var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
+          var datcorp=(Number(this.factura.fltOperation_NoTax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+          this.factura.fltOperation_NoTax_Corp=parseFloat(datcorp); 
+        }
+        
         var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-        this.factura.fltValue_Tax_Local=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-        var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-        this.factura.fltValue_Tax_Corp=parseFloat(dat2);
-        this.factura.fltNetValue_Doc_Local=Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local);
-        var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-        this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
-        var datcorp=(Number(this.factura.fltOperation_NoTax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-        this.factura.fltOperation_NoTax_Corp=parseFloat(datcorp);  
+        this.factura.fltValue_Tax_Local=Math.round(Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100)*100)/100;
+        
+        this.factura.fltNetValue_Doc_Local=Math.round((Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local))*100)/100;
+         
     }    
   }
   closeImpuesto(){
@@ -786,7 +811,7 @@ handleChangeCantidad(val){
             for(var i=0;i<this.diarioInput.length;i++){
               this.diarioInput[i].strOrigenDocum_NO=response;
               diariogeneralService.createDiarioGeneral(this.diarioInput[i])
-              .then(response1=>{}).catch(ex=>{alert('error ingresar diario')})
+              .then(response1=>{}).catch(ex=>{})
             }
             for(var i=0;i<this.movimientoInven.length;i++){
               movimientoService.updateMovimiento(this.movimientoInven[i])

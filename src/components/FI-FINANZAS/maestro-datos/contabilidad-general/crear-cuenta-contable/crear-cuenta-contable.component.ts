@@ -45,7 +45,7 @@ import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 
 import { Notification } from 'element-ui';
-import cuentaContableService from '@/components/service/cuentaContable.service';
+import cuentaContableService from '@/components/service/cuentacontable.service';
 @Component({
   name: 'crear-ingreso-comprobante',
   components:{

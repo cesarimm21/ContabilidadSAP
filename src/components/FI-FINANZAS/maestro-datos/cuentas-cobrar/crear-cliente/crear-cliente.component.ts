@@ -11,7 +11,7 @@ import departamentoService from '@/components/service/departamento.service';
 import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
 import impuestoService from '@/components/service/impuesto.service';
-import cuentaContableService from '@/components/service/cuentaContable.service';
+import cuentaContableService from '@/components/service/cuentacontable.service';
 
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BBancoProveedor from '@/components/buscadores/b_banco/b_banco.vue';

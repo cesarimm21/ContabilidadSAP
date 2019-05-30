@@ -6,9 +6,11 @@ import TopMenu from '@/components/customs/top-menu/TopMenu.vue';
 import HeaderbuttosComponent from '@/components/views/reusables/headerbuttos/headerbuttos.vue';
 import UsuarioComponent from '@/components/usuario/usuario.vue'
 import LogComponent from '@/components/log/log.vue'
-import RunComponent from '../components/FI-FINANZAS/Tesoreria/run/run.vue'
-import PagosIndividualesComponent from '../components/FI-FINANZAS/Tesoreria/pagos_individual.vue'
-import PagosMasivoComponent from '../components/FI-FINANZAS/Tesoreria/pagos_masivo.vue'
+import PagosIndividualesComponent from '../components/FI-FINANZAS/Tesoreria/create_pagos/pagos_individual.vue'
+import ModificarPagosComponent from '../components/FI-FINANZAS/Tesoreria/edit_pagos/edit_pagos.vue'
+import VisualizarPagosComponent from '../components/FI-FINANZAS/Tesoreria/view_pagos/view_pagos.vue'
+import AprobarPagosComponent from '../components/FI-FINANZAS/Tesoreria/aprobar_pagos/aprobar_pagos.vue'
+import ViewAndEditPagosComponent from '../components/FI-FINANZAS/Tesoreria/viewandedit_pagos/viewandedit_pagos.vue'
 import CrearPRComponent from '../components/LO-LOGISTICA/requisicion/pr_crear/pr_crear.vue'
 import CrearHesComponent from '@/components/LO-LOGISTICA/HES/crear-hes/crear-hes.vue'
 import EditHesComponent from '@/components/LO-LOGISTICA/HES/edit-hes/edit-hes.vue'
@@ -94,6 +96,9 @@ import  VisualizarModificarBancoComponent from '../components/FI-FINANZAS/maestr
 import  VisualizarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/visualizar-banco/visualizar-banco.vue';
 import  ModificarBancoComponent from '../components/FI-FINANZAS/maestro-datos/tesoreria/bancos/modificar-banco/modificar-banco.vue';
 
+import CrearPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/crear_periodo/crear_periodo.vue'
+import ModificarPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo.vue'
+
 export default [
  
   {
@@ -121,11 +126,11 @@ export default [
         component: Inicio,
         name: 'Inicio',
       },  
-      {
-        path:'FI-FINANZAS/proveedor/crear-proveedor',
-        component:CrearProveedorComponent,
-        name:'crear-proveedor'
-      }, 
+      // {
+      //   path:'FI-FINANZAS/proveedor/crear-proveedor',
+      //   component:CrearProveedorComponent,
+      //   name:'crear-proveedor'
+      // }, 
       {
         path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/crear-banco',
         component:CrearBancoComponent,
@@ -171,11 +176,11 @@ export default [
         component:VisualizarContabilidadComponent,
         name:'visualizar-contabilidad'
       }, 
-      {
-        path:'FI-FINANZAS/proveedor/modificar-proveedor',
-        component:ModificarProveedorComponent,
-        name:'modificar-proveedor'
-      },
+      // {
+      //   path:'FI-FINANZAS/proveedor/modificar-proveedor',
+      //   component:ModificarProveedorComponent,
+      //   name:'modificar-proveedor'
+      // },
       {
         path:'FI-FINANZAS/libros-balance/librodiario',
         component:LibroDiarioDComponent,
@@ -327,7 +332,7 @@ export default [
       {
         path:'LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_visualizar_clase_material',
         component:ModificarVisualizarClaseMaterialComponent,
-        name:'visualizar_clase_material'
+        name:'ModificarVisualizar_clase_material'
       },
       {
         path:'XX-CONFI/maestro_datos/tipo_cambio/crear_tcambio',
@@ -350,6 +355,16 @@ export default [
         name:'viewandedit-tipo-cambio'
       }, 
       {
+        path:'XX-CONFI/maestro_datos/periodo/crear_periodo/crear_periodo',
+        component:CrearPeriodoComponent,
+        name:'crear-periodo'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo',
+        component:ModificarPeriodoComponent,
+        name:'modificar-periodo'
+      }, 
+      {
         path:'XX-CONFI/maestro_datos/impuesto/crear_impuesto/crear_impuesto',
         component:CrearImpuestoComponent,
         name:'crear-impuesto'
@@ -362,7 +377,7 @@ export default [
       {
         path:'XX-CONFI/maestro_datos/impuesto/visua_impuesto',
         component:VisualizarImpuestoComponent,
-        name:'modificar-impuesto'
+        name:'visualizar-impuesto'
       }, 
       {
         path:'XX-CONFI/maestro_datos/impuesto/viewandedit_impuesto',
@@ -387,27 +402,27 @@ export default [
       {
         path:'LO-LOGISTICA/HES/crear-hes',
         component:CrearHesComponent,
-        name:'hes'
+        name:'crear-hes'
       },  
       {
         path:'LO-LOGISTICA/HES/aprobar-hes',
         component:AprobarHesComponent,
-        name:'hes'
+        name:'aprobar-hes'
       },  
       {
         path:'LO-LOGISTICA/HES/view-hes',
         component:ViewHesComponent,
-        name:'hes'
+        name:'view-hes'
       },  
       {
         path:'LO-LOGISTICA/HES/edit-hes',
         component:EditHesComponent,
-        name:'hes'
+        name:'edit-hes'
       },  
       {
         path:'LO-LOGISTICA/HES/viewandedit_hes',
         component:ViewAndEditHesComponent,
-        name:'hes'
+        name:'viewandedit-hes'
       },  
       
       {
@@ -509,27 +524,42 @@ export default [
       {
         path:'FI-FINANZAS/ingreso-comprobante/modificar-ingreso-comprobante',
         component:ModificarIngresoComprobanteComponent,
-        name:'modificar'
+        name:'modificar-ingreso'
       },    
       {
         path:'FI-FINANZAS/ingreso-comprobante/ver-ingreso-comprobante',
         component:VisualizarIngresoComprobanteComponent,
-        name:'modificar'
+        name:'visualizar-ingreso'
       },    
       {
         path:'FI-FINANZAS/ingreso-comprobante/viewandedit_ic',
         component:ViewAndEditICComponent,
-        name:'modificar'
-      },    
+        name:'viewandedit-ingreso'
+      },      
       {
-        path:'FI-FINANZAS/Tesoreria/pagos_masivo',
-        component:PagosMasivoComponent,
-        name:'pagos'
-      },    
-      {
-        path:'FI-FINANZAS/Tesoreria/pagos_individual',
+        path:'FI-FINANZAS/Tesoreria/create_pagos/pagos_individual',
         component:PagosIndividualesComponent,
-        name:'pagos'
+        name:'create-pagos'
+      },    
+      {
+        path:'FI-FINANZAS/Tesoreria/edit_pagos/edit_pagos',
+        component:ModificarPagosComponent,
+        name:'edit-pagos'
+      },    
+      {
+        path:'FI-FINANZAS/Tesoreria/view_pagos/view_pagos',
+        component:VisualizarPagosComponent,
+        name:'view-pagos'
+      },    
+      {
+        path:'FI-FINANZAS/Tesoreria/aprobar_pagos/aprobar_pagos',
+        component:AprobarPagosComponent,
+        name:'aprobar-pagos'
+      },    
+      {
+        path:'FI-FINANZAS/Tesoreria/viewandedit_pagos/viewandedit_pagos',
+        component:ViewAndEditPagosComponent,
+        name:'viewandedit-pagos'
       },    
       {
         path:'usuario',
@@ -541,11 +571,6 @@ export default [
         component:LogComponent,
         name:'log'
       },
-      {
-        path:'run',
-        component:RunComponent,
-        name:'run'
-      }
     ]
 
   },

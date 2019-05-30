@@ -28,7 +28,7 @@ import departamentoService from '@/components/service/departamento.service';
 import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
 import impuestoService from '@/components/service/impuesto.service';
-import cuentaContableService from '@/components/service/cuentaContable.service';
+import cuentaContableService from '@/components/service/cuentacontable.service';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import { Loading } from 'element-ui';
 @Component({

@@ -14,6 +14,30 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  AprobarRunPagos(pago){    
+    return axios.post(CONFIG.API_URL+'runpagos/aprobar',pago)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateRunPagos(pago){    
+    return axios.post(CONFIG.API_URL+'runpagos/update',pago)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetPagosCompany(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'runpagosaByCompany/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetPagosDetalle(intIdPayRunH_ID){
+    return axios.get(CONFIG.API_URL+'runpagos/detalle/'+intIdPayRunH_ID)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 
 }

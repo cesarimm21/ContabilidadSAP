@@ -1,12 +1,16 @@
 export class PagosDetelleModel {
     intIdPayRunD_ID:number;
     intIdPayRunH_ID:number;
+    blnCheck:boolean;
+    strPayRun_NO:string;
     intIdPayWay_ID:number;
     strPayWay_Cod:string;
     strVendor_NO:string;
     strType_Doc:string;
     strSerie_Doc:string;
     strDocument_NO:string;
+    strVoucher_NO:string;
+    strDesc_Doc:string;
     dtmDoc_Date:Date;
     fltValue_Doc:number;
     fltValue_WH_Detrac:number;
@@ -25,12 +29,16 @@ export class PagosDetelleModel {
     constructor(){
         this.intIdPayRunD_ID=-1;
         this.intIdPayRunH_ID=-1;
+        this.blnCheck=true;
+        this.strPayRun_NO='';
         this.intIdPayWay_ID=-1;
         this.strPayWay_Cod='';
         this.strVendor_NO='';
         this.strType_Doc='';
         this.strSerie_Doc='';
         this.strDocument_NO='';
+        this.strVoucher_NO='';
+        this.strDesc_Doc='';
         this.dtmDoc_Date=new Date();
         this.fltValue_Doc=0;
         this.fltValue_WH_Detrac=0;

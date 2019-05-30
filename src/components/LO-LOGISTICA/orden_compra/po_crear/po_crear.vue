@@ -176,7 +176,7 @@
                                         </el-table-column>
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
+                                        <el-table-column  prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategoriacuenta && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" :disabled="disabledRow">
@@ -186,7 +186,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCateg_Line" sortable  min-width="80"
+                                            prop="strCateg_Line"   min-width="80"
                                             label="Cat. Linea">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategorialinea && bln_tbl_categoria_linea  && (scope.row === editing.row) 
@@ -197,7 +197,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCostCenter" sortable
+                                            prop="strCostCenter" 
                                             label="Centro Costos">
                                             <template scope="scope">
                                                 <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
@@ -208,15 +208,15 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strMaterial_Cod" sortable
+                                            prop="strMaterial_Cod" 
                                             label="Material/Producto">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strDescription" sortable width="200"
+                                            prop="strDescription"  width="200"
                                             label="Descripción">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strVendor_Desc" sortable width="200"
+                                            prop="strVendor_Desc"  width="200"
                                             label="Proveedor Sugerido">
                                         </el-table-column>
                                         <!-- <el-table-column 
@@ -229,7 +229,7 @@
                                            </template>
                                         </el-table-column> -->
                                         <el-table-column
-                                            prop="strUM" sortable  width="100"
+                                            prop="strUM"   width="100"
                                             label="UM">
                                             <template scope="scope">
                                                 <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
@@ -240,7 +240,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltQuantity" sortable width="100"
+                                            prop="fltQuantity"  width="100"
                                             label="Cantidad">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
@@ -251,7 +251,7 @@
                                         </el-table-column>
                                         
                                         <el-table-column
-                                            prop="fltUnitPrice" sortable width="100"
+                                            prop="fltUnitPrice"  width="100"
                                             label="Valor Unitario">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
@@ -261,11 +261,11 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltValue_Total" sortable width="100"
+                                            prop="fltValue_Total"  width="100"
                                             label="Valor Total" >
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPriority_Cod" sortable width="130"
+                                            prop="strPriority_Cod"  width="130"
                                             label="Prioridad">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
@@ -275,7 +275,7 @@
                                                 <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column prop="intConv_Factor" sortable width="100"
+                                        <el-table-column prop="intConv_Factor"  width="100"
                                             label="Factor">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_factor  && (scope.row === editing.row) 
@@ -285,7 +285,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column v-if="false"
-                                            prop="chrStatus" sortable width="40"
+                                            prop="chrStatus"  width="40"
                                             label="Estado">                                   
                                         </el-table-column>
 

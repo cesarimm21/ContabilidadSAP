@@ -116,4 +116,17 @@ export default {
       var mm = (mes<10) ? '0'+mes : mm=mes;
       return yyyy+'-'+mm+'-'+dd;
     },
+      DateEnd(fecha){     
+      var Datef=new Date(fecha);
+      var dia=Datef.getDay();
+      var mes=Datef.getMonth();
+      var year=Datef.getFullYear();
+      // Datef.setDate(Datef.getDate());
+      // var dia = Datef.getDay();
+      // var mes = (Datef.getMonth()<12) ? Datef.getMonth()+1 : mes = Datef.getMonth();
+      // var yyyy = Datef.getFullYear();
+      var dd = (dia<10) ? '0'+dia : dd=dia;
+      var mm = (mes<10) ? '0'+mes : mm=mes;
+      return year+'-'+mm+'-'+dd;
+    },
 }

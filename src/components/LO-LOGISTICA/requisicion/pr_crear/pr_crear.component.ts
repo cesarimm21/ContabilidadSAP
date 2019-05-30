@@ -956,6 +956,10 @@ export default class CrearPRComponent extends Vue {
   }
   nuevoPR(){
     this.requisicionModel=new RequisicionModel();
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.requisicionModel.strCompany_Cod=cod;
+    this.requisicionModel.strCompany_Desc=desc;
     this.tiporequisicion="A";    
     this.tiporequisicionant='A';
   

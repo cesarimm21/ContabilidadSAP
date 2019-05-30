@@ -7,7 +7,7 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
 import BBancoComponent from '@/components/buscadores/b_banco/b_banco.vue';
-import {PagosModel} from '@/modelo/maestro/Pagos';
+import {PagosModel} from '@/modelo/maestro/pagos';
 import {PagosDetelleModel} from '@/modelo/maestro/pagosDetalle';
 import {MonedaModel} from '@/modelo/maestro/moneda'
 import {BancoModel} from '@/modelo/maestro/banco';
@@ -15,7 +15,7 @@ import {PeriodoModel} from '@/modelo/maestro/periodo';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {FacturaModel} from '@/modelo/maestro/factura';
 import {MedioPagoModel} from '@/modelo/maestro/medioPago';
-import MonedaService from '@/components/service/moneda.service'
+import {CuentaBancariaModel} from '@/modelo/maestro/cuentaBancaria';
 import RunPagosService from '@/components/service/runpagos.service';
 import mediopagoService from '@/components/service/mediopago.service';
 import FacturaService from '@/components/service/factura.service'
@@ -27,6 +27,7 @@ import 'jspdf-autotable';
 import Global from '@/Global';
 import proveedorService from '@/components/service/proveedor.service';
 import documentsService from '@/components/service/documents.service';
+import { Alert } from '@/types';
 @Component({
     name: 'pagos-individual',
     components: { 
@@ -38,8 +39,8 @@ import documentsService from '@/components/service/documents.service';
 }
 })
 export default class PagosIndividualesComponent extends Vue {
-    sizeScreen:string = (window.innerHeight - 420).toString();//'0';
-    sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
+     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
     // public compania:CompaniaModel=new CompaniaModel();
     public pago:PagosModel=new PagosModel();
     public pagodetalle:PagosDetelleModel=new PagosDetelleModel();
@@ -51,6 +52,7 @@ export default class PagosIndividualesComponent extends Vue {
     DocDeudores:any;
     dialogVisible:boolean=false;
     VisibleBanco:boolean=false;
+    VisibleCuenta:boolean=false;
     VisibleProveedor:boolean=false;
     btnactivarmoneda:boolean=false;
     btnactivarbanco:boolean=false;
@@ -59,6 +61,7 @@ export default class PagosIndividualesComponent extends Vue {
     gridProveedor:ProveedorModel[];
     gridProData:any[];
     multipleSelection: any[];
+    gridFacturaFilter:FacturaModel[];
     gridFactura:FacturaModel[];
     gridFactura1:FacturaModel[];
     gridFactura2:FacturaModel[];
@@ -91,21 +94,31 @@ export default class PagosIndividualesComponent extends Vue {
 
     dialogMediopago:boolean=false;
     btnactivarmediopago:boolean=false;
+
+    // [CUENTA]
+    gridCuenta:CuentaBancariaModel[];
+    public cuenta:CuentaBancariaModel=new CuentaBancariaModel();
+
     tempro:string='';
     constructor(){                
         super();
         Global.nameComponent = 'pagos-individual';        
         setTimeout(() => {
             this.DateSelected();
-          }, 200)
+          }, 200)        
+        
         
     }
     DateSelected(){ 
         this.fecha_ejecucion = (new Date()).toString();
         this.fecha_ejecucion1 = (new Date()).toString();
         this.DateContabilizacion=(new Date()).toString();
+        this.DocIngresados=Global.getParseDate(this.DateContabilizacion);
+        this.DocDeudores=Global.getParseDate(this.DateContabilizacion);
         this.codigoCompania=localStorage.getItem('compania_cod');
         this.descripcionCompania=localStorage.getItem('compania_name');
+        this.pago.strCompany_Cod=this.codigoCompania;
+        this.pago.strCompany_Desc=this.descripcionCompania;
         this.moneySelect.strCurrency_Cod='0';
         this.loadCodigo(); 
         this.loadPeriodo();
@@ -124,7 +137,7 @@ export default class PagosIndividualesComponent extends Vue {
     loadPeriodo(){
         periodoService.GetAllPeriodoLast()
         .then(response=>{  
-            this.periodo=response;
+            this.periodo=response;     
         })
     }
 
@@ -165,6 +178,19 @@ export default class PagosIndividualesComponent extends Vue {
     }
     //#endregion
 
+    //#region [CUENTA BANCARIA]
+
+    closeCuenta(){
+      this.VisibleCuenta=false;
+    }
+    SeleccionadoCuenta(){
+      this.VisibleCuenta=false;
+    }
+    handleCuenta(val){
+      this.cuenta=val;
+    }
+    //#endregion
+
     loadCodigo(){
         this.CodigoGen=this.getDateString(this.fecha_ejecucion);
         // var selectedValue=this.fecha_ejecucion.split('-');
@@ -183,7 +209,7 @@ export default class PagosIndividualesComponent extends Vue {
             var mm = (mes<10) ? '0'+mes : mm=mes;
             return dd+mm+yyyy;
     }
-    getDateStringView(fecha:string){
+    getDateStringView(fecha:any){
         var dateString = new Date(fecha);
         var dia = dateString.getDate();
             var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
@@ -192,24 +218,28 @@ export default class PagosIndividualesComponent extends Vue {
             var mm = (mes<10) ? '0'+mes : mm=mes;
             return dd+'.'+mm+'.'+yyyy;
         }
-    DateContabilizacionClick(){         
-        this.DocIngresados=Global.getParseDate(this.DateContabilizacion);
-        
-        this.DocDeudores=Global.getParseDate(this.DateContabilizacion);
-        this.pago.dtmPayRun_Date=this.DocIngresados;
-        
-        this.gridFactura=[];
-        this.gridFactura1=[];
-        this.gridFactura2=[];
-        FacturaService.GetFacturaDate(this.pago.dtmPayRun_Date,this.moneySelect.strCurrency_Cod)
-        .then(res=>{            
-            this.gridFactura=res;
-            this.gridFactura1=res;
-            this.gridFactura2=res;
-            
-        })
+    // DateContabilizacionClick(){         
+      
+    // }
+    DateIngresos(){      
+      this.pago.dtmPayRunExpired_Date=this.DocIngresados;
+      var date = new Date(this.DocIngresados);
+              var year = date.getFullYear();
+              var rawMonth = date.getMonth() + 1;
+              var month = rawMonth < 10 ? '0' + rawMonth : rawMonth;
+              var rawDay = date.getDate();
+              var day = rawDay < 10 ? '0' + rawDay : rawDay;               
+      var datetime=year + '-' + month + '-' + day;
+      this.gridFactura=[];
+      this.gridFactura1=[];
+      this.gridFactura2=[];       
+      FacturaService.GetFacturaDate(datetime,this.moneySelect.strCurrency_Cod)
+      .then(res=>{            
+          this.gridFactura=res;
+          this.gridFactura1=res;
+          this.gridFactura2=res;          
+      })
     }
-
     Filtro(){
         var data=this.like(this.gridFactura1,'strCurrency_Doc',this.moneySelect.strCurrency_Cod)
         this.gridFactura=[];
@@ -275,7 +305,9 @@ export default class PagosIndividualesComponent extends Vue {
         this.pago.strBank_Cod=this.bancoSelect.strBank_Cod;
         this.pago.strBank_Name=this.bancoSelect.strBank_Name;
         // this.pago.
+        
         this.VisibleBanco=false;
+        this.VisibleCuenta=true;
     }
     desactivar_moneda(){
         if(this.dialogVisible){
@@ -394,65 +426,64 @@ export default class PagosIndividualesComponent extends Vue {
         this.multipleSelection = val;
     }
     guardarRun(){
-        this.pago.intIdPayRun_Period=this.periodo.intIdPayRun_Period;
-        this.pago.strPeriod_NO=this.periodo.strPeriod_NO;
-        this.pago.dtmPeriod=this.periodo.dtmPeriod;
-        
-        this.pago.fltAmount_Total=0;
-        this.pago.strPayRun_Status='00';
-        // this.ExportarPDF();
-        if(this.multipleSelection.length>0){
-            for(var i=0;i<this.multipleSelection.length;i++){
-                this.pago.fltAmount_Total+=Number(this.multipleSelection[i].fltNetValue_Doc_Local)
+        // this.pago.intIdPayRun_Period=this.periodo.intIdPayRun_Period;
+        // this.pago.strPeriod_NO=this.periodo.strPeriod_NO;
+        // this.pago.strPeriod=this.periodo.strPeriod;
+        // this.pago.dtmPayRun_Date=new Date(this.fecha_ejecucion);
+        // this.pago.dtmPayRunPay_Date=new Date(this.DateContabilizacion);
+        // var user:any=localStorage.getItem('User_Usuario');
+        // this.pago.strCreation_User=user;
+        // this.pago.fltAmount_Total=0;
+        // this.pago.strPayRun_Status='00';
+        this.ExportarPDF('28052019-1-PEN');
+        // if(this.multipleSelection.length>0){
+        //     for(var i=0;i<this.multipleSelection.length;i++){
+        //         this.pago.fltAmount_Total+=Number(this.multipleSelection[i].fltNetValue_Doc_Local)
                 
-            }
-            this.pago.listaDetalle=this.multipleSelection;
-            let loadingInstance = Loading.service({
-                fullscreen: true,
-                text: 'Guargando...',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.8)'
-            }
-            );
-            RunPagosService.CreateRunPagos(this.pago) 
-            .then(response=>{
-                setTimeout(() => {
-                    this.DateSelected();
-                  }, 200)
-                this.issave = true;
-                this.iserror = false;
-                this.fecha_ejecucion = (new Date()).toString();
-                this.fecha_ejecucion1 = (new Date()).toString();
-                this.DateContabilizacion=(new Date()).toString();
-                this.pago=new PagosModel();
-                this.mediopago=new MedioPagoModel();
-                this.bancoSelect=new BancoModel();
-                this.DocIngresados=Global.getParseDate(this.DateContabilizacion);        
-                this.DocDeudores=Global.getParseDate(this.DateContabilizacion);
-                this.openMessageSuccess('Se guardo correctamente '+response);
-                this.textosave = 'Se guardo correctamente. '+response;
-                this.ExportarPDF(response);
-                loadingInstance.close();
-                this.DateContabilizacionClick();
+        //     }
+        //     this.pago.listaDetalle=this.multipleSelection;
+        //     let loadingInstance = Loading.service({
+        //         fullscreen: true,
+        //         text: 'Guargando...',
+        //         spinner: 'el-icon-loading',
+        //         background: 'rgba(0, 0, 0, 0.8)'
+        //     }
+        //     );
+        //     RunPagosService.CreateRunPagos(this.pago) 
+        //     .then(response=>{
+                
+        //         this.issave = true;
+        //         this.iserror = false;
+        //         this.pago=new PagosModel();
+        //         this.mediopago=new MedioPagoModel();
+        //         this.bancoSelect=new BancoModel();
+        //         this.openMessageSuccess('Se guardo correctamente '+response);
+        //         this.textosave = 'Se guardo correctamente. '+response;
+        //         // this.ExportarPDF(response);
+        //         loadingInstance.close();
+        //         setTimeout(() => {
+        //           this.DateSelected();
+        //         }, 200)
+        //         // this.DateContabilizacionClick();
                 
 
-            }) 
-            .catch(response=>{
-                loadingInstance.close();
-                this.issave = false;
-                this.iserror = true;
-                this.textosave = 'Error al guardar.';
-                this.openMessageError('Error al guardar.');
-            })      
+        //     }) 
+        //     .catch(response=>{
+        //         loadingInstance.close();
+        //         this.issave = false;
+        //         this.iserror = true;
+        //         this.textosave = 'Error al guardar.';
+        //         this.openMessageError('Error al guardar.');
+        //     })      
 
-        }
-        else{
-            this.$message({
-                showClose: true,
-                type: 'warning',
-                message: 'Debe seleccionar al menos un documento'
-              });
-        }
+        // }
+        // else{
+        //     this.$message({
+        //         showClose: true,
+        //         type: 'warning',
+        //         message: 'Debe seleccionar al menos un documento'
+        //       });
+        // }
     }
 
     //#endregion
@@ -488,41 +519,60 @@ export default class PagosIndividualesComponent extends Vue {
         var tamW=doc.internal.pageSize.width;                 
         var tam=doc.internal.pageSize.height;
         var mitad=tam/2;
-        doc.text(20, 10, this.descripcionCompania+'  Payment settlement list for payment run  '+this.pago.strPayRun_NO+'  '+dd+'.'+mm+'.'+anio+' / '+hh+':'+min+':'+ss);
+        doc.text(20, 10, this.descripcionCompania)
+        doc.text(tamW/2,10,this.pago.strPayRun_NO+'  '+dd+'.'+mm+'.'+anio+' / '+hh+':'+min+':'+ss)
         doc.text(20, 15, 'AREQUIPA ');
         doc.text(tamW/2, 15,'Usuario: '+ localStorage.getItem('User_Usuario'));
         doc.text(20, 20, 'Codigo Compañia - '+this.codigoCompania);           
         doc.text(tamW/2, 20, 'Pagina: '+pageInfo.pageNumber); 
-        doc.setLineDash([3, 3, 1, 3], 10);
-        doc.setLineWidth(0.2);
-        doc.line(20, 25, tamW-20, 25)
-        this.multipleSelection.forEach(element => {
-          var data=this.like(this.gridProData,'strVendor_NO',element.strVendor_NO)
-          var provedata=data[0];            
+        var resutl:any=[];
+        this.gridFacturaFilter=this.multipleSelection;
+        for(var i=0;i<this.gridFacturaFilter.length;i++){
+          this.gridFacturaFilter[i].strModified_User=this.getDateStringView(this.gridFacturaFilter[i].dtmDue_Date);
+        }
+        resutl=this.multipleSelection.map(item => item.strVendor_NO)
+        .filter((value, index, self) => self.indexOf(value) === index)
+
+        resutl.forEach(element => {
+          //proveedor
+          var data=this.like(this.gridProData,'strVendor_NO',element) 
+          var provedata=data[0];   
+          var sumCost:number=0;
+          var sumCostRetencion:number=0;
+
+          var dataFilter:any=[];
+          dataFilter=this.like(this.gridFacturaFilter,'strVendor_NO',element)
+          dataFilter.forEach(element => {
+            sumCost+=Number(element.fltValue_Local)
+            sumCostRetencion+=Number(element.fltValue_WH_Retention)
+          });
             doc.text(20,comienzo,'PROVEEDOR: ')//1
             doc.text(45,comienzo,provedata.strVendor_NO)
-            doc.text(tamW/2,comienzo,'DETALLE DE BANCO')//2
-            doc.text(45,comienzo+5,provedata.strVendor_Desc+' '+provedata.strSurName+' '+provedata.strLastName)
-            doc.text(tamW/2,comienzo+5,this.bancoSelect.strBank_Name)
-            doc.text(45,comienzo+10,provedata.strAddress)
-            doc.text(tamW/2,comienzo+10,'SWIFT CODE: '+this.bancoSelect.strSwift_Cod)
-            doc.text(45,comienzo+15,provedata.strProvince)
-            doc.text(tamW/2,comienzo+15,'NUMERO BANCO: '+this.bancoSelect.strBank_Cod)
-            doc.text(45,comienzo+20,provedata.intIdCountry_ID.strCountry_Name)
-            doc.text(tamW/2,comienzo+20,'NUMERO CUENTA: '+this.bancoSelect.strBank_Account )
-            doc.setLineDash([3, 3, 1, 3], 10);
-            doc.setLineWidth(0.2);
-            doc.line(20, comienzo+25, tamW-20, comienzo+25)
-            doc.text(45,comienzo+30,codigo)  
-            doc.text(tamW/4,comienzo+30,'BBV01')
-            doc.text(tamW/4+30,comienzo+30,this.pago.strPayRun_Curr)
-            doc.text(tamW/2,comienzo+30,provedata.strVendor_Desc+' '+provedata.strSurName+' '+provedata.strLastName)
-            doc.text(tamW/2+100,comienzo+30,provedata.fltValue_Local+'-'+this.pago.strPayRun_Curr)
+            doc.text(tamW/2-40,comienzo,'DETALLE DE BANCO')//2
+            comienzo+=5;
+            doc.text(45,comienzo,provedata.strVendor_Desc+' '+provedata.strSurName+' '+provedata.strLastName)
+            doc.text(tamW/2,comienzo,this.bancoSelect.strBank_Name)
+            comienzo+=5;
+            doc.text(45,comienzo,provedata.strAddress)
+            doc.text(tamW/2,comienzo,'SWIFT CODE: '+this.bancoSelect.strSwift_Cod)
+            comienzo+=5;
+            doc.text(45,comienzo,provedata.strProvince)
+            doc.text(tamW/2,comienzo,'NUMERO BANCO: '+this.bancoSelect.strBank_Cod)
+            comienzo+=5;
+            doc.text(45,comienzo,provedata.intIdCountry_ID.strCountry_Name)
+            doc.text(tamW/2,comienzo,'NUMERO CUENTA: '+this.bancoSelect.strBank_Account )
+            comienzo+=5;
+            doc.text(45,comienzo,codigo)  
+            doc.text(tamW/4,comienzo,'BBV01')
+            doc.text(tamW/4+30,comienzo,this.pago.strPayRun_Curr)
+            doc.text(tamW/2,comienzo,provedata.strVendor_Desc+' '+provedata.strSurName+' '+provedata.strLastName)
+            doc.text(tamW/2+100,comienzo,sumCost+'-'+this.pago.strPayRun_Curr)
+
             let columns = [
             {title:"Compañia ",dataKey:"strCompany_Cod"},
             {title:"NO Voucher",dataKey:"strVoucher_NO"},
             {title:"Tipo Contable",dataKey:"strType_Doc"},
-            {title:"Fecha Emisión FT",dataKey:"dtmDue_Date"},
+            {title:"Fecha Emisión FT",dataKey:"strModified_User"},
             {title:"Valor por Documento",dataKey:"fltValue_Local"},
             {title:"Retenciones",dataKey:"fltValue_WH_Retention"},
             {title:"Pago total por Documento",dataKey:"fltNetValue_Doc_Local"},
@@ -530,10 +580,12 @@ export default class PagosIndividualesComponent extends Vue {
             {title:"NO de Factura",dataKey:"strDocument_NO"},
             {title:"Codigo del Vendor",dataKey:"strVendor_NO"},
               ];
-
-              doc.autoTable(columns, this.multipleSelection,{
+              comienzo+=5;
+              //data 
               
-              startY: comienzo+40,
+              doc.autoTable(columns, dataFilter,{
+              
+              startY: comienzo,
               startX: 45,
               margin: 45,
               headerStyles: {
@@ -556,7 +608,7 @@ export default class PagosIndividualesComponent extends Vue {
                 strCompany_Cod:{columnWidth: 20},
                 strVoucher_NO: {columnWidth: 20},
                 strType_Doc: {columnWidth: 20},
-                dtmDue_Date: {columnWidth: 20},
+                strModified_User: {columnWidth: 20},
                 fltValue_Local: {columnWidth: 30},
                 fltValue_WH_Retention: {columnWidth: 20},
                 fltNetValue_Doc_Local: {columnWidth: 30},
@@ -564,15 +616,23 @@ export default class PagosIndividualesComponent extends Vue {
                 strDocument_NO:{columnWidth: 30},
                 strVendor_NO:{columnWidth: 20},
               },
-              drawRow: function (row, data) {
-                if (row.index === data.table.rows.length - 1) {
-                    doc.setFontStyle('bold');
-                }
-            },
-              });
-              doc.setLineDash([3, 3, 1, 3], 10);
-              doc.setLineWidth(0.2);
-              doc.line(20, comienzo+80, tamW-20, comienzo+80)
+            //   drawRow: function (row, data) {
+            //     if (row.index === data.table.rows.length - 1) {
+            //         doc.setFontStyle('bold');
+            //     }
+            // },
+              });              
+              comienzo+=10+9*(dataFilter.length)
+              comienzo+=5;
+            doc.text(45,comienzo,'Valor Total')
+            doc.text(45+45,comienzo,'Retenciones')
+            doc.text(45+90,comienzo,'Monto Total')
+            comienzo+=5;
+            doc.text(45,comienzo,' '+sumCost)
+            doc.text(45+45,comienzo,' '+sumCostRetencion)
+            var total=Math.round(Number(sumCost-sumCostRetencion)*100)/100;
+            doc.text(45+90,comienzo,total+'-'+this.pago.strPayRun_Curr)
+            comienzo+=5;
         });
         var result:any = this.tableData.reduce(function (r, a) {
           r[a.correlativo] = r[a.correlativo] || [];
@@ -659,6 +719,7 @@ export default class PagosIndividualesComponent extends Vue {
             DateContabilizacion:'',
             DocIngresados:'',
             DocDeudores:'',
+            gridFacturaFilter:[],
             gridFactura:[],
             gridFactura1:[],
             gridFactura2:[],
@@ -669,7 +730,8 @@ export default class PagosIndividualesComponent extends Vue {
             gridBanco:[],
             inputAtributo:'',
             gridMedioPago:[],
-            gridProData:[]
+            gridProData:[],
+            gridCuenta:[]
         }
     }
 }
