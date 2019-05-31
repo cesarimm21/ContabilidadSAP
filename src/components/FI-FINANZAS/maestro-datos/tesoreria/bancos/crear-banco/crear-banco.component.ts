@@ -137,7 +137,7 @@ export default class CrearBancoComponent extends Vue {
   
   pagina: number =1;
   RegistersForPage: number = 10;
-  totalRegistros: number = 100;
+  totalRegistros: number = 10;
   public CompleteData:Array<DiarioGeneralModel>=[]; 
   public CompleteData1:Array<DiarioGeneralModel>=[]; 
 
@@ -206,7 +206,7 @@ export default class CrearBancoComponent extends Vue {
   bln_tbl_cantidad_debe:boolean=false;
   bln_tbl_cantidad_haber:boolean=false;
   blncuentacontable:boolean=false;
-  tableDataBancaria:CuentaBancariaModel[];
+  tableCuentaBancaria:CuentaBancariaModel[];
 
   editing:any= {
     row:'',
@@ -226,6 +226,9 @@ export default class CrearBancoComponent extends Vue {
   blnilterstrRegión_Cod:boolean=true;
   blnilterstrRegión_Desc:boolean=false;
   Departamento_Desc:string='';
+  bln_tbl_cuenta_cci:boolean=false;
+  bln_tbl_cuenta_branch:boolean=false;
+  bln_tbl_swift_cod:boolean=false;
 
   constructor(){    
     super();
@@ -236,12 +239,12 @@ export default class CrearBancoComponent extends Vue {
     this.loadTipocambio();
     this.strCompany_Cod=localStorage.getItem('compania_cod');
     this.strCompany_Desc=localStorage.getItem('compania_name'); 
-    this.tableDataBancaria=[];
+    this.tableCuentaBancaria=[];
     setTimeout(() => {
       for(var i=0;i<this.totalRegistros;i++){
         var diario:DiarioGeneralModel=new DiarioGeneralModel();
         var item:CuentaBancariaModel=new CuentaBancariaModel();
-        this.tableDataBancaria.push(item);
+        this.tableCuentaBancaria.push(item);
         this.CompleteData.push(diario);
       }
     }, 500)
@@ -285,7 +288,24 @@ clickcantidadHaber(event,edit,column){
   this.editing.row=event;
   this.editing.column=column;
 }
-
+clickcci(event,edit,column){
+  this.bln_tbl_cuenta_cci=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
+clickbranch(event,edit,column){
+  this.bln_tbl_cuenta_branch=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
+clickswiftcode(event,edit,column){
+  this.bln_tbl_swift_cod=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
 loadDocumentoTransaccion(){
   this.dialogDocumentoTransaccion=true;
 }
@@ -379,8 +399,7 @@ closeCategoriaCuenta(){
   }
   cuentacontableselecionadohaber(val,dialog:boolean){
     console.log(val);    
-    this.centrocosto.strAcctDest_Credit=val.strAcc_Local_NO;
-    this.dialogCuentaContableHaber=false; 
+    this.selectrow.strAcc_Local_NO=val.strAcc_Local_NO;
     this.dialogCuentaContable=false; 
   }
 
@@ -949,14 +968,23 @@ closeCategoriaCuenta(){
     this.bancoModel.strCompany_Desc=this.strCompany_Desc;
     this.bancoModel.strBank_Type=this.strlevel;
     this.bancoModel.strBank_Curr=this.Currency_Cod;
-    
+    debugger;
+    for(var i=0;i<this.tableCuentaBancaria.length;i++){
+      if(this.tableCuentaBancaria[i].strAcc_Local_NO!=''){
+        var item=this.tableCuentaBancaria[i];
+        this.bancoModel.listaCuentaBancaria.push(item);
+      }
+    }
+    console.log(this.bancoModel);
+
     bancoService.crearBanco(this.bancoModel)
     .then(response=>{
       loadingInstance.close();
       this.openMessageSuccess('Se guardo correctamente ');
-      this.textosave = 'Se guardo correctamente ';
+      this.textosave = 'Se guardo correctamente '+response.strBank_Cod;
       this.issave=true;
       this.iserror=false;
+      this.limpiar();
     })
     .catch(e =>{      
       this.openMessageError('Error guardar cliente');
@@ -965,6 +993,20 @@ closeCategoriaCuenta(){
       this.issave=false;
       this.iserror=true;
     })    
+  }
+  limpiar(){
+    this.bancoModel=new BancoModel();
+    this.strpais_Cod='';
+    this.strpais_Desc='';
+    this.Currency_Cod='';
+    this.Currency_Cod_Desc='';
+    this.Departamento_Desc='';
+    
+    this.tableCuentaBancaria=new Array<CuentaBancariaModel>();
+    for(var i=0;i<this.totalRegistros;i++){
+      var item:CuentaBancariaModel=new CuentaBancariaModel();
+      this.tableCuentaBancaria.push(item);
+    }
   }
   cambiarCantidadHaber(val){
     this.selectrow.fltQuantityDebe=0;

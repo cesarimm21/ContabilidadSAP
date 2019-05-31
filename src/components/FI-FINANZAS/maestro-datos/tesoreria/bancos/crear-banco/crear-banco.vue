@@ -169,7 +169,7 @@
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-sm-9" >
+                        <div class="col-sm-7" >
                             <el-card class="box-card" style="margin-left: -10px;">
                                 <div slot="header" class="headercard" style="margin-top: -4px;">
                                     <buttons-accions v-on:validarView="validarView()"></buttons-accions>
@@ -179,7 +179,7 @@
                                         <el-table
                                             ref="missionTable"
                                             :max-height="sizeScreen"
-                                            :data="tableDataBancaria" 
+                                            :data="tableCuentaBancaria" 
                                             highlight-current-row
                                             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                             class="ExcelTable2007">
@@ -197,18 +197,24 @@
                                                     <label style="width:100%;    margin: 0rem;" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column
+                                            <!-- <el-table-column
                                                 prop="strBank_Account" sortable  width="120"
                                                 label="Cta. Bancaria">
                                                 <template scope="scope">
+                                                    <el-input  v-if=" bln_tbl_cuenta_contable  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strAcc_Local_NO" >
+                                                    </el-input>
                                                     <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account }}</label>
                                                 </template>
-                                            </el-table-column>   
+                                            </el-table-column>    -->
                                             <el-table-column
                                                 prop="strBank_Account_CCI" sortable  width="120"
                                                 label="Cta. CCI">
                                                 <template scope="scope">
-                                                    <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account_CCI }}</label>
+                                                    <el-input  v-if="bln_tbl_cuenta_cci  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strBank_Account_CCI" >
+                                                    </el-input>
+                                                    <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcci(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account_CCI }}</label>
                                                 </template>
                                             </el-table-column>
                                             <!-- <el-table-column
@@ -222,14 +228,20 @@
                                                 prop="strBranch_Cod" sortable width="150"
                                                 label="Branch Code">
                                                 <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBranch_Cod }}</label>
+                                                    <el-input  v-if="bln_tbl_cuenta_branch  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strBranch_Cod" >
+                                                    </el-input>
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickbranch(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBranch_Cod }}</label>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
                                                 prop="strSwift_Cod" sortable 
                                                 label="Swift Code">
                                                 <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strSwift_Cod }}</label>
+                                                    <el-input  v-if="bln_tbl_swift_cod  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strSwift_Cod" >
+                                                    </el-input>
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickswiftcode(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strSwift_Cod }}</label>
                                                 </template>
                                             </el-table-column>
                                             <!-- <el-table-column

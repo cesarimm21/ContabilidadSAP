@@ -55,7 +55,9 @@ import diariogeneralService from '@/components/service/diariogeneral.service';
 import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
 import {DepartamentoModel} from '@/modelo/maestro/departamento';
 import departamentoService from '@/components/service/departamento.service';
+import cuentabancariaService from '@/components/service/cuentabancaria.service';
 import bancoService from '@/components/service/banco.service';
+import { CuentaBancariaModel } from '@/modelo/maestro/cuentaBancaria';
 @Component({
   name: 'crear-ingreso-comprobante',
   components:{
@@ -136,9 +138,9 @@ export default class ModificarBancoComponent extends Vue {
   
   pagina: number =1;
   RegistersForPage: number = 10;
-  totalRegistros: number = 100;
-  public CompleteData:Array<DiarioGeneralModel>=[]; 
-  public CompleteData1:Array<DiarioGeneralModel>=[]; 
+  totalRegistros: number = 10;
+  public CompleteData:Array<CuentaBancariaModel>=[]; 
+  public CompleteData1:Array<CuentaBancariaModel>=[]; 
 
 
   public ordencompra:OrdenCompraModel=new OrdenCompraModel();
@@ -205,6 +207,7 @@ export default class ModificarBancoComponent extends Vue {
   bln_tbl_cantidad_debe:boolean=false;
   bln_tbl_cantidad_haber:boolean=false;
 
+ 
   editing:any= {
     row:'',
     column:''
@@ -234,6 +237,13 @@ export default class ModificarBancoComponent extends Vue {
   vifdespacho:boolean=false;
   vifcomprobarapro:boolean=false;
   vifimprimir:boolean=false;
+  blncuentacontable:boolean=false;
+  
+  public gridCuentaBancaria:Array<CuentaBancariaModel>=[]; 
+
+  bln_tbl_cuenta_cci:boolean=false;
+  bln_tbl_cuenta_branch:boolean=false;
+  bln_tbl_swift_cod:boolean=false;
 
   constructor(){    
     super();
@@ -244,17 +254,63 @@ export default class ModificarBancoComponent extends Vue {
     this.loadTipocambio();
     this.strCompany_Cod=localStorage.getItem('compania_cod');
     this.strCompany_Desc=localStorage.getItem('compania_name'); 
-
-    for(var i=0;i<this.totalRegistros;i++){
-      var diario:DiarioGeneralModel=new DiarioGeneralModel();
-      this.CompleteData.push(diario);
-    }
-    setTimeout(() => {
+  
+    // setTimeout(() => {
+    //     //this.load();
+    //     for(var i=0;i<this.totalRegistros;i++){
+    //       var diario:DiarioGeneralModel=new DiarioGeneralModel();
+    //       this.CompleteData.push(diario);
+    //       var item:CuentaBancariaModel=new CuentaBancariaModel();
+    //       this.gridCuentaBancaria.push(item);
+    //     }
+    //   }, 300)
+    debugger;
+     
+      setTimeout(() => {
         this.load();
       }, 200)
+      setTimeout(() => {
+        debugger;
+        this.cargarTodo();
+      }, 200)
+      
+    }
+    async cargarCuentaBancaria(){
+      var object = JSON.parse(this.$route.query.data);
+
+      await cuentabancariaService.GetCuentaBancaria(object.strBank_Cod)
+      .then(response=>{
+         if(response){
+           debugger;
+           for(var i=0;i<response.length;i++){
+             this.CompleteData[i]=response[i];
+          }
+          this.gridCuentaBancaria = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    
+
+           console.log('------------')
+           console.log(this.gridCuentaBancaria)
+           console.log('------------')
+         }
+      }).catch(error=>{
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se puede cargar lista de cuenta bancaria'
+        });
+        this.departVisible=false;
+      })
+
     }
     load(){
+      for(var i=0;i<this.totalRegistros;i++){
+        var item:CuentaBancariaModel=new CuentaBancariaModel();
+        this.CompleteData.push(item);
+      }
+    }
+    cargarTodo(){
       debugger;
+    
       var object = JSON.parse(this.$route.query.data);
       var modulo = this.$route.query.vista;
       this.txtviewmodulo=modulo;
@@ -272,10 +328,11 @@ export default class ModificarBancoComponent extends Vue {
           }
         }
       }
-      this.cargar(object.strBank_Cod);
+     this.cargar(object.strBank_Cod);
+     this.cargarCuentaBancaria();
     }
-cargar(code){
-    bancoService.GetOnlyOneBanco(code)
+async cargar(code){
+    await bancoService.GetOnlyOneBanco(code)
     .then(response=>{
      this.bancoModel= response;
      this.strlevel=this.bancoModel.strBank_Type;
@@ -284,6 +341,7 @@ cargar(code){
      this.strpais_Desc=this.bancoModel.strCountry_Desc;
      this.Currency_Cod_Desc=this.bancoModel.strBank_Curr_Desc;
      this.Departamento_Desc=this.bancoModel.strBank_Region_Desc;
+     
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -292,7 +350,7 @@ cargar(code){
       });
       this.departVisible=false;
     })
-}
+  }
   loadTipocambio(){
     tipocambioService.GetAllTipoCambio1()
     .then(response=>{
@@ -428,13 +486,12 @@ closeCategoriaCuenta(){
     this.dialogCuentaContable=true;
   }
   closeDialogCuentaContableHaber(){
-    this.dialogCuentaContableHaber=false;
+    this.dialogCuentaContable=false;
   }
   cuentacontableselecionadohaber(val,dialog:boolean){
-    this.centrocosto.strAcctDest_Credit=val.strAcc_Local_NO;
-    this.dialogCuentaContableHaber=false;  
+    this.selectrow.strAcc_Local_NO=val.strAcc_Local_NO;
+    this.dialogCuentaContable=false;  
   }
-
   activar_CuentaContableDebe(){
     setTimeout(() => {
       this.btnactivarCuentaContableDebe=true;
@@ -901,6 +958,10 @@ closeCategoriaCuenta(){
     this.editing.row=event;
     this.editing.column=column;
   }
+  LoadCuentaContable(row){
+    this.selectrow=row;
+    this.dialogCuentaContable=true;
+  }
   closeDiario(){
     this.diarioSelect=new DiarioModel();
     this.dialogDiario=false;
@@ -994,6 +1055,7 @@ closeCategoriaCuenta(){
         })   
     }
   }
+  
   guardarTodo(){
     let loadingInstance = Loading.service({
       fullscreen: true,
@@ -1010,14 +1072,25 @@ closeCategoriaCuenta(){
     this.bancoModel.strCompany_Desc=this.strCompany_Desc;
     this.bancoModel.strBank_Type=this.strlevel;
     this.bancoModel.strBank_Curr=this.Currency_Cod;
-    
+    debugger;
+    loadingInstance.close();
+    this.bancoModel.listaCuentaBancaria=[];
+    for(var i=0;i<this.gridCuentaBancaria.length;i++){
+      if(this.gridCuentaBancaria[i].strAcc_Local_NO!=''){
+        var item=this.gridCuentaBancaria[i];
+        this.bancoModel.listaCuentaBancaria.push(item);
+      }
+    }
+    console.log(this.bancoModel);
+
     bancoService.updateBanco(this.bancoModel)
     .then(response=>{
       loadingInstance.close();
       this.openMessageSuccess('Se guardo correctamente ');
-      this.textosave = 'Se guardo correctamente ';
+      this.textosave = 'Se guardo correctamente '+response.strBank_Cod;
       this.issave=true;
       this.iserror=false;
+      this.limpiar();
     })
     .catch(e =>{      
       this.openMessageError('Error guardar cliente');
@@ -1027,6 +1100,53 @@ closeCategoriaCuenta(){
       this.iserror=true;
     })    
   }
+  limpiar(){
+    this.bancoModel=new BancoModel();
+    this.strpais_Cod='';
+    this.strpais_Desc='';
+    this.Currency_Cod='';
+    this.Currency_Cod_Desc='';
+    this.Departamento_Desc='';
+    
+    this.gridCuentaBancaria=new Array<CuentaBancariaModel>();
+    for(var i=0;i<this.totalRegistros;i++){
+      var item:CuentaBancariaModel=new CuentaBancariaModel();
+      this.gridCuentaBancaria.push(item);
+    }
+  }
+  // guardarTodo(){
+  //   let loadingInstance = Loading.service({
+  //     fullscreen: true,
+  //     text: 'Guargando...',
+  //     spinner: 'el-icon-loading',
+  //     background: 'rgba(0, 0, 0, 0.8)'
+  //     }
+  //     );  
+  //   this.bancoModel.strCountry=this.strpais_Cod;
+  //   this.bancoModel.strCountry_Desc=this.strpais_Desc;
+  //   this.bancoModel.strBank_Region_Desc=this.Departamento_Desc;
+  //   this.bancoModel.strBank_Curr_Desc=this.Currency_Cod_Desc;
+  //   this.bancoModel.strCompany_Cod=this.strCompany_Cod;
+  //   this.bancoModel.strCompany_Desc=this.strCompany_Desc;
+  //   this.bancoModel.strBank_Type=this.strlevel;
+  //   this.bancoModel.strBank_Curr=this.Currency_Cod;
+    
+  //   bancoService.updateBanco(this.bancoModel)
+  //   .then(response=>{
+  //     loadingInstance.close();
+  //     this.openMessageSuccess('Se guardo correctamente ');
+  //     this.textosave = 'Se guardo correctamente ';
+  //     this.issave=true;
+  //     this.iserror=false;
+  //   })
+  //   .catch(e =>{      
+  //     this.openMessageError('Error guardar cliente');
+  //     loadingInstance.close();
+  //     this.textosave = 'No se guardo cliente.';
+  //     this.issave=false;
+  //     this.iserror=true;
+  //   })    
+  // }
   cambiarCantidadHaber(val){
     this.selectrow.fltQuantityDebe=0;
   }
@@ -1131,7 +1251,32 @@ closeCategoriaCuenta(){
   departChosseClose(){
     this.departVisible=false;
     this.selectDepartamento=new DepartamentoModel();
+  } 
+  closePais(){
+  this.dialogPais=false;
   }
+  documentotransaccionClose(){
+  this.dialogDocumentoTransaccion=false;  
+  }
+  
+clickcci(event,edit,column){
+  this.bln_tbl_cuenta_cci=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
+clickbranch(event,edit,column){
+  this.bln_tbl_cuenta_branch=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
+clickswiftcode(event,edit,column){
+  this.bln_tbl_swift_cod=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
   data(){
     return{
       nameComponent:'crear-ingreso-comprobante',
@@ -1164,6 +1309,8 @@ closeCategoriaCuenta(){
       habilitarPane:true,
       inputAtributo:'',
       DepartamentoGrid:[],
+      Currency_Cod:'',
+      Currency_Cod_Desc:'',
     }
   }
   

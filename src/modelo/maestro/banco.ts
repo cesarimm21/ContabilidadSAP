@@ -1,3 +1,4 @@
+import {CuentaBancariaModel} from "./cuentaBancaria";
 export class BancoModel {
     intBank_ID: number;
     strCountry:string;
@@ -21,6 +22,7 @@ export class BancoModel {
     strCountry_Desc:string;
     strBank_Curr_Desc:string;
     strBank_Region_Desc:string;
+    listaCuentaBancaria:Array<CuentaBancariaModel>;
     constructor(){
         this.intBank_ID=-1;
         this.strCountry='';
@@ -39,5 +41,6 @@ export class BancoModel {
         this.strModified_User='';
         this.dtmModified_Date=new Date();
         this.chrStatus='';
+        this.listaCuentaBancaria=new Array<CuentaBancariaModel>();
     }
 }
