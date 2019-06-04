@@ -7,6 +7,7 @@ export class CuentaBancariaModel {
     strBank_Region:string | null;
     strSwift_Cod:string | null;
     strBank_Address:string | null;
+    strCurrency_Cod:string | null;
 
     strCreation_User:string;
     dtmCreation_Date:Date;

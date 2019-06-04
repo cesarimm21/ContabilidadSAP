@@ -206,6 +206,8 @@ export default class CrearBancoComponent extends Vue {
   bln_tbl_cantidad_debe:boolean=false;
   bln_tbl_cantidad_haber:boolean=false;
   blncuentacontable:boolean=false;
+  bln_tbl_cuenta_bancaria:boolean=false;
+
   tableCuentaBancaria:CuentaBancariaModel[];
 
   editing:any= {
@@ -288,6 +290,14 @@ clickcantidadHaber(event,edit,column){
   this.editing.row=event;
   this.editing.column=column;
 }
+
+clickBankAccount(event,edit,column){
+  this.bln_tbl_cuenta_bancaria=true;
+  event.edit=!edit;
+  this.editing.row=event;
+  this.editing.column=column;
+}
+
 clickcci(event,edit,column){
   this.bln_tbl_cuenta_cci=true;
   event.edit=!edit;
@@ -400,6 +410,7 @@ closeCategoriaCuenta(){
   cuentacontableselecionadohaber(val,dialog:boolean){
     console.log(val);    
     this.selectrow.strAcc_Local_NO=val.strAcc_Local_NO;
+    this.selectrow.strCurrency_Cod=val.strCurrency_Cod;
     this.dialogCuentaContable=false; 
   }
 

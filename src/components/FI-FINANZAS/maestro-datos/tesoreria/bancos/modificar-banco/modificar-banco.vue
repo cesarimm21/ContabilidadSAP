@@ -64,21 +64,6 @@
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Moneda</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input  :disabled="visualizar"
-                                    size ="small" 
-                                    @blur="desactivar_Moneda" 
-                                    @focus="activar_Moneda" 
-                                    v-model="Currency_Cod">
-                                        <el-button :disabled="visualizar" v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{Currency_Cod_Desc}}</span>
-                            </div> 
-                            <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Tipo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
@@ -170,7 +155,7 @@
                     </div>
                     <br/>
                     <div class="row">
-                        <div class="col-sm-7" >
+                        <div class="col-sm-10" >
                             <el-card class="box-card" style="margin-left: -10px;">
                                 <div slot="header" class="headercard" style="margin-top: -4px;">
                                     <buttons-accions v-on:validarView="validarView()"></buttons-accions>
@@ -198,16 +183,16 @@
                                                     <label style="width:100%;    margin: 0rem;" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <!-- <el-table-column
+                                            <el-table-column
                                                 prop="strBank_Account" sortable  width="120"
                                                 label="Cta. Bancaria">
                                                 <template scope="scope">
-                                                    <el-input  v-if=" bln_tbl_cuenta_contable  && (scope.row === editing.row) 
-                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strAcc_Local_NO" >
+                                                    <el-input  v-if=" bln_tbl_cuenta_bancaria  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strBank_Account" >
                                                     </el-input>
-                                                    <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account }}</label>
+                                                    <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickBankAccount(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account }}</label>
                                                 </template>
-                                            </el-table-column>    -->
+                                            </el-table-column> 
                                             <el-table-column
                                                 prop="strBank_Account_CCI" sortable  width="120"
                                                 label="Cta. CCI">
@@ -225,6 +210,13 @@
                                                     <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
                                                 </template>
                                             </el-table-column> -->
+                                            <el-table-column
+                                                prop="strCurrency_Cod" sortable width="150"
+                                                label="Moneda">
+                                                <template scope="scope">
+                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strCurrency_Cod }}</label>
+                                                </template>
+                                            </el-table-column>
                                             <el-table-column
                                                 prop="strBranch_Cod" sortable width="150"
                                                 label="Branch Code">

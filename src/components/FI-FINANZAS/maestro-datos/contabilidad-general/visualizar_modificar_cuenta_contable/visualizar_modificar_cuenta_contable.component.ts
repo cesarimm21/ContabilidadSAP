@@ -74,7 +74,8 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-  
+  strCompany_Cod:string='';
+  strCompany_Desc:string='';
   formBusqueda:any={
     'strPO_NO':'',
     'desde':new Date(),
@@ -96,6 +97,11 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    var id:any=localStorage.getItem('compania_ID');
+    this.strCompany_Desc=desc; 
+    this.strCompany_Cod=cod;
     this.tiporequisicion="A";
     setTimeout(() => {
       this.load();
