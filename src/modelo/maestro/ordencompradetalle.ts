@@ -31,6 +31,8 @@ export class OrdenCompraDetalleModel {
     dtmOrig_Due_Date:Date ;//
     strUnit_Of_Purch:string ;//
     fltPO_QTY_I:number ;//
+    fltPay_Factura:number ;//
+    fltFacture_Net_PR_I:number ;//
     fltPO_Net_PR_I:number ;//
     fltCurr_Net_PR_P:number ;//
     intConv_Factor:number ;//
@@ -103,6 +105,8 @@ export class OrdenCompraDetalleModel {
         this.dtmOrig_Due_Date=new Date;//
         this.strUnit_Of_Purch='';//
         this.fltPO_QTY_I=0 ;//
+        this.fltPay_Factura=0 ;//
+        this.fltFacture_Net_PR_I=0 ;//
         this.fltPO_Net_PR_I=0 ;//
         this.fltCurr_Net_PR_P=0;//
         this.intConv_Factor=0;//

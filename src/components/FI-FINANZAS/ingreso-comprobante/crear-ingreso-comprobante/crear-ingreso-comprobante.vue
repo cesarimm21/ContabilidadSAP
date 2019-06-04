@@ -285,7 +285,14 @@
                                             <label class="el-form-item__label col-sm-3" >Fecha Vencimiento</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input class="validador" type="date"  size ="small" style="font-size:11px;" v-model="fecha_vencida" @change="DateVencida()"></el-input>
+                                                    <el-date-picker
+                                                    type="date"
+                                                    style="width:128px !important"
+                                                    format="dd.MM.yyyy"
+                                                    @change="DateVencida()"
+                                                    size="small" v-model="fecha_vencida" 
+                                                    >
+                                                </el-date-picker>
                                                 </div>
                                             </div>
                                         </div>
@@ -338,15 +345,15 @@
                                                     width="50" >
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="intPO_Item_NO" sortable min-width="50"
+                                                        prop="intPO_Item_NO"  min-width="50"
                                                         label="Item">
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="strPO_NO" sortable min-width="100"
+                                                        prop="strPO_NO"  min-width="100"
                                                         label="PO">
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="strDesc_Item" sortable  min-width="200"
+                                                        prop="strDesc_Item"   min-width="200"
                                                         label="Descripción">
                                                     </el-table-column>
                                                      <!-- <el-table-column 
@@ -360,7 +367,7 @@
                                                     </el-table-column> -->
                                                     <el-table-column
                                                         v-if="columnView"
-                                                        prop="strTax_Cod" sortable 
+                                                        prop="strTax_Cod"  
                                                         label="Impuesto">
                                                         <template scope="scope">
                                                         <el-input  v-if="bln_tbl_centro_costo  && (scope.row === editing.row) 
@@ -371,29 +378,64 @@
                                                         </template>
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="strUM" sortable  min-width="100"
+                                                        prop="strUM"   min-width="100"
                                                         label="U.M.">
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="intQuantity" sortable width="100"
-                                                        label="Cantidad">
+                                                        prop="intQuantity"  width="110"
+                                                        label="Cant. Solicitada">
+                                                    </el-table-column>
+                                                    <el-table-column
+                                                        prop="fltRec_QYT"  width="100"
+                                                        label="Cant. Recibida"
+                                                        align="rigth">
+                                                        
+                                                    </el-table-column>                                                    
+                                                    <el-table-column
+                                                        prop="fltRec_Pend_QTY"  width="100"
+                                                        label="Cant. Faltante">
+                                                    </el-table-column>
+                                                    <el-table-column
+                                                        prop="fltPay_Factura"  width="100"
+                                                        label="Cant. Facturada">
                                                         <template scope="scope">
+                                                            <!-- <el-input-number :disabled="getDisabled(scope.row.fltPO_QTY_I,scope.row.fltRec_QYT,scope.row)" @change="changeRecibida" :min="0" :max="getNumber(scope.row.fltPO_QTY_I)" size="small" v-model="scope.row.fltRec_QYT" >
+                                                            </el-input-number> -->
                                                             <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.intQuantity" :precision="2">
+                                                            && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltPay_Factura" :precision="2" :max="getNumber(scope.row.intQuantity)">
                                                             </el-input>
-                                                            <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intQuantity }}</label>
+                                                            <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltPay_Factura }}</label>
                                                         </template>
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="intUnit_Price" sortable 
+                                                        prop="intUnit_Price"  width="120"
                                                         label="Precio U.">
+                                                        <template scope="scope">
+                                                            <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
+                                                            && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.intUnit_Price" :precision="2" :step="0.01">
+                                                            </el-input>
+                                                            <label style="width:100%"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intUnit_Price }}</label>
+                                                        </template>
+                                                    </el-table-column>
+                                                        
+                                                    <!-- <el-table-column
+                                                        prop="fltValue_Doc"  width="120"
+                                                        label="Total Documento">
+                                                    </el-table-column> -->
+                                                    <el-table-column
+                                                        prop="fltFacture_Net_PR_I"  width="120"
+                                                        label="Total por Facturar">
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="fltValue_Local" sortable 
-                                                        label="Total">
+                                                        prop="fltValue_Local"  
+                                                        label="Total S/">
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="strCreation_User" sortable 
+                                                        prop="fltValue_Corp"  
+                                                        label="Total US$">
+                                                    </el-table-column>
+                                                    <el-table-column
+                                                        prop="strCreation_User"  
                                                         label="Usuario">
                                                     </el-table-column>
                                                 </el-table>

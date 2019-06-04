@@ -15,6 +15,7 @@ export class CuentaBancariaModel {
     dtmModified_Date:Date;
     chrStatus:string;
     constructor(){
+        this.intIdBankAcct_ID=-1;
         this.strAcc_Local_NO='';
         this.strBank_Account='';
         this.strBank_Account_CCI='';

@@ -592,8 +592,8 @@ export default class CrearPOComponent extends Vue {
                 this.totalItems+=Number(this.multipleSelection[i].fltQuantity);
             }               
         }
-        this.totalPrice=inttotal;
-      }
+      this.totalPrice=inttotal;
+    }
     //#endregion
     //#region [ACCIONES TABLA]
     clickcantidad(event,edit,column){

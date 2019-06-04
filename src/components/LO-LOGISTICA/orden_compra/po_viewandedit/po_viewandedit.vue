@@ -143,12 +143,12 @@
                                 <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{OrdenCompra.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row "  style="margin-top:12px;">
-                                <template>
+                                <!-- <template>
                                     <el-checkbox class="CheckBoxPro" v-model="checked" @change="handleCheckAllChange" :disabled="nochancePro">
                                         <span style=" font-size:10px;">Modificar </span>
                                         </el-checkbox>
-                                </template>
-                                <label class="sinLinea el-form-item__label col-md-6" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
+                                </template> -->
+                                <label class="sinLinea el-form-item__label col-md-6" >{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
                                 <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{OrdenCompra.strCurrency_Desc}}</label>

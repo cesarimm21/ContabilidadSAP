@@ -63,6 +63,7 @@ export default class ViewAndEditPagosComponent extends Vue {
     //**Moneda */
     public moneySelect:MonedaModel=new MonedaModel();
     public bancoSelect:BancoModel=new BancoModel();
+    tipoMoney:string;
     gridMedioPago:MedioPagoModel[];
     public mediopago:MedioPagoModel=new MedioPagoModel();
     codigoCompania:any;
@@ -104,11 +105,18 @@ export default class ViewAndEditPagosComponent extends Vue {
     }
     DateSelected(){         
         this.pago= JSON.parse(this.$route.query.data);
+        
         this.DocIngresados=this.pago.dtmPayRunExpired_Date;
         this.fecha_ejecucion =this.pago.dtmPayRun_Date;
         this.DateContabilizacion=this.pago.dtmPayRunPay_Date;
         this.codigoCompania=this.pago.strCompany_Cod;
         this.descripcionCompania=this.pago.strCompany_Desc;
+        if(this.pago.strPayRun_Curr=='PEN'){
+          this.tipoMoney='S/';
+        }
+        if(this.pago.strPayRun_Curr=='USD'){
+          this.tipoMoney='US$'
+        }
         var vista=this.$route.query.vista;
         this.moneySelect.strCurrency_Cod='0';
         if(vista=='Modificar'){
@@ -376,43 +384,37 @@ export default class ViewAndEditPagosComponent extends Vue {
     guardarRun(){        
       var vista=this.$route.query.vista;
       var user:any=localStorage.getItem('User_Usuario');
-        this.pago.strModified_User=user;
-        console.log(vista);
-        
+        this.pago.strModified_User=user;        
       if(vista=='Modificar'){
-        console.log(this.gridPagosDetalle);
-        
-        // if(this.multipleSelection.length>0){
-            // for(var i=0;i<this.multipleSelection.length;i++){
-            //     this.pago.fltAmount_Total+=Number(this.multipleSelection[i].fltNetValue_Doc_Local)                
-            // }
-            // this.pago.listaDetalle=this.multipleSelection;
-            // let loadingInstance = Loading.service({
-            //     fullscreen: true,
-            //     text: 'Guargando...',
-            //     spinner: 'el-icon-loading',
-            //     background: 'rgba(0, 0, 0, 0.8)'
-            // }
-            // );
-            // RunPagosService.CreateRunPagos(this.pago) 
-            // .then(response=>{
-            //     setTimeout(() => {
-            //         this.DateSelected();
-            //       }, 200)
-            //     this.issave = true;
-            //     this.iserror = false;
-            //     this.openMessageSuccess('Se guardo correctamente '+response);
-            //     this.textosave = 'Se guardo correctamente. '+response;
+        this.pago.listaDetalle=this.gridPagosDetalle;
+        // if(this.multipleSelection.length>0){            
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Guargando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+            }
+            );
+            RunPagosService.UpdateRunPagos(this.pago) 
+            .then(response=>{
+                setTimeout(() => {
+                    this.DateSelected();
+                  }, 200)
+                this.issave = true;
+                this.iserror = false;
+                this.openMessageSuccess('Se actualizo correctamente '+response);
+                this.textosave = 'Se actualizo correctamente. '+response;
                 // this.ExportarPDF('28052019-1-PEN');
-            //     loadingInstance.close();
-            // }) 
-            // .catch(response=>{
-            //     loadingInstance.close();
-            //     this.issave = false;
-            //     this.iserror = true;
-            //     this.textosave = 'Error al guardar.';
-            //     this.openMessageError('Error al guardar.');
-            // })      
+                this.loadPagosDetalle(this.pago.intIdPayRunH_ID);   
+                loadingInstance.close();
+            }) 
+            .catch(response=>{
+                loadingInstance.close();
+                this.issave = false;
+                this.iserror = true;
+                this.textosave = 'Error al actualizar.';
+                this.openMessageError('Error al actualizar.');
+            })      
 
         // }
         // else{
@@ -657,6 +659,7 @@ export default class ViewAndEditPagosComponent extends Vue {
             tableData:[],
             gridPago:[],
             CodigoGen:'',
+            tipoMoney:'',
             val:'',
             DateContabilizacion:'',
             DocIngresados:'',

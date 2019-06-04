@@ -22,6 +22,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetCuentaBancaria(code){
+    return axios.get(CONFIG.API_URL+'banco/cuentabancaria/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   searchBanco(data){
     return axios.post(CONFIG.API_URL+'banco/search',data)
     .then(response =>{           

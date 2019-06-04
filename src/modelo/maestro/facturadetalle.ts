@@ -8,6 +8,10 @@ export class FacturaDetalleModel{
     intPO_Item_NO:number;//falta
     strUM:string;//
     intQuantity:number;//
+    fltRec_QYT:number;//
+    fltRec_Pend_QTY:number;//
+    fltPay_Factura:number;
+    fltFacture_Net_PR_I:number;
     intUnit_Price:number;//
     strDesc_Item:string;//
     strAccount_Cod:string;//falta
@@ -33,6 +37,10 @@ export class FacturaDetalleModel{
         this.intPO_Item_NO=0;
         this.strUM='';
         this.intQuantity=0;
+        this.fltRec_QYT=0;
+        this.fltRec_Pend_QTY=0;
+        this.fltPay_Factura=0 ;//
+        this.fltFacture_Net_PR_I=0 ;//
         this.intUnit_Price=0;
         this.strDesc_Item='';
         this.strAccount_Cod='';

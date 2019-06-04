@@ -79,41 +79,41 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strPO_NO" width="100" label="Código PO">
+                                        <el-table-column   prop="strPO_NO" width="100" label="Código PO">
                                             <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strPO_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCompany_Cod" sortable  width="120"
+                                            prop="strCompany_Cod"   width="120"
                                             label="Cod. Compañia">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCompany_Cod }}</label>
                                             </template>
                                         </el-table-column>   
                                         <el-table-column
-                                            prop="strTypeMov_Cod" sortable  width="120"
+                                            prop="strWHS_Cod"   width="120"
                                             label="Cod. Almacen">
-                                            <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
-                                            </template>
+                                            <!-- <template scope="scope">
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
+                                            </template> -->
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strTypeMov_Desc" sortable width="150"
+                                            prop="strWHS_Desc"  width="200"
                                             label="Almacen">
-                                            <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Desc }}</label>
-                                            </template>
+                                            <!-- <template scope="scope">
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
+                                            </template> -->
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strVendor_NO" sortable width="100"
+                                            prop="strVendor_NO"  width="100"
                                             label="Cod Proveedor">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strVendor_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="" sortable width="150"
+                                            prop=""  width="150"
                                             label="Proveedor">
                                             <template scope="scope">
                                                 <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
@@ -121,14 +121,14 @@
                                         </el-table-column>
                                         
                                         <el-table-column
-                                            prop="fltTotal_Val" sortable width="100"
+                                            prop="fltTotal_Val"  width="100"
                                             label="Cantidad Total">
                                             <template scope="scope">
                                                 <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltTotal_Val }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="dtmProcess_Date" sortable width="100"
+                                            prop="dtmProcess_Date"  width="100"
                                             label="Fecha">
                                             <template scope="scope">
                                                 <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmProcess_Date) }}</label>

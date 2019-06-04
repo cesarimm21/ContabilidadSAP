@@ -72,6 +72,7 @@ export default class PagosIndividualesComponent extends Vue {
     public moneySelect:MonedaModel=new MonedaModel();
     public bancoSelect:BancoModel=new BancoModel();
     public periodo:PeriodoModel=new PeriodoModel();
+    tipoMoney:string='';
     gridMedioPago:MedioPagoModel[];
     public mediopago:MedioPagoModel=new MedioPagoModel();
     codigoCompania:any;
@@ -277,6 +278,12 @@ export default class PagosIndividualesComponent extends Vue {
         this.pago.strPayRun_Curr=this.moneySelect.strCurrency_Cod;
         this.pago.strPayRun_Curr_Desc=this.moneySelect.strCurrency_Desc;
         this.dialogVisible=false;
+        if(this.moneySelect.strCurrency_Cod=='PEN'){
+          this.tipoMoney='S/';
+        }
+        if(this.moneySelect.strCurrency_Cod=='USD'){
+          this.tipoMoney='US$'
+        }
         this.runPagosGet(this.CodigoGen);
         this.Filtro();
         
@@ -424,66 +431,66 @@ export default class PagosIndividualesComponent extends Vue {
     //#region [ACCION TABLE]
     handleSelectionChange(val){
         this.multipleSelection = val;
+        this.pago.fltAmount_Total=0;
+        for(var i=0;i<this.multipleSelection.length;i++){
+          this.pago.fltAmount_Total=Math.round((Number(this.pago.fltAmount_Total)+Number(this.multipleSelection[i].fltValue_Local))*100)/100;
+        }
     }
     guardarRun(){
-        // this.pago.intIdPayRun_Period=this.periodo.intIdPayRun_Period;
-        // this.pago.strPeriod_NO=this.periodo.strPeriod_NO;
-        // this.pago.strPeriod=this.periodo.strPeriod;
-        // this.pago.dtmPayRun_Date=new Date(this.fecha_ejecucion);
-        // this.pago.dtmPayRunPay_Date=new Date(this.DateContabilizacion);
-        // var user:any=localStorage.getItem('User_Usuario');
-        // this.pago.strCreation_User=user;
+        this.pago.intIdPayRun_Period=this.periodo.intIdPayRun_Period;
+        this.pago.strPeriod_NO=this.periodo.strPeriod_NO;
+        this.pago.strPeriod=this.periodo.strPeriod;
+        this.pago.dtmPayRun_Date=new Date(this.fecha_ejecucion);
+        this.pago.dtmPayRunPay_Date=new Date(this.DateContabilizacion);
+        var user:any=localStorage.getItem('User_Usuario');
+        this.pago.strCreation_User=user;
         // this.pago.fltAmount_Total=0;
-        // this.pago.strPayRun_Status='00';
-        this.ExportarPDF('28052019-1-PEN');
-        // if(this.multipleSelection.length>0){
-        //     for(var i=0;i<this.multipleSelection.length;i++){
-        //         this.pago.fltAmount_Total+=Number(this.multipleSelection[i].fltNetValue_Doc_Local)
+        this.pago.strPayRun_Status='00';
+        // this.ExportarPDF('28052019-1-PEN');
+        if(this.multipleSelection.length>0){        
+            this.pago.listaDetalle=this.multipleSelection;
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Guargando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+            }
+            );
+            RunPagosService.CreateRunPagos(this.pago) 
+            .then(response=>{
                 
-        //     }
-        //     this.pago.listaDetalle=this.multipleSelection;
-        //     let loadingInstance = Loading.service({
-        //         fullscreen: true,
-        //         text: 'Guargando...',
-        //         spinner: 'el-icon-loading',
-        //         background: 'rgba(0, 0, 0, 0.8)'
-        //     }
-        //     );
-        //     RunPagosService.CreateRunPagos(this.pago) 
-        //     .then(response=>{
-                
-        //         this.issave = true;
-        //         this.iserror = false;
-        //         this.pago=new PagosModel();
-        //         this.mediopago=new MedioPagoModel();
-        //         this.bancoSelect=new BancoModel();
-        //         this.openMessageSuccess('Se guardo correctamente '+response);
-        //         this.textosave = 'Se guardo correctamente. '+response;
-        //         // this.ExportarPDF(response);
-        //         loadingInstance.close();
-        //         setTimeout(() => {
-        //           this.DateSelected();
-        //         }, 200)
-        //         // this.DateContabilizacionClick();
+                this.issave = true;
+                this.iserror = false;
+                this.pago=new PagosModel();
+                this.mediopago=new MedioPagoModel();
+                this.bancoSelect=new BancoModel();
+                this.openMessageSuccess('Se guardo correctamente '+response);
+                this.textosave = 'Se guardo correctamente. '+response;
+                this.ExportarPDF(response);
+                loadingInstance.close();
+                setTimeout(() => {
+                  this.DateSelected();
+                }, 200)
+                // this.DateContabilizacionClick();
                 
 
-        //     }) 
-        //     .catch(response=>{
-        //         loadingInstance.close();
-        //         this.issave = false;
-        //         this.iserror = true;
-        //         this.textosave = 'Error al guardar.';
-        //         this.openMessageError('Error al guardar.');
-        //     })      
+            }) 
+            .catch(response=>{
+                loadingInstance.close();
+                this.issave = false;
+                this.iserror = true;
+                this.textosave = 'Error al guardar.';
+                this.openMessageError('Error al guardar.');
+            })      
 
-        // }
-        // else{
-        //     this.$message({
-        //         showClose: true,
-        //         type: 'warning',
-        //         message: 'Debe seleccionar al menos un documento'
-        //       });
-        // }
+        }
+        else{
+            this.$message({
+                showClose: true,
+                type: 'warning',
+                message: 'Debe seleccionar al menos un documento'
+              });
+        }
     }
 
     //#endregion
@@ -729,6 +736,7 @@ export default class PagosIndividualesComponent extends Vue {
             multipleSelection:[],
             gridBanco:[],
             inputAtributo:'',
+            tipoMoney:'',
             gridMedioPago:[],
             gridProData:[],
             gridCuenta:[]

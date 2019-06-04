@@ -27,14 +27,7 @@
                 <div class="container">
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-6">
-                            <div class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Código Aprobación</label>
-                                <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input  size ="small" :disabled="true" type="text" v-model="strCode">
-                                    </el-input>
-                                    </div>
-                                </div>
+                            <div class="form-group row">
                                 <label class="el-form-item__label col-md-3" >Compañia</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -43,6 +36,15 @@
                                     </div>
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strCompany_Desc}}</span>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Orden Compra</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input  size ="small" :disabled="true" type="text" v-model="strCode">
+                                    </el-input>
+                                    </div>
+                                </div>                                
                             </div>
                             <div class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Guia Remitente</label>
@@ -68,6 +70,7 @@
                                         <el-date-picker
                                             size="mini"
                                             style="width:128px !important"
+                                            format="dd.MM.yyyy"
                                             v-model="dtmFechaGuiaTransportista" >
                                         </el-date-picker>
                                     </div>
@@ -78,6 +81,7 @@
                                         <el-date-picker
                                             size="mini"
                                             style="width:128px !important"
+                                            format="dd.MM.yyyy"
                                             v-model="dtmFechaRecepcion" >
                                         </el-date-picker>
                                     </div>
@@ -97,7 +101,16 @@
                                     <el-input  size ="small" type="text" v-model="strPlaca">
                                     </el-input>
                                     </div>
-                                </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group row">
+                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input  size ="small" type="text" v-model="OrdenCompra.strVendor_NO" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>    
                                 <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strVendor_Desc}}</span>
                             </div>
                              <div  class="form-group row ">
@@ -152,8 +165,7 @@
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @selection-change="handleSelectionChange">
-                                        <el-table-column
-                                             
+                                        <el-table-column                                             
                                             width="40" style="margin-top: 5px;">
                                             <template scope="scope">
                                                 <el-checkbox @change="selectRow(scope.row)" v-if="scope.row.blnSelection" v-model="scope.row.blnCheck" ></el-checkbox>
@@ -161,27 +173,27 @@
                                         </el-table-column>  
                                         <el-table-column type="index" label="Item" width="40">
                                         </el-table-column>
-                                        <!-- <el-table-column  sortable prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
+                                        <!-- <el-table-column   prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCategItem_Cod" sortable  min-width="80"
+                                            prop="strCategItem_Cod"   min-width="80"
                                             label="Cat. linea">
                                         </el-table-column>
                                          -->
                                         <el-table-column
-                                            prop="strStock_Cod" sortable  width="100"
+                                            prop="strStock_Cod"   width="100"
                                             label="Material">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPO_Item_Desc" sortable 
+                                            prop="strPO_Item_Desc"  
                                             label="Descripción">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltPO_QTY_I" sortable width="100"
+                                            prop="fltPO_QTY_I"  width="100"
                                             label="Ctd.Comprada">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltRec_QYT" sortable width="100"
+                                            prop="fltRec_QYT"  width="100"
                                             label="Ctd.Recibida">
                                             <template scope="scope">
                                                 <el-input-number :disabled="getDisabled(scope.row.fltPO_QTY_I,scope.row.fltRec_QYT,scope.row)" @change="changeRecibida" :min="0" :max="getNumber(scope.row.fltPO_QTY_I)" size="small" v-model="scope.row.fltRec_QYT" >
@@ -189,79 +201,79 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strGuiaRem_NO" sortable  width="100"
+                                            prop="strGuiaRem_NO"   width="100"
                                             label="Guia Remitente">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strGuiaTrans_NO" sortable  width="100"
+                                            prop="strGuiaTrans_NO"   width="100"
                                             label="Guia Transportista">
                                         </el-table-column>
                                         <el-table-column
-                                            sortable width="100"
+                                             width="100"
                                             label="Fecha G.Transportista">
                                             <template scope="scope">
                                                  {{getParseDate(scope.row.dtmGuiaTrans_Date)}}
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            sortable  width="100"
+                                              width="100"
                                             label="Fecha Recepción">
                                             <template scope="scope">
                                                  {{getParseDate(scope.row.dtmReceived_Date)}}
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strRec_Driver" sortable 
+                                            prop="strRec_Driver"  
                                             label="Conductor">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPlaca" sortable 
+                                            prop="strPlaca"  
                                             label="Placa">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strUM_Cod" sortable  width="60"
+                                            prop="strUM_Cod"   width="60"
                                             label="UM">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCostCenter_NO" sortable width="80"
+                                            prop="strCostCenter_NO"  width="80"
                                             label="Centro costos">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strAccount_Cod" sortable width="80"
+                                            prop="strAccount_Cod"  width="80"
                                             label="Cuenta Contable">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strVendor_NO" sortable width="110"
+                                            prop="strVendor_NO"  width="110"
                                             label="Proveedor">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCreation_User" sortable width="110"
+                                            prop="strCreation_User"  width="110"
                                             label="Usuario Creación">
                                         </el-table-column>
                                         <el-table-column
-                                            sortable  width="100"
+                                              width="100"
                                             label="Fecha Creación">
                                             <template scope="scope">
                                                  {{getParseDate(scope.row.dtmCreation_Date)}}
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strModified_User" sortable width="120"
+                                            prop="strModified_User"  width="120"
                                             label="Usuario Modificación">
                                         </el-table-column>
                                         <el-table-column
-                                            sortable  width="120"
+                                              width="120"
                                             label="Fecha Modificación">
                                             <template scope="scope">
                                                  {{getParseDate(scope.row.dtmModified_Date)}}
                                             </template>
                                         </el-table-column>
                                         <!--<el-table-column
-                                            prop="strCurrency_Cod" sortable
+                                            prop="strCurrency_Cod" 
                                             label="Moneda">
                                         </el-table-column> -->
                                         <!-- <el-table-column
-                                            prop="strPriority_Cod" sortable
+                                            prop="strPriority_Cod" 
                                             label="Prioridad">
                                         </el-table-column> -->
 

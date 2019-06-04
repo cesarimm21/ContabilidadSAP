@@ -82,6 +82,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   movimientoInven:MovimientoInventarioModel[];
   //#region [BOTONES]
   bln_tbl_cantidad:boolean=false;
+  bln_tbl_Precio:boolean=false;
   bln_tbl_centro_costo:boolean=false;
   multipleSelection: any[];
   arrayTemp:any[];
@@ -150,9 +151,10 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     periodoService.GetAllPeriodoLast()
     .then(response=>{
       this.periodo=response;
+      // alert(this.periodo.strPeriod_NO)
       this.factura.strPeriod_NO=this.periodo.strPeriod_NO;
       this.factura.dtmPeriod=new Date(this.periodo.strPeriod);
-      this.fecha_actual=Global.getDate(this.factura.dtmPeriod); 
+      this.fecha_actual=this.periodo.strPeriod; 
     })
     this.factura.dtmDoc_Date=new Date();
     this.factura.fltExchange_Rate=0;
@@ -236,6 +238,13 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.editing.row=event;
     this.editing.column=column;
   }
+  clickPrice(event,edit,column){
+    this.bln_tbl_Precio=true;
+    this.bln_tbl_cantidad=false;
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+  }
   clickcentrocosto(event,edit,column){
     this.bln_tbl_centro_costo=true;
     this.bln_tbl_cantidad=false;
@@ -284,6 +293,8 @@ handleChangeCantidad(val){
   for (let i = 0; i < this.facturadetalle.length; i++) {
     if(this.facturadetalle[i].intIdPOD_ID == this.rowSelect){
         this.facturadetalle[i].fltValue_Local=Math.round(val*this.facturadetalle[i].intUnit_Price* 100)/100;
+        this.facturadetalle[i].fltValue_Corp=Math.round((val*this.facturadetalle[i].intUnit_Price/Number(this.factura.fltExchange_Rate))* 100)/100;
+        this.facturadetalle[i].fltFacture_Net_PR_I=Math.round(val*this.facturadetalle[i].intUnit_Price* 100)/100;
         this.arrayTemp=this.facturadetalle; 
         this.facturadetalle=[];              
         this.facturadetalle=this.arrayTemp;  
@@ -291,12 +302,10 @@ handleChangeCantidad(val){
     }
   }
   for (let i = 0; i < this.multipleSelection.length; i++) {
+    this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
     if(this.multipleSelection[i].intIdPOD_ID == this.rowSelect){
         this.multipleSelection[i].fltValue_Local=Math.round(val*this.facturadetalle[i].intUnit_Price* 100)/100;
     }
-  }
-  for (let i = 0; i < this.multipleSelection.length; i++) {
-    this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
   }
   var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
   this.factura.fltValue_Tax_Local=Math.round((Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100))* 100)/100;
@@ -310,10 +319,49 @@ handleChangeCantidad(val){
     this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
   }
 }
+handleChangeValUni(val){
+    this.factura.fltValue_Local=0;
+    this.factura.fltValue_Corp=0;
+    this.factura.fltValue_Tax_Local=0;
+    this.factura.fltValue_Tax_Corp=0;
+    this.factura.fltNetValue_Doc_Local=0;
+    this.factura.fltNetValue_Doc_Corp=0;
+  for (let i = 0; i < this.facturadetalle.length; i++) {
+    if(this.facturadetalle[i].intIdPOD_ID == this.rowSelect){
+        this.facturadetalle[i].fltValue_Local=Math.round(val*this.facturadetalle[i].fltPay_Factura* 100)/100;
+        this.facturadetalle[i].fltValue_Corp=Math.round((val*this.facturadetalle[i].fltPay_Factura/Number(this.factura.fltExchange_Rate))* 100)/100;
+        this.facturadetalle[i].fltFacture_Net_PR_I=Math.round(val*this.facturadetalle[i].fltPay_Factura* 100)/100;
+        this.arrayTemp=this.facturadetalle; 
+        this.facturadetalle=[];              
+        this.facturadetalle=this.arrayTemp;  
+        this.arrayTemp=[];
+    }
+  }
+  for (let i = 0; i < this.multipleSelection.length; i++) {
+    this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
+    if(this.multipleSelection[i].intIdPOD_ID == this.rowSelect){
+        this.multipleSelection[i].fltValue_Local=Math.round(val*this.facturadetalle[i].intUnit_Price* 100)/100;
+    }
+  }
+  var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
+  this.factura.fltValue_Tax_Local=Math.round((Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100))* 100)/100;
+  this.factura.fltNetValue_Doc_Local=Math.round((Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local))* 100)/100;
+  if(this.factura.fltExchange_Rate>0){
+    var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+    this.factura.fltValue_Corp=parseFloat(dat1); 
+    var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+    this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+    var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+    this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
+  } 
+}
+getNumber(num){
+  return parseFloat(num);
+}
 //#endregion
   //#region [ORDEN COMPRA]
   loadOrdenCompra(){
-    ordencompraService.GetOrdenCompraCompany(this.codigoCompania)
+    ordencompraService.getOCForFactura(this.codigoCompania)
     .then(respose=>{
       this.ordencompra=[];
       this.ordencompra=respose;
@@ -343,13 +391,17 @@ handleChangeCantidad(val){
         item.intPO_Item_NO=this.ordencompraDetalle[i].intPO_Item_NO;
         item.strUM=this.ordencompraDetalle[i].strUnit_Of_Purch;
         item.intQuantity=this.ordencompraDetalle[i].fltPO_QTY_I;
+        item.fltRec_QYT=this.ordencompraDetalle[i].fltRec_QYT;
+        item.fltRec_Pend_QTY=this.ordencompraDetalle[i].fltRec_Pend_QTY;
+        item.fltPay_Factura=Number(this.ordencompraDetalle[i].fltRec_QYT)-Number(this.ordencompraDetalle[i].fltPay_Factura)
+        item.fltFacture_Net_PR_I=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I))*100)/100;
         item.intUnit_Price=this.ordencompraDetalle[i].fltPO_Net_PR_I;
         item.strDesc_Item=this.ordencompraDetalle[i].strPO_Item_Desc;
         item.strAccount_Cod=this.ordencompraDetalle[i].strAccount_Cod;//aqui esta la cuenta contable
         item.strCostCenter_NO=this.ordencompraDetalle[i].strCostCenter_NO;
         item.fltValue_Doc=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
-        item.fltValue_Local=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
-        item.fltValue_Corp=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
+        item.fltValue_Local=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I))*100)/100;
+        item.fltValue_Corp=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I)/Number(this.factura.fltExchange_Rate))*100)/100;
         item.strTax_Cod=this.factura.strTax_Cod;
         item.fltValue_Tax=this.factura.fltValue_Tax_Local;
         item.blnCheck=true;
@@ -672,14 +724,17 @@ handleChangeCantidad(val){
           item.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
           item.strUM=this.multipleSelection[i].strUM;
           item.intQuantity=this.multipleSelection[i].intQuantity;
+          item.fltRec_QYT=this.multipleSelection[i].fltRec_QYT;
+          item.fltPay_Factura=this.multipleSelection[i].fltPay_Factura;
+          item.fltFacture_Net_PR_I=this.multipleSelection[i].fltFacture_Net_PR_I;
+          item.fltRec_Pend_QTY=this.multipleSelection[i].fltRec_Pend_QTY;
           item.intUnit_Price=this.multipleSelection[i].intUnit_Price;
           item.strDesc_Item=this.multipleSelection[i].strDesc_Item;
           item.strAccount_Cod=this.multipleSelection[i].strAccount_Cod;
           item.strCostCenter_NO=this.multipleSelection[i].strCostCenter_NO;
           item.fltValue_Doc=this.multipleSelection[i].fltValue_Doc;
           item.fltValue_Local=this.multipleSelection[i].fltValue_Local;
-          var dat1=(Number(this.multipleSelection[i].fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-          item.fltValue_Corp=parseFloat(dat1);
+          item.fltValue_Corp=this.multipleSelection[i].fltValue_Corp;
           item.strTax_Cod=this.multipleSelection[i].strTax_Cod;
           item.fltValue_Tax=this.multipleSelection[i].fltValue_Tax;
           item.blnCheck=true;
@@ -694,11 +749,11 @@ handleChangeCantidad(val){
           itemMI.strSerie_Doc=this.factura.strSerie_Doc;
           itemMI.strDocument_NO=this.factura.strDocument_NO;  
           itemMI.strVendor_Cod=this.factura.strVendor_NO;
-          itemMI.fltPrecUnit_Local=0;
+          itemMI.fltPrecUnit_Local=this.multipleSelection[i].intUnit_Price;
           itemMI.fltPrecUnit_Bal_Local=0;
           itemMI.fltAmount_PEN=0;
           itemMI.fltBalance_PEN=0;
-          itemMI.fltPrecUnit_USD=0;
+          itemMI.fltPrecUnit_USD=Math.round((this.multipleSelection[i].intUnit_Price/Number(this.factura.fltExchange_Rate))*100)/100;
           itemMI.fltPrecUnit_Bal_USD=0;
           itemMI.fltAmount_USD=0;
           itemMI.fltBalance_USD=0;
@@ -728,7 +783,7 @@ handleChangeCantidad(val){
           itemDG.strDocument_NO=this.factura.strDocument_NO;   
           itemDG.strCurrency_Cod=this.factura.strCurrency_Doc;
           itemDG.fltAmount_Local=this.multipleSelection[i].fltValue_Local;
-          itemDG.fltAmount_Corp=parseFloat(dat1);
+          itemDG.fltAmount_Corp=this.multipleSelection[i].fltValue_Corp;
           itemDG.intDoc_No=1;
           itemDG.strCreation_User='egaona';
           itemDG.dtmCreation_Date=new Date();
@@ -818,6 +873,7 @@ handleChangeCantidad(val){
               .then(response1=>{}).catch(ex=>{})
             }
             this.factura=new FacturaModel();
+            this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale; 
             this.factura.fltValue_Doc=0;
             this.factura.fltOperation_NoTax_Corp=0;  
             this.factura.fltNetValue_Doc_Corp=0;  
