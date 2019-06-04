@@ -112,9 +112,14 @@ export default class RecepcionMaterialComponent extends Vue {
         }, 200)
     }
     getParseDate(date){
-        console.log('date:',date);
         if(date!='' && date!=null && date!=undefined){
-            return Global.getParseDate(date);
+            var dateString = new Date(date);
+            var dia = dateString.getDate();
+            var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+            var yyyy = dateString.getFullYear();
+            var dd = (dia<10) ? '0'+dia : dd=dia;
+            var mm = (mes<10) ? '0'+mes : mm=mes;
+            return dd+'.'+mm+'.'+yyyy;
         }
         return '';
     }
@@ -138,10 +143,8 @@ export default class RecepcionMaterialComponent extends Vue {
         this.getRequisicion(this.codigoInput);
     }
     getRequisicion(codigo) {
-        debugger;
         requisicionService.getRequisicionByCod(codigo)
             .then(response => {
-                console.log(response);
                 this.requisicionData = response;
             })
     }
@@ -209,7 +212,6 @@ export default class RecepcionMaterialComponent extends Vue {
             }
         }
         this.multipleSelection = dataselect;
-        console.log('item select',this.multipleSelection);
     }
     //#endregion
     //#region [PROVEEDORES]
@@ -350,7 +352,6 @@ export default class RecepcionMaterialComponent extends Vue {
             }
             );
            
-            console.log(this.OrdenCompra)
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
                 ordenCompraService.inventarioPO(this.OrdenCompra)
@@ -416,7 +417,6 @@ export default class RecepcionMaterialComponent extends Vue {
         this.blnchangerec=false;
         setTimeout(() => {
             for(var i=0;i<this.requiDetalle1.length;i++){
-                debugger;
                 if(this.requiDetalle1[i].blnCheck){
                     this.multipleSelection.push(this.requiDetalle1[i])
                     if(this.requiDetalle1[i].fltRec_QYT >0){
@@ -425,19 +425,16 @@ export default class RecepcionMaterialComponent extends Vue {
                     }
                 }
             } 
-            this.fltTot_Rec_QYT=total;
-            this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
-            this.fltTot_Rec_Value=valueTotal;
-            console.log('change*******',this.requiDetalle1,total);  
+            this.fltTot_Rec_QYT=Math.round(total*100)/100;
+            this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100; 
+            this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
         }, 120)
     }
     getNumber(num){
         return parseFloat(num);
     }
     selectRow(row){
-        debugger;
         this.multipleSelection=[];
-        console.log('entro-check',row);
         var total=0;
         var valueTotal=0;
         for(var i=0;i<this.requiDetalle1.length;i++){
@@ -449,10 +446,10 @@ export default class RecepcionMaterialComponent extends Vue {
                 }
             }
         }
-        this.fltTot_Rec_QYT=total;
-        this.fltTot_Rec_Value=valueTotal;
-        this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
-        console.log('entro-check-2',this.multipleSelection)
+        this.fltTot_Rec_QYT=Math.round(total*100)/100;
+        this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
+        this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100;
+        
     }
     getDisabled(num1,num2,row){
         if(this.blnchangerec){
@@ -482,9 +479,7 @@ export default class RecepcionMaterialComponent extends Vue {
     }
     loadPO(){
         this.limpiarVista();
-        debugger;
         var object = JSON.parse(this.$route.query.data);
-        console.log('data extra',object);
         var modulo = this.$route.query.vista;
         if(modulo.toLowerCase()!='aprobar'){
           this.txtmodulo='Recepción Material';
@@ -500,7 +495,6 @@ export default class RecepcionMaterialComponent extends Vue {
             this.visualizar=true;
             this.vifaprobarrechasar=true;
             this.txtmodulo='Aprobar Orden Compra';
-            console.log(object.intIdPOH_ID);
         }
         this.intIdVendor_ID=object.intIdVendor_ID;
         this.intIdTypeReq_ID=object.intIdTypeReq_ID;
@@ -522,7 +516,6 @@ export default class RecepcionMaterialComponent extends Vue {
         ordenCompraService.getPOId(code)
         .then(res=>{
           if(res!=undefined){
-            console.log('cargarData1',res)
             ordenCompraService.getPODetalleId(res[0].intIdPOH_ID)
             .then(resd=>{
               this.OrdenCompra=res[0];
@@ -534,15 +527,12 @@ export default class RecepcionMaterialComponent extends Vue {
                 item.blnCheck=false;
                 this.requiDetalle1.push(item);
               }
-              console.log('cargarData2',resd,this.requiDetalle1)
             })
             .catch(error=>{
-              console.log('error',error)
             })     
           }
         })
         .catch(error=>{
-          console.log('error',error)
         })
       }
     async aprobar(){
@@ -553,8 +543,6 @@ export default class RecepcionMaterialComponent extends Vue {
         this.OrdenCompra.intIdTypeReq_ID=this.intIdTypeReq_ID;
         this.OrdenCompra.intIdPurReqH_ID=this.intIdPurReqH_ID;
         this.OrdenCompra.intIdWHS_ID=this.intIdWHS_ID;
-        
-        console.log('aprobar',this.OrdenCompra);
         await setTimeout(() => {
             for(var i=0;i<100;i++){
             this.valuem++; 
@@ -562,8 +550,6 @@ export default class RecepcionMaterialComponent extends Vue {
         }, 200)
         await ordenCompraService.aprobarPO(this.OrdenCompra)
         .then(res=>{
-            debugger;
-            console.log(this.valuem);
             setTimeout(() => {
                 this.vifprogress=false;
                 this.issave=true;
@@ -608,4 +594,7 @@ export default class RecepcionMaterialComponent extends Vue {
             totalPrice: 0
         }
     }
+    // computed:{
+
+    // }
 }

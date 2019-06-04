@@ -71,7 +71,7 @@ export default class VisualizarPOComponent extends Vue {
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');
     this.textTitle='Visualizar'
-    ordencompraService.GetOrdenCompraCompany(this.codigoCompania)
+    ordencompraService.GetOCView(this.codigoCompania)
     .then(resp=>{
         this.OrdenCompra=[];
         this.OrdenCompra=resp;

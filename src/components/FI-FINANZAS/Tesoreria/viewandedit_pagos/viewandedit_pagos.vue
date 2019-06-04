@@ -73,6 +73,49 @@
                     </div>
                     
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group row" style="margin-top: 6px;">
+                    <label class="sinLinea el-form-item__label col-sm-3" ></label>
+                        <div class="col-sm-4 grupolabel">
+                            <div class="input-group mb-3" >
+                            <!-- <el-input type="text"  size ="small" style="font-size:11px;" disabled></el-input> -->
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 6px;">
+                    <label class="sinLinea el-form-item__label col-sm-3" ></label>
+                        <div class="col-sm-4 grupolabel">
+                            <div class="input-group mb-3" >
+                            <!-- <el-input type="text"  size ="small" v-model="pago.fltAmount_Total" style="font-size:11px;" disabled></el-input> -->
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 6px;">
+                    <label class=" sinLinea el-form-item__label col-sm-3" ></label>
+                        <div class="col-sm-4 grupolabel">
+                            <div class="input-group mb-3" >
+                            <!-- <el-input type="text"  size ="small" v-model="pago.fltAmount_Total" style="font-size:11px;" disabled></el-input> -->
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 6px;">
+                    <label class="sinLinea el-form-item__label col-sm-3" ></label>
+                        <div class="col-sm-4 grupolabel">
+                            <div class="input-group mb-3" >
+                            <!-- <el-input type="text"  size ="small" v-model="pago.fltAmount_Total" style="font-size:11px;" disabled></el-input> -->
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-top: 6px;">
+                        <label class="sinLinea el-form-item__label col-sm-4" ></label>
+                    <label class="el-form-item__label col-sm-3" >Monto Total {{tipoMoney}}</label>
+                        <div class="col-sm-4 grupolabel">
+                            <div class="input-group mb-3" >
+                            <el-input type="text" class="inputAling" size ="small" v-model="pago.fltAmount_Total" style="font-size:11px;" disabled></el-input>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <el-tabs type="border-card">
                 <el-tab-pane>

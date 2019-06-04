@@ -150,8 +150,8 @@ export default class  BAlmacenComponent extends Vue {
   checkCompania(){
     this.$emit('almacenseleccionado',this.almacenSelectModel);
   }
-  closeCompania(){
-    this.$emit('companiaAlmacen');
+  closeAlmacen(){
+    this.$emit('closeAlmacen');
   }
   
   handleCurrentChange(val:AlmacenModel){

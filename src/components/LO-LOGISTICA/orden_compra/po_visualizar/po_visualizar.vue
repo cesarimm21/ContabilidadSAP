@@ -49,7 +49,8 @@
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @header-click="headerclick"
-                                        @current-change="handleCurrentChange" >          
+                                        @current-change="handleCurrentChange" >
+                                        <el-table-column type="index" label="Linea" width="38">   </el-table-column>          
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
                                          prop="strPO_NO" min-width="60" label="Orden Compra">
@@ -81,6 +82,15 @@
                                             :render-header="filterfltTotal_Val"
                                             prop="fltTotal_Val"  width="100"
                                             label="Valor total" >
+                                        </el-table-column>
+                                        <el-table-column 
+                                            prop="chrPO_Status" align="center"  width="80"
+                                            label="Estado">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.chrPO_Status === '50' ? 'success' : 'danger'"
+                                                disable-transitions>{{scope.row.chrPO_Status=== '50'?'Aprobado':'Pendiente'}}</el-tag>
+                                            </template>
                                         </el-table-column>
 
                                     </el-table>

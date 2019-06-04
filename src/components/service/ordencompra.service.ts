@@ -18,6 +18,18 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getOCForFactura(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'ordencompraForFacture/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetOCView(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'ordencompraview/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   UpdateOrdenCompra(OrdenCompra){    
     return axios.post(CONFIG.API_URL+'ordencompra/update',OrdenCompra)
     .then(response =>{            
@@ -55,7 +67,7 @@ export default{
     })
   },
   busquedaPO(data){
-    return axios.get(CONFIG.API_URL+'busqueda/ordencompra/'+data.strPO_NO+'/'+data.strVendor_NO+'/'+data.desde+'/'+data.hasta)
+    return axios.get(CONFIG.API_URL+'busqueda/ordencompra')
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })

@@ -555,10 +555,12 @@ export default class CrearPRComponent extends Vue {
   }
   closePrioridad(){
     this.btnactivarprioridad=false;
+    this.dialogPrioridad=false;
     return false;
   }
   closeUnidadMedida(){
     this.btnactivarunidadmedida=false;
+    this.dialogUnidadMedida=false;
     return false;
   }
 
@@ -579,27 +581,33 @@ export default class CrearPRComponent extends Vue {
   closeProveedor(){
     debugger;
     this.btnactivarproveedor=false;
+    this.dialogProveedor=false;
     return false;
   }
   closeMaterial(){
     debugger;
+    this.dialogMaterial=false;
     this.btnactivarmaterial=false;
     return false;
   }
   closeCuentaContable(){
-    
+    this.dialogCuentaContable=false;
     return false;
   }
   closeCategoriaLinea(){
+    this.dialogCategoriaLinea=false;
     return false;
   }
   closeCentroCostos(){
+    this.dialogCentroCostos=false;
     return false;
   }
   closeCategoriaCuenta(){
+    this.dialogCategoriaCuenta=false;
     return false;
   }
   closeMoneda(){
+    this.dialogMoneda=false;
     return false;
   }
 
@@ -620,7 +628,7 @@ export default class CrearPRComponent extends Vue {
   }
   closeAlmacen(){
     debugger;
-    console.log("closeAlmacen");
+    this.dialogAlmacen=false;
     this.btnactivaralmacen=false;
     return false;
   }
@@ -842,8 +850,7 @@ export default class CrearPRComponent extends Vue {
     console.log('traer',val);
     this.requisicionModel.strWHS_Cod=val.strWHS_Cod;
     this.requisicionModel.strWHS_Desc=val.strWHS_Desc;
-    this.requisicionModel.intIdWHS_ID=val.intIdWHS_ID;
-    
+    this.requisicionModel.intIdWHS_ID=val.intIdWHS_ID;    
     this.dialogAlmacen=false;
   }
   SeleccionadoCategoriaCuenta(val){

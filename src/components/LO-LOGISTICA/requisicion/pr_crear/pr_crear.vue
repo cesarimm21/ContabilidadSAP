@@ -567,56 +567,56 @@
 
    <!--DIALOG BUSQUEDA CENTRO COSTOS-->
     <el-dialog title="Busqueda centro de costos"  :visible.sync="dialogCentroCostos" @close="closeCentroCostos" size="small" >
-      <bcentrocosto v-on:centrocostoselecionado="SeleccionadoCentroCosto($event)">
+      <bcentrocosto v-on:centrocostoselecionado="SeleccionadoCentroCosto($event)" v-on:centrocostosclose="closeCentroCostos()">
       </bcentrocosto>
     </el-dialog>
 
     <!--DIALOG BUSQUEDA MONEDA-->
     <el-dialog title="Busqueda moneda"  :visible.sync="dialogMoneda" @close="closeMoneda" size="small" >
-      <bmoneda v-on:MonedaSeleccionado="SeleccionadoMoneda($event)">
+      <bmoneda v-on:MonedaSeleccionado="SeleccionadoMoneda($event)" v-on:closeMoneda="closeMoneda()">
       </bmoneda>
     </el-dialog>
 
      <!--DIALOG BUSQUEDA CATEGORIA CUENTA-->
     <el-dialog title="Busqueda categoria cuenta"  :visible.sync="dialogCategoriaCuenta" @close="closeCategoriaCuenta" size="small" >
-      <bcategoriacuenta v-on:categoriacuentaselecionado="SeleccionadoCategoriaCuenta($event)">
+      <bcategoriacuenta v-on:categoriacuentaselecionado="SeleccionadoCategoriaCuenta($event)" v-on:categoriacuentaclose="closeCategoriaCuenta()">
       </bcategoriacuenta>
     </el-dialog>
     <!--DIALOG BUSQUEDA CATEGORIA LINEA-->
     <el-dialog title="Busqueda categoria linea"  :visible.sync="dialogCategoriaLinea" @close="closeCategoriaLinea" size="small" >
-      <bcategorialinea v-on:categorialineaselecionado="SeleccionadoCategoriaLinea($event)">
+      <bcategorialinea v-on:categorialineaselecionado="SeleccionadoCategoriaLinea($event)" v-on:categorialineaclose="closeCategoriaLinea()">
       </bcategorialinea>
     </el-dialog>
      <!--DIALOG BUSQUEDA CUENTA CONTABLE-->
     <el-dialog title="Busqueda cuenta contable"  :visible.sync="dialogCuentaContable" @close="closeCuentaContable" size="small" >
-      <bcuentacontable v-on:cuentacontableselecionado="SeleccionadoCuentaContable($event)">
+      <bcuentacontable v-on:cuentacontableselecionado="SeleccionadoCuentaContable($event)" v-on:cuentacontableClose="closeCuentaContable()">
       </bcuentacontable>
     </el-dialog>
       <!--DIALOG BUSQUEDA Material-->
     <el-dialog title="Busqueda material"  :visible.sync="dialogMaterial" @close="closeMaterial" size="small" >
-      <bmaterial v-on:materialselecionado="SeleccionadoMaterial($event)">
+      <bmaterial v-on:materialselecionado="SeleccionadoMaterial($event)" v-on:materialClose="closeMaterial()">
       </bmaterial>
     </el-dialog>
      <!--DIALOG BUSQUEDA PROVEEDOR-->
     <el-dialog title="Busqueda proveedor"  :visible.sync="dialogProveedor" @close="closeProveedor" size="small" >
-      <bproveedor v-on:proveedorselecionado="SeleccionadoProveedor($event)">
+      <bproveedor v-on:proveedorselecionado="SeleccionadoProveedor($event)" v-on:proveedorClose="closeProveedor()">
       </bproveedor>
     </el-dialog>
     <!--DIALOG BUSQUEDA ALMACEN-->
     <el-dialog title="Busqueda almacen"  :visible.sync="dialogAlmacen" @close="closeAlmacen" size="small" >
-      <balmacen v-on:almacenseleccionado="SeleccionadoAlmacen($event)">
+      <balmacen v-on:almacenseleccionado="SeleccionadoAlmacen($event)" v-on:closeAlmacen="closeAlmacen()">
       </balmacen>
     </el-dialog>
 
     <!--DIALOG BUSQUEDA UNIDAD MEDIDA-->
     <el-dialog title="Busqueda unidad medida"  :visible.sync="dialogUnidadMedida" @close="closeUnidadMedida" size="small" >
-      <bunidadmedida v-on:unidadmedidaselecionado="SeleccionadoUnidadMedida($event)">
+      <bunidadmedida v-on:unidadmedidaselecionado="SeleccionadoUnidadMedida($event)" v-on:unidadmedidaClose="closeUnidadMedida()">
       </bunidadmedida>
     </el-dialog>
 
     <!--DIALOG BUSQUEDA PRIORIDAD-->
     <el-dialog title="Busqueda prioridad"  :visible.sync="dialogPrioridad" @close="closePrioridad" size="small" >
-      <bprioridad v-on:prioridadselecionado="SeleccionadoPrioridad($event)">
+      <bprioridad v-on:prioridadselecionado="SeleccionadoPrioridad($event)" v-on:prioridadclose="closePrioridad()">
       </bprioridad>
     </el-dialog>
 

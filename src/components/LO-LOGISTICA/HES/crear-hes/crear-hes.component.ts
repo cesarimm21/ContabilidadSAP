@@ -248,7 +248,6 @@ export default class CrearHesComponent extends Vue {
     .then(response=>{
       this.ordenCompraDetalle=[];
       this.ordenCompraDetalle=response;
-      console.log( this.ordenCompraDetalle);
       this.TableIngreso=[];
       for(var i=0;i<this.ordenCompraDetalle.length;i++){
         var reqDetalle:HesDetalleModel=new HesDetalleModel();
@@ -264,12 +263,12 @@ export default class CrearHesComponent extends Vue {
         reqDetalle.chrStatus="A";
         this.TableIngreso.push(reqDetalle);
       }  
-      // var num=this.TableIngreso.length;
-      // for(var i=0;i<50-num;i++){
-      //   var reqDetalle:HesDetalleModel=new HesDetalleModel();
-      //   reqDetalle.chrStatus="A";
-      //   this.TableIngreso.push(reqDetalle);
-      // }    
+      var num=this.TableIngreso.length;
+      for(var i=0;i<50-num;i++){
+        var reqDetalle:HesDetalleModel=new HesDetalleModel();
+        reqDetalle.chrStatus="A";
+        this.TableIngreso.push(reqDetalle);
+      }    
       
     })
   }
