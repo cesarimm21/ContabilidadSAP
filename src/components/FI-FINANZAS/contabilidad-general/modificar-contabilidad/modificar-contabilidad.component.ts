@@ -996,32 +996,32 @@ closeCategoriaCuenta(){
               nuevo.fltAmount_Local=0;
             }
           }
+          debugger;
+          
+          nuevo.strAccDocum_NO=this.strAccDocum_NO;
+          diariogeneralService.createDiarioGeneralAutoReverse(nuevo).then(response=>{
+            this.voucher=response;
+            this.habilitarPane=false;
+            loadingInstance.close();
+            this.openMessageSuccess('Se guardo correctamente '+response.strAccDocum_NO);
+          
+            this.strDaily_Cod='';
+            this.strDaily_Cod_Desc='';
+            this.Currency_Cod='';
+            this.OrigenDocum_NO='';
+            this.Desc_Header='';
+            this.Autoreverse=false;
+            this.CompleteData=[];
+          })
+          .catch(e =>{
             debugger;
+            console.log(e);
             
-            nuevo.strAccDocum_NO=this.strAccDocum_NO;
-            diariogeneralService.createDiarioGeneral(nuevo) .then(response=>{
-              this.voucher=response;
-              this.habilitarPane=false;
-              loadingInstance.close();
-              this.openMessageSuccess('Se guardo correctamente '+response.strAccDocum_NO);
-            
-              this.strDaily_Cod='';
-              this.strDaily_Cod_Desc='';
-              this.Currency_Cod='';
-              this.OrigenDocum_NO='';
-              this.Desc_Header='';
-              this.Autoreverse=false;
-              this.CompleteData=[];
-            })
-            .catch(e =>{
-              debugger;
-              console.log(e);
-              
-              this.openMessageError('Error guardar contabilidad ');
-              loadingInstance.close();
-            })  
-          }
+            this.openMessageError('Error guardar contabilidad ');
+            loadingInstance.close();
+          })  
         }
+      }
      
     } 
   }

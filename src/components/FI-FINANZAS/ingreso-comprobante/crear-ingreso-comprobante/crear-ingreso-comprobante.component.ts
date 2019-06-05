@@ -13,6 +13,7 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 import ordencompraService from '@/components/service/ordencompra.service';
 import diarioService from '@/components/service/diario.service'; 
 import diariogeneralService from '@/components/service/diariogeneral.service'; 
+import balanceCuentaService from '@/components/service/balancecuenta.service'; 
 import movimientoService from '@/components/service/movinventario.service'; 
 import tipocambioService from '@/components/service/tipocambio.service';
 import facturaService from '@/components/service/factura.service';
@@ -34,6 +35,7 @@ import {FacturaModel} from '@/modelo/maestro/factura';
 import {FacturaDetalleModel} from '@/modelo/maestro/facturadetalle';
 import {DiarioModel} from '@/modelo/maestro/diario';
 import {DiarioGeneralModel} from '@/modelo/maestro/diariogeneral';
+import {BalanceCuentaModel} from '@/modelo/maestro/balancecuentas';
 import {TipoCambioModel} from '@/modelo/maestro/tipocambio';
 import {ImpuestoModel} from '@/modelo/maestro/impuesto';
 import {MovimientoInventarioModel} from '@/modelo/maestro/movimientoinventario';
@@ -124,6 +126,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   fecha_vencida:string='';
   public DiarioGeneral:DiarioGeneralModel=new DiarioGeneralModel();
   diarioInput:DiarioGeneralModel[];
+  balanceclist:BalanceCuentaModel[];
   //**impuesto */
   public Impuesto:ImpuestoModel=new ImpuestoModel();
   public ImpuestoB:ImpuestoModel=new ImpuestoModel();
@@ -706,6 +709,7 @@ getNumber(num){
       .then(res=>{
         this.CodigoGeneral=res;
         this.diarioInput=[];
+        this.balanceclist=[];
         this.movimientoInven=[];
         this.factura.dtmDoc_Acc_Date=new Date(this.fecha_ejecucion);
         this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);
@@ -788,6 +792,20 @@ getNumber(num){
           itemDG.strCreation_User='egaona';
           itemDG.dtmCreation_Date=new Date();
           itemDG.chrStatus='A';
+
+          var balc:BalanceCuentaModel =new BalanceCuentaModel();
+          
+          balc.strCompany_Cod=this.factura.strCompany_Cod;
+          balc.strCompany_Desc=this.factura.strCompany_Desc;
+          balc.intYear=anio;
+          balc.dtmPeriod=this.factura.dtmPeriod;
+          balc.strPeriodRepo='';
+          balc.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
+          balc.fltOpening_Balance=0;
+          balc.fltCredit_Acc=0;
+          balc.fltDebit_Acc=this.multipleSelection[i].fltValue_Local;
+          
+          this.balanceclist.push(balc);
           this.diarioInput.push(itemDG);
         }            
           var itemDG_40:DiarioGeneralModel=new DiarioGeneralModel();
@@ -818,6 +836,20 @@ getNumber(num){
           itemDG_40.strCreation_User='egaona';
           itemDG_40.dtmCreation_Date=new Date();
           itemDG_40.chrStatus='A';
+          
+          var balc40:BalanceCuentaModel =new BalanceCuentaModel();
+          
+          balc40.strCompany_Cod=this.factura.strCompany_Cod;
+          balc40.strCompany_Desc=this.factura.strCompany_Desc;
+          balc40.intYear=anio;
+          balc40.dtmPeriod=this.factura.dtmPeriod;
+          balc40.strPeriodRepo='';
+          balc40.strAcc_Local_NO=this.Impuesto.strCta_Country;
+          balc40.fltOpening_Balance=0;
+          balc40.fltDebit_Acc=this.factura.fltValue_Tax_Local;
+          balc40.fltCredit_Acc=0;
+          this.balanceclist.push(balc40);
+
           this.diarioInput.push(itemDG_40);
           var itemDG_42:DiarioGeneralModel=new DiarioGeneralModel();
           itemDG_42.strCompany_Cod=this.factura.strCompany_Cod;
@@ -847,6 +879,21 @@ getNumber(num){
           itemDG_42.strCreation_User='egaona';
           itemDG_42.dtmCreation_Date=new Date();
           itemDG_42.chrStatus='A';
+          
+          var balc42:BalanceCuentaModel =new BalanceCuentaModel();
+          
+          balc42.strCompany_Cod=this.factura.strCompany_Cod;
+          balc42.strCompany_Desc=this.factura.strCompany_Desc;
+          balc42.intYear=anio;
+          balc42.dtmPeriod=this.factura.dtmPeriod;
+          balc42.strPeriodRepo='';
+          balc42.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
+          balc42.fltOpening_Balance=0;
+          balc42.fltDebit_Acc=0;
+          balc42.fltCredit_Acc=-this.factura.fltOperation_NoTax_Local;
+          
+          this.balanceclist.push(balc42);
+          
           this.diarioInput.push(itemDG_42);
         let loadingInstance = Loading.service({
           fullscreen: true,
@@ -867,6 +914,10 @@ getNumber(num){
               this.diarioInput[i].strOrigenDocum_NO=response;
               diariogeneralService.createDiarioGeneral(this.diarioInput[i])
               .then(response1=>{}).catch(ex=>{})
+            }
+            for(var j=0;j<this.balanceclist.length;j++){
+              balanceCuentaService.CreateBalance(this.balanceclist[j])
+              .then(response2=>{}).catch(ex=>{})
             }
             for(var i=0;i<this.movimientoInven.length;i++){
               movimientoService.updateMovimiento(this.movimientoInven[i])

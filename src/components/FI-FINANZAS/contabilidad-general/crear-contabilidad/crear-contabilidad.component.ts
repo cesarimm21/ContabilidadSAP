@@ -873,7 +873,7 @@ closeCategoriaCuenta(){
       background: 'rgba(0, 0, 0, 0.8)'
       }
       );  
-    correlativoService.GetCorrelativoId('PFI006') .then(resp=>{
+    correlativoService.GetCorrelativoId('PFI006').then(resp=>{
     for(var i=0;i<this.totalRegistros;i++){
       if(this.CompleteData[i].strAcctCateg_Cod!=undefined){
         var nuevo:DiarioGeneralModel=new DiarioGeneralModel();
@@ -904,7 +904,6 @@ closeCategoriaCuenta(){
           }
         }
       
-       
           debugger;
           if(resp!=undefined){
             nuevo.strAccDocum_NO=resp;

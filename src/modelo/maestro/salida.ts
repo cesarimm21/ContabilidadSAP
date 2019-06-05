@@ -8,7 +8,8 @@ export class SalidaModel {
     strTypeMov_Cod:string ;     
     strTypeMov_Desc:string ;
     strWHS_Cod:string ;    
-    strWHS_Desc:string ;        
+    strWHS_Desc:string ;   
+    strMatClass_Cod:string;     
     dtmTransaction_Date:Date ;    
     dtmApproved_Date:Date ; 
     strApproved_Status:string ;    
