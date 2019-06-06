@@ -13,6 +13,8 @@ export class HesDetalleModel {
     strCostCenter_NO:string;
     fltGross_Price:number;
     fltNet_Value:number;
+    fltRec_Value:number;
+    fltFacture_Net_PR_I:number;
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;
@@ -33,6 +35,8 @@ export class HesDetalleModel {
         this.strCostCenter_NO='';
         this.fltGross_Price=0;
         this.fltNet_Value=0;
+        this.fltRec_Value=0;
+        this.fltFacture_Net_PR_I=0;
         this.strCreation_User='';
         this.dtmCreation_Date=new Date;
         this.strModified_User='';

@@ -46,7 +46,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
     vifprogress:boolean=true;
     //FILTRO DE BUSQUEDA
     pagina: number =1;
-    RegistersForPage: number = 10;
+    RegistersForPage: number = 100;
     totalRegistros: number = 100;
     clickColumn:string='';
     txtbuscar:string='';
@@ -77,7 +77,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
           this.gridProveedor=response;   
           for(var j=0;j<this.gridProveedor.length;j++){
             if(this.gridProveedor[j].strLastName!=null){
-              this.gridProveedor[j].strVendor_Desc=this.gridProveedor[j].strVendor_Desc+', '+this.gridProveedor[j].strLastName+' '+this.gridProveedor[j].strSurName              
+              this.gridProveedor[j].strVendor_Desc=this.gridProveedor[j].strVendor_Desc+' '+this.gridProveedor[j].strLastName+' '+this.gridProveedor[j].strSurName              
             }        
           }
           this.gridProveedor1=this.gridProveedor;

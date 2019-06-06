@@ -180,13 +180,13 @@ export default class CrearHesComponent extends Vue {
     this.dialogOrdenCompra=false;
     this.loadOrdenDet(this.ordencompraSelect.intIdPOH_ID);
     this.valueSwtch=false;
-    this.TableIngreso=[];
-    for(var i=0;i<10;i++){
-      var reqDetalle:HesDetalleModel=new HesDetalleModel();
-      reqDetalle.chrStatus="A";
-      reqDetalle.strCurrency=this.ordencompraSelect.strCurrency_Cod;
-      this.TableIngreso.push(reqDetalle);   
-    }
+    // this.TableIngreso=[];
+    // for(var i=0;i<10;i++){
+    //   var reqDetalle:HesDetalleModel=new HesDetalleModel();
+    //   reqDetalle.chrStatus="A";
+    //   reqDetalle.strCurrency=this.ordencompraSelect.strCurrency_Cod;
+    //   this.TableIngreso.push(reqDetalle);   
+    // }
   } 
   closeOrdenCompra(){    
     this.btnactivarOrdenCompra=false;
@@ -257,6 +257,8 @@ export default class CrearHesComponent extends Vue {
         reqDetalle.intQuantity=this.ordenCompraDetalle[i].fltPO_QTY_I;
         reqDetalle.fltGross_Price=this.ordenCompraDetalle[i].fltPO_Net_PR_I;
         reqDetalle.fltNet_Value=this.ordenCompraDetalle[i].fltCurr_Net_PR_P;
+        reqDetalle.fltRec_Value=this.ordenCompraDetalle[i].fltPO_Net_PR_I-this.ordenCompraDetalle[i].fltRec_Value;
+        reqDetalle.fltFacture_Net_PR_I=this.ordenCompraDetalle[i].fltFacture_Net_PR_I;
         reqDetalle.strCurrency=this.ordenCompraDetalle[i].strCurrency_Cod;
         reqDetalle.intIdCostCenter_ID=this.ordenCompraDetalle[i].intIdCostCenter_ID;
         reqDetalle.strCostCenter_NO=this.ordenCompraDetalle[i].strCostCenter_NO;
@@ -328,7 +330,7 @@ export default class CrearHesComponent extends Vue {
     this.multipleSelectionAcept=val;
     this.hesModel.fltTot_QTY=0;
     for(var i=0;i< this.multipleSelectionAcept.length;i++){
-      this.hesModel.fltTot_QTY+=Number(this.multipleSelectionAcept[i].fltNet_Value);
+      this.hesModel.fltTot_QTY+=Number(this.multipleSelectionAcept[i].fltGross_Price);
     }
   }
 //#endregion
@@ -340,33 +342,11 @@ export default class CrearHesComponent extends Vue {
     this.hesModel.dtmProcess_Date=new Date();
     this.hesModel.dtmAuthsd_Date=this.ordencompraSelect.dtmProcess_Date;
     this.hesModel.strCurrency=this.ordencompraSelect.strCurrency_Cod;
-    // this.hesModel.fltTot_QTY=this.ordencompraDetalleSelect.fltCurr_Net_PR_P;
-    // this.hesModel.strPO_Item_NO=this.ordencompraDetalleSelect.intIdPOD_ID.toString();
-    // this.hesModel.intIdPOD_ID=this.ordencompraDetalleSelect.intIdPOD_ID;
-    // this.hesModel.strPO_Item_Desc=this.ordencompraDetalleSelect.strPO_Item_Desc;
     this.hesModel.strCreation_User='egaona';
     this.hesModel.dtmSince_Date=new Date(this.fecha_since);
     this.hesModel.dtmUntil_Date=new Date(this.fecha_until);
     this.hesModel.listaDetalle=[];
     this.hesModel.listaDetalle=this.multipleSelectionAcept;
-    // for(var i=0;i< this.TableIngreso.length;i++){
-    //   if(this.TableIngreso[i].strCostCenter_NO!=''&&this.TableIngreso[i].strDesc_Detail!=''&&this.TableIngreso[i].strService_NO!=''){
-    //     this.hesModel.listaDetalle.push({
-    //       intHES_Item_NO:i+1,
-    //       strService_NO:this.TableIngreso[i].strService_NO,
-    //       strDesc_Detail:this.TableIngreso[i].strDesc_Detail,
-    //       strHES_Status:'00',
-    //       intQuantity:this.TableIngreso[i].intQuantity,
-    //       strUM:this.TableIngreso[i].strUM,
-    //       strCurrency:this.TableIngreso[i].strCurrency,
-    //       intIdCostCenter_ID:-1,
-    //       strCostCenter_NO:this.TableIngreso[i].strCostCenter_NO,
-    //       fltGross_Price:this.TableIngreso[i].fltGross_Price,
-    //       fltNet_Value:this.TableIngreso[i].fltNet_Value,
-    //       chrStatus:'A'
-    //     })
-    //   }      
-    // }
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guargando...',
@@ -567,11 +547,15 @@ handleChangeValUni(val){
   for (let i = 0; i < this.TableIngreso.length; i++) {
       if(this.TableIngreso[i].strService_NO == this.rowSelect){
           this.TableIngreso[i].fltNet_Value=Math.round(val*this.TableIngreso[i].intQuantity*100)/100;
+          this.TableIngreso[i].fltRec_Value=Math.round((this.TableIngreso[i].fltGross_Price-val)*100)/100;
           this.requiTemp=this.TableIngreso; 
           this.TableIngreso=[];              
           this.TableIngreso=this.requiTemp;  
           this.requiTemp=[];
       }
+    }
+    for(let i = 0; i < this.multipleSelectionAcept.length; i++){
+      // this.hesModel.fltTot_Value=0 falta aqui
     }  
 }
   changeAcepte(val){

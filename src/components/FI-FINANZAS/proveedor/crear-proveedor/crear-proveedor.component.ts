@@ -17,7 +17,7 @@ import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
 import impuestoService from '@/components/service/impuesto.service';
 import cuentaContableService from '@/components/service/cuentacontable.service';
-
+import paisService from '@/components/service/pais.service';
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BBancoProveedor from '@/components/buscadores/b_banco/b_banco.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
@@ -164,7 +164,6 @@ export default class CrearProveedorComponent extends Vue {
     this.GetProveedoresCompany(this.codigoCompania);
   }
   handleClick(tab, event) {
-    console.log(tab.label); 
     if(tab.label=='Datos generales'){ this.cardView=true;}   
     if(tab.label=='Dirección'){ this.cardView=false;}   
     if(tab.label=='Cuentas Bancarias'){ this.cardView=false;}   
@@ -222,6 +221,60 @@ export default class CrearProveedorComponent extends Vue {
   //#endregion
 
   //#region [BANCO]
+  GetOnlyOneDepartamento(v){
+    departamentoService.GetOnlyOneDepartamento(v)
+    .then(response=>{
+      this.selectDepartamento=response;
+    })
+  }
+  loadTipoDocumento(v){    
+    
+    this.selectTipoDoc=new TipoDocIdentidadModel();
+    tipodocidentidadService.GetOnlyOneTipoDocumento(v)
+    .then(response=>{
+      this.selectTipoDoc=response;
+    }).catch(error=>{
+
+    })
+  }
+  loadBancoByIDA(v){
+    bancoService.GetOnlyOneBanco(v)
+    .then(response=>{
+     this.selectBancoA=response;
+    }).catch(error=>{
+
+    })
+  }
+  loadBancoByIDB(v){
+    bancoService.GetOnlyOneBanco(v)
+    .then(response=>{
+     this.selectBancoB=response;
+    }).catch(error=>{
+
+    })
+  }
+  loadBancoByIDC(v){
+    bancoService.GetOnlyOneBanco(v)
+    .then(response=>{
+     this.selectBancoC=response;
+    }).catch(error=>{
+
+    })
+  }
+  loadBancoByIDD(v){
+    bancoService.GetOnlyOneBanco(v)
+    .then(response=>{
+     this.selectBancoD=response;
+    }).catch(error=>{
+
+    })
+  }
+  GetOnlyOnePais(v){
+    paisService.GetOnlyOnePais(v)
+    .then(response=>{
+      this.gridSelectPais=response;       
+    })
+  }
   loadBanco(){
     bancoService.GetAllBanco()
     .then(response=>{
@@ -410,7 +463,7 @@ export default class CrearProveedorComponent extends Vue {
     this.dialogVisible=false;
   }
   proveedorCheck(){
-    this.dialogVisible=false;
+    this.dialogVisible=false;   
     this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID.intIdCompany_ID;
     this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
     this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
@@ -421,6 +474,8 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
     this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
     this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
+    this.selectCategoria(this.gridSelectedProveedor.strCat_Person,this.Proveedor.intIdVenCateg_ID);
+    this.value1=this.Proveedor.strCat_Person;
     this.Proveedor.strTax_ID=this.gridSelectedProveedor.strTax_ID;
     this.Proveedor.strVendor_Desc=this.gridSelectedProveedor.strVendor_Desc;
     this.Proveedor.strLastName=this.gridSelectedProveedor.strLastName;
@@ -451,49 +506,64 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
     this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
     this.departEnabled=false;
+    this.loadTipoDocumento(this.Proveedor.strDocIdent_NO);
+    this.GetOnlyOneDepartamento(this.Proveedor.strRegión_Cod);
+    this.loadBancoByIDA(this.Proveedor.strBank_Cod);
+    this.loadBancoByIDB(this.Proveedor.strBank_Corp_Cod);
+    this.loadBancoByIDC(this.Proveedor.strBank_Other_Cod);
+    this.loadBancoByIDD(this.Proveedor.strFore_Branch_Cod);
+    this.GetOnlyOnePais(this.Proveedor.strCountry);
+    this.GetOnlyOneMonedaA(this.Proveedor.strCurrency_Cod);
+    this.GetOnlyOneMonedaB(this.Proveedor.strCurrency_Corp);
+    this.GetOnlyOneMonedaC(this.Proveedor.strFore_Swift_Cod);
+    this.GetOnlyOneMonedaD(this.Proveedor.strFore_Curr_Cod);
+    console.log(this.Proveedor);
+    
   }
-  checkDoblePro(){
-    this.dialogVisible=false;
-    this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID.intIdCompany_ID;
-    this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
-    this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
-    this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
-    this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
-    this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
-    this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
-    this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
-    this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
-    this.Proveedor.strTax_ID=this.gridSelectedProveedor.strTax_ID;
-    this.Proveedor.strVendor_Desc=this.gridSelectedProveedor.strVendor_Desc;
-    this.Proveedor.strLastName=this.gridSelectedProveedor.strLastName;
-    this.Proveedor.strSurName=this.gridSelectedProveedor.strSurName;
-    this.Proveedor.strAddress=this.gridSelectedProveedor.strAddress;
-    this.Proveedor.strProvince=this.gridSelectedProveedor.strProvince;
-    this.Proveedor.strDistrict=this.gridSelectedProveedor.strDistrict;
-    this.Proveedor.strPostal_Cod=this.gridSelectedProveedor.strPostal_Cod;
-    this.Proveedor.strDocIdent_NO=this.gridSelectedProveedor.strDocIdent_NO;
-    this.Proveedor.strCurrency_Cod=this.gridSelectedProveedor.strCurrency_Cod;
-    this.Proveedor.strBank_Cod=this.gridSelectedProveedor.strBank_Cod;
-    this.Proveedor.intDayToPay=this.gridSelectedProveedor.intDayToPay;
-    this.Proveedor.strBankAcct_Local_NO=this.gridSelectedProveedor.strBankAcct_Local_NO;
-    this.Proveedor.strCurrency_Corp=this.gridSelectedProveedor.strCurrency_Corp;
-    this.Proveedor.strBank_Corp_Cod=this.gridSelectedProveedor.strBank_Corp_Cod;
-    this.Proveedor.strBankAcct_Corp_NO=this.gridSelectedProveedor.strBankAcct_Corp_NO;
-    this.Proveedor.strBank_Other_Cod=this.gridSelectedProveedor.strBank_Other_Cod;
-    this.Proveedor.strBankAcct_Other_NO=this.gridSelectedProveedor.strBankAcct_Other_NO;
-    this.Proveedor.strFore_Swift_Cod=this.gridSelectedProveedor.strFore_Swift_Cod;
-    this.Proveedor.strFore_Branch_Cod=this.gridSelectedProveedor.strFore_Branch_Cod;
-    this.Proveedor.strFore_Bank_Desc=this.gridSelectedProveedor.strFore_Bank_Desc;
-    this.Proveedor.strFore_AccBank_NO=this.gridSelectedProveedor.strFore_AccBank_NO;
-    this.Proveedor.strFore_Curr_Cod=this.gridSelectedProveedor.strFore_Curr_Cod;
-    this.Proveedor.strRetention_Cod=this.gridSelectedProveedor.strRetention_Cod;
-    this.Proveedor.fltRetention_Porcen=this.gridSelectedProveedor.fltRetention_Porcen;
-    this.Proveedor.strDetraccion_Cod=this.gridSelectedProveedor.strDetraccion_Cod;
-    this.Proveedor.fltDetraccion_Porcen=this.gridSelectedProveedor.fltDetraccion_Porcen;
-    this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
-    this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
-    this.departEnabled=false;
-  }
+  // checkDoblePro(){
+  //   this.dialogVisible=false;
+  //   this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID.intIdCompany_ID;
+  //   this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
+  //   this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
+  //   this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
+  //   this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
+  //   this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
+  //   this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
+  //   this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
+  //   this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
+  //   this.selectCategoria(this.gridSelectedProveedor.strCat_Person,this.Proveedor.intIdVenCateg_ID);
+  //   this.value1=this.Proveedor.strCat_Person;
+  //   this.Proveedor.strTax_ID=this.gridSelectedProveedor.strTax_ID;
+  //   this.Proveedor.strVendor_Desc=this.gridSelectedProveedor.strVendor_Desc;
+  //   this.Proveedor.strLastName=this.gridSelectedProveedor.strLastName;
+  //   this.Proveedor.strSurName=this.gridSelectedProveedor.strSurName;
+  //   this.Proveedor.strAddress=this.gridSelectedProveedor.strAddress;
+  //   this.Proveedor.strProvince=this.gridSelectedProveedor.strProvince;
+  //   this.Proveedor.strDistrict=this.gridSelectedProveedor.strDistrict;
+  //   this.Proveedor.strPostal_Cod=this.gridSelectedProveedor.strPostal_Cod;
+  //   this.Proveedor.strDocIdent_NO=this.gridSelectedProveedor.strDocIdent_NO;
+  //   this.Proveedor.strCurrency_Cod=this.gridSelectedProveedor.strCurrency_Cod;
+  //   this.Proveedor.strBank_Cod=this.gridSelectedProveedor.strBank_Cod;
+  //   this.Proveedor.intDayToPay=this.gridSelectedProveedor.intDayToPay;
+  //   this.Proveedor.strBankAcct_Local_NO=this.gridSelectedProveedor.strBankAcct_Local_NO;
+  //   this.Proveedor.strCurrency_Corp=this.gridSelectedProveedor.strCurrency_Corp;
+  //   this.Proveedor.strBank_Corp_Cod=this.gridSelectedProveedor.strBank_Corp_Cod;
+  //   this.Proveedor.strBankAcct_Corp_NO=this.gridSelectedProveedor.strBankAcct_Corp_NO;
+  //   this.Proveedor.strBank_Other_Cod=this.gridSelectedProveedor.strBank_Other_Cod;
+  //   this.Proveedor.strBankAcct_Other_NO=this.gridSelectedProveedor.strBankAcct_Other_NO;
+  //   this.Proveedor.strFore_Swift_Cod=this.gridSelectedProveedor.strFore_Swift_Cod;
+  //   this.Proveedor.strFore_Branch_Cod=this.gridSelectedProveedor.strFore_Branch_Cod;
+  //   this.Proveedor.strFore_Bank_Desc=this.gridSelectedProveedor.strFore_Bank_Desc;
+  //   this.Proveedor.strFore_AccBank_NO=this.gridSelectedProveedor.strFore_AccBank_NO;
+  //   this.Proveedor.strFore_Curr_Cod=this.gridSelectedProveedor.strFore_Curr_Cod;
+  //   this.Proveedor.strRetention_Cod=this.gridSelectedProveedor.strRetention_Cod;
+  //   this.Proveedor.fltRetention_Porcen=this.gridSelectedProveedor.fltRetention_Porcen;
+  //   this.Proveedor.strDetraccion_Cod=this.gridSelectedProveedor.strDetraccion_Cod;
+  //   this.Proveedor.fltDetraccion_Porcen=this.gridSelectedProveedor.fltDetraccion_Porcen;
+  //   this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
+  //   this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
+  //   this.departEnabled=false;
+  // }
   //#endregion
   //#region [Tipo Documento]
   tipoSeleccionado(val:TipoDocIdentidadModel){
@@ -661,6 +731,30 @@ export default class CrearProveedorComponent extends Vue {
   }
   //#endregion
   //#region [MONEDA]
+  GetOnlyOneMonedaA(v){
+    monedaService.GetOnlyOneMoneda(v)
+    .then(response=>{
+      this.selectMonedaA=response;
+    })
+  }
+  GetOnlyOneMonedaB(v){
+    monedaService.GetOnlyOneMoneda(v)
+    .then(response=>{
+      this.selectMonedaB=response;
+    })
+  }
+  GetOnlyOneMonedaC(v){
+    monedaService.GetOnlyOneMoneda(v)
+    .then(response=>{
+      this.selectMonedaC=response;
+    })
+  }
+  GetOnlyOneMonedaD(v){
+    monedaService.GetOnlyOneMoneda(v)
+    .then(response=>{
+      this.selectMonedaD=response;
+    })
+  }
   GetAllMoneda(){
     monedaService.GetAllMoneda()
     .then(response=>{
@@ -898,17 +992,21 @@ export default class CrearProveedorComponent extends Vue {
     categoriaService.GetAllCategoria()
     .then(response=>{
       this.Categoria=response;
-      this.value1=this.Categoria[0].strVenCateg_Desc;      
-      this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
+      this.value1=this.Categoria[0].strVenCateg_Desc;    
+      this.Proveedor.strCat_Person=this.Categoria[0].strVenCateg_Desc;
+      this.Proveedor.intIdVenCateg_ID=this.Categoria[0].intIdVenCateg_ID;
+      // this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
+      // this.selectCategoria(this.Proveedor.strCat_Person,this.Categoria[0].intIdVenCateg_ID);
     })
   }
-  selectCategoria(val){
+  selectCategoria(val,intval){
+    alert(val)
       this.VisibleForName=true;
-      if(val===1){
+      if(val=='Natural'){
         this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=true;
-        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.intIdVenCateg_ID=intval;
         this.Proveedor.strCat_Person='Natural';
         for(var i=0;i<this.TipoDoc.length;i++){
           if(this.TipoDoc[i].strDocIdent_NO==='6'){
@@ -919,11 +1017,11 @@ export default class CrearProveedorComponent extends Vue {
         }
         this.tipoDocDisabled=true;
       }
-      if(val===2){
+      if(val=='Jurídica'){
         this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=false;
-        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.intIdVenCateg_ID=intval;
         this.Proveedor.strCat_Person='Jurídica';
         for(var i=0;i<this.TipoDoc.length;i++){
           if(this.TipoDoc[i].strDocIdent_NO==='6'){
@@ -934,11 +1032,11 @@ export default class CrearProveedorComponent extends Vue {
         }
         this.tipoDocDisabled=true;
       }
-      if(val===3){
+      if(val=='Persona'){        
         this.nameTipoJoN='Nombres';
         this.RucOrDni='DNI';
         this.ApellidosShow=true;
-        this.Proveedor.intIdVenCateg_ID=val;
+        this.Proveedor.intIdVenCateg_ID=intval;        
         this.Proveedor.strCat_Person='Persona';
         this.tipoDocDisabled=false;
         this.selectTipoDoc=new TipoDocIdentidadModel();
@@ -951,41 +1049,46 @@ export default class CrearProveedorComponent extends Vue {
     var USERLOGIN:any=localStorage.getItem('User_Usuario');
     this.Proveedor.intIdCompany_ID=parseInt(idCompany);
     this.Proveedor.strCreation_User=USERLOGIN;    
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guargando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );     
-    proveedorService.putProveedor(this.Proveedor)
-    .then(response=>{
-      loadingInstance.close();
-      this.openMessageSuccess('Se guardo correctamente '+response);
-      this.textosave = 'Se guardo correctamente '+response;
-      this.issave=true;
-      this.iserror=false;
-      this.Proveedor=new ProveedorModel();
-      this.gridSelectPais=new PaisModel();
-      this.selectDepartamento=new DepartamentoModel();
-      this.selectTipoDoc=new TipoDocIdentidadModel();
-      this.selectMonedaA=new MonedaModel();
-      this.selectMonedaB=new MonedaModel();
-      this.selectMonedaC=new MonedaModel();
-      this.selectMonedaD=new MonedaModel();
-      this.selectBancoA=new BancoModel();
-      this.selectBancoB=new BancoModel();
-      this.selectBancoC=new BancoModel();
-      this.selectBancoD=new BancoModel();
+    console.log(this.Proveedor);
+    
+    // let loadingInstance = Loading.service({
+    //   fullscreen: true,
+    //   text: 'Guargando...',
+    //   spinner: 'el-icon-loading',
+    //   background: 'rgba(0, 0, 0, 0.8)'
+    //   }
+    //   );     
+    // proveedorService.putProveedor(this.Proveedor)
+    // .then(response=>{
+    //   loadingInstance.close();
+    //   this.openMessageSuccess('Se guardo correctamente '+response);
+    //   this.textosave = 'Se guardo correctamente '+response;
+    //   this.issave=true;
+    //   this.iserror=false;
+    //   this.Proveedor=new ProveedorModel();
+    //   this.gridSelectPais=new PaisModel();
+    //   this.selectDepartamento=new DepartamentoModel();
+    //   this.selectTipoDoc=new TipoDocIdentidadModel();
+    //   this.selectMonedaA=new MonedaModel();
+    //   this.selectMonedaB=new MonedaModel();
+    //   this.selectMonedaC=new MonedaModel();
+    //   this.selectMonedaD=new MonedaModel();
+    //   this.selectBancoA=new BancoModel();
+    //   this.selectBancoB=new BancoModel();
+    //   this.selectBancoC=new BancoModel();
+    //   this.selectBancoD=new BancoModel();
+    //   this.codigoCompania=localStorage.getItem('compania_cod');
+    //   this.descripcionCompania=localStorage.getItem('compania_name');
+    //   this.Proveedor.strCompany_Cod=this.codigoCompania;
 
-    })
-    .catch(e =>{      
-      this.openMessageError('Error guardar proveedor');
-      loadingInstance.close();
-      this.textosave = 'No se guardo proveedor.';
-      this.issave=false;
-      this.iserror=true;
-    })    
+    // })
+    // .catch(e =>{      
+    //   this.openMessageError('Error guardar proveedor');
+    //   loadingInstance.close();
+    //   this.textosave = 'No se guardo proveedor.';
+    //   this.issave=false;
+    //   this.iserror=true;
+    // })    
       
   }
   openMessageError(strMessage:string){

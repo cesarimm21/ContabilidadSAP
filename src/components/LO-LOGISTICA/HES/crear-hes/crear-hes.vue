@@ -168,7 +168,7 @@
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <!-- <el-input type="number"  size ="small" style="font-size:11px;" v-model="ordencompraDetalleSelect.fltCurr_Net_PR_P"></el-input> -->
-                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="hesModel.fltTot_QTY"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px; text-align: right; " class="inputAling" v-model="hesModel.fltTot_QTY"></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -177,7 +177,7 @@
                                             <label class="el-form-item__label col-sm-3"  >Aceptado</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="number"  size ="small" style="font-size:11px;" @change="changeAcepte" v-model="hesModel.fltTot_Value" :precision="2" :step="0.01"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" class="inputAling" @change="changeAcepte" v-model="hesModel.fltTot_Value" :precision="2" :step="0.01"></el-input>
                                                 </div>
                                             </div>
                                             
@@ -186,7 +186,7 @@
                                             <label class="el-form-item__label col-sm-3" >Pendiente</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="hesModel.fltTot_Peding_Value" :precision="2" :step="0.01" disabled></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" class="inputAling" v-model="hesModel.fltTot_Peding_Value" :precision="2" :step="0.01" disabled></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -260,13 +260,27 @@
                                                 <el-table-column
                                                     prop="fltGross_Price" sortable width="100"
                                                     label="Importe">
-                                                    <template scope="scope">
+                                                    <!-- <template scope="scope">
                                                         <el-input type="number" v-if="bln_tbl_total  && (scope.row === editing.row) 
                                                         && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni"  size="small" v-model="scope.row.fltGross_Price" :precision="2" :step="0.01" >
                                                         </el-input>
                                                         <label style="width:100%" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltGross_Price }}</label>
+                                                    </template> -->
+                                                </el-table-column> 
+                                                <el-table-column
+                                                    prop="fltFacture_Net_PR_I" sortable width="100"
+                                                    label="Adelanto">
+                                                    <template scope="scope">
+                                                        <el-input type="number" v-if="bln_tbl_total  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni"  size="small" v-model="scope.row.fltFacture_Net_PR_I" :precision="2" :step="0.01" >
+                                                        </el-input>
+                                                        <label style="width:100%" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltFacture_Net_PR_I }}</label>
                                                     </template>
                                                 </el-table-column> 
+                                                <el-table-column
+                                                    prop="fltRec_Value" sortable width="100"
+                                                    label="Pendiente">
+                                                </el-table-column>
                                                 <el-table-column
                                                     prop="fltNet_Value" sortable width="100"
                                                     label="Valor total">

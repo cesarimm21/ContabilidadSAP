@@ -229,7 +229,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>  
-                                            <label class="el-form-item__label col-md-2" >{{selectMonedaA.strCurrency_Desc}}</label>                     
+                                            <label class="el-form-item__label col-md-2" style="color:#1f2d3d;">{{selectMonedaA.strCurrency_Desc}}</label>                     
                                         </div>
                                     </div>
                                     <div slot="header" class="headercardSecond" style="width:100%; margin-top: 15px;">
@@ -263,7 +263,7 @@
                                                 </el-input>
                                                 </div>
                                             </div>  
-                                            <label class="el-form-item__label col-md-2" >{{selectMonedaB.strCurrency_Desc}}</label>  
+                                            <label class="el-form-item__label col-md-2" style="color:#1f2d3d;" >{{selectMonedaB.strCurrency_Desc}}</label>  
                                             
                                         </div>
                                     </div>
@@ -298,7 +298,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>  
-                                        <label class="el-form-item__label col-md-2" >{{selectMonedaC.strCurrency_Desc}}</label>  
+                                        <label class="el-form-item__label col-md-2" style="color:#1f2d3d;">{{selectMonedaC.strCurrency_Desc}}</label>  
                                         </div>
                                     </div>
                                     <div slot="header" class="headercardSecond" style="width:100%; margin-top: 15px;">
@@ -332,7 +332,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>  
-                                            <label class="el-form-item__label col-md-2" >{{selectMonedaD.strCurrency_Desc}}</label>  
+                                            <label class="el-form-item__label col-md-2" style="color:#1f2d3d;">{{selectMonedaD.strCurrency_Desc}}</label>  
                                             
                                         </div>
                                         </div>
@@ -380,8 +380,8 @@
                                                 <label class="el-form-item__label col-md-1" >Detracción</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
-                                                    <el-input size ="small" v-model="Proveedor.strDetraccion_Cod"  placeholder="">
-                                        
+                                                    <el-input size ="small" @blur="desactivar_detraccion" @focus="activar_detraccion" v-model="Proveedor.strDetraccion_Cod">                            
+                                                        <el-button v-if="btnactivardetraccion && !detraccionVisible" slot="append" class="boton" icon="fa fa-clone" @click="detraccionDialog()"></el-button> 
                                                     </el-input>
                                                     </div>
                                                 </div>  
@@ -433,101 +433,15 @@
 
     </div>
 
-    <el-dialog
-        title="Paises"
-        :visible.sync="paisVisible"
-        width="30%"
-        :before-close="handleClosePais">
-        <el-card class="box-card">
-              <div slot="header" class="headercard">
-                  <span class="labelheadercard" >Buscar Paises</span>
-              </div>
-              <div class="row bodycard">
-                  <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Paises Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-              </div>
-              <el-table
-                :data="Pais"
-                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                highlight-current-row
-                @current-change="paisSelect"
-                height="250">
-                <el-table-column  prop="strCountry_Cod" label="Codigo" width="180">
-                </el-table-column>  
-                <el-table-column  prop="strCountry_Name" label="Nombre del Pais" width="180">
-                </el-table-column> 
-                <el-table-column  prop="strLanguage" label="Idioma" style="width: 70% !important;">
-                </el-table-column> 
-                </el-table>
-          </el-card>
-        <span slot="footer" class="dialog-footer">
-            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="paisChosseCheck()"/>
-            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="paisChosseClose()"/>
-        </span>
-        </el-dialog>
-
-
-    <el-dialog
-        title="Banco"
-        :visible.sync="bancoVisible"
-        width="30%"
-        :before-close="handleCloseBanco">
-        <el-card class="box-card">
-              <div slot="header" class="headercard">
-                  <span class="labelheadercard" >Buscar Banco</span>
-              </div>
-              <div class="row bodycard">
-                  <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Banco Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-              </div>
-              <el-table
-                :data="Banco"
-                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
-                height="250"
-                highlight-current-row
-                @current-change="bancoSelect">
-                <el-table-column  prop="strBank_Cod" label="Codigo" width="180" >
-                </el-table-column>  
-                <el-table-column  prop="strBank_Name" label="Nombre del Banco" width="180">
-                </el-table-column> 
-                <el-table-column  prop="strBank_City" label="Ciudad" style="width: 70% !important;">
-                </el-table-column> 
-                </el-table>
-          </el-card>
-        <span slot="footer" class="dialog-footer">
-            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="bancoChosseCheck()"/>
-            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="handleCloseBanco()"/>
-        </span>
+    <!--DIALOG BUSQUEDA PAIS-->
+    <el-dialog title="Busqueda Pais" :visible.sync="paisVisible" @close="handleClosePais" size="small" >
+      <bpais v-on:PaisSeleccionado="paisSelect($event)" v-on:closePais="handleClosePais()">
+      </bpais>
+    </el-dialog>
+      <!--DIALOG BUSQUEDA BANCO-->
+    <el-dialog title="Busqueda Banco"  :visible.sync="bancoVisible" @close="handleCloseBanco" size="small" >
+      <bbanco v-on:bancoselecionado="bancoselecionado($event)" v-on:closeBanco="bancoChosseClose()">
+      </bbanco>
     </el-dialog>
 
     <el-dialog title="Tipo documento"  :visible.sync="tipodocVisible" @close="closeTipoDocumento" size="small" >
@@ -567,6 +481,7 @@
                 style="width: 100%; cursor: pointer;" class="ExcelTable2007"
                 height="200"
                 highlight-current-row
+                @row-dblclick="departChosseCheck"
                 @current-change="departSelect">
                 <el-table-column  prop="strRegión_Cod" label="Codigo" width="180" >
                 </el-table-column>  
@@ -579,56 +494,25 @@
             <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="departChosseClose()"/>
         </span>
     </el-dialog>
+     <!--DIALOG BUSQUEDA MONEDA-->
+    <el-dialog title="Busqueda moneda"  :visible.sync="monedaVisible" @close="handleCloseMoneda" size="small" >
+        <bmoneda v-on:MonedaSeleccionado="monedaSelect($event)" v-on:closeMoneda="handleCloseMoneda()">
+        </bmoneda>
+    </el-dialog>
     <!--DIALOG BUSQUEDA PAIS-->
     <el-dialog title="Busqueda Pais" :visible.sync="paisVisible" @close="handleClosePais" size="small" >
         <bpais v-on:PaisSeleccionado="paisSelect($event)" v-on:closePais="handleClosePais()">
         </bpais>
+    </el-dialog>    
+    <!--DIALOG BUSQUEDA IMPUESTO-->
+    <el-dialog title="Busqueda Impuesto"  :visible.sync="impuestoVisible" @close="handleCloseImpuesto" size="small" >
+        <bimpuesto v-on:impuestoseleccionado="impuestoSelect($event)" v-on:impuestoClose="handleCloseImpuesto()">
+        </bimpuesto>
     </el-dialog>
-    
-    <el-dialog
-        title="Impuesto"
-        :visible.sync="impuestoVisible"
-        width="30%"
-        :before-close="handleCloseImpuesto">
-        <el-card class="box-card">
-              <div slot="header" class="headercard">
-                  <span class="labelheadercard" >Buscar Impuesto</span>
-              </div>
-              <div class="row bodycard">
-                  <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Impuesto Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                  </div>
-              </div>
-              <el-table
-                :data="Impuesto"
-                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                style="width: 100%; cursor: pointer;" class="ExcelTable2007"
-                height="200"
-                highlight-current-row
-                @current-change="impuestoSelect">  
-                <el-table-column  prop="strWH_Cod" label="Codigo" width="100">
-                </el-table-column>  
-                <el-table-column  prop="fltPorcent" label="Porcentaje" style="width: 70% !important;">
-                </el-table-column> 
-                </el-table>
-          </el-card>
-        <span slot="footer" class="dialog-footer">
-            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="impuestoChosseCheck()"/>
-            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="handleCloseImpuesto()"/>
-        </span>
+    <!--DIALOG BUSQUEDA DETRACCION-->
+    <el-dialog title="Busqueda Impuesto"  :visible.sync="detraccionVisible" @close="handleCloseImp" size="small" >
+        <bimpuesto v-on:impuestoseleccionado="detraccionSelect($event)" v-on:impuestoClose="handleCloseImp()">
+        </bimpuesto>
     </el-dialog>
   </div>  
   

@@ -41,7 +41,7 @@
                                                         v-for="item in Categoria"
                                                         :key="item.intIdVenCateg_ID"
                                                         :label="item.strVenCateg_Desc"
-                                                        :value="item.intIdVenCateg_ID"
+                                                        :value="item.strVenCateg_Desc"
                                                         >
                                                         </el-option>
                                                     </el-select>
@@ -480,7 +480,7 @@
                 style="width: 100%; cursor: pointer;" class="ExcelTable2007"
                 highlight-current-row
                 height="250"
-                @row-dblclick="checkDoblePro"
+                @row-dblclick="proveedorCheck"
                 @current-change="proveedorSelect">
                 <el-table-column   prop="strVendor_NO" label="Codigo" width="180">
                 </el-table-column>  
