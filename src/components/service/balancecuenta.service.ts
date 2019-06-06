@@ -9,6 +9,12 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  CreateBalance(data){
+    return axios.post(CONFIG.API_URL+'balancecuenta',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

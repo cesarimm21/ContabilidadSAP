@@ -3,7 +3,7 @@ export class BalanceCuentaModel {
     strCompany_Cod:string | null;
     strCompany_Desc:string | null;
     intYear:number | null;
-    dtmPeriod:string | null;
+    dtmPeriod:Date | null;
     strPeriodRepo:string | null;
     strAcc_Local_NO:string | null;
     fltOpening_Balance:number | null;

@@ -349,8 +349,7 @@ export default class RecepcionMaterialComponent extends Vue {
                 text: 'Guargando...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.8)'
-            }
-            );
+            });
            
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
