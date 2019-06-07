@@ -145,7 +145,7 @@ export default class CrearHesComponent extends Vue {
   loadOrdenCompra(){
     let loadingInstance = Loading.service({
       fullscreen: true,
-      text: 'Guargando...',
+      text: 'Guardando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }
@@ -349,7 +349,7 @@ export default class CrearHesComponent extends Vue {
     this.hesModel.listaDetalle=this.multipleSelectionAcept;
     let loadingInstance = Loading.service({
       fullscreen: true,
-      text: 'Guargando...',
+      text: 'Guardando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }

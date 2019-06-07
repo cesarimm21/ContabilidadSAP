@@ -1079,6 +1079,7 @@ export default class CrearProveedorComponent extends Vue {
     var idCompany:any=localStorage.getItem('compania_ID');
     var USERLOGIN:any=localStorage.getItem('User_Usuario');
     this.Proveedor.intIdCompany_ID=parseInt(idCompany);
+<<<<<<< HEAD
     this.Proveedor.strCreation_User=USERLOGIN;  
     let loadingInstance = Loading.service({
       fullscreen: true,
@@ -1109,6 +1110,40 @@ export default class CrearProveedorComponent extends Vue {
       this.codigoCompania=localStorage.getItem('compania_cod');
       this.descripcionCompania=localStorage.getItem('compania_name');
       this.Proveedor.strCompany_Cod=this.codigoCompania;
+=======
+    this.Proveedor.strCreation_User=USERLOGIN;    
+    console.log(this.Proveedor);
+    
+    // let loadingInstance = Loading.service({
+    //   fullscreen: true,
+    //   text: 'Guardando...',
+    //   spinner: 'el-icon-loading',
+    //   background: 'rgba(0, 0, 0, 0.8)'
+    //   }
+    //   );     
+    // proveedorService.putProveedor(this.Proveedor)
+    // .then(response=>{
+    //   loadingInstance.close();
+    //   this.openMessageSuccess('Se guardo correctamente '+response);
+    //   this.textosave = 'Se guardo correctamente '+response;
+    //   this.issave=true;
+    //   this.iserror=false;
+    //   this.Proveedor=new ProveedorModel();
+    //   this.gridSelectPais=new PaisModel();
+    //   this.selectDepartamento=new DepartamentoModel();
+    //   this.selectTipoDoc=new TipoDocIdentidadModel();
+    //   this.selectMonedaA=new MonedaModel();
+    //   this.selectMonedaB=new MonedaModel();
+    //   this.selectMonedaC=new MonedaModel();
+    //   this.selectMonedaD=new MonedaModel();
+    //   this.selectBancoA=new BancoModel();
+    //   this.selectBancoB=new BancoModel();
+    //   this.selectBancoC=new BancoModel();
+    //   this.selectBancoD=new BancoModel();
+    //   this.codigoCompania=localStorage.getItem('compania_cod');
+    //   this.descripcionCompania=localStorage.getItem('compania_name');
+    //   this.Proveedor.strCompany_Cod=this.codigoCompania;
+>>>>>>> 669212908bff039625b8265f92520491afe4995f
 
     })
     .catch(e =>{      

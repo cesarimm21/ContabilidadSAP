@@ -390,7 +390,7 @@ export default class ViewAndEditPagosComponent extends Vue {
         // if(this.multipleSelection.length>0){            
             let loadingInstance = Loading.service({
                 fullscreen: true,
-                text: 'Guargando...',
+                text: 'Guardando...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.8)'
             }
@@ -445,7 +445,7 @@ export default class ViewAndEditPagosComponent extends Vue {
       this.pago.listaDetalle=this.gridPagosDetalle2;
        let loadingInstance = Loading.service({
                 fullscreen: true,
-                text: 'Guargando...',
+                text: 'Guardando...',
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.8)'
             }
