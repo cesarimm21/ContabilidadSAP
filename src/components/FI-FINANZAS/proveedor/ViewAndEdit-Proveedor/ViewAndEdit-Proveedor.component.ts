@@ -932,7 +932,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
       this.Proveedor.strModified_User='egaona';
       let loadingInstance = Loading.service({
       fullscreen: true,
-      text: 'Guargando...',
+      text: 'Guardando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }
