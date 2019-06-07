@@ -897,7 +897,7 @@ getNumber(num){
           this.diarioInput.push(itemDG_42);
         let loadingInstance = Loading.service({
           fullscreen: true,
-          text: 'Guargando...',
+          text: 'Guardando...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.8)'
           }

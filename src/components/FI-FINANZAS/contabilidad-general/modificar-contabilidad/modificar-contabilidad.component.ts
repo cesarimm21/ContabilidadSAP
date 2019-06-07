@@ -922,7 +922,7 @@ closeCategoriaCuenta(){
       this.factura.strCreation_User=this.factura.strDoc_Status;    
       let loadingInstance = Loading.service({
         fullscreen: true,
-        text: 'Guargando...',
+        text: 'Guardando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
@@ -952,7 +952,7 @@ closeCategoriaCuenta(){
     if(this.Auto){
       let loadingInstance = Loading.service({
         fullscreen: true,
-        text: 'Guargando...',
+        text: 'Guardando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
@@ -1066,7 +1066,7 @@ closeCategoriaCuenta(){
         }
         let loadingInstance = Loading.service({
           fullscreen: true,
-          text: 'Guargando...',
+          text: 'Guardando...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.8)'
           }
@@ -1136,7 +1136,7 @@ closeCategoriaCuenta(){
         }
         let loadingInstance = Loading.service({
           fullscreen: true,
-          text: 'Guargando...',
+          text: 'Guardando...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.8)'
           }
