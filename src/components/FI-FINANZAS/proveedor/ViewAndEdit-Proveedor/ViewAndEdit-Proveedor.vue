@@ -54,7 +54,7 @@
                                                         v-for="item in Categoria"
                                                         :key="item.intIdVenCateg_ID"
                                                         :label="item.strVenCateg_Desc"
-                                                        :value="item.intIdVenCateg_ID"
+                                                        :value="item.strVenCateg_Desc"
                                                         >
                                                         </el-option>
                                                     </el-select>

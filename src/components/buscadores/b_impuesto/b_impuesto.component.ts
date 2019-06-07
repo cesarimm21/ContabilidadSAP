@@ -33,13 +33,15 @@ export default class  BImpuestoComponent extends Vue {
 
   //Modelos
   articulos:any =[];
-  public impuestoModel:Array<ImpuestoModel>=[];
+  impuestoModel:ImpuestoModel[];
+  impuestoModel1:ImpuestoModel[];
   public impuestoSelectModel:ImpuestoModel=new ImpuestoModel();
-
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
+  blnilterstrWH_Cod:boolean=true;
+  blnilterstrWH_Desc:boolean=false;
+  blnilterfltPorcent:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     this.load();
@@ -47,7 +49,10 @@ export default class  BImpuestoComponent extends Vue {
   load(){
     impuestoService.GetAllImpuesto()
     .then(response=>{
+      this.impuestoModel=[];       
+      this.impuestoModel1=[];       
       this.impuestoModel=response;       
+      this.impuestoModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -72,11 +77,6 @@ export default class  BImpuestoComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('impuestoseleccionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
   bind(){
     // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
     // var order="CODIGO asc";
@@ -156,8 +156,93 @@ export default class  BImpuestoComponent extends Vue {
   closePopup(){
     this.$emit('impuestoClose');
   }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarImpuesto(){
+    var data=this.like(this.impuestoModel1,this.clickColumn,this.inputAtributo)
+    this.impuestoModel=[];
+    this.impuestoModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strWH_Cod"){
+      this.clickColumn=val.property;   
+      this.inputAtributo='';  
+      this.blnilterstrWH_Cod=true;
+      this.blnilterstrWH_Desc=false;
+      this.blnilterfltPorcent=false;
+    }
+    if(val.property=="strWH_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrWH_Cod=false;
+      this.blnilterstrWH_Desc=true;
+      this.blnilterfltPorcent=false;
+    }
+    if(val.property=="fltPorcent"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrWH_Cod=false;
+      this.blnilterstrWH_Desc=false;
+      this.blnilterfltPorcent=true;
+    }
+  }
+  filterstrWH_Cod(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnilterstrWH_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrWH_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrWH_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterfltPorcent(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterfltPorcent){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   data() {
     return {
+      impuestoModel:[],
+      impuestoModel1:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

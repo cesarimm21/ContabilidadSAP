@@ -372,17 +372,14 @@
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Codigo</label>
+                            <label class="el-form-item__label col-md-3" >{{Column}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-model="codigoInput">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                        @click="searchRequisicion()"
-                                            > </el-button>
-                                </el-input>
+                                <el-input size ="small" v-model="inputAtributo">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarRequisicion()"
+                                        > </el-button>
+                                    </el-input>
                                 </div>
                             </div>
                         </div>
@@ -394,15 +391,16 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick"
                     @row-dblclick="checkSelectdb"
                     @current-change="checkSelectdbRequisicion">
-                    <el-table-column  prop="strRequis_NO" label="Codigo" width="100">
+                    <el-table-column :render-header="filterstrRequis_NO" prop="strRequis_NO" label="Codigo" width="100">
                     </el-table-column>
-                    <el-table-column  prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
+                    <el-table-column :render-header="filterstrDesc_Header" prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
                     </el-table-column>
-                    <el-table-column  prop="strTipReq_Desc" label="Tipo requisición" width="120">
+                    <el-table-column :render-header="filterstrTipReq_Desc" prop="strTipReq_Desc" label="Tipo requisición" width="120">
                     </el-table-column>
-                    <el-table-column  prop="strWHS_Desc" label="Almacen" width="120">
+                    <el-table-column :render-header="filterstrWHS_Desc" prop="strWHS_Desc" label="Almacen" width="120">
                     </el-table-column>
                 </el-table>
             </el-card>
@@ -427,18 +425,14 @@
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Codigo</label>
+                            <label class="el-form-item__label col-md-3" >{{Column1}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-model="valueProvee">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-
-                                            > </el-button>
-                                            <!-- @click="searchProo()" -->
-                                </el-input>
+                                <el-input size ="small" v-model="inputAtributo1">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarProveedor()"
+                                        > </el-button>
+                                    </el-input>
                                 </div>
                             </div>
                         </div>
@@ -450,13 +444,14 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick1"
                     @row-dblclick="checkDoblePro"
                     @current-change="checkSelectdbProveedor">
-                    <el-table-column  prop="strVendor_NO" label="Codigo" width="150">
+                    <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="150">
                     </el-table-column>  
-                    <el-table-column  prop="strVendor_Desc" label="Descripción" width="310">
+                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripción" width="310">
                     </el-table-column> 
-                    <el-table-column  prop="strCountry" label="Pais" width="150">
+                    <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Pais" width="150">
                     </el-table-column> 
                 </el-table>
             </el-card>

@@ -19,7 +19,7 @@
               @click="linkRoute(item.strLink)"
               :index="item.strIndex"
               :key="item.strLink">
-              <template slot="title">                
+              <template slot="title" class="mainImport">                
                 <i :class="item.strIcon_Name" style="width:10px"></i>
                 <img v-if="item.strClase_file=='el-folder'" class="el-folder"/>
                 <img v-if="item.strClase_file=='el-folder_last'" class="el-folder_last"/>

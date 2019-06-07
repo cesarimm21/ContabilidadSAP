@@ -116,6 +116,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   public selectMonedaC:MonedaModel=new MonedaModel();
   public selectMonedaD:MonedaModel=new MonedaModel();
   FLAGMONEDA:String;
+  FLAGDOC:string='A';
   //**Categoria */
 
   public Categoria: CategoriaModel[];
@@ -150,7 +151,10 @@ export default class ViewAndEditProveedorComponent extends Vue {
     proveedorService.GetOnlyOneProveedor(codigPr)
     .then(response=>{
       this.gridSelectedProveedor=response; 
-      this.proveedorCheck();
+      setTimeout(() => {
+        this.proveedorCheck();
+      }, 400)
+      // this.proveedorCheck();
     }).catch(error=>{
       this.$message('No se cargaron los datos')
     })
@@ -394,21 +398,20 @@ export default class ViewAndEditProveedorComponent extends Vue {
 
     })
   }
-  proveedorCheck(){   
-    console.log('aqui 1');  
-    console.log(this.gridSelectedProveedor);
-    console.log('aqui 2');  
+  proveedorCheck(){  
     this.Proveedor.intIdVendor_ID=this.gridSelectedProveedor.intIdVendor_ID;
     this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID;
     this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
     this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
-    console.log('aqui otra ve z');   
     this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
     this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
     this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
     this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
     this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
     this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
+    this.FLAGDOC='B'
+    this.selectCategoria(this.Proveedor.strCat_Person);
+    this.value1=this.Proveedor.strCat_Person;
     this.Proveedor.strTax_ID=this.gridSelectedProveedor.strTax_ID;
     this.Proveedor.strVendor_Desc=this.gridSelectedProveedor.strVendor_Desc;
     this.Proveedor.strLastName=this.gridSelectedProveedor.strLastName;
@@ -449,24 +452,24 @@ export default class ViewAndEditProveedorComponent extends Vue {
     this.GetOnlyOneMonedaB(this.Proveedor.strCurrency_Corp);
     this.GetOnlyOneMonedaC(this.Proveedor.strFore_Swift_Cod);
     this.GetOnlyOneMonedaD(this.Proveedor.strFore_Curr_Cod);
-    if(this.Proveedor.strCat_Person==='Natural'){
-      this.nameTipoJoN='Nombres';
-      this.RucOrDni='DNI';
-      this.ApellidosShow=true;
-      this.value1=this.Proveedor.strCat_Person;
-    }
-    if(this.Proveedor.strCat_Person==='Persona'){
-      this.nameTipoJoN='Nombres';
-      this.RucOrDni='DNI';
-      this.ApellidosShow=true;
-      this.value1=this.Proveedor.strCat_Person;
-    }
-    if(this.Proveedor.strCat_Person==='Jurídica'){
-      this.nameTipoJoN='Razon social';
-      this.RucOrDni='RUC';
-      this.ApellidosShow=false;
-      this.value1=this.Proveedor.strCat_Person;
-    }
+    // if(this.Proveedor.strCat_Person==='Natural'){
+    //   this.nameTipoJoN='Nombres';
+    //   this.RucOrDni='DNI';
+    //   this.ApellidosShow=true;
+    //   this.value1=this.Proveedor.strCat_Person;
+    // }
+    // if(this.Proveedor.strCat_Person==='Persona'){
+    //   this.nameTipoJoN='Nombres';
+    //   this.RucOrDni='DNI';
+    //   this.ApellidosShow=true;
+    //   this.value1=this.Proveedor.strCat_Person;
+    // }
+    // if(this.Proveedor.strCat_Person==='Jurídica'){
+    //   this.nameTipoJoN='Razon social';
+    //   this.RucOrDni='RUC';
+    //   this.ApellidosShow=false;
+    //   this.value1=this.Proveedor.strCat_Person;
+    // }
   }
   //#endregion
   
@@ -547,7 +550,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   handleCloseDepart(){
     this.departVisible=false;
-    this.selectDepartamento=new DepartamentoModel();
+    // this.selectDepartamento=new DepartamentoModel();
   }
   departSelect(val:DepartamentoModel){
     this.selectDepartamento=val;
@@ -559,7 +562,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   departChosseClose(){
     this.departVisible=false;
-    this.selectDepartamento=new DepartamentoModel();
+    // this.selectDepartamento=new DepartamentoModel();
   }
   departDialog(){
     this.GetAllDepartamento();
@@ -842,7 +845,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     .then(response=>{
       this.Categoria=[];
       this.Categoria=response;
-      this.value1=this.Categoria[0].strVenCateg_Desc;      
+      // this.value1=this.Categoria[0].strVenCateg_Desc;      
       // this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
     }).catch(error=>{
       this.$message({
@@ -852,15 +855,31 @@ export default class ViewAndEditProveedorComponent extends Vue {
       });
     })
   }
+  btnBuscar(valor){    
+    var data=this.like(this.Categoria,'strVenCateg_Desc',valor)
+    this.Proveedor.intIdVenCateg_ID=data[0].intIdVenCateg_ID;
+  }
+  like(array, key,keyword) {    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+        }
+      }
+    }
+    return responsearr
 
-  selectCategoria(val){
+  }
+
+  selectCategoria(val){    
+    this.btnBuscar(val);
       this.VisibleForName=true;
-      if(val===1){
+      if(val=='Natural'){
         this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=true;
-        this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Natural';
+        this.Proveedor.strCat_Person=val;
         for(var i=0;i<this.TipoDoc.length;i++){
           if(this.TipoDoc[i].strDocIdent_NO==='6'){
             this.selectTipoDoc=this.TipoDoc[i];
@@ -870,12 +889,11 @@ export default class ViewAndEditProveedorComponent extends Vue {
         }
         this.tipoDocDisabled=true;
       }
-      if(val===2){
-        this.nameTipoJoN='Razon social';
+      if(val=='Jurídica'){
+        this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=false;
-        this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Jurídica';
+        this.Proveedor.strCat_Person=val;
         for(var i=0;i<this.TipoDoc.length;i++){
           if(this.TipoDoc[i].strDocIdent_NO==='6'){
             this.selectTipoDoc=this.TipoDoc[i];
@@ -885,16 +903,21 @@ export default class ViewAndEditProveedorComponent extends Vue {
         }
         this.tipoDocDisabled=true;
       }
-      if(val===3){
+      if(val=='Persona'){        
         this.nameTipoJoN='Nombres';
         this.RucOrDni='DNI';
-        this.ApellidosShow=true;
-        this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Persona';
+        this.ApellidosShow=true;   
+        this.Proveedor.strCat_Person=val;
         this.tipoDocDisabled=false;
-        this.selectTipoDoc=new TipoDocIdentidadModel();
-        this.Proveedor.intIdDocIdent_ID=-1;
-        this.Proveedor.strDocIdent_NO='';
+        if(this.FLAGDOC=='A'){
+          this.selectTipoDoc=new TipoDocIdentidadModel();
+          this.Proveedor.intIdDocIdent_ID=-1;
+          this.Proveedor.strDocIdent_NO='';
+        }
+        if(this.FLAGDOC=='B')
+          {
+
+       }
       }
   }
   SaveProveedor(val){

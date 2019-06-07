@@ -98,7 +98,17 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   selectData:string;
   public ordencompraDetalle:OrdenCompraDetalleModel[];
   ordencompra:OrdenCompraModel[];
+  ordencompra1:OrdenCompraModel[];
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
+
+    blnilterstrPO_NO:boolean=true;
+    blnilterstrPO_Desc:boolean=false;
+    blnilterstrVendor_NO:boolean=false;
+    blnilterstrVendor_Desc:boolean=false;
+    clickColumn:string='';
+    Column:string='';
+    inputAtributo:any;
+
   //**Proveedor */
   public proveedor:ProveedorModel=new ProveedorModel();
   proveedores1:any;
@@ -368,6 +378,8 @@ getNumber(num){
     .then(respose=>{
       this.ordencompra=[];
       this.ordencompra=respose;
+      this.ordencompra1=[];
+      this.ordencompra1=respose;
 
       this.dialogOrdenCompra=true;      
     }).catch(error=>{
@@ -968,11 +980,115 @@ getNumber(num){
   reloadpage(){
     window.location.reload();
   }
+  like(array, key,keyword) {    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+        }
+      }
+    }
+    return responsearr
+
+  }
+  buscarOrdenC(){
+    var data=this.like(this.ordencompra1,this.clickColumn,this.inputAtributo)
+    this.ordencompra=[];
+    this.ordencompra=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strPO_NO"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrPO_NO=true;
+      this.blnilterstrPO_Desc=false;
+      this.blnilterstrVendor_NO=false;
+      this.blnilterstrVendor_Desc=false;
+    }
+    if(val.property=="strPO_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrPO_NO=false;
+      this.blnilterstrPO_Desc=true;
+      this.blnilterstrVendor_NO=false;
+      this.blnilterstrVendor_Desc=false;
+    }
+    if(val.property=="strVendor_NO"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrPO_NO=false;
+      this.blnilterstrPO_Desc=false;
+      this.blnilterstrVendor_NO=true;
+      this.blnilterstrVendor_Desc=false;
+    }
+    if(val.property=="strVendor_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrPO_NO=false;
+      this.blnilterstrPO_Desc=false;
+      this.blnilterstrVendor_NO=false;
+      this.blnilterstrVendor_Desc=true;
+    }
+  }
+  filterstrPO_NO(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrPO_NO){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrPO_Desc(h,{column,$index}){
+    if(this.blnilterstrPO_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrVendor_NO(h,{column,$index}){      
+    if(this.blnilterstrVendor_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrVendor_Desc(h,{column,$index}){      
+    if(this.blnilterstrVendor_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   //#endregion
   data(){
     return{
       nameComponent:'factura',
       descripcionCompania:'',
+      inputAtributo:'',
       fecha_actual:'',
       fecha_vencida:'',
       dialogTableVisible: false,
@@ -980,6 +1096,7 @@ getNumber(num){
       selectType:'',
       dataProveedor:[],
       ordencompra:[],
+      ordencompra1:[],
       ordencompraDetalle:[],
       facturadetalle:[],
       codigoCompania:'',

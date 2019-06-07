@@ -222,7 +222,8 @@ export default class CrearMaterialComponent extends Vue {
   iserror:boolean=false;
   textosave:string='';
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
-  public tableClaseMaterial:Array<ClaseMaterialModel>=[]; 
+  public tableClaseMaterial:ClaseMaterialModel[]; 
+  tableClaseMaterial1:ClaseMaterialModel[]; 
   
   tiporequisicionant:string='';
 
@@ -238,6 +239,12 @@ export default class CrearMaterialComponent extends Vue {
   vifprogress:boolean=true;
   percentage:number;
 
+  blnilterstrMatClass_Cod:boolean=true;
+  blnilterstrExp_Cod_Loc:boolean=false;
+  blnilterstrMatClass_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -285,9 +292,11 @@ export default class CrearMaterialComponent extends Vue {
         //console.log("clase material-",response);
         this.tableClaseMaterial=response;    
         this.tableClaseMaterial=[];
+        this.tableClaseMaterial1=[];
           clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
             .then(response=>{
               this.tableClaseMaterial=response;       
+              this.tableClaseMaterial1=response;       
             }).catch(error=>{
               this.$message({
                 showClose: true,
@@ -550,8 +559,6 @@ export default class CrearMaterialComponent extends Vue {
     }
   }
   closeAlmacen(){
-    debugger;
-    console.log("closeAlmacen");
     this.btnactivaralmacen=false;
     return false;
   }
@@ -865,9 +872,11 @@ export default class CrearMaterialComponent extends Vue {
   loadClaseMaterial(){
     this.dialogClaseMaterial=true;
     this.tableClaseMaterial=[];
+    this.tableClaseMaterial1=[];
     clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
       .then(response=>{
         this.tableClaseMaterial=response;       
+        this.tableClaseMaterial1=response;       
       }).catch(error=>{
         this.$message({
           showClose: true,
@@ -947,6 +956,7 @@ export default class CrearMaterialComponent extends Vue {
   closeCategoriaMaterial(){
     debugger;
     this.btnactivarcategoriamaterial=false;
+    this.dialogCategoriaMaterial=false;
     return false;
   }
   closeClaseMaterial(){
@@ -1411,6 +1421,84 @@ debugger;
       this.textosave='No se pudo guardar. Revise los datos'
     }
   }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarClaseMaterial(){
+    var data=this.like(this.tableClaseMaterial1,this.clickColumn,this.inputAtributo)
+    this.tableClaseMaterial=[];
+    this.tableClaseMaterial=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strMatClass_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrMatClass_Cod=true;
+      this.blnilterstrExp_Cod_Loc=false;
+      this.blnilterstrMatClass_Desc=false;
+    }
+    if(val.property=="strExp_Cod_Loc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrMatClass_Cod=false;
+      this.blnilterstrExp_Cod_Loc=true;
+      this.blnilterstrMatClass_Desc=false;
+    }
+    if(val.property=="strMatClass_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrMatClass_Cod=false;
+      this.blnilterstrExp_Cod_Loc=false;
+      this.blnilterstrMatClass_Desc=true;
+    }
+  }
+  filterstrMatClass_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrMatClass_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrExp_Cod_Loc(h,{column,$index}){
+    if(this.blnilterstrExp_Cod_Loc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrMatClass_Desc(h,{column,$index}){
+    if(this.blnilterstrMatClass_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   backPage(){
     window.history.back();
   }
@@ -1422,7 +1510,8 @@ debugger;
       dialogTableVisible: false,
       dialogVisible:false,
       tableDataServicio:[{}],
-      tableClaseMaterial:[{}],
+      tableClaseMaterial:[],
+      tableClaseMaterial1:[],
       item:{
         date: '',
         categoriacuenta: '',

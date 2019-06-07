@@ -837,9 +837,18 @@ export default class CrearPRComponent extends Vue {
     this.editing.row=event;
     this.editing.column=column;
   }
-  getParseDate(fecha){
-    return Global.getParseDate(fecha);
-  }
+  // getParseDate(fecha){
+  //   return Global.getParseDate(fecha);
+  // }
+  getParseDate(fecha:any){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
+    }
   companiaSeleccionado(val){
     console.log('traer',val);
     this.requisicionModel.strCompany_Cod=val.strCompany_Cod;

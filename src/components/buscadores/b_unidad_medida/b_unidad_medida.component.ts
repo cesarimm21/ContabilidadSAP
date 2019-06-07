@@ -30,10 +30,15 @@ export default class  BUnidadMedidaComponent extends Vue {
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
+  blnilterstrUM_Desc:boolean=false;
+  blnilterstrUM_Cod:boolean=true;
   //Modelos
   articulos:any =[];
-  public unidadmedidaModel:Array<UnidadMedidaModel>=[];
+  gridUM:UnidadMedidaModel[];
+  gridUM1:UnidadMedidaModel[];
   public unidadmedidaSelectModel:UnidadMedidaModel=new UnidadMedidaModel();
 
 //   articuloService:ArticuloService=new ArticuloService()
@@ -47,8 +52,10 @@ export default class  BUnidadMedidaComponent extends Vue {
   load(){
     unidadmedidaService.GetAllUnidadMedida()
     .then(response=>{
-      console.log('unidadmedida',response);
-      this.unidadmedidaModel=response;       
+      this.gridUM=[];
+      this.gridUM1=[];
+      this.gridUM=response;       
+      this.gridUM1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -79,40 +86,6 @@ export default class  BUnidadMedidaComponent extends Vue {
   }
 
   bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
   }
 
   CerrarVentana(){
@@ -159,8 +132,67 @@ export default class  BUnidadMedidaComponent extends Vue {
   closePopup(){
     this.$emit('unidadmedidaClose');
   }
+  buscarUnidadMedida(){
+    var data=this.like(this.gridUM1,this.clickColumn,this.inputAtributo)
+    this.gridUM=[];
+    this.gridUM=data;
+  }
+  like(array, key,keyword) {    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strUM_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrUM_Cod=true;
+      this.blnilterstrUM_Desc=false;
+    }
+    if(val.property=="strUM_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrUM_Cod=false;
+      this.blnilterstrUM_Desc=true;
+    }
+  }
+  filterstrUM_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrUM_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      // this.searchMoneda=new MonedaModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrUM_Desc(h,{column,$index}){
+    if(this.blnilterstrUM_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   data() {
     return {
+      gridUM:[],
+      gridUM1:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',
@@ -195,10 +227,5 @@ export default class  BUnidadMedidaComponent extends Vue {
     ]
 
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }
