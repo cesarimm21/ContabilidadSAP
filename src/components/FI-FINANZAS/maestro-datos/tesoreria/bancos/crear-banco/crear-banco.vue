@@ -81,9 +81,10 @@
                                 <label class="el-form-item__label col-md-2" >Tipo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-select  v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-select @change="cambiarTipoBanco" v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                             <el-option style="font-size:13px"
                                             v-for="item in tabletipo"
+                                            
                                             :key="item.strType_Cod"
                                             :label="item.strType_Desc"
                                             :value="item.strType_Cod">
@@ -168,7 +169,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div class="row">
+                    <div class="row" v-if="bln_tipobanco">
                         <div class="col-sm-10" >
                             <el-card class="box-card" style="margin-left: -10px;">
                                 <div slot="header" class="headercard" style="margin-top: -4px;">
@@ -176,7 +177,7 @@
                                 </div>
                                 <div class="col-md-12" >
                                     <div class="row bodycard" style="background: white;margin-top: 0px;">
-                                        <el-table
+                                        <el-table 
                                             ref="missionTable"
                                             :max-height="sizeScreen"
                                             :data="tableCuentaBancaria" 

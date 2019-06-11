@@ -36,6 +36,7 @@ import { Notification } from 'element-ui';
 import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
+import ordencompraService from '@/components/service/ordencompra.service';
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -267,28 +268,69 @@ export default class VisualizarModificarPRComponent extends Vue {
       this.vmaterial=Global.vmmaterial;
     }
   }
+  async existePO(){
+    await ordencompraService.GetOrdenCompraRequisicion(this.selectrow.strRequis_NO)
+    .then(response=>{
+      if(response!=null){
+        if(response!=undefined){
+          alert('Tiene asociada una orden compra:'+response.strPO_NO)
+        }
+        else{
+          if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
+            this.vifprogress=true;
+            this.valuem=0;
+            // await setTimeout(() => {
+            //   for(var i=0;i<100;i++){
+            //     this.valuem++; 
+            //   }
+            // }, 200)
+            // await setTimeout(() => {
+            //   debugger;
+              if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
+                router.push({ path: `/barmenu/LO-LOGISTICA/requisicion/pr_modificar`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
+              }
+            // }, 600)
+          }
+          else{
+            this.vifprogress=false;
+            this.textosave='Seleccione la requisición. ';
+            this.warningMessage('Seleccione la requisición. ');
+          }
+        }
+      }
+      else{
+        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
+          this.vifprogress=true;
+          this.valuem=0;
+          // await setTimeout(() => {
+          //   for(var i=0;i<100;i++){
+          //     this.valuem++; 
+          //   }
+          // }, 200)
+          // await setTimeout(() => {
+          //   debugger;
+            if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
+              router.push({ path: `/barmenu/LO-LOGISTICA/requisicion/pr_modificar`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
+            }
+          // }, 600)
+        }
+        else{
+          this.vifprogress=false;
+          this.textosave='Seleccione la requisición. ';
+          this.warningMessage('Seleccione la requisición. ');
+        }
+      }
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar la PO'
+      });
+    })
+  }
   async validarView(){
     debugger;
-    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
-      this.vifprogress=true;
-      this.valuem=0;
-      await setTimeout(() => {
-        for(var i=0;i<100;i++){
-          this.valuem++; 
-        }
-      }, 200)
-      await setTimeout(() => {
-        debugger;
-        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPurReqH_ID!=-1){
-          router.push({ path: `/barmenu/LO-LOGISTICA/requisicion/pr_modificar`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
-        }
-      }, 600)
-    }
-    else{
-      this.vifprogress=false;
-      this.textosave='Seleccione la requisición. ';
-      this.warningMessage('Seleccione la requisición. ');
-    }
+    await this.existePO();
   }
   async cargar(){
     debugger;
@@ -330,6 +372,19 @@ export default class VisualizarModificarPRComponent extends Vue {
     .catch(error=>{
       
     })
+  }
+  getEstado(estado){
+    debugger;
+    estado=estado.trim();
+    if(estado=== '50'){
+      return 'Aprobado'
+    }
+    if(estado=== '70'){
+      return 'Rechazado'
+    }
+    else{
+      return 'Pendiente'
+    }
   }
   async BuscarRequisicion(){
     debugger;
@@ -721,7 +776,15 @@ export default class VisualizarModificarPRComponent extends Vue {
     await this.BuscarRequisicion();
   }
   // #endregion
-
+  getDateString(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
   data(){
     return{
       dialogTableVisible: false,

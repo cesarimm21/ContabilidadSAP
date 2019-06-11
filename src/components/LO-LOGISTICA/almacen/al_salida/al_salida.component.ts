@@ -152,7 +152,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   bln_tbl_fecha_estimada:boolean=false;
   bln_tbl_centro_costo:boolean=false;
 
-  descompania:string='';
+  descompania:any='';
   destipomovimiento:string='';
   code_compania:string='';
   desalmacen:string='';
@@ -207,6 +207,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
+
     this.tiporequisicion="A";
     for(var i=0;i<this.totalRegistros;i++){
       var items:SalidaDetalleModel=new SalidaDetalleModel();
@@ -231,6 +232,10 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
 
     console.log(this.tableData1);
+    
+    this.descompania=localStorage.getItem('compania_name');
+    var strCompany_Cod:any=localStorage.getItem('compania_cod');
+    this.salidaModel.strCompany_Cod=strCompany_Cod;
   }
   fnOcultar(){
     this.ocultar=!this.ocultar;

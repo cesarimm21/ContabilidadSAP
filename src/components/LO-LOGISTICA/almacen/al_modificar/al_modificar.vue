@@ -356,7 +356,7 @@
                                         <label class="el-form-item__label col-md-2" >Impuesto </label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_impuesto" @focus="activar_impuesto"  v-model="productoModel.strTAX_Ind"  placeholder="" @keyup.enter.native="enterImpuesto(productoModel.strTAX_Ind)"  @keyup.delete.native="borrarImpuesto()">
+                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_impuesto" @focus="activar_impuesto"  v-model="productoModel.strWH_Cod"  placeholder="" @keyup.enter.native="enterImpuesto(productoModel.strWH_Cod)"  @keyup.delete.native="borrarImpuesto()">
                                                 <el-button v-if="btnactivarimpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
                                             </el-input>
                                             </div>

@@ -22,6 +22,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  busquedaRequisicionp(data){
+    return axios.get(CONFIG.API_URL+'busqueda/requisicionp/'+data.strRequis_NO+'/'+data.desde+'/'+data.hasta+'/'+data.strDesc_Header)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   busquedaRequisicion(data){
     return axios.get(CONFIG.API_URL+'busqueda/requisicion/'+data.strRequis_NO+'/'+data.desde+'/'+data.hasta+'/'+data.strDesc_Header)
     .then(response =>{

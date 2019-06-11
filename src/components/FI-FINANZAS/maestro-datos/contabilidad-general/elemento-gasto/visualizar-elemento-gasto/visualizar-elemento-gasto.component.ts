@@ -92,6 +92,8 @@ export default class VisualizarElementoGastoComponent extends Vue {
   strVendor_NO:string='';
   strVendor_Desc:string='';
   vifprogress:boolean=true;
+  strCompany_Cod='';
+  strCompany_Desc=''; 
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -102,6 +104,11 @@ export default class VisualizarElementoGastoComponent extends Vue {
     }, 200)
   }
   load(){
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    var id:any=localStorage.getItem('compania_ID');
+    this.strCompany_Desc=desc; 
+    this.strCompany_Cod=cod;
     this.cargarList();
   }
   async cargarList(){
@@ -133,7 +140,7 @@ export default class VisualizarElementoGastoComponent extends Vue {
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
-    await cuentacontableService.GetBusquedaCuentaContable(data.strPO_NO,data.desde,data.hasta)
+    await cuentacontableService.GetBusquedaElementoGasto(data.strPO_NO,data.desde,data.hasta)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){

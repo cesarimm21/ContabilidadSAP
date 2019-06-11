@@ -34,7 +34,8 @@ export class ProductoModel {
     fltQtyLimit_Min:number;
     fltQtyLimit_Max:number;
     fltFactor:number;
-    strTAX_Ind:string;
+    strWH_Cod:string;
+    strWH_Desc:string;
     fltQuantity:number;
     fltQuantity_Balance:number;
     strUM_Cod:string;

@@ -8,7 +8,8 @@ import productoService from '@/components/service/producto.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
 @Component({
-  name: 'bmaterial'
+  name: 'bmaterial',
+  props: ['tipo']
 })
 
 
@@ -18,7 +19,7 @@ export default class  BMaterialComponent extends Vue {
    pagina:number =1;
    RegistersForPage:number = 5;
    totalRegistros:number = this.RegistersForPage;
-
+   tipo:any;
    CompleteData:any;
   //Busqueda
   formularioBusqueda:any={
@@ -44,10 +45,10 @@ export default class  BMaterialComponent extends Vue {
 
   constructor() {
     super();
-    this.load();
+    //this.load();
   }
   load(){
-    productoService.GetAllProducto()
+    productoService.GetAllProducto(this.tipo)
     .then(response=>{
       console.log('producto',response);
       this.productoModel=response;       
@@ -199,6 +200,11 @@ export default class  BMaterialComponent extends Vue {
   created() {
     if(typeof window != 'undefined') {
       this.bind();
+      //this.load();
     }
+  }
+  mounted (){
+    //alert('mounted');
+    this.load();
   }
 }

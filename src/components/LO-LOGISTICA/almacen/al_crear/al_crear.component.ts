@@ -743,7 +743,8 @@ export default class CrearMaterialComponent extends Vue {
   }
   SeleccionadoImpuesto(val){
     debugger;
-    this.productoModel.strTAX_Ind=val.strWH_Cod
+    this.productoModel.strWH_Cod=val.strWH_Cod
+    this.productoModel.strWH_Desc=val.strWH_Desc
     this.productoModel.intIdCommTax_ID=val.intIdWH_ID
     this.desimpuesto=val.strWH_Desc;
     this.dialogImpuesto=false;
@@ -1279,8 +1280,8 @@ export default class CrearMaterialComponent extends Vue {
       debugger;
       if(response!=undefined){
         if(response.length>0){
-
-          this.productoModel.strTAX_Ind=response[0].strWH_Cod;
+          this.productoModel.strWH_Cod=response[0].strWH_Cod;
+          this.productoModel.strWH_Desc=response[0].strWH_Desc;
           this.productoModel.intIdCommTax_ID=response[0].intIdCommTax_ID;
           this.desimpuesto=response[0].strWH_Desc;
           this.dialogImpuesto=false;

@@ -244,6 +244,7 @@ export default class ModificarBancoComponent extends Vue {
   bln_tbl_cuenta_cci:boolean=false;
   bln_tbl_cuenta_branch:boolean=false;
   bln_tbl_swift_cod:boolean=false;
+  bln_tipobanco:boolean=false;
 
   constructor(){    
     super();
@@ -336,11 +337,19 @@ async cargar(code){
     .then(response=>{
      this.bancoModel= response;
      this.strlevel=this.bancoModel.strBank_Type;
+     if(this.strlevel=='P'){
+      this.bln_tipobanco=true;
+     }
+     else{
+      this.bln_tipobanco=false;
+     }
+     
      this.strpais_Cod=this.bancoModel.strCountry;
      this.Currency_Cod=this.bancoModel.strBank_Curr;
      this.strpais_Desc=this.bancoModel.strCountry_Desc;
      this.Currency_Cod_Desc=this.bancoModel.strBank_Curr_Desc;
      this.Departamento_Desc=this.bancoModel.strBank_Region_Desc;
+
      
     }).catch(error=>{
       this.$message({
@@ -1276,6 +1285,14 @@ clickswiftcode(event,edit,column){
   event.edit=!edit;
   this.editing.row=event;
   this.editing.column=column;
+}
+cambiarTipoBanco(val){
+  if(val=="P"){
+    this.bln_tipobanco=true;
+  }
+  else{
+    this.bln_tipobanco=false;
+  }
 }
   data(){
     return{

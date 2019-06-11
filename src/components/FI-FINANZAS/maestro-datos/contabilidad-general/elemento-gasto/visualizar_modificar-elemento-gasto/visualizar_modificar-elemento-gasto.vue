@@ -3,19 +3,34 @@
 
   <div class="al-crear">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="validarView()"/>
+        <quickaccessmenu v-on:validarView="cargarList()"/>
     </ol>
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Elemento Gasto</span>
+            <span class="labelheadercard" >Modificar Elemnto Gasto</span>
         </div>
         <div class="row bodycard">
            <div class="container">
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input   :disabled="true"
+                                size ="small" 
+                                @blur="desactivar_compania" 
+                                @focus="activar_compania" 
+                                v-model="strCompany_Cod">
+                                    <!-- <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button>  -->
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{strCompany_Desc}}</span>
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Cuenta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strPO_NO"  placeholder="">
@@ -23,7 +38,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row Second">
+                        <!-- <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha Desde</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
@@ -45,7 +60,7 @@
                                     </el-date-picker>
                                 </div>
                             </div>                   
-                        </div>    
+                        </div>     -->
                     </div>
                 </div>
                 <br/>
@@ -53,7 +68,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -67,59 +82,37 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strAcc_Local_NO" width="100" label="Código Cuenta Contable">
+                                        <el-table-column  sortable prop="strAcc_Local_NO" width="100" label="Cuenta Contable">
                                             <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column> 
                                         <el-table-column
-                                            prop="strCompany_Cod" sortable  width="120"
-                                            label="Cod. Compañia">
+                                            prop="strAcc_Local_Name" sortable  
+                                            label="Descripcion">
                                             <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCompany_Cod }}</label>
-                                            </template>
-                                        </el-table-column>   
-                                        <el-table-column
-                                            prop="strTypeMov_Cod" sortable  width="120"
-                                            label="Cod. Almacen">
-                                            <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
+                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_Name }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strTypeMov_Desc" sortable width="150"
-                                            label="Almacen">
+                                            prop="strAcc_Type" sortable width="150"
+                                            label="Tipo">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTypeMov_Desc }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Type }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strVendor_NO" sortable width="100"
-                                            label="Cod Proveedor">
+                                            prop="strGrpAcctCont_Cod" sortable width="100"
+                                            label="Rubro">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strVendor_NO }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strGrpAcctCont_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="" sortable width="150"
-                                            label="Proveedor">
+                                            prop="strExpGroup_Cod" sortable width="150"
+                                            label="Grupo">
                                             <template scope="scope">
-                                                <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        
-                                        <el-table-column
-                                            prop="fltTotal_Val" sortable width="100"
-                                            label="Cantidad Total">
-                                            <template scope="scope">
-                                                <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltTotal_Val }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="dtmProcess_Date" sortable width="100"
-                                            label="Fecha">
-                                            <template scope="scope">
-                                                <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmProcess_Date) }}</label>
+                                                <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strExpGroup_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -164,6 +157,7 @@
   
 </template>
 <script>
+
 import VisualizarModificarElementoGastoComponent from '@/components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/visualizar_modificar-elemento-gasto/visualizar_modificar-elemento-gasto.component'
 export default VisualizarModificarElementoGastoComponent
 </script>

@@ -83,12 +83,14 @@ var EditableColumn = {
 })
 export default class CrearPRComponent extends Vue {
   timer=0;
+  
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   currentRow:any;
   txtnroline:any='';
   titleExcel:string ='Comercial_.xls';
-  
+  options = {  day: '2-digit',month: '2-digit', year: 'numeric' };
+
   hours:number;
   minutos:number;
   seconds:number;
@@ -911,6 +913,9 @@ export default class CrearPRComponent extends Vue {
     this.selectrow.strVendor_Desc=val.strVendor_Desc;
     this.selectrow.strMatClass_Cod=val.strMaterial_Class;
     this.selectrow.strMatClass_Desc=val.strMatClass_Desc;
+    this.strVendor_NOs=val.strVendor_NO;
+    this.strVendor_Descs=val.strVendor_Desc;
+     
 
     this.strStockCod=this.selectrow.strMaterial_Cod==undefined?'':this.selectrow.strMaterial_Cod;
     this.strDescripcion=this.selectrow.strDescription==undefined?'':this.selectrow.strDescription;
@@ -1718,6 +1723,15 @@ export default class CrearPRComponent extends Vue {
       this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     }
   }
+   getDateString(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
+    }
   data(){
     return{
       el: '#app',

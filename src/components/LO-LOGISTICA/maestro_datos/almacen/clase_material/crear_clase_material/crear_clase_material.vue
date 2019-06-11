@@ -38,7 +38,7 @@
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
+                                <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small"  v-model="clasematerial.strMatClass_Desc" type="text">  
                                     </el-input>

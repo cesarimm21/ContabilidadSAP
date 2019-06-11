@@ -240,7 +240,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strAccount_Cod"  width="80"
-                                            label="Cuenta Contable">
+                                            label="Cta. Contable">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strVendor_NO"  width="110"

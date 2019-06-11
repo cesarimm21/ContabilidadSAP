@@ -15,8 +15,8 @@
                             <label class="el-form-item__label col-md-2" >Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"  v-bind:class="{ error: vcompania }" @change="change()"  @blur="desactivar_compania" @focus="activar_compania" v-model="salidaModel.strCompany_Cod"  placeholder="">
-                                    <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                <el-input size ="small" :disabled="true" v-bind:class="{ error: vcompania }" @change="change()"  @blur="desactivar_compania" @focus="activar_compania" v-model="salidaModel.strCompany_Cod"  placeholder="">
+                                    <el-button v-if="btnactivarcompania     && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                 </el-input>
                                 </div>
                             </div>
@@ -53,6 +53,24 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{salidaModel.strWHS_Desc}}</span>
                         </div> 
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Fecha Requerida</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                    <el-date-picker
+                                        type="date"
+                                        style="width:128px !important"
+                                        :disabled="true"
+                                        format="dd.MM.yyyy"
+                                        size="small" v-model="fecha_actual" >
+                                    </el-date-picker>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>    
                 </div>
                 <br/>
                 <div class="row">

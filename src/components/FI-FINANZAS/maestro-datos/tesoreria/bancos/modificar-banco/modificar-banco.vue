@@ -154,7 +154,7 @@
                         </div>
                     </div>
                     <br/>
-                    <div class="row">
+                    <div class="row" v-if="bln_tipobanco">
                         <div class="col-sm-10" >
                             <el-card class="box-card" style="margin-left: -10px;">
                                 <div slot="header" class="headercard" style="margin-top: -4px;">

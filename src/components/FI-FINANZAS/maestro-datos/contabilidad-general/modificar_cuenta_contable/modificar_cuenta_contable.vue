@@ -170,8 +170,8 @@
                                                     <label class="el-form-item__label col-sm-3" >Tipo PDB</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input size ="small" @blur="desactivar_TipoAdquisicion" @focus="activar_TipoAdquisicion" v-model="cuentacontable.strTypeAdq_PDB"  placeholder="">
-                                                                <el-button v-if="btntipoadquisicion && !dialogTipoAquisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoAdquisicion()"></el-button> 
+                                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_TipoAdquisicion" @focus="activar_TipoAdquisicion" v-model="cuentacontable.strTypeAdq_PDB"  placeholder="">
+                                                                <el-button :disabled="visualizar" v-if="btntipoadquisicion && !dialogTipoAquisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoAdquisicion()"></el-button> 
                                                             </el-input>
                                                         </div>
                                                     </div>

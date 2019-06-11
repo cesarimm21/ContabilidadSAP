@@ -18,6 +18,13 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetOrdenCompraRequisicion(code){
+    return axios.get(CONFIG.API_URL+'ordencompra/requisicion/'+code)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  
   getOCForFactura(strCompany_cod){
     return axios.get(CONFIG.API_URL+'ordencompraForFacture/'+strCompany_cod)
     .then(response =>{

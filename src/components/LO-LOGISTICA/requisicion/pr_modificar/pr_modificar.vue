@@ -39,6 +39,7 @@
                                 <div class="input-group mb-3" >
                                     <el-date-picker
                                         type="date"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important"
                                         :disabled="true"
                                         size="small" v-model="fecha_actual" >
@@ -123,7 +124,7 @@
                                             </template>
                                         </el-table-column>
 
-                                        <el-table-column  :render-header="filterstrCateg_Account"   prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
+                                        <el-table-column  :render-header="filterstrCateg_Account"   prop="strCateg_Account" min-width="80" label="Cat.Cta">
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar"  v-if="blntiporequisicion && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" >
@@ -146,7 +147,7 @@
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrAccount_NO"
                                             prop="strAccount_NO"   width="100"
-                                            label="Cuenta Contable">
+                                            label="Cta. Contable">
                                             <template scope="scope">
                                                 <el-input :disabled="visualizar" v-if="blncuentacontable && bln_tbl_cuenta_contable  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strAccount_NO" >
@@ -255,10 +256,11 @@
                                             <template scope="scope">
                                                 <el-date-picker :disabled="visualizar"
                                                     type="date"
+                                                    format="dd.MM.yyyy"
                                                     v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmRequested_Date" >
                                                 </el-date-picker>
-                                                <label :disabled="visualizar" style="width:100%;    margin: 0rem;" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmRequested_Date) }}</label>
+                                                <label :disabled="visualizar" style="width:100%;    margin: 0rem;" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                         
@@ -268,7 +270,7 @@
                         </el-card>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 10px;">
+                <!-- <div class="row" style="margin-top: 10px;">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-2" >Nº Linea</label>
@@ -287,16 +289,9 @@
                                     <img class="imagenfilter"  style="    width: 11px;height: 10px;margin-left: -1px;margin-top: -3px;" src="../../../../images/abajo.png" alt="">
                                 </el-button>
                             </div>
-                            <!-- <div class="input-group col-md-8">
-                            </div>
-                            <div class="col-md-2">
-                                <div style="padding-top: 2px">
-                                    
-                                </div>
-                            </div> -->
                         </div>   
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
                     <div class="col-sm-12" style="margin-top: 10px;">
                         <el-tabs type="border-card">
@@ -338,25 +333,25 @@
                                                 <label class="el-form-item__label col-md-3" >Código</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-3" >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="productoModel.strStock_Cod" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="productoModel.strStock_Cod" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6">
                                             <div class="form-group row ">
-                                                <label class="el-form-item__label col-md-4" >Descripción</label>
-                                                <div class="col-md-8 grupolabel">
+                                                <label class="el-form-item__label col-md-2" >Descripción</label>
+                                                <div class="col-md-10 grupolabel">
                                                     <div class="input-group mb-8" >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="productoModel.strStock_Desc" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="productoModel.strStock_Desc" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group row ">
                                                 <label class="el-form-item__label col-md-3" >Nombre</label>
@@ -368,7 +363,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane label="Cantidad/Fecha">
@@ -379,7 +374,7 @@
                                                 <label class="el-form-item__label col-md-6" >Cantidad</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input :disabled="visualizar" size ="small"  placeholder="">
+                                                    <el-input :disabled="true" size ="small"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -390,7 +385,7 @@
                                                 <label class="el-form-item__label col-md-6" >Fecha Entrega</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input :disabled="visualizar" size ="small" placeholder="">
+                                                    <el-input :disabled="true" size ="small" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -403,7 +398,7 @@
                                                 <label class="el-form-item__label col-md-6" >Cantidad Ordenada</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="fltQuantity" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="fltQuantity" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -414,7 +409,7 @@
                                                 <label class="el-form-item__label col-md-6" >Fecha Requerida</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" :disabled="visualizar"  v-model="dtmRequested_Date" placeholder="">
+                                                    <el-input size ="small" :disabled="true"  v-model="dtmRequested_Date" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -427,7 +422,7 @@
                                                 <label class="el-form-item__label col-md-6" >Cantidad Pendiente</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="fltQuantity" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="fltQuantity" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -438,7 +433,7 @@
                                                 <label class="el-form-item__label col-md-6" >Fecha Modificación</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input :disabled="visualizar" size ="small" placeholder="">
+                                                    <el-input :disabled="true" size ="small" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -455,7 +450,7 @@
                                                 <label class="el-form-item__label col-md-4" >Precio</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="fltUnitPrice" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="fltUnitPrice" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -466,7 +461,7 @@
                                                 <label class="el-form-item__label col-md-4" >Cantidad</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="fltQuantity" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="fltQuantity" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -479,7 +474,7 @@
                                                 <label class="el-form-item__label col-md-4" >Total</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
-                                                        <el-input size ="small" :disabled="visualizar" v-model="fltValue_Total" placeholder="">
+                                                        <el-input size ="small" :disabled="true" v-model="fltValue_Total" placeholder="">
                                                         </el-input>
                                                     </div>
                                                 </div>
@@ -496,7 +491,7 @@
                                                 <label class="el-form-item__label col-md-6" >G/L Cuenta</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="strAccount_NO" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="strAccount_NO" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -507,7 +502,7 @@
                                                 <label class="el-form-item__label col-md-6" >WBS Element</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input :disabled="visualizar" size ="small" placeholder="">
+                                                    <el-input :disabled="true" size ="small" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -520,7 +515,7 @@
                                                 <label class="el-form-item__label col-md-6" >Centro Costo</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input size ="small" :disabled="visualizar" v-model="strCostCenter" placeholder="">
+                                                    <el-input size ="small" :disabled="true" v-model="strCostCenter" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -538,18 +533,18 @@
                                                 <label class="el-form-item__label col-md-6" >Código Proveedor</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
-                                                    <el-input :disabled="visualizar" size ="small" v-model="strVendor_NO"  placeholder="">
+                                                    <el-input :disabled="true" size ="small" v-model="strVendor_NO"  placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6">
                                             <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Nombre Proveedor</label>
-                                                <div class="col-md-6 grupolabel">
+                                                <label class="el-form-item__label col-md-3" >Nombre Proveedor</label>
+                                                <div class="col-md-8 grupolabel">
                                                     <div class="input-group " >
-                                                    <el-input :disabled="visualizar" size ="small"  v-model="strVendor_Desc" placeholder="">
+                                                    <el-input :disabled="true" size ="small"  v-model="strVendor_Desc" placeholder="">
                                                     </el-input>
                                                     </div>
                                                 </div>
@@ -673,7 +668,7 @@
     </el-dialog>
       <!--DIALOG BUSQUEDA Material-->
     <el-dialog title="Busqueda material"  :visible.sync="dialogMaterial" @close="closeMaterial" size="small" >
-      <bmaterial v-on:materialselecionado="SeleccionadoMaterial($event)">
+      <bmaterial :key="tiporequisicion" :tipo="tiporequisicion" v-on:materialselecionado="SeleccionadoMaterial($event)" v-on:materialClose="closeMaterial()">
       </bmaterial>
     </el-dialog>
      <!--DIALOG BUSQUEDA PROVEEDOR-->

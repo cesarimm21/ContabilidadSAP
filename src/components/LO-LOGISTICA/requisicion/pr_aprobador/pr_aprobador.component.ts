@@ -329,7 +329,7 @@ export default class AprobadorPRComponent extends Vue {
       this.valuem++; 
       this.percentage++;
     }
-    await requisicionService.busquedaRequisicion(data)
+    await requisicionService.busquedaRequisicionp(data)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
@@ -739,7 +739,15 @@ export default class AprobadorPRComponent extends Vue {
     await this.BuscarRequisicion();
   }
   // #endregion
-
+  getDateString(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
   data(){
     return{
       dialogTableVisible: false,

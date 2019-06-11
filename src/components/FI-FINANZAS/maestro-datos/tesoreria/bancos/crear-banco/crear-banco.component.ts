@@ -207,7 +207,7 @@ export default class CrearBancoComponent extends Vue {
   bln_tbl_cantidad_haber:boolean=false;
   blncuentacontable:boolean=false;
   bln_tbl_cuenta_bancaria:boolean=false;
-
+  bln_tipobanco:boolean=false;
   tableCuentaBancaria:CuentaBancariaModel[];
 
   editing:any= {
@@ -1000,7 +1000,7 @@ closeCategoriaCuenta(){
     .catch(e =>{      
       this.openMessageError('Error guardar cliente');
       loadingInstance.close();
-      this.textosave = 'No se guardo cliente.';
+      this.textosave = 'No se guardo el banco.';
       this.issave=false;
       this.iserror=true;
     })    
@@ -1126,6 +1126,14 @@ closeCategoriaCuenta(){
   }
   documentotransaccionClose(){
     
+  }
+  cambiarTipoBanco(val){
+    if(val=="P"){
+      this.bln_tipobanco=true;
+    }
+    else{
+      this.bln_tipobanco=false;
+    }
   }
   data(){
     return{

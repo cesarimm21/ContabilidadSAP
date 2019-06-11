@@ -326,6 +326,19 @@ export default class VisualizarPRComponent extends Vue {
       
     })
   }
+  getEstado(estado){
+    debugger;
+    estado=estado.trim();
+    if(estado=== '50'){
+      return 'Aprobado'
+    }
+    if(estado=== '70'){
+      return 'Rechazado'
+    }
+    else{
+      return 'Pendiente'
+    }
+  }
   async BuscarRequisicion(){
     debugger;
     var data:any=this.formBusqueda;
@@ -716,7 +729,15 @@ export default class VisualizarPRComponent extends Vue {
     await this.BuscarRequisicion();
   }
   // #endregion
-
+  getDateString(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
   data(){
     return{
       dialogTableVisible: false,

@@ -34,6 +34,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetBusquedaElementoGasto(strCodigo:any,desde:any,hasta:any){
+    return axios.get(CONFIG.API_URL+'busqueda/elementogasto/'+strCodigo+'/'+desde+'/'+hasta)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetCuentaContableID(code:any){
     return axios.get(CONFIG.API_URL+'cuentacontable/'+code)
     .then(response =>{           

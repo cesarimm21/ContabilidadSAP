@@ -134,7 +134,7 @@
                                                 prop="dtmCreation_Date" sortable width="100"
                                                 label="Fecha">
                                                 <template scope="scope">
-                                                    <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmCreation_Date) }}</label>
+                                                    <label style="width:100%"  >&nbsp;{{getDateString(scope.row.dtmCreation_Date) }}</label>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column

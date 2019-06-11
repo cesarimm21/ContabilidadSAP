@@ -241,20 +241,20 @@
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
+                                                    format="dd.MM.yyyy"
                                                     v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmRequested_Date" >
                                                 </el-date-picker>
-                                                <label style="width:100%;    margin: 0rem;" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmRequested_Date) }}</label>
+                                                <label style="width:100%;    margin: 0rem;" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
                                             </template>
                                         </el-table-column>
-                                        
                                     </el-table>
                                 </div>
                             </div>
                         </el-card>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 10px;">
+                <!-- <div class="row" style="margin-top: 10px;">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
                             <label class="el-form-item__label col-md-2" >Nº Linea</label>
@@ -273,16 +273,9 @@
                                     <img class="imagenfilter"  style="    width: 11px;height: 10px;margin-left: -1px;margin-top: -3px;" src="../../../../images/abajo.png" alt="">
                                 </el-button>
                             </div>
-                            <!-- <div class="input-group col-md-8">
-                            </div>
-                            <div class="col-md-2">
-                                <div style="padding-top: 2px">
-                                    
-                                </div>
-                            </div> -->
                         </div>   
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
                     <div class="col-sm-12" style="margin-top: 10px;">
                         <el-tabs type="border-card">
@@ -301,9 +294,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6">
                                             <div class="form-group row ">
-                                                <label class="el-form-item__label col-md-4" >Descripción</label>
+                                                <label class="el-form-item__label col-md-2" >Descripción</label>
                                                 <div class="col-md-8 grupolabel">
                                                     <div class="input-group mb-8" >
                                                     <el-input :disabled="true" size ="small" v-model="strDescripcion" placeholder="">
@@ -313,7 +306,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group row ">
                                                 <label class="el-form-item__label col-md-3" >Nombre</label>
@@ -325,7 +318,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane label="Cantidad/Fecha">
@@ -509,9 +502,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-9">
                                             <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Nombre Proveedor</label>
+                                                <label class="el-form-item__label col-md-2" >Nombre Proveedor</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
                                                     <el-input :disabled="true" size ="small"  v-model="strVendor_Descs" placeholder="">
@@ -594,7 +587,7 @@
     </el-dialog>
       <!--DIALOG BUSQUEDA Material-->
     <el-dialog title="Busqueda material"  :visible.sync="dialogMaterial" @close="closeMaterial" size="small" >
-      <bmaterial v-on:materialselecionado="SeleccionadoMaterial($event)" v-on:materialClose="closeMaterial()">
+      <bmaterial :key="tiporequisicion" :tipo="tiporequisicion"  v-on:materialselecionado="SeleccionadoMaterial($event)" v-on:materialClose="closeMaterial()">
       </bmaterial>
     </el-dialog>
      <!--DIALOG BUSQUEDA PROVEEDOR-->

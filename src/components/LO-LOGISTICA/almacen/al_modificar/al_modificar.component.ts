@@ -261,6 +261,7 @@ export default class ModificarMaterialComponent extends Vue {
       debugger;
       if(response!=undefined){
         this.productoModel=response[0];
+        this.desimpuesto=this.productoModel.strWH_Desc;
         if(response[0].intIdUnidadMedida!=null){
           var _unidadmedida=response[0].intIdUnidadMedida;
           this.productoModel.intIdUnidadMedida=_unidadmedida.intUnit_Measure_ID;
@@ -765,7 +766,8 @@ export default class ModificarMaterialComponent extends Vue {
   }
   SeleccionadoImpuesto(val){
     debugger;
-    this.productoModel.strTAX_Ind=val.strWH_Cod
+    this.productoModel.strWH_Cod=val.strWH_Cod
+    this.productoModel.strWH_Desc=val.strWH_Desc
     this.productoModel.intIdCommTax_ID=val.intIdWH_ID
     this.productoModel.strWHS_Desc=val.strWH_Desc
     this.desimpuesto=val.strWH_Desc;
@@ -1288,7 +1290,9 @@ export default class ModificarMaterialComponent extends Vue {
       if(response!=undefined){
         if(response.length>0){
 
-          this.productoModel.strTAX_Ind=response[0].strWH_Cod;
+          this.productoModel.strWH_Cod=response[0].strWH_Cod;
+          this.productoModel.strWH_Desc=response[0].strWH_Desc;
+
           this.productoModel.intIdCommTax_ID=response[0].intIdCommTax_ID;
           this.desimpuesto=response[0].strWH_Desc;
           this.dialogImpuesto=false;

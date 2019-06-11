@@ -26,7 +26,7 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{requisicionModel.strCompany_Desc}}</span>
                         </div> 
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código Requisición</label>
+                            <label class="el-form-item__label col-md-2" >Requisicion</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="formBusqueda.strRequis_NO"  placeholder="">
@@ -41,6 +41,7 @@
                                     <el-date-picker :disabled="checkFecha"
                                         v-model="fechaDesde"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                 </div>
@@ -51,6 +52,7 @@
                                     <el-date-picker :disabled="checkFecha"
                                         v-model="fechaHasta"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important"
                                        >
                                     </el-date-picker>
@@ -123,16 +125,16 @@
                                                     v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmRequested_Date" >
                                                 </el-date-picker>
-                                                <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmRequested_Date) }}</label>
+                                                <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column 
-                                            prop="chrStatus" align="center"  width="70"
+                                            prop="chrStatus" align="center"  width="80"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
-                                                :type="scope.row.chrStatus === 'A' ? 'success' : 'danger'"
-                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                                :type="scope.row.chrAuthsd_Status.trim() === '50' ? 'success' :scope.row.chrAuthsd_Status.trim() === '70'?'danger': 'warning'"
+                                                disable-transitions>{{getEstado(scope.row.chrAuthsd_Status)}}</el-tag>
                                             </template>
                                         </el-table-column>
                                         
