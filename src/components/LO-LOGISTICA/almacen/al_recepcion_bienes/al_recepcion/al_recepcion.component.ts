@@ -305,12 +305,12 @@ export default class RecepcionMaterialComponent extends Vue {
         else {
             this.OrdenCompra.listaDetalle = [];
             for (var i = 0; i < this.multipleSelection.length; i++) {
-                this.multipleSelection[i].strGuiaRem_NO=this.strGuiaRemitente;
-                this.multipleSelection[i].strGuiaTrans_NO=this.strGuiaTransportista;
-                this.multipleSelection[i].dtmGuiaRem_Date=this.dtmFechaRecepcion;
-                this.multipleSelection[i].dtmGuiaTrans_Date=this.dtmFechaGuiaTransportista;
-                this.multipleSelection[i].strRec_Driver=this.strConductor;
-                this.multipleSelection[i].strPlaca=this.strPlaca;
+                // this.multipleSelection[i].strGuiaRem_NO=this.strGuiaRemitente;
+                // this.multipleSelection[i].strGuiaTrans_NO=this.strGuiaTransportista;
+                // this.multipleSelection[i].dtmGuiaRem_Date=this.dtmFechaRecepcion;
+                // this.multipleSelection[i].dtmGuiaTrans_Date=this.dtmFechaGuiaTransportista;
+                // this.multipleSelection[i].strRec_Driver=this.strConductor;
+                // this.multipleSelection[i].strPlaca=this.strPlaca;
                 if(this.multipleSelection[i].fltRec_QYT!=undefined && this.multipleSelection[i].fltPO_QTY_I!=undefined && this.multipleSelection[i].fltRec_QYT!=null && this.multipleSelection[i].fltPO_QTY_I!=null) {
                     this.multipleSelection[i].fltRec_Pend_QTY=this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT;
                     if(this.multipleSelection[i].fltRec_Pend_QTY==0){
@@ -344,6 +344,7 @@ export default class RecepcionMaterialComponent extends Vue {
                     this.OrdenCompra.strReceipt_Status='30'  ;
                 }
             }
+            console.log(this.OrdenCompra);
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guardando...',

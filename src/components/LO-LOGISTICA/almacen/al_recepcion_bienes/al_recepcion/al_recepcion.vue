@@ -46,7 +46,7 @@
                                     </div>
                                 </div>                                
                             </div>
-                            <div class="form-group row ">
+                            <!-- <div class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Guia Remitente</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -102,7 +102,7 @@
                                     </el-input>
                                     </div>
                                 </div>                                
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                  <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
@@ -203,32 +203,65 @@
                                         <el-table-column
                                             prop="strGuiaRem_NO"   width="100"
                                             label="Guia Remitente">
+                                            <template scope="scope">
+                                                <el-input  size="small" v-model="scope.row.strGuiaRem_NO" >
+                                                </el-input> 
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strGuiaTrans_NO"   width="100"
                                             label="Guia Transportista">
+                                            <template scope="scope">
+                                                <el-input  size="small" v-model="scope.row.strGuiaTrans_NO" >
+                                                </el-input> 
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                              width="100"
                                             label="Fecha G.Transportista">
-                                            <template scope="scope">
+                                            <!-- <template scope="scope">
                                                  {{getParseDate(scope.row.dtmGuiaTrans_Date)}}
+                                            </template> -->
+                                            <template scope="scope">
+                                                <el-date-picker
+                                                    type="date"
+                                                    format="dd.MM.yyyy"
+                                                    size="small" 
+                                                    v-model="scope.row.dtmGuiaRem_Date" >
+                                                </el-date-picker>
+                                                
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                               width="100"
                                             label="Fecha Recepción">
-                                            <template scope="scope">
+                                            <!-- <template scope="scope">
                                                  {{getParseDate(scope.row.dtmReceived_Date)}}
+                                            </template> -->
+                                            <template scope="scope">
+                                                <el-date-picker
+                                                    type="date"
+                                                    format="dd.MM.yyyy"
+                                                    size="small" 
+                                                    v-model="scope.row.dtmGuiaTrans_Date" >
+                                                </el-date-picker>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strRec_Driver"  
                                             label="Conductor">
+                                            <template scope="scope">
+                                                <el-input  size="small" v-model="scope.row.strRec_Driver" >
+                                                </el-input> 
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPlaca"  
                                             label="Placa">
+                                            <template scope="scope">
+                                                <el-input  size="small" v-model="scope.row.strPlaca" >
+                                                </el-input> 
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strUM_Cod"   width="60"
