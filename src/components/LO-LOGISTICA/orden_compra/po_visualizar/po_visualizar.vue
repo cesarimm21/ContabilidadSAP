@@ -1,7 +1,7 @@
 <template>
     <div class="modificar-po">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        <quickaccessmenu v-on:validarView="validad()" v-on:guardarTodo="guardarTodo()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
@@ -25,7 +25,7 @@
                                 <label class="el-form-item__label col-md-2" >Orden Compra</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
-                                        <el-input size ="small" type="text">
+                                        <el-input size ="small" type="text" v-model="opSelect.strPO_NO">
                                         </el-input>
                                     </div>
                                 </div>
@@ -50,14 +50,14 @@
                                         class="ExcelTable2007"
                                         @header-click="headerclick"
                                         @current-change="handleCurrentChange" >
-                                        <el-table-column type="index" label="Linea" width="38">   </el-table-column>          
+                                        <el-table-column type="index" label="Item" width="38">   </el-table-column>          
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="60" label="Orden Compra">
+                                         prop="strPO_NO" min-width="50" label="Orden Compra">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="60"
+                                            prop="strRequis_NO"   min-width="50"
                                             label="Requisicion">
                                         </el-table-column>
                                         <el-table-column
@@ -72,8 +72,9 @@
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterdtmProcess_Date"
-                                            prop="dtmProcess_Date"  width="200"
-                                            label="Fecha ejecucion">
+                                            prop="dtmProcess_Date"  width="100"
+                                            label="Fecha Ejecucion" 
+                                            align="center">
                                              <template scope="scope">
                                                 <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
                                             </template>
@@ -81,7 +82,8 @@
                                         <el-table-column
                                             :render-header="filterfltTotal_Val"
                                             prop="fltTotal_Val"  width="100"
-                                            label="Valor total" >
+                                            label="Valor Total" 
+                                            align="right">
                                         </el-table-column>
                                         <el-table-column 
                                             prop="chrPO_Status" align="center"  width="80"

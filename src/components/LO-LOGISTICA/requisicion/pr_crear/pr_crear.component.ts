@@ -219,6 +219,7 @@ export default class CrearPRComponent extends Vue {
   strCostCenters:any='';
   strVendor_NOs:any='';
   strVendor_Descs:any='';
+  fltFactors:any='';
 
   constructor(){
     super();
@@ -403,6 +404,7 @@ export default class CrearPRComponent extends Vue {
       this.strCostCenters=val.strCostCenter==undefined?'':val.strCostCenter;
       this.strVendor_NOs=val.strVendor_NO==undefined?'':val.strVendor_NO;
       this.strVendor_Descs=val.strVendor_Desc==undefined?'':val.strVendor_Desc;
+      this.fltFactors=val.fltFactor==undefined?'':val.fltFactor;
       console.log(this.currentRow);
       this.getDetalle(val);
     }
@@ -477,6 +479,7 @@ export default class CrearPRComponent extends Vue {
     this.strCostCenters=this.tableData1[res].strCostCenter==undefined?'':this.tableData1[res].strCostCenter;
     this.strVendor_NOs=this.tableData1[res].strVendor_NO==undefined?'':this.tableData1[res].strVendor_NO;
     this.strVendor_Descs=this.tableData1[res].strVendor_Desc==undefined?'':this.tableData1[res].strVendor_Desc;
+    this.fltFactors=this.tableData1[res].fltFactor==undefined?'':this.tableData1[res].fltFactor;
    
     
     this.dtmDelivery_Dates=this.fltQuantitys
@@ -526,6 +529,7 @@ export default class CrearPRComponent extends Vue {
     this.strCostCenters=this.tableData1[res].strCostCenter==undefined?'':this.tableData1[res].strCostCenter;
     this.strVendor_NOs=this.tableData1[res].strVendor_NO==undefined?'':this.tableData1[res].strVendor_NO;
     this.strVendor_Descs=this.tableData1[res].strVendor_Desc==undefined?'':this.tableData1[res].strVendor_Desc;
+    this.fltFactors=this.tableData1[res].fltFactor==undefined?'':this.tableData1[res].fltFactor;
     this.txtnroline="["+this.tableData1[res].intRequis_Item_NO+"] "+this.tableData1[res].strDescription;
      
     // var document:any = this.$refs.missionTable;
@@ -920,6 +924,7 @@ export default class CrearPRComponent extends Vue {
     this.selectrow.strVendor_Desc=val.strVendor_Desc;
     this.selectrow.strMatClass_Cod=val.strMaterial_Class;
     this.selectrow.strMatClass_Desc=val.strMatClass_Desc;
+    this.selectrow.fltFactor=val.fltFactor;
 
     this.strStockCod=this.selectrow.strMaterial_Cod==undefined?'':this.selectrow.strMaterial_Cod;
     this.strDescripcion=this.selectrow.strDescription==undefined?'':this.selectrow.strDescription;
@@ -1004,6 +1009,7 @@ export default class CrearPRComponent extends Vue {
     this.strCostCenters="";
     this.strVendor_NOs="";
     this.strVendor_Descs="";
+    this.fltFactors="";
   }
   async guardarTodo(val){
     debugger;
@@ -1664,6 +1670,7 @@ export default class CrearPRComponent extends Vue {
       this.strCostCenters=this.tableData1[this.intlineaselect].strCostCenter==undefined?'':this.tableData1[this.intlineaselect].strCostCenter;
       this.strVendor_NOs=this.tableData1[this.intlineaselect].strVendor_NO==undefined?'':this.tableData1[this.intlineaselect].strVendor_NO;
       this.strVendor_Descs=this.tableData1[this.intlineaselect].strVendor_Desc==undefined?'':this.tableData1[this.intlineaselect].strVendor_Desc;
+      this.fltFactors=this.tableData1[this.intlineaselect].fltFactor==undefined?'':this.tableData1[this.intlineaselect].fltFactor;
       this.txtnroline="["+this.tableData1[this.intlineaselect].intRequis_Item_NO+"] "+this.tableData1[this.intlineaselect].strDescription;
     
     }

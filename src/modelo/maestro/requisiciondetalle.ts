@@ -30,6 +30,7 @@ export class RequisicionDetalleModel {
     dtmCompleted_Date:Date;
     strMatClass_Cod:string;
     strMatClass_Desc:string;
+    fltFactor:number;
     strCostCenter_Desc:string;
     strVendor_Desc:string;
     intConv_Factor:number;
@@ -70,6 +71,7 @@ export class RequisicionDetalleModel {
         this.dtmCompleted_Date =new Date()
         this.strMatClass_Cod='';
         this.strMatClass_Desc='';
+        this.fltFactor=0;
         this.strCostCenter_Desc='';
         this.strVendor_Desc='';
         this.intConv_Factor=1

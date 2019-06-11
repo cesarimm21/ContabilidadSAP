@@ -243,6 +243,7 @@ export default class  BImpuestoComponent extends Vue {
     return {
       impuestoModel:[],
       impuestoModel1:[],
+      inputAtributo:'',
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

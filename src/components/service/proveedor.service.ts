@@ -27,6 +27,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getProveedorOne(strVendor_NO){
+    return axios.get(CONFIG.API_URL+'proveedorone/'+strVendor_NO)
+    .then(response => {
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneProveedor(code){
     return axios.get(CONFIG.API_URL+'proveedor/'+code)
     .then(response =>{

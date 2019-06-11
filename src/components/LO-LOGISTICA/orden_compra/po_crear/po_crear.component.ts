@@ -150,6 +150,11 @@ export default class CrearPOComponent extends Vue {
     //**[unidad medidad] */
     dialogUnidadMedida:boolean=false;
     btnactivarunidadmedida:boolean=false;
+
+     //activar colores
+  isactivered:boolean=true;
+  isactiveyellow:boolean=false;
+  isactivegreen:boolean=false;
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
@@ -184,17 +189,7 @@ export default class CrearPOComponent extends Vue {
     loadRequisicion(){
         this.dialogRequisicion=true;
     }
-    // searchRequisicion() {
-    //     this.getRequisicion(this.codigoInput);
-    // }
-    // getRequisicion(codigo) {
-    //     requisicionService.getRequisicionByCod(codigo)
-    //     .then(response=>{
-    //         this.requisicionData=response;                                 
-    //     })
-    // }
-    getReqDetalle(v) {
-        
+    getReqDetalle(v) {        
         requisicionService.getRequiDetallById(v)
         .then(response=>{
             this.requiDetalle=response; 
@@ -234,7 +229,7 @@ export default class CrearPOComponent extends Vue {
                     strMatClass_Desc:this.requiDetalle[i].strMatClass_Desc,
                     strCostCenter_Desc:this.requiDetalle[i].strCostCenter_Desc,
                     strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
-                    intConv_Factor:1,
+                    intConv_Factor:this.requiDetalle[i].fltFactor,
                     chrStatus:this.requiDetalle[i].chrStatus
                 })
             }
@@ -261,14 +256,14 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
-      console.log(val);
-      
         var comId:any=localStorage.getItem('compania_ID');
         this.OrdenCompra.intIdCompany_ID=parseInt(comId); 
         this.OrdenCompra.strCompany_Desc=val.strCompany_Desc;
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;  
         this.OrdenCompra.strPO_Desc=val.strDesc_Header;
+        this.OrdenCompra.strTypeReq_Cod=val.strTypeReq_Cod;
+        this.OrdenCompra.strTipReq_Desc=val.strTipReq_Desc;
         this.OrdenCompra.strTypeMov_Cod=val.strTypeMov_Cod;    
         this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
         this.OrdenCompra.strWHS_Cod=val.strWHS_Cod;

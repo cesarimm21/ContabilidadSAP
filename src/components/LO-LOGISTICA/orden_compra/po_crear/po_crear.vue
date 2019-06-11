@@ -22,7 +22,7 @@
                                 <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Codigo Requisición</label>
+                                <label class="el-form-item__label col-md-3" >Requisición</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
@@ -114,44 +114,44 @@
                                 <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small" type="text" v-model="OrdenCompra.strPO_Desc">
-
                                     </el-input>
                                     </div>
                                 </div>
-                                <!-- <label class="el-form-item__label col-md-3" >Proveedor</label>
+                                <!-- <label class="el-form-item__label col-md-3" >Tipo Requisicion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  >
+                                    <el-input size ="small" v-model="OrdenCompra.strTipReq_Desc" disabled>
                                     </el-input>
                                     </div>
                                 </div> -->
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row " >
-                                <label class="sinLinea el-form-item__label col-md-6"></label>
-                            </div>
-                            <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
+                        <div class="col-sm-6">                            
+                            <div class="form-group row " style="margin-top:15px;">
+                                <label class="sinLinea el-form-item__label col-md-12" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row "  style="margin-top:12px;">
-                                <!-- <template>
-                                    <el-checkbox class="CheckBoxPro" v-model="checked" @change="handleCheckAllChange" :disabled="nochancePro">
-                                        <span style=" font-size:10px;">Modificar </span>
-                                        </el-checkbox>
-                                </template> -->
-                                <label class="sinLinea el-form-item__label col-md-6" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{Impuesto.fltPorcent}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:10px;">{{OrdenCompra.strWH_Desc}}</label>
                             </div>
-                        </div>
+                            <div class="form-group row" style="margin-top:5px;">
+                                <label class="el-form-item__label col-md-3" >Tipo Requisicion</label>
+                                <div class="col-md-4 grupolabel">
+                                    <div class="input-group mb-4" >
+                                    <el-input size ="small" v-model="OrdenCompra.strTipReq_Desc" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
                     </div>
                     <br/>
-                    <div class="row">
+                    <div class="row" >
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
@@ -241,7 +241,8 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltQuantity"  width="100"
-                                            label="Cantidad">
+                                            label="Cantidad" 
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltQuantity" :precision="2">
@@ -252,7 +253,8 @@
                                         
                                         <el-table-column
                                             prop="fltUnitPrice"  width="100"
-                                            label="Valor Unitario">
+                                            label="Valor Unitario"
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2" :step="0.01">
@@ -262,11 +264,13 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltValue_Total"  width="100"
-                                            label="Valor Total" >
+                                            label="Valor Total" 
+                                            align="right">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPriority_Cod"  width="130"
-                                            label="Prioridad">
+                                            label="Prioridad"
+                                            align="center">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
@@ -276,7 +280,8 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column prop="intConv_Factor"  width="100"
-                                            label="Factor">
+                                            label="Factor"
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_factor  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
@@ -284,9 +289,10 @@
                                                 <label style="width:100%"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column v-if="false"
+                                        <el-table-column 
                                             prop="chrStatus"  width="40"
-                                            label="Estado">                                   
+                                            label="Estado"
+                                            align="right">                                   
                                         </el-table-column>
 
                                     </el-table>

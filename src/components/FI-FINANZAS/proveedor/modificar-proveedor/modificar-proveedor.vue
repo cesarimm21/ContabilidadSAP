@@ -1,7 +1,7 @@
 <template>
     <div class="crear-proveedor">
       <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:validarView="validarView()" v-on:guardarTodo="guardarTodo()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
      <div >
           <el-card class="box-card">
@@ -28,14 +28,14 @@
                                 </el-input>
                             </div>
                         </div>  
-                        <label class="el-form-item__label col-md-2" >Pais</label>
+                        <!-- <label class="el-form-item__label col-md-2" >Pais</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-2" >
                                     <el-input size ="small" @blur="desactivar_Pais" @focus="activar_Pais">                            
                                         <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                     </el-input>
                                 </div>
-                            </div>                      
+                            </div>                       -->
                         </div>
                   </div>
               </div>
@@ -58,13 +58,13 @@
                                     highlight-current-row
                                     height="250"
                                     @current-change="proveedorSelect">
-                                    <el-table-column type="index" label="Linea" width="38">                                        
+                                    <el-table-column type="index" label="Item" width="38">                                        
                                     </el-table-column>
                                     <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="100">
                                     </el-table-column> 
                                     <el-table-column  :render-header="filterstrTax_ID" prop="strTax_ID" label="RUC/DNI" width="180">
                                     </el-table-column> 
-                                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre proveedor" width="260">
+                                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre Proveedor" width="260">
                                     </el-table-column>                                      
                                     <el-table-column :render-header="filterintIdCountry_ID" prop="intIdCountry_ID.strCountry_Name" label="Pais" width="100">
                                     </el-table-column> 

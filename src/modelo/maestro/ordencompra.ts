@@ -4,9 +4,11 @@ export class OrdenCompraModel {
     intIdCompany_ID:number;
     intIdPurReqH_ID:number ;
     intIdTypeReq_ID:number ;
-    intIdVendor_ID:number;
+    intIdVendor_ID:number;    
     strTypeMov_Cod:string;
     strTypeMov_Desc:string;
+    strTypeReq_Cod:string;
+    strTipReq_Desc:string;
     strCompany_Cod:string ;
     strCompany_Desc:string;
     strCurrency_Cod:string;

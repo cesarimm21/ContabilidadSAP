@@ -46,7 +46,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
     vifprogress:boolean=true;
     //FILTRO DE BUSQUEDA
     pagina: number =1;
-    RegistersForPage: number = 10;
+    RegistersForPage: number = 100;
     totalRegistros: number = 100;
     clickColumn:string='';
     txtbuscar:string='';
@@ -129,7 +129,7 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         await setTimeout(() => {
             debugger;
             if(this.selectrowCod!=''){
-              router.push({ path: `/barmenu/FI-FINANZAS/proveedor/ViewAndEdit-proveedor`, query: { vista: 'modificar',data:this.selectrowCod }  })
+              router.push({ path: `/barmenu/FI-FINANZAS/proveedor/ViewAndEdit-proveedor`, query: { vista: 'visualizar',data:this.selectrowCod }  })
             }
             else{
                 this.openMessageWaring('Seleccione un proveedor')
@@ -143,7 +143,34 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
                 message: strMessage
               });
           }
-    
+          guardarTodo(){
+            this.$message({
+              showClose: true,
+              type: 'warning',
+              message: 'Accion no permitida'
+            });
+          }
+          async  validarView(){
+            this.selectrowCod='';
+            if(this.gridSelectedProveedor.strVendor_NO==''){
+              this.$message({
+                showClose: true,
+                type: 'warning',
+                message: 'Ingrese codigo proveedor'
+              });
+            }
+            else{    
+              this.selectrowCod=this.gridSelectedProveedor.strVendor_NO;
+                await setTimeout(() => {
+                  if(this.selectrowCod!=''){
+                    router.push({ path: `/barmenu/FI-FINANZAS/proveedor/ViewAndEdit-proveedor`, query: { vista: 'modificar',data:this.selectrowCod }  })
+                  }
+                  else{
+                  this.openMessageWaring('Seleccione un proveedor')
+                }
+              }, 200)
+            }
+          }
     //#region [FILTRO BUSQUEDA]
     Buscar(){
       if(this.Column!=""){
