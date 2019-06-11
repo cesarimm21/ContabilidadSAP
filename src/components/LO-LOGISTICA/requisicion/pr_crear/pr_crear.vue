@@ -697,9 +697,9 @@ import CrearPRComponent from '@/components/LO-LOGISTICA/requisicion/pr_crear/pr_
 export default CrearPRComponent
 </script>
 <style scoped>
-.selected{
+/* .selected{
     background: red;
-}
+} */
 table {
   overflow: hidden;
 }

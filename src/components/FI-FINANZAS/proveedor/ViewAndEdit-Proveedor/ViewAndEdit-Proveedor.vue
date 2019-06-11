@@ -2,7 +2,7 @@
 <template>
     <div class="crear-proveedor">
       <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:actualizarProveedor="SaveProveedor($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:actualizarProveedor="SaveProveedor($event)" v-on:validarView="validarView()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
       <div >
           <el-card class="box-card">
@@ -54,7 +54,7 @@
                                                         v-for="item in Categoria"
                                                         :key="item.intIdVenCateg_ID"
                                                         :label="item.strVenCateg_Desc"
-                                                        :value="item.intIdVenCateg_ID"
+                                                        :value="item.strVenCateg_Desc"
                                                         >
                                                         </el-option>
                                                     </el-select>
@@ -175,7 +175,7 @@
                                             </div>                         
                                         </div>
                                         <div class="form-group row margint">
-                                            <label class="el-form-item__label col-md-1" >Dirección</label>
+                                            <label class="el-form-item__label col-md-1" >Direccion</label>
                                             <div class="col-md-6 grupolabel">
                                                 <div class="input-group mb-6" >
                                                 <el-input size ="small"  v-model="Proveedor.strAddress" :disabled="proDisabled">
@@ -184,7 +184,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-1 grupolabel"></div>  
-                                            <label class="el-form-item__label col-md-2" >Dias en pagar:</label>
+                                            <label class="el-form-item__label col-md-2" >Dias a pagar</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                 <el-input size ="small" type="number" v-model="Proveedor.intDayToPay" :disabled="proDisabled">                    
@@ -200,7 +200,7 @@
                                 <div class="container">
                                     <div class="row">
                                         <div slot="header" class="headercardSecond" style="width:100%;">
-                                            <span class="labelheadercard" >Cuenta local</span>
+                                            <span class="labelheadercard" >Cuenta Local</span>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row ">
@@ -208,12 +208,12 @@
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                     <el-input size ="small" @blur="desactivar_bancoA" @focus="activar_bancoA" v-model="Proveedor.strBank_Cod" :disabled="proDisabled">                            
-                                                        <el-button v-if="btnactivarbancoA && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('A')"></el-button> 
+                                                        <el-button v-if="btnactivarbancoA && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('A')" :disabled="proDisabled"></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>
                                             <label class="el-form-item__label col-md-2" style="color:#1f2d3d;" >{{selectBancoA.strBank_Name}}</label>
-                                            <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
+                                            <label class="el-form-item__label col-md-2" >Cuenta Bancaria</label>
                                             <div class="col-md-2 grupolabel">
                                                 <div class="input-group mb-2" >
                                                 <el-input size ="small" v-model="Proveedor.strBankAcct_Local_NO" :disabled="proDisabled">
@@ -224,8 +224,8 @@
                                             <label class="el-form-item__label col-md-1" >Moneda</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_monedaA" @focus="activar_monedaA" v-model="Proveedor.strCurrency_Cod" :disabled="proDisabled">                            
-                                                        <el-button v-if="btnactivarmonedaA && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('A')"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_monedaA" @focus="activar_monedaA" v-model="Proveedor.strCurrency_Cod" disabled>                            
+                                                        <el-button v-if="btnactivarmonedaA && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('A')" disabled></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>  
@@ -233,15 +233,15 @@
                                         </div>
                                     </div>
                                     <div slot="header" class="headercardSecond" style="width:100%; margin-top: 15px;">
-                                        <span class="labelheadercard" >Cuenta Coorporativo</span>
+                                        <span class="labelheadercard" >Cuenta Extranjera</span>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group row ">
                                             <label class="el-form-item__label col-md-1" >Banco </label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_bancoB" @focus="activar_bancoB" v-model="Proveedor.strBank_Corp_Cod" :disabled="proDisabled">                            
-                                                        <el-button v-if="btnactivarbancoB && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('B')"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_bancoB" @focus="activar_bancoB" v-model="Proveedor.strBank_Corp_Cod" disabled>                            
+                                                        <el-button v-if="btnactivarbancoB && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('B')" disabled></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>
@@ -258,8 +258,8 @@
                                             <label class="el-form-item__label col-md-1" >Moneda </label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                <el-input size ="small" @blur="desactivar_monedaB" @focus="activar_monedaB" v-model="Proveedor.strCurrency_Corp" :disabled="proDisabled">                            
-                                                    <el-button v-if="btnactivarmonedaB && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('B')"></el-button> 
+                                                <el-input size ="small" @blur="desactivar_monedaB" @focus="activar_monedaB" v-model="Proveedor.strCurrency_Corp" disabled>                            
+                                                    <el-button v-if="btnactivarmonedaB && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('B')" disabled></el-button> 
                                                 </el-input>
                                                 </div>
                                             </div>  
@@ -272,7 +272,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group row ">
-                                            <label class="el-form-item__label col-md-1" >banco</label>
+                                            <label class="el-form-item__label col-md-1" >Banco</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                 <el-input size ="small" @blur="desactivar_bancoC" @focus="activar_bancoC" v-model="Proveedor.strBank_Other_Cod" :disabled="proDisabled">                            
@@ -293,7 +293,7 @@
                                             <label class="el-form-item__label col-md-1" >Moneda</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_monedaC" @focus="activar_monedaC" v-model="Proveedor.strFore_Swift_Cod" :disabled="proDisabled">                            
+                                                    <el-input size ="small" @blur="desactivar_monedaC" @focus="activar_monedaC" v-model="Proveedor.strOther_Curr_Cod" :disabled="proDisabled">                            
                                                     <el-button v-if="btnactivarmonedaC && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('C')"></el-button> 
                                                     </el-input>
                                                 </div>
@@ -302,21 +302,21 @@
                                         </div>
                                     </div>
                                     <div slot="header" class="headercardSecond" style="width:100%; margin-top: 15px;">
-                                        <span class="labelheadercard" >Cuenta Foraneo</span>
+                                        <span class="labelheadercard" >Cuenta Exterior</span>
                                     </div>
                                     <div class="col-md-12">                                        
                                         <div class="form-group row ">
                                             <label class="el-form-item__label col-md-1" >Banco </label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                <el-input size ="small" @blur="desactivar_bancoD" @focus="activar_bancoD" v-model="Proveedor.strFore_Branch_Cod" :disabled="proDisabled">                            
+                                                <el-input size ="small" @blur="desactivar_bancoD" @focus="activar_bancoD" v-model="Proveedor.strFore_Bank_Cod" :disabled="proDisabled">                            
                                                     <el-button v-if="btnactivarbancoD && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('D')"></el-button> 
                                                 </el-input>
                                                 </div>
                                             </div>
                                             <label class="el-form-item__label col-md-2" style="color:#1f2d3d;">{{selectBancoD.strBank_Name}}</label>
                                             
-                                            <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
+                                            <label class="el-form-item__label col-md-2" >Cuenta Bancaria</label>
                                             <div class="col-md-2 grupolabel">
                                                 <div class="input-group mb-2" >
                                                 <el-input size ="small" v-model="Proveedor.strFore_AccBank_NO" :disabled="proDisabled">
@@ -335,6 +335,24 @@
                                             <label class="el-form-item__label col-md-2" style="color:#1f2d3d;">{{selectMonedaD.strCurrency_Desc}}</label>  
                                             
                                         </div>
+                                            <div class="form-group row " style="margin-top:10px;">
+                                                <label class="el-form-item__label col-md-1" >Branch Code </label>
+                                                <div class="col-md-1 grupolabel">
+                                                    <div class="input-group mb-1" >
+                                                    <el-input size ="small" v-model="Proveedor.strFore_Branch_NO" :disabled="proDisabled">                            
+                                                    </el-input>
+                                                    </div>
+                                                </div>
+                                                <label class=" sinLinea el-form-item__label col-md-2" style="color:#1f2d3d;"></label>
+                                                
+                                                <label class="el-form-item__label col-md-2" >Swift Code</label>
+                                                <div class="col-md-2 grupolabel">
+                                                    <div class="input-group mb-2" >
+                                                    <el-input size ="small" v-model="Proveedor.strFore_Swift_NO"  placeholder="" :disabled="proDisabled">
+                                                    </el-input>
+                                                    </div>
+                                                </div> 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -354,15 +372,15 @@
                                             <label class="el-form-item__label col-md-1" >Retención</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_impuesto" @focus="activar_impuesto" v-model="Proveedor.strRetention_Cod">                            
-                                                        <el-button v-if="btnactivarimpuesto && !impuestoVisible" slot="append" class="boton" icon="fa fa-clone" @click="impuestoDialog()"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_impuesto" @focus="activar_impuesto" v-model="Proveedor.strRetention_Cod" :disabled="proDisabled">                            
+                                                        <el-button v-if="btnactivarimpuesto && !impuestoVisible" slot="append" class="boton" icon="fa fa-clone" @click="impuestoDialog()" :disabled="proDisabled"></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>  
                                             <label class="el-form-item__label col-md-1" >% Retención</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                <el-input type="number" size ="small" v-model="Proveedor.fltRetention_Porcen"  placeholder="">
+                                                <el-input type="number" size ="small" v-model="Proveedor.fltRetention_Porcen"  placeholder="" :disabled="proDisabled">
                                     
                                                 </el-input>
                                                 </div>
@@ -380,15 +398,15 @@
                                                 <label class="el-form-item__label col-md-1" >Detracción</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_detraccion" @focus="activar_detraccion" v-model="Proveedor.strDetraccion_Cod">                            
-                                                        <el-button v-if="btnactivardetraccion && !detraccionVisible" slot="append" class="boton" icon="fa fa-clone" @click="detraccionDialog()"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_detraccion" @focus="activar_detraccion" v-model="Proveedor.strDetraccion_Cod" :disabled="proDisabled">                            
+                                                        <el-button v-if="btnactivardetraccion && !detraccionVisible" slot="append" class="boton" icon="fa fa-clone" @click="detraccionDialog()" :disabled="proDisabled"></el-button> 
                                                     </el-input>
                                                     </div>
                                                 </div>  
                                                 <label class="el-form-item__label col-md-1" >%Detracción</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
-                                                    <el-input type="number" size ="small" v-model="Proveedor.fltDetraccion_Porcen"  placeholder="">
+                                                    <el-input type="number" size ="small" v-model="Proveedor.fltDetraccion_Porcen"  placeholder="" :disabled="proDisabled">
                                         
                                                     </el-input>
                                                     </div>

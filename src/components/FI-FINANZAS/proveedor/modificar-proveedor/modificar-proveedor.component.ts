@@ -119,9 +119,9 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
       }, 120)
       
     }
-    paisDialog(){
-      this.paisVisible=true;
-    }
+      paisDialog(){
+        this.paisVisible=true;
+      }
       proveedorSelect(val){
         this.gridSelectedProveedor=val;  
         this.selectrowCod=this.gridSelectedProveedor.strVendor_NO;   
@@ -400,6 +400,34 @@ import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
         type: 'warning',
         message: strMessage
       });
+  }
+  async  validarView(){
+    this.selectrowCod='';
+    if(this.gridSelectedProveedor.strVendor_NO==''){
+      this.$message({
+        showClose: true,
+        type: 'warning',
+        message: 'Ingrese codigo proveedor'
+      });
+    }
+    else{    
+      this.selectrowCod=this.gridSelectedProveedor.strVendor_NO;
+        await setTimeout(() => {
+          if(this.selectrowCod!=''){
+            router.push({ path: `/barmenu/FI-FINANZAS/proveedor/ViewAndEdit-proveedor`, query: { vista: 'modificar',data:this.selectrowCod }  })
+          }
+          else{
+          this.openMessageWaring('Seleccione un proveedor')
+        }
+      }, 200)
+    }
+  }
+  guardarTodo(){
+    this.$message({
+      showClose: true,
+      type: 'warning',
+      message: 'Accion no permitida'
+    });
   }
     //#endregion
       data(){

@@ -125,7 +125,7 @@ body {
 }
 .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active, .el-menu-item.is-active, .router-link {
     color: #000000 !important;
-    background-color: #396b88 !important;
+    background-color: #d6dff2 !important;
     width: 100%;
 }
 .hamb-container {

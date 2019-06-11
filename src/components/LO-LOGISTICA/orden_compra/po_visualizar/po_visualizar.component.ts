@@ -111,6 +111,26 @@ export default class VisualizarPOComponent extends Vue {
           this.warningMessage('Seleccione la Impuesto. ');
         }
       }
+      validad(){
+        if(this.opSelect.strPO_NO!=undefined){
+          ordenCompraService.getPOONEview(this.opSelect.strPO_NO)
+          .then(respo=>{
+            this.opSelect=respo;            
+            if(this.opSelect.strPO_NO!=undefined){
+              router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_viewandedit`, query: { vista:this.textTitle ,data:JSON.stringify(this.opSelect) }  })
+            }     
+            else{
+              this.warningMessage('No existe Orden Compra');
+            }      
+          })
+          .catch(error=>{
+            this.warningMessage('No existe Orden Compra');
+          })          
+        }
+        else{
+          this.warningMessage('Inserte Orden Compra');
+        }
+      }
       warningMessage(newMsg : string) {
         this.$message({
           showClose: true,
@@ -252,6 +272,13 @@ export default class VisualizarPOComponent extends Vue {
       }
       reloadpage(){
         window.location.reload();
+      }
+      guardarTodo(){
+        this.$message({
+          showClose: true,
+          message: 'Accion no permitida',
+          type: 'warning'
+        });
       }
     data() {
         return {

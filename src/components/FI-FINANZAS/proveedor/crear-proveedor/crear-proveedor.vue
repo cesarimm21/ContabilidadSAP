@@ -1,7 +1,7 @@
 <template>
   <div class="crear-proveedor">
       <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarProveedor="SaveProveedor($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:validarView="validarView()" v-on:guardarProveedor="SaveProveedor($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
       <div >
          
@@ -166,7 +166,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-1 grupolabel"></div>  
-                                            <label class="el-form-item__label col-md-2" >Dias en pagar:</label>
+                                            <label class="el-form-item__label col-md-2" >Dias a pagar</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                 <el-input size ="small" type="number" v-model="Proveedor.intDayToPay"  placeholder="">                    
@@ -182,15 +182,15 @@
                                 <div class="container">
                                     <div class="row">
                                         <div slot="header" class="headercardSecond" style="width:100%;">
-                                            <span class="labelheadercard" >Cuenta local</span>
+                                            <span class="labelheadercard" >Cuenta Local</span>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group row ">
                                             <label class="el-form-item__label col-md-1" >Banco</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_bancoA" @focus="activar_bancoA" v-model="Proveedor.strBank_Cod">                            
-                                                        <el-button v-if="btnactivarbancoA && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('A')"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_bancoA" @focus="activar_bancoA" v-model="Proveedor.strBank_Cod" >                            
+                                                        <el-button v-if="btnactivarbancoA && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('A')" ></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>
@@ -206,8 +206,8 @@
                                             <label class="el-form-item__label col-md-1" >Moneda</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_monedaA" @focus="activar_monedaA" v-model="Proveedor.strCurrency_Cod">                            
-                                                        <el-button v-if="btnactivarmonedaA && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('A')"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_monedaA" @focus="activar_monedaA" v-model="Proveedor.strCurrency_Cod" disabled>                            
+                                                        <el-button v-if="btnactivarmonedaA && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('A')" disabled></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>  
@@ -215,15 +215,15 @@
                                         </div>
                                     </div>
                                     <div slot="header" class="headercardSecond" style="width:100%; margin-top: 15px;">
-                                        <span class="labelheadercard" >Cuenta Coorporativo</span>
+                                        <span class="labelheadercard" >Cuenta Extranjera</span>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group row ">
                                             <label class="el-form-item__label col-md-1" >Banco </label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_bancoB" @focus="activar_bancoB" v-model="Proveedor.strBank_Corp_Cod">                            
-                                                        <el-button v-if="btnactivarbancoB && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('B')"></el-button> 
+                                                    <el-input size ="small" @blur="desactivar_bancoB" @focus="activar_bancoB" v-model="Proveedor.strBank_Corp_Cod" >                            
+                                                        <el-button v-if="btnactivarbancoB && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('B')" ></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div>
@@ -240,8 +240,8 @@
                                             <label class="el-form-item__label col-md-1" >Moneda </label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                <el-input size ="small" @blur="desactivar_monedaB" @focus="activar_monedaB" v-model="Proveedor.strCurrency_Corp">                            
-                                                    <el-button v-if="btnactivarmonedaB && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('B')"></el-button> 
+                                                <el-input size ="small" @blur="desactivar_monedaB" @focus="activar_monedaB" v-model="Proveedor.strCurrency_Corp" disabled>                            
+                                                    <el-button v-if="btnactivarmonedaB && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('B')" disabled></el-button> 
                                                 </el-input>
                                                 </div>
                                             </div>  
@@ -275,7 +275,7 @@
                                             <label class="el-form-item__label col-md-1" >Moneda</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_monedaC" @focus="activar_monedaC" v-model="Proveedor.strFore_Swift_Cod">                            
+                                                    <el-input size ="small" @blur="desactivar_monedaC" @focus="activar_monedaC" v-model="Proveedor.strOther_Curr_Cod">                            
                                                     <el-button v-if="btnactivarmonedaC && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog('C')"></el-button> 
                                                     </el-input>
                                                 </div>
@@ -284,14 +284,14 @@
                                         </div>
                                     </div>
                                     <div slot="header" class="headercardSecond" style="width:100%; margin-top: 15px;">
-                                        <span class="labelheadercard" >Cuenta Foraneo</span>
+                                        <span class="labelheadercard" >Cuenta Exterior</span>
                                     </div>
-                                    <div class="col-md-12">                                        
-                                        <div class="form-group row ">
+                                    <div class="col-md-12" >                                        
+                                        <div class="form-group row " >
                                             <label class="el-form-item__label col-md-1" >Banco </label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                <el-input size ="small" @blur="desactivar_bancoD" @focus="activar_bancoD" v-model="Proveedor.strFore_Branch_Cod">                            
+                                                <el-input size ="small" @blur="desactivar_bancoD" @focus="activar_bancoD" v-model="Proveedor.strFore_Bank_Cod">                            
                                                     <el-button v-if="btnactivarbancoD && !bancoVisible" slot="append" class="boton" icon="fa fa-clone" @click="bancoDialog('D')"></el-button> 
                                                 </el-input>
                                                 </div>
@@ -316,6 +316,24 @@
                                             </div>  
                                             <label class="el-form-item__label col-md-2" >{{selectMonedaD.strCurrency_Desc}}</label>  
                                             
+                                        </div>
+                                        <div class="form-group row " style="margin-top:10px;">
+                                            <label class="el-form-item__label col-md-1" >Branch Code </label>
+                                            <div class="col-md-1 grupolabel">
+                                                <div class="input-group mb-1" >
+                                                <el-input size ="small" v-model="Proveedor.strFore_Branch_NO">                            
+                                                </el-input>
+                                                </div>
+                                            </div>
+                                            <label class=" sinLinea el-form-item__label col-md-2" style="color:#1f2d3d;"></label>
+                                            
+                                            <label class="el-form-item__label col-md-2" >Swift Code</label>
+                                            <div class="col-md-2 grupolabel">
+                                                <div class="input-group mb-2" >
+                                                <el-input size ="small" v-model="Proveedor.strFore_Swift_NO"  placeholder="">
+                                                </el-input>
+                                                </div>
+                                            </div> 
                                         </div>
                                         </div>
                                     </div>
@@ -459,16 +477,14 @@
               <div class="row bodycard">
                   <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Proveedor Codigo</label>
+                            <label class="el-form-item__label col-md-3" >{{Column1}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
+                                <el-input size ="small" v-model="inputAtributo1">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarProveedor()"
+                                        > </el-button>
+                                    </el-input>
                                 </div>
                             </div>
                         </div>
@@ -480,13 +496,14 @@
                 style="width: 100%; cursor: pointer;" class="ExcelTable2007"
                 highlight-current-row
                 height="250"
+                @header-click="headerclick1"
                 @row-dblclick="proveedorCheck"
                 @current-change="proveedorSelect">
-                <el-table-column   prop="strVendor_NO" label="Codigo" width="180">
+                <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="180">
                 </el-table-column>  
-                <el-table-column  prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
+                <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
                 </el-table-column> 
-                <el-table-column  prop="strCountry" label="Pais" style="width: 70% !important;">
+                <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Pais" style="width: 70% !important;">
                 </el-table-column> 
                 </el-table>
           </el-card>

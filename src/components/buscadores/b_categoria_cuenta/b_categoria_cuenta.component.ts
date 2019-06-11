@@ -37,19 +37,25 @@ export default class  BCategoriaCuentaComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
-  public categoriacuentaModel:Array<CategoriaCuentaModel>=[];
+  categoriacuentaModel:CategoriaCuentaModel[];
+  categoriacuentaModel1:CategoriaCuentaModel[];
   public categoriacuentaSelectModel:CategoriaCuentaModel=new CategoriaCuentaModel();
-
+  blnilterstrAcctCateg_Cod:boolean=true;
+  blnilterstrAcctCateg_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     this.load();
   }
   load(){
     categoriacuentaService.GetAllCategoriaCuenta()
-    .then(response=>{
-      console.log('categoriacuenta',response);
-      
+    .then(response=>{      
+      this.categoriacuentaModel=[];       
+      this.categoriacuentaModel1=[];       
       this.categoriacuentaModel=response;       
+      this.categoriacuentaModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -160,9 +166,71 @@ export default class  BCategoriaCuentaComponent extends Vue {
   closePopup(){
     this.$emit('categoriacuentaclose');
   }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarCategoria(){
+    var data=this.like(this.categoriacuentaModel1,this.clickColumn,this.inputAtributo)
+    this.categoriacuentaModel=[];
+    this.categoriacuentaModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strAcctCateg_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrAcctCateg_Cod=true;
+      this.blnilterstrAcctCateg_Desc=false;
+    }
+    if(val.property=="strAcctCateg_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrAcctCateg_Cod=false;
+      this.blnilterstrAcctCateg_Desc=true;
+    }
+  }
+  filterstrAcctCateg_Cod(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnilterstrAcctCateg_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcctCateg_Desc(h,{column,$index}){
+    debugger;
+    
+    if(this.blnilterstrAcctCateg_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   data() {
     return {
       categoriacuentaModel:[],
+      categoriacuentaModel1:[],
+      inputAtributo:'',
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

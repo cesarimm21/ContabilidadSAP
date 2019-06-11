@@ -143,6 +143,15 @@ export default class ViewAndEditPOComponent extends Vue {
     intIdCompany_ID:number=0;
     intIdWHS_ID:number=0;
 
+    activeValues:boolean=false;
+
+    //activar colores
+  isactivered:boolean=false;
+  isactiveyellow:boolean=false;
+  isactivegreen:boolean=false;
+
+  totalRecibida:number;
+  totalFaltante:number;
     constructor(){
         super();
         Global.nameComponent = 'viewandedit-po';
@@ -171,41 +180,60 @@ export default class ViewAndEditPOComponent extends Vue {
             this.nameFuncion='Visualizar PO';
             this.impDisabled=true;
             this.disabledRow=true;
+            this.activeValues=true;
             this.checked=false;
         }
         if(vista=='aprobar'){
             var object = JSON.parse(this.$route.query.data); 
             this.visualizar=false;
             this.vifaprobarrechasar=true;
+            this.impDisabled=true;
+            this.disabledRow=true;
             this.nameFuncion='Aprobar Orden Compra';
             this.intIdVendor_ID=object.intIdVendor_ID;
             this.intIdTypeReq_ID=object.intIdTypeReq_ID;
             this.intIdPurReqH_ID=object.intIdPurReqH_ID;
             this.intIdWHS_ID=object.intIdWHS_ID;
         }
+        if(this.OrdenCompra.chrPO_Status=='00'){
+          this.isactivered=true;
+          this.isactiveyellow=false;
+          this.isactivegreen=false;
+        }
+        if(this.OrdenCompra.chrPO_Status=='30'){
+          this.isactivered=false;
+          this.isactiveyellow=true;
+          this.isactivegreen=false;
+        }
+        if(this.OrdenCompra.chrPO_Status=='50'){
+          this.isactivered=false;
+          this.isactiveyellow=false;
+          this.isactivegreen=true;
+        }
         this.codigoCompania=localStorage.getItem('compania_cod');
         this.descripcionCompania=localStorage.getItem('compania_name');            
         this.codigoInput='';
         
         this.getOrdenCDetalle(this.OrdenCompra.intIdPOH_ID);
-        // requisicionService.GetRequisicionCompany(this.codigoCompania)
-        // .then(response=>{
-        //     this.requisicionData=[];
-        //     this.requisicionData=response;
-        // })
         proveedorService.GetProveedoresCompany(this.codigoCompania)
         .then(resp=>{
             this.gridProveedor=[];
             this.gridProveedor=resp;  
-            this.tempGrid=this.gridProveedor;  
-                    
+            this.tempGrid=this.gridProveedor;                     
         })
     }
     getOrdenCDetalle(val){
         ordenCompraService.GetAllOrdenDetalle(val)
         .then(resp=>{
             this.detalleOrdenCompra=[];
-            this.detalleOrdenCompra=resp;
+            this.detalleOrdenCompra=resp;    
+            this.totalRecibida=0;
+            this.totalFaltante=0;
+            for (let index = 0; index < this.detalleOrdenCompra.length; index++) {
+              this.detalleOrdenCompra[index].blnSelection=true;
+              this.totalRecibida=Number(this.totalRecibida)+Number(this.detalleOrdenCompra[index].fltRec_QYT);
+              this.totalFaltante=Number(this.totalFaltante)+Number(this.detalleOrdenCompra[index].fltRec_Pend_QTY);
+            }        
         })
     }
     
@@ -748,7 +776,10 @@ export default class ViewAndEditPOComponent extends Vue {
             bln_tbl_check:true,
             descripcionCompania:'',
             gridProveedor:[],
-            tempGrid:[]
+            tempGrid:[],
+            activeValues:false,
+            totalRecibida:0,
+            totalFaltante:0
 
         }
     }

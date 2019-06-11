@@ -50,7 +50,7 @@ export default class ModificarPOComponent extends Vue {
     txtbuscar:string='';
     Column:string='';
     pagina: number =1;
-    RegistersForPage: number = 10;
+    RegistersForPage: number = 100;
     totalRegistros: number = 100;
     vifprogress:boolean=false;
     issave:boolean=false;
@@ -91,6 +91,7 @@ export default class ModificarPOComponent extends Vue {
    }
    handleCurrentChange(val:OrdenCompraModel){
     this.opSelect=val;    
+    this.textosave='Orden Compra '+this.opSelect.strPO_NO;
    }
    getDateString(fecha:string){
     var dateString = new Date(fecha);
@@ -119,12 +120,30 @@ export default class ModificarPOComponent extends Vue {
         }
         else{
           // this.vifprogress=false;
-          this.textosave='Seleccione la PO. ';
-          this.warningMessage('Seleccione la PO. ');
+          this.textosave='Seleccione la Orden Compra. ';
+          this.warningMessage('Seleccione la Orden Compra. ');
         }
       }
       validad(){
-        
+        // alert(this.opSelect.strPO_NO)
+        if(this.opSelect.strPO_NO!=undefined){
+          ordenCompraService.getPOONE(this.opSelect.strPO_NO)
+          .then(respo=>{
+            this.opSelect=respo;
+            if(this.opSelect.strPO_NO!=undefined){
+              router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_viewandedit`, query: { vista:this.textTitle ,data:JSON.stringify(this.opSelect) }  })
+            }     
+            else{
+              this.warningMessage('No existe Orden Compra');
+            }      
+          })
+          .catch(error=>{
+            this.warningMessage('No existe Orden Compra');
+          })          
+        }
+        else{
+          this.warningMessage('Inserte Orden Compra');
+        }
       }
       warningMessage(newMsg : string) {
         this.$message({
@@ -362,6 +381,13 @@ export default class ModificarPOComponent extends Vue {
       }
       reloadpage(){
         window.location.reload();
+      }
+      guardarTodo(){
+        this.$message({
+          showClose: true,
+          message: 'Accion no permitida',
+          type: 'warning'
+        });
       }
     data() {
         return {

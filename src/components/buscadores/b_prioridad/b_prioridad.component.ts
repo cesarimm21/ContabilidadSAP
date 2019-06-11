@@ -35,9 +35,14 @@ articulos:any =[];
 // public companiaModel:Array<CompaniaModel>[];
 public companiaSelectModel:CompaniaModel=new CompaniaModel();
 
-public prioridadModel:Array<PrioridadModel>[];
+prioridadModel:PrioridadModel[];
+prioridadModel1:PrioridadModel[];
 public prioridadSelectModel:PrioridadModel=new PrioridadModel();
-
+  blnilterstrPriority_Cod:boolean=true;
+  blnilterstrPriority_Name:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
 constructor() {
  super();
 // this.loadCompania();
@@ -47,8 +52,10 @@ constructor() {
 load(){
   prioridadService.GetAllPrioridad()
   .then(response=>{
+    this.prioridadModel=[];    
+    this.prioridadModel1=[];    
     this.prioridadModel=response;    
-    console.log('prioridad',response);
+    this.prioridadModel1=response;    
     
     
   }).catch(error=>{
@@ -134,10 +141,72 @@ checkPopup(){
 closePopup(){
   this.$emit('prioridadclose');
 }
+like(array, key,keyword) {
+    
+  var responsearr:any = []
+  for(var i=0;i<array.length;i++) {
+      if(array[i][key].toString().indexOf(keyword) > -1 ) {
+        responsearr.push(array[i])
+    }
+  }
+  return responsearr
+}
+buscarPrioridad(){
+  var data=this.like(this.prioridadModel1,this.clickColumn,this.inputAtributo)
+  this.prioridadModel=[];
+  this.prioridadModel=data;
+}
+headerclick(val){
+  this.Column=val.label;
+  if(val.property=="strPriority_Cod"){
+    this.clickColumn=val.property;  
+    this.inputAtributo='';  
+    this.blnilterstrPriority_Cod=true;
+    this.blnilterstrPriority_Name=false;
+  }
+  if(val.property=="strPriority_Name"){
+    this.clickColumn=val.property;
+    this.inputAtributo='';
+    this.blnilterstrPriority_Cod=false;
+    this.blnilterstrPriority_Name=true;
+  }
+}
+filterstrPriority_Cod(h,{column,$index}){
+  debugger;
+  var column1 = column.label; 
+  if(this.blnilterstrPriority_Cod){
+    this.Column=column1;
+    this.clickColumn=column.property;
+    return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+    [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+      h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      , column.label),
+     ])
+  }
+  else{
+    return h('span',{style: 'padding-left: 5px;'}, column.label);
+  } 
+}
+filterstrPriority_Name(h,{column,$index}){
+  debugger;
+  
+  if(this.blnilterstrPriority_Name){
+    return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+    [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+      h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+      , column.label),
+     ])
+  }
+  else{
+    return h('span',{style: 'padding-left: 5px;'}, column.label);
+  } 
+}
+
 data() {
  return {
    companiaModel:[],
    prioridadModel:[],
+   prioridadModel1:[],
    categorias: [{
      id_categoria:0,
      nombre: 'CODIGO',

@@ -1,7 +1,7 @@
 <template>
     <div class="modificar-po">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
+        <quickaccessmenu v-on:validarView="validad()" v-on:guardarTodo="guardarTodo()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"></quickaccessmenu>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
@@ -25,7 +25,7 @@
                                 <label class="el-form-item__label col-md-2" >Orden Compra</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
-                                        <el-input size ="small" type="text">
+                                        <el-input size ="small" type="text" v-model="opSelect.strPO_NO">
                                         </el-input>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                         class="ExcelTable2007"
                                         @header-click="headerclick"
                                         @current-change="handleCurrentChange" >    
-                                         <el-table-column type="index" label="Linea" width="38">   </el-table-column>   
+                                         <el-table-column type="index" label="Item" width="38">   </el-table-column>   
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
                                          prop="strPO_NO" min-width="60" label="Orden Compra">
@@ -73,7 +73,8 @@
                                         <el-table-column
                                             :render-header="filterdtmProcess_Date"
                                             prop="dtmProcess_Date"  width="100"
-                                            label="Fecha ejecucion">
+                                            label="Fecha Ejecucion"
+                                            align="center">
                                              <template scope="scope">
                                                 <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
                                             </template>
@@ -81,7 +82,9 @@
                                         <el-table-column
                                             :render-header="filterfltTotal_Val"
                                             prop="fltTotal_Val"  width="100"
-                                            label="Valor total" >
+                                            label="Valor Total" 
+                                            class="totalpri"
+                                            align="right">
                                         </el-table-column>
 
                                     </el-table>
@@ -122,7 +125,7 @@
             </div>
         </div>
     </div>
-    <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+    <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="btnBuscar">
       <div style="height:85px">
         <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
         <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->

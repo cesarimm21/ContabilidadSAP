@@ -30,9 +30,11 @@ export class ProveedorModel {
     strBankAcct_Corp_NO:string;
     strBank_Other_Cod:string;
     strBankAcct_Other_NO:string;
-    strFore_Swift_Cod:string;//
-    strFore_Branch_Cod:string;//
-    strFore_Bank_Desc:string;
+    strOther_Curr_Cod:string;
+    strFore_Swift_NO:string;//
+    strFore_Branch_NO:string;//
+    strFore_Bank_Cod:string;//
+    // strFore_Bank_Desc:string;
     strFore_AccBank_NO:string;//
     strFore_Curr_Cod:string;//
     strRetention_Cod:string;//
@@ -71,9 +73,11 @@ export class ProveedorModel {
         this.strBankAcct_Corp_NO='';
         this.strBank_Other_Cod='';
         this.strBankAcct_Other_NO='';
-        this.strFore_Swift_Cod='';
-        this.strFore_Branch_Cod='';
-        this.strFore_Bank_Desc='';
+        this.strOther_Curr_Cod='';
+        this.strFore_Swift_NO='';
+        this.strFore_Branch_NO='';
+        this.strFore_Bank_Cod='';
+        // this.strFore_Bank_Desc='';
         this.strFore_AccBank_NO='';
         this.strFore_Curr_Cod='';
         this.strRetention_Cod='';

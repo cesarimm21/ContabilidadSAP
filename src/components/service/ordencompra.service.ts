@@ -31,6 +31,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getOCForAprove(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'ocaprove/'+strCompany_cod)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOCView(strCompany_cod){
     return axios.get(CONFIG.API_URL+'ordencompraview/'+strCompany_cod)
     .then(response =>{
@@ -93,6 +99,18 @@ export default{
   },
   getPOCod(code){
     return axios.get(CONFIG.API_URL+'ordencompraByCod/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getPOONE(code){
+    return axios.get(CONFIG.API_URL+'ocone/'+code)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getPOONEview(code){
+    return axios.get(CONFIG.API_URL+'oconeforview/'+code)
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })

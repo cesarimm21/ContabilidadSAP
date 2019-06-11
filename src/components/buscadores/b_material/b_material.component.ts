@@ -40,9 +40,15 @@ export default class  BMaterialComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
 
-  public productoModel:Array<ProductoModel>=[];
+  productoModel:ProductoModel[];
+  productoModel1:ProductoModel[];
   public productoSelectModel:ProductoModel=new ProductoModel();
 
+  blnilterstrStock_Cod:boolean=true;
+  blnilterstrStock_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     //this.load();
@@ -50,8 +56,10 @@ export default class  BMaterialComponent extends Vue {
   load(){
     productoService.GetAllProducto(this.tipo)
     .then(response=>{
-      console.log('producto',response);
+      this.productoModel=[];
+      this.productoModel1=[];
       this.productoModel=response;       
+      this.productoModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -155,6 +163,67 @@ export default class  BMaterialComponent extends Vue {
   handleCurrentChange(val:ProductoModel){
     this.productoSelectModel=val;
   }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarMaterial(){
+    console.log(this.clickColumn+' y '+this.inputAtributo);
+    
+    var data=this.like(this.productoModel1,this.clickColumn,this.inputAtributo)
+    console.log(data);
+    
+    this.productoModel=[];
+    this.productoModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strStock_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrStock_Cod=true;
+      this.blnilterstrStock_Desc=false;
+    }
+    if(val.property=="strStock_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrStock_Cod=false;
+      this.blnilterstrStock_Desc=true;
+    }
+  }
+  filterstrStock_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrStock_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrStock_Desc(h,{column,$index}){
+    if(this.blnilterstrStock_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   checkPopup(){
     debugger;
     this.$emit('materialselecionado',this.productoSelectModel);
@@ -165,6 +234,8 @@ export default class  BMaterialComponent extends Vue {
   data() {
     return {
       productoModel:[],
+      productoModel1:[],
+      inputAtributo:'',
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

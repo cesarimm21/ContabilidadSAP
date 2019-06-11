@@ -107,6 +107,7 @@ export default class CrearPOComponent extends Vue {
     public moneda: MonedaModel = new MonedaModel();
     //**[REQUISICION] */
     requisicionData: Array<RequisicionModel>[];
+    requisicionData1: Array<RequisicionModel>[];
     requisicionDetalle: any[];
     public requiSelect: RequisicionModel = new RequisicionModel();
     public requiDetalle: any[];
@@ -115,7 +116,12 @@ export default class CrearPOComponent extends Vue {
     arrayTemp:any[];
     public detalleOrdenCompra:OrdenCompraDetalleModel[];
     multipleSelection: any[];
-
+    blnilterstrVendor_NO:boolean=true;
+    blnilterstrVendor_Desc:boolean=false;
+    blnilterstrCountry:boolean=false;
+    clickColumn:string='';
+    Column:string='';
+    inputAtributo:any;
     //**[PROVEEDORES] */
     dialogProveedor: boolean = false;
     btnactivarpro: boolean = false;
@@ -125,7 +131,14 @@ export default class CrearPOComponent extends Vue {
     provData:ProveedorModel[];
     provData1:ProveedorModel[];
     tempGrid:ProveedorModel[];
-
+    tempGrid1:ProveedorModel[];
+    blnilterstrRequis_NO:boolean=true;
+    blnilterstrDesc_Header:boolean=false;
+    blnilterstrTipReq_Desc:boolean=false;
+    blnilterstrWHS_Desc:boolean=false;
+    clickColumn1:string='';
+    Column1:string='';
+    inputAtributo1:any;
     //**[ORDEN COMPRA] */
     public OrdenCompra: OrdenCompraModel = new OrdenCompraModel();
     ordencompraDetalle: any[];
@@ -137,6 +150,11 @@ export default class CrearPOComponent extends Vue {
     //**[unidad medidad] */
     dialogUnidadMedida:boolean=false;
     btnactivarunidadmedida:boolean=false;
+
+     //activar colores
+  isactivered:boolean=true;
+  isactiveyellow:boolean=false;
+  isactivegreen:boolean=false;
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
@@ -156,28 +174,22 @@ export default class CrearPOComponent extends Vue {
         .then(response=>{
             this.requisicionData=[];
             this.requisicionData=response;
+            this.requisicionData1=[];
+            this.requisicionData1=response;
         })
         proveedorService.GetProveedoresCompany(this.codigoCompania)
         .then(resp=>{
             this.gridProveedor=[];
+            this.tempGrid1=[];
             this.gridProveedor=resp;  
             this.tempGrid=this.gridProveedor;          
+            this.tempGrid1=this.gridProveedor;          
         })
     }
     loadRequisicion(){
         this.dialogRequisicion=true;
     }
-    searchRequisicion() {
-        this.getRequisicion(this.codigoInput);
-    }
-    getRequisicion(codigo) {
-        requisicionService.getRequisicionByCod(codigo)
-        .then(response=>{
-            this.requisicionData=response;                                 
-        })
-    }
-    getReqDetalle(v) {
-        
+    getReqDetalle(v) {        
         requisicionService.getRequiDetallById(v)
         .then(response=>{
             this.requiDetalle=response; 
@@ -217,7 +229,7 @@ export default class CrearPOComponent extends Vue {
                     strMatClass_Desc:this.requiDetalle[i].strMatClass_Desc,
                     strCostCenter_Desc:this.requiDetalle[i].strCostCenter_Desc,
                     strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
-                    intConv_Factor:1,
+                    intConv_Factor:this.requiDetalle[i].fltFactor,
                     chrStatus:this.requiDetalle[i].chrStatus
                 })
             }
@@ -244,14 +256,14 @@ export default class CrearPOComponent extends Vue {
         }   
     }
     checkSelectdbRequisicion(val){
-      console.log(val);
-      
         var comId:any=localStorage.getItem('compania_ID');
         this.OrdenCompra.intIdCompany_ID=parseInt(comId); 
         this.OrdenCompra.strCompany_Desc=val.strCompany_Desc;
         this.OrdenCompra.intIdTypeReq_ID=val.intIdTypeReq_ID.intIdTypeReq_ID;
         this.OrdenCompra.intIdWHS_ID=val.intIdWHS_ID.intIdWHS_ID;  
         this.OrdenCompra.strPO_Desc=val.strDesc_Header;
+        this.OrdenCompra.strTypeReq_Cod=val.strTypeReq_Cod;
+        this.OrdenCompra.strTipReq_Desc=val.strTipReq_Desc;
         this.OrdenCompra.strTypeMov_Cod=val.strTypeMov_Cod;    
         this.OrdenCompra.strTypeMov_Desc=val.strTypeMov_Desc;  
         this.OrdenCompra.strWHS_Cod=val.strWHS_Cod;
@@ -340,14 +352,14 @@ export default class CrearPOComponent extends Vue {
         
         
     }
-    searchProo() {
-        proveedorService.GetOnlyOneProveedor(this.valueProvee)
-            .then(response => {
-                this.provData = response;
-                this.tempGrid=[];
-                this.tempGrid=this.provData;
-            })
-    }
+    // searchProo() {
+    //     proveedorService.GetOnlyOneProveedor(this.valueProvee)
+    //         .then(response => {
+    //             this.provData = response;
+    //             this.tempGrid=[];
+    //             this.tempGrid=this.provData;
+    //         })
+    // }
     checkDoblePro() {     
       this.OrdenCompra.strVendor_NO = this.selectProo.strVendor_NO;
       this.OrdenCompra.intIdVendor_ID = this.selectProo.intIdVendor_ID;
@@ -783,6 +795,177 @@ export default class CrearPOComponent extends Vue {
         this.dialogUnidadMedida=false;
       }
     //#endregion
+    like(array, key,keyword) {    
+      var responsearr:any = []
+      for(var i=0;i<array.length;i++) {
+        if(array[i][key]!=undefined){
+          if(array[i][key].toString().indexOf(keyword) > -1 ) {
+            responsearr.push(array[i])
+          }
+        }
+      }
+      return responsearr
+  
+    }
+    buscarRequisicion(){
+      var data=this.like(this.requisicionData1,this.clickColumn,this.inputAtributo)
+      this.requisicionData=[];
+      this.requisicionData=data;
+    }
+    headerclick(val){
+      this.Column=val.label;
+      if(val.property=="strRequis_NO"){
+        this.clickColumn=val.property;  
+        this.inputAtributo='';  
+        this.blnilterstrRequis_NO=true;
+        this.blnilterstrDesc_Header=false;
+        this.blnilterstrTipReq_Desc=false;
+        this.blnilterstrWHS_Desc=false;
+      }
+      if(val.property=="strDesc_Header"){
+        this.clickColumn=val.property;
+        this.inputAtributo='';
+        this.blnilterstrRequis_NO=false;
+        this.blnilterstrDesc_Header=true;
+        this.blnilterstrTipReq_Desc=false;
+        this.blnilterstrWHS_Desc=false;
+      }
+      if(val.property=="strTipReq_Desc"){
+        this.clickColumn=val.property;
+        this.inputAtributo='';
+        this.blnilterstrRequis_NO=false;
+        this.blnilterstrDesc_Header=false;
+        this.blnilterstrTipReq_Desc=true;
+        this.blnilterstrWHS_Desc=false;
+      }
+      if(val.property=="strWHS_Desc"){
+        this.clickColumn=val.property;
+        this.inputAtributo='';
+        this.blnilterstrRequis_NO=false;
+        this.blnilterstrDesc_Header=false;
+        this.blnilterstrTipReq_Desc=false;
+        this.blnilterstrWHS_Desc=true;
+      }
+    }
+    filterstrRequis_NO(h,{column,$index}){
+      var column1 = column.label; 
+      if(this.blnilterstrRequis_NO){
+        this.Column1=column1;
+        this.clickColumn1=column.property;
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrDesc_Header(h,{column,$index}){
+      if(this.blnilterstrDesc_Header){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrTipReq_Desc(h,{column,$index}){
+      if(this.blnilterstrTipReq_Desc){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrWHS_Desc(h,{column,$index}){
+      if(this.blnilterstrWHS_Desc){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    buscarProveedor(){
+      var data=this.like(this.tempGrid1,this.clickColumn1,this.inputAtributo1)
+      this.tempGrid=[];
+      this.tempGrid=data;
+    }
+    headerclick1(val){
+      this.Column1=val.label;
+      if(val.property=="strVendor_NO"){
+        this.clickColumn1=val.property;  
+        this.inputAtributo1='';  
+        this.blnilterstrVendor_NO=true;
+        this.blnilterstrVendor_Desc=false;
+        this.blnilterstrCountry=false;
+      }
+      if(val.property=="strVendor_Desc"){
+        this.clickColumn1=val.property;
+        this.inputAtributo1='';
+        this.blnilterstrVendor_NO=false;
+        this.blnilterstrVendor_Desc=true;
+        this.blnilterstrCountry=false;
+      }
+      if(val.property=="strCountry"){
+        this.clickColumn1=val.property;
+        this.inputAtributo1='';
+        this.blnilterstrVendor_NO=false;
+        this.blnilterstrVendor_Desc=false;
+        this.blnilterstrCountry=true;
+      }
+    }
+    filterstrVendor_NO(h,{column,$index}){
+      var column1 = column.label; 
+      if(this.blnilterstrVendor_NO){
+        this.Column1=column1;
+        this.clickColumn1=column.property;
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrVendor_Desc(h,{column,$index}){
+      if(this.blnilterstrVendor_Desc){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrCountry(h,{column,$index}){      
+      if(this.blnilterstrCountry){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+          h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label),
+         ])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
     backPage(){
         window.history.back();
       }
@@ -794,10 +977,13 @@ export default class CrearPOComponent extends Vue {
             nameComponent:'crear-po',
             codigoInput:'',
             codigoCompania:'',
+            inputAtributo:'',
+            inputAtributo1:'',
             descripcionCompania:'',
             tableData:[],
             requisicionDetalle:[],
             requisicionData:[],
+            requisicionData1:[],
             provData:[],
             valueProvee:'',
             requiDetalle:[],
@@ -812,7 +998,8 @@ export default class CrearPOComponent extends Vue {
             nochancePro:true,
             bln_tbl_check:true,            
             gridProveedor:[],
-            tempGrid:[]
+            tempGrid:[],
+            tempGrid1:[],
 
         }
     }

@@ -22,7 +22,7 @@
                                 <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Codigo Requisición</label>
+                                <label class="el-form-item__label col-md-3" >Requisición</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
@@ -114,44 +114,44 @@
                                 <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small" type="text" v-model="OrdenCompra.strPO_Desc">
-
                                     </el-input>
                                     </div>
                                 </div>
-                                <!-- <label class="el-form-item__label col-md-3" >Proveedor</label>
+                                <!-- <label class="el-form-item__label col-md-3" >Tipo Requisicion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  >
+                                    <el-input size ="small" v-model="OrdenCompra.strTipReq_Desc" disabled>
                                     </el-input>
                                     </div>
                                 </div> -->
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row " >
-                                <label class="sinLinea el-form-item__label col-md-6"></label>
-                            </div>
-                            <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
+                        <div class="col-sm-6">                            
+                            <div class="form-group row " style="margin-top:15px;">
+                                <label class="sinLinea el-form-item__label col-md-12" style="margin-top:10px;">{{almacen.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row "  style="margin-top:12px;">
-                                <!-- <template>
-                                    <el-checkbox class="CheckBoxPro" v-model="checked" @change="handleCheckAllChange" :disabled="nochancePro">
-                                        <span style=" font-size:10px;">Modificar </span>
-                                        </el-checkbox>
-                                </template> -->
-                                <label class="sinLinea el-form-item__label col-md-6" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12" style="margin-left:10px;">{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:10px;">{{moneda.strCurrency_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{Impuesto.fltPorcent}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:10px;">{{OrdenCompra.strWH_Desc}}</label>
                             </div>
-                        </div>
+                            <div class="form-group row" style="margin-top:5px;">
+                                <label class="el-form-item__label col-md-3" >Tipo Requisicion</label>
+                                <div class="col-md-4 grupolabel">
+                                    <div class="input-group mb-4" >
+                                    <el-input size ="small" v-model="OrdenCompra.strTipReq_Desc" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
                     </div>
                     <br/>
-                    <div class="row">
+                    <div class="row" >
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
@@ -241,7 +241,8 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltQuantity"  width="100"
-                                            label="Cantidad">
+                                            label="Cantidad" 
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltQuantity" :precision="2">
@@ -252,7 +253,8 @@
                                         
                                         <el-table-column
                                             prop="fltUnitPrice"  width="100"
-                                            label="Valor Unitario">
+                                            label="Valor Unitario"
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2" :step="0.01">
@@ -262,11 +264,13 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltValue_Total"  width="100"
-                                            label="Valor Total" >
+                                            label="Valor Total" 
+                                            align="right">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPriority_Cod"  width="130"
-                                            label="Prioridad">
+                                            label="Prioridad"
+                                            align="center">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
@@ -276,7 +280,8 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column prop="intConv_Factor"  width="100"
-                                            label="Factor">
+                                            label="Factor"
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_factor  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
@@ -284,9 +289,10 @@
                                                 <label style="width:100%"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column v-if="false"
+                                        <el-table-column 
                                             prop="chrStatus"  width="40"
-                                            label="Estado">                                   
+                                            label="Estado"
+                                            align="right">                                   
                                         </el-table-column>
 
                                     </el-table>
@@ -372,17 +378,14 @@
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Codigo</label>
+                            <label class="el-form-item__label col-md-3" >{{Column}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-model="codigoInput">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                        @click="searchRequisicion()"
-                                            > </el-button>
-                                </el-input>
+                                <el-input size ="small" v-model="inputAtributo">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarRequisicion()"
+                                        > </el-button>
+                                    </el-input>
                                 </div>
                             </div>
                         </div>
@@ -394,15 +397,16 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick"
                     @row-dblclick="checkSelectdb"
                     @current-change="checkSelectdbRequisicion">
-                    <el-table-column  prop="strRequis_NO" label="Codigo" width="100">
+                    <el-table-column :render-header="filterstrRequis_NO" prop="strRequis_NO" label="Codigo" width="100">
                     </el-table-column>
-                    <el-table-column  prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
+                    <el-table-column :render-header="filterstrDesc_Header" prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
                     </el-table-column>
-                    <el-table-column  prop="strTipReq_Desc" label="Tipo requisición" width="120">
+                    <el-table-column :render-header="filterstrTipReq_Desc" prop="strTipReq_Desc" label="Tipo requisición" width="120">
                     </el-table-column>
-                    <el-table-column  prop="strWHS_Desc" label="Almacen" width="120">
+                    <el-table-column :render-header="filterstrWHS_Desc" prop="strWHS_Desc" label="Almacen" width="120">
                     </el-table-column>
                 </el-table>
             </el-card>
@@ -427,18 +431,14 @@
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Codigo</label>
+                            <label class="el-form-item__label col-md-3" >{{Column1}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-model="valueProvee">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-
-                                            > </el-button>
-                                            <!-- @click="searchProo()" -->
-                                </el-input>
+                                <el-input size ="small" v-model="inputAtributo1">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarProveedor()"
+                                        > </el-button>
+                                    </el-input>
                                 </div>
                             </div>
                         </div>
@@ -450,13 +450,14 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick1"
                     @row-dblclick="checkDoblePro"
                     @current-change="checkSelectdbProveedor">
-                    <el-table-column  prop="strVendor_NO" label="Codigo" width="150">
+                    <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="150">
                     </el-table-column>  
-                    <el-table-column  prop="strVendor_Desc" label="Descripción" width="310">
+                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripción" width="310">
                     </el-table-column> 
-                    <el-table-column  prop="strCountry" label="Pais" width="150">
+                    <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Pais" width="150">
                     </el-table-column> 
                 </el-table>
             </el-card>

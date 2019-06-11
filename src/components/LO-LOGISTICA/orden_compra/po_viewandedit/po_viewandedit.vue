@@ -92,7 +92,7 @@
                                  <label class="el-form-item__label col-md-3" >Cantidad Total</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" type="number" v-model="OrdenCompra.fltCURR_QTY_I" disabled>
+                                    <el-input size ="small" type="number" v-model="OrdenCompra.fltCURR_QTY_I" disabled class="inputAling">
                                     </el-input>
                                     </div>
                                 </div>                              
@@ -109,7 +109,7 @@
                                  <label class="el-form-item__label col-md-3" >Valor documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3">
-                                    <el-input size ="small"  type="number" v-model="OrdenCompra.fltTotal_Val" disabled>
+                                    <el-input size ="small"  type="number" v-model="OrdenCompra.fltTotal_Val" disabled class="inputAling">
                                     </el-input>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="form-group row " >
                                 <label class="sinLinea el-form-item__label col-md-6"></label>
                             </div>
@@ -143,18 +143,67 @@
                                 <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{OrdenCompra.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row "  style="margin-top:12px;">
-                                <!-- <template>
-                                    <el-checkbox class="CheckBoxPro" v-model="checked" @change="handleCheckAllChange" :disabled="nochancePro">
-                                        <span style=" font-size:10px;">Modificar </span>
-                                        </el-checkbox>
-                                </template> -->
                                 <label class="sinLinea el-form-item__label col-md-6" >{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
                                 <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{OrdenCompra.strCurrency_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{Impuesto.fltPorcent}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:6px;">{{OrdenCompra.strWH_Desc}}</label>
+                            </div>
+                            <div class="form-group row" style="margin-top:10px;">
+                                <label class="el-form-item__label col-md-6" >Tipo Requisicion</label>
+                                <div class="col-md-6 grupolabel">
+                                    <div class="input-group mb-6" >
+                                    <el-input size ="small" v-model="OrdenCompra.strTipReq_Desc" disabled>
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group row">
+                                <label class="sinLinea el-form-item__label col-md-3" ></label>
+                                <!-- <div class="col-md-3 grupolabel">{{ordencompraSelect.strCompany_Desc}}</div> -->
+                                <div class="col-sm-3"></div>
+                                <div class="col-md-4" style="margin-top:5px;">
+                                    <span v-if="isactivered" v-bind:class="{red1:isactivered}">&nbsp;</span>
+                                    <span v-if="!isactivered" v-bind:class="{opaco:!isactivered}">&nbsp;</span>
+                                    <span v-if="isactiveyellow" v-bind:class="{yellow:isactiveyellow}">&nbsp;</span>
+                                    <span v-if="!isactiveyellow" v-bind:class="{opaco:!isactiveyellow}">&nbsp;</span>
+                                    <span v-if="isactivegreen" v-bind:class="{green:isactivegreen}">&nbsp;</span>
+                                    <span v-if="!isactivegreen" v-bind:class="{opaco:!isactivegreen}">&nbsp;</span>
+                                </div>  
+                            </div>                            
+                            <div class="form-group row "  style="margin-top:12px;">
+                                <label class="sinLinea el-form-item__label col-md-6" style="margin-left:10px;"></label>
+                            </div>
+                            <div v-if="activeValues" class="form-group row " style="margin-top:10px;">
+                                <label class="el-form-item__label col-md-6" >Cant. Comprada</label>
+                                <div class="col-md-5 grupolabel">
+                                    <div class="input-group mb-6">
+                                    <el-input size ="small"  type="number" v-model="OrdenCompra.fltCURR_QTY_I" disabled class="inputAling">
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="activeValues" class="form-group row " style="margin-top:10px;">
+                                <label class="el-form-item__label col-md-6" >Cant. Recibida</label>
+                                <div class="col-md-5 grupolabel">
+                                    <div class="input-group mb-6">
+                                    <el-input size ="small"  type="number" v-model="totalRecibida" disabled class="inputAling">
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="activeValues" class="form-group row " style="margin-top:10px;">
+                                <label class="el-form-item__label col-md-6" >Cant. Faltante</label>
+                                <div class="col-md-5 grupolabel">
+                                    <div class="input-group mb-6">
+                                    <el-input size ="small"  type="number" v-model="totalFaltante" disabled class="inputAling">
+                                    </el-input>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -177,14 +226,15 @@
                                         class="ExcelTable2007"
                                         @current-change="handleCurrentChange"
                                         >
-                                        <!-- <el-table-column
-                                            type="selection"
-                                            select-on-indeterminate="true"
-                                            width="45">
-                                        </el-table-column> -->
+                                        <el-table-column                                             
+                                            width="40" style="margin-top: 5px;">
+                                            <template scope="scope">
+                                                <el-checkbox v-if="scope.row.blnSelection" v-model="scope.row.blnCheck" :disabled="impDisabled"></el-checkbox>
+                                            </template>
+                                        </el-table-column>  
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  prop="strAcctCateg_Cod" min-width="80" label="Cta. cuenta">
+                                        <el-table-column  prop="strAcctCateg_Cod" min-width="80" label="Cat. Cta.">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategoriacuenta && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strAcctCateg_Cod" :disabled="disabledRow">
@@ -195,7 +245,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCategItem_Cod"  min-width="80"
-                                            label="Cat. linea">
+                                            label="Cat. Linea">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategorialinea && bln_tbl_categoria_linea  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCategItem_Cod" :disabled="disabledRow">
@@ -206,7 +256,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCostCenter_NO" 
-                                            label="Centro costos">
+                                            label="Centro Costos">
                                             <template scope="scope">
                                                 <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter_NO" :disabled="disabledRow">
@@ -245,7 +295,8 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltPO_QTY_I"  width="100"
-                                            label="Cantidad">
+                                            label="Cantidad"
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltPO_QTY_I" :precision="2">
@@ -256,7 +307,8 @@
                                         
                                         <el-table-column
                                             prop="fltPO_Net_PR_I"  width="100"
-                                            label="Valor Unitario">
+                                            label="Valor Unitario"
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltPO_Net_PR_I" :precision="2" :step="0.01">
@@ -266,11 +318,13 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltCurr_Net_PR_P"  width="100"
-                                            label="Valor total" >
+                                            label="Valor total" 
+                                            align="right">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPriority_Cod"  width="130"
-                                            label="Prioridad">
+                                            label="Prioridad"
+                                            align="center">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
@@ -280,7 +334,8 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column prop="intConv_Factor"  width="100"
-                                            label="Factor">
+                                            label="Factor" 
+                                            align="right">
                                             <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_factor  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
@@ -288,9 +343,10 @@
                                                 <label style="width:100%"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column v-if="false"
+                                        <el-table-column 
                                             prop="chrStatus"  width="40"
-                                            label="Estado">                                   
+                                            label="Estado"
+                                            align="right">                                   
                                         </el-table-column>
 
                                     </el-table>

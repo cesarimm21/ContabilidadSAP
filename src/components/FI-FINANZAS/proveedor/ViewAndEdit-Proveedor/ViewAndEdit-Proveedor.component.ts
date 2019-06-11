@@ -116,6 +116,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   public selectMonedaC:MonedaModel=new MonedaModel();
   public selectMonedaD:MonedaModel=new MonedaModel();
   FLAGMONEDA:String;
+  FLAGDOC:string='A';
   //**Categoria */
 
   public Categoria: CategoriaModel[];
@@ -147,12 +148,22 @@ export default class ViewAndEditProveedorComponent extends Vue {
       this.namepage='Visualizar Proveedor';
       this.proDisabled=true;
     }
-    proveedorService.GetOnlyOneProveedor(codigPr)
+    proveedorService.getProveedorOne(codigPr)
     .then(response=>{
       this.gridSelectedProveedor=response; 
-      this.proveedorCheck();
+      if(this.gridSelectedProveedor.strVendor_NO!=''){        
+        setTimeout(() => {
+          this.proveedorCheck();
+        }, 200)
+      }
+      else{
+        this.$message('No existe proveedor')
+      router.push({ path: `/barmenu/FI-FINANZAS/proveedor/modificar-proveedor`})
+      }
+      // this.proveedorCheck();
     }).catch(error=>{
       this.$message('No se cargaron los datos')
+      router.push({ path: `/barmenu/FI-FINANZAS/proveedor/modificar-proveedor`})
     })
     this.GetAllCategoria();
     // this.GetAllCuentaContable();
@@ -378,7 +389,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     }
     if(this.FLAGBANCO==='D'){
       this.selectBancoD=val;
-      this.Proveedor.strFore_Branch_Cod=this.selectBancoD.strBank_Cod;
+      this.Proveedor.strFore_Bank_Cod=this.selectBancoD.strBank_Cod;
     }    
     this.bancoVisible=false;
   }
@@ -394,21 +405,20 @@ export default class ViewAndEditProveedorComponent extends Vue {
 
     })
   }
-  proveedorCheck(){   
-    console.log('aqui 1');  
-    console.log(this.gridSelectedProveedor);
-    console.log('aqui 2');  
+  proveedorCheck(){  
     this.Proveedor.intIdVendor_ID=this.gridSelectedProveedor.intIdVendor_ID;
     this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID;
     this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
     this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
-    console.log('aqui otra ve z');   
     this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
     this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
     this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
     this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
     this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
     this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
+    this.FLAGDOC='B'
+    this.selectCategoria(this.Proveedor.strCat_Person);
+    this.value1=this.Proveedor.strCat_Person;
     this.Proveedor.strTax_ID=this.gridSelectedProveedor.strTax_ID;
     this.Proveedor.strVendor_Desc=this.gridSelectedProveedor.strVendor_Desc;
     this.Proveedor.strLastName=this.gridSelectedProveedor.strLastName;
@@ -427,9 +437,11 @@ export default class ViewAndEditProveedorComponent extends Vue {
     this.Proveedor.strBankAcct_Corp_NO=this.gridSelectedProveedor.strBankAcct_Corp_NO;
     this.Proveedor.strBank_Other_Cod=this.gridSelectedProveedor.strBank_Other_Cod;
     this.Proveedor.strBankAcct_Other_NO=this.gridSelectedProveedor.strBankAcct_Other_NO;
-    this.Proveedor.strFore_Swift_Cod=this.gridSelectedProveedor.strFore_Swift_Cod;
-    this.Proveedor.strFore_Branch_Cod=this.gridSelectedProveedor.strFore_Branch_Cod;
-    this.Proveedor.strFore_Bank_Desc=this.gridSelectedProveedor.strFore_Bank_Desc;
+    this.Proveedor.strOther_Curr_Cod=this.gridSelectedProveedor.strOther_Curr_Cod;
+    this.Proveedor.strFore_Swift_NO=this.gridSelectedProveedor.strFore_Swift_NO;
+    this.Proveedor.strFore_Branch_NO=this.gridSelectedProveedor.strFore_Branch_NO;
+    this.Proveedor.strFore_Bank_Cod=this.gridSelectedProveedor.strFore_Bank_Cod;
+    // this.Proveedor.strFore_Bank_Desc=this.gridSelectedProveedor.strFore_Bank_Desc;
     this.Proveedor.strFore_AccBank_NO=this.gridSelectedProveedor.strFore_AccBank_NO;
     this.Proveedor.strFore_Curr_Cod=this.gridSelectedProveedor.strFore_Curr_Cod;
     this.Proveedor.strRetention_Cod=this.gridSelectedProveedor.strRetention_Cod;
@@ -443,30 +455,30 @@ export default class ViewAndEditProveedorComponent extends Vue {
     this.loadBancoByIDA(this.Proveedor.strBank_Cod);
     this.loadBancoByIDB(this.Proveedor.strBank_Corp_Cod);
     this.loadBancoByIDC(this.Proveedor.strBank_Other_Cod);
-    this.loadBancoByIDD(this.Proveedor.strFore_Branch_Cod);
+    this.loadBancoByIDD(this.Proveedor.strFore_Bank_Cod);
     this.GetOnlyOnePais(this.Proveedor.strCountry);
     this.GetOnlyOneMonedaA(this.Proveedor.strCurrency_Cod);
     this.GetOnlyOneMonedaB(this.Proveedor.strCurrency_Corp);
-    this.GetOnlyOneMonedaC(this.Proveedor.strFore_Swift_Cod);
+    this.GetOnlyOneMonedaC(this.Proveedor.strOther_Curr_Cod);
     this.GetOnlyOneMonedaD(this.Proveedor.strFore_Curr_Cod);
-    if(this.Proveedor.strCat_Person==='Natural'){
-      this.nameTipoJoN='Nombres';
-      this.RucOrDni='DNI';
-      this.ApellidosShow=true;
-      this.value1=this.Proveedor.strCat_Person;
-    }
-    if(this.Proveedor.strCat_Person==='Persona'){
-      this.nameTipoJoN='Nombres';
-      this.RucOrDni='DNI';
-      this.ApellidosShow=true;
-      this.value1=this.Proveedor.strCat_Person;
-    }
-    if(this.Proveedor.strCat_Person==='Jurídica'){
-      this.nameTipoJoN='Razon social';
-      this.RucOrDni='RUC';
-      this.ApellidosShow=false;
-      this.value1=this.Proveedor.strCat_Person;
-    }
+    // if(this.Proveedor.strCat_Person==='Natural'){
+    //   this.nameTipoJoN='Nombres';
+    //   this.RucOrDni='DNI';
+    //   this.ApellidosShow=true;
+    //   this.value1=this.Proveedor.strCat_Person;
+    // }
+    // if(this.Proveedor.strCat_Person==='Persona'){
+    //   this.nameTipoJoN='Nombres';
+    //   this.RucOrDni='DNI';
+    //   this.ApellidosShow=true;
+    //   this.value1=this.Proveedor.strCat_Person;
+    // }
+    // if(this.Proveedor.strCat_Person==='Jurídica'){
+    //   this.nameTipoJoN='Razon social';
+    //   this.RucOrDni='RUC';
+    //   this.ApellidosShow=false;
+    //   this.value1=this.Proveedor.strCat_Person;
+    // }
   }
   //#endregion
   
@@ -547,7 +559,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   handleCloseDepart(){
     this.departVisible=false;
-    this.selectDepartamento=new DepartamentoModel();
+    // this.selectDepartamento=new DepartamentoModel();
   }
   departSelect(val:DepartamentoModel){
     this.selectDepartamento=val;
@@ -559,7 +571,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   departChosseClose(){
     this.departVisible=false;
-    this.selectDepartamento=new DepartamentoModel();
+    // this.selectDepartamento=new DepartamentoModel();
   }
   departDialog(){
     this.GetAllDepartamento();
@@ -635,7 +647,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     }   
     if(this.FLAGMONEDA==='C'){
       this.selectMonedaC=val;
-      this.Proveedor.strFore_Swift_Cod=this.selectMonedaC.strCurrency_Cod;
+      this.Proveedor.strOther_Curr_Cod=this.selectMonedaC.strCurrency_Cod;
     }   
     if(this.FLAGMONEDA==='D'){
       this.selectMonedaD=val;
@@ -842,7 +854,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     .then(response=>{
       this.Categoria=[];
       this.Categoria=response;
-      this.value1=this.Categoria[0].strVenCateg_Desc;      
+      // this.value1=this.Categoria[0].strVenCateg_Desc;      
       // this.selectCategoria(this.Categoria[0].intIdVenCateg_ID);
     }).catch(error=>{
       this.$message({
@@ -852,15 +864,31 @@ export default class ViewAndEditProveedorComponent extends Vue {
       });
     })
   }
+  btnBuscar(valor){    
+    var data=this.like(this.Categoria,'strVenCateg_Desc',valor)
+    this.Proveedor.intIdVenCateg_ID=data[0].intIdVenCateg_ID;
+  }
+  like(array, key,keyword) {    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+        }
+      }
+    }
+    return responsearr
 
-  selectCategoria(val){
+  }
+
+  selectCategoria(val){    
+    this.btnBuscar(val);
       this.VisibleForName=true;
-      if(val===1){
+      if(val=='Natural'){
         this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=true;
-        this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Natural';
+        this.Proveedor.strCat_Person=val;
         for(var i=0;i<this.TipoDoc.length;i++){
           if(this.TipoDoc[i].strDocIdent_NO==='6'){
             this.selectTipoDoc=this.TipoDoc[i];
@@ -870,12 +898,11 @@ export default class ViewAndEditProveedorComponent extends Vue {
         }
         this.tipoDocDisabled=true;
       }
-      if(val===2){
-        this.nameTipoJoN='Razon social';
+      if(val=='Jurídica'){
+        this.nameTipoJoN='Nombres';
         this.RucOrDni='RUC';
         this.ApellidosShow=false;
-        this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Jurídica';
+        this.Proveedor.strCat_Person=val;
         for(var i=0;i<this.TipoDoc.length;i++){
           if(this.TipoDoc[i].strDocIdent_NO==='6'){
             this.selectTipoDoc=this.TipoDoc[i];
@@ -885,63 +912,66 @@ export default class ViewAndEditProveedorComponent extends Vue {
         }
         this.tipoDocDisabled=true;
       }
-      if(val===3){
+      if(val=='Persona'){        
         this.nameTipoJoN='Nombres';
         this.RucOrDni='DNI';
-        this.ApellidosShow=true;
-        this.Proveedor.intIdVenCateg_ID=val;
-        this.Proveedor.strCat_Person='Persona';
+        this.ApellidosShow=true;   
+        this.Proveedor.strCat_Person=val;
         this.tipoDocDisabled=false;
-        this.selectTipoDoc=new TipoDocIdentidadModel();
-        this.Proveedor.intIdDocIdent_ID=-1;
-        this.Proveedor.strDocIdent_NO='';
+        if(this.FLAGDOC=='A'){
+          this.selectTipoDoc=new TipoDocIdentidadModel();
+          this.Proveedor.intIdDocIdent_ID=-1;
+          this.Proveedor.strDocIdent_NO='';
+        }
+        if(this.FLAGDOC=='B')
+          {
+
+       }
       }
   }
   SaveProveedor(val){
-    if(this.Proveedor.strVendor_NO===''){
+    var vista=this.$route.query.vista;
+    if(vista=='modificar'){
+      if(this.Proveedor.strVendor_NO===''){
+        this.$message({
+          showClose: true,
+          type: 'warning',
+          message: 'Por favor seleccione proveedor a editar'
+        });
+      }
+      else{
+        this.Proveedor.strModified_User='egaona';
+        let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        );     
+        proveedorService.UpdateProveedor(this.Proveedor)
+        .then(response=>{
+          loadingInstance.close();
+          this.openMessageSuccess('Se editó correctamente '+response);
+          this.textosave = 'Se editó correctamente '+response;
+          this.issave=true;
+          this.iserror=false;
+        })
+        .catch(e =>{      
+          this.openMessageError('Error editar proveedor');
+          loadingInstance.close();
+          this.textosave = 'Error editar proveedor.';
+          this.issave=false;
+          this.iserror=true;
+        })    
+      } 
+    }
+    if(vista=='visualizar'){
       this.$message({
         showClose: true,
         type: 'warning',
-        message: 'Por favor seleccione proveedor a editar'
+        message: 'Accion no permitida'
       });
     }
-    else{
-      this.Proveedor.strModified_User='egaona';
-      let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guardando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );     
-      proveedorService.UpdateProveedor(this.Proveedor)
-      .then(response=>{
-        loadingInstance.close();
-        this.openMessageSuccess('Se editó correctamente '+response);
-        this.textosave = 'Se editó correctamente '+response;
-        this.issave=true;
-        this.iserror=false;
-        // this.Proveedor=new ProveedorModel();
-        // this.gridSelectPais=new PaisModel();
-        // this.selectDepartamento=new DepartamentoModel();
-        // this.selectTipoDoc=new TipoDocIdentidadModel();
-        // this.selectMonedaA=new MonedaModel();
-        // this.selectMonedaB=new MonedaModel();
-        // this.selectMonedaC=new MonedaModel();
-        // this.selectMonedaD=new MonedaModel();
-        // this.selectBancoA=new BancoModel();
-        // this.selectBancoB=new BancoModel();
-        // this.selectBancoC=new BancoModel();
-        // this.selectBancoD=new BancoModel();
-      })
-      .catch(e =>{      
-        this.openMessageError('Error editar proveedor');
-        loadingInstance.close();
-        this.textosave = 'Error editar proveedor.';
-        this.issave=false;
-        this.iserror=true;
-      })    
-    } 
   }
   openMessageError(strMessage:string){
     this.$message({
@@ -962,6 +992,13 @@ export default class ViewAndEditProveedorComponent extends Vue {
   }
   reloadpage(){
     window.location.reload();
+  }
+  validarView(){
+    this.$message({
+      showClose: true,
+      type: 'warning',
+      message: 'Accion no permitida'
+    });
   }
   data(){
     return{
