@@ -270,9 +270,10 @@ export default class VisualizarModificarPRComponent extends Vue {
   }
   async existePO(){
     await ordencompraService.GetOrdenCompraRequisicion(this.selectrow.strRequis_NO)
-    .then(response=>{
+    .then(response=>{ 
+      console.log(response);
       if(response!=null){
-        if(response!=undefined){
+        if(response!=''){
           alert('Tiene asociada una orden compra:'+response.strPO_NO)
         }
         else{
