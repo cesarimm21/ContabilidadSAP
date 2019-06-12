@@ -429,7 +429,11 @@ export default class VisualizarModificarPRComponent extends Vue {
         this.CompleteData1=this.CompleteData;
         this.totalRegistros=this.CompleteData1.length;
         this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-        this.vifprogress=false;}, 600)
+        if(data.strRequis_NO!='*'){
+          this.selectrow=this.tableData[0];
+          this.existePO();
+        }
+        this.vifprogress=false;}, 100)
     })
     .catch(error=>{
       

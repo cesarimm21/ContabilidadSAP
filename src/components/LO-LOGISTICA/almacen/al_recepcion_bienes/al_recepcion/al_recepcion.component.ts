@@ -206,6 +206,7 @@ export default class RecepcionMaterialComponent extends Vue {
     }
     handleSelectionChange(val) {
         var dataselect:any=[];
+        console.log('handleSelectionChange',val.length);
         for(var i=0;i<val.length;i++){
             if(val[0].blnSelection){
                 dataselect.push(val[0])
@@ -304,6 +305,7 @@ export default class RecepcionMaterialComponent extends Vue {
 
         else {
             this.OrdenCompra.listaDetalle = [];
+            console.log('multiple selec',this.multipleSelection.length)
             for (var i = 0; i < this.multipleSelection.length; i++) {
                 // this.multipleSelection[i].strGuiaRem_NO=this.strGuiaRemitente;
                 // this.multipleSelection[i].strGuiaTrans_NO=this.strGuiaTransportista;
@@ -415,6 +417,7 @@ export default class RecepcionMaterialComponent extends Vue {
         var total=0;
         var valueTotal=0;
         this.blnchangerec=false;
+        this.multipleSelection=[];
         setTimeout(() => {
             for(var i=0;i<this.requiDetalle1.length;i++){
                 if(this.requiDetalle1[i].blnCheck){
@@ -437,13 +440,16 @@ export default class RecepcionMaterialComponent extends Vue {
         this.multipleSelection=[];
         var total=0;
         var valueTotal=0;
+        debugger;
         for(var i=0;i<this.requiDetalle1.length;i++){
             if(this.requiDetalle1[i].blnCheck){
-                this.multipleSelection.push(this.requiDetalle1[i])
-                if(this.requiDetalle1[i].fltRec_QYT >0){
-                    total+=this.requiDetalle1[i].fltRec_QYT;
-                    valueTotal+=this.requiDetalle1[i].fltRec_QYT*this.requiDetalle1[i].fltPO_Net_PR_I;
-                }
+                //setTimeout(() => {
+                    this.multipleSelection.push(this.requiDetalle1[i])
+                    if(this.requiDetalle1[i].fltRec_QYT >0){
+                        total+=this.requiDetalle1[i].fltRec_QYT;
+                        valueTotal+=this.requiDetalle1[i].fltRec_QYT*this.requiDetalle1[i].fltPO_Net_PR_I;
+                    }
+                //}, 50)
             }
         }
         this.fltTot_Rec_QYT=Math.round(total*100)/100;

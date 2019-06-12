@@ -688,7 +688,6 @@ export default class VisualizarPRComponent extends Vue {
     else{
       alert('Debe de seleccionar una fila!!!');
     }
-    
   }
   siguiente(){
     if(this.pagina<(this.totalRegistros/this.RegistersForPage)){

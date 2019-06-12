@@ -82,6 +82,9 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
     'hasta':new Date(),
     'strVendor_NO':''
   }
+  
+  dialogEliminar:boolean=false;
+
   public tableData:Array<OrdenCompraModel>=[]; 
   valuem=0;
   btnbuscarb:boolean=false;
@@ -139,7 +142,7 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
-    await cuentacontableService.GetBusquedaCuentaContable(data.strPO_NO,data.desde,data.hasta)
+    await cuentacontableService.GetBusquedaCuentaContable(data.strPO_NO.trim(),data.desde,data.hasta)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
@@ -152,7 +155,11 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
           console.log(res)
           this.tableData=res;
           this.vifprogress=false;
-        }, 600)
+          if(res.length>0 && data.strPO_NO.trim()!='*'){
+            this.selectrow=res[0]
+            this.validarView();
+          }
+        }, 10)
       }
     })
     .catch(error=>{
@@ -366,6 +373,46 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
   }
   LoadProveedor(){
     this.dialogProveedor=true;      
+  }
+  EliminarItem(){
+    debugger;
+    if(this.selectrow!=undefined){
+      this.dialogEliminar=true;
+    }
+    else{
+      alert('Debe de seleccionar una fila!!!');
+    }
+  }
+  async btnEliminar(){
+    await cuentacontableService.EliminarCuentaContable(this.currentRow)
+    .then(response=>{
+      debugger;
+      console.log('eliminar',response);
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.' + response.strRequis_NO;
+         this.issave=true;
+         this.iserror=false;
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.dialogEliminar=false;
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar almacen'
+      });
+    })
+    await this.Buscar();
   }
   data(){
     return{

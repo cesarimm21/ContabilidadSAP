@@ -170,9 +170,18 @@ export default class CrearCuentaContableComponent extends Vue {
   dialogCostItem:boolean=false;
 
   public cuentacontableModel:Array<CuentaContableModel>=[];
+  public cuentacontableModel1:Array<CuentaContableModel>=[];
+
   public cuentacontableSelectModel:CuentaContableModel=new CuentaContableModel();
   btntipoadquisicion:boolean=false;
-
+  blnfilterstrAcc_Local_NO:boolean=true;
+  blnfilterstrAcc_Corp_NO:boolean=false;
+  blnfilterstrAcc_Local_Name:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  
+  public search:CuentaContableModel=new CuentaContableModel();
+  inputAtributo:any;
 
   constructor(){    
     super();
@@ -229,8 +238,9 @@ export default class CrearCuentaContableComponent extends Vue {
     // this.cuentacontable.intIdCompany_ID=this.companiaModel.intIdCompany_ID;
     // this.cuentacontable.strCompany_Cod=this.companiaModel.strCompany_Cod;
     // this.cuentacontable.strCompany_Name=this.companiaModel.strCompany_Name;
-    this.cuentacontable.strAccFth_Local=val.strAcc_Local_NO;
-    this.strAccFth_Local_Desc=val.strAcc_Local_Name;
+    debugger;
+    this.cuentacontable.strAccFth_Local=this.cuentacontableSelectModel.strAcc_Local_NO;
+    this.strAccFth_Local_Desc=this.cuentacontableSelectModel.strAcc_Local_Name;
     this.dialogCuentaContablePadre=false; 
   }
   cuentacontableselecionadoPadreCorp(val){
@@ -248,10 +258,13 @@ export default class CrearCuentaContableComponent extends Vue {
     this.dialogplancontablecorporativo=false;    
   }
   dialogplancontablelocalClose(){
-
+    this.dialogplancontablelocal=false;
   }
   dialogplancontablecorporativoClose(){
 
+  }
+  closeDialogTipoCuentaContable(){
+    this.dialogTipoCuentaContable=false;
   }
   desactivar_PlanCuentaLocal(){
     debugger;
@@ -562,12 +575,13 @@ export default class CrearCuentaContableComponent extends Vue {
     .then(response=>{
       debugger
       console.log('cuentacontable',response);
-      this.cuentacontableModel=response;       
+      this.cuentacontableModel=response;   
+      this.cuentacontableModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo cargar los almacenes'
+        message: 'No se pudo cargar'
       });
     })
     this.dialogCuentaContablePadre=true;
@@ -585,6 +599,7 @@ export default class CrearCuentaContableComponent extends Vue {
     this.cuentacontableSelectModel=val;
   }
   tipocuentacontableSeleccionado(val){
+    debugger;
     this.cuentacontable.strAcc_Type=val.strAcc_Type_Cod;
     this.dialogTipoCuentaContable=false;
   }
@@ -615,8 +630,104 @@ export default class CrearCuentaContableComponent extends Vue {
   loadTipoAdquisicion(){
     this.dialogTipoAquisicion=true;
   }
+  
+  filterstrAcc_Local_NO(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrAcc_Local_NO){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new CuentaContableModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcc_Corp_NO(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrAcc_Corp_NO){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new CuentaContableModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcc_Local_Name(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrAcc_Local_Name){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new CuentaContableModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strAcc_Local_NO"){
+      this.clickColumn=val.property;  
+      this.search=new CuentaContableModel();  
+      this.inputAtributo='';  
+      this.blnfilterstrAcc_Local_NO=true;
+      this.blnfilterstrAcc_Corp_NO=false;
+      this.blnfilterstrAcc_Local_Name=false;
+    }
+    if(val.property=="strAcc_Corp_NO"){
+      this.clickColumn=val.property;
+      this.search=new CuentaContableModel();
+      this.inputAtributo='';
+      this.blnfilterstrAcc_Local_NO=false;
+      this.blnfilterstrAcc_Corp_NO=true;
+      this.blnfilterstrAcc_Local_Name=false;
+    }
+    if(val.property=="strAcc_Local_Name"){
+      this.clickColumn=val.property;
+      this.search=new CuentaContableModel();
+      this.inputAtributo='';
+      this.blnfilterstrAcc_Local_NO=false;
+      this.blnfilterstrAcc_Corp_NO=false;
+      this.blnfilterstrAcc_Local_Name=true;
+    }
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().toLowerCase().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarfilterCuenta(){
+    var input=this.inputAtributo.toLowerCase();
+    var data=this.like(this.cuentacontableModel1,this.clickColumn,input)
+    this.cuentacontableModel=[];
+    this.cuentacontableModel=data;
+  }
   data(){
     return{
+      cuentacontableModel1:[],
       nameComponent:'crear-ingreso-comprobante',
       fechavencida:'',
       dialogTableVisible: false,

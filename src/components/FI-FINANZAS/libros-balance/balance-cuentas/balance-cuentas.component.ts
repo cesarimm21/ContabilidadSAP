@@ -274,7 +274,7 @@ export default class BalanceCuentasComponent extends Vue {
     debugger;
     if(typeof window != 'undefined') {
       // this.getAccesos();
-      debugger;
+       debugger;
       this.vmaterial=Global.vmmaterial;
     }
   }

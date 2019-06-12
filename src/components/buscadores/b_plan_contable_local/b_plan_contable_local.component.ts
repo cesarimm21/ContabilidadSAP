@@ -34,10 +34,19 @@ export default class  BPlanContableLocalComponent extends Vue {
   articulos:any =[];
 
   public cuentacontableModel:Array<PlanCuentaModel>=[];
+  public cuentacontableModel1:Array<PlanCuentaModel>=[];
   public cuentacontableSelectModel:PlanCuentaModel=new PlanCuentaModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
+//   categoriaService:CategoriaService=new CategoriaService();  
+  blnfilterstrChartAcct_L_Desc:boolean=true;
+  blnfilterstrChartAcct_L_Cod:boolean=false;
+  
+  clickColumn:string='';
+  Column:string='';
+
+  public search:PlanCuentaModel=new PlanCuentaModel();
+  inputAtributo:any;
 
   constructor() {
     super();
@@ -51,7 +60,9 @@ export default class  BPlanContableLocalComponent extends Vue {
     .then(response=>{
       debugger
       console.log('grupogastos',response);
-      this.cuentacontableModel=response;       
+      this.cuentacontableModel=response;    
+      this.cuentacontableModel1=response;    
+      
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -159,11 +170,83 @@ export default class  BPlanContableLocalComponent extends Vue {
     this.$emit('plancuentacontableselecionado',this.cuentacontableSelectModel);
   }
   closePopup(){
-    this.$emit('plancuentacontableselecionadoClose');
+    this.$emit('close');
   }
+
+  
+  filterstrChartAcct_L_Desc(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrChartAcct_L_Desc){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new PlanCuentaModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrChartAcct_L_Cod(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrChartAcct_L_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new PlanCuentaModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strChartAcct_L_Cod"){
+      this.clickColumn=val.property;  
+      this.search=new PlanCuentaModel();  
+      this.inputAtributo='';  
+      this.blnfilterstrChartAcct_L_Cod=true;
+      this.blnfilterstrChartAcct_L_Desc=false;
+    }
+    if(val.property=="strChartAcct_L_Desc"){
+      this.clickColumn=val.property;
+      this.search=new PlanCuentaModel();
+      this.inputAtributo='';
+      this.blnfilterstrChartAcct_L_Cod=false;
+      this.blnfilterstrChartAcct_L_Desc=true;
+    }
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toLowerCase().toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarfilter(){
+    var input=this.inputAtributo.toLowerCase();
+    var data=this.like(this.cuentacontableModel1,this.clickColumn,input)
+    this.cuentacontableModel=[];
+    this.cuentacontableModel=data;
+  }
+
+
   data() {
     return {
       cuentacontableModel:[],
+      cuentacontableModel1:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

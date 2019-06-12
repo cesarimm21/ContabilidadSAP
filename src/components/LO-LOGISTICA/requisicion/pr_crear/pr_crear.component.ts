@@ -218,6 +218,7 @@ export default class CrearPRComponent extends Vue {
   fltUnitPrices:any='';
   fltValue_Totals:any='';
   strAccount_NOs:any='';
+  strUM:any='';
   strCostCenters:any='';
   strVendor_NOs:any='';
   strVendor_Descs:any='';
@@ -928,19 +929,22 @@ export default class CrearPRComponent extends Vue {
     this.selectrow.strMatClass_Desc=val.strMatClass_Desc;
     this.strVendor_NOs=val.strVendor_NO;
     this.strVendor_Descs=val.strVendor_Desc;
-     
+    this.strAccount_NOs=val.strExp_Acct;
     this.selectrow.fltFactor=val.fltFactor;
-
+    this.strUM=val.strUM_Cod;
     this.strStockCod=this.selectrow.strMaterial_Cod==undefined?'':this.selectrow.strMaterial_Cod;
     this.strDescripcion=this.selectrow.strDescription==undefined?'':this.selectrow.strDescription;
     
-    this.selectrow.fltUnitPrice=val.fltPrecUnit_Local;
+    this.fltUnitPrices=val.fltPrecUnit_Local!=null?val.fltPrecUnit_Local:0;
+    this.selectrow.fltUnitPrice=val.fltPrecUnit_Local!=null?val.fltPrecUnit_Local:0;
     this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
     this.dialogMaterial=false;
   }
   cambiarCantidad(val){
     setTimeout(() => {
-      this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
+      this.selectrow.fltValue_Total=Number(this.selectrow.fltUnitPrice)*Number(this.selectrow.fltQuantity);
+      console.log(val)
+      this.fltQuantitys=val.fltQuantity;
     }, 200)
     
   }

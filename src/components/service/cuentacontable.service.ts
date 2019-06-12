@@ -22,6 +22,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  EliminarCuentaContable(data){
+    return axios.post(CONFIG.API_URL+'cuentacontable/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneCuentaGastos(code:any){
     return axios.get(CONFIG.API_URL+'cuentacontable/'+code)
     .then(response =>{           

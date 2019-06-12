@@ -5,7 +5,7 @@
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Crear Requisición</span>
+            <span class="labelheadercard" >Crear Requisicion</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -41,7 +41,7 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{requisicionModel.strCompany_Desc}}</span>
                         </div>
                         <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-2" >Tipo Requisición</label>
+                            <label class="el-form-item__label col-md-2" >Tipo Requisicion</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                     
@@ -55,7 +55,7 @@
                                     </el-select>
                                 </div>
                             </div>    
-                            <label class="el-form-item__label col-md-1" >Almacén</label>
+                            <label class="el-form-item__label col-md-1" >Almacen</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @blur="desactivar_almacen" v-model="requisicionModel.strWHS_Cod" @focus="activar_almacen"  placeholder="">
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col-sm-10">
                         <div class="form-group row Third">
-                            <label class="el-form-item__label col-md-2" >Descripción</label>
+                            <label class="el-form-item__label col-md-2" >Descripcion</label>
                             <div class="col-md-10 grupolabel" style="margin-left: -17px;">
                                 <div class="input-group mb-9">
                                     <el-input size ="small" @focus="activar_descripcion" v-model="requisicionModel.strDesc_Header"  placeholder="">                
@@ -165,7 +165,7 @@
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrDescription"
                                             prop="strDescription"   width="200"
-                                            label="Descripción">
+                                            label="Descripcion">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDescription" >
@@ -231,7 +231,7 @@
                                             prop="fltUnitPrice"   width="100"
                                             label="Precio">
                                             <template scope="scope">
-                                                <label style="width:100%;margin-top: 4px;">&nbsp;{{ scope.row.fltUnitPrice }}</label>
+                                                <label style="width:100%;margin-top: 4px;">&nbsp;{{ scope.row.fltUnitPrice!=null?scope.row.fltUnitPrice:0  }}</label>
                                             </template>
                                         </el-table-column>
                                        
@@ -285,7 +285,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group row ">
-                                                <label class="el-form-item__label col-md-3" >Código</label>
+                                                <label class="el-form-item__label col-md-3" >Codigo</label>
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group mb-3" >
                                                     <el-input :disabled="true" size ="small" v-model="strStockCod"  placeholder="">
@@ -296,7 +296,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group row ">
-                                                <label class="el-form-item__label col-md-2" >Descripción</label>
+                                                <label class="el-form-item__label col-md-2" >Descripcion</label>
                                                 <div class="col-md-8 grupolabel">
                                                     <div class="input-group mb-8" >
                                                     <el-input :disabled="true" size ="small" v-model="strDescripcion" placeholder="">
@@ -321,7 +321,7 @@
                                     </div> -->
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="Cantidad/Fecha">
+                            <!-- <el-tab-pane label="Cantidad/Fecha">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-sm-3">
@@ -391,7 +391,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Fecha Modificación</label>
+                                                <label class="el-form-item__label col-md-6" >Fecha Modificacion</label>
                                                 <div class="col-md-6 grupolabel">
                                                     <div class="input-group " >
                                                         <el-date-picker :disabled="true"
@@ -404,8 +404,8 @@
                                         </div>
                                     </div> 
                                 </div>
-                            </el-tab-pane>
-                            <el-tab-pane label="Valoración">
+                            </el-tab-pane> -->
+                            <el-tab-pane label="Valoracion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-sm-3">
@@ -438,6 +438,18 @@
                                                 <div class="col-md-7 grupolabel">
                                                     <div class="input-group " >
                                                         <el-input :disabled="true" size ="small" v-model="fltValue_Totals" placeholder="">
+                                                        </el-input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-sm-3">
+                                            <div class="form-group1 row ">
+                                                <label class="el-form-item__label col-md-4" >UM</label>
+                                                <div class="col-md-7 grupolabel">
+                                                    <div class="input-group  mb-2" >
+                                                        <el-input :disabled="true" size ="small" v-model="strUM" placeholder="">
                                                         </el-input>
                                                     </div>
                                                 </div>
@@ -493,7 +505,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Código Proveedor</label>
+                                                <label class="el-form-item__label col-md-6" >Codigo Proveedor</label>
                                                 <div class="col-md-5 grupolabel">
                                                     <div class="input-group mb-2" >
                                                     <el-input :disabled="true" size ="small" v-model="strVendor_NOs"  placeholder="">

@@ -34,10 +34,20 @@ export default class  BCuentaContableComponent extends Vue {
   articulos:any =[];
 
   gridCuenta:CuentaContableModel[];
+  gridCuenta1:CuentaContableModel[];
   public cuentacontableSelectModel:CuentaContableModel=new CuentaContableModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
+
+  blnfilterstrAcc_Local_NO:boolean=true;
+  blnfilterstrAcc_Corp_NO:boolean=false;
+  blnfilterstrAcc_Local_Name:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  
+  public search:CuentaContableModel=new CuentaContableModel();
+  inputAtributo:any;
 
   constructor() {
     super();
@@ -49,7 +59,9 @@ export default class  BCuentaContableComponent extends Vue {
     cuentacontableService.GetAllCuentaContable()
     .then(response=>{      
       this.gridCuenta=[];
+      this.gridCuenta1=[];
       this.gridCuenta=response;   
+      this.gridCuenta1=response;   
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -158,9 +170,105 @@ export default class  BCuentaContableComponent extends Vue {
   closePopup(){
     this.$emit('cuentacontableClose');
   }
+
+  filterstrAcc_Local_NO(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrAcc_Local_NO){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new CuentaContableModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcc_Corp_NO(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrAcc_Corp_NO){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new CuentaContableModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcc_Local_Name(h,{column,$index}){
+    debugger;
+    var column1 = column.label; 
+    if(this.blnfilterstrAcc_Local_Name){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      this.search=new CuentaContableModel();
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strAcc_Local_NO"){
+      this.clickColumn=val.property;  
+      this.search=new CuentaContableModel();  
+      this.inputAtributo='';  
+      this.blnfilterstrAcc_Local_NO=true;
+      this.blnfilterstrAcc_Corp_NO=false;
+      this.blnfilterstrAcc_Local_Name=false;
+    }
+    if(val.property=="strAcc_Corp_NO"){
+      this.clickColumn=val.property;
+      this.search=new CuentaContableModel();
+      this.inputAtributo='';
+      this.blnfilterstrAcc_Local_NO=false;
+      this.blnfilterstrAcc_Corp_NO=true;
+      this.blnfilterstrAcc_Local_Name=false;
+    }
+    if(val.property=="strAcc_Local_Name"){
+      this.clickColumn=val.property;
+      this.search=new CuentaContableModel();
+      this.inputAtributo='';
+      this.blnfilterstrAcc_Local_NO=false;
+      this.blnfilterstrAcc_Corp_NO=false;
+      this.blnfilterstrAcc_Local_Name=true;
+    }
+  }
+  like(array, key,keyword) {
+    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+      }
+    }
+    return responsearr
+  }
+  buscarfilterCuenta(){
+    var data=this.like(this.gridCuenta1,this.clickColumn,this.inputAtributo)
+    this.gridCuenta=[];
+    this.gridCuenta=data;
+  }
+
   data() {
     return {
       gridCuenta:[],
+      gridCuenta1:[],
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

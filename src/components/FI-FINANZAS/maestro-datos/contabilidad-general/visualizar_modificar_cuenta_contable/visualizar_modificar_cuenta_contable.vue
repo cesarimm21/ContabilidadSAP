@@ -68,7 +68,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView()"></buttons-accions>
+                                <buttons-accions v-on:EliminarItem="EliminarItem()"  v-on:validarView="validarView()" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -80,18 +80,18 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         <el-table-column  sortable prop="strAcc_Local_NO" width="100" label="Cuenta Contable">
                                             <template scope="scope">
-                                            <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
+                                            <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
                                             prop="strAcc_Local_Name" sortable  
                                             label="Descripcion">
                                             <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_Name }}</label>
+                                                <label v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_Name }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -153,6 +153,16 @@
       <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event);" v-on:companiaClose="companiaClose($event);" >
       </bcompania>
     </el-dialog>
+    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
+      <div style="height:85px"> 
+        <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
+        <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
 </div>  
   
 </template>
