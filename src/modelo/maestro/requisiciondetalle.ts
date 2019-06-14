@@ -33,6 +33,8 @@ export class RequisicionDetalleModel {
     fltFactor:number;
     strCostCenter_Desc:string;
     strVendor_Desc:string;
+    strPO_NO:string;
+    fltPO_QTY_I:number;
     intConv_Factor:number;
     blnCheck:boolean;      
     strCreation_User:Date ;
@@ -74,11 +76,12 @@ export class RequisicionDetalleModel {
         this.fltFactor=0;
         this.strCostCenter_Desc='';
         this.strVendor_Desc='';
+        this.strPO_NO='';
+        this.fltPO_QTY_I=0;
         this.intConv_Factor=1
         this.blnCheck=true;
         this.strMatClass_Cod='';
         this.strMatClass_Desc='';
-        this.strCostCenter_Desc='';
         this.strVendor_Desc='';
     }
 }

@@ -2,6 +2,7 @@
 export class OrdenCompraDetalleModel {
     intIdPOD_ID:number;//
     intIdPOH_ID:number;
+    intIdPurReqD_ID:number;
     intIdAcctCateg_ID:number;//
     intIdCategLine_ID:number;//
     intIdCurrency_ID:number;//
@@ -75,6 +76,7 @@ export class OrdenCompraDetalleModel {
     chrStatus:string ;
     constructor(){
         this.intIdPOD_ID=0;//
+        this.intIdPurReqD_ID=-1;//
         this.intIdPOH_ID=-1;//
         this.intIdAcctCateg_ID=-1;//
         this.intIdCategLine_ID=-1; //

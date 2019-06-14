@@ -29,11 +29,11 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column  :render-header="filterstrWH_Cod" prop="strWH_Cod" label="Codigo" width="120">
+            <el-table-column  :render-header="filterstrWH_Cod" prop="strWH_Cod" label="Codigo" width="120" align="center">
             </el-table-column>  
             <el-table-column :render-header="filterstrWH_Desc" prop="strWH_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
-            <el-table-column :render-header="filterfltPorcent"  prop="fltPorcent" label="Tasa %" width="120">
+            <el-table-column :render-header="filterfltPorcent"  prop="fltPorcent" label="Tasa %" width="120" align="right">
             </el-table-column>  
             
             </el-table>

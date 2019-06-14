@@ -29,7 +29,7 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"> 
-            <el-table-column :render-header="filterstrBank_Cod" prop="strBank_Cod" label="Codigo" width="180" >
+            <el-table-column :render-header="filterstrBank_Cod" prop="strBank_Cod" label="Codigo" width="150" align="center">
             </el-table-column>  
             <el-table-column :render-header="filterstrBank_Name" prop="strBank_Name" label="Descripcion">
             </el-table-column> 

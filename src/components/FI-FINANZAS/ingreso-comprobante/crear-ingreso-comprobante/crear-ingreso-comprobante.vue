@@ -32,16 +32,40 @@
                                         <el-button v-if="btnactivarOrdenCompra && !dialogOrdenCompra" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenCompra()"></el-button>                           
                                     </el-input>
                                     </div>
-                                </div>
+                                </div> 
+                                <label class="el-form-item__label col-md-3" >Servicio</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input class="validador" size ="small" v-model="factura.strPO_NO" type="text" disabled>  
+                                     </el-input>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="col-sm-6" >
+                            <div class="form-group row" style="margin-top:3px;">
                                 <label class="el-form-item__label col-md-3" >Periodo</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" type="text"  placeholder="" v-model="fecha_actual" disabled>                            
                                     </el-input>
                                     </div>
-                                </div>   
+                                </div>  
+                            </div>
+                            <div class="form-group row" >
+                                <label class="el-form-item__label col-md-3" >Diario</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input class="validador" size ="small" @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" >                            
+                                         <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{factura.strDaily_Desc}}</label>                              
                                 
                             </div>
+                        </div>
+                        <div class="col-sm-6">
                             <div class="form-group row">
                                 <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
@@ -62,9 +86,7 @@
                                     </div>
                                 </div>
                                 <label class="sinLinea el-form-item__label col-md-6" >{{comprobantePago.strDocType_Desc}}</label>                              
-                                
-                            </div>
-                            
+                            </div>                            
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Serie</label>
                                 <div class="col-md-3 grupolabel">
@@ -85,12 +107,6 @@
                                 <label class="el-form-item__label col-sm-3" >Fecha Emisión</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <!-- <el-input type="date"  
-                                        size ="small" 
-                                        style="font-size:11px;" 
-                                        v-model="factura.dtmDoc_Date"  
-                                        @change="DateforGetChanceDolar()">
-                                        </el-input> -->
                                         <el-date-picker
                                                     class="validador"
                                                     type="date"
@@ -120,26 +136,9 @@
                                 </div>
                             </div>                          
                         </div>
-                        <div class="col-sm-6" >
-                            <div class="form-group row" style="margin-top:3px;">
-                                <label class=" sinLinea el-form-item__label col-md-3" ></label>
-                            </div>
-                            <div class="form-group row" style="margin-top:6px;">
-                                <label class="el-form-item__label col-md-3" >Diario</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-2" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" >                            
-                                         <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <label class="sinLinea el-form-item__label col-md-6" >{{factura.strDaily_Desc}}</label>                              
-                                
-                            </div>
-                            <!-- <div class="form-group row" style="margin-top:10px;">
-                                <label class=" sinLinea el-form-item__label col-md-3" ></label>
-                            </div> -->
-                            <div class="form-group row" style="margin-top:6px;">
+                        
+                        <div class="col-sm-6 squareResult">
+                            <div class="form-group row " >
                                 <label class="el-form-item__label col-sm-3" >Cantidad</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
@@ -271,13 +270,11 @@
                                             <label class="el-form-item__label col-sm-3" >Fecha Contable</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <!-- <el-input type="date"  size ="small" style="font-size:11px;" v-model="factura.dtmDoc_Acc_Date"></el-input> -->
-                                                <!-- <el-input type="date"  size ="small" style="font-size:11px;" v-model="fecha_ejecucion"></el-input> -->
                                                 <el-date-picker
                                                     type="date"
                                                     style="width:128px !important"
-                                                    :disabled="true"
                                                     format="dd.MM.yyyy"
+                                                    @change="DatePeriodo()"
                                                     size="small" v-model="fecha_ejecucion" >
                                                 </el-date-picker>
                                                 </div>
@@ -311,12 +308,6 @@
                                                     <el-input type="text"  size ="small" style="font-size:11px;" class="inputAling" v-model="factura.fltExchange_Rate" disabled></el-input>
                                                 </div>
                                             </div>
-                                            <!-- <label class="el-form-item__label col-sm-3" >Total Doc.</label>
-                                            <div class="col-sm-3 grupolabel">
-                                                <div class="input-group mb-3" >
-                                                <el-input type="number"  size ="small" style="font-size:11px;" ></el-input>
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
                                     
@@ -653,5 +644,12 @@ export default CrearIngresoComprobanteComponent
   border-bottom: 1px solid #f6f7f9;
   color: #1f2d3d; 
 }
-
+.squareResult{
+    margin-top: 5px;
+    background:#c7d9e9;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #349025;
+    border-style: solid;
+}
 </style>

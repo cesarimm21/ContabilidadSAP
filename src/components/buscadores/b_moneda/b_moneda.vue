@@ -30,7 +30,7 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column  :render-header="filterstrCurrency_Cod" prop="strCurrency_Cod" label="Codigo" width="180">
+            <el-table-column  :render-header="filterstrCurrency_Cod" prop="strCurrency_Cod" label="Codigo" width="120" align="center">
             </el-table-column>  
             <el-table-column :render-header="filterstrCurrency_Desc" prop="strCurrency_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
