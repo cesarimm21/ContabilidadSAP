@@ -15,6 +15,24 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  CrearCriticidad(data){
+    return axios.post(CONFIG.API_URL+'criticidad',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateCriticidad(data){
+    return axios.post(CONFIG.API_URL+'criticidad/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Eliminar(data){
+    return axios.post(CONFIG.API_URL+'criticidad/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

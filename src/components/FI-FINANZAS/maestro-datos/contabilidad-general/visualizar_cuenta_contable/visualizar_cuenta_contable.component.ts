@@ -92,10 +92,19 @@ export default class VisualizarCuentaContableComponent extends Vue {
   strVendor_NO:string='';
   strVendor_Desc:string='';
   vifprogress:boolean=true;
+  strCompany_Cod:string='';
+  strCompany_Desc:string='';
+  
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    var id:any=localStorage.getItem('compania_ID');
+    this.strCompany_Desc=desc; 
+    this.strCompany_Cod=cod;
+
     this.tiporequisicion="A";
     setTimeout(() => {
       this.load();

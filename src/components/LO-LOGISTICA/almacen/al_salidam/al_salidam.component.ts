@@ -370,6 +370,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
         fillColor: [215, 215, 215],
         textColor: "#000000",
         fontSize:7,
+        
         lineWidth: 0.1,
         lineColor:"#b3b3b3", //Silver gray
         fontStyle: 'bold',

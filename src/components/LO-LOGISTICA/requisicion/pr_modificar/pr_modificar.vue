@@ -371,30 +371,6 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Cantidad</label>
-                                                <div class="col-md-4 grupolabel">
-                                                    <div class="input-group " >
-                                                    <el-input :disabled="true" size ="small"  placeholder="">
-                                                    </el-input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Fecha Entrega</label>
-                                                <div class="col-md-6 grupolabel">
-                                                    <div class="input-group " >
-                                                    <el-input :disabled="true" size ="small" placeholder="">
-                                                    </el-input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <div class="form-group1 row ">
                                                 <label class="el-form-item__label col-md-6" >Cantidad Ordenada</label>
                                                 <div class="col-md-4 grupolabel">
                                                     <div class="input-group " >
@@ -416,30 +392,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Cantidad Pendiente</label>
-                                                <div class="col-md-4 grupolabel">
-                                                    <div class="input-group " >
-                                                    <el-input size ="small" :disabled="true" v-model="fltQuantity" placeholder="">
-                                                    </el-input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group1 row ">
-                                                <label class="el-form-item__label col-md-6" >Fecha Modificación</label>
-                                                <div class="col-md-6 grupolabel">
-                                                    <div class="input-group " >
-                                                    <el-input :disabled="true" size ="small" placeholder="">
-                                                    </el-input>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> 
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane label="Valoración">

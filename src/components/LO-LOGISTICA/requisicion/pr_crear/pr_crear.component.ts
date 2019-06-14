@@ -650,31 +650,10 @@ export default class CrearPRComponent extends Vue {
     debugger;
     console.log("activar_tipo_requisicion");
     this.tiporequisicion=value;
-    if(value=='N' || value=='AC'){
+   
+    if(value=='A'){
       this.cell_ocultar='#349025';
-      this.border_width='1px';
-      this.blntiporequisicion=true;
-      this.blncategorialinea=true;
-      
-      this.blncentrocosto=true;
-      this.blnunidadmedida=true;
-      this.blnproveedor=true;
-      this.CompleteData=[];
-      this.tableData1=[];
-      for(var i=0;i<this.totalRegistros;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.strDescription="";
-        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
-        this.CompleteData.push(reqDetalle);
-      }
-      this.CompleteData1=this.CompleteData;
-      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-  
-    }
-    else{
-      this.cell_ocultar='transparent';        
-      this.border_width='0px';        
+      this.border_width='1px';     
       this.blntiporequisicion=false;
       this.blncategorialinea=false;
       this.blncuentacontable=false;
@@ -688,6 +667,28 @@ export default class CrearPRComponent extends Vue {
       for(var i=0;i<this.totalRegistros;i++){
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
         reqDetalle.strCateg_Account="ST";
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.strDescription="";
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
+      }
+      this.CompleteData1=this.CompleteData;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+    }
+    else{
+      this.cell_ocultar='transparent';        
+      this.border_width='0px';  
+      this.blntiporequisicion=true;
+      this.blncategorialinea=true;
+      
+      this.blncentrocosto=true;
+      this.blnunidadmedida=true;
+      this.blnproveedor=true;
+      this.CompleteData=[];
+      this.tableData1=[];
+      for(var i=0;i<this.totalRegistros;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
         reqDetalle.intRequis_Item_NO=i+1;
         reqDetalle.strDescription="";
         reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;

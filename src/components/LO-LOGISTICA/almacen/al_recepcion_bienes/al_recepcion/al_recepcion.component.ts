@@ -363,6 +363,7 @@ export default class RecepcionMaterialComponent extends Vue {
                         this.issave = true;
                         this.iserror = false;
                         this.vifprogress=false;
+                        
                         this.textosave = 'Se guardo correctamente. '+ this.strCode;
                         this.loadPO();
                     }, 600)

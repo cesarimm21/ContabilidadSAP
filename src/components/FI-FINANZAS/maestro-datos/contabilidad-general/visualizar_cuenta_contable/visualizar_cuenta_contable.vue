@@ -8,14 +8,29 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Cuenta Contable</span>
+            <span class="labelheadercard" >Visualizar Cuenta Contable</span>
         </div>
         <div class="row bodycard">
            <div class="container">
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input   :disabled="true"
+                                size ="small" 
+                                @blur="desactivar_compania" 
+                                @focus="activar_compania" 
+                                v-model="strCompany_Cod">
+                                    <!-- <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button>  -->
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{strCompany_Desc}}</span>
+                        </div>
+                        <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Cuenta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strPO_NO"  placeholder="">
@@ -23,7 +38,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row Second">
+                        <!-- <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha Desde</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
@@ -45,7 +60,7 @@
                                     </el-date-picker>
                                 </div>
                             </div>                   
-                        </div>    
+                        </div>     -->
                     </div>
                 </div>
                 <br/>

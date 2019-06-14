@@ -501,7 +501,7 @@ export default class ModificarPRComponent extends Vue {
       this.currentRow = val;
       this.fltQuantity=val.fltQuantity;
       this.dtmRequested_Date=this.getParseDate(val.dtmRequested_Date);
-      this.fltUnitPrice=val.fltUnitPrice;
+      this.fltUnitPrice=val.fltUnitPrice!=null?val.fltUnitPrice:0;
       this.fltValue_Total=this.fltUnitPrice*this.fltQuantity;
       this.strAccount_NO=val.strAccount_NO;
       this.strCostCenter=val.strCostCenter;

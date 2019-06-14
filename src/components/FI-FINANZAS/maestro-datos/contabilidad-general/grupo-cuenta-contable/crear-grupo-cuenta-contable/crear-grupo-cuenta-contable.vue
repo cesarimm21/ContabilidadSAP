@@ -37,13 +37,23 @@
                             </div>        
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-3 grupolabel">
+                                <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" v-model="grupoCuentaContableModel.strGrpAcctCont_Desc" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
-                            </div>            
+                            </div>   
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-sm-2" >Componente</label>
+                                <div class="col-sm-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" @blur="desactivar_Componente" @focus="activar_Componente" v-model="grupoCuentaContableModel.strComp_Cod">                            
+                                        <el-button v-if="btnactivarComponente && !dialogComponente" slot="append" class="boton" icon="fa fa-clone" @click="loadComponente()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>         
                         </div>
                     </div>
                 </div>
@@ -71,7 +81,12 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div> 
+        <el-dialog title="Componente Cuenta Contable"  :visible.sync="dialogComponente" @close="closeComponente" size="small" >
+            <bcomponentecuentacontable v-on:componenteselecionado="componenteselecionado($event)" v-on:close="closeComponente">
+            </bcomponentecuentacontable>
+        </el-dialog>
+         
     </div>  
 </template>
 <script>

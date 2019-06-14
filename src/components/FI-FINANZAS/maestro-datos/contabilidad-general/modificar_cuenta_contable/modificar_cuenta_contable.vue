@@ -376,11 +376,12 @@
             </div>
             
         </div>
-        <el-dialog title="Plan contable local"  :visible.sync="dialogplancontablelocal" @close="dialogplancontablelocalClose" size="small" >
-            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontableselecionado($event)" v-on:companiaClose="dialogplancontablelocalClose()">
+        <el-dialog title="Plan Contable Local"  :visible.sync="dialogplancontablelocal" @close="dialogplancontablelocalClose" size="small" >
+            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontableselecionado($event)" v-on:close="dialogplancontablelocalClose()">
             </bplancontablelocal>
         </el-dialog>
-        <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContablePadre" @close="closeDialogCuentaContablePadre" size="small" >
+
+         <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContablePadre" @close="closeDialogCuentaContablePadre" size="small" >
            <div>
                 <el-card class="box-card">
                     <div slot="header" class="headercard">
@@ -389,15 +390,13 @@
                     <div class="row bodycard">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="el-form-item__label col-md-3" >Código</label>
-                                <div class="col-md-2 grupolabel">
+                                <label class="el-form-item__label col-md-3" >{{Column}}</label>
+                                <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   placeholder="">
-                                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                                > </el-button>
+                                    <el-input size ="small" v-model="inputAtributo">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarfilterCuenta()"
+                                        > </el-button>
                                     </el-input>
                                     </div>
                                 </div>
@@ -410,33 +409,35 @@
                     style="width: 100%" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick"
                     @row-dblclick="cuentacontableselecionadoPadre"
                     @current-change="handleCurrentChangeCCPadre">
-                        <el-table-column   prop="strAcc_Local_NO" label="Cuenta Local" width="180">
+                        <el-table-column :render-header="filterstrAcc_Local_NO"  prop="strAcc_Local_NO" label="Cuenta Local" width="180">
                         </el-table-column>  
-                        <el-table-column  prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
+                        <el-table-column :render-header="filterstrAcc_Corp_NO" prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
                         </el-table-column>  
-                        <el-table-column  prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
+                        <el-table-column :render-header="filterstrAcc_Local_Name" prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
                         </el-table-column> 
                     </el-table>
                 </el-card>
                 <br/>
                 <footer class="modal-footer">
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="cuentacontableselecionadoPadre()">
                     <img class="imagenfilter" src="../../../../../images/check.png" alt="" >
                     </el-button>
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDialogCuentaContablePadre()">
                     <img class="imagenfilter" src="../../../../../images/close.png" alt="" >
                     </el-button>
                 </footer>
             </div>
         </el-dialog> 
 
+
         <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContablePadreCorp" @close="closeDialogCuentaContablePadreCorp" size="small" >
             <bcuentacontable v-on:cuentacontableselecionado="cuentacontableselecionadoPadreCorp($event)" v-on:cuentacontableClose="closeDialogCuentaContablePadreCorp()">
             </bcuentacontable>
         </el-dialog> 
-        <el-dialog title="Plan contable corporativo"  :visible.sync="dialogplancontablecorporativo" @close="dialogplancontablecorporativoClose" size="small" >
+        <el-dialog title="Plan Contable Corporativo"  :visible.sync="dialogplancontablecorporativo" @close="dialogplancontablecorporativoClose" size="small" >
             <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontablecorpselecionado($event)" v-on:companiaClose="dialogplancontablelocalClose()">
             </bplancontablelocal>
         </el-dialog>
@@ -444,12 +445,12 @@
             <brubro v-on:rubroselecionado="rubroselecionado($event)" v-on:companiaClose="dialogRubroClose()">
             </brubro>
         </el-dialog>
-        <el-dialog title="Grupo cuenta contable"  :visible.sync="dialogGrupoCuentaContable" @close="dialogGrupoCuentaContableClose" size="small" >
-            <bgrupocuentacontable v-on:grupocuentacontableselecionado="grupocuentacontableselecionado($event)" v-on:companiaClose="dialogGrupoCuentaContableClose()">
+        <el-dialog title="Rubro Cuenta"  :visible.sync="dialogGrupoCuentaContable" @close="dialogGrupoCuentaContableClose" size="small" >
+            <bgrupocuentacontable v-on:grupocuentacontableselecionado="grupocuentacontableselecionado($event)" v-on:close="dialogGrupoCuentaContableClose()">
             </bgrupocuentacontable>
         </el-dialog>
-        <el-dialog title="Grupo gastos"  :visible.sync="dialogGrupoGastos" @close="dialogGrupoGastosClose" size="small" >
-            <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:companiaClose="dialogGrupoGastosClose()">
+        <el-dialog title="Grupo Gastos"  :visible.sync="dialogGrupoGastos" @close="dialogGrupoGastosClose" size="small" >
+            <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:close="dialogGrupoGastosClose()">
             </bgrupogastos>
         </el-dialog>
         
@@ -467,19 +468,19 @@
             </bmoneda>
         </el-dialog> 
         
-        <el-dialog title="CostItem"  :visible.sync="dialogCostItem" @close="closeDialogCostItem" size="small" >
-            <bcostitem v-on:costitemselecionado="costitemselecionado($event)" v-on:closeMoneda="closeDialogCostItem()">
+        <el-dialog title="Rubro Costos"  :visible.sync="dialogCostItem" @close="closeDialogCostItem" size="small" >
+            <bcostitem v-on:costitemselecionado="costitemselecionado($event)" v-on:close="closeDialogCostItem()">
             </bcostitem>
         </el-dialog> 
          
         
-        <el-dialog title="Tipo Cuenta Contable"  :visible.sync="dialogTipoCuentaContable" @close="closeDialogTipoCuentaContable" size="small" >
-            <btipocuentacontable v-on:tipocuentacontableSeleccionado="tipocuentacontableSeleccionado($event)" v-on:closeMoneda="closeDialogTipoCuentaContable()">
+        <el-dialog title="Reporte"  :visible.sync="dialogTipoCuentaContable" @close="closeDialogTipoCuentaContable" size="small" >
+            <btipocuentacontable v-on:tipoSeleccionado="tipocuentacontableSeleccionado($event)" v-on:close="closeDialogTipoCuentaContable()">
             </btipocuentacontable>
         </el-dialog>  
 
-        <el-dialog title="Tipo Adquisicion"  :visible.sync="dialogTipoAquisicion" @close="closeDialogTipoAdquisicion" size="small" >
-            <btipoadquisicion v-on:tipoadquisicionSeleccionado="tipoadquisicionSeleccionado($event)" v-on:closeMoneda="closeDialogTipoAdquisicion()">
+        <el-dialog title="Tipo PDB"  :visible.sync="dialogTipoAquisicion" @close="closeDialogTipoAdquisicion" size="small" >
+            <btipoadquisicion v-on:seleccionar="tipoadquisicionSeleccionado($event)" v-on:close="closeDialogTipoAdquisicion()">
             </btipoadquisicion>
         </el-dialog>  
         

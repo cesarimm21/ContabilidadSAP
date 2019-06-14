@@ -5,7 +5,8 @@ export class GrupoCuentaContableModel {
     strGrpAcctCont_Desc:string;
     strCompany_Cod:string;
     strCompany_Desc:string;
-
+    strComp_Cod:string;
+    strComp_Desc:string;
     
     strCreation_User:string;
     dtmCreation_Date:Date;

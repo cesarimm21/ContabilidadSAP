@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Grupo Cuenta Contable</span>
+                <span class="labelheadercard" > Modificar Grupo Cuenta Contable</span>
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -30,7 +30,7 @@
                                 <label class="el-form-item__label col-md-2" >Grupo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" :disabled="visualizar" v-model="grupoCuentaContableModel.strGrpAcctCont_Cod" type="text">  
+                                    <el-input size ="small" :disabled="true" v-model="grupoCuentaContableModel.strGrpAcctCont_Cod" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -43,7 +43,18 @@
                                     </el-input>
                                     </div>
                                 </div>
-                            </div>            
+                            </div> 
+                             
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-sm-2" >Componente</label>
+                                <div class="col-sm-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small" :disabled="visualizar" @blur="desactivar_Componente" @focus="activar_Componente" v-model="grupoCuentaContableModel.strComp_Cod">                            
+                                        <el-button :disabled="visualizar" v-if="btnactivarComponente && !dialogComponente" slot="append" class="boton" icon="fa fa-clone" @click="loadComponente()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>             
                         </div>
                     </div>
                 </div>
@@ -72,6 +83,11 @@
                 </div>
             </div>
         </div>  
+        
+        <el-dialog title="Componente Cuenta Contable"  :visible.sync="dialogComponente" @close="closeComponente" size="small" >
+            <bcomponentecuentacontable v-on:componenteselecionado="componenteselecionado($event)" v-on:close="closeComponente">
+            </bcomponentecuentacontable>
+        </el-dialog>
     </div>  
 </template>
 <script>

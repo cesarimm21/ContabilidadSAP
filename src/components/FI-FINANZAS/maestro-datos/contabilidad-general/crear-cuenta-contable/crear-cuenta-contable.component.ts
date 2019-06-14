@@ -607,6 +607,9 @@ export default class CrearCuentaContableComponent extends Vue {
     this.cuentacontable.strCost_Item_Cod=val.strCost_Item_Cod;
     this.dialogCostItem=false;
   }
+  closeDialogCostItem(){
+    this.dialogCostItem=false;
+  }
   tipoadquisicionSeleccionado(val){
     this.cuentacontable.strTypeAdq_PDB=val.intTypeAdq_PDB_Cod;
     this.dialogTipoAquisicion=false;

@@ -110,6 +110,20 @@ import VisualizarCostitemComponent from '../components/FI-FINANZAS/maestro-datos
 import CrearPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/crear_periodo/crear_periodo.vue'
 import ModificarPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo.vue'
 
+import CrearCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/crear_criticidad/crear_criticidad.vue'
+import ModificarCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/modif_criticidad/modif_criticidad.vue'
+import ViewandEditCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/viewandedit_criticidad/viewandedit_criticidad.vue'
+import ViewCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/visu_criticidad/visu_criticidad.vue'
+import VisualGrupoCompradorComponent from '@/components/XX-CONFI/maestro_datos/grupo_comprador/visu_grupo_comprador/visu_grupo_comprador.vue'
+import ViewAndEditGrupoCompradorComponent from '@/components/XX-CONFI/maestro_datos/grupo_comprador/viewandedit_grupo_comprador/viewandedit_grupo_comprador.vue'
+import CrearGrupoCompradorComponent from '@/components/XX-CONFI/maestro_datos/grupo_comprador/crear_grupo_comprador/crear_grupo_comprador.vue'
+import ModificarGrupoCompradorComponent from '@/components/XX-CONFI/maestro_datos/grupo_comprador/modif_grupo_comprador/modif_grupo_comprador.vue'
+
+import ModificarCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/categoria_linea/modif_categoria_linea/modif_categoria_linea.vue'
+import CrearCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/categoria_linea/crear_categoria_linea/crear_categoria_linea.vue'
+import ViewAndEditCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/categoria_linea/viewandedit_categoria_linea/viewandedit_categoria_linea.vue'
+import VisuCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/categoria_linea/visu_categoria_linea/visu_categoria_linea.vue'
+
 export default [
  
   {
@@ -405,6 +419,49 @@ export default [
         name:'modificars-tipo-cambio'
       }, 
       {
+        path:'XX-CONFI/maestro_datos/grupo_comprador/visu_grupo_comprador',
+        component:VisualGrupoCompradorComponent,
+        name:'visualizar_grupo_comprador'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/grupo_comprador/viewandedit_grupo_comprador',
+        component:ViewAndEditGrupoCompradorComponent,
+        name:'visualizar_modifica_grupo_comprador'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/categoria_linea/modif_categoria_linea',
+        component:ModificarCategoriaLineaComponent,
+        name:'modificar_categoria_linea'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_linea/crear_categoria_linea',
+        component:CrearCategoriaLineaComponent,
+        name:'crear_categoria_linea'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_linea/viewandedit_categoria_linea',
+        component:ViewAndEditCategoriaLineaComponent,
+        name:'visualizar-edit-categoria-linea'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_linea/visu_categoria_linea',
+        component:VisuCategoriaLineaComponent,
+        name:'viewandedit-categoria-linea'
+      },       
+
+
+      {
+        path:'XX-CONFI/maestro_datos/grupo_comprador/crear_grupo_comprador',
+        component:CrearGrupoCompradorComponent,
+        name:'crear_grupo_comprador'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/grupo_comprador/modif_grupo_comprador',
+        component:ModificarGrupoCompradorComponent,
+        name:'modificar_grupo_comprador'
+      }, 
+      {
         path:'XX-CONFI/maestro_datos/tipo_cambio/visua_tcambio',
         component:VisualizarTipoCambioComponent,
         name:'visualizar-tipo-cambio'
@@ -443,6 +500,27 @@ export default [
         path:'XX-CONFI/maestro_datos/impuesto/viewandedit_impuesto',
         component:ViewAndEditImpuestoComponent,
         name:'viewandedit-impuesto'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/criticidad/crear_criticidad',
+        component: CrearCriticidadComponent,
+        name:'crear-criticidad'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/criticidad/modif_criticidad',
+        component:ModificarCriticidadComponent,
+        name:'modificar-criticidad'
+      }, 
+      
+      {
+        path:'XX-CONFI/maestro_datos/criticidad/viewandedit_criticidad',
+        component: ViewandEditCriticidadComponent,
+        name:'viewmodificar-criticidad'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/criticidad/visu_criticidad',
+        component:ViewCriticidadComponent,
+        name:'visu-criticidad'
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_modificar',

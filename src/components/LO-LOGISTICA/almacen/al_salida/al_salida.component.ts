@@ -202,7 +202,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   el: '#app';
   txtnroline:any='';
   intlineaselect:number=-1;
-
+  
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
