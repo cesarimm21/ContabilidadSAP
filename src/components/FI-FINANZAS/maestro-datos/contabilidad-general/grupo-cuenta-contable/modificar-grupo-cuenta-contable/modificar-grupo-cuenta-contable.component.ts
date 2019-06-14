@@ -13,11 +13,14 @@ import {CompaniaModel} from '@/modelo/maestro/compania';
 import {GrupoCuentaContableModel} from '@/modelo/maestro/grupocuentacontable';
 import { Notification } from 'element-ui';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+import BComponenteCuentaContable from '@/components/buscadores/b_componente_cuenta_contable/b_componente_cuenta_contable.vue';
+
 @Component({
   name: 'crear-grupo-cuenta-contable',
   components:{
     'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
+    'bcomponentecuentacontable':BComponenteCuentaContable
   }
 })
 export default class ModificarGrupoCuentaContableComponent extends Vue {
@@ -36,6 +39,9 @@ export default class ModificarGrupoCuentaContableComponent extends Vue {
   dialogTipoCuentaContable:boolean=false;
   txtmodulo:string='';
   visualizar:boolean=false;
+  dialogComponente:boolean=false;
+  btnactivarComponente:boolean=false;
+
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
@@ -96,21 +102,47 @@ export default class ModificarGrupoCuentaContableComponent extends Vue {
   //#endregion
   
   guardarTodo(){
-    grupocuentacontableService.CrearGrupoCuenta(this.grupoCuentaContableModel)
+    grupocuentacontableService.UpdateGrupoCuenta(this.grupoCuentaContableModel)
     .then(response=>{
       this.issave=true;
       this.textosave='Se guardo correctamente.'
       this.grupoCuentaContableModel.strGrpAcctCont_Cod='';
       this.grupoCuentaContableModel.strGrpAcctCont_Desc='';
+      this.grupoCuentaContableModel.strComp_Cod='';
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo guardar producto'
+        message: 'No se pudo guardar'
       });
     })
   }
 
+  componenteselecionado(val){
+    debugger;
+    this.grupoCuentaContableModel.strComp_Cod=val.strComp_Cod;
+    this.grupoCuentaContableModel.strComp_Desc=val.strComp_Desc;
+    
+    this.dialogComponente=false;
+  }
+  closeComponente(){
+    this.dialogComponente=false;
+  }
+  loadComponente(){
+    this.dialogComponente=true;
+  }
+  desactivar_Componente(){
+    debugger;
+    if(this.dialogComponente){
+        this.btnactivarComponente=false;
+    } 
+  }
+  
+  activar_Componente(){
+    setTimeout(() => {
+      this.btnactivarComponente=true;
+    }, 120)
+  }
 
   data(){
     return{

@@ -16,6 +16,18 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  UpdateGrupoCuenta(data){
+    return axios.post(CONFIG.API_URL+'grupocuentacontable/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Eliminar(data){
+    return axios.post(CONFIG.API_URL+'grupocuentacontable/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   getBusqueda(strCompany_Cod,strGrpAcctCont_Cod){
     return axios.get(CONFIG.API_URL+'grupocuentacontable/'+strGrpAcctCont_Cod+'/'+strCompany_Cod)
     .then(response =>{           

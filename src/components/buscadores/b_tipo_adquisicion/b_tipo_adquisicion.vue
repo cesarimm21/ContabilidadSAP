@@ -7,15 +7,13 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-1" >Código</label>
-                        <div class="col-md-2 grupolabel">
+                         <label class="el-form-item__label col-md-3" >{{Column}}</label>
+                        <div class="col-md-3 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small"   placeholder="">
-                            <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                        > </el-button>
+                            <el-input size ="small" v-model="inputAtributo">
+                             <el-button slot="append" class="boton" icon="fa fa-search" 
+                                    @click="buscarfilter()"
+                                > </el-button>
                             </el-input>
                             </div>
                         </div>
@@ -29,10 +27,11 @@
             height="250"
             highlight-current-row
             @row-dblclick="seleccionar"
-            @current-change="handleCurrentChange">
-            <el-table-column   prop="intTypeAdq_PDB_Cod" label="Codigo" width="180">
+            @current-change="handleCurrentChange"
+            @header-click="headerclick">
+            <el-table-column  :render-header="filterintTypeAdq_PDB_Cod" prop="intTypeAdq_PDB_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column  prop="strTypeAdq_PDB_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrTypeAdq_PDB_Desc"  prop="strTypeAdq_PDB_Desc" label="Descripción" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

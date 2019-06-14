@@ -15,6 +15,27 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  CrearGrupoComprador(data){
+    return axios.post(CONFIG.API_URL+'grupocomprador',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  
+  UpdateGrupoComprador(data){
+    return axios.post(CONFIG.API_URL+'grupocomprador/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  
+  EliminarGrupoComprador(data){
+    return axios.get(CONFIG.API_URL+'grupocomprador/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+
 }
   

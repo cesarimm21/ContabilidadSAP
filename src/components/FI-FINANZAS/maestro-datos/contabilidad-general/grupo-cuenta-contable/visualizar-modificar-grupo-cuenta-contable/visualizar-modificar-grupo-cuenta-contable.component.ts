@@ -93,6 +93,7 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
   strVendor_NO:string='';
   strVendor_Desc:string='';
   vifprogress:boolean=true;
+  dialogEliminar:boolean=false;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -348,6 +349,46 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
   }
   LoadProveedor(){
     this.dialogProveedor=true;      
+  }
+  EliminarItem(){
+    if(this.selectrow!=undefined){
+      this.dialogEliminar=true;
+    }
+    else{
+      alert('Debe de seleccionar una fila!!!');
+    }
+  }
+  async btnEliminar(){
+    await grupocuentacontableService.Eliminar(this.currentRow)
+    .then(response=>{
+      debugger;
+      console.log('eliminar',response);
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.' + response.strCodGrupo;
+         this.issave=true;
+         this.iserror=false;
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.Buscar();
+      this.dialogEliminar=false;
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
+      
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo eliminar'
+      });
+    })
+    
   }
   data(){
     return{

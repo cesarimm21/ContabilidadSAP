@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear cuenta contable</span>
+                <span class="labelheadercard" > Crear Cuenta Contable</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -449,7 +449,7 @@
             </bgrupocuentacontable>
         </el-dialog>
         <el-dialog title="Grupo Gastos"  :visible.sync="dialogGrupoGastos" @close="dialogGrupoGastosClose" size="small" >
-            <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:companiaClose="dialogGrupoGastosClose()">
+            <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:close="dialogGrupoGastosClose()">
             </bgrupogastos>
         </el-dialog>
         
@@ -468,7 +468,7 @@
         </el-dialog> 
         
         <el-dialog title="Rubro Costos"  :visible.sync="dialogCostItem" @close="closeDialogCostItem" size="small" >
-            <bcostitem v-on:costitemselecionado="costitemselecionado($event)" v-on:closeMoneda="closeDialogCostItem()">
+            <bcostitem v-on:costitemselecionado="costitemselecionado($event)" v-on:close="closeDialogCostItem()">
             </bcostitem>
         </el-dialog> 
          
@@ -479,7 +479,7 @@
         </el-dialog>  
 
         <el-dialog title="Tipo PDB"  :visible.sync="dialogTipoAquisicion" @close="closeDialogTipoAdquisicion" size="small" >
-            <btipoadquisicion v-on:tipoadquisicionSeleccionado="tipoadquisicionSeleccionado($event)" v-on:closeMoneda="closeDialogTipoAdquisicion()">
+            <btipoadquisicion v-on:seleccionar="tipoadquisicionSeleccionado($event)" v-on:close="closeDialogTipoAdquisicion()">
             </btipoadquisicion>
         </el-dialog>  
         

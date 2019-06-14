@@ -242,7 +242,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
      <!--DIALOG BUSQUEDA COMPAÑIA-->
     <el-dialog title="Busqueda Compañia" :visible.sync="dialogCompania"  size="small" >
@@ -251,7 +250,7 @@
     </el-dialog>
     <!--DIALOG MATERIAL-->
     <el-dialog title="Busqueda Material" :visible.sync="dialogMaterial"  size="small" >
-      <bmaterial v-on:materialselecionado="SeleccionadoMaterial($event)">
+      <bmaterial :key="tiporequisicion" :tipo="tiporequisicion" v-on:materialselecionado="SeleccionadoMaterial($event)">
       </bmaterial>
     </el-dialog>
     <!--DIALOG BUSQUEDA UNIDAD MEDIDA-->

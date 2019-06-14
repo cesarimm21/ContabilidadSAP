@@ -10,6 +10,34 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  CrearCategoriaLinea(data){      
+    debugger;
+    return axios.post(CONFIG.API_URL+'categorialinea',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateCategoriaLinea(data){      
+    debugger;
+    return axios.post(CONFIG.API_URL+'categorialinea/update',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetOneCategoriaLinea(code){      
+    debugger;
+    return axios.get(CONFIG.API_URL+'categorialinea/'+code)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  EliminarCategoriaLinea(data){      
+    debugger;
+    return axios.post(CONFIG.API_URL+'categorialinea/eliminar',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   
