@@ -27,7 +27,25 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  CreateDepartamento(data){
+    return axios.post(CONFIG.API_URL+'departamento',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateDepartamento(data){
+    return axios.post(CONFIG.API_URL+'departamento/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  EliminarDepartamento(data){
+    return axios.post(CONFIG.API_URL+'departamento/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 
 }
   

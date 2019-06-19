@@ -435,9 +435,9 @@ export default class ViewAndEditClienteComponent extends Vue {
     this.Cliente.strDetraccion_Cod=this.gridSelectedCliente.strDetraccion_Cod;
     this.Cliente.fltDetraccion_Porcen=this.gridSelectedCliente.fltDetraccion_Porcen;
     this.Cliente.strAcc_Local_NO=this.gridSelectedCliente.strAcc_Local_NO;
-    this.Cliente.strRegión_Cod=this.gridSelectedCliente.strRegión_Cod;
+    this.Cliente.strRegion_Cod=this.gridSelectedCliente.strRegion_Cod;
     this.loadTipoDocumento(this.Cliente.strDocIdent_NO);
-    this.GetOnlyOneDepartamento(this.Cliente.strRegión_Cod);
+    this.GetOnlyOneDepartamento(this.Cliente.strRegion_Cod);
     this.loadBancoByIDA(this.Cliente.strBank_Cod);
     this.loadBancoByIDB(this.Cliente.strBank_Corp_Cod);
     this.loadBancoByIDC(this.Cliente.strBank_Other_Cod);
@@ -550,7 +550,7 @@ export default class ViewAndEditClienteComponent extends Vue {
   departSelect(val:DepartamentoModel){
     this.selectDepartamento=val;
     this.Cliente.intIdRegion_ID=this.selectDepartamento.intIdRegion_ID;
-    this.Cliente.strRegión_Cod=this.selectDepartamento.strRegión_Cod;
+    this.Cliente.strRegion_Cod=this.selectDepartamento.strRegion_Cod;
   }
   departChosseCheck(){
     this.departVisible=false;

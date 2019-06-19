@@ -135,6 +135,31 @@ import CrearCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/ca
 import ViewAndEditCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/categoria_linea/viewandedit_categoria_linea/viewandedit_categoria_linea.vue'
 import VisuCategoriaLineaComponent from '@/components/XX-CONFI/maestro_datos/categoria_linea/visu_categoria_linea/visu_categoria_linea.vue'
 
+import CrearTipoMovimientoComponent from '@/components/XX-CONFI/maestro_datos/tipo_movimiento/crear_tipo_movimiento/crear_tipo_movimiento.vue'
+import ModificarTipoMovimientoComponent from '@/components/XX-CONFI/maestro_datos/tipo_movimiento/modif_tipo_movimiento/modif_tipo_movimiento.vue'
+import ViewAndEditTipoMovimientoComponent from '@/components/XX-CONFI/maestro_datos/tipo_movimiento/viewandedit_tipo_movimiento/viewandedit_tipo_movimiento.vue'
+import VisuTipoMovimientoComponent from '@/components/XX-CONFI/maestro_datos/tipo_movimiento/visu_tipo_movimiento/visu_tipo_movimiento.vue'
+
+import VisuDocumentoTransaccionComponent from '@/components/XX-CONFI/maestro_datos/documento_transaccion/visu_documento_transaccion/visu_documento_transaccion.vue'
+import ViewAndEditDocumentoTransaccionComponent from '@/components/XX-CONFI/maestro_datos/documento_transaccion/viewandedit_documento_transaccion/viewandedit_documento_transaccion.vue'
+import ModificarDocumentoTransaccionComponent from '@/components/XX-CONFI/maestro_datos/documento_transaccion/modif_documento_transaccion/modif_documento_transaccion.vue'
+import CrearDocumentoTransaccionComponent from '@/components/XX-CONFI/maestro_datos/documento_transaccion/crear_documento_transaccion/crear_documento_transaccion.vue'
+
+import CrearCorrelativoComponent from '@/components/XX-CONFI/maestro_datos/correlativo/crear_correlativo/crear_correlativo.vue'
+import ModificarCorrelativoComponent from '@/components/XX-CONFI/maestro_datos/correlativo/modif_correlativo/modif_correlativo.vue'
+import ViewAndEditCorrelativoComponent from '@/components/XX-CONFI/maestro_datos/correlativo/viewandedit_correlativo/viewandedit_correlativo.vue'
+import VisuCorrelativoComponent from '@/components/XX-CONFI/maestro_datos/correlativo/visu_correlativo/visu_correlativo.vue'
+
+import CrearRegionComponent from '@/components/XX-CONFI/maestro_datos/region/crear_region/crear_region.vue'
+import ModificarRegionComponent from '@/components/XX-CONFI/maestro_datos/region/modif_region/modif_region.vue'
+import ViewAndEditRegionComponent from '@/components/XX-CONFI/maestro_datos/region/viewandedit_region/viewandedit_region.vue'
+import VisuRegionComponent from '@/components/XX-CONFI/maestro_datos/region/visu_region/visu_region.vue'
+
+import VisuCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania/visu_compania/visu_compania.vue'
+import ViewAndEditCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania/viewandedit_compania/viewandedit_compania.vue'
+import ModificarCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania/modif_compania/modif_compania.vue'
+import CrearCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania/crear_compania/crear_compania.vue'
+
 export default [
  
   {
@@ -423,6 +448,118 @@ export default [
         path:'XX-CONFI/maestro_datos/tipo_cambio/crear_tcambio',
         component:CrearTipoCambioComponent,
         name:'crear-tipo-cambio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/correlativo/crear_correlativo',
+        component:CrearCorrelativoComponent,
+        name:'crear-correlativo'
+      }, 
+      
+      {
+        path:'XX-CONFI/maestro_datos/correlativo/modif_correlativo',
+        component:ModificarCorrelativoComponent,
+        name:'modif-correlativo'
+      }, 
+      
+      {
+        path:'XX-CONFI/maestro_datos/correlativo/viewandedit_correlativo',
+        component:ViewAndEditCorrelativoComponent,
+        name:'view-and-edit-correlativo'
+      }, 
+      
+      {
+        path:'XX-CONFI/maestro_datos/correlativo/visu_correlativo',
+        component:VisuCorrelativoComponent,
+        name:'visu-correlativo'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/region/crear_region',
+        component:CrearRegionComponent,
+        name:'crear-region'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/region/modif_region',
+        component:ModificarRegionComponent,
+        name:'modif-region'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/region/viewandedit_region',
+        component:ViewAndEditRegionComponent,
+        name:'view-and-edit-region'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/region/visu_region',
+        component:VisuRegionComponent,
+        name:'visu-region'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/compania/visu_compania',
+        component:VisuCompaniaComponent,
+        name:'crear-region'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/compania/viewandedit_compania',
+        component:ViewAndEditCompaniaComponent,
+        name:'modif-region'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/compania/modif_compania',
+        component:ModificarCompaniaComponent,
+        name:'view-and-edit-region'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/compania/crear_compania',
+        component:CrearCompaniaComponent,
+        name:'visu-region'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_movimiento/crear_tipo_movimiento',
+        component:CrearTipoMovimientoComponent,
+        name:'crear-tipo-movimiento'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_movimiento/modif_tipo_movimiento',
+        component:ModificarTipoMovimientoComponent,
+        name:'modificar-tipo-movimiento'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_movimiento/viewandedit_tipo_movimiento',
+        component:ViewAndEditTipoMovimientoComponent,
+        name:'viewandedit-tipo-movimiento'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_movimiento/visu_tipo_movimiento',
+        component:VisuTipoMovimientoComponent,
+        name:'visu-tipo-movimiento'
+      }, 
+
+      
+      {
+        path:'XX-CONFI/maestro_datos/documento_transaccion/visu_documento_transaccion',
+        component:VisuDocumentoTransaccionComponent,
+        name:'VisuDocumentoTransaccionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/documento_transaccion/viewandedit_documento_transaccion',
+        component:ViewAndEditDocumentoTransaccionComponent,
+        name:'ViewAndEditDocumentoTransaccionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/documento_transaccion/modif_documento_transaccion',
+        component:ModificarDocumentoTransaccionComponent,
+        name:'ModificarDocumentoTransaccionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/documento_transaccion/crear_documento_transaccion',
+        component:CrearDocumentoTransaccionComponent,
+        name:'CrearDocumentoTransaccionComponent'
       }, 
       {
         path:'XX-CONFI/maestro_datos/tipo_cambio/edit_tcambio',

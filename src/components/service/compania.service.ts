@@ -15,6 +15,24 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  CrearCompania(data){
+    return axios.post(CONFIG.API_URL+'compania',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateCompania(data){
+    return axios.post(CONFIG.API_URL+'compania/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  EliminarCompania(data){
+    return axios.post(CONFIG.API_URL+'compania/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }
   

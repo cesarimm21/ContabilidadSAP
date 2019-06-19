@@ -6,7 +6,7 @@ export class ClienteModel {
     intIdVenCateg_ID:number;//
     intIdCountry_ID:number;
     strDocIdent_Name:string;
-    strRegión_Cod:string;
+    strRegion_Cod:string;
     strCompany_Cod:string;//
     strCliente_NO:string ;//*
     strCountry:string;//    
@@ -53,7 +53,7 @@ export class ClienteModel {
         this.intIdCountry_ID=-1;
         this.strDocIdent_Name='';
         this.strCompany_Cod='';
-        this.strRegión_Cod='';
+        this.strRegion_Cod='';
         this.strCliente_NO='';
         this.strCountry='';
         this.strCat_Person='';

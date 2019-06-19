@@ -119,8 +119,8 @@ export default class CrearProveedorComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
-  blnilterstrRegión_Cod:boolean=true;
-  blnilterstrRegión_Desc:boolean=false;
+  blnilterstrRegion_Cod:boolean=true;
+  blnilterstrRegion_Desc:boolean=false;
   blnilterstrVendor_NO:boolean=true;
   blnilterstrVendor_Desc:boolean=false;
   blnilterstrCountry:boolean=false;
@@ -534,10 +534,10 @@ export default class CrearProveedorComponent extends Vue {
     this.Proveedor.strDetraccion_Cod=this.gridSelectedProveedor.strDetraccion_Cod;
     this.Proveedor.fltDetraccion_Porcen=this.gridSelectedProveedor.fltDetraccion_Porcen;
     this.Proveedor.strAcc_Local_NO=this.gridSelectedProveedor.strAcc_Local_NO;
-    this.Proveedor.strRegión_Cod=this.gridSelectedProveedor.strRegión_Cod;
+    this.Proveedor.strRegion_Cod=this.gridSelectedProveedor.strRegion_Cod;
     this.departEnabled=false;
     this.loadTipoDocumento(this.Proveedor.strDocIdent_NO);
-    this.GetOnlyOneDepartamento(this.Proveedor.strRegión_Cod);
+    this.GetOnlyOneDepartamento(this.Proveedor.strRegion_Cod);
     this.loadBancoByIDA(this.Proveedor.strBank_Cod);
     this.loadBancoByIDB(this.Proveedor.strBank_Corp_Cod);
     this.loadBancoByIDC(this.Proveedor.strBank_Other_Cod);
@@ -643,7 +643,7 @@ export default class CrearProveedorComponent extends Vue {
   departSelect(val:DepartamentoModel){
     this.selectDepartamento=val;
     this.Proveedor.intIdRegion_ID=this.selectDepartamento.intIdRegion_ID;
-    this.Proveedor.strRegión_Cod=this.selectDepartamento.strRegión_Cod;
+    this.Proveedor.strRegion_Cod=this.selectDepartamento.strRegion_Cod;
   }
   departChosseCheck(){
     this.departVisible=false;
@@ -657,25 +657,25 @@ export default class CrearProveedorComponent extends Vue {
   }
   headerclick(val){
     this.Column=val.label;
-    if(val.property=="strRegión_Cod"){
+    if(val.property=="strRegion_Cod"){
       this.clickColumn=val.property;  
       this.searchDepartamento=new DepartamentoModel();  
       this.inputAtributo='';  
-      this.blnilterstrRegión_Cod=true;
-      this.blnilterstrRegión_Desc=false;
+      this.blnilterstrRegion_Cod=true;
+      this.blnilterstrRegion_Desc=false;
     }
-    if(val.property=="strRegión_Desc"){
+    if(val.property=="strRegion_Desc"){
       this.clickColumn=val.property;
       this.searchDepartamento=new DepartamentoModel();
       this.inputAtributo='';
-      this.blnilterstrRegión_Cod=false;
-      this.blnilterstrRegión_Desc=true;
+      this.blnilterstrRegion_Cod=false;
+      this.blnilterstrRegion_Desc=true;
     }
   }
-  filterstrRegión_Cod(h,{column,$index}){
+  filterstrRegion_Cod(h,{column,$index}){
     debugger;
     var column1 = column.label; 
-    if(this.blnilterstrRegión_Cod){
+    if(this.blnilterstrRegion_Cod){
       this.Column=column1;
       this.clickColumn=column.property;
       this.searchDepartamento=new DepartamentoModel();
@@ -689,10 +689,10 @@ export default class CrearProveedorComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrRegión_Desc(h,{column,$index}){
+  filterstrRegion_Desc(h,{column,$index}){
     debugger;
     
-    if(this.blnilterstrRegión_Desc){
+    if(this.blnilterstrRegion_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -705,8 +705,8 @@ export default class CrearProveedorComponent extends Vue {
   }
   searchDepa(){
     this.searchDepartamento.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
-    if(this.clickColumn=="strRegión_Cod"){  this.searchDepartamento.strRegión_Cod=this.inputAtributo; }
-    if(this.clickColumn=="strRegión_Desc"){ this.searchDepartamento.strRegión_Desc=this.inputAtributo; }
+    if(this.clickColumn=="strRegion_Cod"){  this.searchDepartamento.strRegion_Cod=this.inputAtributo; }
+    if(this.clickColumn=="strRegion_Desc"){ this.searchDepartamento.strRegion_Desc=this.inputAtributo; }
         
     departamentoService.searchDepartamento(this.searchDepartamento)
     .then(resp=>{
