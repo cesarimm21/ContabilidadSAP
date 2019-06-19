@@ -110,6 +110,17 @@ import VisualizarCostitemComponent from '../components/FI-FINANZAS/maestro-datos
 import CrearPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/crear_periodo/crear_periodo.vue'
 import ModificarPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo.vue'
 
+import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
+import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
+import ViewAndEditUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um.vue'
+
+import CrearPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P01-Crear.vue'
+import ModificarPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P02-Modificar.vue'
+import VisualizarPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P03-Visualizar.vue'
+import ViewAndEditPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/viewandedit_pais.vue'
+
+
+
 import CrearCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/crear_criticidad/crear_criticidad.vue'
 import ModificarCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/modif_criticidad/modif_criticidad.vue'
 import ViewandEditCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/viewandedit_criticidad/viewandedit_criticidad.vue'
@@ -521,6 +532,41 @@ export default [
         path:'XX-CONFI/maestro_datos/criticidad/visu_criticidad',
         component:ViewCriticidadComponent,
         name:'visu-criticidad'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/unidad_medida/modificar_um',
+        component:ModificarUMComponent,
+        name:'visu-um'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/unidad_medida/viewandedit_um',
+        component:ViewAndEditUMComponent,
+        name:'viewandedit-um'
+      }, 
+      {
+        path:'XX-CONFI/entidad/XA03-Pais/P01-Crear',
+        component:CrearPaisComponent,
+        name:'crear-pais'
+      }, 
+      {
+        path:'XX-CONFI/entidad/XA03-Pais/P02-Modificar',
+        component:ModificarPaisComponent,
+        name:'modificar-pais'
+      }, 
+      {
+        path:'XX-CONFI/entidad/XA03-Pais/P03-Visualizar',
+        component:VisualizarPaisComponent,
+        name:'visualizar-pais'
+      }, 
+      {
+        path:'XX-CONFI/entidad/XA03-Pais/viewandedit_pais',
+        component:ViewAndEditPaisComponent,
+        name:'viewandedit-pais'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/unidad_medida/crear_um',
+        component:CrearUMComponent,
+        name:'crear-um'
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_modificar',

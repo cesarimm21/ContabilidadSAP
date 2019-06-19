@@ -58,7 +58,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   habilitar:boolean=false;
   habilitarPane:boolean=true;
   timer=0;
-  cell_ocultar:string='transparent';
+  cell_ocultar:string='#349025';
+  border_width:string='0px';
   editing:any= {
     row:'',
     column:''
@@ -143,12 +144,13 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   public ImpuestoC:ImpuestoModel=new ImpuestoModel();
   dialogImpuesto:boolean=false;
   btnactivarImpuesto:boolean=false;
-  columnView:boolean=false;
+  columnView:boolean=true;
   ImpuestoDisabled:boolean=true;
   PeriodoAC:string;
   constructor(){    
     super();
-    this.cell_ocultar='#e4e2e2';  
+    this.cell_ocultar='#349025'; 
+    this.border_width='1px';   
     Global.nameComponent='factura';     
     
     setTimeout(() => {
@@ -216,6 +218,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
         this.factura.fltNetValue_Doc_Local=0;
         this.factura.fltNetValue_Doc_Corp=0;
         for (let i = 0; i < this.multipleSelection.length; i++) {
+          
           this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))* 100)/100;
         }
         var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
@@ -423,16 +426,17 @@ getNumber(num){
         item.fltPay_Factura=Number(this.ordencompraDetalle[i].fltRec_QYT)-Number(this.ordencompraDetalle[i].fltPay_Factura)
         item.fltFacture_Net_PR_I=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I))*100)/100;
         item.intUnit_Price=this.ordencompraDetalle[i].fltPO_Net_PR_I;
+        item.strStock_Cod=this.ordencompraDetalle[i].strStock_Cod;
         item.strDesc_Item=this.ordencompraDetalle[i].strPO_Item_Desc;
         item.strAccount_Cod=this.ordencompraDetalle[i].strAccount_Cod;//aqui esta la cuenta contable
         item.strCostCenter_NO=this.ordencompraDetalle[i].strCostCenter_NO;
         item.strCostCenter_Desc=this.ordencompraDetalle[i].strCostCenter_Desc;
         item.strAcctCateg_Cod=this.ordencompraDetalle[i].strAcctCateg_Cod;
+        item.strTax_Cod=this.ordencompraDetalle[i].strTax_Cod;
+        item.fltValue_Tax=this.ordencompraDetalle[i].fltTax_Percent;
         item.fltValue_Doc=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
-        item.fltValue_Local=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I))*100)/100;
-        item.fltValue_Corp=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I)/Number(this.factura.fltExchange_Rate))*100)/100;
-        item.strTax_Cod=this.factura.strTax_Cod;
-        item.fltValue_Tax=this.factura.fltValue_Tax_Local;
+        item.fltValue_Local=Math.round((Number(item.fltValue_Doc)+Number(item.fltValue_Doc)*Number(item.fltValue_Tax/100))*100)/100;
+        item.fltValue_Corp=Math.round((Number(item.fltValue_Local)/Number(this.factura.fltExchange_Rate))*100)/100;
         item.blnCheck=true;
         item.strCreation_User='egaona';
         item.dtmCreation_Date=new Date();
@@ -648,11 +652,14 @@ getNumber(num){
   ImpuestoSeleccionado(val:ImpuestoModel){
     if(this.Flag=='A'){
       this.Impuesto=val
-      // this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
+      this.factura.strTax_Cod=this.Impuesto.strWH_Cod;
+      this.factura.fltValue_Tax=this.Impuesto.fltPorcent;
       this.dialogImpuesto=false;  
       for(var i=0;i<this.facturadetalle.length;i++){
         this.facturadetalle[i].strTax_Cod=this.factura.strTax_Cod;
-        this.facturadetalle[i].fltValue_Tax=this.Impuesto.fltPorcent;
+        this.facturadetalle[i].fltValue_Tax=this.factura.fltValue_Tax;
+        this.facturadetalle[i].fltValue_Local=Math.round((Number(this.facturadetalle[i].fltValue_Doc)+Number(this.facturadetalle[i].fltValue_Doc)*Number(this.facturadetalle[i].fltValue_Tax/100))*100)/100;
+        this.facturadetalle[i].fltValue_Corp=Math.round((Number(this.facturadetalle[i].fltValue_Local)/Number(this.factura.fltExchange_Rate))*100)/100;
       }
       // this.columnView=true;
       var temp=this.facturadetalle;
@@ -669,48 +676,52 @@ getNumber(num){
       this.factura.strDetrac_Cod=this.ImpuestoC.strWH_Cod
       this.factura.fltDetraccion_Porcen=this.ImpuestoC.fltPorcent;
     }    
-    else{
+    else{      
       this.Impuesto=val;
       for (let i = 0; i < this.facturadetalle.length; i++) {
         if(this.facturadetalle[i].intIdPOD_ID == this.rowSelect){
             this.facturadetalle[i].strTax_Cod=this.Impuesto.strWH_Cod;
+            this.facturadetalle[i].fltValue_Tax=this.Impuesto.fltPorcent;
+            this.facturadetalle[i].fltValue_Local=Math.round((Number(this.facturadetalle[i].fltValue_Doc)+Number(this.facturadetalle[i].fltValue_Doc)*Number(this.facturadetalle[i].fltValue_Tax/100))*100)/100;
+            this.facturadetalle[i].fltValue_Corp=Math.round((Number(this.facturadetalle[i].fltValue_Local)/Number(this.factura.fltExchange_Rate))*100)/100;
             this.arrayTemp=this.facturadetalle; 
-            this.facturadetalle=[];              
-            this.facturadetalle=this.arrayTemp;  
+            this.facturadetalle=[];    
+            this.facturadetalle=[];  
+            this.facturadetalle=this.arrayTemp;     
             this.arrayTemp=[];
         }
       }
       this.dialogImpuesto=false;
-        this.factura.fltValue_Local=0;
-        this.factura.fltValue_Corp=0;
-        this.factura.fltValue_Tax_Local=0;
-        this.factura.fltValue_Tax_Corp=0;
-        this.factura.fltNetValue_Doc_Local=0;
-        this.factura.fltNetValue_Doc_Corp=0;
+      //   this.factura.fltValue_Local=0;
+      //   this.factura.fltValue_Corp=0;
+      //   this.factura.fltValue_Tax_Local=0;
+      //   this.factura.fltValue_Tax_Corp=0;
+      //   this.factura.fltNetValue_Doc_Local=0;
+      //   this.factura.fltNetValue_Doc_Corp=0;
 
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          if(this.multipleSelection[i].strTax_Cod==this.factura.strTax_Cod){
-            this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Local))*100)/100;
-          }
-          else{
-            this.factura.fltOperation_NoTax_Local=Math.round((this.factura.fltOperation_NoTax_Local+Number(this.multipleSelection[i].fltValue_Local))*100)/100;
-          }          
-        }
-        if(this.factura.fltExchange_Rate>0){
-          var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-          this.factura.fltValue_Corp=parseFloat(dat1); 
-          var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-          this.factura.fltValue_Tax_Corp=parseFloat(dat2);
-          var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-          this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
-          var datcorp=(Number(this.factura.fltOperation_NoTax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
-          this.factura.fltOperation_NoTax_Corp=parseFloat(datcorp); 
-        }
+      //   for (let i = 0; i < this.multipleSelection.length; i++) {
+      //     if(this.multipleSelection[i].strTax_Cod==this.factura.strTax_Cod){
+      //       this.factura.fltValue_Local=Math.round((this.factura.fltValue_Local+Number(this.multipleSelection[i].fltValue_Doc))*100)/100;
+      //     }
+      //     else{
+      //       this.factura.fltOperation_NoTax_Local=Math.round((this.factura.fltOperation_NoTax_Local+Number(this.multipleSelection[i].fltValue_Local))*100)/100;
+      //     }          
+      //   }
+      //   if(this.factura.fltExchange_Rate>0){
+      //     var dat1=(Number(this.factura.fltValue_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      //     this.factura.fltValue_Corp=parseFloat(dat1); 
+      //     var dat2=(Number(this.factura.fltValue_Tax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      //     this.factura.fltValue_Tax_Corp=parseFloat(dat2);
+      //     var dat1=(Number(this.factura.fltNetValue_Doc_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      //     this.factura.fltNetValue_Doc_Corp=parseFloat(dat1);  
+      //     var datcorp=(Number(this.factura.fltOperation_NoTax_Local)/Number(this.factura.fltExchange_Rate)).toFixed(2);
+      //     this.factura.fltOperation_NoTax_Corp=parseFloat(datcorp); 
+      //   }
         
-        var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
-        this.factura.fltValue_Tax_Local=Math.round(Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100)*100)/100;
+      //   var valorIgv=Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100);
+      //   this.factura.fltValue_Tax_Local=Math.round(Number(this.factura.fltValue_Local)*Number(this.Impuesto.fltPorcent/100)*100)/100;
         
-        this.factura.fltNetValue_Doc_Local=Math.round((Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local))*100)/100;
+      //   this.factura.fltNetValue_Doc_Local=Math.round((Number(this.factura.fltValue_Local)+ Number(valorIgv)+Number(this.factura.fltOperation_NoTax_Local))*100)/100;
          
     }    
   }
@@ -720,6 +731,7 @@ getNumber(num){
   //#endregion
   //#region [Factura] 
   SaveFactura(event){   
+    var user:any=localStorage.getItem('User_Usuario');
     if(this.factura.strPO_NO===''){
       this.$message({
         showClose: true,
@@ -740,7 +752,7 @@ getNumber(num){
           this.movimientoInven=[];
           this.factura.dtmDoc_Acc_Date=new Date(this.fecha_ejecucion);
           this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);
-          this.factura.dtmDoc_Date=new Date();
+          // this.factura.dtmDoc_Date=new Date();
           this.factura.strDoc_Status="00";
           this.factura.strCreation_User='egaona';    
           var date=this.factura.dtmPeriod;
@@ -790,7 +802,6 @@ getNumber(num){
             itemMI.fltAmount_USD=0;
             itemMI.fltBalance_USD=0;
             this.movimientoInven.push(itemMI);
-            //quedamos aqui:
             var itemDG_60:DiarioGeneralModel=new DiarioGeneralModel();
             itemDG_60.strCompany_Cod=this.factura.strCompany_Cod;
             itemDG_60.strCompany_Desc=this.factura.strCompany_Desc;
@@ -803,32 +814,46 @@ getNumber(num){
             itemDG_60.strCenCosWBS_Cod=this.multipleSelection[i].strCostCenter_NO;
             itemDG_60.strCenCosWBS_Desc=this.multipleSelection[i].strCostCenter_Desc;
             itemDG_60.strVendor_NO=this.factura.strVendor_NO;
-            itemDG_60.strVendor_Desc=this.factura.strVendor_Desc;
-            itemDG_60.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
-            // itemDG_60.strPosting_Status='B';      
+            itemDG_60.strVendor_Desc=this.factura.strVendor_Desc;  
             itemDG_60.strRequis_NO=this.ordencompraSelect.strRequis_NO;
             itemDG_60.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
             itemDG_60.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
             itemDG_60.strWHS_Cod=this.ordencompraSelect.strWHS_Cod;
-            itemDG_60.strWHS_Cod_Dest=this.ordencompraSelect.strWHS_Desc;//Consultar
+            itemDG_60.strWHS_Cod_Dest=this.ordencompraSelect.strWHS_Desc;
             itemDG_60.strPO_NO=this.factura.strPO_NO;
             itemDG_60.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
             itemDG_60.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
-            itemDG_60.fltQuantity=this.multipleSelection[i].intQuantity;
-            itemDG_60.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
+            itemDG_60.fltQuantity=this.multipleSelection[i].fltPay_Factura;
+            //VOUCHER SE ESTA INGRESANDO EN ABAJO
             itemDG_60.strType_Doc=this.factura.strType_Doc;
             itemDG_60.strSerie_Doc=this.factura.strSerie_Doc;    
             itemDG_60.strDocument_NO=this.factura.strDocument_NO;   
+            itemDG_60.dtmDoc_Date=this.factura.dtmDoc_Date;   
+            itemDG_60.strTax_Cod=this.multipleSelection[i].strTax_Cod;
+            itemDG_60.strDoc_Status='30';
+            itemDG_60.strApproved_Status='A';
+            itemDG_60.strApproved_User=user;
+            itemDG_60.dtmApproved_Date=new Date();
+            itemDG_60.strStock_Cod=this.ordencompraDetalle[i].strStock_Cod;
+            itemDG_60.strStock_Desc=this.ordencompraDetalle[i].strPO_Item_Desc;
+            itemDG_60.fltExchange_Rate=this.factura.fltExchange_Rate;
+            itemDG_60.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
+            //jalar de la tblCuentaContable descripcion
             itemDG_60.strCurrency_Cod=this.factura.strCurrency_Doc;
-            itemDG_60.fltAmount_Local=this.multipleSelection[i].fltValue_Local;
+            if(this.factura.strCurrency_Doc=='PEN'){
+              itemDG_60.fltAmount_Orig=this.multipleSelection[i].fltFacture_Net_PR_I;
+            }
+            if(this.factura.strCurrency_Doc=='USD'){
+              itemDG_60.fltAmount_Orig=this.multipleSelection[i].fltValue_Corp;
+            }
+            itemDG_60.fltAmount_Local=this.multipleSelection[i].fltFacture_Net_PR_I;
             itemDG_60.fltAmount_Corp=this.multipleSelection[i].fltValue_Corp;
             itemDG_60.intDoc_No=1;
-            itemDG_60.strCreation_User='egaona';
+            itemDG_60.strCreation_User=user;
             itemDG_60.dtmCreation_Date=new Date();
             itemDG_60.chrStatus='A';
   
-            var balc:BalanceCuentaModel =new BalanceCuentaModel();
-            
+            var balc:BalanceCuentaModel =new BalanceCuentaModel();            
             balc.strCompany_Cod=this.factura.strCompany_Cod;
             balc.strCompany_Desc=this.factura.strCompany_Desc;
             balc.intYear=anio;
@@ -837,8 +862,7 @@ getNumber(num){
             balc.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
             balc.fltOpening_Balance=0;
             balc.fltCredit_Acc=0;
-            balc.fltDebit_Acc=this.multipleSelection[i].fltValue_Local;
-            
+            balc.fltDebit_Acc=this.multipleSelection[i].fltValue_Local;            
             this.balanceclist.push(balc);
             this.diarioInput.push(itemDG_60);
           }            
@@ -846,24 +870,34 @@ getNumber(num){
             itemDG_40.strCompany_Cod=this.factura.strCompany_Cod;
             itemDG_40.strCompany_Desc=this.factura.strCompany_Desc;
             itemDG_40.strAccDocum_NO=this.CodigoGeneral;
-            itemDG_40.strAcc_Local_NO=this.Impuesto.strCta_Country;
-            itemDG_40.dtmPosting_Date=new Date();
-            itemDG_40.dtmPeriod=this.factura.dtmPeriod;
+            itemDG_40.dtmPosting_Date=this.factura.dtmDoc_Acc_Date;
+            itemDG_40.dtmProcess_Date=new Date();
+            itemDG_40.dtmPeriod=this.factura.dtmDoc_Acc_Date;
             itemDG_40.strYear=anio;
-            itemDG_40.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
-            // itemDG_40.strPosting_Status='B';        
             itemDG_40.strVendor_NO=this.factura.strVendor_NO;
             itemDG_40.strVendor_Desc=this.factura.strVendor_Desc;
-            itemDG_40.strRequis_NO=this.ordencompraSelect.strRequis_NO;
-            itemDG_40.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
-            itemDG_40.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_40.strRequis_NO=this.ordencompraSelect.strRequis_NO;            
+            itemDG_40.strAcc_Local_NO=this.Impuesto.strCta_Country;
+            itemDG_40.intRequis_Item_NO=0;
+            itemDG_40.dtmRequis_Date=new Date();
             itemDG_40.strPO_NO=this.factura.strPO_NO;
             itemDG_40.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
-            itemDG_40.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
             itemDG_40.strType_Doc=this.factura.strType_Doc;
             itemDG_40.strSerie_Doc=this.factura.strSerie_Doc;  
             itemDG_40.strDocument_NO=this.factura.strDocument_NO;   
+            itemDG_40.dtmDoc_Date=this.factura.dtmDoc_Date;  
+            itemDG_40.strDoc_Status='30';
+            itemDG_40.strApproved_Status='A';
+            itemDG_40.strApproved_User=user; 
+            itemDG_40.dtmApproved_Date=new Date();
+            itemDG_40.fltExchange_Rate=this.factura.fltExchange_Rate;
             itemDG_40.strCurrency_Cod=this.factura.strCurrency_Doc;
+            // if(this.factura.strCurrency_Doc=='PEN'){
+            //   itemDG_60.fltAmount_Orig=this.multipleSelection[i].fltFacture_Net_PR_I;
+            // }
+            // if(this.factura.strCurrency_Doc=='USD'){
+            //   itemDG_60.fltAmount_Orig=this.multipleSelection[i].fltValue_Corp;
+            // }
             itemDG_40.fltAmount_Local=this.factura.fltValue_Tax_Local;
             itemDG_40.fltAmount_Corp=this.factura.fltValue_Tax_Corp;
             itemDG_40.intDoc_No=1;
@@ -898,8 +932,8 @@ getNumber(num){
             itemDG_42.strVendor_NO=this.factura.strVendor_NO;
             itemDG_42.strVendor_Desc=this.factura.strVendor_Desc;
             itemDG_42.strRequis_NO=this.ordencompraSelect.strRequis_NO;
-            itemDG_42.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
-            itemDG_42.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_42.intRequis_Item_NO=0;
+            itemDG_42.dtmRequis_Date=new Date();
             itemDG_42.strPO_NO=this.factura.strPO_NO;
             itemDG_42.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
             itemDG_42.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
@@ -966,7 +1000,7 @@ getNumber(num){
               this.comprobantePago=new TipoComprobantePagoModel();
               this.facturadetalle=[];
               this.fecha_vencida='';
-              this.columnView=false;
+              // this.columnView=false;
             })
             .catch(e =>{          
               this.issave = false;

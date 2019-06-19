@@ -4,6 +4,18 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
+  CreateUM(unidad){
+    return axios.post(CONFIG.API_URL+'unidadmedida', unidad)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  UpdateUM(unidad){
+    return axios.post(CONFIG.API_URL+'unidadmedida/update', unidad)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
   GetAllUnidadMedida(){  
     return axios.get(CONFIG.API_URL+'unidadmedida')
     .then(response =>{           

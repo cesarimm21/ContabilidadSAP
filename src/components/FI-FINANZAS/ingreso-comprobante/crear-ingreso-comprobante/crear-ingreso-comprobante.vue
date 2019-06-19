@@ -55,7 +55,7 @@
                             <div class="form-group row" >
                                 <label class="el-form-item__label col-md-3" >Diario</label>
                                 <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
+                                    <div class="input-group mb-2" >
                                     <el-input class="validador" size ="small" @blur="desactivar_Diario" @focus="activar_Diario" v-model="factura.strDaily_Cod" >                            
                                          <el-button v-if="btnactivarDiario && !dialogDiario" slot="append" class="boton" icon="fa fa-clone" @click="loadDiario()"></el-button> 
                                     </el-input>
@@ -139,7 +139,7 @@
                         
                         <div class="col-sm-6 squareResult">
                             <div class="form-group row " >
-                                <label class="el-form-item__label col-sm-3" >Cantidad</label>
+                                <label class="el-form-item__label col-sm-3" >Cantidad PO</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
                                             <el-input  size ="small" style="font-size:11px;" type="text" class="inputAling" v-model="factura.intQuantity_Doc" disabled></el-input>
@@ -297,7 +297,7 @@
                                             <label class="el-form-item__label col-sm-3" >Impuesto(IGV)</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                 <el-input class="validador" size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strTax_Cod"  :disabled="columnView">
+                                                 <el-input class="validador" size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strTax_Cod" ><!-- :disabled="columnView">-->
                                                     <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto('A')"></el-button> 
                                                 </el-input>
                                                 </div>
@@ -344,7 +344,7 @@
                                                         label="PO">
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="strDesc_Item"   min-width="200"
+                                                        prop="strDesc_Item"   min-width="250"
                                                         label="Descripción">
                                                     </el-table-column>
                                                      <!-- <el-table-column 
@@ -357,77 +357,97 @@
                                                         </template>
                                                     </el-table-column> -->
                                                     <el-table-column
-                                                        v-if="columnView"
-                                                        prop="strTax_Cod"  
-                                                        label="Impuesto">
-                                                        <template scope="scope">
-                                                        <el-input  v-if="bln_tbl_centro_costo  && (scope.row === editing.row) 
-                                                            && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strTax_Cod" :disabled="ImpuestoDisabled">
-                                                            <el-button slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto(scope.row)" :disabled="ImpuestoDisabled"></el-button>  
-                                                            </el-input>
-                                                            <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTax_Cod }}</label>
-                                                        </template>
+                                                        prop="strUM"   min-width="50"
+                                                        label="U.M."
+                                                        align="center">
                                                     </el-table-column>
-                                                    <el-table-column
-                                                        prop="strUM"   min-width="100"
-                                                        label="U.M.">
-                                                    </el-table-column>
-                                                    <el-table-column
+                                                   
+                                                    <!-- <el-table-column
                                                         prop="intQuantity"  width="110"
                                                         label="Cant. Solicitada">
-                                                    </el-table-column>
-                                                    <el-table-column
+                                                    </el-table-column> -->
+                                                    <!-- <el-table-column
                                                         prop="fltRec_QYT"  width="100"
                                                         label="Cant. Recibida"
                                                         align="rigth">
                                                         
-                                                    </el-table-column>                                                    
-                                                    <el-table-column
+                                                    </el-table-column>                                                     -->
+                                                    <!-- <el-table-column
                                                         prop="fltRec_Pend_QTY"  width="100"
                                                         label="Cant. Faltante">
-                                                    </el-table-column>
+                                                    </el-table-column> -->
                                                     <el-table-column
-                                                        prop="fltPay_Factura"  width="100"
-                                                        label="Cant. Facturada">
-                                                        <template scope="scope">
-                                                            <!-- <el-input-number :disabled="getDisabled(scope.row.fltPO_QTY_I,scope.row.fltRec_QYT,scope.row)" @change="changeRecibida" :min="0" :max="getNumber(scope.row.fltPO_QTY_I)" size="small" v-model="scope.row.fltRec_QYT" >
-                                                            </el-input-number> -->
+                                                        prop="fltPay_Factura"  width="110"
+                                                        label="Cant. Pte. Facturar" 
+                                                        align="right">
+                                                        <!-- <template scope="scope">
                                                             <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                             && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltPay_Factura" :precision="2" :max="getNumber(scope.row.intQuantity)">
                                                             </el-input>
                                                             <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltPay_Factura }}</label>
-                                                        </template>
+                                                        </template> -->
                                                     </el-table-column>
                                                     <el-table-column
-                                                        prop="intUnit_Price"  width="120"
-                                                        label="Precio U.">
-                                                        <template scope="scope">
+                                                        prop="intUnit_Price"  width="100"
+                                                        label="Precio U."
+                                                        align="right">
+                                                        <!-- <template scope="scope">
                                                             <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                             && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.intUnit_Price" :precision="2" :step="0.01">
                                                             </el-input>
                                                             <label style="width:100%"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intUnit_Price }}</label>
-                                                        </template>
+                                                        </template> -->
                                                     </el-table-column>
                                                         
                                                     <!-- <el-table-column
                                                         prop="fltValue_Doc"  width="120"
                                                         label="Total Documento">
                                                     </el-table-column> -->
-                                                    <el-table-column
+                                                    <!-- <el-table-column
                                                         prop="fltFacture_Net_PR_I"  width="120"
                                                         label="Total por Facturar">
-                                                    </el-table-column>
+                                                    </el-table-column> -->
                                                     <el-table-column
+                                                        prop="fltValue_Doc"  width="100"
+                                                        label="Total S/ "
+                                                        align="right">
+                                                    </el-table-column>
+                                                    <!-- <el-table-column
                                                         prop="fltValue_Local"  
                                                         label="Total S/">
+                                                    </el-table-column> -->
+                                                     <el-table-column
+                                                        v-if="columnView"
+                                                        prop="strTax_Cod"  
+                                                        label="Impuesto"
+                                                        align="right">
+                                                        <template scope="scope">
+                                                        <el-input  v-if="bln_tbl_centro_costo  && (scope.row === editing.row) 
+                                                            && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strTax_Cod" :disabled="ImpuestoDisabled">
+                                                            <el-button slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto(scope.row)" :disabled="ImpuestoDisabled"></el-button>  
+                                                            </el-input>
+                                                            <label v-bind:style="{'border-color': cell_ocultar,'border-style': 'solid','border-radius': '0.3em','border-width': border_width,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTax_Cod }}</label>
+                                                        </template>
+                                                    </el-table-column>                                                    
+                                                    <el-table-column
+                                                        prop="fltValue_Tax"   width="80"
+                                                        label="Porcentaje %"
+                                                        align="right">
+                                                    </el-table-column>
+                                                    <el-table-column width="100"
+                                                        prop="fltValue_Local"  
+                                                        label="Total S/ + IVG"
+                                                        align="right">
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="fltValue_Corp"  
-                                                        label="Total US$">
+                                                        label="Total US$ "
+                                                        align="right">
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="strCreation_User"  
-                                                        label="Usuario">
+                                                        label="Usuario"
+                                                        align="center">
                                                     </el-table-column>
                                                 </el-table>
                                             </div>

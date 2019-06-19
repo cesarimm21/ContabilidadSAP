@@ -22,4 +22,16 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  createtblPais(data){
+    return axios.post(CONFIG.API_URL+'pais',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  updatetblPais(data){
+    return axios.post(CONFIG.API_URL+'pais/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

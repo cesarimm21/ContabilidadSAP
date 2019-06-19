@@ -14,6 +14,7 @@ export class FacturaDetalleModel{
     fltFacture_Net_PR_I:number;
     intUnit_Price:number;//
     strDesc_Item:string;//
+    strStock_Cod:string;
     strAccount_Cod:string;//falta
     strCostCenter_NO:string;//falta
     strCostCenter_Desc:string;//
@@ -45,6 +46,7 @@ export class FacturaDetalleModel{
         this.fltFacture_Net_PR_I=0 ;//
         this.intUnit_Price=0;
         this.strDesc_Item='';
+        this.strStock_Cod='';
         this.strAccount_Cod='';
         this.strCostCenter_NO='';
         this.strCostCenter_Desc='';

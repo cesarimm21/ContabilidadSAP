@@ -19,6 +19,7 @@ export class OrdenCompraModel {
     strVendor_Desc:string;
     strWH_Cod:string;
     strWH_Desc:string;
+    fltPorcent: number;
     strPO_NO:string ;
     chrPO_Status:string ;
     strPO_Desc:string;
@@ -51,4 +52,7 @@ export class OrdenCompraModel {
     fltTot_Inv_QTY:number;
     fltTot_Inv_Value:number;
     strReceipt_Status:string;
+    constructor(){
+        this.fltPorcent=0;
+    }
 }

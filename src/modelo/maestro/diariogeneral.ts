@@ -55,7 +55,7 @@ export class DiarioGeneralModel {
     strPaid_Vendor:string;
     strBank_Cod:string;
     dtmPayRun_Date:Date;
-    strExchange_Rate:string;
+    fltExchange_Rate:number;
     strCurrency_Cod:string;
     fltAmount_Orig:number;
     fltAmount_Local:number;
@@ -75,6 +75,8 @@ export class DiarioGeneralModel {
     strDoc_Trans_Cod:string;
     strHeader_Desc:string;
     strDoc_Status:string;
+    strApproved_Status:string;
+    strApproved_User:string;
     strUser_Status:string;
     dtmDate_Status:Date;
     constructor(){
@@ -133,7 +135,7 @@ export class DiarioGeneralModel {
         this.strPaid_Vendor='';
         this.strBank_Cod='';
         this.dtmPayRun_Date=new Date();
-        this.strExchange_Rate='';
+        this.fltExchange_Rate=0;
         this.strCurrency_Cod='';
         this.fltAmount_Orig=0;
         this.fltAmount_Local=0;
@@ -144,6 +146,11 @@ export class DiarioGeneralModel {
         this.dtmCreation_Date=new Date();
         this.dmModified_Date=new Date();
         this.chrStatus='';
+        this.strApproved_Status='';
+        this.strApproved_User='';
+        this.strPeriod_NO='';
+        this.strAcctCateg_Cod='';
+        this.strDetail_Desc='';
         this.fltQuantityDebe=0;
         this.fltQuantityHaber=0;
         this.blnAutoreverse=false;

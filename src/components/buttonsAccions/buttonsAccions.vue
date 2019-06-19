@@ -41,6 +41,9 @@
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" >
                                         <img class="imagenfilter" src="../../images/informacion.png" alt="" >
                                     </el-button>
+                                    <el-button v-if="falseortrue" class="buttonfilter btn btn-outline-secondary orange" @click="ActivaCheck()">
+                                        <img class="imagenfilter" src="../../images/check.png" >
+                                    </el-button> 
                                     <!-- <div class="v-separator"></div>    
                                                                          
                                          <el-button class="buttonfilter btn btn-outline-secondary orange" @click="anterior()">

@@ -405,6 +405,7 @@ export default class CrearPOComponent extends Vue {
     this.Impuesto=val
     this.OrdenCompra.strWH_Cod=this.Impuesto.strWH_Cod;
     this.OrdenCompra.strWH_Desc=this.Impuesto.strWH_Desc;
+    this.OrdenCompra.fltPorcent=this.Impuesto.fltPorcent;
     this.dialogImpuesto=false;
   }
   closeImpuesto(){
