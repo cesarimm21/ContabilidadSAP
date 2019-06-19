@@ -120,12 +120,12 @@
                                             <label class="el-form-item__label col-md-1" >Region</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
-                                                    <el-input size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="Proveedor.strRegión_Cod" :disabled="departEnabled">                            
+                                                    <el-input size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="Proveedor.strRegion_Cod" :disabled="departEnabled">                            
                                                         <el-button v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
                                                     </el-input>
                                                 </div>
                                             </div> 
-                                            <label class="sinLinea el-form-item__label col-md-1" style="color:#1f2d3d;">{{selectDepartamento.strRegión_Desc}}</label>
+                                            <label class="sinLinea el-form-item__label col-md-1" style="color:#1f2d3d;">{{selectDepartamento.strRegion_Desc}}</label>
                                             <div class="col-md-1 grupolabel"></div>                           
                                         </div>
                                         <div class="form-group row margint">
@@ -561,9 +561,9 @@
                 @header-click="headerclick"
                 @row-dblclick="departChosseCheck"
                 @current-change="departSelect">
-                <el-table-column :render-header="filterstrRegión_Cod"  prop="strRegión_Cod" label="Codigo" width="180" >
+                <el-table-column :render-header="filterstrRegion_Cod"  prop="strRegion_Cod" label="Codigo" width="180" >
                 </el-table-column>  
-                <el-table-column :render-header="filterstrRegión_Desc" prop="strRegión_Desc" label="Nombre Departamento" style="width: 70% !important;">
+                <el-table-column :render-header="filterstrRegion_Desc" prop="strRegion_Desc" label="Nombre Departamento" style="width: 70% !important;">
                 </el-table-column> 
                 </el-table>
           </el-card>

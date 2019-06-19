@@ -338,9 +338,9 @@
                     @header-click="headerclick"
                     @row-dblclick="departChosseCheck"
                     @current-change="departSelect">
-                    <el-table-column :render-header="filterstrRegión_Cod"  prop="strRegión_Cod" label="Codigo" width="180" >
+                    <el-table-column :render-header="filterstrRegion_Cod"  prop="strRegion_Cod" label="Codigo" width="180" >
                     </el-table-column>  
-                    <el-table-column :render-header="filterstrRegión_Desc" prop="strRegión_Desc" label="Nombre Departamento" style="width: 70% !important;">
+                    <el-table-column :render-header="filterstrRegion_Desc" prop="strRegion_Desc" label="Nombre Departamento" style="width: 70% !important;">
                     </el-table-column> 
                     </el-table>
             </el-card>

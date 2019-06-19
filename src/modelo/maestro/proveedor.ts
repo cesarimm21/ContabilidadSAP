@@ -7,7 +7,7 @@ export class ProveedorModel {
     intIdVenCateg_ID:number;//
     intIdCountry_ID:number;
     strDocIdent_Name:string;
-    strRegión_Cod:string;
+    strRegion_Cod:string;
     strCompany_Cod:string;//
     strVendor_NO:string ;//*
     strCountry:string;//    
@@ -56,7 +56,7 @@ export class ProveedorModel {
         this.intIdCountry_ID=-1;
         this.strDocIdent_Name='';
         this.strCompany_Cod='';
-        this.strRegión_Cod='';
+        this.strRegion_Cod='';
         this.strVendor_NO='';
         this.strCountry='';
         this.strCat_Person='';

@@ -3,6 +3,7 @@ export class TipoMovimientoModel {
     strTypeMov_Cod:string;
     strTypeMov_Name:string;
     strTypeMov_Desc:string;
+    strDoc_Trans_Num:string;
 
     strCreation_User:string;
     dtmCreation_Date:Date;
