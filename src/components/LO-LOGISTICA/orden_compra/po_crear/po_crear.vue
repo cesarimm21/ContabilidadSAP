@@ -176,7 +176,7 @@
                                         </el-table-column>
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  prop="strCateg_Account" min-width="80" label="Cat. Cuenta">
+                                        <el-table-column  prop="strCateg_Account" min-width="80" label="Cat. Cta.">
                                             <template scope="scope">
                                                 <el-input  v-if="blncategoriacuenta && bln_tbl_categoria_cuenta  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCateg_Account" :disabled="disabledRow">
@@ -209,7 +209,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strMaterial_Cod" 
-                                            label="Material/Producto">
+                                            label="Material">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strDescription"  width="200"
@@ -229,8 +229,9 @@
                                            </template>
                                         </el-table-column> -->
                                         <el-table-column
-                                            prop="strUM"   width="100"
-                                            label="UM">
+                                            prop="strUM"   width="50"
+                                            label="UM"
+                                            align="center">
                                             <template scope="scope">
                                                 <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" :disabled="disabledRow">
@@ -243,12 +244,12 @@
                                             prop="fltQuantity"  width="100"
                                             label="Cantidad" 
                                             align="right">
-                                            <template scope="scope">
+                                            <!-- <template scope="scope">
                                                 <el-input  type="number" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.fltQuantity" :precision="2">
                                                 </el-input>
                                                 <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltQuantity }}</label>
-                                            </template>
+                                            </template> -->
                                         </el-table-column>
                                         
                                         <el-table-column
@@ -259,7 +260,7 @@
                                                 <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2" :step="0.01">
                                                 </el-input>
-                                                <label style="width:100%"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
+                                                <label style="width:100%;  border-color: #349025; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -268,7 +269,7 @@
                                             align="right">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPriority_Cod"  width="130"
+                                            prop="strPriority_Cod"  width="100"
                                             label="Prioridad"
                                             align="center">
                                             <template scope="scope">

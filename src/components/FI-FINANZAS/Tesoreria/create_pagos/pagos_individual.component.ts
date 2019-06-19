@@ -136,10 +136,10 @@ export default class PagosIndividualesComponent extends Vue {
       })
     }
     loadPeriodo(){
-        periodoService.GetAllPeriodoLast()
-        .then(response=>{  
-            this.periodo=response;     
-        })
+        // periodoService.GetAllPeriodoLast()
+        // .then(response=>{  
+        //     this.periodo=response;     
+        // })
     }
 
     //#region [MEDIO PAGO]

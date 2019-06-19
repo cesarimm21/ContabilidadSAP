@@ -88,7 +88,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1 "></div>
-                                                <label class="el-form-item__label col-md-2" >Tipo documento</label>
+                                                <label class="el-form-item__label col-md-2" >Tipo Documento</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
                                                         <el-input size ="small" @blur="desactivar_TipoDocumento" @focus="activar_TipoDocumento" v-model="Proveedor.strDocIdent_NO" :disabled="tipoDocDisabled">                            
@@ -147,7 +147,7 @@
                                                 </div>
                                             </div> 
                                             <div class="col-md-1 grupolabel"></div>   
-                                            <label class="el-form-item__label col-md-2" >Codigo postal</label>
+                                            <label class="el-form-item__label col-md-2" >Codigo Postal</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                 <el-input size ="small" v-model="Proveedor.strPostal_Cod"  placeholder="">
@@ -195,7 +195,7 @@
                                                 </div>
                                             </div>
                                             <label class="sinLinea el-form-item__label col-md-2" style="color:#1f2d3d;" >{{selectBancoA.strBank_Name}}</label>
-                                            <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
+                                            <label class="el-form-item__label col-md-2" >Cuenta Bancaria</label>
                                             <div class="col-md-2 grupolabel">
                                                 <div class="input-group mb-2" >
                                                 <el-input size ="small" v-model="Proveedor.strBankAcct_Local_NO"  placeholder="">
@@ -298,7 +298,7 @@
                                             </div>
                                             <label class=" sinLinea el-form-item__label col-md-2" style="color:#1f2d3d;">{{selectBancoD.strBank_Name}}</label>
                                             
-                                            <label class="el-form-item__label col-md-2" >Cuenta bancaria</label>
+                                            <label class="el-form-item__label col-md-2" >Cuenta Bancaria</label>
                                             <div class="col-md-2 grupolabel">
                                                 <div class="input-group mb-2" >
                                                 <el-input size ="small" v-model="Proveedor.strFore_AccBank_NO"  placeholder="">
@@ -499,11 +499,11 @@
                 @header-click="headerclick1"
                 @row-dblclick="proveedorCheck"
                 @current-change="proveedorSelect">
-                <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="180">
+                <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="120" align="center">
                 </el-table-column>  
                 <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
                 </el-table-column> 
-                <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Pais" style="width: 70% !important;">
+                <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Pais" width="120" align="center">
                 </el-table-column> 
                 </el-table>
           </el-card>

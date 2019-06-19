@@ -59,6 +59,7 @@ import ModificarEmpleadoComponent from '../components/HR-Planilla/empleado/emple
 import CrearPOComponent from '../components/LO-LOGISTICA/orden_compra/po_crear/po_crear.vue'
 import ModificarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_modificar/po_modificar.vue'
 import VisualizarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_visualizar/po_visualizar.vue'
+import ImprimirPOComponent from '../components/LO-LOGISTICA/orden_compra/po_imprimir/po_imprimir.vue'
 import ViewAndEditPOComponent from '../components/LO-LOGISTICA/orden_compra/po_viewandedit/po_viewandedit.vue'
 import AprobarPOComponent from '../components/LO-LOGISTICA/orden_compra/po_aprobacion/po_aprobacion.vue'
 import AprobadorPRComponent from '../components/LO-LOGISTICA/requisicion/pr_aprobador/pr_aprobador.vue'
@@ -667,6 +668,11 @@ export default [
         path:'LO-LOGISTICA/orden_compra/po_visualizar',
         component:VisualizarPOComponent,
         name:'visualizar-po'
+      }, 
+      {
+        path:'LO-LOGISTICA/orden_compra/po_imprimir',
+        component:ImprimirPOComponent,
+        name:'imprimir-po'
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_viewandedit',

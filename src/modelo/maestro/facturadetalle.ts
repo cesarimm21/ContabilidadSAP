@@ -16,6 +16,8 @@ export class FacturaDetalleModel{
     strDesc_Item:string;//
     strAccount_Cod:string;//falta
     strCostCenter_NO:string;//falta
+    strCostCenter_Desc:string;//
+    strAcctCateg_Cod:string;//
     fltValue_Doc:number;//falta
     fltValue_Local:number;
     fltValue_Corp:number;
@@ -45,6 +47,8 @@ export class FacturaDetalleModel{
         this.strDesc_Item='';
         this.strAccount_Cod='';
         this.strCostCenter_NO='';
+        this.strCostCenter_Desc='';
+        this.strAcctCateg_Cod='';
         this.fltValue_Doc=0;
         this.fltValue_Local=0;
         this.fltValue_Corp=0;

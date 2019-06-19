@@ -42,25 +42,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="form-group row" style="margin-top:10px;">                                
-                                <label class="el-form-item__label col-md-3" >PO Item</label>
-                                    <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-2" >
-                                    <el-input size ="small" @blur="desactivar_OrdenD" @focus="activar_OrdenD" v-model="ordencompraDetalleSelect.intIdPOD_ID" class="inputOrdenCompra" :disabled="valueSwtch">                            
-                                            <el-button v-if="btnactivarOrdenD && !dialogOrdenD" slot="append" class="boton" icon="fa fa-clone" @click="loadOrdenD()"></el-button> 
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row" style="margin-top:10px;">                                
-                                <label class="el-form-item__label col-md-3" >Descripción Servicio</label>
-                                    <div class="col-md-9 grupolabel">
-                                    <div class="input-group mb-9" >
-                                    <el-input size ="small"  v-model="ordencompraDetalleSelect.strPO_Item_Desc" disabled>
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group row">
@@ -219,12 +200,6 @@
                                                 <el-table-column
                                                     prop="strService_NO" sortable width="80"
                                                     label="Servicio N.">
-                                                    <!-- <template scope="scope">
-                                                        <el-input v-if="bln_tbl_Servicio  && (scope.row === editing.row) 
-                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strService_NO" >
-                                                        </el-input>
-                                                        <label style="width:100%" v-else @click="clickServicio(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strService_NO }}</label>
-                                                    </template> -->
                                                 </el-table-column>
                                                 <el-table-column
                                                     prop="strDesc_Detail" sortable min-width="200"
@@ -239,12 +214,6 @@
                                                 <el-table-column
                                                     prop="strUM" sortable width="100"
                                                     label="Unidad">
-                                                    <!-- <template scope="scope">
-                                                        <el-input v-if="bln_tbl_Unidad  && (scope.row === editing.row) 
-                                                        && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM" >
-                                                        </el-input>
-                                                        <label style="width:100%" v-else @click="clickUnidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM }}</label>
-                                                    </template> -->
                                                 </el-table-column>
                                                 <el-table-column
                                                     prop="intQuantity" sortable width="100" 
@@ -260,12 +229,6 @@
                                                 <el-table-column
                                                     prop="fltGross_Price" sortable width="100"
                                                     label="Importe">
-                                                    <!-- <template scope="scope">
-                                                        <el-input type="number" v-if="bln_tbl_total  && (scope.row === editing.row) 
-                                                        && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni"  size="small" v-model="scope.row.fltGross_Price" :precision="2" :step="0.01" >
-                                                        </el-input>
-                                                        <label style="width:100%" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltGross_Price }}</label>
-                                                    </template> -->
                                                 </el-table-column> 
                                                 <el-table-column
                                                     prop="fltFacture_Net_PR_I" sortable width="100"
@@ -288,11 +251,7 @@
                                                 <el-table-column
                                                     prop="strCurrency" sortable width="80"
                                                     label="Moneda">
-                                                </el-table-column>
-                                                <!-- <el-table-column
-                                                    prop="recurso" sortable 
-                                                    label="Persona Ejecución">
-                                                </el-table-column>                                                -->
+                                                </el-table-column>                                          -->
                                                 <el-table-column
                                                     prop="strCostCenter_NO" sortable width="100"
                                                     label="Centro de costo">
@@ -312,25 +271,11 @@
                         </div>
                     </el-card>
                 </el-tab-pane>
-                <!-- <el-tab-pane>
-                    <span slot="label"><i class="el-icon-view"></i> Valores</span>
-                </el-tab-pane>
-                <el-tab-pane>
-                    <span slot="label"><i class="el-icon-sort"></i> Texto largo</span>
-                </el-tab-pane>
-                <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Historia</span>
-                </el-tab-pane> -->
             </el-tabs>
       </el-card>
          <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
-                <!-- <div class="col-sm-2">
-                    <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
-                         <b-progress-bar :value="valuem" :label="valuem + '%'" />
-                    </b-progress>
-                </div> -->
                 <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>

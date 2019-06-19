@@ -152,6 +152,7 @@ export default class CrearPRComponent extends Vue {
   desalmacen:string='';
   code_almacen:string='';
   cell_ocultar:string='transparent';
+  border_width:string='0px';
   value: string='';
   
   public tableData1:Array<RequisicionDetalleModel>=[]; 
@@ -230,6 +231,7 @@ export default class CrearPRComponent extends Vue {
     debugger;
     Global.nameComponent="requisicion"
     this.cell_ocultar='#e4e2e2';        
+    this.border_width='0px';        
     this.blntiporequisicion=false;
     this.blncategorialinea=false;
     this.blncuentacontable=false;
@@ -650,7 +652,8 @@ export default class CrearPRComponent extends Vue {
     this.tiporequisicion=value;
    
     if(value=='A'){
-      this.cell_ocultar='#e4e2e2';        
+      this.cell_ocultar='#349025';
+      this.border_width='1px';     
       this.blntiporequisicion=false;
       this.blncategorialinea=false;
       this.blncuentacontable=false;
@@ -674,7 +677,8 @@ export default class CrearPRComponent extends Vue {
   
     }
     else{
-      this.cell_ocultar='transparent';
+      this.cell_ocultar='transparent';        
+      this.border_width='0px';  
       this.blntiporequisicion=true;
       this.blncategorialinea=true;
       

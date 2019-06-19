@@ -145,7 +145,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   btnactivarImpuesto:boolean=false;
   columnView:boolean=false;
   ImpuestoDisabled:boolean=true;
-
+  PeriodoAC:string;
   constructor(){    
     super();
     this.cell_ocultar='#e4e2e2';  
@@ -161,18 +161,32 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     this.fecha_ejecucion1=(new Date()).toString();  
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');    
-    periodoService.GetAllPeriodoLast()
-    .then(response=>{
-      this.periodo=response;
-      // alert(this.periodo.strPeriod_NO)
-      this.factura.strPeriod_NO=this.periodo.strPeriod_NO;
-      this.factura.dtmPeriod=new Date(this.periodo.strPeriod);
-      this.fecha_actual=this.periodo.strPeriod; 
-    })
+    
     this.factura.dtmDoc_Date=new Date();
     this.factura.fltExchange_Rate=0;
     
   }
+  DatePeriodo(){
+    this.periodo.dtmModified_Date=new Date(this.fecha_ejecucion)
+    periodoService.GetAllPeriodoLast(this.periodo)
+    .then(response=>{
+      this.periodo=response;
+      console.log(this.periodo)
+    //   // alert(this.periodo.strPeriod_NO)
+      this.factura.strPeriod_NO=this.periodo.strPeriod_NO;
+      this.factura.dtmPeriod=new Date(this.periodo.strPeriod);
+      this.fecha_actual=this.periodo.strPeriod; 
+      this.PeriodoAC=this.periodo.chrStatus;
+      if(this.periodo.chrStatus!='A'){
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'Periodo Cerrado '
+        });
+      }
+    })
+  }
+
   DateforGetChanceDolar(){
     this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);    
     tipocambioService.GetAllTipoCambio(this.factura.dtmDoc_Date)
@@ -191,7 +205,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
       });
     })
     
-    }
+  }
     loadSecond(){
       
       if(this.multipleSelection.length>0){
@@ -219,9 +233,7 @@ export default class CrearIngresoComprobanteComponent extends Vue {
     }
     
   DateVencida(){this.factura.dtmDue_Date=new Date(this.fecha_vencida);}
-  fnOcultar(){
-    
-  }
+  fnOcultar(){}
   clickCheck(event,edit,column){
     event.edit=!edit;
     this.editing.row=event;
@@ -414,6 +426,8 @@ getNumber(num){
         item.strDesc_Item=this.ordencompraDetalle[i].strPO_Item_Desc;
         item.strAccount_Cod=this.ordencompraDetalle[i].strAccount_Cod;//aqui esta la cuenta contable
         item.strCostCenter_NO=this.ordencompraDetalle[i].strCostCenter_NO;
+        item.strCostCenter_Desc=this.ordencompraDetalle[i].strCostCenter_Desc;
+        item.strAcctCateg_Cod=this.ordencompraDetalle[i].strAcctCateg_Cod;
         item.fltValue_Doc=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
         item.fltValue_Local=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I))*100)/100;
         item.fltValue_Corp=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I)/Number(this.factura.fltExchange_Rate))*100)/100;
@@ -715,245 +729,258 @@ getNumber(num){
     }
     else
     {
-      this.factura.strCompany_Cod=this.codigoCompania;
-      this.factura.strCompany_Desc=this.descripcionCompania;
-      diariogeneralService.GetLastCodCorrelativo()
-      .then(res=>{
-        this.CodigoGeneral=res;
-        this.diarioInput=[];
-        this.balanceclist=[];
-        this.movimientoInven=[];
-        this.factura.dtmDoc_Acc_Date=new Date(this.fecha_ejecucion);
-        this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);
-        this.factura.dtmDoc_Date=new Date();
-        this.factura.strDoc_Status="00";
-        this.factura.strCreation_User='egaona';    
-        var date=this.factura.dtmPeriod;
-        var datetime=new Date(date.toString())
-        var anio:any=datetime.getFullYear();
-        var mes=datetime.getMonth();    
-        for(let i=0;i<this.multipleSelection.length;i++){
-          var item:FacturaDetalleModel=new FacturaDetalleModel();
-          item.intIdPOD_ID=this.multipleSelection[i].intIdPOD_ID;
-          item.strCompany_Cod=this.multipleSelection[i].strCompany_Cod;
-          item.strPO_NO=this.multipleSelection[i].strPO_NO;
-          item.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
-          item.strUM=this.multipleSelection[i].strUM;
-          item.intQuantity=this.multipleSelection[i].intQuantity;
-          item.fltRec_QYT=this.multipleSelection[i].fltRec_QYT;
-          item.fltPay_Factura=this.multipleSelection[i].fltPay_Factura;
-          item.fltFacture_Net_PR_I=this.multipleSelection[i].fltFacture_Net_PR_I;
-          item.fltRec_Pend_QTY=this.multipleSelection[i].fltRec_Pend_QTY;
-          item.intUnit_Price=this.multipleSelection[i].intUnit_Price;
-          item.strDesc_Item=this.multipleSelection[i].strDesc_Item;
-          item.strAccount_Cod=this.multipleSelection[i].strAccount_Cod;
-          item.strCostCenter_NO=this.multipleSelection[i].strCostCenter_NO;
-          item.fltValue_Doc=this.multipleSelection[i].fltValue_Doc;
-          item.fltValue_Local=this.multipleSelection[i].fltValue_Local;
-          item.fltValue_Corp=this.multipleSelection[i].fltValue_Corp;
-          item.strTax_Cod=this.multipleSelection[i].strTax_Cod;
-          item.fltValue_Tax=this.multipleSelection[i].fltValue_Tax;
-          item.blnCheck=true;
-          item.strCreation_User=this.multipleSelection[i].strCreation_User;
-          item.dtmCreation_Date=this.multipleSelection[i].dtmCreation_Date;
-          item.chrStatus=this.multipleSelection[i].chrStatus;
-          this.factura.listaDetalle.push(item);
-          //Datos Para Insertar en MOvimiento inventario
-          var itemMI:MovimientoInventarioModel=new MovimientoInventarioModel()
-          itemMI.strPO_NO=this.multipleSelection[i].strPO_NO;
-          itemMI.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
-          itemMI.strSerie_Doc=this.factura.strSerie_Doc;
-          itemMI.strDocument_NO=this.factura.strDocument_NO;  
-          itemMI.strVendor_Cod=this.factura.strVendor_NO;
-          itemMI.fltPrecUnit_Local=this.multipleSelection[i].intUnit_Price;
-          itemMI.fltPrecUnit_Bal_Local=0;
-          itemMI.fltAmount_PEN=0;
-          itemMI.fltBalance_PEN=0;
-          itemMI.fltPrecUnit_USD=Math.round((this.multipleSelection[i].intUnit_Price/Number(this.factura.fltExchange_Rate))*100)/100;
-          itemMI.fltPrecUnit_Bal_USD=0;
-          itemMI.fltAmount_USD=0;
-          itemMI.fltBalance_USD=0;
-          this.movimientoInven.push(itemMI);
-          //quedamos aqui:
-          var itemDG:DiarioGeneralModel=new DiarioGeneralModel();
-          itemDG.strCompany_Cod=this.factura.strCompany_Cod;
-          itemDG.strCompany_Desc=this.factura.strCompany_Desc;
-          itemDG.strAccDocum_NO=this.CodigoGeneral;
-          itemDG.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
-          itemDG.dtmPosting_Date=new Date();
-          itemDG.strPosting_Status='B';      
-          itemDG.dtmPeriod=this.factura.dtmPeriod;
-          itemDG.strYear=anio;
-          itemDG.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
-          itemDG.strVendor_NO=this.factura.strVendor_NO;
-          itemDG.strVendor_Desc=this.factura.strVendor_Desc;
-          itemDG.strRequis_NO=this.ordencompraSelect.strRequis_NO;
-          itemDG.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
-          itemDG.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
-          itemDG.strPO_NO=this.factura.strPO_NO;
-          itemDG.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
-          itemDG.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
-          itemDG.fltQuantity=this.multipleSelection[i].intQuantity;
-          itemDG.strType_Doc=this.factura.strType_Doc;
-          itemDG.strSerie_Doc=this.factura.strSerie_Doc;    
-          itemDG.strDocument_NO=this.factura.strDocument_NO;   
-          itemDG.strCurrency_Cod=this.factura.strCurrency_Doc;
-          itemDG.fltAmount_Local=this.multipleSelection[i].fltValue_Local;
-          itemDG.fltAmount_Corp=this.multipleSelection[i].fltValue_Corp;
-          itemDG.intDoc_No=1;
-          itemDG.strCreation_User='egaona';
-          itemDG.dtmCreation_Date=new Date();
-          itemDG.chrStatus='A';
-
-          var balc:BalanceCuentaModel =new BalanceCuentaModel();
-          
-          balc.strCompany_Cod=this.factura.strCompany_Cod;
-          balc.strCompany_Desc=this.factura.strCompany_Desc;
-          balc.intYear=anio;
-          balc.dtmPeriod=this.factura.dtmPeriod;
-          balc.strPeriodRepo='';
-          balc.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
-          balc.fltOpening_Balance=0;
-          balc.fltCredit_Acc=0;
-          balc.fltDebit_Acc=this.multipleSelection[i].fltValue_Local;
-          
-          this.balanceclist.push(balc);
-          this.diarioInput.push(itemDG);
-        }            
-          var itemDG_40:DiarioGeneralModel=new DiarioGeneralModel();
-          itemDG_40.strCompany_Cod=this.factura.strCompany_Cod;
-          itemDG_40.strCompany_Desc=this.factura.strCompany_Desc;
-          itemDG_40.strAccDocum_NO=this.CodigoGeneral;
-          itemDG_40.strAcc_Local_NO=this.Impuesto.strCta_Country;
-          itemDG_40.dtmPosting_Date=new Date();
-          itemDG_40.dtmPeriod=this.factura.dtmPeriod;
-          itemDG_40.strYear=anio;
-          itemDG_40.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
-          itemDG_40.strPosting_Status='B';        
-          itemDG_40.strVendor_NO=this.factura.strVendor_NO;
-          itemDG_40.strVendor_Desc=this.factura.strVendor_Desc;
-          itemDG_40.strRequis_NO=this.ordencompraSelect.strRequis_NO;
-          itemDG_40.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
-          itemDG_40.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
-          itemDG_40.strPO_NO=this.factura.strPO_NO;
-          itemDG_40.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
-          itemDG_40.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
-          itemDG_40.strType_Doc=this.factura.strType_Doc;
-          itemDG_40.strSerie_Doc=this.factura.strSerie_Doc;  
-          itemDG_40.strDocument_NO=this.factura.strDocument_NO;   
-          itemDG_40.strCurrency_Cod=this.factura.strCurrency_Doc;
-          itemDG_40.fltAmount_Local=this.factura.fltValue_Tax_Local;
-          itemDG_40.fltAmount_Corp=this.factura.fltValue_Tax_Corp;
-          itemDG_40.intDoc_No=1;
-          itemDG_40.strCreation_User='egaona';
-          itemDG_40.dtmCreation_Date=new Date();
-          itemDG_40.chrStatus='A';
-          
-          var balc40:BalanceCuentaModel =new BalanceCuentaModel();
-          
-          balc40.strCompany_Cod=this.factura.strCompany_Cod;
-          balc40.strCompany_Desc=this.factura.strCompany_Desc;
-          balc40.intYear=anio;
-          balc40.dtmPeriod=this.factura.dtmPeriod;
-          balc40.strPeriodRepo='';
-          balc40.strAcc_Local_NO=this.Impuesto.strCta_Country;
-          balc40.fltOpening_Balance=0;
-          balc40.fltDebit_Acc=this.factura.fltValue_Tax_Local;
-          balc40.fltCredit_Acc=0;
-          this.balanceclist.push(balc40);
-
-          this.diarioInput.push(itemDG_40);
-          var itemDG_42:DiarioGeneralModel=new DiarioGeneralModel();
-          itemDG_42.strCompany_Cod=this.factura.strCompany_Cod;
-          itemDG_42.strCompany_Desc=this.factura.strCompany_Desc;
-          itemDG_42.strAccDocum_NO=this.CodigoGeneral;
-          itemDG_42.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
-          itemDG_42.dtmPosting_Date=new Date();
-          itemDG_42.dtmPeriod=this.factura.dtmPeriod;
-          itemDG_42.strYear=anio;
-          itemDG_42.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
-          itemDG_42.strPosting_Status='B';        
-          itemDG_42.strVendor_NO=this.factura.strVendor_NO;
-          itemDG_42.strVendor_Desc=this.factura.strVendor_Desc;
-          itemDG_42.strRequis_NO=this.ordencompraSelect.strRequis_NO;
-          itemDG_42.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
-          itemDG_42.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
-          itemDG_42.strPO_NO=this.factura.strPO_NO;
-          itemDG_42.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
-          itemDG_42.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
-          itemDG_42.strType_Doc=this.factura.strType_Doc;
-          itemDG_42.strSerie_Doc=this.factura.strSerie_Doc;  
-          itemDG_42.strDocument_NO=this.factura.strDocument_NO;      
-          itemDG_42.strCurrency_Cod=this.factura.strCurrency_Doc;
-          itemDG_42.fltAmount_Local=-this.factura.fltOperation_NoTax_Local;
-          itemDG_42.fltAmount_Corp=-this.factura.fltOperation_NoTax_Corp;
-          itemDG_42.intDoc_No=1;
-          itemDG_42.strCreation_User='egaona';
-          itemDG_42.dtmCreation_Date=new Date();
-          itemDG_42.chrStatus='A';
-          
-          var balc42:BalanceCuentaModel =new BalanceCuentaModel();
-          
-          balc42.strCompany_Cod=this.factura.strCompany_Cod;
-          balc42.strCompany_Desc=this.factura.strCompany_Desc;
-          balc42.intYear=anio;
-          balc42.dtmPeriod=this.factura.dtmPeriod;
-          balc42.strPeriodRepo='';
-          balc42.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
-          balc42.fltOpening_Balance=0;
-          balc42.fltDebit_Acc=0;
-          balc42.fltCredit_Acc=-this.factura.fltOperation_NoTax_Local;
-          
-          this.balanceclist.push(balc42);
-          
-          this.diarioInput.push(itemDG_42);
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Guardando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          );     
-          facturaService.CreateFactura(this.factura)
-          .then(response=>{
-            this.voucher=response;
-            loadingInstance.close();
-            this.openMessageSuccess('Se guardo correctamente '+response);
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se guardo correctamente. Voucher Nro. '+response;
-            for(var i=0;i<this.diarioInput.length;i++){
-              this.diarioInput[i].strOrigenDocum_NO=response;
-              diariogeneralService.createDiarioGeneral(this.diarioInput[i])
-              .then(response1=>{}).catch(ex=>{})
+      if(this.PeriodoAC=='A'){
+        this.factura.strCompany_Cod=this.codigoCompania;
+        this.factura.strCompany_Desc=this.descripcionCompania;
+        diariogeneralService.GetLastCodCorrelativo()
+        .then(res=>{
+          this.CodigoGeneral=res;
+          this.diarioInput=[];
+          this.balanceclist=[];
+          this.movimientoInven=[];
+          this.factura.dtmDoc_Acc_Date=new Date(this.fecha_ejecucion);
+          this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);
+          this.factura.dtmDoc_Date=new Date();
+          this.factura.strDoc_Status="00";
+          this.factura.strCreation_User='egaona';    
+          var date=this.factura.dtmPeriod;
+          var anio:any=this.factura.dtmDoc_Acc_Date.getFullYear();
+          var mes=this.factura.dtmDoc_Acc_Date.getMonth();    
+          for(let i=0;i<this.multipleSelection.length;i++){
+            var item:FacturaDetalleModel=new FacturaDetalleModel();
+            item.intIdPOD_ID=this.multipleSelection[i].intIdPOD_ID;
+            item.strCompany_Cod=this.multipleSelection[i].strCompany_Cod;
+            item.strPO_NO=this.multipleSelection[i].strPO_NO;
+            item.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
+            item.strUM=this.multipleSelection[i].strUM;
+            item.intQuantity=this.multipleSelection[i].intQuantity;
+            item.fltRec_QYT=this.multipleSelection[i].fltRec_QYT;
+            item.fltPay_Factura=this.multipleSelection[i].fltPay_Factura;
+            item.fltFacture_Net_PR_I=this.multipleSelection[i].fltFacture_Net_PR_I;
+            item.fltRec_Pend_QTY=this.multipleSelection[i].fltRec_Pend_QTY;
+            item.intUnit_Price=this.multipleSelection[i].intUnit_Price;
+            item.strDesc_Item=this.multipleSelection[i].strDesc_Item;
+            item.strAccount_Cod=this.multipleSelection[i].strAccount_Cod;
+            item.strCostCenter_NO=this.multipleSelection[i].strCostCenter_NO;
+            item.strCostCenter_Desc=this.multipleSelection[i].strCostCenter_Desc;
+            item.strAcctCateg_Cod=this.multipleSelection[i].strAcctCateg_Cod;
+            item.fltValue_Doc=this.multipleSelection[i].fltValue_Doc;
+            item.fltValue_Local=this.multipleSelection[i].fltValue_Local;
+            item.fltValue_Corp=this.multipleSelection[i].fltValue_Corp;
+            item.strTax_Cod=this.multipleSelection[i].strTax_Cod;
+            item.fltValue_Tax=this.multipleSelection[i].fltValue_Tax;
+            item.blnCheck=true;
+            item.strCreation_User=this.multipleSelection[i].strCreation_User;
+            item.dtmCreation_Date=this.multipleSelection[i].dtmCreation_Date;
+            item.chrStatus=this.multipleSelection[i].chrStatus;
+            this.factura.listaDetalle.push(item);
+            //Datos Para Insertar en MOvimiento inventario
+            var itemMI:MovimientoInventarioModel=new MovimientoInventarioModel()
+            itemMI.strPO_NO=this.factura.strPO_NO;
+            itemMI.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
+            itemMI.strSerie_Doc=this.factura.strSerie_Doc;
+            itemMI.strDocument_NO=this.factura.strDocument_NO;  
+            itemMI.strVendor_Cod=this.factura.strVendor_NO;
+            itemMI.fltPrecUnit_Local=this.multipleSelection[i].intUnit_Price;
+            itemMI.fltPrecUnit_Bal_Local=0;
+            itemMI.fltAmount_PEN=0;
+            itemMI.fltBalance_PEN=0;
+            itemMI.fltPrecUnit_USD=Math.round((this.multipleSelection[i].intUnit_Price/Number(this.factura.fltExchange_Rate))*100)/100;
+            itemMI.fltPrecUnit_Bal_USD=0;
+            itemMI.fltAmount_USD=0;
+            itemMI.fltBalance_USD=0;
+            this.movimientoInven.push(itemMI);
+            //quedamos aqui:
+            var itemDG_60:DiarioGeneralModel=new DiarioGeneralModel();
+            itemDG_60.strCompany_Cod=this.factura.strCompany_Cod;
+            itemDG_60.strCompany_Desc=this.factura.strCompany_Desc;
+            itemDG_60.strAccDocum_NO=this.CodigoGeneral;
+            itemDG_60.dtmPosting_Date=this.factura.dtmDoc_Acc_Date;
+            itemDG_60.dtmProcess_Date=new Date();
+            itemDG_60.dtmPeriod=this.factura.dtmDoc_Acc_Date;
+            itemDG_60.strYear=anio;
+            itemDG_60.strAcctCateg_Cod=this.multipleSelection[i].strAcctCateg_Cod;
+            itemDG_60.strCenCosWBS_Cod=this.multipleSelection[i].strCostCenter_NO;
+            itemDG_60.strCenCosWBS_Desc=this.multipleSelection[i].strCostCenter_Desc;
+            itemDG_60.strVendor_NO=this.factura.strVendor_NO;
+            itemDG_60.strVendor_Desc=this.factura.strVendor_Desc;
+            itemDG_60.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
+            // itemDG_60.strPosting_Status='B';      
+            itemDG_60.strRequis_NO=this.ordencompraSelect.strRequis_NO;
+            itemDG_60.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
+            itemDG_60.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_60.strWHS_Cod=this.ordencompraSelect.strWHS_Cod;
+            itemDG_60.strWHS_Cod_Dest=this.ordencompraSelect.strWHS_Desc;//Consultar
+            itemDG_60.strPO_NO=this.factura.strPO_NO;
+            itemDG_60.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
+            itemDG_60.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_60.fltQuantity=this.multipleSelection[i].intQuantity;
+            itemDG_60.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
+            itemDG_60.strType_Doc=this.factura.strType_Doc;
+            itemDG_60.strSerie_Doc=this.factura.strSerie_Doc;    
+            itemDG_60.strDocument_NO=this.factura.strDocument_NO;   
+            itemDG_60.strCurrency_Cod=this.factura.strCurrency_Doc;
+            itemDG_60.fltAmount_Local=this.multipleSelection[i].fltValue_Local;
+            itemDG_60.fltAmount_Corp=this.multipleSelection[i].fltValue_Corp;
+            itemDG_60.intDoc_No=1;
+            itemDG_60.strCreation_User='egaona';
+            itemDG_60.dtmCreation_Date=new Date();
+            itemDG_60.chrStatus='A';
+  
+            var balc:BalanceCuentaModel =new BalanceCuentaModel();
+            
+            balc.strCompany_Cod=this.factura.strCompany_Cod;
+            balc.strCompany_Desc=this.factura.strCompany_Desc;
+            balc.intYear=anio;
+            balc.dtmPeriod=this.factura.dtmPeriod;
+            balc.strPeriodRepo='';
+            balc.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
+            balc.fltOpening_Balance=0;
+            balc.fltCredit_Acc=0;
+            balc.fltDebit_Acc=this.multipleSelection[i].fltValue_Local;
+            
+            this.balanceclist.push(balc);
+            this.diarioInput.push(itemDG_60);
+          }            
+            var itemDG_40:DiarioGeneralModel=new DiarioGeneralModel();
+            itemDG_40.strCompany_Cod=this.factura.strCompany_Cod;
+            itemDG_40.strCompany_Desc=this.factura.strCompany_Desc;
+            itemDG_40.strAccDocum_NO=this.CodigoGeneral;
+            itemDG_40.strAcc_Local_NO=this.Impuesto.strCta_Country;
+            itemDG_40.dtmPosting_Date=new Date();
+            itemDG_40.dtmPeriod=this.factura.dtmPeriod;
+            itemDG_40.strYear=anio;
+            itemDG_40.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
+            // itemDG_40.strPosting_Status='B';        
+            itemDG_40.strVendor_NO=this.factura.strVendor_NO;
+            itemDG_40.strVendor_Desc=this.factura.strVendor_Desc;
+            itemDG_40.strRequis_NO=this.ordencompraSelect.strRequis_NO;
+            itemDG_40.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
+            itemDG_40.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_40.strPO_NO=this.factura.strPO_NO;
+            itemDG_40.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_40.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
+            itemDG_40.strType_Doc=this.factura.strType_Doc;
+            itemDG_40.strSerie_Doc=this.factura.strSerie_Doc;  
+            itemDG_40.strDocument_NO=this.factura.strDocument_NO;   
+            itemDG_40.strCurrency_Cod=this.factura.strCurrency_Doc;
+            itemDG_40.fltAmount_Local=this.factura.fltValue_Tax_Local;
+            itemDG_40.fltAmount_Corp=this.factura.fltValue_Tax_Corp;
+            itemDG_40.intDoc_No=1;
+            itemDG_40.strCreation_User='egaona';
+            itemDG_40.dtmCreation_Date=new Date();
+            itemDG_40.chrStatus='A';
+            
+            var balc40:BalanceCuentaModel =new BalanceCuentaModel();
+            
+            balc40.strCompany_Cod=this.factura.strCompany_Cod;
+            balc40.strCompany_Desc=this.factura.strCompany_Desc;
+            balc40.intYear=anio;
+            balc40.dtmPeriod=this.factura.dtmPeriod;
+            balc40.strPeriodRepo='';
+            balc40.strAcc_Local_NO=this.Impuesto.strCta_Country;
+            balc40.fltOpening_Balance=0;
+            balc40.fltDebit_Acc=this.factura.fltValue_Tax_Local;
+            balc40.fltCredit_Acc=0;
+            this.balanceclist.push(balc40);
+  
+            this.diarioInput.push(itemDG_40);
+            var itemDG_42:DiarioGeneralModel=new DiarioGeneralModel();
+            itemDG_42.strCompany_Cod=this.factura.strCompany_Cod;
+            itemDG_42.strCompany_Desc=this.factura.strCompany_Desc;
+            itemDG_42.strAccDocum_NO=this.CodigoGeneral;
+            itemDG_42.strAcc_Local_NO=this.diarioModel.strDaily_AccLocal;
+            itemDG_42.dtmPosting_Date=new Date();
+            itemDG_42.dtmPeriod=this.factura.dtmPeriod;
+            itemDG_42.strYear=anio;
+            itemDG_42.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
+            // itemDG_42.strPosting_Status='B';        
+            itemDG_42.strVendor_NO=this.factura.strVendor_NO;
+            itemDG_42.strVendor_Desc=this.factura.strVendor_Desc;
+            itemDG_42.strRequis_NO=this.ordencompraSelect.strRequis_NO;
+            itemDG_42.intRequis_Item_NO=parseInt(this.ordencompraSelect.strRequis_Item_NO);
+            itemDG_42.dtmRequis_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_42.strPO_NO=this.factura.strPO_NO;
+            itemDG_42.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
+            itemDG_42.dtmApproved_Date=this.ordencompraSelect.dtmAuthsd_Date;
+            itemDG_42.strType_Doc=this.factura.strType_Doc;
+            itemDG_42.strSerie_Doc=this.factura.strSerie_Doc;  
+            itemDG_42.strDocument_NO=this.factura.strDocument_NO;      
+            itemDG_42.strCurrency_Cod=this.factura.strCurrency_Doc;
+            itemDG_42.fltAmount_Local=-this.factura.fltOperation_NoTax_Local;
+            itemDG_42.fltAmount_Corp=-this.factura.fltOperation_NoTax_Corp;
+            itemDG_42.intDoc_No=1;
+            itemDG_42.strCreation_User='egaona';
+            itemDG_42.dtmCreation_Date=new Date();
+            itemDG_42.chrStatus='A';
+            
+            var balc42:BalanceCuentaModel =new BalanceCuentaModel();
+            
+            balc42.strCompany_Cod=this.factura.strCompany_Cod;
+            balc42.strCompany_Desc=this.factura.strCompany_Desc;
+            balc42.intYear=anio;
+            balc42.dtmPeriod=this.factura.dtmPeriod;
+            balc42.strPeriodRepo='';
+            balc42.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
+            balc42.fltOpening_Balance=0;
+            balc42.fltDebit_Acc=0;
+            balc42.fltCredit_Acc=-this.factura.fltOperation_NoTax_Local;
+            
+            this.balanceclist.push(balc42);
+            
+            this.diarioInput.push(itemDG_42);
+          let loadingInstance = Loading.service({
+            fullscreen: true,
+            text: 'Guardando...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.8)'
             }
-            for(var j=0;j<this.balanceclist.length;j++){
-              balanceCuentaService.CreateBalance(this.balanceclist[j])
-              .then(response2=>{}).catch(ex=>{})
-            }
-            for(var i=0;i<this.movimientoInven.length;i++){
-              movimientoService.updateMovimiento(this.movimientoInven[i])
-              .then(response1=>{}).catch(ex=>{})
-            }
-            this.factura=new FacturaModel();
-            this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale; 
-            this.factura.fltValue_Doc=0;
-            this.factura.fltOperation_NoTax_Corp=0;  
-            this.factura.fltNetValue_Doc_Corp=0;  
-            this.moneda=new MonedaModel();
-            this.comprobantePago=new TipoComprobantePagoModel();
-            this.facturadetalle=[];
-            this.fecha_vencida='';
-            this.columnView=false;
-          })
-          .catch(e =>{          
-            this.issave = false;
-            this.iserror = true;
-            this.openMessageError('Error guardar factura ');
-            this.textosave = 'Error guardar factura. ';
-            loadingInstance.close();
-          })   
-        }) 
+            );     
+            facturaService.CreateFactura(this.factura)
+            .then(response=>{
+              this.voucher=response;
+              loadingInstance.close();
+              this.openMessageSuccess('Se guardo correctamente '+response);
+              this.issave = true;
+              this.iserror = false;
+              this.textosave = 'Se guardo correctamente. Voucher Nro. '+response;
+              for(var i=0;i<this.diarioInput.length;i++){
+                this.diarioInput[i].strOrigenDocum_NO=response;
+                diariogeneralService.createDiarioGeneral(this.diarioInput[i])
+                .then(response1=>{}).catch(ex=>{})
+              }
+              for(var j=0;j<this.balanceclist.length;j++){
+                balanceCuentaService.CreateBalance(this.balanceclist[j])
+                .then(response2=>{}).catch(ex=>{})
+              }
+              for(var i=0;i<this.movimientoInven.length;i++){
+                movimientoService.updateMovimiento(this.movimientoInven[i])
+                .then(response1=>{}).catch(ex=>{})
+              }
+              this.factura=new FacturaModel();
+              this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale; 
+              this.factura.fltValue_Doc=0;
+              this.factura.fltOperation_NoTax_Corp=0;  
+              this.factura.fltNetValue_Doc_Corp=0;  
+              this.moneda=new MonedaModel();
+              this.comprobantePago=new TipoComprobantePagoModel();
+              this.facturadetalle=[];
+              this.fecha_vencida='';
+              this.columnView=false;
+            })
+            .catch(e =>{          
+              this.issave = false;
+              this.iserror = true;
+              this.openMessageError('Error guardar factura ');
+              this.textosave = 'Error guardar factura. ';
+              loadingInstance.close();
+            })   
+          }) 
+      }
+      else{
+        this.openMessageError('Periodo Cerrado ');
+      }
+     
     }
   }
   openMessageSuccess(strMessage:string){
@@ -1111,7 +1138,8 @@ getNumber(num){
       multipleSelection:[],
       CodigoGeneral:'',
       fecha_ejecucion:'',
-      fecha_ejecucion1:''
+      fecha_ejecucion1:'',
+      PeriodoAC:''
     }
   }
   

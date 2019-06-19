@@ -10,8 +10,8 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllPeriodoLast(){ 
-    return axios.get(CONFIG.API_URL+'periodolast')
+  GetAllPeriodoLast(periodo){ 
+    return axios.post(CONFIG.API_URL+'periodolast',periodo)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

@@ -170,13 +170,7 @@ export default class CrearPOComponent extends Vue {
         this.codigoCompania=localStorage.getItem('compania_cod');
         this.descripcionCompania=localStorage.getItem('compania_name');            
         this.codigoInput='';
-        requisicionService.GetRequisicionCompany(this.codigoCompania)
-        .then(response=>{
-            this.requisicionData=[];
-            this.requisicionData=response;
-            this.requisicionData1=[];
-            this.requisicionData1=response;
-        })
+        
         proveedorService.GetProveedoresCompany(this.codigoCompania)
         .then(resp=>{
             this.gridProveedor=[];
@@ -187,7 +181,15 @@ export default class CrearPOComponent extends Vue {
         })
     }
     loadRequisicion(){
-        this.dialogRequisicion=true;
+      requisicionService.GetRequisicionCompany(this.codigoCompania)
+      .then(response=>{
+          this.requisicionData=[];
+          this.requisicionData=response;
+          this.requisicionData1=[];
+          this.requisicionData1=response;
+          this.dialogRequisicion=true;
+      })
+        
     }
     getReqDetalle(v) {        
         requisicionService.getRequiDetallById(v)
@@ -424,6 +426,7 @@ export default class CrearPOComponent extends Vue {
             for (var i = 0; i < this.multipleSelection.length; i++) {
                 var item:OrdenCompraDetalleModel=new OrdenCompraDetalleModel();
                 var IdAcctCateg_ID=this.multipleSelection[i].intIdAcctCateg_ID;
+                item.intIdPurReqD_ID=this.multipleSelection[i].intIdPurReqD_ID;
                 item.intIdAcctCateg_ID= parseInt(IdAcctCateg_ID.intIdAcctCateg_ID)
                 item.intIdCategLine_ID=this.multipleSelection[i].intIdCategLine_ID
                 item.intIdCurrency_ID=this.moneda.intIdCurrency_ID
@@ -522,7 +525,7 @@ export default class CrearPOComponent extends Vue {
                         this.issave = true;
                         this.iserror = false;
                         this.OrdenCompra = new OrdenCompraModel();
-                        this.requiSelect = new RequisicionModel();
+                        // this.requiSelect = new RequisicionModel();
                         this.Impuesto = new ImpuestoModel();
                         this.almacen=new AlmacenModel();
                         this.moneda=new MonedaModel();

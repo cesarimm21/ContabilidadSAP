@@ -267,24 +267,16 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPreq_Stock_Cod" 
-                                            label="Material/Producto">
+                                            label="Material">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPO_Item_Desc"  width="200"
                                             label="Descripción">
                                         </el-table-column>
-                                        <!-- <el-table-column 
-                                            prop="blnCheck"
-                                            width="100"
-                                            label="Incluir Costo">
-                                            <template scope="scope">
-                                             <el-checkbox class="newCheckBox" v-if="(scope.row != editing.row)||(scope.row === editing.row)" v-focus size="small" v-model="scope.row.blnCheck" @change="clickCheck(scope.row,$event,scope.column.property)">
-                                            </el-checkbox>
-                                           </template>
-                                        </el-table-column> -->
                                         <el-table-column
-                                            prop="strUnit_Of_Purch"   width="100"
-                                            label="UM">
+                                            prop="strUnit_Of_Purch"   width="50"
+                                            label="UM"
+                                            align="center">
                                             <template scope="scope">
                                                 <el-input v-if="bln_tbl_UnidadMedida  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUnit_Of_Purch" :disabled="disabledRow">
@@ -322,7 +314,7 @@
                                             align="right">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPriority_Cod"  width="130"
+                                            prop="strPriority_Cod"  width="100"
                                             label="Prioridad"
                                             align="center">
                                             <template scope="scope">

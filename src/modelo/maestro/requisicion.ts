@@ -22,6 +22,7 @@ export class RequisicionModel {
     strWHS_Desc:string;
     strTipReq_Desc:string;
     strTypeReq_Cod:string;
+    strStatus_full:string;
     strCreation_User:string ;
     dtmCreation_Date:Date ;
     strModified_User:string ;
@@ -50,5 +51,6 @@ export class RequisicionModel {
         this.strTipReq_Desc='';
         this.strTypeReq_Cod='';
         this.strTypeMov_Cod='';
+        this.strStatus_full='N';
     }
 }
