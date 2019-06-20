@@ -4,33 +4,32 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllControlPrecio(){  
-    return axios.get(CONFIG.API_URL+'controlprecio')
+  GetAlltiporenta(){  
+    return axios.get(CONFIG.API_URL+'tiporenta')
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetOnlyOneControlPrecio(code){
-    return axios.get(CONFIG.API_URL+'controlprecio/'+code)
+  GetOnlyOnetiporenta(code){
+    return axios.get(CONFIG.API_URL+'tiporenta/'+code)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  
-  Crearcontrolprecio(data){
-    return axios.post(CONFIG.API_URL+'controlprecio',data)
+  Creartiporenta(data){
+    return axios.post(CONFIG.API_URL+'tiporenta',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  Updatecontrolprecio(data){
-    return axios.post(CONFIG.API_URL+'controlprecio/update',data)
+  Updatetiporenta(data){
+    return axios.post(CONFIG.API_URL+'tiporenta/update',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  Eliminarcontrolprecio(data){
-    return axios.post(CONFIG.API_URL+'controlprecio/eliminar',data)
+  Eliminartiporenta(data){
+    return axios.post(CONFIG.API_URL+'tiporenta/eliminar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

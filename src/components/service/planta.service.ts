@@ -10,5 +10,30 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetOnlyOneplanta(code){  
+    return axios.get(CONFIG.API_URL+'planta/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
+  ,
+  Crearplanta(data){
+    return axios.post(CONFIG.API_URL+'planta',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Updateplanta(data){
+    return axios.post(CONFIG.API_URL+'planta/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Eliminarplanta(data){
+    return axios.post(CONFIG.API_URL+'planta/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

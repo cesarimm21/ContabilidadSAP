@@ -17,6 +17,25 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  
+  Crearcategoriacuenta(data){
+    return axios.post(CONFIG.API_URL+'categoriacuenta',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Updatecategoriacuenta(data){
+    return axios.post(CONFIG.API_URL+'categoriacuenta/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Eliminarcategoriacuenta(data){
+    return axios.post(CONFIG.API_URL+'categoriacuenta/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

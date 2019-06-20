@@ -160,6 +160,48 @@ import ViewAndEditCompaniaComponent from '@/components/XX-CONFI/maestro_datos/co
 import ModificarCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania/modif_compania/modif_compania.vue'
 import CrearCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania/crear_compania/crear_compania.vue'
 
+import CrearTipoOperacionComponent from '@/components/XX-CONFI/maestro_datos/tipo_operacion/crear_tipo_operacion/crear_tipo_operacion.vue'
+import ModificarTipoOperacionComponent from '@/components/XX-CONFI/maestro_datos/tipo_operacion/modif_tipo_operacion/modif_tipo_operacion.vue'
+import ViewAndEditTipoOperacionComponent from '@/components/XX-CONFI/maestro_datos/tipo_operacion/viewandedit_tipo_operacion/viewandedit_tipo_operacion.vue'
+import VisuTipoOperacionComponent from '@/components/XX-CONFI/maestro_datos/tipo_operacion/visu_tipo_operacion/visu_tipo_operacion.vue'
+
+import VisuTipoRentaComponent from '@/components/XX-CONFI/maestro_datos/tipo_renta/visu_tipo_renta/visu_tipo_renta.vue'
+import ViewAndEditTipoRentaComponent from '@/components/XX-CONFI/maestro_datos/tipo_renta/viewandedit_tipo_renta/viewandedit_tipo_renta.vue'
+import ModificarTipoRentaComponent from '@/components/XX-CONFI/maestro_datos/tipo_renta/modif_tipo_renta/modif_tipo_renta.vue'
+import CrearTipoRentaComponent from '@/components/XX-CONFI/maestro_datos/tipo_renta/crear_tipo_renta/crear_tipo_renta.vue'
+
+import VisuTipoTituloComponent from '@/components/XX-CONFI/maestro_datos/tipo_titulo/visu_tipo_titulo/visu_tipo_titulo.vue'
+import ViewAndEditTipoTituloComponent from '@/components/XX-CONFI/maestro_datos/tipo_titulo/viewandedit_tipo_titulo/viewandedit_tipo_titulo.vue'
+import ModificarTipoTituloComponent from '@/components/XX-CONFI/maestro_datos/tipo_titulo/modif_tipo_titulo/modif_tipo_titulo.vue'
+import CrearTipoTituloComponent from '@/components/XX-CONFI/maestro_datos/tipo_titulo/crear_tipo_titulo/crear_tipo_titulo.vue'
+
+import VisuCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_datos/categoria_cuenta/visu_categoria_cuenta/visu_categoria_cuenta.vue'
+import ViewAndEditCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_datos/categoria_cuenta/viewandedit_categoria_cuenta/viewandedit_categoria_cuenta.vue'
+import ModificarCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_datos/categoria_cuenta/modif_categoria_cuenta/modif_categoria_cuenta.vue'
+import CrearCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_datos/categoria_cuenta/crear_categoria_cuenta/crear_categoria_cuenta.vue'
+
+import VisuControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/visu_control_precio/visu_control_precio.vue'
+import ViewAndEditControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/viewandedit_control_precio/viewandedit_control_precio.vue'
+import ModificarControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/modif_control_precio/modif_control_precio.vue'
+import CrearControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/crear_control_precio/crear_control_precio.vue'
+
+
+import VisuPrioridadComponent from '@/components/XX-CONFI/maestro_datos/prioridad/visu_prioridad/visu_prioridad.vue'
+import ViewAndEditPrioridadComponent from '@/components/XX-CONFI/maestro_datos/prioridad/viewandedit_prioridad/viewandedit_prioridad.vue'
+import ModificarPrioridadComponent from '@/components/XX-CONFI/maestro_datos/prioridad/modif_prioridad/modif_prioridad.vue'
+import CrearPrioridadComponent from '@/components/XX-CONFI/maestro_datos/prioridad/crear_prioridad/crear_prioridad.vue'
+
+import VisuPlantaComponent from '@/components/XX-CONFI/maestro_datos/planta/visu_planta/visu_planta.vue'
+import ViewAndEditPlantaComponent from '@/components/XX-CONFI/maestro_datos/planta/viewandedit_planta/viewandedit_planta.vue'
+import ModificarPlantaComponent from '@/components/XX-CONFI/maestro_datos/planta/modif_planta/modif_planta.vue'
+import CrearPlantaComponent from '@/components/XX-CONFI/maestro_datos/planta/crear_planta/crear_planta.vue'
+
+import VisuTipoProductoComponent from '@/components/XX-CONFI/maestro_datos/tipo_producto/visu_tipo_producto/visu_tipo_producto.vue'
+import ViewAndEditTipoProductoComponent from '@/components/XX-CONFI/maestro_datos/tipo_producto/viewandedit_tipo_producto/viewandedit_tipo_producto.vue'
+import ModificarTipoProductoComponent from '@/components/XX-CONFI/maestro_datos/tipo_producto/modif_tipo_producto/modif_tipo_producto.vue'
+import CrearTipoProductoComponent from '@/components/XX-CONFI/maestro_datos/tipo_producto/crear_tipo_producto/crear_tipo_producto.vue'
+
+
 export default [
  
   {
@@ -535,12 +577,173 @@ export default [
         name:'viewandedit-tipo-movimiento'
       }, 
       {
+        path:'XX-CONFI/maestro_datos/tipo_operacion/crear_tipo_operacion',
+        component:CrearTipoOperacionComponent,
+        name:'CrearTipoOperacionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_operacion/modif_tipo_operacion',
+        component:ModificarTipoOperacionComponent,
+        name:'ModificarTipoOperacionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_operacion/viewandedit_tipo_operacion',
+        component:ViewAndEditTipoOperacionComponent,
+        name:'ViewAndEditTipoOperacionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_operacion/visu_tipo_operacion',
+        component:VisuTipoOperacionComponent,
+        name:'VisuTipoOperacionComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_renta/visu_tipo_renta',
+        component:VisuTipoRentaComponent,
+        name:'VisuTipoRentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_renta/viewandedit_tipo_renta',
+        component:ViewAndEditTipoRentaComponent,
+        name:'ViewAndEditTipoRentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_renta/modif_tipo_renta',
+        component:ModificarTipoRentaComponent,
+        name:'ModificarTipoRentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_renta/crear_tipo_renta',
+        component:CrearTipoRentaComponent,
+        name:'CrearTipoRentaComponent'
+      }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/tipo_titulo/visu_tipo_titulo',
+        component:VisuTipoTituloComponent,
+        name:'VisuTipoTituloComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_titulo/viewandedit_tipo_titulo',
+        component:ViewAndEditTipoTituloComponent,
+        name:'ViewAndEditTipoTituloComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_titulo/modif_tipo_titulo',
+        component:ModificarTipoTituloComponent,
+        name:'ModificarTipoTituloComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_titulo/crear_tipo_titulo',
+        component:CrearTipoTituloComponent,
+        name:'CrearTipoTituloComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_cuenta/visu_categoria_cuenta',
+        component:VisuCategoriaCuentaComponent,
+        name:'VisuCategoriaCuentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_cuenta/viewandedit_categoria_cuenta',
+        component:ViewAndEditCategoriaCuentaComponent,
+        name:'ViewAndEditCategoriaCuentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_cuenta/modif_categoria_cuenta',
+        component:ModificarCategoriaCuentaComponent,
+        name:'ModificarCategoriaCuentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/categoria_cuenta/crear_categoria_cuenta',
+        component:CrearCategoriaCuentaComponent,
+        name:'CrearCategoriaCuentaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/control_precio/visu_control_precio',
+        component:VisuControlPrecioComponent,
+        name:'VisuControlPrecioComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/control_precio/viewandedit_control_precio',
+        component:ViewAndEditControlPrecioComponent,
+        name:'ViewAndEditControlPrecioComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/control_precio/modif_control_precio',
+        component:ModificarControlPrecioComponent,
+        name:'ModificarControlPrecioComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/control_precio/crear_control_precio',
+        component:CrearControlPrecioComponent,
+        name:'CrearControlPrecioComponent'
+      }, 
+      {
         path:'XX-CONFI/maestro_datos/tipo_movimiento/visu_tipo_movimiento',
         component:VisuTipoMovimientoComponent,
         name:'visu-tipo-movimiento'
       }, 
+      {
+        path:'XX-CONFI/maestro_datos/prioridad/visu_prioridad',
+        component:VisuPrioridadComponent,
+        name:'VisuPrioridadComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/prioridad/viewandedit_prioridad',
+        component:ViewAndEditPrioridadComponent,
+        name:'ViewAndEditPrioridadComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/prioridad/modif_prioridad',
+        component:ModificarPrioridadComponent,
+        name:'ModificarPrioridadComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/prioridad/crear_prioridad',
+        component:CrearPrioridadComponent,
+        name:'CrearPrioridadComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/planta/visu_planta',
+        component:VisuPlantaComponent,
+        name:'VisuPlantaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/planta/viewandedit_planta',
+        component:ViewAndEditPlantaComponent,
+        name:'ViewAndEditPlantaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/planta/modif_planta',
+        component:ModificarPlantaComponent,
+        name:'ModificarPlantaComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/planta/crear_planta',
+        component:CrearPlantaComponent,
+        name:'CrearPlantaComponent'
+      }, 
 
-      
+      {
+        path:'XX-CONFI/maestro_datos/tipo_producto/visu_tipo_producto',
+        component:VisuTipoProductoComponent,
+        name:'VisuTipoProductoComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_producto/viewandedit_tipo_producto',
+        component:ViewAndEditTipoProductoComponent,
+        name:'ViewAndEditTipoProductoComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_producto/modif_tipo_producto',
+        component:ModificarTipoProductoComponent,
+        name:'ModificarTipoProductoComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_producto/crear_tipo_producto',
+        component:CrearTipoProductoComponent,
+        name:'CrearTipoProductoComponent'
+      }, 
+
       {
         path:'XX-CONFI/maestro_datos/documento_transaccion/visu_documento_transaccion',
         component:VisuDocumentoTransaccionComponent,
