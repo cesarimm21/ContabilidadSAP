@@ -15,6 +15,24 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  Crearprioridad(data){
+    return axios.post(CONFIG.API_URL+'prioridad',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Updateprioridad(data){
+    return axios.post(CONFIG.API_URL+'prioridad/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Eliminarprioridad(data){
+    return axios.post(CONFIG.API_URL+'prioridad/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   
