@@ -28,6 +28,12 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  crearAlmacen(data){
+    return axios.post(CONFIG.API_URL+'almacen/create',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

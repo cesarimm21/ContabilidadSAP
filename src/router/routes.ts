@@ -110,6 +110,7 @@ import VisualizarCostitemComponent from '../components/FI-FINANZAS/maestro-datos
 import CrearPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/crear_periodo/crear_periodo.vue'
 import ModificarPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo.vue'
 
+import CrearAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/crear_almacen.vue'
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
 import ViewAndEditUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um.vue'
@@ -704,6 +705,11 @@ export default [
         path:'XX-CONFI/maestro_datos/unidad_medida/crear_um',
         component:CrearUMComponent,
         name:'crear-um'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/crear_almacen',
+        component:CrearAlmacenComponent,
+        name:'crear-almacen'
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_modificar',
