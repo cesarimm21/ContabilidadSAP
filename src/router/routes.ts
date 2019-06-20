@@ -202,6 +202,10 @@ import ViewAndEditTipoProductoComponent from '@/components/XX-CONFI/maestro_dato
 import ModificarTipoProductoComponent from '@/components/XX-CONFI/maestro_datos/tipo_producto/modif_tipo_producto/modif_tipo_producto.vue'
 import CrearTipoProductoComponent from '@/components/XX-CONFI/maestro_datos/tipo_producto/crear_tipo_producto/crear_tipo_producto.vue'
 
+import VisuSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/visu_sucursal/visu_sucursal.vue'
+import ViewAndEditSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/viewandedit_sucursal/viewandedit_sucursal.vue' 	
+import ModificarSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/modif_sucursal/modif_sucursal.vue'
+import CrearSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/crear_sucursal/crear_sucursal.vue'
 
 export default [
  
@@ -744,6 +748,28 @@ export default [
         component:CrearTipoProductoComponent,
         name:'CrearTipoProductoComponent'
       }, 
+
+      {
+        path:'XX-CONFI/maestro_datos/sucursal/visu_sucursal',
+        component:VisuSucursalComponent,
+        name:'VisuSucursalComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/sucursal/viewandedit_sucursal',
+        component:ViewAndEditSucursalComponent,
+        name:'ViewAndEditSucursalComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/sucursal/modif_sucursal',
+        component:ModificarSucursalComponent,
+        name:'ModificarSucursalComponent'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/sucursal/crear_sucursal',
+        component:CrearSucursalComponent,
+        name:'CrearSucursalComponent'
+      }, 
+      
 
       {
         path:'XX-CONFI/maestro_datos/documento_transaccion/visu_documento_transaccion',
