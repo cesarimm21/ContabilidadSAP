@@ -217,6 +217,8 @@ import ViewAndEditSucursalComponent from '@/components/XX-CONFI/maestro_datos/su
 import ModificarSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/modif_sucursal/modif_sucursal.vue'
 import CrearSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/crear_sucursal/crear_sucursal.vue'
 
+import BalanceComprobacionComponent from '@/components/FI-FINANZAS/libros-balance/balance-comprobacion/balance-comprobacion.vue'
+
 export default [
  
   {
@@ -779,6 +781,12 @@ export default [
         component:CrearSucursalComponent,
         name:'CrearSucursalComponent'
       }, 
+      {
+        path:'FI-FINANZAS/libros-balance/balance-comprobacion',
+        component:BalanceComprobacionComponent,
+        name:'BalanceComprobacionComponent'
+      }, 
+      
       
 
       {
