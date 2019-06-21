@@ -111,9 +111,19 @@ import CrearPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/c
 import ModificarPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo.vue'
 
 import CrearAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/crear_almacen.vue'
+import ModificarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/modificar_al.vue'
+import VisualizarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/visualizar_al.vue'
+import ViewAndEditAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/viewandedit_al.vue'
+
+
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
 import ViewAndEditUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um.vue'
+
+import CrearMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/crear_moneda.vue'
+import ModificarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/modificar_moneda.vue'
+import VisualizarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/visualizar_moneda.vue'
+import ViewAndEditMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/viewandedit_moneda.vue'
 
 import CrearPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P01-Crear.vue'
 import ModificarPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P02-Modificar.vue'
@@ -939,6 +949,41 @@ export default [
         path:'XX-CONFI/entidad/almacen/crear_almacen',
         component:CrearAlmacenComponent,
         name:'crear-almacen'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/modificar_al',
+        component:ModificarAlmacenComponent,
+        name:'modificar-almacen'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/visualizar_al',
+        component:VisualizarAlmacenComponent,
+        name:'visualizar-almacen'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/viewandedit_al',
+        component:ViewAndEditAlmacenComponent,
+        name:'viewandedit-almacen'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/crear_moneda',
+        component:CrearMonedaComponent,
+        name:'crear-moneda'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/modificar_moneda',
+        component:ModificarMonedaComponent,
+        name:'modificar-moneda'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/visualizar_moneda',
+        component:VisualizarMonedaComponent,
+        name:'visualizar-moneda'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/viewandedit_moneda',
+        component:ViewAndEditMonedaComponent,
+        name:'viewandedit-moneda'
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_modificar',

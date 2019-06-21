@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Almacen</span>
+                <span class="labelheadercard" > Visualizar Almacen</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -166,8 +166,8 @@
 </template>
 <script>
 
-import ModificarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/modificar_al.component'
-export default ModificarAlmacenComponent
+import VisualizarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/visualizar_al.component'
+export default VisualizarAlmacenComponent
 </script>
 <style scoped>
     

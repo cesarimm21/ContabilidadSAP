@@ -4,40 +4,36 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
-import {AlmacenModel} from '@/modelo/maestro/almacen';
-import {PlantaModel} from '@/modelo/maestro/planta';
+import {MonedaModel} from '@/modelo/maestro/moneda';
+import {PaisModel} from '@/modelo/maestro/pais';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import almacenService from '@/components/service/almacen.service';
-import BPlantaComponent from '@/components/buscadores/b_planta/b_planta.vue';
+import monedaService from '@/components/service/moneda.service';
+import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 import BSucursalComponent from '@/components/buscadores/b_sucursal/b_sucursal.vue';
-import { SucursalModel } from '@/modelo/maestro/sucursal';
 @Component({
-  name: 'crear-almacen',
+  name: 'crear-moneda',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
-  'bplanta':BPlantaComponent,
+  'bpais':BPaisComponent,
   'bsucursal':BSucursalComponent,
   }
 })
-export default class CrearAlmacenComponent extends Vue {
+export default class CrearMonedaComponent extends Vue {
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
   companyName:any;
   companyCod:any;
-  public almacen:AlmacenModel=new AlmacenModel();
-  public planta:PlantaModel=new PlantaModel();
-  public sucursal:SucursalModel=new SucursalModel();
+  public moneda:MonedaModel=new MonedaModel();
+  public pais:PaisModel=new PaisModel();
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-  btnactivarsucursal:boolean=false;
-  btnactivarplanta:boolean=false;
-  plantaVisible:boolean=false;
-  sucursalVisible:boolean=false;
+  btnactivarpais:boolean=false;
+  paisVisible:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='crear-almacen';
+        Global.nameComponent='crear-moneda';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -46,63 +42,34 @@ export default class CrearAlmacenComponent extends Vue {
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');  
     }  
-    //#region [SUCURSAL]
-    desactivar_sucursal(){
-      if(this.sucursalVisible){
-        this.btnactivarsucursal=false;
+    //#region [PAIS]
+  desactivar_pais(){
+      if(this.paisVisible){
+        this.btnactivarpais=false;
       }
   } 
-  activar_sucursal(){
+  activar_pais(){
       setTimeout(() => {
-        this.btnactivarsucursal=true;
-        this.btnactivarplanta=false;
+        this.btnactivarpais=true;
       }, 120)
     } 
-  sucursalDialog(){
-      this.sucursalVisible=true;  
+    paisDialog(){
+      this.paisVisible=true;  
   }
-  handleCloseSucursal(){
-      this.sucursalVisible=false;
+  handleClosePais(){
+      this.paisVisible=false;
     }
-    sucursalSelect(val:SucursalModel){
-      this.sucursal=val;  
-      this.almacen.intIdSubsidiary_ID=this.sucursal.intIdSubsidiary_ID;
-      this.almacen.strSubsidiary_Cod=this.sucursal.strSubsidiary_Cod;     
-      this.sucursalVisible=false;
+    paisSelect(val:PaisModel){
+      this.pais=val;  
+      this.moneda.strCountry=this.pais.strCountry_Name;
+      this.paisVisible=false;
     }
-    //#endregion
-    //#region [PLANTA]
-    desactivar_planta(){
-      if(this.plantaVisible){
-        this.btnactivarplanta=false;
-      }
-  } 
-  activar_planta(){
-      setTimeout(() => {
-        this.btnactivarsucursal=false;
-        this.btnactivarplanta=true;
-      }, 120)
-    } 
-  plantaDialog(){
-    this.plantaVisible=true;
-  }
-    handleClosePlanta(){
-      this.plantaVisible=false;
-    }
-    plantaSelect(val:PlantaModel){
-      this.planta=val;
-      this.almacen.intPlant_ID=this.planta.intPlant_ID;
-      this.almacen.strPlant_Cod=this.planta.strPlant_Cod;
-      this.plantaVisible=false;
-    }
-    //#endregion
+    //#endregion   
     
-    guardarAlmacen(){
+    guardarMoneda(){
       var user:any=localStorage.getItem('User_Usuario');
       var id:any=localStorage.getItem('compania_ID');
-      this.almacen.strCreation_User=user;
-      this.almacen.intIdCompany_ID=id;
-      this.almacen.strCompany_Cod=this.companyCod;
+      this.moneda.strCreation_User=user;
       let loadingInstance = Loading.service({
         fullscreen: true,
         text: 'Guardando...',
@@ -110,8 +77,8 @@ export default class CrearAlmacenComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
         );     
-      if(this.almacen.strWHS_Cod!=''&&this.almacen.strWHS_Desc!=''){
-        almacenService.crearAlmacen(this.almacen)
+      if(this.moneda.strCurrency_Cod!=''&&this.moneda.strCurrency_Desc!=''){
+        monedaService.createtblMoneda(this.moneda)
         .then(resp=>{
           loadingInstance.close();
           this.$message({
@@ -119,9 +86,8 @@ export default class CrearAlmacenComponent extends Vue {
                 type: 'success',
                 message: 'Se guardo Correctamente '+resp
               });
-              this.almacen=new AlmacenModel();
-              this.planta=new PlantaModel();
-              this.sucursal=new SucursalModel();
+              this.moneda=new MonedaModel();
+              this.pais=new PaisModel();
               this.issave = true;
               this.iserror = false;
               this.textosave = 'Se guardo correctamente. '+resp;

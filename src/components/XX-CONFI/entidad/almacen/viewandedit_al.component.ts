@@ -12,19 +12,21 @@ import BPlantaComponent from '@/components/buscadores/b_planta/b_planta.vue';
 import BSucursalComponent from '@/components/buscadores/b_sucursal/b_sucursal.vue';
 import { SucursalModel } from '@/modelo/maestro/sucursal';
 @Component({
-  name: 'crear-almacen',
+  name: 'viewandedit-almacen',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'bplanta':BPlantaComponent,
   'bsucursal':BSucursalComponent,
   }
 })
-export default class CrearAlmacenComponent extends Vue {
+export default class ViewAndEditAlmacenComponent extends Vue {
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
   companyName:any;
   companyCod:any;
+  textTitle:string='';
+  enabledtf:boolean=false;
   public almacen:AlmacenModel=new AlmacenModel();
   public planta:PlantaModel=new PlantaModel();
   public sucursal:SucursalModel=new SucursalModel();
@@ -37,14 +39,25 @@ export default class CrearAlmacenComponent extends Vue {
   sucursalVisible:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='crear-almacen';
+        Global.nameComponent='viewandedit-almacen';
         setTimeout(() => {
             this.load();
           }, 200)
     }  
     load(){
         this.companyName=localStorage.getItem('compania_name');
-        this.companyCod=localStorage.getItem('compania_cod');  
+        this.companyCod=localStorage.getItem('compania_cod'); 
+        this.almacen= JSON.parse(this.$route.query.data); 
+        var vista=this.$route.query.vista;
+        if(vista=='modificar'){
+            this.enabledtf=false;
+            this.textTitle='Modificar Almacen';
+        }
+        if(vista=='visualizar'){
+            this.enabledtf=true;
+            this.textTitle='Visualizar Almacen';
+        }
+
     }  
     //#region [SUCURSAL]
     desactivar_sucursal(){
@@ -98,55 +111,63 @@ export default class CrearAlmacenComponent extends Vue {
     //#endregion
     
     guardarAlmacen(){
-      var user:any=localStorage.getItem('User_Usuario');
-      var id:any=localStorage.getItem('compania_ID');
-      this.almacen.strCreation_User=user;
-      this.almacen.intIdCompany_ID=id;
-      this.almacen.strCompany_Cod=this.companyCod;
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Guardando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-        );     
-      if(this.almacen.strWHS_Cod!=''&&this.almacen.strWHS_Desc!=''){
-        almacenService.crearAlmacen(this.almacen)
-        .then(resp=>{
-          loadingInstance.close();
-          this.$message({
-              showClose: true,
-                type: 'success',
-                message: 'Se guardo Correctamente '+resp
-              });
-              this.almacen=new AlmacenModel();
-              this.planta=new PlantaModel();
-              this.sucursal=new SucursalModel();
-              this.issave = true;
-              this.iserror = false;
-              this.textosave = 'Se guardo correctamente. '+resp;
-          }).catch(errorss=>{
+      var vista=this.$route.query.vista; 
+      if(vista=='modificar'){
+        var user:any=localStorage.getItem('User_Usuario');
+        var id:any=localStorage.getItem('compania_ID');
+        this.almacen.strModified_User=user;
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Guardando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          );     
+        if(this.almacen.strWHS_Cod!=''&&this.almacen.strWHS_Desc!=''){
+          almacenService.updateAlmacen(this.almacen)
+          .then(resp=>{
             loadingInstance.close();
             this.$message({
+                showClose: true,
+                  type: 'success',
+                  message: 'Se actualizo Correctamente '+resp
+                });
+                this.almacen=new AlmacenModel();
+                this.planta=new PlantaModel();
+                this.sucursal=new SucursalModel();
+                this.issave = true;
+                this.iserror = false;
+                this.textosave = 'Se actualizo correctamente. '+resp;
+            }).catch(errorss=>{
+              loadingInstance.close();
+              this.$message({
+                showClose: true,
+                  type:'error',
+                  message: 'No se actualizo Correctamente '
+                });
+                this.issave = false;
+                this.iserror = true;
+                this.textosave = 'No se actualizo Correctamente ';
+            })
+        }
+        else{
+          this.$message({
               showClose: true,
-                type:'error',
-                message: 'No se guardo Correctamente '
-              });
-              this.issave = false;
-              this.iserror = true;
-              this.textosave = 'No se guardo Correctamente ';
-          })
-      }
-      else{
+              type: 'error',
+              message: 'Complete datos'
+            });
+          this.issave = false;
+          this.iserror = true;
+          this.textosave = 'Complete datos.';
+        }     
+      }else{
         this.$message({
             showClose: true,
-            type: 'error',
-            message: 'Complete datos'
+            type: 'info',
+            message: 'Accion no permitida'
           });
-        this.issave = false;
-        this.iserror = true;
-        this.textosave = 'Complete datos.';
-      }     
+      }
+      
         
     } 
     fnOcultar(){
@@ -164,7 +185,8 @@ export default class CrearAlmacenComponent extends Vue {
     data(){
         return{     
             companyName:'',
-            companyCod:''
+            companyCod:'',
+            textTitle:''
           }
     }
   

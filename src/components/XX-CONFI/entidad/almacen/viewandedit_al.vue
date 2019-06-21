@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Almacen</span>
+                <span class="labelheadercard" >{{textTitle}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Almacen</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text" :maxlength="3">  
+                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text" :maxlength="3" :disabled="enabledtf">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -37,7 +37,7 @@
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="almacen.strWHS_Desc"  >
+                                        <el-input class="validador" size="small" v-model="almacen.strWHS_Desc" :disabled="enabledtf" >
                                         </el-input>
                                     </div>
                                 </div>
@@ -46,7 +46,7 @@
                                 <label class="el-form-item__label col-sm-2" >Ubicacion</label>
                                 <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="almacen.strLocation"  >
+                                        <el-input class="validador" size="small" v-model="almacen.strLocation"  :disabled="enabledtf">
                                         </el-input>
                                     </div>
                                 </div>
@@ -55,8 +55,8 @@
                                 <label class="el-form-item__label col-md-2" >Sucursal</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod">                            
-                                        <el-button v-if="btnactivarsucursal && !sucursalVisible" slot="append" class="boton" icon="fa fa-clone" @click="sucursalDialog()"></el-button> 
+                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod" :disabled="enabledtf">                            
+                                        <el-button v-if="btnactivarsucursal && !sucursalVisible" slot="append" class="boton" icon="fa fa-clone" @click="sucursalDialog()" :disabled="enabledtf"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -66,8 +66,8 @@
                                 <label class="el-form-item__label col-md-2" >Planta</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_planta" @focus="activar_planta" v-model="almacen.strPlant_Cod">                            
-                                        <el-button v-if="btnactivarplanta && !plantaVisible" slot="append" class="boton" icon="fa fa-clone" @click="plantaDialog()"></el-button> 
+                                    <el-input class="validador" size ="small" @blur="desactivar_planta" @focus="activar_planta" v-model="almacen.strPlant_Cod" :disabled="enabledtf">                            
+                                        <el-button v-if="btnactivarplanta && !plantaVisible" slot="append" class="boton" icon="fa fa-clone" @click="plantaDialog()" :disabled="enabledtf"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -116,8 +116,8 @@
 </template>
 <script>
 
-import CrearAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/crear_almacen.component'
-export default CrearAlmacenComponent
+import ViewAndEditAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/viewandedit_al.component'
+export default ViewAndEditAlmacenComponent
 </script>
 <style scoped>
    .sinLinea{

@@ -154,7 +154,6 @@ export default class  BPlantaComponent extends Vue {
     this.plantaSelectModel=val;
   }
   checkPopup(){
-    debugger;
     this.$emit('plantaselecionado',this.plantaSelectModel);
   }
   closePopup(){

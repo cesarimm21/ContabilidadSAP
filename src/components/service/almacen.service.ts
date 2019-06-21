@@ -35,5 +35,11 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  updateAlmacen(data){
+    return axios.post(CONFIG.API_URL+'almacen/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

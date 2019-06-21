@@ -4,19 +4,19 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-import {AlmacenModel} from '@/modelo/maestro/almacen';
+import {MonedaModel} from '@/modelo/maestro/moneda';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import almacenService from '@/components/service/almacen.service';
+import monedaService from '@/components/service/moneda.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'modificar-almacen',
+  name: 'visualizar-moneda',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
-export default class ModificarAlmacenComponent extends Vue {
+export default class VisualizarMonedaComponent extends Vue {
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
@@ -25,10 +25,10 @@ export default class ModificarAlmacenComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
-  public almacen:AlmacenModel=new AlmacenModel();
-  gridAlmacen:AlmacenModel[];
-  gridAlmacen1:AlmacenModel[];
-  gridAlmacen2:AlmacenModel[];
+  public moneda:MonedaModel=new MonedaModel();
+  gridMoneda:MonedaModel[];
+  gridMoneda1:MonedaModel[];
+  gridMoneda2:MonedaModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -39,17 +39,15 @@ export default class ModificarAlmacenComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blnilterstrWHS_Cod:boolean=false;
-  blnilterstrWHS_Desc:boolean=false;
-  blnilterstrLocation:boolean=false;
-  blnilterstrCompany_Cod:boolean=false;
-  blnilterstrPlant_Cod:boolean=false;
-  blnilterstrSubsidiary_Cod:boolean=false;
+  blnilterstrCurrency_Cod:boolean=false;
+  blnilterstrCurrency_Desc:boolean=false;
+  blnilterstrReference:boolean=false;
+  blnilterstrCountry:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='modificar-almacen';
+        Global.nameComponent='visualizar-almacen';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -57,14 +55,14 @@ export default class ModificarAlmacenComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        almacenService.GetAllAlmacen()
+        monedaService.GetAllMoneda()
         .then(response=>{
-          this.gridAlmacen=[];
-          this.gridAlmacen1=[];
-          this.gridAlmacen2=[];
-          this.gridAlmacen=response;
-          this.gridAlmacen1=response;
-          this.gridAlmacen2=response;
+          this.gridMoneda=[];
+          this.gridMoneda1=[];
+          this.gridMoneda2=[];
+          this.gridMoneda=response;
+          this.gridMoneda1=response;
+          this.gridMoneda2=response;
         })
     }
     getDateStringView(fecha:string){
@@ -76,13 +74,13 @@ export default class ModificarAlmacenComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
-    handleCurrentChange(val:AlmacenModel){
-      this.almacen=val;
+    handleCurrentChange(val:MonedaModel){
+      this.moneda=val;
      }
     btnBuscar(){
-      var data=this.like(this.gridAlmacen1,this.clickColumn,this.txtbuscar)
-      this.gridAlmacen=[];
-      this.gridAlmacen=data;
+      var data=this.like(this.gridMoneda1,this.clickColumn,this.txtbuscar)
+      this.gridMoneda=[];
+      this.gridMoneda=data;
       this.dialogBusquedaFilter=false;
     }
     like(array, key,keyword) {
@@ -133,29 +131,27 @@ export default class ModificarAlmacenComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
       );
-      var data=await this.sortByKeyAsc(this.gridAlmacen1,this.clickColumn) 
-      this.gridAlmacen2=[];
-      this.gridAlmacen2=data;
-      this.gridAlmacen = await this.gridAlmacen2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=await this.sortByKeyAsc(this.gridMoneda1,this.clickColumn) 
+      this.gridMoneda2=[];
+      this.gridMoneda2=data;
+      this.gridMoneda = await this.gridMoneda2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       await loading.close();
     }
     DscItem(){
-      var data=this.sortByKeyDesc(this.gridAlmacen1,this.clickColumn) 
-      this.gridAlmacen2=[];
-      this.gridAlmacen2=data;
-      this.gridAlmacen = this.gridAlmacen2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=this.sortByKeyDesc(this.gridMoneda1,this.clickColumn) 
+      this.gridMoneda2=[];
+      this.gridMoneda2=data;
+      this.gridMoneda = this.gridMoneda2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     
     }
     Limpiar(){
-      this.gridAlmacen = this.gridAlmacen1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blnilterstrWHS_Cod=false;
-      this.blnilterstrWHS_Desc=false; 
-      this.blnilterstrLocation=false; 
-      this.blnilterstrCompany_Cod=false; 
-      this.blnilterstrPlant_Cod=false; 
-      this.blnilterstrSubsidiary_Cod=false; 
+      this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrCurrency_Cod=false;
+      this.blnilterstrCurrency_Desc=false; 
+      this.blnilterstrReference=false; 
+      this.blnilterstrCountry=false; 
       this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;  
+      this.blnilterstrCreation_User=false; 
     }
     Print(){
       window.print();
@@ -199,45 +195,45 @@ export default class ModificarAlmacenComponent extends Vue {
       // }
   }
   async validad(){      
-    var data=this.like(this.gridAlmacen1,'strWHS_Cod',this.almacen.strWHS_Cod)
-    this.almacen=data[0];
-    if(this.almacen.intIdWHS_ID!=undefined){
+    var data=this.like(this.gridMoneda1,'strCurrency_Cod',this.moneda.strCurrency_Cod)
+    this.moneda=data[0];
+    if(this.moneda.intIdCurrency_ID!=undefined){
       await setTimeout(() => {
         debugger;
-        if(this.almacen.strWHS_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+        if(this.moneda.strCurrency_Cod!=undefined){
+          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/moneda/viewandedit_moneda`, query: { vista:'visualizar' ,data:JSON.stringify(this.moneda) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Almacen. ';
-      this.warningMessage('No existe Almacen. ');
+      this.textosave='No existe Moneda. ';
+      this.warningMessage('No existe Moneda. ');
     }
   }
    async validarView(){
-      if(this.almacen.intIdWHS_ID!=undefined){
+      if(this.moneda.intIdCurrency_ID!=undefined){
           await setTimeout(() => {
             debugger;
-            if(this.almacen.strWHS_Cod!=undefined){
-              router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+            if(this.moneda.strCurrency_Cod!=undefined){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/moneda/viewandedit_moneda`, query: { vista:'visualizar' ,data:JSON.stringify(this.moneda) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Almacen. ';
-          this.warningMessage('Seleccione Almacen. ');
+          this.textosave='Seleccione Moneda. ';
+          this.warningMessage('Seleccione Moneda. ');
         }
       }
     siguiente(){
       if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
         this.pagina++;
-        this.gridAlmacen = this.gridAlmacen1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     anterior(){
       if(this.pagina>1){
       this.pagina--;
-      this.gridAlmacen = this.gridAlmacen1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     warningMessage(newMsg : string) {
@@ -251,97 +247,64 @@ export default class ModificarAlmacenComponent extends Vue {
   headerclick(val){    
       this.Column=val.label;
       Global.setColumna(this.Column);     
-      if(val.property=="strWHS_Cod"){
-          this.clickColumn="strWHS_Cod";
-          this.blnilterstrWHS_Cod=true;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
+      if(val.property=="strCurrency_Cod"){
+          this.clickColumn="strCurrency_Cod";
+          this.blnilterstrCurrency_Cod=true;
+          this.blnilterstrCurrency_Desc=false; 
+          this.blnilterstrReference=false; 
+          this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
       }
-      if(val.property=="strWHS_Desc"){
-          this.clickColumn="strWHS_Desc";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=true; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
+      if(val.property=="strCurrency_Desc"){
+          this.clickColumn="strCurrency_Desc";
+          this.blnilterstrCurrency_Cod=false;
+          this.blnilterstrCurrency_Desc=true; 
+          this.blnilterstrReference=false; 
+          this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
       }
-      if(val.property=="strLocation"){
-          this.clickColumn="strLocation";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=true; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
+      if(val.property=="strReference"){
+          this.clickColumn="strReference";
+          this.blnilterstrCurrency_Cod=false;
+          this.blnilterstrCurrency_Desc=false; 
+          this.blnilterstrReference=true; 
+          this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
       }
-      if(val.property=="strCompany_Cod"){
-          this.clickColumn="strCompany_Cod";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=true; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
+      if(val.property=="strCountry"){
+          this.clickColumn="strCountry";
+          this.blnilterstrCurrency_Cod=false;
+          this.blnilterstrCurrency_Desc=false; 
+          this.blnilterstrReference=false; 
+          this.blnilterstrCountry=true; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
       }
-      if(val.property=="strPlant_Cod"){
-          this.clickColumn="strPlant_Cod";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=true; 
-          this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
-      }
-      if(val.property=="strSubsidiary_Cod"){
-          this.clickColumn="strSubsidiary_Cod";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
-      }
+      
       if(val.property=="dtmCreation_Date"){
           this.clickColumn="dtmCreation_Date";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrCurrency_Cod=false;
+          this.blnilterstrCurrency_Desc=false; 
+          this.blnilterstrReference=false; 
+          this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=true;
           this.blnilterstrCreation_User=false;
       }
       if(val.property=="strCreation_User"){
           this.clickColumn="strCreation_User";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrCurrency_Cod=false;
+          this.blnilterstrCurrency_Desc=false; 
+          this.blnilterstrReference=false; 
+          this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=true;
       }        
   }
-  filterstrWHS_Cod(h,{column,$index}){
-      if(this.blnilterstrWHS_Cod){
+  filterstrCurrency_Cod(h,{column,$index}){
+      if(this.blnilterstrCurrency_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -350,8 +313,8 @@ export default class ModificarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrWHS_Desc(h,{column,$index}){        
-      if(this.blnilterstrWHS_Desc){
+    filterstrCurrency_Desc(h,{column,$index}){        
+      if(this.blnilterstrCurrency_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -360,8 +323,8 @@ export default class ModificarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrLocation(h,{column,$index}){        
-      if(this.blnilterstrLocation){
+    filterstrReference(h,{column,$index}){        
+      if(this.blnilterstrReference){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -370,8 +333,8 @@ export default class ModificarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCompany_Cod(h,{column,$index}){        
-      if(this.blnilterstrCompany_Cod){
+    filterstrCountry(h,{column,$index}){        
+      if(this.blnilterstrCountry){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -379,27 +342,7 @@ export default class ModificarAlmacenComponent extends Vue {
       else{
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
-    }
-    filterstrPlant_Cod(h,{column,$index}){        
-      if(this.blnilterstrPlant_Cod){
-        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-          , column.label)])
-      }
-      else{
-        return h('span',{style: 'padding-left: 5px;'}, column.label);
-      } 
-    }
-    filterstrSubsidiary_Cod(h,{column,$index}){        
-      if(this.blnilterstrSubsidiary_Cod){
-        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-          , column.label)])
-      }
-      else{
-        return h('span',{style: 'padding-left: 5px;'}, column.label);
-      } 
-    }
+    }    
     filterdtmCreation_Date(h,{column,$index}){
       
       if(this.blnilterdtmCreation_Date){
@@ -434,9 +377,9 @@ export default class ModificarAlmacenComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            gridAlmacen:[],
-            gridAlmacen1:[],
-            gridAlmacen2:[],
+            gridMoneda:[],
+            gridMoneda1:[],
+            gridMoneda2:[],
         }
     }
   

@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Almacen</span>
+                <span class="labelheadercard" > Modificar Moneda</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Codigo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,13 +42,13 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Periodos</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Monedas</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
                             :max-height="sizeScreen"
-                            :data="gridAlmacen"
+                            :data="gridMoneda"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
@@ -56,24 +56,18 @@
                             >
                             <el-table-column type="index" width="45">                                
                             </el-table-column>
-                            <el-table-column :render-header="filterstrWHS_Cod"
-                            prop="strWHS_Cod" label="Codigo" width="100" align="center">                                
+                            <el-table-column :render-header="filterstrCurrency_Cod"
+                            prop="strCurrency_Cod" label="Codigo" width="100" align="center">                                
                             </el-table-column>
-                            <el-table-column  :render-header="filterstrWHS_Desc"
-                             prop="strWHS_Desc" min-width="180" label="Descripcion">
+                            <el-table-column  :render-header="filterstrCurrency_Desc"
+                             prop="strCurrency_Desc" min-width="180" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterstrLocation"
-                            prop="strLocation" label="Ubicacion" width="100" align="center">                                
+                            <el-table-column :render-header="filterstrReference"
+                            prop="strReference" label="Reference" width="100" align="center">                                
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCompany_Cod"
-                            prop="strCompany_Cod" label="Compania" width="100" align="center">                                
-                            </el-table-column>
-                            <el-table-column :render-header="filterstrPlant_Cod"
-                            prop="strPlant_Cod" label="Planta" width="100" align="center">                                
-                            </el-table-column>
-                            <el-table-column :render-header="filterstrSubsidiary_Cod"
-                            prop="strSubsidiary_Cod" label="Sucursal" width="100" align="center">                                
-                            </el-table-column>
+                            <el-table-column :render-header="filterstrCountry"
+                            prop="strCountry" label="Pais" width="100" align="center">                                
+                            </el-table-column>                           
                             <el-table-column :render-header="filterdtmCreation_Date"
                                 prop="dtmCreation_Date"   min-width="80"
                                 label="Fecha Creada">
@@ -166,8 +160,8 @@
 </template>
 <script>
 
-import ModificarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/modificar_al.component'
-export default ModificarAlmacenComponent
+import VisualizarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/visualizar_moneda.component'
+export default VisualizarMonedaComponent
 </script>
 <style scoped>
     

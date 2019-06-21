@@ -1,11 +1,11 @@
 <template>
     <div class="crear-ingreso-comprobante">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-            <quickaccessmenu v-on:guardarTodo="guardarAlmacen($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+            <quickaccessmenu v-on:guardarTodo="guardarMoneda($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Almacen</span>
+                <span class="labelheadercard" > Crear Moneda</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Almacen</label>
+                                <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text" :maxlength="3">  
+                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text" :maxlength="4">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -37,42 +37,30 @@
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="almacen.strWHS_Desc"  >
+                                        <el-input class="validador" size="small" v-model="moneda.strCurrency_Desc"  >
                                         </el-input>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Ubicacion</label>
+                                <label class="el-form-item__label col-sm-2" >Referencia</label>
                                 <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="almacen.strLocation"  >
+                                        <el-input class="validador" size="small" v-model="moneda.strReference"  >
                                         </el-input>
                                     </div>
                                 </div>
                             </div>   
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Sucursal</label>
+                                <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod">                            
-                                        <el-button v-if="btnactivarsucursal && !sucursalVisible" slot="append" class="boton" icon="fa fa-clone" @click="sucursalDialog()"></el-button> 
+                                    <el-input class="validador" size ="small" @blur="desactivar_pais" @focus="activar_pais" v-model="moneda.strCountry">                            
+                                        <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="sinLinea el-form-item__label col-md-2">{{sucursal.strSubsidiary_Desc}}</label>
-                            </div> 
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Planta</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_planta" @focus="activar_planta" v-model="almacen.strPlant_Cod">                            
-                                        <el-button v-if="btnactivarplanta && !plantaVisible" slot="append" class="boton" icon="fa fa-clone" @click="plantaDialog()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <label class="sinLinea el-form-item__label col-md-2">{{planta.strPlan_Desc}}</label>
-                            </div>   
+                            </div>  
                         </div>                         
                     </div>
                 </div>
@@ -102,22 +90,16 @@
                 </div>
             </div>            
         </div>   
-        <!--DIALOG BUSQUEDA PLANTA-->
-    <el-dialog title="Busqueda Planta"  :visible.sync="plantaVisible" @close="handleClosePlanta" size="small" >
-        <bplanta v-on:plantaselecionado="plantaSelect($event)" v-on:plantaClose="handleClosePlanta()">
-        </bplanta>
-    </el-dialog> 
-        <!--DIALOG BUSQUEDA SUCURSAL-->
-    <el-dialog title="Busqueda Sucursal"  :visible.sync="sucursalVisible" @close="handleCloseSucursal" size="small" >
-        <bsucursal v-on:sucursalselecionado="sucursalSelect($event)" v-on:sucursalClose="handleCloseSucursal()">
-        </bsucursal>
-    </el-dialog> 
+       <!--DIALOG BUSQUEDA PAIS-->
+    <el-dialog title="Busqueda Pais" :visible.sync="paisVisible" @close="handleClosePais" size="small" >
+      <bpais v-on:PaisSeleccionado="paisSelect($event)" v-on:closePais="handleClosePais()">
+      </bpais>
+    </el-dialog>
     </div>  
 </template>
 <script>
-
-import CrearAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/crear_almacen.component'
-export default CrearAlmacenComponent
+import CrearMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/crear_moneda.component'
+export default CrearMonedaComponent
 </script>
 <style scoped>
    .sinLinea{

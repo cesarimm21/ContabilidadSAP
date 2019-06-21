@@ -16,7 +16,7 @@ import { Loading } from 'element-ui';
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
-export default class ModificarAlmacenComponent extends Vue {
+export default class VisualizarAlmacenComponent extends Vue {
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
@@ -161,42 +161,6 @@ export default class ModificarAlmacenComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se eliminó',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
   }
   async validad(){      
     var data=this.like(this.gridAlmacen1,'strWHS_Cod',this.almacen.strWHS_Cod)
@@ -205,7 +169,7 @@ export default class ModificarAlmacenComponent extends Vue {
       await setTimeout(() => {
         debugger;
         if(this.almacen.strWHS_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+          router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'visualizar' ,data:JSON.stringify(this.almacen) }  })
         }
       }, 600)
     }
@@ -219,7 +183,7 @@ export default class ModificarAlmacenComponent extends Vue {
           await setTimeout(() => {
             debugger;
             if(this.almacen.strWHS_Cod!=undefined){
-              router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+              router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'visualizar' ,data:JSON.stringify(this.almacen) }  })
             }
           }, 600)
         }
