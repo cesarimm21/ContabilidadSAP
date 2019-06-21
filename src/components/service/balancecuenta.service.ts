@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetBalanceComprabacion(datar){
+    return axios.get(CONFIG.API_URL+'balancecuenta/comprobacion/'+datar.strCompany_Cod+'/'+datar.intYear+'/'+datar.strAcc_Local_NO)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateBalance(data){
     return axios.post(CONFIG.API_URL+'balancecuenta',data)
     .then(response =>{           

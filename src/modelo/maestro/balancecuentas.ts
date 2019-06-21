@@ -16,4 +16,10 @@ export class BalanceCuentaModel {
     strModified_User:string | null;
     dtmModified_Date:Date | null;
     chrStatus:string | null;
+    fltClosing_Balanced:number;
+    fltClosing_Balancea:number;
+    fltClosing_Balancesd:number;
+    fltClosing_Balancesa:number;
+    fltOpening_Balanced:number;
+    fltOpening_Balancea:number;
 }
