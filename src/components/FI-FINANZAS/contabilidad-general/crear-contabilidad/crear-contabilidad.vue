@@ -49,6 +49,7 @@
                                         <el-date-picker
                                             v-model="Period"
                                             size="mini"
+                                            format="dd.MM.yyyy"
                                             style="width:128px !important">
                                         </el-date-picker>
                                     </div>
@@ -76,6 +77,7 @@
                                      <el-date-picker
                                         v-model="Posting_Date"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                     </div>
@@ -86,6 +88,7 @@
                                      <el-date-picker
                                         v-model="Doc_Date"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                     </div>

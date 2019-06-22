@@ -9,5 +9,17 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  CreateTipoComprobante(comprobante){
+    return axios.post(CONFIG.API_URL+'tipocomprobantepago/create', comprobante)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  UpdateTipoComprobante(comprobante){
+    return axios.post(CONFIG.API_URL+'tipocomprobantepago/update', comprobante)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
   }
 }

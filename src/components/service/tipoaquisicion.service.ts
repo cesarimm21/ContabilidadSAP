@@ -10,5 +10,17 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  CreateTipoAdquisicion(adquisicion){
+    return axios.post(CONFIG.API_URL+'tipoadquisicion/create', adquisicion)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  UpdateTipoAdquisicion(adquisicion){
+    return axios.post(CONFIG.API_URL+'tipoadquisicion/update', adquisicion)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  }
   
 }

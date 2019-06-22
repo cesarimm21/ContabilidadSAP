@@ -866,6 +866,13 @@ closeCategoriaCuenta(){
     }
   }
   guardarTodo(){
+    var dateString = new Date();
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    var anio=new Date().getFullYear();
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guardando...',
@@ -883,7 +890,7 @@ closeCategoriaCuenta(){
         nuevo.strDaily_Desc=this.strDaily_Cod_Desc;
         nuevo.strDoc_Trans_Cod=this.Doc_Trans_Cod;
         nuevo.strPeriod_NO=this.Period.getFullYear().toString()+this.Period.getMonth().toString();
-        nuevo.dtmPeriod=this.Period;
+        nuevo.strdtmPeriod=mm+'.'+anio;
         nuevo.dtmDoc_Date=this.Doc_Date;
         nuevo.strCurrency_Cod=this.Currency_Cod;
         nuevo.strOrigenDocum_NO=this.OrigenDocum_NO;

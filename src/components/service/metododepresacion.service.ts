@@ -4,20 +4,20 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetMedioPago(){ 
-    return axios.get(CONFIG.API_URL+'mediopago')
+  GetAllMetodoDep(){    
+    return axios.get(CONFIG.API_URL+'metododepreciacion')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  CreateMedioPago(comprobante){
-    return axios.post(CONFIG.API_URL+'mediopago/create', comprobante)
+  CreateMetodoDep(comprobante){
+    return axios.post(CONFIG.API_URL+'metododepresacion/create', comprobante)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
   },
-  UpdateMedioPago(comprobante){
-    return axios.post(CONFIG.API_URL+'mediopago/update', comprobante)
+  UpdateMetodoDep(comprobante){
+    return axios.post(CONFIG.API_URL+'metododepresacion/update', comprobante)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })

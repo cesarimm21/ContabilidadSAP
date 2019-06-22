@@ -264,7 +264,7 @@ export default class ModificarContabilidadComponent extends Vue {
         this.strDaily_Cod=this.CompleteData[0].strDaily_Cod;
         this.strDaily_Cod_Desc=this.CompleteData[0].strDaily_Desc;
         this.Doc_Trans_Cod=this.CompleteData[0].strDoc_Trans_Cod;
-        this.Period=new Date(this.CompleteData[0].dtmPeriod);
+        // this.Period=new Date(this.CompleteData[0].dtmPeriod);
         this.Doc_Date=this.CompleteData[0].dtmDoc_Date;
         this.Currency_Cod=this.CompleteData[0].strCurrency_Cod;
         this.OrigenDocum_NO=this.CompleteData[0].strOrigenDocum_NO;
@@ -971,7 +971,7 @@ closeCategoriaCuenta(){
           var ultimoDia = new Date(this.Period.getFullYear(), this.Period.getMonth() + 1, 0);
           
           ultimoDia.setDate(ultimoDia.getDate()+1)
-          nuevo.dtmPeriod=ultimoDia;
+          // nuevo.dtmPeriod=ultimoDia;
           nuevo.dtmDoc_Date=this.Doc_Date;
           nuevo.strCurrency_Cod=this.Currency_Cod;
           nuevo.strOrigenDocum_NO=this.OrigenDocum_NO;
@@ -1036,7 +1036,7 @@ closeCategoriaCuenta(){
         nuevo.strDaily_Cod=this.strDaily_Cod;
         nuevo.strDaily_Desc=this.strDaily_Cod_Desc;
         nuevo.strDoc_Trans_Cod=this.Doc_Trans_Cod;
-        nuevo.dtmPeriod=this.Period;
+        // nuevo.dtmPeriod=this.Period;
         nuevo.dtmDoc_Date=this.Doc_Date;
         nuevo.strCurrency_Cod=this.Currency_Cod;
         nuevo.strOrigenDocum_NO=this.OrigenDocum_NO;
@@ -1108,7 +1108,7 @@ closeCategoriaCuenta(){
         nuevo.strDaily_Cod=this.strDaily_Cod;
         nuevo.strDaily_Desc=this.strDaily_Cod_Desc;
         nuevo.strDoc_Trans_Cod=this.Doc_Trans_Cod;
-        nuevo.dtmPeriod=this.Period;
+        // nuevo.dtmPeriod=this.Period;
         nuevo.dtmDoc_Date=this.Doc_Date;
         nuevo.strCurrency_Cod=this.Currency_Cod;
         nuevo.strOrigenDocum_NO=this.OrigenDocum_NO;

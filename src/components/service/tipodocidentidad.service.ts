@@ -15,6 +15,18 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  CreateTipoDocumento(documento){
+    return axios.post(CONFIG.API_URL+'tipodocidentidad/create', documento)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  UpdateTipoDocumento(documento){
+    return axios.post(CONFIG.API_URL+'tipodocidentidad/update', documento)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
   }
 }
   

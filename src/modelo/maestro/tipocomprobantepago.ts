@@ -7,4 +7,14 @@ export class TipoComprobantePagoModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    constructor(){
+        this.intIdDocIdent_IDType_ID=-1;
+        this.strDocType_Cod='';
+        this.strDocType_Desc='';
+        this.strCreation_User='';
+        this.strModified_User='';
+        this.dtmCreation_Date=new Date();
+        this.dtmModified_Date=new Date();
+        this.chrStatus='';
+    }
 }
