@@ -808,7 +808,7 @@ getNumber(num){
             itemDG_60.strAccDocum_NO=this.CodigoGeneral;
             itemDG_60.dtmPosting_Date=this.factura.dtmDoc_Acc_Date;
             itemDG_60.dtmProcess_Date=new Date();
-            itemDG_60.dtmPeriod=this.factura.dtmDoc_Acc_Date;
+            itemDG_60.strdtmPeriod=this.factura.dtmDoc_Acc_Date;
             itemDG_60.strYear=anio;
             itemDG_60.strAcctCateg_Cod=this.multipleSelection[i].strAcctCateg_Cod;
             itemDG_60.strCenCosWBS_Cod=this.multipleSelection[i].strCostCenter_NO;
@@ -872,7 +872,7 @@ getNumber(num){
             itemDG_40.strAccDocum_NO=this.CodigoGeneral;
             itemDG_40.dtmPosting_Date=this.factura.dtmDoc_Acc_Date;
             itemDG_40.dtmProcess_Date=new Date();
-            itemDG_40.dtmPeriod=this.factura.dtmDoc_Acc_Date;
+            itemDG_40.strdtmPeriod=this.factura.dtmDoc_Acc_Date;
             itemDG_40.strYear=anio;
             itemDG_40.strVendor_NO=this.factura.strVendor_NO;
             itemDG_40.strVendor_Desc=this.factura.strVendor_Desc;
@@ -925,7 +925,7 @@ getNumber(num){
             itemDG_42.strAccDocum_NO=this.CodigoGeneral;
             itemDG_42.strAcc_Local_NO=this.diarioModel.strDaily_AccLocal;
             itemDG_42.dtmPosting_Date=new Date();
-            itemDG_42.dtmPeriod=this.factura.dtmPeriod;
+            itemDG_42.strdtmPeriod=this.factura.dtmPeriod;
             itemDG_42.strYear=anio;
             itemDG_42.dtmProcess_Date=this.factura.dtmDoc_Acc_Date;
             // itemDG_42.strPosting_Status='B';        

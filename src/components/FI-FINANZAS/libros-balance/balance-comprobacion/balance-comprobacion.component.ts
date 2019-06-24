@@ -15,7 +15,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
-
 import salidaService from '@/components/service/salida.service';
 import libroBalanceService from '@/components/service/libroBalances.service';
 
@@ -29,7 +28,13 @@ import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
 import balancecuentaService from '@/components/service/balancecuenta.service';
-import XLSX from 'xlsx';
+import XLSX from "xlsx"
+
+// import * as XLSX from '@/assets/js/xlsx.full.min.js'
+// import * as  XLSX from "http://rawgit.com/protobi/js-xlsx/master/dist/xlsx.full.min.js";
+// import * as saveAs from 'http://cdn.jsdelivr.net/g/filesaver.js';
+
+import { saveAs } from 'file-saver';
 import { SalidaModel } from '@/modelo/maestro/salida';
 import { BalanceCuentaModel } from '@/modelo/maestro/balancecuentas';
 
@@ -79,10 +84,10 @@ export default class BalanceComprobacionComponent extends Vue {
   dialogCuentaContable:boolean=false;
   /*input*/
   btnactivarcompania:boolean=false;
-   
+  XLSX:any;
   /*Model*/
   public productoModel:ProductoModel=new ProductoModel();
-
+  
   descompania:string='';
   code_compania:string='';
   strAcc_Local_NO:string='';
@@ -107,6 +112,19 @@ export default class BalanceComprobacionComponent extends Vue {
   balCuentas:BalanceCuentaModel=new BalanceCuentaModel();
   strTypeMov_Cod:string='';
   sums:any = [];
+  sums1:number=0;
+  sums2:number=0;
+  sums3:number=0;
+  sums4:number=0;
+  rsums1:number=0;
+  rsums2:number=0;
+  rsums3:number=0;
+  rsums4:number=0;
+  fltsaldofinald:number=0;
+  fltsaldofinala:number=0;
+  fltsaldofinalba:number=0;
+  fltsaldofinalbd:number=0;
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -115,7 +133,6 @@ export default class BalanceComprobacionComponent extends Vue {
     var id:any=localStorage.getItem('compania_ID');
     this.balCuentas.strCompany_Desc=desc; 
     this.balCuentas.strCompany_Cod=cod;
-  
     this.tiporequisicion="A";
     setTimeout(() => {
       this.load();
@@ -288,7 +305,14 @@ export default class BalanceComprobacionComponent extends Vue {
     console.log('suma total',this.sums);
   }
   async cargar(){
-   
+    this.sums1=0;
+    this.sums2=0;
+    this.sums3=0;
+    this.sums4=0;
+    this.rsums1=0;
+    this.rsums2=0;
+    this.rsums3=0;
+    this.rsums4=0;
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
@@ -387,141 +411,12 @@ export default class BalanceComprobacionComponent extends Vue {
 
   ExportarExcel(){
        /* generate workbook object from table */
-			var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
+			// var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
       /* generate file and force a download*/
       
-      XLSX.writeFile(wb, "Libro_Diario_"+ this.getParseDate(new Date())+".xlsx");
+      // XLSX.writeFile(wb, "Libro_Diario_"+ this.getParseDate(new Date())+".xlsx");
       
-    // var animals= [
-    //   {"name": "cat", "category": "animal"}
-    //   ,{"name": "dog", "category": "animal"}
-    //   ,{"name": "pig", "category": "animal"}
-    // ]
-    // var pokemons= [
-    //   {"name": "pikachu", "category": "pokemon"}
-    //   ,{"name": "Arbok", "category": "pokemon"}
-    //   ,{"name": "Eevee", "category": "pokemon"}
-    // ]
-    // var animalWS = XLSX.utils.json_to_sheet(animals) 
-    // var pokemonWS = XLSX.utils.json_to_sheet(pokemons) 
-
-    // // A workbook is the name given to an Excel file
-    // var wb = XLSX.utils.book_new() // make Workbook of Excel
-
-    // // add Worksheet to Workbook
-    // // Workbook contains one or more worksheets
-    // XLSX.utils.book_append_sheet(wb, animalWS, 'animals') // sheetAName is name of Worksheet
-    // XLSX.utils.book_append_sheet(wb, pokemonWS, 'pokemons')   
-
-    // var worksheet_name = "SheetJS";
-    // var workbook = XLSX.utils.book_new();
-
-    // complete Report Data is a 2D array of floats
-    //var ws = XLSX.utils.aoa_to_sheet(animalsWS);
-      
-    // animalWS['A2'].s = {
-    //     fill: {
-    //     patternType: "none", // none / solid
-    //     fgColor: {rgb: "FF000000"},
-    //     bgColor: {rgb: "FFFFFFFF"}
-    //       },
-    //       font: {
-    //     name: 'Times New Roman',
-    //     sz: 16,
-    //     color: {rgb: "#FF000000"},
-    //     bold: true,
-    //     italic: false,
-    //     underline: false
-    //       },
-    //       border: {
-    //     top: {style: "thin", color: {auto: 1}},
-    //     right: {style: "thin", color: {auto: 1}},
-    //     bottom: {style: "thin", color: {auto: 1}},
-    //     left: {style: "thin", color: {auto: 1}}
-    //       }
-    //   };
-    // XLSX.utils.book_append_sheet(workbook, animalWS, worksheet_name);
-    // var filename = "REPORTJSONNAME.xlsx";
-    // XLSX.writeFile(workbook, filename);
-    
-// var first_sheet_name = workbook.SheetNames[0];
-// var address_of_cell = 1
-// var worksheet = workbook.Sheets[first_sheet_name];
-// animalWS[address_of_cell].s = {
-// fill: {
-// type:'pattern',
-// pattern: "solid", // none / solid
-// fgColor: { argb: "FF1c4587" },
-// bgColor: { argb: "FF1c4587" }
-// }
-// }
-// worksheet[address_of_cell].v = 1;
-// XLSX.writeFile(workbook, 'book.xlsx');
-    // animalWS.Cells["A1:V2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-    // wb.Cells["A1:V2"].Style.Fill.BackgroundColor.SetColor(colFromHex);
-    // export Excel file
-   // XLSX.writeFile(wb, 'book.xlsx')
-
-  //  let xlsx = officegen('xlsx')
-
-  //   let sheet = xlsx.makeNewSheet()
-  //   sheet.name = 'Officegen Excel'
-
-  //   // Add data using setCell:
-
-  //   sheet.setCell('E7', 42)
-  //   sheet.setCell('I1', -3)
-  //   sheet.setCell('I2', 3.141592653589)
-  //   sheet.setCell('G102', 'Hello World!')
-
-  //   // The direct option - two-dimensional array:
-
-  //   sheet.data[0] = []
-  //   sheet.data[0][0] = 1
-  //   sheet.data[1] = []
-  //   sheet.data[1][3] = 'some'
-  //   sheet.data[1][4] = 'data'
-  //   sheet.data[1][5] = 'goes'
-  //   sheet.data[1][6] = 'here'
-  //   sheet.data[2] = []
-  //   sheet.data[2][5] = 'more text'
-  //   sheet.data[2][6] = 900
-  //   sheet.data[6] = []
-  //   sheet.data[6][2] = 1972
-
-    // Let's generate the Excel document into a file:
-
-   // let out = fs.createWriteStream('example.xlsx')
-
-    // out.on('error', function(err) {
-    //   console.log(err)
-    // })
-
-      // // Async call to generate the output file:
-      // xlsx.generate(out)
-      // var Heading = [
-      //   ["Employee Details"],
-      //   ["Emp Name", "Emp Sal"]
-      // ];
-      // var Data = [
-      //   {name:"xyz", sal:1000},
-      //   {name:"abc", sal:2000}
-      // ];
-      // var ws = XLSX.utils.aoa_to_sheet(Heading);
-     
-      // XLSX.utils.sheet_add_json(ws, Data, {
-      //   header:["name", "sal"],
-      //   skipHeader:true,
-      //   origin:-1
-      //  });
-       
-      // var cell = ws['A1'];
-      // cell.s = { 
-      //   alignment: { textRotation: 90 }, 
-      //   font: { sz: 16, bold: true, color: '#FF00FF' }, 
-      //   fill: { bgColor: '#FFFFFF' } 
-      // }   
-      
+          
       
   }
 
@@ -732,10 +627,11 @@ export default class BalanceComprobacionComponent extends Vue {
   }
   getSaldoFinaldd(row){
     debugger;
-    var saldoini=this.getfunctiond(row.fltOpening_Balance);
+    var saldoini=row.fltOpening_Balance;
     var total=Number(saldoini)+Number(row.fltDebit_Acc)-Number(row.fltCredit_Acc);
     if(total>0){
       total=Math.abs(total);
+      total=Math.round(total*100)/100;
       row.fltOpening_Balanced=Math.abs(Number(saldoini));
       row.fltClosing_Balanced=total;
       return total;
@@ -747,10 +643,11 @@ export default class BalanceComprobacionComponent extends Vue {
   }
   getSaldoFinalaa(row){
     debugger;
-    var saldoini=this.getfunctiona(row.fltOpening_Balance);
-    var total=-1*Number(saldoini)+Number(row.fltDebit_Acc)-Number(row.fltCredit_Acc);
+    var saldoini=row.fltOpening_Balance;
+    var total=Number(saldoini)+Number(row.fltDebit_Acc)-Number(row.fltCredit_Acc);
     if(total<0){
       total=Math.abs(total);
+      total=Math.round(total*100)/100;
       row.fltOpening_Balancea=Math.abs(Number(saldoini));
       row.fltClosing_Balancea=total;
       return total;
@@ -761,10 +658,11 @@ export default class BalanceComprobacionComponent extends Vue {
   }
   getSaldoFinald(row){
     debugger;
-    var saldoini=this.getfunctiond(row.fltOpening_Balance);
+    var saldoini=row.fltOpening_Balance;
     var total=Number(saldoini)+Number(row.fltDebit_Acc)-Number(row.fltCredit_Acc);
     if(total>0){
       total=Math.abs(total);
+      total=Math.round(total*100)/100;
       row.fltClosing_Balancesd=total;
       return total;
     }
@@ -773,10 +671,11 @@ export default class BalanceComprobacionComponent extends Vue {
   }
   getSaldoFinala(row){
     debugger;
-    var saldoini=this.getfunctiona(row.fltOpening_Balance);
-    var total=-1*Number(saldoini)+Number(row.fltDebit_Acc)-Number(row.fltCredit_Acc);
+    var saldoini=row.fltOpening_Balance;
+    var total=Number(saldoini)+Number(row.fltDebit_Acc)-Number(row.fltCredit_Acc);
     if(total<0){
       total=Math.abs(total);
+      total=Math.round(total*100)/100;
       row.fltClosing_Balancesa=total;
       return total;
     }
@@ -789,7 +688,7 @@ export default class BalanceComprobacionComponent extends Vue {
     
     columns.forEach((column, index) => {
       if (index === 0) {
-        this.sums[index] = 'Costo total';
+        this.sums[index] = ' ';
         return;
       }
       const values = data.map(item => Number(item[column.property]));
@@ -803,18 +702,709 @@ export default class BalanceComprobacionComponent extends Vue {
             
           }
           if (!isNaN(value)) {
-            return prev + curr;
+            var res=Math.round((prev + curr)*100)/100;
+            if(index==6){
+              this.sums1=  res;
+            }
+            if(index==7){
+              this.sums2=  res;
+            }
+            if(index==8){
+              this.sums3=  res;
+            }
+            if(index==9){
+              this.sums4=  res;
+            }
+            return res;
           } else {
             return prev;
           }
         }, 0);
-
+        
       } else {
         this.sums[index] = ' ';
       }
     });
 
     return this.sums;
+  }
+
+  CambiarSaldoFinalD(val){
+    this.rsums1=Math.round((Number(this.sums1)+Number(val))*100)/100;
+  }
+  CambiarSaldoFinalA(val){
+    this.rsums2=Math.round((Number(this.sums2)+Number(val))*100)/100;
+  }
+  CambiarSaldoFinalBA(val){
+    this.rsums4=Math.round((Number(this.sums4)+Number(val))*100)/100;
+  }
+  CambiarSaldoFinalBD(val){
+    this.rsums3=Math.round((Number(this.sums3)+Number(val))*100)/100;
+  }
+
+  export_table_to_excel() {
+    var wb = {
+      "SheetNames": [
+        "Main"
+      ],
+      "Sheets": {
+        "Main": {
+          "!merges": [
+            {
+              "s": {
+                "c": 0,
+                "r": 0
+              },
+              "e": {
+                "c": 2,
+                "r": 1
+              }
+            }
+          ],
+          "A1": {
+            "v": "This is a submerged cell",
+            "s": {
+              "border": {
+                "left": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "top": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "bottom": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            },
+            "t": "s"
+          },
+          "B1": {
+            "v": "Pirate ship",
+            "s": {
+              "border": {
+                "top": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "bottom": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            },
+            "t": "s"
+          },
+          "C1": {
+            "v": "Sunken treasure",
+            "s": {
+              "border": {
+                "right": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "top": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "bottom": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            },
+            "t": "s"
+          },
+          "A2": {
+            "v": "Blank",
+            "t": "s",
+            "s":{
+              "border": {
+                "left": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "top": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "bottom": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            }
+          },
+          "B2": {
+            "v": "Red",
+            "s": {
+              "fill": {
+                "fgColor": {
+                  "rgb": "FFFF0000"
+                }
+              },
+
+              "border": {
+
+                "bottom": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            },
+            "t": "s"
+          },
+          "C2": {
+            "v": "Green",
+            "s": {
+              "fill": {
+                "fgColor": {
+                  "rgb": "FF00FF00"
+                }
+              },
+              "border": {
+
+                "bottom": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "right": {
+                  "style": "thick",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+
+            },
+            "t": "s"
+          },
+          "D2": {
+            "v": "Blue",
+            "s": {
+              "fill": {
+                "fgColor": {
+                  "rgb": "FF0000FF"
+                }
+              }
+            },
+            "t": "s"
+          },
+          "E2": {
+            "v": "Theme 5",
+            "s": {
+              "fill": {
+                "fgColor": {
+                  "theme": 5
+                }
+              }
+            },
+            "t": "s"
+          },
+          "F2": {
+            "v": "Theme 5 Tint -0.5",
+            "s": {
+              "fill": {
+                "fgColor": {
+                  "theme": 5,
+                  "tint": -0.5
+                }
+              }
+            },
+            "t": "s"
+          },
+          "A3": {
+            "v": "Default",
+            "t": "s"
+          },
+          "B3": {
+            "v": "Arial",
+            "s": {
+              "font": {
+                "name": "Arial",
+                "sz": 24,
+                "color": {
+                  "theme": "5"
+                }
+              }
+            },
+            "t": "s"
+          },
+          "C3": {
+            "v": "Times New Roman",
+            "s": {
+              "font": {
+                "name": "Times New Roman",
+                bold: true,
+                underline: true,
+                italic: true,
+                strike: true,
+                outline: true,
+                shadow: true,
+                vertAlign: "superscript",
+                "sz": 16,
+                "color": {
+                  "rgb": "FF2222FF"
+                }
+              }
+            },
+            "t": "s"
+          },
+          "D3": {
+            "v": "Courier New",
+            "s": {
+              "font": {
+                "name": "Courier New",
+                "sz": 14
+              }
+            },
+            "t": "s"
+          },
+          "A4": {
+            "v": 0.618033989,
+            "t": "n"
+          },
+          "B4": {
+            "v": 0.618033989,
+            "t": "n"
+          },
+          "C4": {
+            "v": 0.618033989,
+            "t": "n"
+          },
+          "D4": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0.00%"
+            }
+          },
+          "E4": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0.00%",
+              "fill": {
+                "fgColor": {
+                  "rgb": "FFFFCC00"
+                }
+              }
+            }
+          },
+          "A5": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0%"
+            }
+          },
+          "B5": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0.0%"
+            }
+          },
+          "C5": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0.00%"
+            }
+          },
+          "D5": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0.000%"
+            }
+          },
+          "E5": {
+            "v": 0.618033989,
+            "t": "n",
+            "s": {
+              "numFmt": "0.0000%"
+            }
+          },
+          "F5": {
+            "v": 0,
+            "t": "n",
+            "s": {
+              "numFmt": "0.00%;\\(0.00%\\);\\-;@",
+              "fill": {
+                "fgColor": {
+                  "rgb": "FFFFCC00"
+                }
+              }
+            }
+          },
+          "A6": {
+            "v": "Sat Mar 21 2015 23:47:34 GMT-0400 (EDT)",
+            "t": "s"
+          },
+          "B6": {
+            "v": 42084.99137416667,
+            "t": "n"
+          },
+          "C6": {
+            "v": 42084.99137416667,
+            "s": {
+              "numFmt": "d-mmm-yy"
+            },
+            "t": "n"
+          },
+          "A7": {
+            "v": "left",
+            "s": {
+              "alignment": {
+                "horizontal": "left"
+              }
+            },
+            "t": "s"
+          },
+          "B7": {
+            "v": "center",
+            "s": {
+              "alignment": {
+                "horizontal": "center"
+              }
+            },
+            "t": "s"
+          },
+          "C7": {
+            "v": "right",
+            "s": {
+              "alignment": {
+                "horizontal": "right"
+              }
+            },
+            "t": "s"
+          },
+          "A8": {
+            "v": "vertical",
+            "s": {
+              "alignment": {
+                "vertical": "top"
+              }
+            },
+            "t": "s"
+          },
+          "B8": {
+            "v": "vertical",
+            "s": {
+              "alignment": {
+                "vertical": "center"
+              }
+            },
+            "t": "s"
+          },
+          "C8": {
+            "v": "vertical",
+            "s": {
+              "alignment": {
+                "vertical": "bottom"
+              }
+            },
+            "t": "s"
+          },
+          "A9": {
+            "v": "indent",
+            "s": {
+              "alignment": {
+                "indent": "1"
+              }
+            },
+            "t": "s"
+          },
+          "B9": {
+            "v": "indent",
+            "s": {
+              "alignment": {
+                "indent": "2"
+              }
+            },
+            "t": "s"
+          },
+          "C9": {
+            "v": "indent",
+            "s": {
+              "alignment": {
+                "indent": "3"
+              }
+            },
+            "t": "s"
+          },
+          "A10": {
+            "v": "In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. ",
+            "s": {
+              "alignment": {
+                "wrapText": 1,
+                "horizontal": "right",
+                "vertical": "center",
+                "indent": 1
+              }
+            },
+            "t": "s"
+          },
+          "A11": {
+            "v": 41684.35264774306,
+            "s": {
+              "numFmt": "m/d/yy"
+            },
+            "t": "n"
+          },
+          "B11": {
+            "v": 41684.35264774306,
+            "s": {
+              "numFmt": "d-mmm-yy"
+            },
+            "t": "n"
+          },
+          "C11": {
+            "v": 41684.35264774306,
+            "s": {
+              "numFmt": "h:mm:ss AM/PM"
+            },
+            "t": "n"
+          },
+          "D11": {
+            "v": 42084.99137416667,
+            "s": {
+              "numFmt": "m/d/yy"
+            },
+            "t": "n"
+          },
+          "E11": {
+            "v": 42065.02247239584,
+            "s": {
+              "numFmt": "m/d/yy"
+            },
+            "t": "n"
+          },
+          "F11": {
+            "v": 42084.99137416667,
+            "s": {
+              "numFmt": "m/d/yy h:mm:ss AM/PM"
+            },
+            "t": "n"
+          },
+          "A12": {
+            "v": "Apple",
+            "s": {
+              "border": {
+                "top": {
+                  "style": "thin"
+                },
+                "left": {
+                  "style": "thin"
+                },
+                "right": {
+                  "style": "thin"
+                },
+                "bottom": {
+                  "style": "thin"
+                }
+              }
+            },
+            "t": "s"
+          },
+          "C12": {
+            "v": "Apple",
+            "s": {
+              "border": {
+                "diagonalUp": 1,
+                "diagonalDown": 1,
+                "top": {
+                  "style": "dashed",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "right": {
+                  "style": "medium",
+                  "color": {
+                    "theme": "5"
+                  }
+                },
+                "bottom": {
+                  "style": "hair",
+                  "color": {
+                    "theme": 5,
+                    "tint": "-0.3"
+                  }
+                },
+                "left": {
+                  "style": "thin",
+                  "color": {
+                    "rgb": "FFFFAA00"
+                  }
+                },
+                "diagonal": {
+                  "style": "dotted",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            },
+            "t": "s"
+          },
+          "E12": {
+            "v": "Pear",
+            "s": {
+              "border": {
+                "diagonalUp": 1,
+                "diagonalDown": 1,
+                "top": {
+                  "style": "dashed",
+                  "color": {
+                    "auto": 1
+                  }
+                },
+                "right": {
+                  "style": "dotted",
+                  "color": {
+                    "theme": "5"
+                  }
+                },
+                "bottom": {
+                  "style": "mediumDashed",
+                  "color": {
+                    "theme": 5,
+                    "tint": "-0.3"
+                  }
+                },
+                "left": {
+                  "style": "double",
+                  "color": {
+                    "rgb": "FFFFAA00"
+                  }
+                },
+                "diagonal": {
+                  "style": "hair",
+                  "color": {
+                    "auto": 1
+                  }
+                }
+              }
+            },
+            "t": "s"
+          },
+          "A13": {
+            "v": "Up 90",
+            "s": {
+              "alignment": {
+                "textRotation": 90
+              }
+            },
+            "t": "s"
+          },
+          "B13": {
+            "v": "Up 45",
+            "s": {
+              "alignment": {
+                "textRotation": 45
+              }
+            },
+            "t": "s"
+          },
+          "C13": {
+            "v": "Horizontal",
+            "s": {
+              "alignment": {
+                "textRotation": 0
+              }
+            },
+            "t": "s"
+          },
+          "D13": {
+            "v": "Down 45",
+            "s": {
+              "alignment": {
+                "textRotation": 135
+              }
+            },
+            "t": "s"
+          },
+          "E13": {
+            "v": "Down 90",
+            "s": {
+              "alignment": {
+                "textRotation": 180
+              }
+            },
+            "t": "s"
+          },
+          "F13": {
+            "v": "Vertical",
+            "s": {
+              "alignment": {
+                "textRotation": 255
+              }
+            },
+            "t": "s"
+          },
+          "A14": {
+            "v": "Font color test",
+            "s": {
+              "font": {
+                "color": {
+                  "rgb": "FFC6EFCE"
+                }
+              }
+            },
+            "t": "s"
+          },
+          "!ref": "A1:F14"
+        }
+      }
+    }
+    var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
+    var fname =   'testas.xlsx';
+    try {
+      saveAs(new Blob([this.s2ab(wbout)],{type:"application/octet-stream"}), fname);
+    } catch(e) { if(typeof console != 'undefined') console.log(e, wbout); }
+    return wbout;
+  }
+  s2ab(s) {
+    if(typeof ArrayBuffer !== 'undefined') {
+      var buf = new ArrayBuffer(s.length);
+      var view = new Uint8Array(buf);
+      for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+      return buf;
+    } else {
+      var buf2 = new Array(s.length);
+      for (var i=0; i!=s.length; ++i) buf2[i] = s.charCodeAt(i) & 0xFF;
+      return buf2;
+    }
   }
   data(){
     return{
@@ -825,6 +1415,11 @@ export default class BalanceComprobacionComponent extends Vue {
         authenticated: false
       },
     }
+  }
+  mounted() {
+    let recaptchaScript = document.createElement('script')
+    recaptchaScript.setAttribute('src', 'http://rawgit.com/protobi/js-xlsx/master/dist/xlsx.full.min.js')
+    document.head.appendChild(recaptchaScript)
   }
   
 }

@@ -5,7 +5,7 @@ export class DiarioGeneralModel {
     strAccDocum_NO:string;//*
     dtmPosting_Date:Date;//*   
     strPosting_Status:string;  //*
-    dtmPeriod:any;//*
+    strdtmPeriod:any;//*
     strYear:string;//*
     dtmProcess_Date:Date;//*
     strTypeMov_Cod:string;//se agrega de la tabla maestro de acuerdo a que ventana estoy

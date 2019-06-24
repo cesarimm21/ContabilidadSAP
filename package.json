@@ -42,6 +42,7 @@
     "trumbowyg": "^2.10.0",
     "ts-loader": "^2.3.7",
     "typescript": "^2.5.2",
+    "typescript-require": "^0.2.10",
     "vee-validate": "^2.2.0",
     "vue": "^2.4.4",
     "vue-ads-table-tree": "^2.3.2",
@@ -67,7 +68,8 @@
     "vue-trumbowyg": "^1.0.3",
     "whatwg-fetch": "^2.0.3",
     "xlsx": "^0.14.3",
-    "xlsx-populate": "^1.19.1"
+    "xlsx-populate": "^1.19.1",
+    "xlsx-style": "^0.8.13"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.4",

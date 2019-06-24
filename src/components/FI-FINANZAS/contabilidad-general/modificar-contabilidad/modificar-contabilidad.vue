@@ -66,12 +66,11 @@
                                 <label class="el-form-item__label col-md-2" >Periodo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-date-picker
-                                            :disabled="visualizar"
-                                            v-model="Period"
-                                            size="mini"
-                                            style="width:128px !important">
-                                        </el-date-picker>
+                                        <el-input  
+                                        :disabled="visualizar"
+                                        size ="small" 
+                                        v-model="Period">
+                                        </el-input>
                                     </div>
                                 </div>
                             </div>
