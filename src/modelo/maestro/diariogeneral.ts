@@ -6,7 +6,8 @@ export class DiarioGeneralModel {
     dtmPosting_Date:Date;//*   
     strPosting_Status:string;  //*
     strdtmPeriod:any;//*
-    strYear:string;//*
+    intYear:number;//*
+    intMonth:number;//*
     dtmProcess_Date:Date;//*
     strTypeMov_Cod:string;//se agrega de la tabla maestro de acuerdo a que ventana estoy
     strTypeMov_Desc:string;
@@ -85,7 +86,9 @@ export class DiarioGeneralModel {
         this.strAccDocum_NO='';
         this.dtmPosting_Date=new Date();
         this.strPosting_Status='';
-        this.strYear='';
+        this.strdtmPeriod='';
+        this.intYear=0;
+        this.intMonth=0;
         this.dtmProcess_Date=new Date();
         this.strTypeMov_Cod='';
         this.strTypeMov_Desc='';

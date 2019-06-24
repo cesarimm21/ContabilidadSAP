@@ -21,6 +21,19 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  createtblMoneda(data){
+    return axios.post(CONFIG.API_URL+'moneda/create',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  updatetblMoneda(data){
+    return axios.post(CONFIG.API_URL+'moneda/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+
 }
   

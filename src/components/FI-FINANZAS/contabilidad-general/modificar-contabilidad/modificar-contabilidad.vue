@@ -98,6 +98,7 @@
                                         :disabled="visualizar"
                                         v-model="Posting_Date"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                     </div>
@@ -109,6 +110,7 @@
                                         :disabled="visualizar"
                                         v-model="Doc_Date"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                     </div>

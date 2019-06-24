@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Pais</span>
+                <span class="labelheadercard" > Crear Almacen</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -44,13 +44,35 @@
                             </div>
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Ubicacion</label>
-                                <div class="col-sm-2 grupolabel">
+                                <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
                                         <el-input class="validador" size="small" v-model="almacen.strLocation"  >
                                         </el-input>
                                     </div>
                                 </div>
-                            </div>     
+                            </div>   
+                            <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Sucursal</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod">                            
+                                        <el-button v-if="btnactivarsucursal && !sucursalVisible" slot="append" class="boton" icon="fa fa-clone" @click="sucursalDialog()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-2">{{sucursal.strSubsidiary_Desc}}</label>
+                            </div> 
+                            <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Planta</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input class="validador" size ="small" @blur="desactivar_planta" @focus="activar_planta" v-model="almacen.strPlant_Cod">                            
+                                        <el-button v-if="btnactivarplanta && !plantaVisible" slot="append" class="boton" icon="fa fa-clone" @click="plantaDialog()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <label class="sinLinea el-form-item__label col-md-2">{{planta.strPlan_Desc}}</label>
+                            </div>   
                         </div>                         
                     </div>
                 </div>
@@ -80,6 +102,16 @@
                 </div>
             </div>            
         </div>   
+        <!--DIALOG BUSQUEDA PLANTA-->
+    <el-dialog title="Busqueda Planta"  :visible.sync="plantaVisible" @close="handleClosePlanta" size="small" >
+        <bplanta v-on:plantaselecionado="plantaSelect($event)" v-on:plantaClose="handleClosePlanta()">
+        </bplanta>
+    </el-dialog> 
+        <!--DIALOG BUSQUEDA SUCURSAL-->
+    <el-dialog title="Busqueda Sucursal"  :visible.sync="sucursalVisible" @close="handleCloseSucursal" size="small" >
+        <bsucursal v-on:sucursalselecionado="sucursalSelect($event)" v-on:sucursalClose="handleCloseSucursal()">
+        </bsucursal>
+    </el-dialog> 
     </div>  
 </template>
 <script>
@@ -88,5 +120,8 @@ import CrearAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/crear_a
 export default CrearAlmacenComponent
 </script>
 <style scoped>
-    
+   .sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+} 
 </style>

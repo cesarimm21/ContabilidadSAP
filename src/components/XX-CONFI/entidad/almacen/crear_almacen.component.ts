@@ -3,13 +3,20 @@ import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
+import { Loading } from 'element-ui';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
+import {PlantaModel} from '@/modelo/maestro/planta';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import almacenService from '@/components/service/almacen.service';
+import BPlantaComponent from '@/components/buscadores/b_planta/b_planta.vue';
+import BSucursalComponent from '@/components/buscadores/b_sucursal/b_sucursal.vue';
+import { SucursalModel } from '@/modelo/maestro/sucursal';
 @Component({
   name: 'crear-almacen',
   components:{
-  'quickaccessmenu':QuickAccessMenuComponent
+  'quickaccessmenu':QuickAccessMenuComponent,
+  'bplanta':BPlantaComponent,
+  'bsucursal':BSucursalComponent,
   }
 })
 export default class CrearAlmacenComponent extends Vue {
@@ -19,11 +26,15 @@ export default class CrearAlmacenComponent extends Vue {
   companyName:any;
   companyCod:any;
   public almacen:AlmacenModel=new AlmacenModel();
+  public planta:PlantaModel=new PlantaModel();
+  public sucursal:SucursalModel=new SucursalModel();
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-  monedaVisible:boolean=false;
-  btnactivarmonedaA:boolean=false;
+  btnactivarsucursal:boolean=false;
+  btnactivarplanta:boolean=false;
+  plantaVisible:boolean=false;
+  sucursalVisible:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='crear-almacen';
@@ -35,6 +46,56 @@ export default class CrearAlmacenComponent extends Vue {
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');  
     }  
+    //#region [SUCURSAL]
+    desactivar_sucursal(){
+      if(this.sucursalVisible){
+        this.btnactivarsucursal=false;
+      }
+  } 
+  activar_sucursal(){
+      setTimeout(() => {
+        this.btnactivarsucursal=true;
+        this.btnactivarplanta=false;
+      }, 120)
+    } 
+  sucursalDialog(){
+      this.sucursalVisible=true;  
+  }
+  handleCloseSucursal(){
+      this.sucursalVisible=false;
+    }
+    sucursalSelect(val:SucursalModel){
+      this.sucursal=val;  
+      this.almacen.intIdSubsidiary_ID=this.sucursal.intIdSubsidiary_ID;
+      this.almacen.strSubsidiary_Cod=this.sucursal.strSubsidiary_Cod;     
+      this.sucursalVisible=false;
+    }
+    //#endregion
+    //#region [PLANTA]
+    desactivar_planta(){
+      if(this.plantaVisible){
+        this.btnactivarplanta=false;
+      }
+  } 
+  activar_planta(){
+      setTimeout(() => {
+        this.btnactivarsucursal=false;
+        this.btnactivarplanta=true;
+      }, 120)
+    } 
+  plantaDialog(){
+    this.plantaVisible=true;
+  }
+    handleClosePlanta(){
+      this.plantaVisible=false;
+    }
+    plantaSelect(val:PlantaModel){
+      this.planta=val;
+      this.almacen.intPlant_ID=this.planta.intPlant_ID;
+      this.almacen.strPlant_Cod=this.planta.strPlant_Cod;
+      this.plantaVisible=false;
+    }
+    //#endregion
     
     guardarAlmacen(){
       var user:any=localStorage.getItem('User_Usuario');
@@ -42,18 +103,38 @@ export default class CrearAlmacenComponent extends Vue {
       this.almacen.strCreation_User=user;
       this.almacen.intIdCompany_ID=id;
       this.almacen.strCompany_Cod=this.companyCod;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        );     
       if(this.almacen.strWHS_Cod!=''&&this.almacen.strWHS_Desc!=''){
         almacenService.crearAlmacen(this.almacen)
         .then(resp=>{
+          loadingInstance.close();
           this.$message({
               showClose: true,
                 type: 'success',
-                message: 'Se guardo Correctamente '
+                message: 'Se guardo Correctamente '+resp
               });
               this.almacen=new AlmacenModel();
+              this.planta=new PlantaModel();
+              this.sucursal=new SucursalModel();
               this.issave = true;
               this.iserror = false;
-              this.textosave = 'Se guardo correctamente. '+resp.strWHS_Cod;
+              this.textosave = 'Se guardo correctamente. '+resp;
+          }).catch(errorss=>{
+            loadingInstance.close();
+            this.$message({
+              showClose: true,
+                type:'error',
+                message: 'No se guardo Correctamente '
+              });
+              this.issave = false;
+              this.iserror = true;
+              this.textosave = 'No se guardo Correctamente ';
           })
       }
       else{

@@ -86,6 +86,43 @@ import ModificarTipoCambioComponent from '../components/XX-CONFI/maestro_datos/t
 import VisualizarTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/visua_tcambio/visua_tcambio.vue'
 import ViewAndEditTipoCambioComponent from '../components/XX-CONFI/maestro_datos/tipo_cambio/viewandedit_tcambio/viewandedit_t.vue'
 
+import CrearDocIdentidadComponent from '../components/XX-CONFI/maestro_datos/tipo_docIndentidad/crear_docIndentidad.vue'
+import ModificarDocIdentidadComponent from '../components/XX-CONFI/maestro_datos/tipo_docIndentidad/modificar_docIndentidad.vue'
+import VisualizarTDocIdentidadComponent from '../components/XX-CONFI/maestro_datos/tipo_docIndentidad/visualizar_docIndentidad.vue'
+import ViewAndEditDocIdentidadComponent from '../components/XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad.vue'
+
+import CrearComprobPagoComponent from '../components/XX-CONFI/maestro_datos/tipo_comprobPago/crear_comprobPago.vue'
+import ModificarComprobPagoComponent from '../components/XX-CONFI/maestro_datos/tipo_comprobPago/modificar_comprobPago.vue'
+import VisualizarComprobPagoComponent from '../components/XX-CONFI/maestro_datos/tipo_comprobPago/visualizar_comprobPago.vue'
+import ViewAndEditComprobPagoComponent from '../components/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago.vue'
+
+import CrearAdquisicionComponent from '../components/XX-CONFI/maestro_datos/tipo_adquisicion/crear_adquisicion.vue'
+import ModificarAdquisicionComponent from '../components/XX-CONFI/maestro_datos/tipo_adquisicion/modificar_adquisicion.vue'
+import VisualizarAdquisicionComponent from '../components/XX-CONFI/maestro_datos/tipo_adquisicion/visualizar_adquisicion.vue'
+import ViewAndEditAdquisicionComponent from '../components/XX-CONFI/maestro_datos/tipo_adquisicion/viewandedit_adquisicion.vue'
+
+import CrearServicioComponent from '../components/XX-CONFI/maestro_datos/servicio_prestado/crear_servicio.vue'
+import ModificarServicioComponent from '../components/XX-CONFI/maestro_datos/servicio_prestado/modificar_servicio.vue'
+import VisualizarServicioComponent from '../components/XX-CONFI/maestro_datos/servicio_prestado/visualizar_servicio.vue'
+import ViewAndEditServicioComponent from '../components/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio.vue'
+
+import CrearMetodoDepComponent from '../components/XX-CONFI/maestro_datos/meto_depresacion/crear_metododep.vue'
+import ModificarMetodoDepComponent from '../components/XX-CONFI/maestro_datos/meto_depresacion/modificar_metododep.vue'
+import VisualizarMetodoDepComponent from '../components/XX-CONFI/maestro_datos/meto_depresacion/visualizar_metododep.vue'
+import ViewAndEditMetodoDepComponent from '../components/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep.vue'
+
+import CrearAduanaComponent from '../components/XX-CONFI/maestro_datos/aduana/crear_aduana.vue'
+import ModificarAduanaComponent from '../components/XX-CONFI/maestro_datos/aduana/modificar_aduana.vue'
+import VisualizarAduanaComponent from '../components/XX-CONFI/maestro_datos/aduana/visualizar_aduana.vue'
+import ViewAndEditAduanaComponent from '../components/XX-CONFI/maestro_datos/aduana/viewandedit_aduana.vue'
+
+import CrearMedioPagoComponent from '../components/XX-CONFI/maestro_datos/medio_pago/crear_mediopago.vue'
+import ModificarMedioPagoComponent from '../components/XX-CONFI/maestro_datos/medio_pago/modificar_mediopago.vue'
+import VisualizarMedioPagoComponent from '../components/XX-CONFI/maestro_datos/medio_pago/visualizar_mediopago.vue'
+import ViewAndEditMedioPagoComponent from '../components/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago.vue'
+
+
+
 import  CrearContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/crear-contabilidad/crear-contabilidad.vue';
 import  CrearCuentaContableComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/crear-cuenta-contable/crear-cuenta-contable.vue';
 import  CrearElementoGastoComponent from '../components/FI-FINANZAS/maestro-datos/contabilidad-general/elemento-gasto/crear-elemento-gasto/crear-elemento-gasto.vue';
@@ -111,9 +148,19 @@ import CrearPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/c
 import ModificarPeriodoComponent from '@/components/XX-CONFI/maestro_datos/periodo/edit_periodo/edit_periodo.vue'
 
 import CrearAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/crear_almacen.vue'
+import ModificarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/modificar_al.vue'
+import VisualizarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/visualizar_al.vue'
+import ViewAndEditAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/viewandedit_al.vue'
+
+
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
 import ViewAndEditUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um.vue'
+
+import CrearMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/crear_moneda.vue'
+import ModificarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/modificar_moneda.vue'
+import VisualizarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/visualizar_moneda.vue'
+import ViewAndEditMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/viewandedit_moneda.vue'
 
 import CrearPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P01-Crear.vue'
 import ModificarPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P02-Modificar.vue'
@@ -498,6 +545,148 @@ export default [
         component:CrearTipoCambioComponent,
         name:'crear-tipo-cambio'
       }, 
+
+      //nuevos ultimos 
+      {
+        path:'XX-CONFI/maestro_datos/medio_pago/crear_mediopago',
+        component:CrearMedioPagoComponent,
+        name:'crear-mediopago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/medio_pago/modificar_mediopago',
+        component:ModificarMedioPagoComponent,
+        name:'modificar-mediopago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/medio_pago/visualizar_mediopago',
+        component:VisualizarMedioPagoComponent,
+        name:'visualizar-mediopago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago',
+        component:ViewAndEditMedioPagoComponent,
+        name:'viewandedit-mediopago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/aduana/crear_aduana',
+        component:CrearAduanaComponent,
+        name:'crear-aduana'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/aduana/modificar_aduana',
+        component:ModificarAduanaComponent,
+        name:'modificar-aduana'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/aduana/visualizar_aduana',
+        component:VisualizarAduanaComponent,
+        name:'visualizar-aduana'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/aduana/viewandedit_aduana',
+        component:ViewAndEditAduanaComponent,
+        name:'viewandedit-aduana'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/meto_depresacion/crear_metododep',
+        component:CrearMetodoDepComponent,
+        name:'crear-metododep'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/meto_depresacion/modificar_metododep',
+        component:ModificarMetodoDepComponent,
+        name:'modificar-metododep'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/meto_depresacion/visualizar_metododep',
+        component:VisualizarMetodoDepComponent,
+        name:'visualizar-metododep'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep',
+        component:ViewAndEditMetodoDepComponent,
+        name:'viewandedit-metododep'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/servicio_prestado/crear_servicio',
+        component:CrearServicioComponent,
+        name:'crear-servicio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/servicio_prestado/modificar_servicio',
+        component:ModificarServicioComponent,
+        name:'modificar-servicio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/servicio_prestado/visualizar_servicio',
+        component:VisualizarServicioComponent,
+        name:'visualizar-servicio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio',
+        component:ViewAndEditServicioComponent,
+        name:'viewandedit-servicio'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_adquisicion/crear_adquisicion',
+        component:CrearAdquisicionComponent,
+        name:'crear-adquisicion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_adquisicion/modificar_adquisicion',
+        component:ModificarAdquisicionComponent,
+        name:'modificar-adquisicion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_adquisicion/visualizar_adquisicion',
+        component:VisualizarAdquisicionComponent,
+        name:'visualizar-adquisicion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_adquisicion/viewandedit_adquisicion',
+        component:ViewAndEditAdquisicionComponent,
+        name:'viewandedit-adquisicion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_comprobPago/crear_comprobPago',
+        component:CrearComprobPagoComponent,
+        name:'crear-comprobPago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_comprobPago/modificar_comprobPago',
+        component:ModificarComprobPagoComponent,
+        name:'modificar-comprobPago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_comprobPago/visualizar_comprobPago',
+        component:VisualizarComprobPagoComponent,
+        name:'visualizar-comprobPago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago',
+        component:ViewAndEditComprobPagoComponent,
+        name:'viewandedit-comprobPago'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_docIndentidad/crear_docIndentidad',
+        component:CrearDocIdentidadComponent,
+        name:'crear-docidentidad'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_docIndentidad/modificar_docIndentidad',
+        component:ModificarDocIdentidadComponent,
+        name:'modificar-docidentidad'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_docIndentidad/visualizar_docIndentidad',
+        component:VisualizarTDocIdentidadComponent,
+        name:'visualizar-docidentidad'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad',
+        component:ViewAndEditDocIdentidadComponent,
+        name:'viewandedit-docidentidad'
+      }, 
       {
         path:'XX-CONFI/maestro_datos/correlativo/crear_correlativo',
         component:CrearCorrelativoComponent,
@@ -548,25 +737,25 @@ export default [
       {
         path:'XX-CONFI/maestro_datos/compania/visu_compania',
         component:VisuCompaniaComponent,
-        name:'crear-region'
+        name:'crear-compania'
       }, 
 
       {
         path:'XX-CONFI/maestro_datos/compania/viewandedit_compania',
         component:ViewAndEditCompaniaComponent,
-        name:'modif-region'
+        name:'modif-compania'
       }, 
 
       {
         path:'XX-CONFI/maestro_datos/compania/modif_compania',
         component:ModificarCompaniaComponent,
-        name:'view-and-edit-region'
+        name:'view-and-edit-compania'
       }, 
 
       {
         path:'XX-CONFI/maestro_datos/compania/crear_compania',
         component:CrearCompaniaComponent,
-        name:'visu-region'
+        name:'visu-compania'
       }, 
       {
         path:'XX-CONFI/maestro_datos/tipo_movimiento/crear_tipo_movimiento',
@@ -947,6 +1136,41 @@ export default [
         path:'XX-CONFI/entidad/almacen/crear_almacen',
         component:CrearAlmacenComponent,
         name:'crear-almacen'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/modificar_al',
+        component:ModificarAlmacenComponent,
+        name:'modificar-almacen'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/visualizar_al',
+        component:VisualizarAlmacenComponent,
+        name:'visualizar-almacen'
+      }, 
+      {
+        path:'XX-CONFI/entidad/almacen/viewandedit_al',
+        component:ViewAndEditAlmacenComponent,
+        name:'viewandedit-almacen'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/crear_moneda',
+        component:CrearMonedaComponent,
+        name:'crear-moneda'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/modificar_moneda',
+        component:ModificarMonedaComponent,
+        name:'modificar-moneda'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/visualizar_moneda',
+        component:VisualizarMonedaComponent,
+        name:'visualizar-moneda'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/moneda/viewandedit_moneda',
+        component:ViewAndEditMonedaComponent,
+        name:'viewandedit-moneda'
       }, 
       {
         path:'LO-LOGISTICA/orden_compra/po_modificar',

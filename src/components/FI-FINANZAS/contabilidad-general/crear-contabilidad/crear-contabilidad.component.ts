@@ -866,6 +866,13 @@ closeCategoriaCuenta(){
     }
   }
   guardarTodo(){
+    var dateString = new Date();
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    var anio=new Date().getFullYear();
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Guardando...',
