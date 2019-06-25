@@ -5,7 +5,7 @@ export class DiarioModel {
     strDaily_Type:string;
     strDaily_AccLocal:string;
     strDaily_AccForen:string;
-    strUser_ID:string;
+    strCreation_User:string;
     dtmCreation_Date:Date;
     strModify_User:string;
     dmModified_Date:Date;
@@ -17,7 +17,7 @@ export class DiarioModel {
         this.strDaily_Type='';
         this.strDaily_AccLocal='';
         this.strDaily_AccForen='';
-        this.strUser_ID='';
+        this.strCreation_User='';
         this.dtmCreation_Date=new Date();
         this.strModify_User='';
         this.dmModified_Date=new Date();

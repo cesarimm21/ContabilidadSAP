@@ -1,6 +1,6 @@
 export class CuentaBancariaModel {
     intIdBankAcct_ID:number;
-    strAcc_Local_NO:string | null;
+    strAcc_Local_NO:string;
     strBank_Account:string | null;
     strBank_Account_CCI:string | null;
     strBranch_Cod:string | null;

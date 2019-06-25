@@ -15,8 +15,10 @@ import {PeriodoModel} from '@/modelo/maestro/periodo';
 import {ProveedorModel} from '@/modelo/maestro/proveedor';
 import {FacturaModel} from '@/modelo/maestro/factura';
 import {MedioPagoModel} from '@/modelo/maestro/medioPago';
+import {DiarioGeneralModel} from '@/modelo/maestro/diariogeneral';
 import {CuentaBancariaModel} from '@/modelo/maestro/cuentaBancaria';
 import RunPagosService from '@/components/service/runpagos.service';
+import DiarioGeneralService from '@/components/service/diariogeneral.service';
 import mediopagoService from '@/components/service/mediopago.service';
 import FacturaService from '@/components/service/factura.service'
 import periodoService from '@/components/service/periodo.service';
@@ -28,6 +30,7 @@ import Global from '@/Global';
 import proveedorService from '@/components/service/proveedor.service';
 import documentsService from '@/components/service/documents.service';
 import { Alert } from '@/types';
+import { CuentaContableModel } from '@/modelo/maestro/cuentacontable';
 @Component({
     name: 'pagos-individual',
     components: { 
@@ -158,7 +161,7 @@ export default class PagosIndividualesComponent extends Vue {
       this.mediopago=val;
     }
     SelectMedioPago(val){
-      this.pago.intIdPayWay_ID=this.mediopago.intIdPayWay_ID;
+      this.pago.intIdPayWay_ID=this.mediopago.intIdPayWay_ID;      
       this.pago.strPayWay_Cod=this.mediopago.strPayWay_Cod;
       this.dialogMediopago=false;
     }
@@ -187,7 +190,7 @@ export default class PagosIndividualesComponent extends Vue {
     SeleccionadoCuenta(){
       this.VisibleCuenta=false;
     }
-    handleCuenta(val){
+    handleCuenta(val:CuentaBancariaModel){
       this.cuenta=val;
     }
     //#endregion
@@ -443,10 +446,35 @@ export default class PagosIndividualesComponent extends Vue {
         this.pago.dtmPayRun_Date=new Date(this.fecha_ejecucion);
         this.pago.dtmPayRunPay_Date=new Date(this.DateContabilizacion);
         var user:any=localStorage.getItem('User_Usuario');
+
         this.pago.strCreation_User=user;
         // this.pago.fltAmount_Total=0;
         this.pago.strPayRun_Status='00';
         // this.ExportarPDF('28052019-1-PEN');
+        var anio=new Date().getFullYear();
+        var dateString = new Date();
+        var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var item_10:DiarioGeneralModel=new DiarioGeneralModel();
+        item_10.strCompany_Cod=this.codigoCompania;
+        item_10.strCompany_Desc=this.descripcionCompania;
+        item_10.dtmPosting_Date=new Date();
+        item_10.dtmProcess_Date=new Date();
+        item_10.strdtmPeriod=mes+'.'+anio;
+        item_10.intYear=anio;
+        item_10.intMonth=mes;
+        item_10.strDoc_Status='50';
+        item_10.strApproved_Status='A';
+        item_10.strApproved_User=user;
+        item_10.dtmApproved_Date=new Date();
+        item_10.intDoc_No=1;
+        item_10.strCreation_User=user;
+        item_10.dtmCreation_Date=new Date();
+        item_10.chrStatus='A';
+        item_10.strAcc_Local_NO=this.cuenta.strAcc_Local_NO;
+        item_10.fltPaid_Vendor=this.pago.fltAmount_Total;
+        item_10.strBank_Cod=this.pago.strPayRun_Curr;
+
         if(this.multipleSelection.length>0){        
             this.pago.listaDetalle=this.multipleSelection;
             let loadingInstance = Loading.service({
@@ -459,6 +487,7 @@ export default class PagosIndividualesComponent extends Vue {
             RunPagosService.CreateRunPagos(this.pago) 
             .then(response=>{
                 
+              DiarioGeneralService.createrun10DiarioGeneral(item_10).then(next=>{}).catch(er=>{})
                 this.issave = true;
                 this.iserror = false;
                 this.pago=new PagosModel();

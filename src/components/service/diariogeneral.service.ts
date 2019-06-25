@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  createrun10DiarioGeneral(data){   
+    return axios.post(CONFIG.API_URL+'diariogeneralrun10',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   createDiarioGeneralAutoReverse(data){   
     return axios.post(CONFIG.API_URL+'diariogeneral/autoreverse',data)
     .then(response =>{            

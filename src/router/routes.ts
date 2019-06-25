@@ -121,6 +121,16 @@ import ModificarMedioPagoComponent from '../components/XX-CONFI/maestro_datos/me
 import VisualizarMedioPagoComponent from '../components/XX-CONFI/maestro_datos/medio_pago/visualizar_mediopago.vue'
 import ViewAndEditMedioPagoComponent from '../components/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago.vue'
 
+import CrearExoOperacionComponent from '../components/XX-CONFI/maestro_datos/exo_operacion/crear_exooperacion.vue'
+import ModificarExoOperacionComponent from '../components/XX-CONFI/maestro_datos/exo_operacion/modificar_exooperacion.vue'
+import VisualizarExoOperacionComponent from '../components/XX-CONFI/maestro_datos/exo_operacion/visualizar_exooperacion.vue'
+import ViewAndEditExoOperacionComponent from '../components/XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion.vue'
+
+import CrearCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/crear_codigodiario.vue'
+import ModificarCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/modificar_codigodiario.vue'
+import VisualizarCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/visualizar_codigodiario.vue'
+import ViewAndEditCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario.vue'
+
 
 
 import  CrearContabilidadComponent from '../components/FI-FINANZAS/contabilidad-general/crear-contabilidad/crear-contabilidad.vue';
@@ -255,6 +265,7 @@ import ModificarSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucu
 import CrearSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal/crear_sucursal/crear_sucursal.vue'
 
 import BalanceComprobacionComponent from '@/components/FI-FINANZAS/libros-balance/balance-comprobacion/balance-comprobacion.vue'
+import CajaBancosComponent from '@/components/FI-FINANZAS/libros-balance/cajabancos/cajabancos.vue'
 
 export default [
  
@@ -547,6 +558,46 @@ export default [
       }, 
 
       //nuevos ultimos 
+      {
+        path:'XX-CONFI/maestro_datos/codigo_diario/crear_codigodiario',
+        component:CrearCodigoDiarioComponent,
+        name:'crear-codigodiario'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/codigo_diario/modificar_codigodiario',
+        component:ModificarCodigoDiarioComponent,
+        name:'modificar-codigodiario'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/codigo_diario/visualizar_codigodiario',
+        component:VisualizarCodigoDiarioComponent,
+        name:'visualizar-codigodiario'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario',
+        component:ViewAndEditCodigoDiarioComponent,
+        name:'viewandedit-codigodiario'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/exo_operacion/crear_exooperacion',
+        component:CrearExoOperacionComponent,
+        name:'crear-exooperacion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/exo_operacion/modificar_exooperacion',
+        component:ModificarExoOperacionComponent,
+        name:'modificar-exooperacion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/exo_operacion/visualizar_exooperacion',
+        component:VisualizarExoOperacionComponent,
+        name:'visualizar-exooperacion'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion',
+        component:ViewAndEditExoOperacionComponent,
+        name:'viewandedit-exooperacion'
+      }, 
       {
         path:'XX-CONFI/maestro_datos/medio_pago/crear_mediopago',
         component:CrearMedioPagoComponent,
@@ -964,6 +1015,11 @@ export default [
         path:'FI-FINANZAS/libros-balance/balance-comprobacion',
         component:BalanceComprobacionComponent,
         name:'BalanceComprobacionComponent'
+      }, 
+      {
+        path:'FI-FINANZAS/libros-balance/cajabancos',
+        component:CajaBancosComponent,
+        name:'crear-cajabancos'
       }, 
       
       

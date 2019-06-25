@@ -53,7 +53,7 @@ export class DiarioGeneralModel {
     intHES_Item_NO:number;
     strDesc_Header:string;
     strPayRun_NO:string;
-    strPaid_Vendor:string;
+    fltPaid_Vendor:number;
     strBank_Cod:string;
     dtmPayRun_Date:Date;
     fltExchange_Rate:number;
@@ -135,7 +135,7 @@ export class DiarioGeneralModel {
         this.intHES_Item_NO=0;
         this.strDesc_Header='';
         this.strPayRun_NO='';
-        this.strPaid_Vendor='';
+        this.fltPaid_Vendor=0;
         this.strBank_Cod='';
         this.dtmPayRun_Date=new Date();
         this.fltExchange_Rate=0;

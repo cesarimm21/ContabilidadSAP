@@ -12,7 +12,6 @@ export default{
     })
   },
   GetOnlyOneCategoriaCuenta(code){
-    console.log(CONFIG.API_URL+'categoriacuenta/'+code);
     return axios.get(CONFIG.API_URL+'categoriacuenta/'+code)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));

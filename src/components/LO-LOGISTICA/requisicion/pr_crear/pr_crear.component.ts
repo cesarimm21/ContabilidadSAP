@@ -228,7 +228,7 @@ export default class CrearPRComponent extends Vue {
   constructor(){
     super();
     this.fecha_actual=(new Date()).toString();
-    debugger;
+    
     Global.nameComponent="requisicion"
     this.cell_ocultar='#e4e2e2';        
     this.border_width='0px';        
@@ -244,27 +244,23 @@ export default class CrearPRComponent extends Vue {
   }
 
   load(){
-    debugger;
+    
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
     this.requisicionModel.strCompany_Cod=cod;
     this.requisicionModel.strCompany_Desc=desc;
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
-      debugger;
       this.tabletipoRequisicion=res;
       this.tiporequisicion="A";    
       this.tiporequisicionant='A';
   
     })
     .catch(error=>{
-      console.log('error',error)
     })
     categoriacuentaService.GetOnlyOneCategoriaCuenta("ST")
     .then(res=>{
-      this.categoriaCuentaModel=res[0];
-      console.log('Categoria-Cuenta',this.categoriaCuentaModel);
-      debugger;
+      this.categoriaCuentaModel=res;
       for(var i=0;i<this.totalRegistros;i++){
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
         reqDetalle.strCateg_Account="ST";
@@ -278,18 +274,15 @@ export default class CrearPRComponent extends Vue {
 
     })
     .catch(error=>{
-      console.log('error',error)
     })
     maestroService.GetMaestro('VIEW','LA05') 
     .then(res=>{
-      debugger;
       if(res!=undefined){
         this.strTypeMov_Cod=res.strTypeMov_Cod;
         this.strTypeMov_Desc=res.strTypeMov_Desc;
       }
     })
     .catch(error=>{
-      console.log('error',error)
     });
   }
 
@@ -369,7 +362,7 @@ export default class CrearPRComponent extends Vue {
     //   });
   }
   tableRowClassName(row, rowIndex) {
-      debugger;
+      
     // if (row === undefined || row.EstadoAprobacion === undefined) return '';
     // if (row.EstadoAprobacion === 'R'){
     //   return 'rechazado-row';
@@ -381,13 +374,13 @@ export default class CrearPRComponent extends Vue {
     // return '';
   }
   // handleCurrentChange(val) {
-  //   debugger;
+  //   
   //   this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
   //   this.intlineaselect=val.intRequis_Item_NO-1;
   //   this.currentRow = val;
   // }
   handleCurrentChange(val) {
-    debugger;
+    
     if(val!=undefined){
       this.txtnroline="["+val.intRequis_Item_NO+"] "+val.strDescription;
       if(val.intRequis_Item_NO==0){
@@ -410,32 +403,27 @@ export default class CrearPRComponent extends Vue {
       this.strVendor_NOs=val.strVendor_NO==undefined?'':val.strVendor_NO;
       this.strVendor_Descs=val.strVendor_Desc==undefined?'':val.strVendor_Desc;
       this.fltFactors=val.fltFactor==undefined?'':val.fltFactor;
-      console.log(this.currentRow);
       this.getDetalle(val);
     }
   }
 
   getDetalle(val){
-    debugger;
+    
     if(val.strDescription!='' && val.strDescription!=undefined)
     {
       productoService.GetOnlyOneProducto(val.strMaterial_Cod)
       .then(res=>{
         this.productoModel=res[0];
-        console.log('producto--obtener',this.productoModel);
         this.getTotals=this.productoModel.fltPrecUnit_Local*this.selectrow.fltQuantity;
       })
       .catch(error=>{
-        console.log('error',error)
       })
 
       proveedorService.GetOnlyOneProveedor(val.strVendor_Suggested)
       .then(res=>{
         this.proveedorModel=res[0];
-        console.log('proveedor--obtener',this.proveedorModel);
       })
       .catch(error=>{
-        console.log('error',error)
       })
       
     }
@@ -443,7 +431,7 @@ export default class CrearPRComponent extends Vue {
 
 
  async nextTable(){
-    debugger;
+    
     
     var data:any=this.$refs.missionTable;
     
@@ -477,7 +465,7 @@ export default class CrearPRComponent extends Vue {
     this.fltQuantitys=this.tableData1[res].fltQuantity==undefined?'':this.tableData1[res].fltQuantity;
     this.dtmDelivery_Dates=await this.tableData1[res].dtmDelivery_Date==undefined?'':this.getParseDate(this.tableData1[res].dtmDelivery_Date);
     this.dtmRequested_Dates=await this.tableData1[res].dtmRequested_Date==undefined?'':this.getParseDate(this.tableData1[res].dtmRequested_Date);
-    debugger;
+    
     this.fltUnitPrices=this.tableData1[res].fltUnitPrice==undefined?'':this.tableData1[res].fltUnitPrice;
     this.fltValue_Totals=this.tableData1[res].fltValue_Total==undefined?'':this.tableData1[res].fltValue_Total;
     this.strAccount_NOs=this.tableData1[res].strAccount_NO==undefined?'':this.tableData1[res].strAccount_NO;
@@ -492,12 +480,12 @@ export default class CrearPRComponent extends Vue {
 
     var document:any = this.$refs.missionTable;
     document.setCurrentRow(this.tableData1[res]);
-    debugger;
+    
     
       
   }
   async backTable(){
-    debugger;
+    
     if(this.intlineaselect>0){
       this.intlineaselect--;
     }
@@ -527,7 +515,7 @@ export default class CrearPRComponent extends Vue {
     this.fltQuantitys=this.tableData1[res].fltQuantity==undefined?'':this.tableData1[res].fltQuantity;
     this.dtmDelivery_Dates=await this.tableData1[res].dtmDelivery_Date==undefined?'':this.getParseDate(this.tableData1[res].dtmDelivery_Date);
     this.dtmRequested_Dates=await this.tableData1[res].dtmRequested_Date==undefined?'':this.getParseDate(this.tableData1[res].dtmRequested_Date);
-    debugger;
+    
     this.fltUnitPrices=this.tableData1[res].fltUnitPrice==undefined?'':this.tableData1[res].fltUnitPrice;
     this.fltValue_Totals=this.tableData1[res].fltValue_Total==undefined?'':this.tableData1[res].fltValue_Total;
     this.strAccount_NOs=this.tableData1[res].strAccount_NO==undefined?'':this.tableData1[res].strAccount_NO;
@@ -551,14 +539,14 @@ export default class CrearPRComponent extends Vue {
     }, 120)
   }
   desactivar_compania(){
-    debugger;
+    
     if(this.dialogCompania){
       this.btnactivarcompania=false;
     }
   }
  
   closeCompania(){
-    debugger;
+    
     this.btnactivarcompania=false;
     return false;
   }
@@ -582,19 +570,19 @@ export default class CrearPRComponent extends Vue {
     }, 120)
   }
   desactivar_proveedor(){
-    debugger;
+    
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
   }
   closeProveedor(){
-    debugger;
+    
     this.btnactivarproveedor=false;
     this.dialogProveedor=false;
     return false;
   }
   closeMaterial(){
-    debugger;
+    
     this.dialogMaterial=false;
     this.btnactivarmaterial=false;
     return false;
@@ -623,20 +611,19 @@ export default class CrearPRComponent extends Vue {
   /*Almacen imput*/
   activar_almacen(){
     setTimeout(() => {
-      console.log("activar_almacen");
       this.btnactivaralmacen=true;
       this.btnactivarcompania=false;
       this.btnactivarproveedor=false;
     }, 120)
   }
   desactivar_almacen(){
-    debugger;
+    
     if(this.dialogAlmacen){
       this.btnactivaralmacen=false;
     }
   }
   closeAlmacen(){
-    debugger;
+    
     this.dialogAlmacen=false;
     this.btnactivaralmacen=false;
     return false;
@@ -647,13 +634,19 @@ export default class CrearPRComponent extends Vue {
     this.btnactivarcompania=false
   }
   activar_tipo_requisicion(value){
-    debugger;
-    console.log("activar_tipo_requisicion");
     this.tiporequisicion=value;
-   
-    if(value=='A'){
+    
+    if(value=='S'){
       this.cell_ocultar='#349025';
-      this.border_width='1px';     
+      this.border_width='1px';  
+    }
+    if(value=='N' || value=='AC'){
+      this.cell_ocultar='#349025';
+      this.border_width='1px';  
+    }
+    if(value=='A'){
+      this.cell_ocultar='transparent';
+      this.border_width='1px';    
       this.blntiporequisicion=false;
       this.blncategorialinea=false;
       this.blncuentacontable=false;
@@ -677,8 +670,6 @@ export default class CrearPRComponent extends Vue {
   
     }
     else{
-      this.cell_ocultar='transparent';        
-      this.border_width='0px';  
       this.blntiporequisicion=true;
       this.blncategorialinea=true;
       
@@ -705,20 +696,18 @@ export default class CrearPRComponent extends Vue {
 
   /*tabla metodos*/
   handleBlur(event) {
-    // debugger;
+    // 
     // this.bln_tbl_categoria_cuenta=false;
     // event.edit=false;
     // this.editing.row='';
     // this.editing.column='';
-    // console.log('blur');
   }
   isEditing() {
     return this.editing !== null
   }
   onCellBlur(row, column, cell, event) {
-    debugger;
+    
     this.editing = null
-    console.log('onCellBlur',row, column, cell, event);
   }
   onCellClick(row, column, cell, event) {
     this.editing = {
@@ -730,7 +719,6 @@ export default class CrearPRComponent extends Vue {
   LoadCategoriaCuenta(row,column){
     this.selectrow=row;
     this.selectcolumn=column;
-    console.log(row);
     this.dialogCategoriaCuenta=true;
   }
   LoadCategoriaLinea(row){
@@ -765,85 +753,84 @@ export default class CrearPRComponent extends Vue {
     this.selectrow=row;
     this.dialogCentroCostos=true;
   }
-  alerta(event,edit,column){
-    debugger;
+  alerta(event,edit,column){    
     this.bln_tbl_categoria_cuenta=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcategorialinea(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_linea=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcuentacontable(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cuenta_contable=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterial(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterialdescripcion(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material_descripcion=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcantidad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cantidad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickunidadmedida(event,edit,column){
-    debugger;
+    
     this.bln_tbl_unidad_medida=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickproveedor(event,edit,column){
-    debugger;
+    
     this.bln_tbl_proveedor=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmoneda(event,edit,column){
-    debugger;
+    
     this.bln_tbl_moneda=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickprioridad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_prioridad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickfechaestimada(event,edit,column){
-    debugger;
+    
     this.bln_tbl_fecha_estimada=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcentrocosto(event,edit,column){
-    debugger;
+    
     this.bln_tbl_centro_costo=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -862,13 +849,11 @@ export default class CrearPRComponent extends Vue {
         return dd+'.'+mm+'.'+yyyy;
     }
   companiaSeleccionado(val){
-    console.log('traer',val);
     this.requisicionModel.strCompany_Cod=val.strCompany_Cod;
     this.requisicionModel.strCompany_Desc=val.strCompany_Desc;
     this.dialogCompania=false;
   }
   SeleccionadoAlmacen(val){
-    console.log('traer',val);
     this.requisicionModel.strWHS_Cod=val.strWHS_Cod;
     this.requisicionModel.strWHS_Desc=val.strWHS_Desc;
     this.requisicionModel.intIdWHS_ID=val.intIdWHS_ID;    
@@ -888,14 +873,14 @@ export default class CrearPRComponent extends Vue {
    
   }
   SeleccionadoCategoriaLinea(val){
-    debugger;
+    
     this.selectrow.strCateg_Line=val.strCategItem_Cod;
     this.selectrow.intIdCategLine_ID=val.intIdCategLine_ID;
     this.dialogCategoriaLinea=false;
 
     
     setTimeout(() => {
-      debugger;
+      
       if(this.selectrow.strCateg_Account=='CC'){
         if(this.selectrow.strCateg_Line=='B' || this.selectrow.strCateg_Line=='S'){
           this.dialogMaterial=true;
@@ -905,7 +890,7 @@ export default class CrearPRComponent extends Vue {
   }
  
   SeleccionadoCentroCosto(val){
-    debugger;
+    
     this.selectrow.strCostCenter=val.strCostCenter_NO;
     this.selectrow.strCostCenter_Desc=val.strCostCenter_Desc;
     this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
@@ -914,7 +899,7 @@ export default class CrearPRComponent extends Vue {
     
   }
   SeleccionadoCuentaContable(val){
-    debugger;
+    
     this.selectrow.strAccount_NO=val.strAcc_NO_Local;
     this.dialogCuentaContable=false;
 
@@ -922,7 +907,7 @@ export default class CrearPRComponent extends Vue {
   
   }
   SeleccionadoMaterial(val){
-    debugger;
+    
     this.selectrow.strMaterial_Cod=val.strStock_Cod;
     this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
     this.selectrow.strUM=val.strUM_Cod;
@@ -948,20 +933,20 @@ export default class CrearPRComponent extends Vue {
   cambiarCantidad(val){
     setTimeout(() => {
       this.selectrow.fltValue_Total=Number(this.selectrow.fltUnitPrice)*Number(this.selectrow.fltQuantity);
-      console.log(val)
+     
       this.fltQuantitys=val.fltQuantity;
     }, 200)
     
   }
   SeleccionadoUnidadMedida(val){
-    debugger;
+    
     this.selectrow.strUM=val.strUM_Cod;
     
     
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
-    debugger;
+    
     this.selectrow.strVendor_Suggested=val.strVendor_NO;
 
     this.strVendor_NOs=this.selectrow.strVendor_Suggested==undefined?'':this.selectrow.strVendor_Suggested;
@@ -969,7 +954,7 @@ export default class CrearPRComponent extends Vue {
     this.dialogProveedor=false;
   }
   SeleccionadoMoneda(val){
-    debugger;
+    
     this.selectrow.strCurr=val.strCurrency_Cod;
     this.selectrow.intIdCurrency_ID=val.intIdCurrency_ID;
     this.dialogMoneda=false;
@@ -977,7 +962,7 @@ export default class CrearPRComponent extends Vue {
     
   }
   SeleccionadoPrioridad(val){
-    debugger;
+    
     this.selectrow.strPriority_Cod=val.strPriority_Cod;
     this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;
@@ -987,7 +972,6 @@ export default class CrearPRComponent extends Vue {
     if(this.tiporequisicion!=selected){
       this.tiporequisicion=selected;
     }
-    console.log('select',selected);
   }
   nuevoPR(){
     this.requisicionModel=new RequisicionModel();
@@ -1026,29 +1010,20 @@ export default class CrearPRComponent extends Vue {
     this.fltFactors="";
   }
   async guardarTodo(val){
-    debugger;
-    
     this.vifprogress=true;
     this.issave=false;
     this.iserror=false;
     this.textosave=''
     this.percentage=0;  
-
     var tabla:Array<RequisicionDetalleModel>=[];
-    
-    console.log('guardar todo',this.tableData1);
-    
     for(var i=0;i<this.tableData1.length;i++){
       if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!="" && this.tableData1[i].strMaterial_Cod!=""){
         tabla.push(this.tableData1[i]);
       }
     }
-
-    console.log('paso 2',tabla);   
     for(var i=0;i<50;i++){
       this.valuem=this.valuem+1; 
     }
-
     this.requisicionModel.strTypeReq_Cod=this.tiporequisicion;
     for(var i=0;i<this.tabletipoRequisicion.length;i++){
       if(this.tiporequisicion==this.tabletipoRequisicion[i].strTypeReq_Cod){
@@ -1062,10 +1037,9 @@ export default class CrearPRComponent extends Vue {
     this.requisicionModel.strTypeMov_Cod=this.strTypeMov_Cod;
     this.requisicionModel.strTypeMov_Desc=this.strTypeMov_Desc;
     this.requisicionModel.listaDetalle=tabla;
-    console.log('---***---',this.requisicionModel);
     requisicionService.crearRequisicion(this.requisicionModel)
     .then(res=>{
-      debugger;
+      
       for(var i=0;i<50;i++){
         setTimeout(
           () => {this.percentage++;},1  
@@ -1083,7 +1057,6 @@ export default class CrearPRComponent extends Vue {
       // for(var i=0;i<50;i++){
       //   this.valuem++; 
       // }
-      // console.log(this.valuem);
       // if(this.valuem>=100){
       //   setTimeout(() => {
       //     this.vifprogress=false;
@@ -1115,11 +1088,10 @@ export default class CrearPRComponent extends Vue {
 
     //   salidaService.CrearSalida(this.salidaModel)
     //   .then(res=>{
-    //     debugger;
+    //     
     //     for(var i=0;i<50;i++){
     //       this.valuem++; 
     //     }
-    //     console.log(this.valuem);
     //     loading.close();
     //     if(this.valuem>=100){
     //       setTimeout(() => {
@@ -1149,7 +1121,7 @@ export default class CrearPRComponent extends Vue {
   }
   
   filterstrCateg_Account(h,{column,$index}){
-    debugger;
+    
     
     if(this.blnilterstrCateg_Account){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
@@ -1163,7 +1135,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrCateg_Line(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrCateg_Line){
@@ -1176,7 +1148,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrAccount_NO(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrAccount_NO){
@@ -1189,7 +1161,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrCostCenter(h,{column,$index}){
-    debugger;
+    
     
     
     
@@ -1204,7 +1176,7 @@ export default class CrearPRComponent extends Vue {
   }
 
   filterstrMaterial_Cod(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrMaterial_Cod){
@@ -1217,7 +1189,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrDescription(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrDescription){
@@ -1230,7 +1202,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterfltQuantity(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterfltQuantity){
@@ -1243,7 +1215,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterfltUnitPrice(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterfltUnitPrice){
@@ -1256,7 +1228,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrUM(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrUM){
@@ -1269,7 +1241,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrVendor_Suggested(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrVendor_Suggested){
@@ -1282,7 +1254,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrCurr(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrCurr){
@@ -1295,7 +1267,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterstrPriority_Cod(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterstrPriority_Cod){
@@ -1308,7 +1280,7 @@ export default class CrearPRComponent extends Vue {
     } 
   }
   filterdtmRequested_Date(h,{column,$index}){
-    debugger;
+    
     
     
     if(this.blnilterdtmRequested_Date){
@@ -1544,9 +1516,6 @@ export default class CrearPRComponent extends Vue {
    { TagId: 4, TagName: "Fakes", },
    { TagId: 2, TagName: "Single Page Application", }, 
     ]
-
-    console.log('headerclick',val)
-    console.log(val)
     // this.CompleteData.sort(this.sortBy('intRequis_Item_NO',true));
 
    
@@ -1563,7 +1532,7 @@ export default class CrearPRComponent extends Vue {
   }
   sortByKeyAsc(array, key) {
     return array.sort(function (a, b) {
-        debugger;
+        
         var x = a[key]; var y = b[key];
         if(x === "" || y === null) return 1;
         if(x === "" || y === null) return -1;
@@ -1584,7 +1553,7 @@ export default class CrearPRComponent extends Vue {
   }
 
   Buscar(){
-    debugger;
+    
     if(this.Column!=""){
       this.dialogBusquedaFilter=true;
     }
@@ -1595,7 +1564,6 @@ export default class CrearPRComponent extends Vue {
   btnBuscar(){
     var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
     this.tableData1=data;
-    console.log('-----like-----',data)
     this.dialogBusquedaFilter=false;
   }
   sortBy = (key, reverse) => {
@@ -1619,7 +1587,6 @@ export default class CrearPRComponent extends Vue {
     };
   };
   async AscItem(){
-    debugger;
     let loading = Loading.service({
       fullscreen: true,
       text: 'Cargando...',
@@ -1627,15 +1594,12 @@ export default class CrearPRComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
     );
-    console.log("asc",this.clickColumn)
     var data=await this.sortByKeyAsc(this.CompleteData,this.clickColumn) 
     this.CompleteData=data;
     this.tableData1 = await this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     await loading.close();
   }
   DscItem(){
-    debugger;
-    console.log("desc",this.clickColumn)
     var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
     this.CompleteData=data;
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
@@ -1649,7 +1613,7 @@ export default class CrearPRComponent extends Vue {
   }
   
   nroLineaSelect(){
-    debugger;
+    
     if(!isNaN(this.txtnroline)){
       this.intlineaselect=parseInt(this.txtnroline)-1;
       var res:any;
@@ -1692,7 +1656,7 @@ export default class CrearPRComponent extends Vue {
   }
 
   Limpiar(){
-    debugger;
+    
       
     this.CompleteData=this.CompleteData1;
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
@@ -1732,7 +1696,6 @@ export default class CrearPRComponent extends Vue {
   }
   
   EliminarItem(){
-    console.log(this.currentRow.intRequis_Item_NO);
     this.CompleteData.splice(this.currentRow.intRequis_Item_NO-1, 1);
     for(var i=this.currentRow.intRequis_Item_NO;i<this.CompleteData.length;i++){
       this.CompleteData[i].intRequis_Item_NO=i+1;
@@ -1740,7 +1703,6 @@ export default class CrearPRComponent extends Vue {
     this.CompleteData1=this.CompleteData;
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
    
-    console.log(this.CompleteData);
   }
   siguiente(){
     if(this.pagina<(this.totalRegistros/this.RegistersForPage)){

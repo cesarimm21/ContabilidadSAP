@@ -4,23 +4,22 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllDiarios(){   
-    return axios.get(CONFIG.API_URL+'diario')
+  GetAllExoOperaciones(){    
+    return axios.get(CONFIG.API_URL+'exoneracionoperaciones')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  CreateDiarios(comprobante){
-    return axios.post(CONFIG.API_URL+'diario/create', comprobante)
+  CreateExoOperaciones(comprobante){
+    return axios.post(CONFIG.API_URL+'exoneracionoperaciones/create', comprobante)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
   },
-  UpdateDiarios(comprobante){
-    return axios.post(CONFIG.API_URL+'diario/update', comprobante)
+  UpdateExoOperaciones(comprobante){
+    return axios.post(CONFIG.API_URL+'exoneracionoperaciones/update', comprobante)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
   }
 }
-  
