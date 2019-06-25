@@ -1,0 +1,35 @@
+export class KardexValoradoModel{
+    intKardexValorado_ID:number;
+    strFecProcesoMaterial:string | null;
+    strTipoDocumento:string | null;
+    strSerie:string | null;
+    strNumeroDoc:string | null;
+    strTipoOperacion:string | null;
+    strUM:string | null;
+    strTipoMovimiento:string | null;
+    strCodProveedor:string | null;
+    strRazonSocial:string | null;
+    strCodCentroCosto:string | null;
+    strWO:string | null;
+    strUsuario:string | null;
+    fltCantidadEntrada:number | null;
+    fltPUEntrada:number | null;
+    fltCostoTotalEntrada:number | null;
+    fltCantidadSalida:number | null;
+    fltPUSalida:number | null;
+    fltCostoTotalSalida:number | null;
+    fltCantidadSalidaFinal:number | null;
+    fltPUSalidaFinal:number | null;
+    fltCostoTotalSalidaFinal:number | null;
+    dtmTransaccion_Date:Date | null;
+    intRowSpan:number | null;
+    intColSpan:number | null;
+    strCodMaterial:string | null;
+    strMaterial_Desc:string | null;
+    intIndex:number | null;
+    strCreation_User:string | null;
+    dtmCreation_Date:Date | null;
+    strModified_User:string | null;
+    dtmModified_Date:Date | null;
+    chrStatus:string | null;
+}

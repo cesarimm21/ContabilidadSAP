@@ -7,7 +7,7 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import XLSX from 'xlsx';
+// import XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
@@ -339,9 +339,9 @@ export default class LibroRegistroCompraComponent extends Vue {
   ExportarExcel(){
       
       /* generate workbook object from table */
-			var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
-			/* generate file and force a download*/
-      XLSX.writeFile(wb, "Libro_Registro_Compras_"+ this.getParseDate(new Date())+".xlsx");
+			// var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
+			// /* generate file and force a download*/
+      // XLSX.writeFile(wb, "Libro_Registro_Compras_"+ this.getParseDate(new Date())+".xlsx");
     
   }
   ExportarTxt(){

@@ -28,7 +28,7 @@ import { Notification } from 'element-ui';
 import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
-import XLSX from 'xlsx';
+// import XLSX from 'xlsx';
 import { SalidaModel } from '@/modelo/maestro/salida';
 
 
@@ -366,142 +366,9 @@ export default class LibroDiarioComponent extends Vue {
   }
 
   ExportarExcel(){
-       /* generate workbook object from table */
-			var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
-      /* generate file and force a download*/
+    	// var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
       
-      XLSX.writeFile(wb, "Libro_Diario_"+ this.getParseDate(new Date())+".xlsx");
-      
-    // var animals= [
-    //   {"name": "cat", "category": "animal"}
-    //   ,{"name": "dog", "category": "animal"}
-    //   ,{"name": "pig", "category": "animal"}
-    // ]
-    // var pokemons= [
-    //   {"name": "pikachu", "category": "pokemon"}
-    //   ,{"name": "Arbok", "category": "pokemon"}
-    //   ,{"name": "Eevee", "category": "pokemon"}
-    // ]
-    // var animalWS = XLSX.utils.json_to_sheet(animals) 
-    // var pokemonWS = XLSX.utils.json_to_sheet(pokemons) 
-
-    // // A workbook is the name given to an Excel file
-    // var wb = XLSX.utils.book_new() // make Workbook of Excel
-
-    // // add Worksheet to Workbook
-    // // Workbook contains one or more worksheets
-    // XLSX.utils.book_append_sheet(wb, animalWS, 'animals') // sheetAName is name of Worksheet
-    // XLSX.utils.book_append_sheet(wb, pokemonWS, 'pokemons')   
-
-    // var worksheet_name = "SheetJS";
-    // var workbook = XLSX.utils.book_new();
-
-    // complete Report Data is a 2D array of floats
-    //var ws = XLSX.utils.aoa_to_sheet(animalsWS);
-      
-    // animalWS['A2'].s = {
-    //     fill: {
-    //     patternType: "none", // none / solid
-    //     fgColor: {rgb: "FF000000"},
-    //     bgColor: {rgb: "FFFFFFFF"}
-    //       },
-    //       font: {
-    //     name: 'Times New Roman',
-    //     sz: 16,
-    //     color: {rgb: "#FF000000"},
-    //     bold: true,
-    //     italic: false,
-    //     underline: false
-    //       },
-    //       border: {
-    //     top: {style: "thin", color: {auto: 1}},
-    //     right: {style: "thin", color: {auto: 1}},
-    //     bottom: {style: "thin", color: {auto: 1}},
-    //     left: {style: "thin", color: {auto: 1}}
-    //       }
-    //   };
-    // XLSX.utils.book_append_sheet(workbook, animalWS, worksheet_name);
-    // var filename = "REPORTJSONNAME.xlsx";
-    // XLSX.writeFile(workbook, filename);
-    
-// var first_sheet_name = workbook.SheetNames[0];
-// var address_of_cell = 1
-// var worksheet = workbook.Sheets[first_sheet_name];
-// animalWS[address_of_cell].s = {
-// fill: {
-// type:'pattern',
-// pattern: "solid", // none / solid
-// fgColor: { argb: "FF1c4587" },
-// bgColor: { argb: "FF1c4587" }
-// }
-// }
-// worksheet[address_of_cell].v = 1;
-// XLSX.writeFile(workbook, 'book.xlsx');
-    // animalWS.Cells["A1:V2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-    // wb.Cells["A1:V2"].Style.Fill.BackgroundColor.SetColor(colFromHex);
-    // export Excel file
-   // XLSX.writeFile(wb, 'book.xlsx')
-
-  //  let xlsx = officegen('xlsx')
-
-  //   let sheet = xlsx.makeNewSheet()
-  //   sheet.name = 'Officegen Excel'
-
-  //   // Add data using setCell:
-
-  //   sheet.setCell('E7', 42)
-  //   sheet.setCell('I1', -3)
-  //   sheet.setCell('I2', 3.141592653589)
-  //   sheet.setCell('G102', 'Hello World!')
-
-  //   // The direct option - two-dimensional array:
-
-  //   sheet.data[0] = []
-  //   sheet.data[0][0] = 1
-  //   sheet.data[1] = []
-  //   sheet.data[1][3] = 'some'
-  //   sheet.data[1][4] = 'data'
-  //   sheet.data[1][5] = 'goes'
-  //   sheet.data[1][6] = 'here'
-  //   sheet.data[2] = []
-  //   sheet.data[2][5] = 'more text'
-  //   sheet.data[2][6] = 900
-  //   sheet.data[6] = []
-  //   sheet.data[6][2] = 1972
-
-    // Let's generate the Excel document into a file:
-
-   // let out = fs.createWriteStream('example.xlsx')
-
-    // out.on('error', function(err) {
-    //   console.log(err)
-    // })
-
-      // // Async call to generate the output file:
-      // xlsx.generate(out)
-      // var Heading = [
-      //   ["Employee Details"],
-      //   ["Emp Name", "Emp Sal"]
-      // ];
-      // var Data = [
-      //   {name:"xyz", sal:1000},
-      //   {name:"abc", sal:2000}
-      // ];
-      // var ws = XLSX.utils.aoa_to_sheet(Heading);
-     
-      // XLSX.utils.sheet_add_json(ws, Data, {
-      //   header:["name", "sal"],
-      //   skipHeader:true,
-      //   origin:-1
-      //  });
-       
-      // var cell = ws['A1'];
-      // cell.s = { 
-      //   alignment: { textRotation: 90 }, 
-      //   font: { sz: 16, bold: true, color: '#FF00FF' }, 
-      //   fill: { bgColor: '#FFFFFF' } 
-      // }   
-      
+      // XLSX.writeFile(wb, "Libro_Diario_"+ this.getParseDate(new Date())+".xlsx");
       
   }
 

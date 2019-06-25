@@ -890,7 +890,7 @@ closeCategoriaCuenta(){
         nuevo.strDaily_Desc=this.strDaily_Cod_Desc;
         nuevo.strDoc_Trans_Cod=this.Doc_Trans_Cod;
         nuevo.strPeriod_NO=this.Period.getFullYear().toString()+this.Period.getMonth().toString();
-        nuevo.strdtmPeriod=mm+'.'+anio;
+        nuevo.strdtmPeriod=this.Period.getMonth().toString()+this.Period.getFullYear().toString();
         nuevo.dtmDoc_Date=this.Doc_Date;
         nuevo.strCurrency_Cod=this.Currency_Cod;
         nuevo.strOrigenDocum_NO=this.OrigenDocum_NO;

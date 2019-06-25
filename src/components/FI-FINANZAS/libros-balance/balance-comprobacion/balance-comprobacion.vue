@@ -3,7 +3,7 @@
 
   <div class="al-crear">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:validarView="cargar2()"/>
+        <quickaccessmenu v-on:validarView="cargar()"/>
     </ol>
 
     <el-card class="box-card">
@@ -57,22 +57,23 @@
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
                                 <div style="margin-top: 4px;margin-left: 15px;"> 
-                                    <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
                                         <img class="imagenfilter" src="../../../../images/pdf1.png" style="width: 100%;height: 100%;" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange"  @click="ExportarExcel()">
+                                    <el-button id="idbutton" class="buttonfilter btn btn-outline-secondary orange"  >
                                         <img class="imagenfilter" src="../../../../images/excel.png" style="width: 100%;height: 100%;" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarTxt()">
+                                    <el-button  class="buttonfilter btn btn-outline-secondary orange" @click="ExportarTxt()">
                                         <img class="imagenfilter" src="../../../../images/txt.png" style="width: 100%;height: 100%;" alt="" >
-                                    </el-button> -->
+                                    </el-button>
                                 </div>
                                 <!-- <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions> -->
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" id="out-table" style="background: white;margin-top: 0px;">
                                     <el-table
+                                        id="idtablaBalance"
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
@@ -82,7 +83,7 @@
                                         @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column label="CUENTA">
+                                        <el-table-column header-align="center" label="CUENTA">
                                             <el-table-column  sortable prop="strAcc_Local_NO" width="100" label="CODIGO">
                                                 <template scope="scope">
                                                 <label  >&nbsp;{{ scope.row.strAcc_Local_NO }}</label>
@@ -114,14 +115,14 @@
                                          </el-table-column> 
                                         <el-table-column header-align="center" label="MOVIMIENTOS">                              
                                             <el-table-column
-                                                prop="fltDebit_Acc" sortable width="100"
+                                                prop="fltDebit_Acc" sortable width="150"
                                                 label="DEBE">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltDebit_Acc }}</label>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
-                                                prop="fltCredit_Acc" sortable width="100"
+                                                prop="fltCredit_Acc" sortable width="150"
                                                 label="HABER">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltCredit_Acc }}</label>
@@ -130,14 +131,14 @@
                                         </el-table-column>
                                          <el-table-column header-align="center" label="SALDOS FINALES">                              
                                             <el-table-column
-                                                prop="fltClosing_Balanced" sortable width="100"
+                                                prop="fltClosing_Balanced" sortable width="150"
                                                 label="DEUDOR">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{getSaldoFinaldd(scope.row)}}</label>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
-                                                prop="fltClosing_Balancea" sortable width="100"
+                                                prop="fltClosing_Balancea" sortable width="150"
                                                 label="ACREEDOR">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{getSaldoFinalaa(scope.row) }}</label>
@@ -146,7 +147,7 @@
                                         </el-table-column>
                                         <el-table-column header-align="center" label="SALDOS FINALES DEL BALANCE GENERAL">                              
                                             <el-table-column
-                                                prop="fltClosing_Balancesd" sortable width="100"
+                                                prop="fltClosing_Balancesd" sortable width="150"
                                                 label="ACTIVO">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{getSaldoFinald(scope.row) }}</label>
@@ -163,75 +164,112 @@
                                     </el-table>
                                 </div>
                             </div>
-                            <div class="row" style="margin-top: 3px;">
-                                <div class="col-sm-6" />
-                                <div class="col-sm-6" >
-                                    <div class="form-group row "  >
-                                        <label class="el-form-item__label col-md-2" >MONTO</label>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small"   placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 grupolabel" style="margin-right: 15px;">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small"   placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 grupolabel"  style="margin-right: 15px;">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small"   placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small"   placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top: 3px;">
-                                <div class="col-sm-6" />
-                                <div class="col-sm-6" >
-                                    <div class="form-group row "  >
-                                        <label class="el-form-item__label col-md-2" >TOTAL</label>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="true"  v-model="balCuentas.strCompany_Cod"  placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 grupolabel" style="margin-right: 15px;">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="true"  v-model="balCuentas.strCompany_Cod"  placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 grupolabel" style="margin-right: 15px;">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="true"  v-model="balCuentas.strCompany_Cod"  placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" :disabled="true"  v-model="balCuentas.strCompany_Cod"  placeholder="">
-                                            </el-input>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                            </div>
                         </el-card>
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-top: 10px;">
+                                <el-tabs type="border-card">
+                                    <el-tab-pane label="Total">
+                                        <div class="container">
+                                            <div class="row" >
+                                                <div class="col-sm-12" >
+                                                    <div class="form-group row "  >
+                                                        <label class="el-form-item__label col-md-1" >SUMATORIA</label>
+                                                        <div class="col-md-2 grupolabel" style="width: 100%;">
+                                                            <div class="input-group mb-3" >
+                                                                <el-input :disabled="true"    v-focus size="small"  v-model="sums1" >
+                                                                </el-input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel" >
+                                                            <div class="input-group mb-3" style="width: 100%;">
+                                                                <el-input :disabled="true"   v-focus size="small"  v-model="sums2" >
+                                                                </el-input> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel"  >
+                                                            <div class="input-group mb-3" >
+                                                                <el-input :disabled="true"    v-focus size="small"  v-model="sums3" >
+                                                                </el-input> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel">
+                                                            <div class="input-group mb-3" >
+                                                                <el-input :disabled="true"    v-focus size="small"  v-model="sums4" >
+                                                                </el-input> 
+                                                            </div>
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            <div class="row" >
+                                                <div class="col-sm-12" >
+                                                    <div class="form-group row "  >
+                                                        <label class="el-form-item__label col-md-1" >MONTO</label>
+                                                       <div class="col-md-2 grupolabel" >
+                                                            <div class="input-group mb-3" >
+                                                                <el-input  type="number"  @change="CambiarSaldoFinalD(fltsaldofinald)" v-focus size="small"  v-model="fltsaldofinald" >
+                                                                </el-input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel" >
+                                                            <div class="input-group mb-3" >
+                                                                <el-input  type="number" @change="CambiarSaldoFinalA(fltsaldofinala)" v-focus size="small"  v-model="fltsaldofinala" >
+                                                                </el-input> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel"  >
+                                                            <div class="input-group mb-3" >
+                                                                <el-input  type="number" @change="CambiarSaldoFinalBD(fltsaldofinalbd)" v-focus size="small"  v-model="fltsaldofinalbd" >
+                                                                </el-input> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel">
+                                                            <div class="input-group mb-3" >
+                                                                <el-input  type="number" @change="CambiarSaldoFinalBA(fltsaldofinalba)" v-focus size="small"  v-model="fltsaldofinalba" >
+                                                                </el-input> 
+                                                            </div>
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            <div class="row" >
+                                                <div class="col-sm-12" >
+                                                    <div class="form-group row "  >
+                                                        <label class="el-form-item__label col-md-1" >TOTAL</label>
+                                                        <div class="col-md-2 grupolabel">
+                                                            <div class="input-group mb-3" >
+                                                            <el-input size ="small" :disabled="true"  v-model="rsums1"  placeholder="">
+                                                            </el-input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel" >
+                                                            <div class="input-group mb-3" >
+                                                            <el-input size ="small" :disabled="true"  v-model="rsums2"  placeholder="">
+                                                            </el-input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel">
+                                                            <div class="input-group mb-3" >
+                                                            <el-input size ="small" :disabled="true"  v-model="rsums3"  placeholder="">
+                                                            </el-input>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 grupolabel">
+                                                            <div class="input-group mb-3" >
+                                                            <el-input size ="small" :disabled="true"  v-model="rsums4"  placeholder="">
+                                                            </el-input>
+                                                            </div>
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </el-tab-pane>
+                                </el-tabs>
+                            </div>
+                        </div>
                     </div>
-                   
                 </div>
-                
             </div>
         </div>
     </el-card>
@@ -271,9 +309,11 @@
 </div>  
   
 </template>
+
 <script>
 import BalanceComprobacionComponent from '@/components/FI-FINANZAS/libros-balance/balance-comprobacion/balance-comprobacion.component'
 export default BalanceComprobacionComponent
+
 </script>
 <style scoped>
 

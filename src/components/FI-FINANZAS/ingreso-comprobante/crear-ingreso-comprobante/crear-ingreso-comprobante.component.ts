@@ -808,9 +808,8 @@ getNumber(num){
             itemDG_60.strAccDocum_NO=this.CodigoGeneral;
             itemDG_60.dtmPosting_Date=this.factura.dtmDoc_Acc_Date;
             itemDG_60.dtmProcess_Date=new Date();
-            itemDG_60.strdtmPeriod=mes+'.'+anio;
+            itemDG_60.strdtmPeriod=this.factura.dtmDoc_Acc_Date;
             itemDG_60.intYear=anio;
-            itemDG_60.intMonth=mes;
             itemDG_60.strAcctCateg_Cod=this.multipleSelection[i].strAcctCateg_Cod;
             itemDG_60.strCenCosWBS_Cod=this.multipleSelection[i].strCostCenter_NO;
             itemDG_60.strCenCosWBS_Desc=this.multipleSelection[i].strCostCenter_Desc;

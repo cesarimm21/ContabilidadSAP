@@ -98,7 +98,7 @@ export default class VisuTipoRentaComponent extends Vue {
         if(this.selectrow!=undefined && this.selectrow!=null ){
             debugger;
             if(this.selectrow!=undefined && this.selectrow!=null ){
-                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_renta/modif_tipo_renta`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
+                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_renta/modif_tipo_renta`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
             }
         }
         else{

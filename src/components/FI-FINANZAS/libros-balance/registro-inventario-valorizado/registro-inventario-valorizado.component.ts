@@ -28,6 +28,7 @@ import Global from '@/Global';
 import companiaService from '@/components/service/compania.service';
 import productoService from '@/components/service/producto.service';
 import balancecuentaService from '@/components/service/balancecuenta.service';
+import kardexvaloradoService from '@/components/service/kardexvalorado.service';
 import XLSX from "xlsx"
 
 // import * as XLSX from '@/assets/js/xlsx.full.min.js'
@@ -37,6 +38,7 @@ import XLSX from "xlsx"
 import { saveAs } from 'file-saver';
 import { SalidaModel } from '@/modelo/maestro/salida';
 import { BalanceCuentaModel } from '@/modelo/maestro/balancecuentas';
+import { KardexValoradoModel } from '@/modelo/maestro/tblkardexvalorado';
 
 
 import jsPDF from 'jspdf'
@@ -67,7 +69,7 @@ var EditableColumn = {
   } ,
  
 })
-export default class BalanceComprobacionComponent extends Vue {
+export default class RegistroInventarioValorizadoComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 250).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   formBusqueda:any={
@@ -320,9 +322,8 @@ export default class BalanceComprobacionComponent extends Vue {
     console.log(this.fechaDesde);
     this.balCuentas.intYear=this.fechaDesde.getFullYear();
     this.balCuentas.strCompany_Cod=this.balCuentas.strCompany_Cod==undefined?'*':this.balCuentas.strCompany_Cod;
-    this.balCuentas.strAcc_Local_NO=this.balCuentas.strAcc_Local_NO==undefined?'*':this.balCuentas.strAcc_Local_NO;
-
-    await balancecuentaService.GetBalanceComprabacion(this.balCuentas)
+    
+    await kardexvaloradoService.GetKardexValorado(this.balCuentas.strCompany_Cod,this.balCuentas.intYear,this.fechaDesde.getMonth()+1)
     .then(res=>{
       //debugger;
       for(var i=0;i<50;i++){
