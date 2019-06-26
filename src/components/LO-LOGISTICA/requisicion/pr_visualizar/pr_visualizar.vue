@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Visualizar Requisición</span>
+            <span class="labelheadercard" >Visualizar Requisicion</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -61,36 +61,36 @@
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
-                                    <el-table
+                                      <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
-                                        :data="tableData" 
+                                        :data="tableData"
                                         @header-click="headerclick"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  :render-header="filterstrRequis_NO"  prop="strRequis_NO" width="100" label="Numero Requisicion">
+                                        <el-table-column  :render-header="filterstrRequis_NO"  prop="strRequis_NO" width="100" label="Requisicion">
                                             <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strRequis_NO }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strTipReq_Desc" :render-header="filterstrTipReq_Desc"   width="120"
-                                            label="Tipo Requisición">
+                                            label="Tipo Requisicion">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTipReq_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterstrWHS_Cod"
+                                        <!-- <el-table-column :render-header="filterstrWHS_Cod"
                                             prop="strWHS_Cod"  width="100"
-                                            label="Codigo Almacen">
+                                            label="Cod Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column> -->
                                         <el-table-column :render-header="filterstrWHS_Desc"
                                             prop="strWHS_Desc"  width="150"
                                             label="Almacen">
@@ -100,14 +100,14 @@
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrDesc_Header"
                                             prop="strDesc_Header"  
-                                            label="Descripción">
+                                            label="Descripcion">
                                             <template scope="scope">
                                                 <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Header }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmRequested_Date"
                                             prop="dtmRequested_Date"  width="100"
-                                            label="Fecha">
+                                            label="Fecha Proceso">
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
@@ -117,16 +117,22 @@
                                                 <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
                                             </template>
                                         </el-table-column>
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strCreation_User"  width="100"
+                                            label="Usuario">
+                                            <template scope="scope">
+                                                <label style="width:100%">&nbsp;{{scope.row.strCreation_User }}</label>
+                                            </template>
+                                        </el-table-column>
                                         <el-table-column 
                                             prop="chrStatus" align="center"  width="80"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
                                                 :type="scope.row.chrAuthsd_Status.trim() === '50' ? 'success' :scope.row.chrAuthsd_Status.trim() === '70'?'danger': 'warning'"
-                                                disable-transitions>{{ getEstado(scope.row.chrAuthsd_Status)}}</el-tag>
+                                                disable-transitions>{{getEstado(scope.row.chrAuthsd_Status)}}</el-tag>
                                             </template>
                                         </el-table-column>
-                                        
                                     </el-table>
                                 </div>
                             </div>
@@ -155,7 +161,7 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Código Material</label>
+                            <label class="el-form-item__label col-md-3" >Codigo Material</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">

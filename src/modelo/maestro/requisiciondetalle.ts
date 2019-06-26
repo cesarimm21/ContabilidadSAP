@@ -14,6 +14,7 @@ export class RequisicionDetalleModel {
     strCateg_Line:string;
     strMaterial_Cod:string;
     strPriority_Cod:string;
+    strPriority_Desc:string;
     fltQuantity:number=0 ;
     strUM:string ;
     fltUnitPrice:number;
@@ -58,6 +59,7 @@ export class RequisicionDetalleModel {
         this.strCateg_Line=''
         this.strMaterial_Cod=''
         this.strPriority_Cod=''
+        this.strPriority_Desc=''
         this.fltQuantity=0
         this.strUM=''
         this.fltUnitPrice=0

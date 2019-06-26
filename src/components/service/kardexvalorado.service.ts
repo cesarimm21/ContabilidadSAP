@@ -10,6 +10,13 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  GetKardexUnidadFisica(cod_company,anio,mes,mesf){
+    return axios.get(CONFIG.API_URL+'kardexunidadfisica/'+cod_company+'/'+anio+'/'+mes+'/'+mesf)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+
 }
   

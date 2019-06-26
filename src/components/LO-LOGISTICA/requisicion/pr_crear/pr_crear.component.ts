@@ -101,7 +101,7 @@ export default class CrearPRComponent extends Vue {
   contador:any=0;
   _10min:boolean=false;
   ocultarConfig:boolean = true;
-  nameuser:string;
+  nameuser:any;
   namecomplete:string;
   accesosUser:any=[];
   ocultar:boolean=false;
@@ -142,6 +142,7 @@ export default class CrearPRComponent extends Vue {
   bln_tbl_cantidad:boolean=false;
   bln_tbl_unidad_medida:boolean=false;
   bln_tbl_proveedor:boolean=false;
+  bln_tbl_precio:boolean=false;
   bln_tbl_moneda:boolean=false;
   bln_tbl_prioridad:boolean=false;
   bln_tbl_fecha_estimada:boolean=false;
@@ -164,6 +165,7 @@ export default class CrearPRComponent extends Vue {
   public tipoRequisicionModel:TipoRequisicionModel=new TipoRequisicionModel();
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
 
+  almacenModel:AlmacenModel[];
   getTotals:number=0;
   
   /*tabla*/
@@ -179,6 +181,7 @@ export default class CrearPRComponent extends Vue {
   blncentrocosto:boolean=true;
   blnunidadmedida:boolean=true;
   blnproveedor:boolean=true;
+  blnprecio:boolean=true;
   intlineaselect:number=-1;
   tiporequisicion:string='';  
   tiporequisicionant:string='';
@@ -202,7 +205,7 @@ export default class CrearPRComponent extends Vue {
   blnilterstrCateg_Line:boolean=false;
   blnilterstrCateg_Account :boolean=false;
   pagina: number =1;
-  RegistersForPage: number = 10;
+  RegistersForPage: number = 100;
   totalRegistros: number = 100;
   public CompleteData:Array<RequisicionDetalleModel>=[]; 
   public CompleteData1:Array<RequisicionDetalleModel>=[]; 
@@ -224,13 +227,17 @@ export default class CrearPRComponent extends Vue {
   strVendor_NOs:any='';
   strVendor_Descs:any='';
   fltFactors:any='';
+  visiblecolumna:boolean=false;
+  strWHS_Cod:string='';
+  strWHS_Desc:string='';
+
 
   constructor(){
     super();
     this.fecha_actual=(new Date()).toString();
-    
+    this.nameuser=localStorage.getItem('User_Usuario');
     Global.nameComponent="requisicion"
-    this.cell_ocultar='#e4e2e2';        
+    this.cell_ocultar='rgb(255, 157, 164)';        
     this.border_width='0px';        
     this.blntiporequisicion=false;
     this.blncategorialinea=false;
@@ -284,6 +291,7 @@ export default class CrearPRComponent extends Vue {
     })
     .catch(error=>{
     });
+    this.loadAlmacenTodo();
   }
 
   fnOcultar(){
@@ -635,60 +643,80 @@ export default class CrearPRComponent extends Vue {
   }
   activar_tipo_requisicion(value){
     this.tiporequisicion=value;
+    setTimeout(() => {
+      if(this.tiporequisicion=='A'){
+        this.bln_tbl_precio=false;
+        this.visiblecolumna=false;
+        this.cell_ocultar='transparent';
+        this.border_width='1px';    
+        this.blntiporequisicion=false;
+        this.blncategorialinea=false;
+        this.blncuentacontable=false;
+        this.blncentrocosto=false;
+        this.blnunidadmedida=false;
+        this.blnproveedor=false;
+        this.tableData1=[];
+        
+        this.CompleteData=[];
+        this.tableData1=[];
+        for(var i=0;i<this.totalRegistros;i++){
+          var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+          reqDetalle.strCateg_Account="ST";
+          reqDetalle.intRequis_Item_NO=i+1;
+          reqDetalle.strDescription="";
+          reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+          this.CompleteData.push(reqDetalle);
+        }
+        this.CompleteData1=this.CompleteData;
+        this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     
-    if(value=='S'){
-      this.cell_ocultar='#349025';
-      this.border_width='1px';  
-    }
-    if(value=='N' || value=='AC'){
-      this.cell_ocultar='#349025';
-      this.border_width='1px';  
-    }
-    if(value=='A'){
-      this.cell_ocultar='transparent';
-      this.border_width='1px';    
-      this.blntiporequisicion=false;
-      this.blncategorialinea=false;
-      this.blncuentacontable=false;
-      this.blncentrocosto=false;
-      this.blnunidadmedida=false;
-      this.blnproveedor=false;
-      this.tableData1=[];
-      
-      this.CompleteData=[];
-      this.tableData1=[];
-      for(var i=0;i<this.totalRegistros;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.strCateg_Account="ST";
-        reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.strDescription="";
-        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
-        this.CompleteData.push(reqDetalle);
       }
-      this.CompleteData1=this.CompleteData;
-      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      else{
+      debugger;
+        if(this.tiporequisicion=='S'){
+          this.visiblecolumna=true;
+          this.cell_ocultar='rgb(255, 157, 164)';
+          this.border_width='1px';  
+          this.bln_tbl_precio=true;
   
-    }
-    else{
-      this.blntiporequisicion=true;
-      this.blncategorialinea=true;
-      
-      this.blncentrocosto=true;
-      this.blnunidadmedida=true;
-      this.blnproveedor=true;
-      this.CompleteData=[];
-      this.tableData1=[];
-      for(var i=0;i<this.totalRegistros;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.strDescription="";
-        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
-        this.CompleteData.push(reqDetalle);
+          this.strWHS_Cod=this.almacenModel[0].strWHS_Cod;
+          this.strWHS_Desc=this.almacenModel[0].strWHS_Desc;
+          //alert(this.strWHS_Cod);
+          this.requisicionModel.intIdWHS_ID=this.almacenModel[0].intIdWHS_ID;    
+          this.dialogAlmacen=false;
+        }
+        if(this.tiporequisicion=='N' || this.tiporequisicion=='AC'){
+          this.visiblecolumna=true;
+          this.cell_ocultar='rgb(255, 157, 164)';
+          this.border_width='1px';  
+          this.bln_tbl_precio=true;
+          this.strWHS_Cod="";
+          this.strWHS_Desc="";
+          //alert(this.strWHS_Cod);
+          this.requisicionModel.intIdWHS_ID=-1; 
+        }
+        this.blntiporequisicion=true;
+        this.blncategorialinea=true;
+        
+        this.blncentrocosto=true;
+        this.blnunidadmedida=true;
+        this.blnproveedor=true;
+        this.CompleteData=[];
+        this.tableData1=[];
+        for(var i=0;i<this.totalRegistros;i++){
+          var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+          reqDetalle.intRequis_Item_NO=i+1;
+          reqDetalle.strDescription="";
+          reqDetalle.strCateg_Account="";
+          reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+          this.CompleteData.push(reqDetalle);
+        }
+        this.CompleteData1=this.CompleteData;
+        this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    
       }
-      this.CompleteData1=this.CompleteData;
-      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-  
-    }
+    }, 200)
+    
     // this.btnactivaralmacen=false;
     // this.btnactivarproveedor=false;
     // this.btnactivarcompania=false
@@ -808,6 +836,12 @@ export default class CrearPRComponent extends Vue {
     this.editing.row=event;
     this.editing.column=column;
   }
+  clickprecio(event,edit,column){
+    
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+  }
   clickmoneda(event,edit,column){
     
     this.bln_tbl_moneda=true;
@@ -853,9 +887,21 @@ export default class CrearPRComponent extends Vue {
     this.requisicionModel.strCompany_Desc=val.strCompany_Desc;
     this.dialogCompania=false;
   }
+  loadAlmacenTodo(){
+    almacenService.GetAllAlmacen()
+    .then(response=>{
+      this.almacenModel=response;            
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar los almacenes'
+      });
+    })
+  }
   SeleccionadoAlmacen(val){
-    this.requisicionModel.strWHS_Cod=val.strWHS_Cod;
-    this.requisicionModel.strWHS_Desc=val.strWHS_Desc;
+    this.strWHS_Cod=val.strWHS_Cod;
+    this.strWHS_Desc=val.strWHS_Desc;
     this.requisicionModel.intIdWHS_ID=val.intIdWHS_ID;    
     this.dialogAlmacen=false;
   }
@@ -948,6 +994,7 @@ export default class CrearPRComponent extends Vue {
   SeleccionadoProveedor(val){
     
     this.selectrow.strVendor_Suggested=val.strVendor_NO;
+    this.selectrow.strVendor_Desc=val.strVendor_Desc;
 
     this.strVendor_NOs=this.selectrow.strVendor_Suggested==undefined?'':this.selectrow.strVendor_Suggested;
 
@@ -964,6 +1011,7 @@ export default class CrearPRComponent extends Vue {
   SeleccionadoPrioridad(val){
     
     this.selectrow.strPriority_Cod=val.strPriority_Cod;
+    this.selectrow.strPriority_Desc=val.strPriority_Desc;
     this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;
 
@@ -1034,9 +1082,16 @@ export default class CrearPRComponent extends Vue {
     for(var i=0;i<50;i++){
       this.percentage++;
     }
+    this.requisicionModel.strCreation_User=this.nameuser;
     this.requisicionModel.strTypeMov_Cod=this.strTypeMov_Cod;
     this.requisicionModel.strTypeMov_Desc=this.strTypeMov_Desc;
+    this.requisicionModel.strWHS_Cod=this.strWHS_Cod;
+    this.requisicionModel.strWHS_Desc=this.strWHS_Desc;
+
     this.requisicionModel.listaDetalle=tabla;
+    console.log('*******************')
+    console.log(tabla)
+    console.log('*******************')
     requisicionService.crearRequisicion(this.requisicionModel)
     .then(res=>{
       
