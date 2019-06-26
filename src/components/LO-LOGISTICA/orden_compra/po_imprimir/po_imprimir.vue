@@ -37,7 +37,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions  v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Buscar="Buscar" v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:EliminarItem="EliminarItem()" ></buttons-accions>
+                                <buttons-accions  v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Buscar="Buscar" v-on:siguiente="siguiente()" v-on:anterior="anterior()" v-on:EliminarItem="EliminarItem()" v-on:ExportarPDF="ExportarPDF()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -98,9 +98,9 @@
                                     </el-table>
                                 </div>
                             </div>
-                            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
+                            <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
                                         <img class="imagenfilter" src="../../../../images/pdf1.png" style="width: 100%;height: 100%;" alt="" >
-                                    </el-button>
+                                    </el-button> -->
                         </el-card>
                     </div>
                 </div>

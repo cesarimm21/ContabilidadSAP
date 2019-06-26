@@ -32,7 +32,6 @@ export class OrdenCompraModel {
     strPO_Item_Type:string;
     strVendor_NO:string;
     intChange_Count:number;
-    strAuthsd_Status:string;
     strAuthsd_By:string;
     dtmAuthsd_Date:Date; 
     intIdWHS_ID:number;  

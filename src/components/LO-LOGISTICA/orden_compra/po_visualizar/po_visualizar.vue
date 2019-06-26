@@ -70,6 +70,13 @@
                                             prop="strVendor_Desc" 
                                             label="Proveedor">
                                         </el-table-column>
+                                        
+                                        <el-table-column
+                                            :render-header="filterfltTotal_Val"
+                                            prop="fltTotal_Val"  width="100"
+                                            label="Valor Total" 
+                                            align="right">
+                                        </el-table-column>
                                         <el-table-column
                                             :render-header="filterdtmProcess_Date"
                                             prop="dtmProcess_Date"  width="100"
@@ -80,17 +87,15 @@
                                             </template>
                                         </el-table-column>   
                                         <el-table-column
-                                            :render-header="filterfltTotal_Val"
-                                            prop="fltTotal_Val"  width="100"
-                                            label="Valor Total" 
-                                            align="right">
+                                            prop="strCreation_User"   min-width="60"
+                                            label="Usuario Creador">
                                         </el-table-column>
                                         <el-table-column 
                                             prop="chrPO_Status" align="center"  width="80"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
-                                                :type="scope.row.chrPO_Status === '50' ? 'success' : 'danger'"
+                                                :type="scope.row.chrPO_Status === '50' ? 'success' : 'warning'"
                                                 disable-transitions>{{scope.row.chrPO_Status=== '50'?'Aprobado':'Pendiente'}}</el-tag>
                                             </template>
                                         </el-table-column>

@@ -22,7 +22,7 @@
                                 <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Requisición</label>
+                                <label class="el-form-item__label col-md-3" >Requisicion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
@@ -35,7 +35,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Almacén</label>
+                                <label class="el-form-item__label col-md-3" >Almacen</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" type="text" v-model="requiSelect.strWHS_Cod">
@@ -93,7 +93,7 @@
                                 </div>                                
                             </div>
                              <div  class="form-group row ">
-                                 <label class="el-form-item__label col-md-3" >Valor documento</label>
+                                 <label class="el-form-item__label col-md-3" >Valor Documento</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3">
                                     <el-input size ="small"  type="number" v-model="totalPrice" disabled>
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Descripción</label>
+                                <label class="el-form-item__label col-md-3" >Descripcion</label>
                                 <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small" type="text" v-model="OrdenCompra.strPO_Desc">
@@ -374,7 +374,7 @@
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Requisición</span>
+                    <span class="labelheadercard" >Buscar Requisicion</span>
                 </div>
                 <div class="row bodycard">
                     <div class="col-md-12">
@@ -403,9 +403,9 @@
                     @current-change="checkSelectdbRequisicion">
                     <el-table-column :render-header="filterstrRequis_NO" prop="strRequis_NO" label="Codigo" width="100">
                     </el-table-column>
-                    <el-table-column :render-header="filterstrDesc_Header" prop="strDesc_Header" label="Descripción" style="width: 70% !important;">
+                    <el-table-column :render-header="filterstrDesc_Header" prop="strDesc_Header" label="Descripcion" style="width: 70% !important;">
                     </el-table-column>
-                    <el-table-column :render-header="filterstrTipReq_Desc" prop="strTipReq_Desc" label="Tipo requisición" width="120">
+                    <el-table-column :render-header="filterstrTipReq_Desc" prop="strTipReq_Desc" label="Tipo requisicion" width="120">
                     </el-table-column>
                     <el-table-column :render-header="filterstrWHS_Desc" prop="strWHS_Desc" label="Almacen" width="120">
                     </el-table-column>
@@ -456,7 +456,7 @@
                     @current-change="checkSelectdbProveedor">
                     <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="150">
                     </el-table-column>  
-                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripción" width="310">
+                    <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripcion" width="310">
                     </el-table-column> 
                     <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Pais" width="150">
                     </el-table-column> 

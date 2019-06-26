@@ -332,7 +332,7 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.dtmProcess_Date = new Date();
             this.OrdenCompra.intIdPurReqH_ID = this.requiSelect.intIdPurReqH_ID;
             this.OrdenCompra.strPO_Item_Type = 'C';
-            this.OrdenCompra.strAuthsd_Status = '00';
+            this.OrdenCompra.chrPO_Status = '00';
             this.OrdenCompra.fltCURR_QTY_I = 0;
             this.OrdenCompra.fltTotal_Val = 0;
             this.OrdenCompra.strCreation_User = 'egaona';

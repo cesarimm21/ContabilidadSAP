@@ -106,22 +106,28 @@
                                         </el-table-column>
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="50" label="Orden Compra">
+                                         prop="strPO_NO" min-width="80" label="Orden Compra">
                                         </el-table-column>
                                        <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="50"
+                                            prop="strRequis_NO"   min-width="80"
                                             label="Requisicion">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrPO_Desc"
-                                            prop="strPO_Desc"  min-width="160"
+                                            prop="strPO_Desc"  min-width="260"
                                             label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
-                                            :render-header="filterstrVendor_Desc"
+                                            :render-header="filterstrVendor_Desc" min-width="260"
                                             prop="strVendor_Desc" 
                                             label="Proveedor">
+                                        </el-table-column>
+                                        <el-table-column
+                                            :render-header="filterfltTotal_Val"
+                                            prop="fltTotal_Val"  width="100"
+                                            label="Valor Total" 
+                                            align="right">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterdtmProcess_Date"
@@ -132,11 +138,19 @@
                                                 <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
                                             </template>
                                         </el-table-column>   
+                                        
                                         <el-table-column
-                                            :render-header="filterfltTotal_Val"
-                                            prop="fltTotal_Val"  width="100"
-                                            label="Valor Total" 
-                                            align="right">
+                                            prop="strCreation_User" align="center"  min-width="60"
+                                            label="Usuario Creador">
+                                        </el-table-column>
+                                        <el-table-column 
+                                            prop="chrPO_Status" align="center"  width="80"
+                                            label="Estado">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.chrPO_Status === '50' ? 'success' : 'warning'"
+                                                disable-transitions>{{scope.row.chrPO_Status=== '50'?'Aprobado':'Pendiente'}}</el-tag>
+                                            </template>
                                         </el-table-column>
                                     </el-table>
                                 </div>

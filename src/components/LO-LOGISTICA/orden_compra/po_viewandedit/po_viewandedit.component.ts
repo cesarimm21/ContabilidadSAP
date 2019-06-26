@@ -528,7 +528,7 @@ export default class ViewAndEditPOComponent extends Vue {
                         this.issave=true;
                         this.textosave='Se aprobó correctamente. '+res.strPO_NO;
                         this.openMessage('Se aprobó correctamente '+res.strPO_NO);
-                        router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+                        // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
                     }, 600)
                 })
                 .catch(error=>{
@@ -538,7 +538,7 @@ export default class ViewAndEditPOComponent extends Vue {
             else{
                 this.textosave='Se aprobó correctamente. '+res.strPO_NO;
                 this.openMessage('Se aprobó correctamente '+res.strPO_NO);
-                router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+                // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
             }
            
         })
