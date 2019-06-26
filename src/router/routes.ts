@@ -1034,7 +1034,7 @@ export default [
       {
         path:'XX-CONFI/maestro_datos/documento_transaccion/visu_documento_transaccion',
         component:VisuDocumentoTransaccionComponent,
-        name:'VisuDocumentoTransaccionComponent'
+        name:'visu-documentotransaccion'
       }, 
       {
         path:'XX-CONFI/maestro_datos/documento_transaccion/viewandedit_documento_transaccion',
@@ -1049,7 +1049,7 @@ export default [
       {
         path:'XX-CONFI/maestro_datos/documento_transaccion/crear_documento_transaccion',
         component:CrearDocumentoTransaccionComponent,
-        name:'CrearDocumentoTransaccionComponent'
+        name:'crear-documento transaccion'
       }, 
       {
         path:'XX-CONFI/maestro_datos/tipo_cambio/edit_tcambio',

@@ -19,14 +19,28 @@ import { Notification } from 'element-ui';
 export default class ButtonsAccionsComponent extends Vue { 
   filter:boolean=false;
   falseortrue:boolean;
+  falseortruePO:boolean;
   constructor(){
     super();
-    if(Global.nameComponent=='factura'){
-      this.falseortrue=true;
-    }
-    else{
+    switch(Global.nameComponent){
+      case 'imprimir-po': this.falseortruePO=true;
+      break;
+      case 'factura':this.falseortrue=true;
+      break;
+      default:
       this.falseortrue=false;
+      this.falseortruePO=false;
     }
+    // if(Global.nameComponent=='imprimir-po'){
+    //   this.falseortruePO=true;
+    // }
+    // if(Global.nameComponent=='factura'){
+    //   this.falseortrue=true;
+    // }
+    // else{
+    //   this.falseortrue=false;
+    //   this.falseortruePO=false;
+    // }
   } 
   
   BuscarSome(){
@@ -42,6 +56,9 @@ export default class ButtonsAccionsComponent extends Vue {
   }
   ActivaCheck(){
     this.$emit('ActivaCheck');
+  }
+  ExportarPDF(){
+    this.$emit('ExportarPDF');
   }
   ValidarItem(){
     this.$emit('validarView');

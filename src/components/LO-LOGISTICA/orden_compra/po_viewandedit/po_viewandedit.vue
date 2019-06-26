@@ -31,7 +31,7 @@
                                 <label class="sinLinea el-form-item__label col-md-6" >{{descripcionCompania}}</label>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Codigo PO</label>
+                                <label class="el-form-item__label col-md-3" >Orden Compra</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Codigo Requisición</label>
+                                <label class="el-form-item__label col-md-3" >Codigo Requisicion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
@@ -51,7 +51,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-3" >Almacén</label>
+                                <label class="el-form-item__label col-md-3" >Almacen</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" type="text" v-model="OrdenCompra.strWHS_Cod" :disabled="impDisabled">
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Descripción</label>
+                                <label class="el-form-item__label col-md-3" >Descripcion</label>
                                 <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small" type="text" v-model="OrdenCompra.strPO_Desc" :disabled="impDisabled">
@@ -140,13 +140,13 @@
                                 <label class="sinLinea el-form-item__label col-md-6"></label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6" style="margin-top:10px;">{{OrdenCompra.strWHS_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12" style="margin-top:10px;">{{OrdenCompra.strWHS_Desc}}</label>
                             </div>
                             <div class="form-group row "  style="margin-top:12px;">
-                                <label class="sinLinea el-form-item__label col-md-6" >{{OrdenCompra.strVendor_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12" >{{OrdenCompra.strVendor_Desc}}</label>
                             </div>
                             <div class="form-group row ">
-                                <label class="sinLinea el-form-item__label col-md-6"  style="margin-top:10px;">{{OrdenCompra.strCurrency_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:10px;">{{OrdenCompra.strCurrency_Desc}}</label>
                             </div>
                             <div class="form-group row ">
                                 <label class="sinLinea el-form-item__label col-md-12"  style="margin-top:6px;">{{OrdenCompra.strWH_Desc}}</label>

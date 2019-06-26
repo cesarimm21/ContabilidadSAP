@@ -158,7 +158,7 @@ export default class CrearPOComponent extends Vue {
     constructor(){
         super();
         Global.nameComponent = 'crear-po';
-        this.OrdenCompra.chrPO_Status = 'A';
+        this.OrdenCompra.chrPO_Status = '00';
         this.OrdenCompra.strRequis_Item_NO="0";
         this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
         setTimeout(() => {
@@ -499,7 +499,6 @@ export default class CrearPOComponent extends Vue {
             this.OrdenCompra.intChange_Count=0;
             this.OrdenCompra.dtmProcess_Date=new Date();            
             this.OrdenCompra.strPO_Item_Type='C';
-            this.OrdenCompra.strAuthsd_Status='00';
             this.OrdenCompra.fltCURR_QTY_I=this.totalItems;
             this.OrdenCompra.fltTotal_Val=this.totalPrice;
             this.OrdenCompra.strUser_ID='egaona';

@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Aprobar Requisición</span>
+            <span class="labelheadercard" >Aprobar Requisicion</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -72,42 +72,42 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Linea" width="38">
                                         </el-table-column>
-                                        <el-table-column  :render-header="filterstrRequis_NO"  prop="strRequis_NO" width="100" label="Numero Requisicion">
+                                        <el-table-column  :render-header="filterstrRequis_NO"  prop="strRequis_NO" width="100" label="Requisicion">
                                             <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}"  @click="alerta(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strRequis_NO }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strTipReq_Desc" :render-header="filterstrTipReq_Desc"   width="120"
-                                            label="Tipo Requisición">
+                                            label="Tipo Requisicion">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strTipReq_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterstrWHS_Cod"
+                                        <!-- <el-table-column :render-header="filterstrWHS_Cod"
                                             prop="strWHS_Cod"  width="100"
                                             label="Codigo Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column> -->
                                         <el-table-column :render-header="filterstrWHS_Desc"
                                             prop="strWHS_Desc"  width="150"
                                             label="Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column>                                        
                                         <el-table-column :render-header="filterstrDesc_Header"
                                             prop="strDesc_Header"  
-                                            label="Descripción">
+                                            label="Descripcion">
                                             <template scope="scope">
                                                 <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Header }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmRequested_Date"
                                             prop="dtmRequested_Date"  width="100"
-                                            label="Fecha">
+                                            label="Fecha Creacion">
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
@@ -115,6 +115,13 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmRequested_Date" >
                                                 </el-date-picker>
                                                 <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="strCreation_User"  width="110"
+                                            label="Usuario Creador">
+                                            <template scope="scope">
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCreation_User }}</label>
                                             </template>
                                         </el-table-column>
                                         <!-- <el-table-column 
