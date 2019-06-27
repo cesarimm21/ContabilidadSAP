@@ -1,9 +1,6 @@
 import Inicio from '@/components/inicio/inicio.vue'
-import Slider from '@/components/slider/slider.vue'
 import Login from '@/components/login/login.vue'
 import Barmenu from '@/components/barmenu/barmenu.vue'
-import TopMenu from '@/components/customs/top-menu/TopMenu.vue';
-import HeaderbuttosComponent from '@/components/views/reusables/headerbuttos/headerbuttos.vue';
 import UsuarioComponent from '@/components/usuario/usuario.vue'
 import LogComponent from '@/components/log/log.vue'
 import PagosIndividualesComponent from '../components/FI-FINANZAS/Tesoreria/create_pagos/pagos_individual.vue'
@@ -130,6 +127,15 @@ import CrearCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/cod
 import ModificarCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/modificar_codigodiario.vue'
 import VisualizarCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/visualizar_codigodiario.vue'
 import ViewAndEditCodigoDiarioComponent from '../components/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario.vue'
+
+import CrearClaseServicioComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/clase_servicio/crear_clase_servicio/crear_clase_servicio.vue'
+import ModificarClaseServicioComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/clase_servicio/modificar_clase_servicio/modificar_clase_servicio.vue'
+import VisualizarModificarClaseServicioComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/clase_servicio/modificar_visualizar_clase_servicio/modificar_visualizar_clase_servicio.vue'
+import VisualizarClaseServicioComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/clase_servicio/visualizar_clase_servicio/visualizar_clase_servicio.vue'
+import CrearServicioMateComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/servicio_crear/servicio_crear.vue'
+import ModificarServicioMateComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/servicio_modificar/servicio_modificar.vue'
+import VisualizarServicioMateComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/servicio_visualizar/servicio_visualizar.vue'
+import VisualizarModificarServicioComponent from '../components/LO-LOGISTICA/maestro_datos/servicio/servicio_visualizar_modificar/servicio_visualizar_modificar.vue'
 
 
 
@@ -295,11 +301,6 @@ export default [
         component: Inicio,
         name: 'Inicio',
       },  
-      // {
-      //   path:'FI-FINANZAS/proveedor/crear-proveedor',
-      //   component:CrearProveedorComponent,
-      //   name:'crear-proveedor'
-      // }, 
       {
         path:'FI-FINANZAS/maestro-datos/tesoreria/bancos/crear-banco',
         component:CrearBancoComponent,
@@ -389,11 +390,6 @@ export default [
         component:VisualizarContabilidadComponent,
         name:'visualizar-contabilidad'
       }, 
-      // {
-      //   path:'FI-FINANZAS/proveedor/modificar-proveedor',
-      //   component:ModificarProveedorComponent,
-      //   name:'modificar-proveedor'
-      // },
       {
         path:'FI-FINANZAS/libros-balance/librodiario',
         component:LibroDiarioDComponent,
@@ -531,6 +527,48 @@ export default [
         component:CrearPOComponent,
         name:'crear-po'
       }, 
+      //TIPO DE SERVICIO PARA REQUISICION
+      
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/clase_servicio/crear_clase_servicio',
+        component:CrearClaseServicioComponent,
+        name:'crear-clase-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/clase_servicio/modificar_clase_servicio',
+        component:ModificarClaseServicioComponent,
+        name:'modificar-clase-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/clase_servicio/modificar_visualizar_clase_servicio',
+        component:VisualizarModificarClaseServicioComponent,
+        name:'modificar-visualizar-clase-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/clase_servicio/visualizar_clase_servicio',
+        component:VisualizarClaseServicioComponent,
+        name:'visualizar-clase-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/servicio_crear',
+        component:CrearServicioMateComponent,
+        name:'crear-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/servicio_modificar',
+        component:ModificarServicioMateComponent,
+        name:'modificar-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/servicio_visualizar',
+        component:VisualizarServicioMateComponent,
+        name:'visualizar-serviciomate'
+      },
+      {
+        path:'LO-LOGISTICA/maestro_datos/servicio/servicio_visualizar_modificar',
+        component:VisualizarModificarServicioComponent,
+        name:'visualizar-modificar-serviciomate'
+      },
       {
         path:'LO-LOGISTICA/maestro_datos/almacen/clase_material/crear_clase_material',
         component:CrearClaseMaterialComponent,

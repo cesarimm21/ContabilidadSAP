@@ -415,6 +415,7 @@ export default class CrearPOComponent extends Vue {
   //#endregion
     //#region [ORDEN COMPRA]
     guardarPO(val) {
+      var user:any=localStorage.getItem('User_Usuario');
         if (this.multipleSelection.length == 0) {
             this.$message({
                 showClose: true,
@@ -489,20 +490,20 @@ export default class CrearPOComponent extends Vue {
                 item.blnCheck=this.multipleSelection[i].blnCheck//vacio
                 item.strMatClass_Cod=this.multipleSelection[i].strMatClass_Cod
                 item.strMatClass_Desc=this.multipleSelection[i].strMatClass_Desc
-                item.strCreation_User='egaona'
+                item.strCreation_User=user;
                 this.OrdenCompra.listaDetalle.push(item);   
                 requisicionService.getUpdateRequisicionStatus(this.multipleSelection[i].intIdPurReqD_ID)
                 .then(response=>{}).catch(error=>{})
 
             }            
-            this.OrdenCompra.strAuthsd_By='egaona';
+            
             this.OrdenCompra.intChange_Count=0;
             this.OrdenCompra.dtmProcess_Date=new Date();            
             this.OrdenCompra.strPO_Item_Type='C';
             this.OrdenCompra.fltCURR_QTY_I=this.totalItems;
             this.OrdenCompra.fltTotal_Val=this.totalPrice;
-            this.OrdenCompra.strUser_ID='egaona';
-            this.OrdenCompra.strCreation_User='egaona';
+            this.OrdenCompra.strUser_ID=user;
+            this.OrdenCompra.strCreation_User=user;
             this.OrdenCompra.fltTot_Rec_QYT=0;
             this.OrdenCompra.fltTot_Rec_Pend_QTY=0;
             this.OrdenCompra.fltTot_Rec_Value=0;

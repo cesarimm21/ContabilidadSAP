@@ -506,8 +506,9 @@ export default class ViewAndEditPOComponent extends Vue {
         this.editing.column=column;
       }
     async aprobar(){
+        var user:any=localStorage.getItem('User_Usuario');
         this.valuem=0;
-        this.OrdenCompra.strAuthsd_By='ADMINISTRADOR';
+        this.OrdenCompra.strAuthsd_By=user;
         this.OrdenCompra.intIdPurReqH_ID=this.requiSelect.intIdPurReqH_ID;
         this.OrdenCompra.intIdVendor_ID=this.selectProo.intIdVendor_ID;
         this.OrdenCompra.intIdTypeReq_ID=this.requiSelect.intIdTypeReq_ID;
