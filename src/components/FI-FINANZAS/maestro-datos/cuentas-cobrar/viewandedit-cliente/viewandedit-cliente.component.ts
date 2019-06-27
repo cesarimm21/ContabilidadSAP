@@ -865,8 +865,8 @@ export default class ViewAndEditClienteComponent extends Vue {
       clienteService.UpdateCliente(this.Cliente)
       .then(response=>{
         loadingInstance.close();
-        this.openMessageSuccess('Se editó correctamente '+response);
-        this.textosave = 'Se editó correctamente '+response;
+        this.openMessageSuccess('Se edito correctamente '+response);
+        this.textosave = 'Se edito correctamente '+response;
         this.issave=true;
         this.iserror=false;
         this.Cliente=new ClienteModel();

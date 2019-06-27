@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="Dirección">
+                            <el-tab-pane label="Direccion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -157,7 +157,7 @@
                                             </div>                         
                                         </div>
                                         <div class="form-group row margint">
-                                            <label class="el-form-item__label col-md-1" >Dirección</label>
+                                            <label class="el-form-item__label col-md-1" >Direccion</label>
                                             <div class="col-md-6 grupolabel">
                                                 <div class="input-group mb-6" >
                                                 <el-input size ="small"  v-model="Cliente.strAddress" placeholder="">
@@ -328,12 +328,12 @@
                 <div class="row" v-if="cardView">
                     <div class="col-sm-12" style="margin-top: 10px; ">
                         <el-tabs type="border-card" style="margin-right:100px;">
-                            <el-tab-pane label="Retención">
+                            <el-tab-pane label="Retencion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row margint">
-                                            <label class="el-form-item__label col-md-1" >Retención</label>
+                                            <label class="el-form-item__label col-md-1" >Retencion</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                     <el-input size ="small" @blur="desactivar_impuesto" @focus="activar_impuesto" v-model="Cliente.strRetention_Cod">                            
@@ -341,7 +341,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>  
-                                            <label class="el-form-item__label col-md-1" >% Retención</label>
+                                            <label class="el-form-item__label col-md-1" >% Retencion</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                 <el-input type="number" size ="small" v-model="Cliente.fltRetention_Porcen"  placeholder="">
@@ -354,12 +354,12 @@
                                     </div>
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="Detracción">
+                            <el-tab-pane label="Detraccion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row margint">
-                                                <label class="el-form-item__label col-md-1" >Detracción</label>
+                                                <label class="el-form-item__label col-md-1" >Detraccion</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
                                                     <el-input size ="small" @blur="desactivar_detraccion" @focus="activar_detraccion" v-model="Cliente.strDetraccion_Cod">                            
@@ -367,7 +367,7 @@
                                                     </el-input>
                                                     </div>
                                                 </div>  
-                                                <label class="el-form-item__label col-md-1" >%Detracción</label>
+                                                <label class="el-form-item__label col-md-1" >%Detraccion</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
                                                     <el-input type="number" size ="small" v-model="Cliente.fltDetraccion_Porcen"  placeholder="">
@@ -484,7 +484,7 @@
                 @current-change="clienteSelect">
                 <el-table-column   prop="strCliente_NO" label="Codigo" width="180">
                 </el-table-column>  
-                <el-table-column  prop="strCliente_Desc" label="Descripción" style="width: 70% !important;">
+                <el-table-column  prop="strCliente_Desc" label="Descripcion" style="width: 70% !important;">
                 </el-table-column> 
                 <el-table-column  prop="strCountry" label="Pais" style="width: 70% !important;">
                 </el-table-column> 

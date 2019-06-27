@@ -310,8 +310,8 @@ export default class AprobadorPRComponent extends Vue {
     }
     else{
       this.vifprogress=false;
-      this.textosave='Seleccione la requisición. ';
-      this.warningMessage('Seleccione la requisición. ');
+      this.textosave='Seleccione la requisicion. ';
+      this.warningMessage('Seleccione la requisicion. ');
     }
   }
   async cargar(){
@@ -747,6 +747,19 @@ export default class AprobadorPRComponent extends Vue {
     var dd = (dia<10) ? '0'+dia : dd=dia;
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
+  }
+  getEstado(estado){
+    debugger;
+    estado=estado.trim();
+    if(estado=== '50'){
+      return 'Aprobado'
+    }
+    if(estado=== '70'){
+      return 'Rechazado'
+    }
+    else{
+      return 'Pendiente'
+    }
   }
   data(){
     return{

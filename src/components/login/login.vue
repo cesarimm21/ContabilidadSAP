@@ -35,7 +35,7 @@
                                             <img src="../../images/logo_login.png" style="width: 100%;" class="img-fluid">
                                         </div>
                                     </div>
-                                    <p class="text-muted text-center"><span style="font-size:13px;color:white">Iniciar sesión</span></p>
+                                    <p class="text-muted text-center"><span style="font-size:13px;color:white">Iniciar sesion</span></p>
                                     <div class="form-group input-group mb-3" style="margin-left: 0px !important;">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text iconLogin" style="background: #498bbb;border: #498bbb;"><i class="fa fa-user" style="color:white"></i></span>
@@ -77,7 +77,7 @@
                                             <button type="submit" class="btn btn-primary px-4 " @click="loginUsuario">Iniciar</button>
                                         </div>
                                         <div class="col-lg-8 text-right">
-                                            <button type="button" style="color:white!important; font-size:13px !important;" class="btn btn-link px-0 ">Se olvidó su contraseña?</button>
+                                            <button type="button" style="color:white!important; font-size:13px !important;" class="btn btn-link px-0 ">Se olvido su contraseña?</button>
                                         </div>
                                     </div>
                                 </form>

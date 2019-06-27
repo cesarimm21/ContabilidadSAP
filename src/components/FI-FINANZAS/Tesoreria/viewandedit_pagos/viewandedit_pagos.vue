@@ -235,12 +235,12 @@
                                     </el-table-column>
                                     <el-table-column
                                         prop="strDesc_Doc"  width="200"
-                                        label="Descripción">
+                                        label="Descripcion">
                                     </el-table-column>
                                     <el-table-column 
                                         prop="dtmDoc_Date"
                                         width="100"
-                                        label="Fecha emisión">
+                                        label="Fecha emision">
                                         <template scope="scope">
                                             <span>{{ getDateStringView(scope.row.dtmDoc_Date) }}</span>
                                         </template>

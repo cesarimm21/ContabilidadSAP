@@ -29,7 +29,7 @@
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"
             @header-click="headerclick">
-            <el-table-column :render-header="filterstrChartAcct_L_Cod"  prop="strChartAcct_L_Cod" label="Código" width="180">
+            <el-table-column :render-header="filterstrChartAcct_L_Cod"  prop="strChartAcct_L_Cod" label="Codigo" width="180">
             </el-table-column>  
             <el-table-column :render-header="filterstrChartAcct_L_Desc"  prop="strChartAcct_L_Desc" label="Nombre" style="width: 70% !important;">
             </el-table-column>  

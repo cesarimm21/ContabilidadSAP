@@ -184,9 +184,9 @@
                                             prop="strStock_Cod"   width="100"
                                             label="Material">
                                         </el-table-column>
-                                        <el-table-column
+                                        <el-table-column width="200"
                                             prop="strPO_Item_Desc"  
-                                            label="Descripción">
+                                            label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltPO_QTY_I"  width="100"
@@ -234,7 +234,7 @@
                                         </el-table-column>
                                         <el-table-column
                                               width="100"
-                                            label="Fecha Recepción">
+                                            label="Fecha Recepcion">
                                             <!-- <template scope="scope">
                                                  {{getParseDate(scope.row.dtmReceived_Date)}}
                                             </template> -->
@@ -281,22 +281,33 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCreation_User"  width="110"
-                                            label="Usuario Creación">
+                                            label="Usuario Creacion">
                                         </el-table-column>
                                         <el-table-column
                                               width="100"
-                                            label="Fecha Creación">
+                                            label="Fecha Creacion">
                                             <template scope="scope">
                                                  {{getParseDate(scope.row.dtmCreation_Date)}}
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strModified_User"  width="120"
-                                            label="Usuario Modificación">
+                                            label="Usuario Modificacion">
                                         </el-table-column>
                                         <el-table-column
                                               width="120"
-                                            label="Fecha Modificación">
+                                            label="Fecha Modificacion">
+                                            <template scope="scope">
+                                                 {{getParseDate(scope.row.dtmModified_Date)}}
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column
+                                            prop="strModified_User"  width="120"
+                                            label="Usuario Modificacion">
+                                        </el-table-column>
+                                        <el-table-column
+                                              width="120"
+                                            label="Fecha Modificacion">
                                             <template scope="scope">
                                                  {{getParseDate(scope.row.dtmModified_Date)}}
                                             </template>
@@ -361,7 +372,7 @@
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Requisición</span>
+                    <span class="labelheadercard" >Buscar Requisicion</span>
                 </div>
                 <div class="row bodycard">
                     <div class="col-md-12">
@@ -392,7 +403,7 @@
                     @current-change="checkSelectdbRequisicion">
                     <el-table-column  prop="strRequis_NO" label="Codigo" width="180">
                     </el-table-column>
-                    <el-table-column  prop="strRequested_By" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strRequested_By" label="Descripcion" style="width: 70% !important;">
                     </el-table-column>
                     <el-table-column  prop="dtmRequested_Date" label="Fecha" width="180">
                     </el-table-column>
@@ -446,7 +457,7 @@
                     >
                     <el-table-column  prop="strVendor_NO" label="Codigo" width="180">
                     </el-table-column>
-                    <el-table-column  prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strVendor_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column>
                 </el-table>
             </el-card>

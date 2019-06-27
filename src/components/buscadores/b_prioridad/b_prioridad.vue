@@ -33,7 +33,7 @@
             @current-change="handleCurrentChange">
             <el-table-column :render-header="filterstrPriority_Cod"  prop="strPriority_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrPriority_Name" prop="strPriority_Name" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrPriority_Name" prop="strPriority_Name" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

@@ -41,7 +41,7 @@
                             </div>
                             
                             <div class="form-group row" >                                
-                                <label class="el-form-item__label col-md-3" >Descripción PO</label>
+                                <label class="el-form-item__label col-md-3" >Descripcion PO</label>
                                     <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small" v-model="hesModel.strDesc_Header" :disabled="impDisabled">
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="form-group row" style="margin-top:10px;">                                
-                                <label class="el-form-item__label col-md-3" >Descripción Servicio</label>
+                                <label class="el-form-item__label col-md-3" >Descripcion Servicio</label>
                                     <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small"  v-model="ordencompraDetalleSelect.strPO_Item_Desc" disabled>
@@ -90,7 +90,7 @@
             <br>
             <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-tickets"></i> Aceptación Servicio</span>
+                    <span slot="label"><i class="el-icon-tickets"></i> Aceptacion Servicio</span>
                     <el-card class="box-card">
                         <div class="row bodycard">
                             <div class="container">
@@ -234,7 +234,7 @@
                                                 </el-table-column>
                                                 <el-table-column
                                                     prop="strDesc_Detail" sortable min-width="200"
-                                                    label="Descripción">
+                                                    label="Descripcion">
                                                     <template scope="scope">
                                                         <el-input v-if="bln_tbl_Descripcion  && (scope.row === editing.row) 
                                                         && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDesc_Detail" :disabled="impDisabled">
@@ -283,7 +283,7 @@
                                                 </el-table-column>
                                                 <!-- <el-table-column
                                                     prop="recurso" sortable 
-                                                    label="Persona Ejecución">
+                                                    label="Persona Ejecucion">
                                                 </el-table-column>                                                -->
                                                 <el-table-column
                                                     prop="strCostCenter_NO" sortable width="100"

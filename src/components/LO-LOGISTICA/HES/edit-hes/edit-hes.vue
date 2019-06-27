@@ -60,7 +60,7 @@
                                         <el-table-column
                                             :render-header="filterstrDesc_Header"
                                             prop="strDesc_Header"   min-width="260"
-                                            label="Descripción">
+                                            label="Descripcion">
                                         </el-table-column>
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
@@ -84,7 +84,7 @@
                                         <el-table-column
                                             :render-header="filterdtmAuthsd_Date"
                                             prop="dtmAuthsd_Date"  width="100"
-                                            label="Fecha Creación">
+                                            label="Fecha Creacion">
                                              <template scope="scope">
                                                 <span>{{ getDateString(scope.row.dtmAuthsd_Date) }}</span>
                                             </template>

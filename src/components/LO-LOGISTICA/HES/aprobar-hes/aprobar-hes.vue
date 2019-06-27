@@ -5,14 +5,14 @@
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Aprobador Aceptación Servicio</span>            
+            <span class="labelheadercard" >Aprobador Aceptacion Servicio</span>            
         </div>
         <div class="row bodycard">
            <div class="container">
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strHES_NO"  placeholder="">
@@ -84,7 +84,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strDesc_Header" sortable width="200"
-                                            label="Descripción">
+                                            label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCurrency" sortable width="100"

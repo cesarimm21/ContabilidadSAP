@@ -51,6 +51,24 @@
                                     </el-date-picker>
                                 </div>
                             </div>                   
+                        </div> 
+                        
+                        <div class="form-group row Second">
+                            <label class="el-form-item__label col-md-2" >Periodo Final</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                    <el-date-picker
+                                        v-model="fechaHasta"
+                                        type="month"
+                                        @change="cambiarmes(fechaHasta)"
+                                        size="mini"
+                                        format="MMMM / yyyy"
+                                        placeholder="Seleccione Mes"
+                                        :editable = "false"
+                                        style="width:128px !important">
+                                    </el-date-picker>
+                                </div>
+                            </div>                   
                         </div>    
                     </div>
                 </div>
@@ -63,7 +81,7 @@
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
                                         <img class="imagenfilter" src="../../../../images/pdf1.png" style="width: 100%;height: 100%;" alt="" >
                                     </el-button>
-                                    <el-button id="idbutton" class="buttonfilter btn btn-outline-secondary orange"  >
+                                    <el-button id="idbutton" class="buttonfilter btn btn-outline-secondary orange" @click="ExportarExcel()" >
                                         <img class="imagenfilter" src="../../../../images/excel.png" style="width: 100%;height: 100%;" alt="">
                                     </el-button>
                                     <div class="v-separator"></div>
@@ -124,20 +142,20 @@
                                                     <label >&nbsp;{{scope.row.fltCantidadEntrada }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column
+                                            <!-- <el-table-column
                                                 prop="fltPUEntrada" sortable width="150"
                                                 label="Entradas Precio Unitario">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltPUEntrada}}</label>
                                                 </template>
-                                            </el-table-column>
-                                            <el-table-column
+                                            </el-table-column> -->
+                                            <!-- <el-table-column
                                                 prop="fltCostoTotalEntrada" sortable width="150"
                                                 label="Entradas Total">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltCostoTotalEntrada }}</label>
                                                 </template>
-                                            </el-table-column>
+                                            </el-table-column> -->
                                             <el-table-column
                                                 prop="fltCantidadSalida" sortable width="150"
                                                 label="Salidas Cantidad">
@@ -145,20 +163,20 @@
                                                     <label >&nbsp;{{scope.row.fltCantidadSalida }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column
+                                            <!-- <el-table-column
                                                 prop="fltPUSalida" sortable width="150"
                                                 label="Salidas Precio Unitario">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltPUSalida}}</label>
                                                 </template>
-                                            </el-table-column>
-                                            <el-table-column
+                                            </el-table-column> -->
+                                            <!-- <el-table-column
                                                 prop="fltCostoTotalSalida" sortable width="150"
                                                 label="Salidas Total">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltCostoTotalSalida}}</label>
                                                 </template>
-                                            </el-table-column>
+                                            </el-table-column> -->
                                             <el-table-column
                                                 prop="fltCantidadSalidaFinal" sortable width="150"
                                                 label="Saldo Final Cantidad">
@@ -166,20 +184,20 @@
                                                     <label >&nbsp;{{scope.row.fltCantidadSalidaFinal}}</label>
                                                 </template>
                                             </el-table-column>
-                                            <el-table-column
+                                            <!-- <el-table-column
                                                 prop="fltPUSalidaFinal" sortable width="150"
                                                 label="Saldo Final Precio Unitario">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltPUSalidaFinal}}</label>
                                                 </template>
-                                            </el-table-column>
-                                            <el-table-column
+                                            </el-table-column> -->
+                                            <!-- <el-table-column
                                                 prop="fltCostoTotalSalidaFinal" sortable width="150"
                                                 label="Saldo Final Total">
                                                 <template scope="scope">
                                                     <label >&nbsp;{{scope.row.fltCostoTotalSalidaFinal}}</label>
                                                 </template>
-                                            </el-table-column>
+                                            </el-table-column> -->
                                     </el-table>
                                 </div>
                             </div>
@@ -227,8 +245,8 @@
 </template>
 
 <script>
-import RegistroInventarioValorizadoComponent from '@/components/FI-FINANZAS/libros-balance/registro-inventario-valorizado/registro-inventario-valorizado.component'
-export default RegistroInventarioValorizadoComponent
+import RegistroInventarioUnidadFisicaComponent from '@/components/FI-FINANZAS/libros-balance/registro-inventario-unidad-fisica/registro-inventario-unidad-fisica.component'
+export default RegistroInventarioUnidadFisicaComponent
 
 </script>
 <style scoped>

@@ -294,8 +294,8 @@ export default class VisualizarModificarPRComponent extends Vue {
           }
           else{
             this.vifprogress=false;
-            this.textosave='Seleccione la requisición. ';
-            this.warningMessage('Seleccione la requisición. ');
+            this.textosave='Seleccione la requisicion. ';
+            this.warningMessage('Seleccione la requisicion. ');
           }
         }
       }
@@ -317,8 +317,8 @@ export default class VisualizarModificarPRComponent extends Vue {
         }
         else{
           this.vifprogress=false;
-          this.textosave='Seleccione la requisición. ';
-          this.warningMessage('Seleccione la requisición. ');
+          this.textosave='Seleccione la requisicion. ';
+          this.warningMessage('Seleccione la requisicion. ');
         }
       }
     }).catch(error=>{

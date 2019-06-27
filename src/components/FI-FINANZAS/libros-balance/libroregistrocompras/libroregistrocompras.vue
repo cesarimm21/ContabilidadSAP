@@ -18,7 +18,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código Compañia</label>
+                            <label class="el-form-item__label col-md-2" >Codigo Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="formBusqueda.cod_company"  placeholder="">

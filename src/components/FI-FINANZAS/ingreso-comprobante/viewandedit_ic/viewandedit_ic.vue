@@ -92,7 +92,7 @@
                                 </div>                               
                             </div>
                             <div  class="form-group row ">                                
-                                <label class="el-form-item__label col-sm-3" >Fecha Emisión</label>
+                                <label class="el-form-item__label col-sm-3" >Fecha Emision</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
                                         <!-- <el-input type="date"  
@@ -122,7 +122,7 @@
                                 </div>
                             </div>  
                             <div class="form-group row" >
-                                <label class="el-form-item__label col-md-3">Descripción</label>
+                                <label class="el-form-item__label col-md-3">Descripcion</label>
                                 <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9">
                                         <el-input size ="small" v-model="factura.strDesc_Doc"  type="text" :disabled="impDisabled">                            
@@ -357,7 +357,7 @@
                                                     </el-table-column>
                                                     <el-table-column
                                                         prop="strDesc_Item" sortable  min-width="200"
-                                                        label="Descripción">
+                                                        label="Descripcion">
                                                     </el-table-column>
                                                      <!-- <el-table-column 
                                                         prop="blnCheck"
@@ -422,7 +422,7 @@
                     <div class="col-md-12">
                         <div class="form-group row">
                             <div class="form-group row margint">
-                                <label class="el-form-item__label col-md-3" >Retención</label>
+                                <label class="el-form-item__label col-md-3" >Retencion</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strWH_Reten_Cod">                            
@@ -430,7 +430,7 @@
                                             </el-input>
                                         </div>
                                     </div>  
-                                <label class="el-form-item__label col-md-3" >% Retención</label>
+                                <label class="el-form-item__label col-md-3" >% Retencion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input type="number" size ="small" v-model="factura.fltValue_WH_Retention"  placeholder="">
@@ -442,7 +442,7 @@
                         </div>
                         <div class="form-group row" style="margin-top:15px;">
                             <div class="form-group row margint">
-                                <label class="el-form-item__label col-md-3" >Detracción</label>
+                                <label class="el-form-item__label col-md-3" >Detraccion</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
                                             <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="factura.strDetrac_Cod">                            
@@ -450,7 +450,7 @@
                                             </el-input>
                                         </div>
                                     </div>  
-                                    <label class="el-form-item__label col-md-3" >%Detracción</label>
+                                    <label class="el-form-item__label col-md-3" >%Detraccion</label>
                                     <div class="col-md-3 grupolabel">
                                         <div class="input-group mb-3" >
                                             <el-input type="number" size ="small" v-model="factura.fltDetraccion_Porcen"  placeholder="">
@@ -531,7 +531,7 @@
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="PO" width="100">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column>
                     <el-table-column prop="strVendor_NO"  label="Codigo Proveedor" width="100">
                     </el-table-column>  
@@ -593,7 +593,7 @@
                     @current-change="checkSelectDiario">
                     <el-table-column  prop="strDaily_Cod" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strDaily_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strDaily_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                     <el-table-column  prop="strDaily_Type" label="Tipo" width="180">
                     </el-table-column> 

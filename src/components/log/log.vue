@@ -1,7 +1,7 @@
 <template>
   <div id="roles">
     <p align="center">
-         Configuración Log
+         Configuracion Log
        </p>
       
            

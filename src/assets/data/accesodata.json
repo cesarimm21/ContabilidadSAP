@@ -15,7 +15,7 @@
         },
         {
             "intAccess_ID": "1",
-            "strName": "FI-Administración",
+            "strName": "FI-Administracion",
             "strDescription": "Administracion",
             "strLink": "/barmenu/administracion",
             "intLevel": "1",

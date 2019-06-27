@@ -224,8 +224,8 @@ export default class ViewAndEditHesComponent extends Vue {
             setTimeout(() => {
                 this.vifprogress=false;
                 this.issave=true;
-                this.textosave='Se aprobó correctamente. '+res.strPO_NO;
-                this.openMessageSuccess('Se aprobó correctamente '+res.strPO_NO);
+                this.textosave='Se aprobo correctamente. '+res.strPO_NO;
+                this.openMessageSuccess('Se aprobo correctamente '+res.strPO_NO);
                 // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
             }, 600)
            

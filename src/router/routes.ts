@@ -272,8 +272,9 @@ import CrearSucursalComponent from '@/components/XX-CONFI/maestro_datos/sucursal
 
 import BalanceComprobacionComponent from '@/components/FI-FINANZAS/libros-balance/balance-comprobacion/balance-comprobacion.vue'
 import CajaBancosComponent from '@/components/FI-FINANZAS/libros-balance/cajabancos/cajabancos.vue'
-
+import RegistroInventarioUnidadFisicaComponent from '@/components/FI-FINANZAS/libros-balance/registro-inventario-unidad-fisica/registro-inventario-unidad-fisica.vue'
 import RegistroInventarioValorizadoComponent from '@/components/FI-FINANZAS/libros-balance/registro-inventario-valorizado/registro-inventario-valorizado.vue'
+
 export default [
  
   {
@@ -1066,6 +1067,11 @@ export default [
         name:'RegistroInventarioValorizadoComponent'
       }, 
       
+      {
+        path:'FI-FINANZAS/libros-balance/registro-inventario-unidad-fisica',
+        component:RegistroInventarioUnidadFisicaComponent,
+        name:'RegistroInventarioUnidadFisicaComponent'
+      }, 
       
       
 

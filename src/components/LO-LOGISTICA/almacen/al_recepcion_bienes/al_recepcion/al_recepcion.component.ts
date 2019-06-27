@@ -489,7 +489,7 @@ export default class RecepcionMaterialComponent extends Vue {
         var object = JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         if(modulo.toLowerCase()!='aprobar'){
-          this.txtmodulo='Recepción Material';
+          this.txtmodulo='Recepcion Material';
           this.vifaprobarrechasar=false;
           if(modulo.toLowerCase()!='visualizar'){
             this.visualizar=true;
@@ -560,8 +560,8 @@ export default class RecepcionMaterialComponent extends Vue {
             setTimeout(() => {
                 this.vifprogress=false;
                 this.issave=true;
-                this.textosave='Se aprobó correctamente. '+res.strPO_NO;
-                this.openMessage('Se aprobó correctamente '+res.strPO_NO);
+                this.textosave='Se aprobo correctamente. '+res.strPO_NO;
+                this.openMessage('Se aprobo correctamente '+res.strPO_NO);
             }, 600)
         })
         .catch(error=>{

@@ -69,7 +69,7 @@ var EditableColumn = {
   } ,
  
 })
-export default class RegistroInventarioValorizadoComponent extends Vue {
+export default class RegistroInventarioUnidadFisicaComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 250).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   formBusqueda:any={
@@ -86,7 +86,6 @@ export default class RegistroInventarioValorizadoComponent extends Vue {
   dialogCuentaContable:boolean=false;
   /*input*/
   btnactivarcompania:boolean=false;
-  XLSX:any;
   /*Model*/
   public productoModel:ProductoModel=new ProductoModel();
   
@@ -323,7 +322,7 @@ export default class RegistroInventarioValorizadoComponent extends Vue {
     this.balCuentas.intYear=this.fechaDesde.getFullYear();
     this.balCuentas.strCompany_Cod=this.balCuentas.strCompany_Cod==undefined?'*':this.balCuentas.strCompany_Cod;
     
-    await kardexvaloradoService.GetKardexValorado(this.balCuentas.strCompany_Cod,this.balCuentas.intYear,this.fechaDesde.getMonth()+1)
+    await kardexvaloradoService.GetKardexUnidadFisica(this.balCuentas.strCompany_Cod,this.balCuentas.intYear,this.fechaDesde.getMonth()+1,this.fechaHasta.getMonth()+1)
     .then(res=>{
       //debugger;
       for(var i=0;i<50;i++){
@@ -412,13 +411,9 @@ export default class RegistroInventarioValorizadoComponent extends Vue {
 
   ExportarExcel(){
        /* generate workbook object from table */
-			// var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
+			var wb = XLSX.utils.table_to_book(document.getElementById('out-table'));
       /* generate file and force a download*/
-      
-      // XLSX.writeFile(wb, "Libro_Diario_"+ this.getParseDate(new Date())+".xlsx");
-      
-          
-      
+      XLSX.writeFile(wb, "Formato 12.1 Registro Del Inventario Permanente En Unidades Físicas "+ this.getParseDate(new Date())+".xlsx");
   }
 
   ExportarPDF(){
@@ -1406,6 +1401,28 @@ export default class RegistroInventarioValorizadoComponent extends Vue {
       for (var i=0; i!=s.length; ++i) buf2[i] = s.charCodeAt(i) & 0xFF;
       return buf2;
     }
+  }
+  cambiarmes(fecha){
+    var anio:any=new Date(this.fechaDesde);
+    anio=anio.getFullYear();
+    var anios:any=new Date(fecha);
+    anios=anios.getFullYear();
+    if(anios==anio){
+      var mes:any=new Date(this.fechaDesde);
+      mes=mes.getMonth();
+      var mess:any=new Date(fecha);
+      mess=mess.getMonth();
+      if(mess<mes){
+        alert('Ingrese periodo correctamente');
+        this.fechaHasta=new Date();
+      }
+    }
+    else{
+      alert('Ingrese periodo correctamente');
+      this.fechaHasta=new Date();
+      return new Date();
+    }
+    
   }
   data(){
     return{

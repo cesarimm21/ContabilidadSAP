@@ -7,7 +7,7 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-1" >Código</label>
+                        <label class="el-form-item__label col-md-1" >Codigo</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
                             <el-input size ="small" v-model="inputAtributo">
@@ -32,7 +32,7 @@
             <!-- @current-change="handleCurrentChange"> -->
             <el-table-column :render-header="filterstrCostCenter_NO"  prop="strCostCenter_NO" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrCostCenter_Name" prop="strCostCenter_Name" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrCostCenter_Name" prop="strCostCenter_Name" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

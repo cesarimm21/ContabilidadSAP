@@ -564,7 +564,7 @@ export default class ViewAndEditPagosComponent extends Vue {
             {title:"Compañia ",dataKey:"strCompany_Cod"},
             {title:"NO Voucher",dataKey:"strVoucher_NO"},
             {title:"Tipo Contable",dataKey:"strType_Doc"},
-            {title:"Fecha Emisión FT",dataKey:"dtmDue_Date"},
+            {title:"Fecha Emision FT",dataKey:"dtmDue_Date"},
             {title:"Valor por Documento",dataKey:"fltValue_Local"},
             {title:"Retenciones",dataKey:"fltValue_WH_Retention"},
             {title:"Pago total por Documento",dataKey:"fltNetValue_Doc_Local"},
@@ -621,7 +621,7 @@ export default class ViewAndEditPagosComponent extends Vue {
         var sumdata:any=[{}];
         var dataTotal:any=[{}];
           
-          var paragraph="Este documento (incluidas las páginas siguientes) es confidencial, este puede ser leído, copiado y utilizado solamente para fines respectivos.  Si Usted recibe este documento por error, por favor notifíquelo inmediatamente. No comparta su información a ninguna persona y destrúyalo. Muchas gracias. ";
+          var paragraph="Este documento (incluidas las páginas siguientes) es confidencial, este puede ser leído, copiado y utilizado solamente para fines respectivos.  Si Usted recibe este documento por error, por favor notifíquelo inmediatamente. No comparta su informacion a ninguna persona y destrúyalo. Muchas gracias. ";
           let columnsf = [
             {title:"Footer",dataKey:"footer"},
           ]

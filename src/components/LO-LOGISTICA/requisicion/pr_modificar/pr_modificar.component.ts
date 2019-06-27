@@ -91,7 +91,7 @@ export default class ModificarPRComponent extends Vue {
   contador:any=0;
   _10min:boolean=false;
   ocultarConfig:boolean = true;
-  nameuser:string;
+  nameuser:any;
   namecomplete:string;
   accesosUser:any=[];
   ocultar:boolean=false;
@@ -226,14 +226,20 @@ export default class ModificarPRComponent extends Vue {
   strTypeMov_Cod:string='';
   strTypeMov_Desc:string='';
 
+  bln_tbl_precio:boolean=false;
+  visiblecolumna:boolean=false;
+  border_width:string='0px';
+  strUM:string='';
+  
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     
+    this.nameuser=localStorage.getItem('User_Usuario');
     Global.nameComponent="requisicion"
     this.cell_ocultar='#e4e2e2';        
-    this.blntiporequisicion=false;
+    this.blntiporequisicion=false;  
     this.blncategorialinea=false;
     this.blncuentacontable=false;
     this.blncentrocosto=false;
@@ -272,17 +278,17 @@ export default class ModificarPRComponent extends Vue {
   //     if(modulo.toLowerCase()!='aprobar'){
   //       if(modulo.toLowerCase()!='modificar'){
   //         this.visualizar=true;
-  //         this.txtmodulo='Visualizar Requisición';
+  //         this.txtmodulo='Visualizar Requisicion';
   //       }
   //       else{
   //         this.visualizar=false;
-  //         this.txtmodulo='Modificar Requisición';
+  //         this.txtmodulo='Modificar Requisicion';
   //       }
   //     }
   //     else{
   //       this.visualizar=true;
   //       this.vifaprobarrechasar=true;
-  //       this.txtmodulo='Aprobar Requisición';
+  //       this.txtmodulo='Aprobar Requisicion';
   //     }
   //     this.cargar(object.strRequis_NO);
   //   })
@@ -318,9 +324,11 @@ export default class ModificarPRComponent extends Vue {
     .catch(error=>{
       console.log('error',error)
     })
+    
     await categoriacuentaService.GetOnlyOneCategoriaCuenta("ST")
     .then(res=>{
-      this.categoriaCuentaModel=res[0];
+      debugger;
+      this.categoriaCuentaModel=res;
       console.log('Categoria-Cuenta',this.categoriaCuentaModel);
       debugger;
       for(var i=0;i<this.totalRegistros;i++){
@@ -355,17 +363,17 @@ export default class ModificarPRComponent extends Vue {
     if(modulo.toLowerCase()!='aprobar'){
       if(modulo.toLowerCase()!='modificar'){
         this.visualizar=true;
-        this.txtmodulo='Visualizar Requisición';
+        this.txtmodulo='Visualizar Requisicion';
       }
       else{
         this.visualizar=false;
-        this.txtmodulo='Modificar Requisición';
+        this.txtmodulo='Modificar Requisicion';
       }
     }
     else{
       this.visualizar=true;
       this.vifaprobarrechasar=true;
-      this.txtmodulo='Aprobar Requisición';
+      this.txtmodulo='Aprobar Requisicion';
     }
    await  this.cargar(object.strRequis_NO);
   }
@@ -379,6 +387,30 @@ export default class ModificarPRComponent extends Vue {
         .then(resd=>{
           if(resd!=undefined){
             this.requisicionModel=res[0];
+            this.tiporequisicion=this.requisicionModel.strTypeReq_Cod;
+            this.activar_tipo_requisicion(this.tiporequisicion);
+            this.CompleteData=[];
+            this.tableData1=[];
+            if(this.tiporequisicion!='A'){
+              this.bln_tbl_precio=true;
+              for(var i=0;i<this.totalRegistros;i++){
+                var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+                reqDetalle.intRequis_Item_NO=i+1;
+                this.CompleteData.push(reqDetalle);
+              }
+            }
+            else{
+              this.bln_tbl_precio=false;
+              for(var i=0;i<this.totalRegistros;i++){
+                var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+                reqDetalle.strCateg_Account="ST";
+                reqDetalle.intRequis_Item_NO=i+1;
+                reqDetalle.strDescription="";
+                reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+                this.CompleteData.push(reqDetalle);
+              }
+            }
+            
             
             for(var i=0;i<resd.length;i++){
               console.log('detalle',resd);
@@ -388,7 +420,7 @@ export default class ModificarPRComponent extends Vue {
             }
             this.CompleteData1=this.CompleteData;
             this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-      
+          
           }
         })
         .catch(error=>{
@@ -500,15 +532,24 @@ export default class ModificarPRComponent extends Vue {
       console.log('handleCurrentChange',val);
       this.currentRow = val;
       this.fltQuantity=val.fltQuantity;
-      this.dtmRequested_Date=this.getParseDate(val.dtmRequested_Date);
+      this.dtmRequested_Date=this.getDateString(val.dtmRequested_Date);
       this.fltUnitPrice=val.fltUnitPrice!=null?val.fltUnitPrice:0;
       this.fltValue_Total=this.fltUnitPrice*this.fltQuantity;
       this.strAccount_NO=val.strAccount_NO;
       this.strCostCenter=val.strCostCenter;
+      this.strUM=val.strUM==undefined?'':val.strUM;
+
       this.getDetalle(val);
     }
   }
 
+  comprobar(numero,row){
+    if(numero==""){
+      this.selectrow=row;
+      this.selectrow.fltUnitPrice=0;
+      return 0;
+    }
+  }
   getDetalle(val){
     debugger;
     if(val.strDescription!='')
@@ -659,29 +700,43 @@ export default class ModificarPRComponent extends Vue {
     this.btnactivarproveedor=false;
     this.btnactivarcompania=false
   }
+  
+
   activar_tipo_requisicion(value){
-    debugger;
-    console.log("activar_tipo_requisicion");
-    if(this.tiporequisicionant!=value){
-    this.tiporequisicionant=value;
-    if(value=='N'){
-      this.cell_ocultar='transparent';
-      this.blntiporequisicion=true;
-      this.blncategorialinea=true;
-      
-      this.blncentrocosto=true;
-      this.blnunidadmedida=true;
-      this.blnproveedor=true;
-      this.tableData1=[];
-      
-      for(var i=0;i<10;i++){
-        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
-        reqDetalle.intRequis_Item_NO=i+1;
-        this.tableData1.push(reqDetalle);
+    this.tiporequisicion=value;
+    
+    if(value=='S'){
+      this.visiblecolumna=true;
+      if(this.visualizar){
+        this.cell_ocultar='transparent';
       }
+      else{
+        this.cell_ocultar='rgb(255, 157, 164)';
+      }
+      
+      this.border_width='1px';  
     }
-    else{
-      this.cell_ocultar='#e4e2e2';        
+    if(value=='N' || value=='AC'){
+      this.visiblecolumna=true;
+      if(this.visualizar){
+        this.cell_ocultar='transparent';
+      }
+      else{
+        this.cell_ocultar='rgb(255, 157, 164)';
+      }
+      this.border_width='1px';  
+    }
+    if(value=='A'){
+      this.visiblecolumna=false;
+      //this.cell_ocultar='transparent';
+      if(this.visualizar){
+        this.cell_ocultar='transparent';
+      }
+      else{
+        this.cell_ocultar='rgb(255, 157, 164)';
+      }
+
+      this.border_width='1px';    
       this.blntiporequisicion=false;
       this.blncategorialinea=false;
       this.blncuentacontable=false;
@@ -690,17 +745,43 @@ export default class ModificarPRComponent extends Vue {
       this.blnproveedor=false;
       this.tableData1=[];
       
-      for(var i=0;i<10;i++){
+      this.CompleteData=[];
+      this.tableData1=[];
+      for(var i=0;i<this.totalRegistros;i++){
+        var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
+        reqDetalle.strCateg_Account="ST";
+        reqDetalle.intRequis_Item_NO=i+1;
+        reqDetalle.strDescription="";
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
+      }
+      this.CompleteData1=this.CompleteData;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
+    }
+    else{
+      this.blntiporequisicion=true;
+      this.blncategorialinea=true;
+      
+      this.blncentrocosto=true;
+      this.blnunidadmedida=true;
+      this.blnproveedor=true;
+      this.CompleteData=[];
+      this.tableData1=[];
+      for(var i=0;i<this.totalRegistros;i++){
         var reqDetalle:RequisicionDetalleModel=new RequisicionDetalleModel();
         reqDetalle.intRequis_Item_NO=i+1;
-        reqDetalle.strCateg_Account="A"
-        this.tableData1.push(reqDetalle);
+        reqDetalle.strDescription="";
+        reqDetalle.intIdAcctCateg_ID=this.categoriaCuentaModel.intIdAcctCateg_ID;
+        this.CompleteData.push(reqDetalle);
       }
+      this.CompleteData1=this.CompleteData;
+      this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+  
     }
     // this.btnactivaralmacen=false;
     // this.btnactivarproveedor=false;
     // this.btnactivarcompania=false
-  }
 }
 
   /*tabla metodos*/
@@ -925,7 +1006,7 @@ export default class ModificarPRComponent extends Vue {
     // //this.selectrow.strs=val.strStock_Desc;
     // this.selectrow.strAccount_NO=val.strExp_Acct;
     // this.selectrow.strVendor_Suggested=val.strVendor_NO;
- 
+    
     this.selectrow.strMaterial_Cod=val.strStock_Cod;
     this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
     this.selectrow.strUM=val.strUM_Cod;
@@ -941,6 +1022,7 @@ export default class ModificarPRComponent extends Vue {
     this.selectrow.strPriority_Cod='';
     this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
     
+    this.strUM=val.strUM_Cod;
     this.strVendor_NO=val.strVendor_NO;
     this.strVendor_Desc=val.strVendor_Desc;
     this.strAccount_NO=val.strExp_Acct;
@@ -975,6 +1057,8 @@ export default class ModificarPRComponent extends Vue {
   SeleccionadoPrioridad(val){
     debugger;
     this.selectrow.strPriority_Cod=val.strPriority_Cod;
+    this.selectrow.strPriority_Desc=val.strPriority_Desc;
+    
     this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;
     this.inlineText();
@@ -1023,6 +1107,9 @@ export default class ModificarPRComponent extends Vue {
     }
     this.requisicionModel.listaDetalle=tabla;
     this.requisicionModel.listaDetalleNuevo=tablan;
+    this.requisicionModel.strModified_User=this.nameuser;
+    this.requisicionModel.strCreation_User=this.nameuser;
+
     for(var i=0;i<50;i++){
       this.percentage++;
     }
@@ -1057,6 +1144,9 @@ export default class ModificarPRComponent extends Vue {
       }
     }, 200)
     console.log('aprobar',this.requisicionModel);
+    
+    this.requisicionModel.strModified_User=this.nameuser;
+    this.requisicionModel.strCreation_User=this.nameuser;
     await requisicionService.aprobarRequisicion(this.requisicionModel)
     .then(res=>{
       debugger;
@@ -1064,8 +1154,8 @@ export default class ModificarPRComponent extends Vue {
       setTimeout(() => {
         this.vifprogress=false;
         this.issave=true;
-        this.textosave='Se aprobó correctamente. '+res.strRequis_NO;
-        this.openMessage('Se aprobó correctamente '+res.strRequis_NO);
+        this.textosave='Se aprobo correctamente. '+res.strRequis_NO;
+        this.openMessage('Se aprobo correctamente '+res.strRequis_NO);
       }, 600)
     })
     .catch(error=>{
@@ -1087,8 +1177,8 @@ export default class ModificarPRComponent extends Vue {
       setTimeout(() => {
         this.vifprogress=false;
         this.issave=true;
-        this.textosave='Se rechazó correctamente. '+res.strRequis_NO;
-        this.openMessage('Se rechazó correctamente '+res.strRequis_NO);
+        this.textosave='Se rechazo correctamente. '+res.strRequis_NO;
+        this.openMessage('Se rechazo correctamente '+res.strRequis_NO);
       }, 600)
     })
     .catch(error=>{
@@ -1699,6 +1789,12 @@ export default class ModificarPRComponent extends Vue {
     return dd+'.'+mm+'.'+yyyy;
   }
 
+  clickprecio(event,edit,column){
+    
+    event.edit=!edit;
+    this.editing.row=event;
+    this.editing.column=column;
+  }
   data(){
     return{
       dialogTableVisible: false,

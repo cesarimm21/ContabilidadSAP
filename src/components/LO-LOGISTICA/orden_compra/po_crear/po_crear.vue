@@ -213,7 +213,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strDescription"  width="200"
-                                            label="Descripción">
+                                            label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strVendor_Desc"  width="200"

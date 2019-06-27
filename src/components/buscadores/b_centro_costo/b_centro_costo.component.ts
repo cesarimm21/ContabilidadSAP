@@ -246,15 +246,15 @@ export default class  BCentroCostoComponent extends Vue {
     dataTable:[{
         CostCenter_NO:'630207101',
         CostCen_Father_NO:'630207',
-        CostCenter_Name:'Perforación Primaria Ore',
-        CostCenter_Desc:'Perforación Primaria Ore',
+        CostCenter_Name:'Perforacion Primaria Ore',
+        CostCenter_Desc:'Perforacion Primaria Ore',
         Cat_Code:'01',
       },
       {
         CostCenter_NO:'630207101',
         CostCen_Father_NO:'630207',
-        CostCenter_Name:'Perforación Primaria Waste',
-        CostCenter_Desc:'Perforación Primaria Waste',
+        CostCenter_Name:'Perforacion Primaria Waste',
+        CostCenter_Desc:'Perforacion Primaria Waste',
         Cat_Code:'01',
       },
       {

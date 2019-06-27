@@ -31,7 +31,7 @@
             @current-change="handleCurrentChange">
             <el-table-column :render-header="filterstrUM_Cod"  prop="strUM_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrUM_Desc" prop="strUM_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrUM_Desc" prop="strUM_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

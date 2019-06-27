@@ -245,7 +245,7 @@
                                         <div class="input-group mb-3" >
                                             <el-checkbox :disabled="visualizar" class="col-sm-6"  v-model="cuentacontable.blnAcc_ST" >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
-                                                    Estadistica Producción
+                                                    Estadistica Produccion
                                                 </span>  
                                             </el-checkbox>
                                         </div>
@@ -313,17 +313,17 @@
                             </div>
                         </el-tab-pane>
                         <el-tab-pane >
-                            <span slot="label"><i class="el-icon-warning"></i> Información</span>
+                            <span slot="label"><i class="el-icon-warning"></i> Informacion</span>
                             <div class="col-md-6">
                              
                                 <div class="form-group row" style="margin-top:10px;">
-                                    <label class="el-form-item__label col-sm-3" >Usuario Creación</label>
+                                    <label class="el-form-item__label col-sm-3" >Usuario Creacion</label>
                                     <div class="col-sm-3 grupolabel">
                                             <div class="input-group mb-3" >
                                                 <el-input type="text" :disabled="true" size ="small" style="font-size:11px;" v-model="cuentacontable.strCreation_User"></el-input>
                                             </div>
                                         </div>
-                                    <label class="el-form-item__label col-sm-3" >Usuario Modificación</label>
+                                    <label class="el-form-item__label col-sm-3" >Usuario Modificacion</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
                                         <el-input type="text"  :disabled="true" size ="small" style="font-size:11px;" v-model="cuentacontable.strModified_User"></el-input>
@@ -331,13 +331,13 @@
                                     </div>
                                 </div>
                                   <div class="form-group row" >
-                                    <label class="el-form-item__label col-sm-3" >Fecha Creación</label>
+                                    <label class="el-form-item__label col-sm-3" >Fecha Creacion</label>
                                     <div class="col-sm-3 grupolabel">
                                             <div class="input-group mb-3" >
                                                 <el-input type="text" :disabled="true" size ="small" style="font-size:11px;" v-model="cuentacontable.dtmCreation_Date"></el-input>
                                             </div>
                                         </div>
-                                    <label class="el-form-item__label col-sm-3" >Fecha Modificación</label>
+                                    <label class="el-form-item__label col-sm-3" >Fecha Modificacion</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
                                         <el-input type="text" :disabled="true"  size ="small" style="font-size:11px;" v-model="cuentacontable.dtmModified_Date"></el-input>
@@ -389,7 +389,7 @@
                     <div class="row bodycard">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="el-form-item__label col-md-3" >Código</label>
+                                <label class="el-form-item__label col-md-3" >Codigo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small"   placeholder="">

@@ -14,14 +14,14 @@
       </div>
       </el-tooltip>
     </div>
-    <div class="brand" >Sistema de <span style="color:#d7803d">Gestión Empresarial </span>
+    <div class="brand" >Sistema de <span style="color:#d7803d">Gestion Empresarial </span>
     <span >{{compania}}</span> </div>
    
     <el-tooltip class="item" effect="dark" :content="namecomplete" placement="bottom">
       <div class="user-container " style="line-height: 35px;"><i class="el-icon-fa-user" style="font-size: 16px;"></i> <span style="font-size: 14px;">{{nameuser}}</span>
       </div>
     </el-tooltip>
-    <el-tooltip v-if="ocultarConfig" class="item" effect="dark" content="Configuración" placement="bottom">
+    <el-tooltip v-if="ocultarConfig" class="item" effect="dark" content="Configuracion" placement="bottom">
       <div class="icon-container blue" style="line-height: 35px;" @click.prevent="$refs.ctxMenu.open"><i class="el-icon-fa-cog" style="font-size: 16px;"></i>
       </div>
     </el-tooltip>

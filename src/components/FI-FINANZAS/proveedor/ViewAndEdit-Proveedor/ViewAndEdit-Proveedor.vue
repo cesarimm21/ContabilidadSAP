@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="Dirección">
+                            <el-tab-pane label="Direccion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -364,12 +364,12 @@
                 <div class="row">
                     <div class="col-sm-12" style="margin-top: 10px; ">
                         <el-tabs type="border-card" style="margin-right:100px;">
-                            <el-tab-pane label="Retención">
+                            <el-tab-pane label="Retencion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row margint">
-                                            <label class="el-form-item__label col-md-1" >Retención</label>
+                                            <label class="el-form-item__label col-md-1" >Retencion</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                     <el-input size ="small" @blur="desactivar_impuesto" @focus="activar_impuesto" v-model="Proveedor.strRetention_Cod" :disabled="proDisabled">                            
@@ -377,7 +377,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>  
-                                            <label class="el-form-item__label col-md-1" >% Retención</label>
+                                            <label class="el-form-item__label col-md-1" >% Retencion</label>
                                             <div class="col-md-1 grupolabel">
                                                 <div class="input-group mb-1" >
                                                 <el-input type="number" size ="small" v-model="Proveedor.fltRetention_Porcen"  placeholder="" :disabled="proDisabled">
@@ -390,12 +390,12 @@
                                     </div>
                                 </div>
                             </el-tab-pane>
-                            <el-tab-pane label="Detracción">
+                            <el-tab-pane label="Detraccion">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group row margint">
-                                                <label class="el-form-item__label col-md-1" >Detracción</label>
+                                                <label class="el-form-item__label col-md-1" >Detraccion</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
                                                     <el-input size ="small" @blur="desactivar_detraccion" @focus="activar_detraccion" v-model="Proveedor.strDetraccion_Cod" :disabled="proDisabled">                            
@@ -403,7 +403,7 @@
                                                     </el-input>
                                                     </div>
                                                 </div>  
-                                                <label class="el-form-item__label col-md-1" >%Detracción</label>
+                                                <label class="el-form-item__label col-md-1" >%Detraccion</label>
                                                 <div class="col-md-1 grupolabel">
                                                     <div class="input-group mb-1" >
                                                     <el-input type="number" size ="small" v-model="Proveedor.fltDetraccion_Porcen"  placeholder="" :disabled="proDisabled">

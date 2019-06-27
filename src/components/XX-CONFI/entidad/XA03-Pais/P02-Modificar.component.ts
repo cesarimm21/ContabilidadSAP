@@ -181,7 +181,7 @@ export default class ModificarPaisComponent extends Vue {
       //           .catch(error=>{
       //             this.$message({
       //                 showClose: true,
-      //                 message: 'No se eliminó',
+      //                 message: 'No se elimino',
       //                 type: 'error'
       //               });
       //           })

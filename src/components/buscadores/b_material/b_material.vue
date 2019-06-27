@@ -34,7 +34,7 @@
             @current-change="handleCurrentChange">
             <el-table-column  :render-header="filterstrStock_Cod" prop="strStock_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrStock_Desc" prop="strStock_Desc" label="Descripción" >
+            <el-table-column :render-header="filterstrStock_Desc" prop="strStock_Desc" label="Descripcion" >
             </el-table-column> 
             </el-table>
         </el-card>

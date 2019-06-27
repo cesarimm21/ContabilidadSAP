@@ -29,11 +29,11 @@
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"
             @header-click="headerclick">
-            <el-table-column :render-header="filterstrGrpAcctCont_Cod"   prop="strGrpAcctCont_Cod" label="Código" width="180">
+            <el-table-column :render-header="filterstrGrpAcctCont_Cod"   prop="strGrpAcctCont_Cod" label="Codigo" width="180">
             </el-table-column>  
             <el-table-column :render-header="filterstrGrpAcctCont_Name" prop="strGrpAcctCont_Name" label="Nombre" style="width: 70% !important;">
             </el-table-column>  
-            <el-table-column :render-header="filterstrGrpAcctCont_Desc" prop="strGrpAcctCont_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrGrpAcctCont_Desc" prop="strGrpAcctCont_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

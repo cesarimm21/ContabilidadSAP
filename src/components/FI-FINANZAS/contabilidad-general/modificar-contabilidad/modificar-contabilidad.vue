@@ -150,7 +150,7 @@
                                 </el-checkbox> 
                             </div>   
                             <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Descripción</label>
+                                <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar"   size ="small" style="font-size:11px;" v-model="Desc_Header" ></el-input>
@@ -212,7 +212,7 @@
                                                     </el-table-column>
                                                     <el-table-column 
                                                         prop="strDescription"   width="200"
-                                                        label="Descripción">
+                                                        label="Descripcion">
                                                         <template scope="scope">
                                                             <el-input :disabled="visualizar"  v-if="bln_tbl_descripcion  && (scope.row === editing.row) 
                                                             && (scope.column.property === editing.column)"  v-focus size="small" v-model="scope.row.strDetail_Desc" >
@@ -322,7 +322,7 @@
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
@@ -417,7 +417,7 @@
                     @current-change="checkSelectDiario">
                     <el-table-column  prop="strDaily_Cod" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strDaily_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strDaily_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>

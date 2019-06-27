@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Código Salida</label>
+                            <label class="el-form-item__label col-md-3" >Codigo Salida</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
@@ -184,16 +184,16 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Código">
+                                        <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Codigo">
                                             <template scope="scope">
                                             <label >&nbsp;{{ scope.row.strIssueAjust_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCompany_Cod" sortable  width="120"
-                                            label="Código Compañia">
+                                            label="Codigo Compañia">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.strCompany_Cod }}</label>
                                             </template>
@@ -207,7 +207,7 @@
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strTypeMov_Cod" sortable  width="120"
-                                            label="Código Tipo Movimiento">
+                                            label="Codigo Tipo Movimiento">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
                                             </template>
@@ -221,7 +221,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strWHS_Cod" sortable width="150"
-                                            label="Código Almacen">
+                                            label="Codigo Almacen">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>

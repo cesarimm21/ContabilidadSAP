@@ -31,7 +31,7 @@
             @header-click="headerclick">
             <el-table-column  :render-header="filterintTypeAdq_PDB_Cod" prop="intTypeAdq_PDB_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrTypeAdq_PDB_Desc"  prop="strTypeAdq_PDB_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrTypeAdq_PDB_Desc"  prop="strTypeAdq_PDB_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
