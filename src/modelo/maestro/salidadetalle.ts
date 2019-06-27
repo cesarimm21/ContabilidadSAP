@@ -15,6 +15,7 @@ export class SalidaDetalleModel {
     strDelivery_Place: string | null;
     dtmDelivery_Date: Date | null;
     strPriority_Cod: string | null;
+    strPriority_Desc: string | null;
     strIssueAjust_NO:string | null;
     intIdInvStock_ID:number;
     intIdCostCenter_ID:number;

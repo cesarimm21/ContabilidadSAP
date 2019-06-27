@@ -81,7 +81,7 @@
                                 </el-input>
                                 </div>
                             </div>
-                            <span style="font-size: 11px;margin-top: 5px;">{{salidaModel.strTypeMov_Desc}}</span>
+                            <span style="font-size: 11px;margin-top: 5px;">{{strTypeMov_Desc}}</span>
                         </div> 
                     </div>
                 </div>
@@ -236,10 +236,10 @@
                                             label="Prioridad">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Desc" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
+                                                <label style="width:100%" v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         
@@ -297,8 +297,55 @@
     </el-dialog>
     <!--DIALOG BUSQUEDA TIPO MOVIMIENTO-->
     <el-dialog title="Busqueda Tipo Movimiento"  :visible.sync="dialogTipoMovimiento"  size="small" >
-      <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
-      </btipomovimiento>
+      <!-- <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
+      </btipomovimiento> -->
+        <div>
+            <el-card class="box-card">
+                <div slot="header" class="headercard">
+                    <span class="labelheadercard" ></span>
+                </div>
+                <div class="row bodycard">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-1" >Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <el-table
+                :data="tipomovimientoModel"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%" class="ExcelTable2007"
+                height="250"
+                highlight-current-row
+                @row-dblclick="tipomovimientoSelecionado"
+                @current-change="handleCurrentChangeTipo">
+                <el-table-column   prop="strTypeMov_Cod" label="Codigo" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strTypeMov_Desc" label="Descripcion" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+            </el-card>
+            <br/>
+            <footer class="modal-footer">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="tipomovimientoSelecionado()">
+                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                </el-button>
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="dialogTipoMovimiento=false">
+                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                </el-button>
+            </footer>
+        </div>
     </el-dialog>
     <!--DIALOG BUSQUEDA CENTRO COSTO-->
     <el-dialog title="Busqueda Centro Costo"  :visible.sync="dialogCentroCostos"  size="small" >

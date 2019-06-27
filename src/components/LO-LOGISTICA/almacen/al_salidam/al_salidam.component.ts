@@ -56,6 +56,9 @@ import { Base64 } from 'js-base64';
 import autoTable from 'jspdf-autotable';
 import 'jspdf-autotable';
 
+import {TipoMovimientoModel} from '@/modelo/maestro/tipoMovimiento';
+import tipomovimientoService from '@/components/service/tipomovimiento.service';
+
 Vue.directive('focus', {
   inserted: function(el) {
     el.focus()
@@ -190,6 +193,10 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   vifcomprobarapro:boolean=false;
   vifimprimir:boolean=false;
   
+  public tipomovimientoSelectModel:TipoMovimientoModel=new TipoMovimientoModel();
+  public tipomovimientoModel:Array<TipoMovimientoModel>=[];
+  strTypeMov_Desc:string="";
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -216,7 +223,35 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     console.log(this.tableData1);
     setTimeout(() => {
       this.load();
+      this.loadTipoMovimientoC();
     }, 200)
+  }
+  loadTipoMovimientoC(){
+    tipomovimientoService.GetAllTipoMovimiento()
+    .then(response=>{
+      debugger;
+      console.log('tipomovimiento',response);
+      //this.tipomovimientoModel=response; 
+      for(var i=0;i<response.length;i++){
+        var tipom=response[i].strTypeMov_Cod;
+        if(tipom>=200 && tipom<300){
+          this.tipomovimientoModel.push(response[i])
+        }
+      }      
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar tipo movimiento'
+      });
+    })
+  }
+
+  handleCurrentChangeTipo(val:TipoMovimientoModel){
+    this.tipomovimientoSelectModel=val;
+  }
+  seleccionarTipo(row,index){
+    this.$emit('tipomovimientoselecionado',row);
   }
   load(){
     debugger;
@@ -514,6 +549,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
         .then(resd=>{
           this.salidaModel=res[0];
           var almacen=res[0].intIdWHS_ID;
+          this.strTypeMov_Desc=this.salidaModel.strTypeMov_Desc;
           if(almacen!=undefined){
             var planta=almacen.intPlant_ID;
             this.salidaModel.strPlant_Cod=planta.strPlant_Cod;
@@ -554,6 +590,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     }
     if(this.txtviewmodulo=='despacho' && !this.vifguardar){
       this.salidaModel.listaDetalle=this.tableData1;
+      this.salidaModel.strTypeMov_Desc=this.strTypeMov_Desc;
       let loading = Loading.service({
         fullscreen: true,
         text: 'Cargando...',
@@ -1083,9 +1120,18 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   //   this.selectrow.moneda=val.CODIGO;
   //   this.dialogMoneda=false;
   // }
+  // SeleccionadoPrioridad(val){
+  //   debugger;
+  //   this.selectrow.strPriority_Cod=val.strPriority_Cod;
+  //   this.dialogPrioridad=false;
+  // }
+  
   SeleccionadoPrioridad(val){
     debugger;
     this.selectrow.strPriority_Cod=val.strPriority_Cod;
+    this.selectrow.strPriority_Desc=val.strPriority_Desc;
+    
+    this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;
   }
   cambioTipoRequisicion(selected){
@@ -1115,7 +1161,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   }
   tipomovimientoSelecionado(val){
     this.salidaModel.strTypeMov_Cod=val.strTypeMov_Cod
-    this.destipomovimiento=val.strTypeMov_Desc;
+    this.strTypeMov_Desc=val.strTypeMov_Desc;
    
     this.dialogTipoMovimiento=false;
   }

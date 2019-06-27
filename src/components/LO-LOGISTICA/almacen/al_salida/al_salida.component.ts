@@ -42,6 +42,8 @@ import {SalidaDetalleModel} from '@/modelo/maestro/salidadetalle';
 import {SalidaModel} from '@/modelo/maestro/salida';
 
 
+import {TipoMovimientoModel} from '@/modelo/maestro/tipoMovimiento';
+import tipomovimientoService from '@/components/service/tipomovimiento.service';
 import { Notification } from 'element-ui';
 import Global from '@/Global';
 Vue.directive('focus', {
@@ -203,6 +205,9 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   txtnroline:any='';
   intlineaselect:number=-1;
   
+  public tipomovimientoSelectModel:TipoMovimientoModel=new TipoMovimientoModel();
+  public tipomovimientoModel:Array<TipoMovimientoModel>=[];
+
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -223,6 +228,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       items.strDelivery_Place='';
       items.dtmDelivery_Date=new Date();
       items.strPriority_Cod='';
+      
       items.errorCentroCosto=false;
       items.errorLugarEntrega=false;
       items.errorPrioridad=false;
@@ -236,7 +242,40 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.descompania=localStorage.getItem('compania_name');
     var strCompany_Cod:any=localStorage.getItem('compania_cod');
     this.salidaModel.strCompany_Cod=strCompany_Cod;
+    
+    setTimeout(() => {
+      this.loadTipoMovimientoC();
+    }, 200)
   }
+
+  loadTipoMovimientoC(){
+    tipomovimientoService.GetAllTipoMovimiento()
+    .then(response=>{
+      debugger;
+      console.log('tipomovimiento',response);
+      //this.tipomovimientoModel=response; 
+      for(var i=0;i<response.length;i++){
+        var tipom=response[i].strTypeMov_Cod;
+        if(tipom>=200 && tipom<300){
+          this.tipomovimientoModel.push(response[i])
+        }
+      }      
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar tipo movimiento'
+      });
+    })
+  }
+
+  handleCurrentChangeTipo(val:TipoMovimientoModel){
+    this.tipomovimientoSelectModel=val;
+  }
+  seleccionarTipo(row,index){
+    this.$emit('tipomovimientoselecionado',row);
+  }
+
   fnOcultar(){
     this.ocultar=!this.ocultar;
   }
@@ -647,6 +686,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   SeleccionadoPrioridad(val){
     debugger;
+    
+    this.selectrow.strPriority_Desc=val.strPriority_Desc;
     this.selectrow.strPriority_Cod=val.strPriority_Cod;
     this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
     this.dialogPrioridad=false;

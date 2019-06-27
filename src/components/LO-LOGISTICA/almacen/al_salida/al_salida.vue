@@ -195,14 +195,14 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrPriority_Cod"
-                                            prop="strPriority_Cod"   
+                                            prop="strPriority_Cod" width="120" 
                                             label="Prioridad">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Desc" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         
@@ -261,9 +261,9 @@
     </el-dialog>
     <!--DIALOG BUSQUEDA TIPO MOVIMIENTO-->
     <el-dialog title="Busqueda Tipo Movimiento"  :visible.sync="dialogTipoMovimiento"  size="small" >
-      <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
-      </btipomovimiento>
-        <!-- <div>
+      <!-- <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
+      </btipomovimiento> -->
+        <div>
             <el-card class="box-card">
                 <div slot="header" class="headercard">
                     <span class="labelheadercard" ></span>
@@ -292,8 +292,8 @@
                 style="width: 100%" class="ExcelTable2007"
                 height="250"
                 highlight-current-row
-                @row-dblclick="seleccionar"
-                @current-change="handleCurrentChange">
+                @row-dblclick="tipomovimientoSelecionado"
+                @current-change="handleCurrentChangeTipo">
                 <el-table-column   prop="strTypeMov_Cod" label="Codigo" width="180">
                 </el-table-column>  
                 <el-table-column  prop="strTypeMov_Desc" label="Descripcion" style="width: 70% !important;">
@@ -302,14 +302,14 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
-                <img class="imagenfilter" src="../../../images/check.png" alt="" >
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="tipomovimientoSelecionado()">
+                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
-                <img class="imagenfilter" src="../../../images/close.png" alt="" >
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="dialogTipoMovimiento=false">
+                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                 </el-button>
             </footer>
-        </div> -->
+        </div>
     </el-dialog>
     <!--DIALOG BUSQUEDA CENTRO COSTO-->
     <el-dialog title="Busqueda Centro Costo"  :visible.sync="dialogCentroCostos"  size="small" >
