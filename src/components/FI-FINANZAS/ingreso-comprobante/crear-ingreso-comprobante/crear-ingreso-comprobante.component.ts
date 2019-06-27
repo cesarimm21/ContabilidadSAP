@@ -754,7 +754,7 @@ getNumber(num){
           this.factura.dtmDoc_Date=new Date(this.fecha_ejecucion1);
           // this.factura.dtmDoc_Date=new Date();
           this.factura.strDoc_Status="00";
-          this.factura.strCreation_User='egaona';    
+          this.factura.strCreation_User=user;    
           var date=this.factura.dtmPeriod;
           var anio:any=this.factura.dtmDoc_Acc_Date.getFullYear();
           var mes=this.factura.dtmDoc_Acc_Date.getMonth();    
@@ -902,7 +902,7 @@ getNumber(num){
             itemDG_40.fltAmount_Local=this.factura.fltValue_Tax_Local;
             itemDG_40.fltAmount_Corp=this.factura.fltValue_Tax_Corp;
             itemDG_40.intDoc_No=1;
-            itemDG_40.strCreation_User='egaona';
+            itemDG_40.strCreation_User=user;
             itemDG_40.dtmCreation_Date=new Date();
             itemDG_40.chrStatus='A';
             
@@ -951,7 +951,7 @@ getNumber(num){
             itemDG_42.fltAmount_Local=-this.factura.fltOperation_NoTax_Local;
             itemDG_42.fltAmount_Corp=-this.factura.fltOperation_NoTax_Corp;
             itemDG_42.intDoc_No=1;
-            itemDG_42.strCreation_User='egaona';
+            itemDG_42.strCreation_User=user;
             itemDG_42.dtmCreation_Date=new Date();
             itemDG_42.chrStatus='A';
             
