@@ -60,7 +60,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-8" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código Salida</label>
+                            <label class="el-form-item__label col-md-2" >Codigo Salida</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar"  size ="small"  v-model="salidaModel.strIssueAjust_NO"  placeholder="">
@@ -114,7 +114,7 @@
                                         :data="tableData1" 
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="48">
+                                        <el-table-column type="index" style="width:100%;margin-top: 4px;" width="48">
                                         </el-table-column>
                                         <el-table-column width="100"
                                             prop="material" sortable 
@@ -129,7 +129,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="material_descripcion" sortable width="200"
-                                            label="Descripción">
+                                            label="Descripcion">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strStock_Desc" >

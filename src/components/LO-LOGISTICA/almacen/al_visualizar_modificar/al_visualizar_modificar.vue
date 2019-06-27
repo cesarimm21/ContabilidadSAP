@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Código Material</label>
+                            <label class="el-form-item__label col-md-3" >Codigo Material</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
@@ -145,7 +145,7 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         
                                         <el-table-column :render-header="filterstrWHS_Cod"

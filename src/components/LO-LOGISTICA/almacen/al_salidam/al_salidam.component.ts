@@ -277,8 +277,8 @@ export default class ModificarSalidaMaterialComponent extends Vue {
       setTimeout(() => {
         this.vifprogress=false;
         this.issave=true;
-        this.textosave='Se eliminó correctamente.'
-        this.openMessage('Se eliminó correctamente');
+        this.textosave='Se elimino correctamente.'
+        this.openMessage('Se elimino correctamente');
       }, 300)
     })
     .catch(error=>{
@@ -346,7 +346,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
     
     let columns = [
       {title:"Nro",dataKey:"index"},
-      {title:"Código",dataKey:"strStock_Cod"},
+      {title:"Codigo",dataKey:"strStock_Cod"},
       {title:"Material",dataKey:"strStock_Desc"},
       {title:"Stock",dataKey:"fltQuantity"},
       {title:"Unidad Medida",dataKey:"strUM_Cod"},
@@ -383,7 +383,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
       }
       });
       
-      var paragraph="Este documento (incluidas las páginas siguientes) es confidencial, este puede ser leído, copiado y utilizado solamente para fines respectivos.  Si Usted recibe este documento por error, por favor notifíquelo inmediatamente. No comparta su información a ninguna persona y destrúyalo. Muchas gracias. ";
+      var paragraph="Este documento (incluidas las páginas siguientes) es confidencial, este puede ser leído, copiado y utilizado solamente para fines respectivos.  Si Usted recibe este documento por error, por favor notifíquelo inmediatamente. No comparta su informacion a ninguna persona y destrúyalo. Muchas gracias. ";
       let columnsf = [
         {title:"Footer",dataKey:"footer"},
       ]
@@ -1157,8 +1157,8 @@ export default class ModificarSalidaMaterialComponent extends Vue {
           .then(resp=>{
             this.vifprogress=false;
             this.issave=true;
-            this.textosave='Se aprobó correctamente. '+res.strIssueAjust_NO;
-            this.openMessage('Se aprobó correctamente '+res.strIssueAjust_NO);
+            this.textosave='Se aprobo correctamente. '+res.strIssueAjust_NO;
+            this.openMessage('Se aprobo correctamente '+res.strIssueAjust_NO);
           })
           .catch(error=>{
             this.textosave='Ocurrio un error inesperado. ';
@@ -1226,8 +1226,8 @@ export default class ModificarSalidaMaterialComponent extends Vue {
       setTimeout(() => {
         this.vifprogress=false;
         this.issave=true;
-        this.textosave='Se rechazó correctamente. '+res.strIssueAjust_NO;
-        this.openMessage('Se rechazó correctamente '+res.strIssueAjust_NO);
+        this.textosave='Se rechazo correctamente. '+res.strIssueAjust_NO;
+        this.openMessage('Se rechazo correctamente '+res.strIssueAjust_NO);
       }, 600)
     })
     .catch(error=>{

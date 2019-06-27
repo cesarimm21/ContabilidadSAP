@@ -87,7 +87,7 @@
                                                         <el-input   size ="small" style="font-size:11px;" v-model="centrocosto.strCostCenter_Name"  @change="DateContabilizacionClick()"></el-input>
                                                         </div>
                                                     </div>
-                                                    <label class="el-form-item__label col-sm-3" >Descripción</label>
+                                                    <label class="el-form-item__label col-sm-3" >Descripcion</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input   size ="small" style="font-size:11px;" v-model="centrocosto.strCostCenter_Desc" ></el-input>
@@ -247,7 +247,7 @@
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
@@ -331,7 +331,7 @@
                     @current-change="checkSelectDiario">
                     <el-table-column  prop="strDaily_Cod" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strDaily_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strDaily_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                     <el-table-column  prop="strDaily_Type" label="Tipo" width="180">
                     </el-table-column> 

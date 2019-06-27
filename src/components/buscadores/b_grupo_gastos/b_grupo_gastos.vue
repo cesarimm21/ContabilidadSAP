@@ -29,11 +29,11 @@
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"
             @header-click="headerclick">
-            <el-table-column :render-header="filterstrExpGroup_Cod"  prop="strExpGroup_Cod" label="Código" width="180">
+            <el-table-column :render-header="filterstrExpGroup_Cod"  prop="strExpGroup_Cod" label="Codigo" width="180">
             </el-table-column>  
             <el-table-column :render-header="filterstrExpGroup_Name" prop="strExpGroup_Name" label="Nombre" style="width: 70% !important;">
             </el-table-column>  
-            <el-table-column :render-header="filterstrExpGroup_Desc" prop="strExpGroup_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrExpGroup_Desc" prop="strExpGroup_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

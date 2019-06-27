@@ -72,7 +72,7 @@
                                     </el-table-column> 
                                     <el-table-column  :render-header="filterstrDistrict" prop="strDistrict" label="Distrito" width="180">
                                     </el-table-column>  
-                                    <el-table-column :render-header="filterstrAddress" prop="strAddress" label="Dirección"  width="260">
+                                    <el-table-column :render-header="filterstrAddress" prop="strAddress" label="Direccion"  width="260">
                                     </el-table-column> 
                                      <el-table-column 
                                             prop="chrStatus" align="center"  width="70"

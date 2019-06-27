@@ -271,7 +271,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="strPO_Item_Desc"  width="200"
-                                            label="Descripción">
+                                            label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
                                             prop="strUnit_Of_Purch"   width="50"
@@ -452,7 +452,7 @@
                     @current-change="checkSelectdbProveedor">
                     <el-table-column  prop="strVendor_NO" label="Codigo" width="150">
                     </el-table-column>  
-                    <el-table-column  prop="strVendor_Desc" label="Descripción" width="310">
+                    <el-table-column  prop="strVendor_Desc" label="Descripcion" width="310">
                     </el-table-column> 
                     <el-table-column  prop="strCountry" label="Pais" width="150">
                     </el-table-column> 

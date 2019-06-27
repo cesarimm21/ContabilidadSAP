@@ -177,7 +177,7 @@ export default class ModificarAdquisicionoComponent extends Vue {
       //           .catch(error=>{
       //             this.$message({
       //                 showClose: true,
-      //                 message: 'No se eliminó',
+      //                 message: 'No se elimino',
       //                 type: 'error'
       //               });
       //           })

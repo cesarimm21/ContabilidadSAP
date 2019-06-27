@@ -32,7 +32,7 @@
 
             <el-table-column :render-header="filterstrAcc_Type_Cod"   prop="strAcc_Type_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrAcc_Type_Name" prop="strAcc_Type_Name" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrAcc_Type_Name" prop="strAcc_Type_Name" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

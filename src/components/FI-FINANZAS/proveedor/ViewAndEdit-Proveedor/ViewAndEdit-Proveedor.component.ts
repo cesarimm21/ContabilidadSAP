@@ -951,8 +951,8 @@ export default class ViewAndEditProveedorComponent extends Vue {
         proveedorService.UpdateProveedor(this.Proveedor)
         .then(response=>{
           loadingInstance.close();
-          this.openMessageSuccess('Se editó correctamente '+response);
-          this.textosave = 'Se editó correctamente '+response;
+          this.openMessageSuccess('Se edito correctamente '+response);
+          this.textosave = 'Se edito correctamente '+response;
           this.issave=true;
           this.iserror=false;
         })

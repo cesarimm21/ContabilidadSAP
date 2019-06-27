@@ -430,13 +430,13 @@ export default class LibroRegistroCompraComponent extends Vue {
     
     let columns = [
       {title:"Periodo Contable ",dataKey:"periodo"},
-      {title:"Número Correlativo del Asiento ó Código unico de la operación",dataKey:"correlativo"},
+      {title:"Número Correlativo del Asiento o Codigo unico de la operacion",dataKey:"correlativo"},
       {title:"Número correlativo del asiento contable identificado",dataKey:"strReferDocum_NO"},
       {title:"Cuenta Contable Perú",dataKey:"item_strAcc_Local_NO"},
       {title:"Moneda del documento",dataKey:"item_strCurrency_Cod"},
-      {title:"Fecha Contabilización",dataKey:"item_dtmPosting_Date"},
+      {title:"Fecha Contabilizacion",dataKey:"item_dtmPosting_Date"},
       {title:"Fecha de Registro",dataKey:"item_dtmDoc_Date"},
-      {title:"Glosa o Descripción de la Operación",dataKey:"item_strDaily_Desc"},
+      {title:"Glosa o Descripcion de la Operacion",dataKey:"item_strDaily_Desc"},
       {title:"Movimientos del Debe",dataKey:"debe"},
       {title:"Movimientos del Haber",dataKey:"haber"},
     ];
@@ -533,7 +533,7 @@ export default class LibroRegistroCompraComponent extends Vue {
     },
       });
       
-      var paragraph="Este documento (incluidas las páginas siguientes) es confidencial, este puede ser leído, copiado y utilizado solamente para fines respectivos.  Si Usted recibe este documento por error, por favor notifíquelo inmediatamente. No comparta su información a ninguna persona y destrúyalo. Muchas gracias. ";
+      var paragraph="Este documento (incluidas las páginas siguientes) es confidencial, este puede ser leído, copiado y utilizado solamente para fines respectivos.  Si Usted recibe este documento por error, por favor notifíquelo inmediatamente. No comparta su informacion a ninguna persona y destrúyalo. Muchas gracias. ";
       let columnsf = [
         {title:"Footer",dataKey:"footer"},
       ]

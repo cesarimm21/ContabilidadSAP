@@ -177,7 +177,7 @@ export default class ModificarMedioPagoComponent extends Vue {
       //           .catch(error=>{
       //             this.$message({
       //                 showClose: true,
-      //                 message: 'No se eliminó',
+      //                 message: 'No se elimino',
       //                 type: 'error'
       //               });
       //           })

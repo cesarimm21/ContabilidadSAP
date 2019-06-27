@@ -93,7 +93,7 @@
                   </el-menu-item>
                 <el-menu-item index="1-1-4">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span slot="title">FP10-Reconciliación</span>
+                  <span slot="title">FP10-Reconciliacion</span>
                   </el-menu-item>
                 <el-menu-item index="1-1-5"
                 @click="linkRouterunpagos()">
@@ -136,7 +136,7 @@
                 </el-menu-item>
                 <el-menu-item index="1-2-4">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span slot="title">FR10-Reconciliación</span>
+                  <span slot="title">FR10-Reconciliacion</span>
                   </el-menu-item>
               </el-submenu>
               <el-submenu index="1-3">
@@ -330,7 +330,7 @@
                   </template>
                   <el-menu-item index="1-6-2-1">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>RI01-Estado de situación financiera</span>
+                    <span>RI01-Estado de situacion financiera</span>
                   </el-menu-item>
                   <el-menu-item index="1-6-2-2">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -393,7 +393,7 @@
                   </el-menu-item>
                   <el-menu-item index="1-6-6-2">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>RC02-Información de operaciones</span>
+                    <span>RC02-Informacion de operaciones</span>
                   </el-menu-item>
                   <el-menu-item index="1-6-6-3">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -408,11 +408,11 @@
                   </template>
                   <el-menu-item index="1-6-6-1">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>RS01-Para el consignador - control de bienes entregados en consignación</span>
+                    <span>RS01-Para el consignador - control de bienes entregados en consignacion</span>
                   </el-menu-item>
                   <el-menu-item index="1-6-6-2">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>RS02-Para el consignatario - control de bienes recibidos en consignación</span>
+                    <span>RS02-Para el consignatario - control de bienes recibidos en consignacion</span>
                   </el-menu-item>
                   
                 </el-submenu>
@@ -539,7 +539,7 @@
                 <template slot="title">
                   <i class="fa fa-caret-right" style="width:10px"></i>
                   <img class="el-folder"/>
-                  <span slot="title">Requisición de compras</span>
+                  <span slot="title">Requisicion de compras</span>
                 </template>
                 <el-menu-item index="2-1-1" @click="linkCrearRequisicion()">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -585,7 +585,7 @@
                 <template slot="title">
                   <i class="fa fa-caret-right" style="width:10px"></i>
                   <img class="el-folder"/>
-                  <span slot="title">Aceptación servicio</span>
+                  <span slot="title">Aceptacion servicio</span>
                 </template>
                 <el-menu-item index="2-3-1" @click="linkRouteHes('crear')">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" /> 
@@ -806,7 +806,7 @@
                 </el-menu-item>
                 <el-menu-item index="3-1-6">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>CC06-Distribución de Costos y Gastos</span>
+                  <span>CC06-Distribucion de Costos y Gastos</span>
                 </el-menu-item>
                 <el-menu-item index="3-1-7">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -853,7 +853,7 @@
                 </el-menu-item>
                 <el-menu-item index="3-2-3">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>CP03-Ingreso Datos de Deprecación</span>
+                  <span>CP03-Ingreso Datos de Deprecacion</span>
                 </el-menu-item>
              </el-submenu>
              <el-submenu index="3-3">
@@ -864,7 +864,7 @@
                 </template>
                 <el-menu-item index="3-3-1">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>CM01-Centro Costos Visualización</span>
+                  <span>CM01-Centro Costos Visualizacion</span>
                 </el-menu-item>
                 <el-menu-item index="3-3-2">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -876,7 +876,7 @@
                 </el-menu-item>
                 <el-menu-item index="3-3-4">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                  <span>CM05-Distribución de Costos</span>
+                  <span>CM05-Distribucion de Costos</span>
                 </el-menu-item>
                 <el-menu-item index="3-3-5">
                   <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -933,11 +933,11 @@
                   </el-menu-item>
                   <el-menu-item index="4-2-2">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>OL02-Modificación de leyes AU - AG</span>
+                    <span>OL02-Modificacion de leyes AU - AG</span>
                   </el-menu-item>
                   <el-menu-item index="4-2-3">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>OL03-Visualización de leyes AU - AG</span>
+                    <span>OL03-Visualizacion de leyes AU - AG</span>
                   </el-menu-item>
                   <el-menu-item index="4-2-4">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
@@ -945,7 +945,7 @@
                   </el-menu-item>
                   <el-menu-item index="4-2-5">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>OL06-Visualización de leyes referenciales</span>
+                    <span>OL06-Visualizacion de leyes referenciales</span>
                   </el-menu-item>
               </el-submenu>
               <el-submenu index="4-3">
@@ -960,11 +960,11 @@
                   </el-menu-item>
                   <el-menu-item index="4-3-2">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>OC02-Modificación de datos comerciales</span>
+                    <span>OC02-Modificacion de datos comerciales</span>
                   </el-menu-item>
                   <el-menu-item index="4-3-3">
                     <img src="../../images/sheet.png" style="width:17px; height:15px; cursor: pointer;" @click="linkRoute('/menu/inicio')"/> 
-                    <span>OC04-Visualiación de datos comerciales</span>
+                    <span>OC04-Visualiacion de datos comerciales</span>
                   </el-menu-item>
               </el-submenu>
                <el-submenu index="4-4">
@@ -1037,7 +1037,7 @@
               <template slot="title">
                 <i class="fa fa-caret-right" style="width:10px"></i>
                 <img class="el-folder"/>
-                <span>XX-Configuración</span>
+                <span>XX-Configuracion</span>
               </template>
               <el-submenu index="6-1">
                 <template slot="title">

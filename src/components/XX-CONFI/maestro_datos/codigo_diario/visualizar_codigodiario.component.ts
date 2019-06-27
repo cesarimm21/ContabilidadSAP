@@ -178,7 +178,7 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
       //           .catch(error=>{
       //             this.$message({
       //                 showClose: true,
-      //                 message: 'No se eliminó',
+      //                 message: 'No se elimino',
       //                 type: 'error'
       //               });
       //           })

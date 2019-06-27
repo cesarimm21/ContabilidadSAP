@@ -387,6 +387,13 @@ export default class CrearPRComponent extends Vue {
   //   this.intlineaselect=val.intRequis_Item_NO-1;
   //   this.currentRow = val;
   // }
+  comprobar(numero,row){
+    if(numero==""){
+      this.selectrow=row;
+      this.selectrow.fltUnitPrice=0;
+      return 0;
+    }
+  }
   handleCurrentChange(val) {
     
     if(val!=undefined){
@@ -408,8 +415,10 @@ export default class CrearPRComponent extends Vue {
       this.fltValue_Totals=val.fltValue_Total==undefined?'':val.fltValue_Total;
       this.strAccount_NOs=val.strAccount_NO==undefined?'':val.strAccount_NO;
       this.strCostCenters=val.strCostCenter==undefined?'':val.strCostCenter;
-      this.strVendor_NOs=val.strVendor_NO==undefined?'':val.strVendor_NO;
+      this.strVendor_NOs=val.strVendor_Suggested==undefined?'':val.strVendor_Suggested;
       this.strVendor_Descs=val.strVendor_Desc==undefined?'':val.strVendor_Desc;
+      this.strUM=val.strUM_Cod==undefined?'':val.strUM_Cod;
+
       this.fltFactors=val.fltFactor==undefined?'':val.fltFactor;
       this.getDetalle(val);
     }
@@ -995,6 +1004,8 @@ export default class CrearPRComponent extends Vue {
     
     this.selectrow.strVendor_Suggested=val.strVendor_NO;
     this.selectrow.strVendor_Desc=val.strVendor_Desc;
+    this.strVendor_NOs=val.strVendor_NO;
+    this.strVendor_Descs=val.strVendor_Desc;
 
     this.strVendor_NOs=this.selectrow.strVendor_Suggested==undefined?'':this.selectrow.strVendor_Suggested;
 

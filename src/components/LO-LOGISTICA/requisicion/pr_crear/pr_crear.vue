@@ -221,9 +221,12 @@
                                             prop="fltUnitPrice"   width="100"
                                             label="Precio">
                                             <template scope="scope">
-                                                <el-input-number  style="width:100%;margin-top: 4px;"  v-if="bln_tbl_precio  && (scope.row === editing.row) 
+                                                <!-- <el-input-number  @change="comprobar(scope.row.fltUnitPrice)" style="width:100%;margin-top: 4px;"  v-if="bln_tbl_precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small"  v-model="scope.row.fltUnitPrice" >
-                                                </el-input-number> 
+                                                </el-input-number>  -->
+                                                <el-input  type="number" v-if="bln_tbl_precio  && (scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @change="comprobar(scope.row.fltUnitPrice,scope.row)" @blur="handleBlur(scope.row)" v-focus  size="small" v-model="scope.row.fltUnitPrice" :precision="2" :step="0.01">
+                                                </el-input>
                                                 <label style="width:100%;margin-top: 4px;"  v-else @click="clickprecio(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice!=null?scope.row.fltUnitPrice:0 }}</label>
                                               <!-- <label style="width:100%;margin-top: 4px;">&nbsp;{{ scope.row.fltUnitPrice!=null?scope.row.fltUnitPrice:0   }}</label> -->
                                             </template>
@@ -243,7 +246,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrPriority_Cod"
-                                            prop="strPriority_Cod"    
+                                            prop="strPriority_Cod"    width="100"  
                                             label="Prioridad">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 

@@ -36,7 +36,7 @@
                         </div>
                     <!-- <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strPO_NO"  placeholder="">

@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Código Material</label>
+                            <label class="el-form-item__label col-md-3" >Codigo Material</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" :disabled="true" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
@@ -61,7 +61,7 @@
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <!-- <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Código Antiguo</label>
+                                        <label class="el-form-item__label col-md-6" >Codigo Antiguo</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod_Old"  placeholder="">
@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Código Almacen</label>
+                                        <label class="el-form-item__label col-md-2" >Codigo Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" class="validador" :disabled="visualizar" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
@@ -498,7 +498,7 @@
                     <div class="row bodycard">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="el-form-item__label col-md-3" >Código</label>
+                                <label class="el-form-item__label col-md-3" >Codigo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small"   placeholder="">
@@ -526,7 +526,7 @@
                     </el-table-column>  
                     <el-table-column  prop="strExp_Cod_Loc" label="Cuenta" >
                     </el-table-column> 
-                    <el-table-column  prop="strMatClass_Desc" label="Descripción" >
+                    <el-table-column  prop="strMatClass_Desc" label="Descripcion" >
                     </el-table-column> 
                     </el-table>
                 </el-card>

@@ -7,7 +7,7 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-2" >Código</label>
+                        <label class="el-form-item__label col-md-2" >Codigo</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
                             <el-input size ="small"   placeholder="">
@@ -37,7 +37,7 @@
             </el-table-column>  
             <el-table-column  prop="strCompany_Name" label="Nombre" style="width: 70% !important;">
             </el-table-column>             
-            <el-table-column  prop="strCompany_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column  prop="strCompany_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

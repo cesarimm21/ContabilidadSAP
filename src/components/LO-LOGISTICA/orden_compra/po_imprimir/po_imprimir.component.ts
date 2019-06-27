@@ -283,7 +283,7 @@ export default class ImprimirPOComponent extends Vue {
           doc.line(8, 38, 8, 63);
           doc.line(8, 63, ancho/2-1, 63);
           doc.line(ancho/2-1, 38, ancho/2-1, 63);
-          doc.text("Código de Proveedor: ", 10, 43);        
+          doc.text("Codigo de Proveedor: ", 10, 43);        
           doc.text("Datos: ", 10, 48);              
           doc.text("ATT: ", 10, 62);    
           //[TEXTO 1 INPUT]   FIGURA 1
@@ -328,7 +328,7 @@ export default class ImprimirPOComponent extends Vue {
           doc.line(8, 65, 8, 115);
           doc.line(8, 115, ancho/2-1, 115);
           doc.line(ancho/2-1, 65, ancho/2-1, 115);
-          doc.text("Dirección de ", 10, 70);        
+          doc.text("Direccion de ", 10, 70);        
           doc.text("Entregas: ", 10, 75);        
           doc.text("Teléfono: ", 10, 85);        
           doc.text("Celular: ", 10, 90);        
@@ -350,12 +350,12 @@ export default class ImprimirPOComponent extends Vue {
           doc.line(ancho-8, 84, ancho-8, 115);
           doc.setFontSize(9);
           doc.text("Las facturas deben hacer referencia a una orden de compra:", ancho/2+3,94);        
-          doc.text("válida y relevante. Dirección de Facturación: ", ancho/2+3, 89);        
+          doc.text("válida y relevante. Direccion de Facturacion: ", ancho/2+3, 89);        
           doc.text("Para consultas financiero-contables contactar: ", ancho/2+3, 109);
           doc.setFontSize(10);
           let columns = [
             {title:"Nro Item",dataKey:"intPO_Item_NO"},
-            {title:"Descripción",dataKey:"strPO_Item_Desc"},
+            {title:"Descripcion",dataKey:"strPO_Item_Desc"},
             {title:"Cantidad",dataKey:"fltPO_QTY_I"},
             {title:"UM",dataKey:"strUM_Cod"},
             {title:"Valor Unitario (Sin IGV)",dataKey:"fltPO_Net_PR_I"},
@@ -427,7 +427,7 @@ export default class ImprimirPOComponent extends Vue {
               doc.setFontSize(13);
               doc.text("ORDEN DE SERVICIO NRO. "+this.opSelect.strPO_NO,(ancho/2)-40,30);
               doc.setFontSize(10);
-              doc.text("Versión :",10,35);
+              doc.text("Version :",10,35);
               doc.text("Fecha Orden : ",10,40);
               doc.text("Tipo de Orden: ",ancho/2,35);
               doc.text("Términos de Pago : ",ancho/2,40);
@@ -450,23 +450,23 @@ export default class ImprimirPOComponent extends Vue {
               doc.text("Contrato",10,62);
               doc.setFontStyle('normal');
               doc.text("significa los términos y condiciones incluidos en el presente documento ",21,62);
-              doc.text("y la O/C (incluyendo cualquier condición especial de la O/C y cualquier anexo o ",10,66);
+              doc.text("y la O/C (incluyendo cualquier condicion especial de la O/C y cualquier anexo o ",10,66);
               doc.text("listado).  ",10,70);
               doc.setFontStyle('bold');
               doc.text("Crédito Fiscal del IVF/IVA",10,74);
               doc.setFontStyle('normal');
               doc.text("significa un crédito que un contribuyente tiene",41,74);
-              doc.text("derecho a reclamar para compensar su obligación de pagar el IVF/IVA, de",10,78);
-              doc.text("acuerdo con la Ley del IVF/IVA pertinente de la jurisdicción aplicable.",10,82);
+              doc.text("derecho a reclamar para compensar su obligacion de pagar el IVF/IVA, de",10,78);
+              doc.text("acuerdo con la Ley del IVF/IVA pertinente de la jurisdiccion aplicable.",10,82);
               doc.setFontStyle('bold');
               doc.text("Disposiciones Legislativas",10,86);
               doc.setFontStyle('normal');
               doc.text(" incluye cualquier:",42,86);
-              doc.text("(a) ley, ordenanza, reglamento, orden, fallo y proclamación nacional,",20,90);
+              doc.text("(a) ley, ordenanza, reglamento, orden, fallo y proclamacion nacional,",20,90);
               doc.text("(regional, municipal o local, o cualquier ley emitida por cualquier",30,94);
               doc.text("autoridad competente; y ",30,98);
-              doc.text("(b) certificado, licencia, consentimiento, permiso, aprobación y requisito de ",20,102);
-              doc.text("organizaciones que tengan jurisdicción con relación a la prestación ",30,106);
+              doc.text("(b) certificado, licencia, consentimiento, permiso, aprobacion y requisito de ",20,102);
+              doc.text("organizaciones que tengan jurisdiccion con relacion a la prestacion ",30,106);
               doc.text("de los Servicios.  ",30,110);
               doc.setFontStyle('bold');
               doc.text("Evento de Incumplimiento del Contratista",10,114);
@@ -474,9 +474,9 @@ export default class ImprimirPOComponent extends Vue {
               doc.text("significa cada uno de los siguientes",(ancho/4)+ 8,114);
               doc.text("supuestos: ",10,118);
               doc.text("(a) Incumplimiento del Contratista con ejecutar los Servicios de",20,122);
-              doc.text("conformidad con el presente Contrato, incluyendo la provisión de ",30,126);
+              doc.text("conformidad con el presente Contrato, incluyendo la provision de ",30,126);
               doc.text("Servicios defectuosos;",30,130);
-              doc.text("(b) Que cualquier declaración o garantía otorgada por el Contratista en",20,134);
+              doc.text("(b) Que cualquier declaracion o garantía otorgada por el Contratista en",20,134);
               doc.text("virtud de la cláusula 12 carezca de veracidad o sea engañosa en ",30,138);
               doc.text("cualquier aspecto significativo; y  ",30,142);
               doc.text("(c) que el Contratista incumpla cualquiera de sus obligaciones en virtud del ",20,146);

@@ -91,7 +91,7 @@ export default class ModificarPRComponent extends Vue {
   contador:any=0;
   _10min:boolean=false;
   ocultarConfig:boolean = true;
-  nameuser:string;
+  nameuser:any;
   namecomplete:string;
   accesosUser:any=[];
   ocultar:boolean=false;
@@ -229,15 +229,17 @@ export default class ModificarPRComponent extends Vue {
   bln_tbl_precio:boolean=false;
   visiblecolumna:boolean=false;
   border_width:string='0px';
-
+  strUM:string='';
+  
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
     
+    this.nameuser=localStorage.getItem('User_Usuario');
     Global.nameComponent="requisicion"
     this.cell_ocultar='#e4e2e2';        
-    this.blntiporequisicion=false;
+    this.blntiporequisicion=false;  
     this.blncategorialinea=false;
     this.blncuentacontable=false;
     this.blncentrocosto=false;
@@ -530,15 +532,24 @@ export default class ModificarPRComponent extends Vue {
       console.log('handleCurrentChange',val);
       this.currentRow = val;
       this.fltQuantity=val.fltQuantity;
-      this.dtmRequested_Date=this.getParseDate(val.dtmRequested_Date);
+      this.dtmRequested_Date=this.getDateString(val.dtmRequested_Date);
       this.fltUnitPrice=val.fltUnitPrice!=null?val.fltUnitPrice:0;
       this.fltValue_Total=this.fltUnitPrice*this.fltQuantity;
       this.strAccount_NO=val.strAccount_NO;
       this.strCostCenter=val.strCostCenter;
+      this.strUM=val.strUM==undefined?'':val.strUM;
+
       this.getDetalle(val);
     }
   }
 
+  comprobar(numero,row){
+    if(numero==""){
+      this.selectrow=row;
+      this.selectrow.fltUnitPrice=0;
+      return 0;
+    }
+  }
   getDetalle(val){
     debugger;
     if(val.strDescription!='')
@@ -696,17 +707,35 @@ export default class ModificarPRComponent extends Vue {
     
     if(value=='S'){
       this.visiblecolumna=true;
-      this.cell_ocultar='rgb(255, 157, 164)';
+      if(this.visualizar){
+        this.cell_ocultar='transparent';
+      }
+      else{
+        this.cell_ocultar='rgb(255, 157, 164)';
+      }
+      
       this.border_width='1px';  
     }
     if(value=='N' || value=='AC'){
       this.visiblecolumna=true;
-      this.cell_ocultar='rgb(255, 157, 164)';
+      if(this.visualizar){
+        this.cell_ocultar='transparent';
+      }
+      else{
+        this.cell_ocultar='rgb(255, 157, 164)';
+      }
       this.border_width='1px';  
     }
     if(value=='A'){
       this.visiblecolumna=false;
-      this.cell_ocultar='transparent';
+      //this.cell_ocultar='transparent';
+      if(this.visualizar){
+        this.cell_ocultar='transparent';
+      }
+      else{
+        this.cell_ocultar='rgb(255, 157, 164)';
+      }
+
       this.border_width='1px';    
       this.blntiporequisicion=false;
       this.blncategorialinea=false;
@@ -977,7 +1006,7 @@ export default class ModificarPRComponent extends Vue {
     // //this.selectrow.strs=val.strStock_Desc;
     // this.selectrow.strAccount_NO=val.strExp_Acct;
     // this.selectrow.strVendor_Suggested=val.strVendor_NO;
- 
+    
     this.selectrow.strMaterial_Cod=val.strStock_Cod;
     this.selectrow.intIdInvStock_ID=val.intIdInvStock_ID;
     this.selectrow.strUM=val.strUM_Cod;
@@ -993,6 +1022,7 @@ export default class ModificarPRComponent extends Vue {
     this.selectrow.strPriority_Cod='';
     this.selectrow.fltValue_Total=this.selectrow.fltUnitPrice*this.selectrow.fltQuantity;
     
+    this.strUM=val.strUM_Cod;
     this.strVendor_NO=val.strVendor_NO;
     this.strVendor_Desc=val.strVendor_Desc;
     this.strAccount_NO=val.strExp_Acct;
@@ -1077,6 +1107,9 @@ export default class ModificarPRComponent extends Vue {
     }
     this.requisicionModel.listaDetalle=tabla;
     this.requisicionModel.listaDetalleNuevo=tablan;
+    this.requisicionModel.strModified_User=this.nameuser;
+    this.requisicionModel.strCreation_User=this.nameuser;
+
     for(var i=0;i<50;i++){
       this.percentage++;
     }
@@ -1111,6 +1144,9 @@ export default class ModificarPRComponent extends Vue {
       }
     }, 200)
     console.log('aprobar',this.requisicionModel);
+    
+    this.requisicionModel.strModified_User=this.nameuser;
+    this.requisicionModel.strCreation_User=this.nameuser;
     await requisicionService.aprobarRequisicion(this.requisicionModel)
     .then(res=>{
       debugger;

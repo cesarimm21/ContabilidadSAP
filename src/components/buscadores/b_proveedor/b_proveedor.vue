@@ -31,7 +31,7 @@
             @current-change="handleCurrentChange">
             <el-table-column  :render-header="filterstrVendor_NO" prop="strVendor_NO" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             <el-table-column :render-header="filterstrCountry" prop="strCountry" label="Ciudad" style="width: 70% !important;">
             </el-table-column> 

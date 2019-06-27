@@ -15,7 +15,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código</label>
+                            <label class="el-form-item__label col-md-2" >Codigo</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strPO_NO"  placeholder="">
@@ -66,7 +66,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCompany_Cod" width="100" label="Código ">
+                                        <el-table-column  sortable prop="strCompany_Cod" width="100" label="Codigo ">
                                             <template scope="scope">
                                             <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCostCenter_NO }}</label>
                                             </template>

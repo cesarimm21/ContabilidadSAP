@@ -18,7 +18,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código Compañia</label>
+                            <label class="el-form-item__label col-md-2" >Codigo Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="formBusqueda.cod_company"  placeholder="">
@@ -89,7 +89,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="item_strAccDocum_NO" sortable  min-width="120"
-                                            label="Número Correlativo del Asiento ó Código unico de la operación ">
+                                            label="Número Correlativo del Asiento o Codigo unico de la operacion ">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.correlativo }}</label>
                                             </template>
@@ -117,7 +117,7 @@
                                         </el-table-column>                                       
                                         <el-table-column
                                             prop="item_dtmPosting_Date" sortable width="100"
-                                            label="Fecha de Contabilización">
+                                            label="Fecha de Contabilizacion">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ getParseDate(scope.row.item_dtmPosting_Date) }}</label>
                                             </template>
@@ -131,7 +131,7 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="item_strDaily_Desc" sortable width="100"
-                                            label="Glosa o Descripción de la Operación">
+                                            label="Glosa o Descripcion de la Operacion">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.item_strDaily_Desc }}</label>
                                             </template>

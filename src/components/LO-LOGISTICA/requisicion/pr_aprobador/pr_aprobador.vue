@@ -61,16 +61,16 @@
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
-                                    <el-table
+                                     <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
-                                        :data="tableData" 
+                                        :data="tableData"
                                         @header-click="headerclick"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         <el-table-column  :render-header="filterstrRequis_NO"  prop="strRequis_NO" width="100" label="Requisicion">
                                             <template scope="scope">
@@ -86,7 +86,7 @@
                                         </el-table-column>
                                         <!-- <el-table-column :render-header="filterstrWHS_Cod"
                                             prop="strWHS_Cod"  width="100"
-                                            label="Codigo Almacen">
+                                            label="Cod Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>
@@ -97,7 +97,7 @@
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strWHS_Desc }}</label>
                                             </template>
-                                        </el-table-column>                                        
+                                        </el-table-column>
                                         <el-table-column :render-header="filterstrDesc_Header"
                                             prop="strDesc_Header"  
                                             label="Descripcion">
@@ -107,7 +107,7 @@
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmRequested_Date"
                                             prop="dtmRequested_Date"  width="100"
-                                            label="Fecha Creacion">
+                                            label="Fecha Proceso">
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
@@ -117,22 +117,22 @@
                                                 <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strCreation_User"  width="110"
-                                            label="Usuario Creador">
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strCreation_User"  width="100"
+                                            label="Usuario">
                                             <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCreation_User }}</label>
+                                                <label style="width:100%">&nbsp;{{scope.row.strCreation_User }}</label>
                                             </template>
                                         </el-table-column>
-                                        <!-- <el-table-column 
-                                            prop="chrStatus" align="center"  width="70"
+                                        <el-table-column 
+                                            prop="chrStatus" align="center"  width="80"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
-                                                :type="scope.row.chrStatus === 'A' ? 'success' : 'danger'"
-                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                                :type="scope.row.chrAuthsd_Status.trim() === '50' ? 'success' :scope.row.chrAuthsd_Status.trim() === '70'?'danger': 'warning'"
+                                                disable-transitions>{{getEstado(scope.row.chrAuthsd_Status)}}</el-tag>
                                             </template>
-                                        </el-table-column> -->
+                                        </el-table-column>
                                         
                                     </el-table>
                                 </div>
@@ -162,7 +162,7 @@
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Código Material</label>
+                            <label class="el-form-item__label col-md-3" >Codigo Material</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">

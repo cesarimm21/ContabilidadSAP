@@ -172,7 +172,7 @@ export default class TopMenu extends Vue {
   
   //       }
   //       if(this.contador === 0){
-  //         Notification.warning('Su tiempo de Sesión ha expirado, Vuelva a iniciar sesión')
+  //         Notification.warning('Su tiempo de Sesion ha expirado, Vuelva a iniciar sesion')
   //         window.sessionStorage.clear();
   //         router.push('/')
   //         window.location.reload();

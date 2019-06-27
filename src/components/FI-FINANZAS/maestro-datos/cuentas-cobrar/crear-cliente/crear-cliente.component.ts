@@ -160,7 +160,7 @@ export default class CrearClienteComponent extends Vue {
   handleClick(tab, event) {
     console.log(tab.label); 
     if(tab.label=='Datos generales'){ this.cardView=true;}   
-    if(tab.label=='Dirección'){ this.cardView=false;}   
+    if(tab.label=='Direccion'){ this.cardView=false;}   
     if(tab.label=='Cuentas Bancarias'){ this.cardView=false;}   
     
   }

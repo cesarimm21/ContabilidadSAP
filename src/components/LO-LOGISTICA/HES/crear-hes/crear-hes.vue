@@ -6,7 +6,7 @@
       <el-card class="box-card">
           
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear aceptación servicio</span>
+                <span class="labelheadercard" > Crear aceptacion servicio</span>
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -34,7 +34,7 @@
                             </div>
                             
                             <div class="form-group row" >                                
-                                <label class="el-form-item__label col-md-3" >Descripción PO</label>
+                                <label class="el-form-item__label col-md-3" >Descripcion PO</label>
                                     <div class="col-md-9 grupolabel">
                                     <div class="input-group mb-9" >
                                     <el-input size ="small" @click="desactivar()" v-model="hesModel.strDesc_Header">
@@ -64,7 +64,7 @@
             <br>
             <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-tickets"></i> Aceptación Servicio</span>
+                    <span slot="label"><i class="el-icon-tickets"></i> Aceptacion Servicio</span>
                     <el-card class="box-card">
                         <div class="row bodycard">
                             <div class="container">
@@ -203,7 +203,7 @@
                                                 </el-table-column>
                                                 <el-table-column
                                                     prop="strDesc_Detail" sortable min-width="200"
-                                                    label="Descripción">
+                                                    label="Descripcion">
                                                     <template scope="scope">
                                                         <el-input v-if="bln_tbl_Descripcion  && (scope.row === editing.row) 
                                                         && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDesc_Detail" >
@@ -341,7 +341,7 @@
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
@@ -393,7 +393,7 @@
                         </el-table-column>
                     <el-table-column  prop="intPO_Item_NO" label="Item" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Item_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Item_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>

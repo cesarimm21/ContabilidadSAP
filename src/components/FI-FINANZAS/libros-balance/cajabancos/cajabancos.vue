@@ -18,7 +18,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Código Compañia</label>
+                            <label class="el-form-item__label col-md-2" >Codigo Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input :disabled="true" size ="small"  v-model="codigoCompania"  placeholder="">
@@ -85,7 +85,7 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column prop="periodo" width="150" label="Código de la Operación" align="center">
+                                        <el-table-column prop="periodo" width="150" label="Codigo de la Operacion" align="center">
                                             
                                         </el-table-column>
                                         <el-table-column prop="periodo" width="50" label="Fecha proceso" align="center">
@@ -95,13 +95,13 @@
                                             <el-table-column prop="periodo" width="80" label="Medio de Pago" align="center">
 
                                             </el-table-column>
-                                            <el-table-column prop="periodo" width="150" label="Detalle de la Operación" align="center">
+                                            <el-table-column prop="periodo" width="150" label="Detalle de la Operacion" align="center">
 
                                             </el-table-column>
-                                            <el-table-column prop="periodo" width="150" label="Denomicación o Razón Social" align="center">
+                                            <el-table-column prop="periodo" width="150" label="Denomicacion o Razon Social" align="center">
 
                                             </el-table-column>
-                                            <el-table-column prop="periodo" width="120" label="Transacción Bancaria" align="center">
+                                            <el-table-column prop="periodo" width="120" label="Transaccion Bancaria" align="center">
 
                                             </el-table-column>
                                         </el-table-column>

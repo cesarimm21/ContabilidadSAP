@@ -31,9 +31,9 @@
             @current-change="handleCurrentChange"> 
             <el-table-column :render-header="filterstrWHS_Cod"  prop="strWHS_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrWHS_Name" prop="strWHS_Name" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrWHS_Name" prop="strWHS_Name" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
-            <el-table-column :render-header="filterstrLocation" prop="strLocation" label="Descripción" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrLocation" prop="strLocation" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>

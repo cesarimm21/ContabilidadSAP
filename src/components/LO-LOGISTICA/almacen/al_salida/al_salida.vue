@@ -30,9 +30,9 @@
                             <label class="el-form-item__label col-md-2" >Tipo Movimiento</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-bind:class="{ error: vtipomovimiento }"  @change="change()" @blur="desactivar_tipo_movimiento" @focus="activar_tipo_movimiento" v-model="salidaModel.strTypeMov_Cod"  placeholder="">
-                                    <el-button v-if="btnactivartipomovimiento && !dialogTipoMovimiento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoMovimiento()"></el-button> 
-                                </el-input>
+                                    <el-input size ="small" style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-bind:class="{ error: vtipomovimiento }"  @change="change()" @blur="desactivar_tipo_movimiento" @focus="activar_tipo_movimiento" v-model="salidaModel.strTypeMov_Cod"  placeholder="">
+                                        <el-button v-if="btnactivartipomovimiento && !dialogTipoMovimiento" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoMovimiento()"></el-button> 
+                                    </el-input>
                                 </div>
                             </div>
                             <span style="font-size: 11px;margin-top: 5px;">{{salidaModel.strTypeMov_Desc}}</span>
@@ -45,7 +45,7 @@
                             <label class="el-form-item__label col-md-2" >Almacen</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" v-bind:class="{ error: valmacen }"  @change="change()" @blur="desactivar_almacen" @focus="activar_almacen" v-model="salidaModel.strWHS_Cod"  placeholder="">
+                                <el-input style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" size ="small" v-bind:class="{ error: valmacen }"  @change="change()" @blur="desactivar_almacen" @focus="activar_almacen" v-model="salidaModel.strWHS_Cod"  placeholder="">
                                     <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="LoadAlmacen()"></el-button> 
                                 </el-input>
                                 </div>
@@ -94,7 +94,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column prop="intIssueAjust_Item"  width="40">
                                             <template scope="scope">
-                                                <label style="width:100%;    margin: 0rem;" >&nbsp;{{ scope.row.intIssueAjust_Item }}</label>
+                                                <label  style="width:100%;margin-top: 4px;"  >&nbsp;{{ scope.row.intIssueAjust_Item }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrStock_Cod"
@@ -105,17 +105,17 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strStock_Cod" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadMaterial(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickmaterial(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strStock_Cod }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickmaterial(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strStock_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrStock_Desc"
                                             prop="strStock_Desc"  width="200"
-                                            label="Descripción">
+                                            label="Descripcion">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strStock_Desc" >
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strStock_Desc }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strStock_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -125,7 +125,7 @@
                                                 <!-- <el-input-number  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
                                                 </el-input-number> -->
-                                                <label >&nbsp;{{ scope.row.fltQuantity }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" >&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -135,7 +135,7 @@
                                                 <el-input-number :max="scope.row.fltQuantity" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltIssueRequest_QTY" >
                                                 </el-input-number>
-                                                <label style="width:100%;" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueRequest_QTY }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueRequest_QTY }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrUM_Cod"
@@ -146,29 +146,29 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strUM_Cod" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadUnidadMedida(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickunidadmedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM_Cod }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickunidadmedida(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strUM_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column  :render-header="filterstrCostCenter_NO"
                                             prop="strCostCenter_NO"   
-                                            label="Centro costos" >
+                                            label="Centro Costos" >
                                             <template scope="scope" >
                                                 <el-input   v-if="bln_tbl_centro_costo  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter_NO" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCentroCosto(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-bind:class="{ error: scope.row.errorCentroCosto  }" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-bind:class="{ error: scope.row.errorCentroCosto  }" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrAcc_NO_Local"
                                             prop="strAcc_NO_Local"  width="100"
-                                            label="Cuenta contable">
+                                            label="Cuenta Contable">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_cuenta_contable  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strAcc_NO_Local" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCuentaContable(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_NO_Local }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_NO_Local }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrDelivery_Place"
@@ -178,7 +178,7 @@
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDelivery_Place" >
                                                 </el-input>
-                                                <label style="width:100%"  v-bind:class="{error: scope.row.errorLugarEntrega}" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDelivery_Place }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;"  v-bind:class="{error: scope.row.errorLugarEntrega}" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDelivery_Place }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmDelivery_Date"
@@ -187,10 +187,11 @@
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
+                                                    format="dd.MM.yyyy"
                                                     v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmDelivery_Date" >
                                                 </el-date-picker>
-                                                <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmDelivery_Date) }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmDelivery_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrPriority_Cod"
@@ -201,7 +202,7 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         
@@ -262,6 +263,53 @@
     <el-dialog title="Busqueda Tipo Movimiento"  :visible.sync="dialogTipoMovimiento"  size="small" >
       <btipomovimiento v-on:tipomovimientoselecionado="tipomovimientoSelecionado($event)" v-on:tipomovimientoclose="tipomovimientoClose($event)">
       </btipomovimiento>
+        <!-- <div>
+            <el-card class="box-card">
+                <div slot="header" class="headercard">
+                    <span class="labelheadercard" ></span>
+                </div>
+                <div class="row bodycard">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-1" >Codigo</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small"   placeholder="">
+                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                            > </el-button>
+                                </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <el-table
+                :data="tipomovimientoModel"
+                stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                style="width: 100%" class="ExcelTable2007"
+                height="250"
+                highlight-current-row
+                @row-dblclick="seleccionar"
+                @current-change="handleCurrentChange">
+                <el-table-column   prop="strTypeMov_Cod" label="Codigo" width="180">
+                </el-table-column>  
+                <el-table-column  prop="strTypeMov_Desc" label="Descripcion" style="width: 70% !important;">
+                </el-table-column> 
+                </el-table>
+            </el-card>
+            <br/>
+            <footer class="modal-footer">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+                <img class="imagenfilter" src="../../../images/check.png" alt="" >
+                </el-button>
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+                <img class="imagenfilter" src="../../../images/close.png" alt="" >
+                </el-button>
+            </footer>
+        </div> -->
     </el-dialog>
     <!--DIALOG BUSQUEDA CENTRO COSTO-->
     <el-dialog title="Busqueda Centro Costo"  :visible.sync="dialogCentroCostos"  size="small" >

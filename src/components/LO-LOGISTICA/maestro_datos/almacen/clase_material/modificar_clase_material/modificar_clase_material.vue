@@ -268,7 +268,7 @@
                     @current-change="selectOrdenCompra">
                     <el-table-column  prop="strPO_NO" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                 </el-table>
             </el-card>
@@ -352,7 +352,7 @@
                     @current-change="checkSelectDiario">
                     <el-table-column  prop="strDaily_Cod" label="Codigo" width="180">
                     </el-table-column>  
-                    <el-table-column  prop="strDaily_Desc" label="Descripción" style="width: 70% !important;">
+                    <el-table-column  prop="strDaily_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                     <el-table-column  prop="strDaily_Type" label="Tipo" width="180">
                     </el-table-column> 

@@ -131,7 +131,7 @@ export default class CrearHesComponent extends Vue {
       this.$message({
         showClose: true,
         type: 'warning',
-        message: 'Ingrese código PO'
+        message: 'Ingrese codigo PO'
       });
     }
     else{
