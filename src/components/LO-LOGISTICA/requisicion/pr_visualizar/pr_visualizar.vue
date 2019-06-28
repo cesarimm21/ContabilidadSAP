@@ -111,6 +111,7 @@
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
+                                                    format="dd.MM.yyyy"
                                                     v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmRequested_Date" >
                                                 </el-date-picker>

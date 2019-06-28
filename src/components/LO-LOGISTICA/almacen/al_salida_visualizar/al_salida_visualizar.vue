@@ -163,58 +163,53 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Codigo">
+                                        <el-table-column  sortable prop="strIssueAjust_NO" width="100" label="Vale Salida">
                                             <template scope="scope">
-                                            <label  >&nbsp;{{ scope.row.strIssueAjust_NO }}</label>
+                                            <label >&nbsp;{{ scope.row.strIssueAjust_NO }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strCompany_Cod" sortable  width="120"
-                                            label="Codigo Compañia">
+                                            prop="dtmTransaction_Date" sortable  width="120"
+                                            label="Fecha Requerida">
                                             <template scope="scope">
-                                                <label >&nbsp;{{ scope.row.strCompany_Cod }}</label>
+                                                <label >&nbsp;{{ getDateString(scope.row.dtmTransaction_Date) }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
-                                            prop="strCompany_Desc" sortable  width="180"
-                                            label="Compañia">
-                                            <template scope="scope">
-                                                <label >&nbsp;{{ scope.row.strCompany_Desc }}</label>
-                                            </template>
-                                        </el-table-column>  
-                                        <el-table-column
-                                            prop="strTypeMov_Cod" sortable  width="120"
-                                            label="Codigo Tipo Movimiento">
-                                            <template scope="scope">
-                                                <label >&nbsp;{{ scope.row.strTypeMov_Cod }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="strTypeMov_Desc" sortable width="100"
-                                            label="Tipo Movimiento">
+                                            prop="strTypeMov_Desc" sortable  
+                                            label="Tipo Mov.">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.strTypeMov_Desc }}</label>
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column>  
                                         <el-table-column
-                                            prop="strWHS_Cod" sortable width="150"
-                                            label="Codigo Almacen">
-                                            <template scope="scope">
-                                                <label >&nbsp;{{ scope.row.strWHS_Cod }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="strWHS_Desc" sortable 
+                                            prop="strWHS_Desc" sortable  width="150"
                                             label="Almacen">
                                             <template scope="scope">
                                                 <label >&nbsp;{{ scope.row.strWHS_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="dtmTransaction_Date" sortable width="100"
+                                            prop="strCreation_User" sortable width="100"
+                                            label="Usuario">
+                                            <template scope="scope">
+                                                <label >&nbsp;{{ scope.row.strCreation_User }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="dtmCreation_Date" sortable width="100"
                                             label="Fecha">
                                             <template scope="scope">
-                                                <label >&nbsp;{{ getParseDate(scope.row.dtmTransaction_Date) }}</label>
+                                                <label >&nbsp;{{ getDateString(scope.row.dtmCreation_Date) }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column 
+                                            prop="chrStatus" align="center"  width="80"
+                                            label="Estado">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.chrStatus.trim() === '50' ? 'success' :scope.row.chrStatus.trim() === '70'?'danger': 'warning'"
+                                                disable-transitions>{{getEstado(scope.row.chrStatus)}}</el-tag>
                                             </template>
                                         </el-table-column>
                                     </el-table>

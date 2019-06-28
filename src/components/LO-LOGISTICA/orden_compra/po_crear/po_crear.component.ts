@@ -278,6 +278,8 @@ export default class CrearPOComponent extends Vue {
         this.loadAlmacen(this.requiSelect.strWHS_Cod);
         this.OrdenCompra.strCompany_Cod=this.requiSelect.strCompany_Cod;
         this.OrdenCompra.strRequis_NO=this.requiSelect.strRequis_NO;
+        this.OrdenCompra.strTypeMov_Cod=this.requiSelect.strTypeMov_Cod;
+        this.OrdenCompra.strTypeMov_Desc=this.requiSelect.strTypeMov_Desc;
         this.dialogRequisicion=false;
         if(this.requiSelect.strTypeReq_Cod=='A'){
             this.disabledRow=true;

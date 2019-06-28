@@ -184,23 +184,30 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
       data.strWHS_Cod=this.strWHS_Cod;
     }
     
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-      this.per++;
-    }
+    // for(var i=0;i<50;i++){
+    //   this.valuem++; 
+    //   this.percentage++;
+    //   this.per++;
+    // }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await clasematerialService.busquedaProducto(data.strStock_Cod,data.desde,data.hasta)
     .then(res=>{
       debugger;
-     
+      loading.close();
       console.log(res);
      // if(this.valuem>=100){
         // setTimeout(() => {
-          for(var i=0;i<50;i++){
-            setTimeout(
-              () => {this.percentage++;},1  
-            )
-          }
+          // for(var i=0;i<50;i++){
+          //   setTimeout(
+          //     () => {this.percentage++;},1  
+          //   )
+          // }
           console.log('/****************Busqueda***************/')
           console.log(res)
          // }, 1200)
@@ -212,7 +219,7 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
       //}
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   async BuscarProducto(){

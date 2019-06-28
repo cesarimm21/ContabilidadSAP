@@ -184,11 +184,18 @@ export default class VisualizarClaseMaterialComponent extends Vue {
       data.strWHS_Cod=this.strWHS_Cod;
     }
     
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-      this.per++;
-    }
+    // for(var i=0;i<50;i++){
+    //   this.valuem++; 
+    //   this.percentage++;
+    //   this.per++;
+    // }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await clasematerialService.busquedaProducto(data.strStock_Cod,data.desde,data.hasta)
     .then(res=>{
       debugger;
@@ -196,11 +203,11 @@ export default class VisualizarClaseMaterialComponent extends Vue {
       console.log(res);
      // if(this.valuem>=100){
         // setTimeout(() => {
-          for(var i=0;i<50;i++){
-            setTimeout(
-              () => {this.percentage++;},1  
-            )
-          }
+          // for(var i=0;i<50;i++){
+          //   setTimeout(
+          //     () => {this.percentage++;},1  
+          //   )
+          // }
           console.log('/****************Busqueda***************/')
           console.log(res)
          // }, 1200)
@@ -209,10 +216,11 @@ export default class VisualizarClaseMaterialComponent extends Vue {
           this.totalRegistros=this.CompleteData1.length;
           this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       this.vifprogress=false;}, 600)
+      loading.close();
       //}
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   async BuscarProducto(){

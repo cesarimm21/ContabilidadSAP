@@ -103,7 +103,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   contador:any=0;
   _10min:boolean=false;
   ocultarConfig:boolean = true;
-  nameuser:string;
+  nameuser:any;
   namecomplete:string;
   accesosUser:any=[];
   ocultar:boolean=false;
@@ -173,7 +173,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     column:''
   };
   fecha_actual:string;
-  selectrow:any;
+  //selectrow:any;
+  public selectrow:SalidaDetalleModel=new SalidaDetalleModel();
   selectcolumn:any;
   blntiporequisicion:boolean=true;
   tiporequisicion:string='';
@@ -213,6 +214,8 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     debugger;
 
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.nameuser=localStorage.getItem('User_Usuario');
     this.tiporequisicion="A";
     for(var i=0;i<this.totalRegistros;i++){
       var items:SalidaDetalleModel=new SalidaDetalleModel();
@@ -628,15 +631,15 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.code_planta=val.strPlant_Cod;
     this.dialogAlmacen=false;
   }
-  SeleccionadoCategoriaCuenta(val){
-    this.selectrow.categoriacuenta=val.CODIGO;
-    this.dialogCategoriaCuenta=false;
-  }
-  SeleccionadoCategoriaLinea(val){
-    debugger;
-    this.selectrow.categorialinea=val.CODIGO;
-    this.dialogCategoriaLinea=false;
-  }
+  // SeleccionadoCategoriaCuenta(val){
+  //   this.selectrow.categoriacuenta=val.CODIGO;
+  //   this.dialogCategoriaCuenta=false;
+  // }
+  // SeleccionadoCategoriaLinea(val){
+  //   debugger;
+  //   this.selectrow.categorialinea=val.CODIGO;
+  //   this.dialogCategoriaLinea=false;
+  // }
   SeleccionadoCentroCosto(val){
     debugger;
     this.selectrow.strCostCenter_NO=val.strCostCenter_NO;
@@ -662,9 +665,9 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.selectrow.strUM_Cod=val.strUM_Cod;
     this.selectrow.strAcc_NO_Local=val.strExp_Acct;
     this.selectrow.fltQuantity=val.fltQuantity_Virtual;
-    this.selectrow.fltPrecUnit_Local=val.fltPrecUnit_Local;
-    this.selectrow.fltPrecUnit_USD=val.fltPrecUnit_USD;
-    this.selectrow.strMatClass_Cod=val.strMaterial_Class;
+    //this.selectrow.fltPrecUnit_Local=val.fltPrecUnit_Local;
+    //this.selectrow.fltPrecUnit_USD=val.fltPrecUnit_USD;
+    //this.selectrow.strMatClass_Cod=val.strMaterial_Class;
     this.dialogMaterial=false;
     console.log('SeleccionadoMaterial',this.selectrow)
     
@@ -674,16 +677,16 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.selectrow.strUM_Cod=val.strUM_Cod;
     this.dialogUnidadMedida=false;
   }
-  SeleccionadoProveedor(val){
-    debugger;
-    this.selectrow.proveedor=val.Vendor_NO;
-    this.dialogProveedor=false;
-  }
-  SeleccionadoMoneda(val){
-    debugger;
-    this.selectrow.moneda=val.CODIGO;
-    this.dialogMoneda=false;
-  }
+  // SeleccionadoProveedor(val){
+  //   debugger;
+  //   this.selectrow.proveedor=val.Vendor_NO;
+  //   this.dialogProveedor=false;
+  // }
+  // SeleccionadoMoneda(val){
+  //   debugger;
+  //   this.selectrow.moneda=val.CODIGO;
+  //   this.dialogMoneda=false;
+  // }
   SeleccionadoPrioridad(val){
     debugger;
     
@@ -891,7 +894,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       for(var i=0;i<50;i++){
         this.percentage++;
       }
-
+      this.salidaModel.strCreation_User=this.nameuser;
       salidaService.CrearSalida(this.salidaModel)
       .then(res=>{
         debugger;
@@ -1382,10 +1385,10 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   EliminarItem(){
     debugger;
     console.log(this.selectrow.intIssueAjust_Item);
-    var item_nro=this.selectrow.intIssueAjust_Item-1;
+    var item_nro=Number(this.selectrow.intIssueAjust_Item)-1;
     alert(item_nro);
     this.CompleteData.splice(item_nro, 1);
-    for(var i=this.selectrow.intIssueAjust_Item-1;i<this.CompleteData.length;i++){
+    for(var i=Number(this.selectrow.intIssueAjust_Item)-1;i<this.CompleteData.length;i++){
       this.CompleteData[i].intIssueAjust_Item=i+1;
     }
     this.CompleteData1=this.CompleteData;
@@ -1426,177 +1429,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       dialogTableVisible: false,
       dialogVisible:false,
       tableDataServicio:[{}],
-      item:{
-        date: '',
-        categoriacuenta: '',
-        categorialinea: '',
-        cuentacontable: '',
-        material:'',
-        material_descripcion:'',
-        cantidad:0,
-        unidad_medida:'',
-        proveedor:'',
-        moneda:'',
-        prioridad:'',
-        fecha_estimada:'',
-        centrocosto:'',
-      },
-      tableData: [{
-        date: '0001',
-        categoriacuenta: 'Ferreyros',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0002',
-        categoriacuenta: 'Yura SAC',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0003',
-        categoriacuenta: 'Signal company',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0004',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }
-      , {
-        date: '0005',
-        categoriacuenta: 'Tisur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0006',
-        categoriacuenta: 'Seguro',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0007',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0008',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0009',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0010',
-        categoriacuenta: 'Linea',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0011',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }],
       user: {
         authenticated: false
       },

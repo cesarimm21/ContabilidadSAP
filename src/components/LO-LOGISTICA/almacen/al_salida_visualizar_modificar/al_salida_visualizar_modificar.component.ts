@@ -396,6 +396,29 @@ export default class VisualizarSalidaModificarMaterialComponent extends Vue {
     this.dialogAlmacen=false;
     //this.validate();
   }
+  
+  getDateString(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
+  getEstado(estado){
+    debugger;
+    estado=estado.trim();
+    if(estado=== '50'){
+      return 'Aprobado'
+    }
+    if(estado=== '70'){
+      return 'Rechazado'
+    }
+    else{
+      return 'Pendiente'
+    }
+  }
   data(){
     return{
       dialogTableVisible: false,

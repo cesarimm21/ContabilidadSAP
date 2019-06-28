@@ -21,6 +21,7 @@ import { CompaniaModel } from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { ImpuestoModel } from '@/modelo/maestro/impuesto';
+import maestroService from '@/components/service/maestro.service';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
 @Component({
@@ -102,6 +103,8 @@ export default class RecepcionMaterialComponent extends Vue {
     fltCURR_QTY_I:number=0;
     fltTot_Rec_Value:number=0;
     blnchangerec:boolean=true;
+    strTypeMov_Cod:string='';
+    strTypeMov_Desc:string='';
     constructor() {
         super();
         Global.nameComponent = 'crear-po';
@@ -353,7 +356,8 @@ export default class RecepcionMaterialComponent extends Vue {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.8)'
             });
-           
+           this.OrdenCompra.strTypeMov_Cod=this.strTypeMov_Cod;
+           this.OrdenCompra.strTypeMov_Desc=this.strTypeMov_Desc;
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
                 ordenCompraService.inventarioPO(this.OrdenCompra)
@@ -518,6 +522,16 @@ export default class RecepcionMaterialComponent extends Vue {
         this.strGuiaRemitente=object.strGuiaRem_NO;
         this.strGuiaTransportista=object.strGuiaTrans_NO;
         this.cargar(object.intIdPOH_ID);
+        maestroService.GetMaestro('VIEW','LA05') 
+        .then(res=>{
+          if(res!=undefined){
+            this.strTypeMov_Cod=res.strTypeMov_Cod;
+            this.strTypeMov_Desc=res.strTypeMov_Desc;
+            console.log(this.strTypeMov_Cod,this.strTypeMov_Desc);
+          }
+        })
+        .catch(error=>{
+        });
       }
       cargar(code){
         ordenCompraService.getPOId(code)
