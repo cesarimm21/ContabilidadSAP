@@ -99,6 +99,15 @@
                                             </template> -->
                                         </el-table-column>
                                         <el-table-column
+                                        :render-header="filterdtmProcess_Date"
+                                            prop="dtmProcess_Date"  width="100"
+                                            label="Fecha OC"
+                                            align="center">
+                                            <template scope="scope">
+                                                <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmProcess_Date) }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
                                             :render-header="filterstrRequis_NO"
                                             prop="strRequis_NO"   min-width="60"
                                             label="Requisicion">
@@ -153,12 +162,19 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                        :render-header="filterdtmProcess_Date"
-                                            prop="dtmProcess_Date"  width="100"
-                                            label="Fecha"
+                                            prop="strAuthsd_By"  width="150"
+                                            label="Usuario Aprob.">
+                                            <template scope="scope">
+                                                <label style="width:100%" >&nbsp;{{ scope.row.strAuthsd_By }}</label>
+                                            </template>
+                                        </el-table-column> 
+                                        <el-table-column
+                                        :render-header="filterdtmAuthsd_Date"
+                                            prop="dtmAuthsd_Date"  width="100"
+                                            label="Fecha Aprob."
                                             align="center">
                                             <template scope="scope">
-                                                <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmProcess_Date) }}</label>
+                                                <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmAuthsd_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                     </el-table>

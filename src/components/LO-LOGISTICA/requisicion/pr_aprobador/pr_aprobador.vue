@@ -15,6 +15,17 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
+                            <label class="el-form-item__label col-md-2" >Compañia</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input :disabled="true" size ="small" @focus="activar_compania" v-model="requisicionModel.strCompany_Cod"  placeholder="">
+                                    <el-button :disabled="true"  slot="append" class="boton" icon="fa fa-clone"></el-button> 
+                                </el-input>
+                                </div>
+                            </div>
+                            <span style="font-size: 11px;margin-top: 5px;">{{requisicionModel.strCompany_Desc}}</span>
+                        </div>
+                        <div class="form-group row ">
                             <label class="el-form-item__label col-md-2" >Requisicion</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >

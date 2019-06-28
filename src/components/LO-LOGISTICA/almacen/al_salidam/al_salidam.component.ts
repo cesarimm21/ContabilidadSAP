@@ -110,7 +110,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   contador:any=0;
   _10min:boolean=false;
   ocultarConfig:boolean = true;
-  nameuser:string;
+  nameuser:any;
   namecomplete:string;
   accesosUser:any=[];
   ocultar:boolean=false;
@@ -200,6 +200,7 @@ export default class ModificarSalidaMaterialComponent extends Vue {
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
+    this.nameuser=localStorage.getItem('User_Usuario');
     debugger;
     this.tiporequisicion="A";
     for(var i=0;i<10;i++){
@@ -602,6 +603,9 @@ export default class ModificarSalidaMaterialComponent extends Vue {
         this.valuem=this.valuem+1; 
       }
       console.log("--///",this.salidaModel)
+      
+      this.salidaModel.strCreation_User=this.nameuser;
+      this.salidaModel.strModified_User=this.nameuser;
       salidaService.despachoSalida(this.salidaModel)
       .then(res=>{
         debugger;

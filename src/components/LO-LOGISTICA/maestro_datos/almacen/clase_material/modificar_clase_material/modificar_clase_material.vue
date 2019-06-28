@@ -75,7 +75,7 @@
                                                  <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta. Contable</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Contable</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strAcct_Loc')" v-model="clasematerial.strAcct_Loc"  placeholder="">
@@ -86,7 +86,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strAcct_Loc_Desc}}</span>
                                                         </div>
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Contable Corporativo</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Contable Corporativo</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strAcct_Corp')" v-model="clasematerial.strAcct_Corp"  placeholder="">
@@ -97,7 +97,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strAcct_Corp_Desc}}</span>
                                                         </div>    
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Gasto</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Gasto</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strExp_Cod_Loc')" v-model="clasematerial.strExp_Cod_Loc"  placeholder="">
@@ -108,7 +108,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strExp_Cod_Loc_Desc}}</span>
                                                         </div>    
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Gasto Corporativo</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Gasto Corporativo</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strExp_Cod_Corp')" v-model="clasematerial.strExp_Cod_Corp"  placeholder="">
@@ -119,7 +119,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strExp_Cod_Corp_Desc }}</span>
                                                         </div>    
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Compra Debe</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Compra Debe</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strRecep_Deb')" v-model="clasematerial.strRecep_Deb"  placeholder="">
@@ -130,7 +130,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strRecep_Deb_Desc }}</span>
                                                         </div>                       
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Compra Haber</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Compra Haber</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strRecep_Cred')" v-model="clasematerial.strRecep_Cred"  placeholder="">
@@ -141,7 +141,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strRecep_Cred_Desc }}</span>
                                                         </div>                       
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Ingreso Almacen Debe</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Ingreso Almacen Debe</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strInvoice_Deb')" v-model="clasematerial.strInvoice_Deb"  placeholder="">
@@ -152,7 +152,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strInvoice_Deb_Desc }}</span>
                                                         </div>                       
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Ingreso Almacen Haber</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Ingreso Almacen Haber</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strInvoice_Cred')" v-model="clasematerial.strInvoice_Cred"  placeholder="">
@@ -163,7 +163,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strInvoice_Cred_Desc }}</span>
                                                         </div>                       
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Salida Almacen Debe</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Salida Almacen Debe</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strIssue_Deb')" v-model="clasematerial.strIssue_Deb"  placeholder="">
@@ -174,7 +174,7 @@
                                                             <span style="font-size: 11px;margin-top: 5px;">{{clasematerial.strIssue_Deb_Desc }}</span>
                                                         </div>                       
                                                         <div class="form-group row">
-                                                            <label class="el-form-item__label col-sm-3" >Cuenta Salida Almacen Haber</label>
+                                                            <label class="el-form-item__label col-sm-3" >Cta. Salida Almacen Haber</label>
                                                             <div class="col-sm-2 grupolabel">
                                                                 <div class="input-group mb-3" >
                                                                 <el-input size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber('strIssue_Cred')" v-model="clasematerial.strIssue_Cred"  placeholder="">

@@ -168,7 +168,7 @@ export default class ModificarClaseMaterialComponent extends Vue {
   btnstrExp_Cod_Loc:boolean=false;
   btnstrAcct_Corp:boolean=false;
   blnstrAcct_Loc:boolean=false;
-
+  nameuser:any;
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
@@ -184,6 +184,7 @@ export default class ModificarClaseMaterialComponent extends Vue {
     }, 200)
   }
   load(){
+    this.nameuser=localStorage.getItem('User_Usuario');
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
       debugger;
@@ -861,12 +862,26 @@ export default class ModificarClaseMaterialComponent extends Vue {
         this.clasematerial.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
       }
     }
+    
+    this.clasematerial.strCreation_User=this.nameuser;
+    this.clasematerial.strModified_User=this.nameuser;
+    
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+
     clasematerialService.update(this.clasematerial)
     .then(response=>{
       this.issave=true;
+      loading.close();
       this.textosave='Se actualizo correctamente.'+response.strMatClass_Cod
       this.limpiar();
     }).catch(error=>{
+      loading.close();
       this.$message({
         showClose: true,
         type: 'error',

@@ -171,6 +171,21 @@
                                                 <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_NO_Local }}</label>
                                             </template>
                                         </el-table-column>
+                                        
+                                        <el-table-column :render-header="filterstrPriority_Cod"
+                                            prop="strPriority_Cod" width="120" 
+                                            label="Prioridad">
+                                            <template scope="scope">
+                                                <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
+                                                    && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Desc" >
+                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
+                                                </el-input>
+                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" 
+                                                v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">
+                                                &nbsp;{{ scope.row.strPriority_Desc }}
+                                                </label>
+                                            </template>
+                                        </el-table-column>
                                         <el-table-column :render-header="filterstrDelivery_Place"
                                             prop="strDelivery_Place"  width="200"
                                             label="Lugar Entrega">
@@ -192,20 +207,6 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmDelivery_Date" >
                                                 </el-date-picker>
                                                 <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmDelivery_Date) }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column :render-header="filterstrPriority_Cod"
-                                            prop="strPriority_Cod" width="120" 
-                                            label="Prioridad">
-                                            <template scope="scope">
-                                                <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" size="small" v-model="scope.row.strPriority_Desc" >
-                                                <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
-                                                </el-input>
-                                                <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" 
-                                                v-bind:class="{error: scope.row.errorPrioridad}" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">
-                                                &nbsp;{{ scope.row.strPriority_Desc }}
-                                                </label>
                                             </template>
                                         </el-table-column>
                                         

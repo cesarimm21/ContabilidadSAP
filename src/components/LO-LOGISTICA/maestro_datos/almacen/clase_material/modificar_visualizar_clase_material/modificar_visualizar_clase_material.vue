@@ -137,20 +137,20 @@
                                         
                                         <el-table-column 
                                             prop="strMatClass_Cod"  
-                                            label="Cod. Clase Material">
+                                            label="Clase">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column 
                                             prop="strMatClass_Desc"  
-                                            label="Descripcion Clase Material">
+                                            label="Descripcion">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                          <el-table-column 
-                                          prop="strStock_Type_Desc" label="Descripcion Tipo">
+                                          prop="strStock_Type_Desc" label="Tipo">
                                             <template scope="scope">
                                             <label >&nbsp;{{ scope.row.strStock_Type_Desc }}</label>
                                             </template>
@@ -158,16 +158,24 @@
                                           
                                         <el-table-column 
                                             prop="strAcct_Loc"  
-                                            label="Cuenta Contable">
+                                            label="Cta. Contable">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strAcct_Loc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column  
                                             prop="strExp_Cod_Loc"  align="right"  
-                                            label="Cuenta Gastos">
+                                            label="Cta. Gasto">
                                             <template scope="scope">
                                                 <label style="width:100%"  >&nbsp;{{ scope.row.strExp_Cod_Loc }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strModified_User"  width="100"
+                                            label="Usuario">
+                                            <template scope="scope">
+                                                <label style="width:100%">&nbsp;{{scope.row.strModified_User }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column

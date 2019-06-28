@@ -316,6 +316,11 @@ export default class AprobadorPRComponent extends Vue {
   }
   async cargar(){
     debugger;
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
+    this.requisicionModel.strCompany_Cod=cod;
+    this.requisicionModel.strCompany_Desc=desc;
+    
     this.fechaDesde=""
     this.fechaHasta=""
     var data:any=this.formBusqueda;

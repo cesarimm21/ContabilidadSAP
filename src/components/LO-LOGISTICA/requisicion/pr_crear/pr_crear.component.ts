@@ -287,6 +287,7 @@ export default class CrearPRComponent extends Vue {
       if(res!=undefined){
         this.strTypeMov_Cod=res.strTypeMov_Cod;
         this.strTypeMov_Desc=res.strTypeMov_Desc;
+        console.log(this.strTypeMov_Cod,this.strTypeMov_Desc);
       }
     })
     .catch(error=>{

@@ -163,10 +163,12 @@ export default class CrearClaseMaterialComponent extends Vue {
   btnstrExp_Cod_Loc:boolean=false;
   btnstrAcct_Corp:boolean=false;
   blnstrAcct_Loc:boolean=false;
-
+  nameuser:any;
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
+    
+    this.nameuser=localStorage.getItem('User_Usuario');
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
     this.loadTipocambio();
@@ -821,13 +823,23 @@ export default class CrearClaseMaterialComponent extends Vue {
         this.clasematerial.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
       }
     }
-
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    this.clasematerial.strCreation_User=this.nameuser;
+    this.clasematerial.strModified_User=this.nameuser;
     clasematerialService.CreateClaseMaterial(this.clasematerial)
     .then(response=>{
       this.issave=true;
+      loading.close();
       this.textosave='Se guardo correctamente.'+response.strMatClass_Cod
       this.limpiar();
     }).catch(error=>{
+      loading.close();
       this.$message({
         showClose: true,
         type: 'error',
