@@ -97,7 +97,6 @@ export default class VisualizarModificarClaseServicioComponent extends Vue {
   striped=true;
   per:number=3;
   percentage:number;
-  btnbuscarb:boolean=false;
   fechaHasta:any=new Date();
   strStock_Cod:string='';
   fechaDesde:any=new Date();
@@ -216,9 +215,30 @@ export default class VisualizarModificarClaseServicioComponent extends Vue {
     })
   }
   async BuscarProducto(){
-    debugger;
-    this.btnbuscarb=true;
-    this.cargarList();
+    if(this.strStock_Cod!=''){
+      this.vifprogress=true;
+      this.valuem=0;
+      await setTimeout(() => {
+        for(var i=0;i<100;i++){
+          this.valuem++; 
+        }
+      }, 200)
+      clasematerialService.GetOnlyOneClaseMaterial(this.strStock_Cod)
+      .then(respo=>{
+        this.selectrow=respo;
+        console.log(this.selectrow);        
+        if(this.selectrow!=undefined && this.selectrow!=null ){
+        router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_clase_material`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
+        }
+        else{
+          this.openMessageError('No existe Clase Material')
+        }
+      })      
+    }
+    else{
+      this.vifprogress=false;
+      this.textosave='Ingrese Codigo Clase Material. ';
+    }
   }
 
   openMessage(newMsg : string) {

@@ -224,8 +224,6 @@ export default class CrearServicioMateComponent extends Vue {
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
   public tableClaseMaterial:ClaseMaterialModel[]; 
   tableClaseMaterial1:ClaseMaterialModel[]; 
-  
-  tiporequisicionant:string='';
 
   valboolalmacen:boolean=false;
   valbooltipo:boolean=false;
@@ -248,7 +246,7 @@ export default class CrearServicioMateComponent extends Vue {
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
-    debugger;
+    
     this.tiporequisicion="A";
     for(var i=0;i<10;i++){
       var item:any={
@@ -282,14 +280,12 @@ export default class CrearServicioMateComponent extends Vue {
 
     tipoRequisicionService.GetAllTipoRequisicion()
     .then(res=>{
-      debugger;
+      
       this.tabletipoRequisicion=res;
-      this.tiporequisicion="A";    
-      this.tiporequisicionant='A';
-      debugger;
+      this.tiporequisicion="S";     
+      
       clasematerialService.GetAllClaseMaterial()
       .then(response=>{
-        //console.log("clase material-",response);
         this.tableClaseMaterial=response;    
         this.tableClaseMaterial=[];
         this.tableClaseMaterial1=[];
@@ -391,7 +387,7 @@ export default class CrearServicioMateComponent extends Vue {
     //   });
   }
   tableRowClassName(row, rowIndex) {
-      debugger;
+      
     // if (row === undefined || row.EstadoAprobacion === undefined) return '';
     // if (row.EstadoAprobacion === 'R'){
     //   return 'rechazado-row';
@@ -403,7 +399,7 @@ export default class CrearServicioMateComponent extends Vue {
     // return '';
   }
   // handleCurrentChange(val) {
-  //   debugger;
+  //   
   //   if(val.date){
   //       return 'selected-row';
   //   }
@@ -431,61 +427,61 @@ export default class CrearServicioMateComponent extends Vue {
     }, 120)
   }
   desactivar_compania(){
-    debugger;
+    
     if(this.dialogCompania){
       this.btnactivarcompania=false;
     }
   }
   desactivar_unidad_medida(){
-    debugger;
+    
     if(this.dialogUnidadMedida){
       this.btnactivarunidadmedida=false;
     }
   }
   desactivar_impuesto(){
-    debugger;
+    
     if(this.dialogImpuesto){
       this.btnactivarimpuesto=false;
     }
   }
   desactivar_control_precio(){
-    debugger;
+    
     if(this.dialogControlPrecio){
       this.btnactivarcontrolprecio=false;
     }
   }
   desactivar_clase_material(){
-    debugger;
+    
     if(this.dialogClaseMaterial){
       this.btnactivarclasematerial=false;
     }
   }
   desactivar_criticidad(){
-    debugger;
+    
     if(this.dialogCriticidad){
       this.btnactivarcriticidad=false;
     }
   }
   desactivar_grupo_comprador(){
-    debugger;
+    
     if(this.dialogGrupoComprador){
       this.btnactivargrupocomprador=false;
     }
   }
   desactivar_categoria_material(){
-    debugger;
+    
     if(this.dialogCategoriaMaterial){
       this.btnactivarcategoriamaterial=false;
     }
   }
   desactivar_cuenta_contable(){
-    debugger;
+    
     if(this.dialogCuentaContable){
       this.btnactivarcuentacontable=false;
     }
   }
   closeCompania(){
-    debugger;
+    
     this.btnactivarcompania=false;
     return false;
   }
@@ -534,13 +530,13 @@ export default class CrearServicioMateComponent extends Vue {
     }, 120)
   }
   desactivar_proveedor(){
-    debugger;
+    
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
   }
   closeProveedor(){
-    debugger;
+    
     this.btnactivarproveedor=false;
     return false;
   }
@@ -553,7 +549,7 @@ export default class CrearServicioMateComponent extends Vue {
     }, 120)
   }
   desactivar_almacen(){
-    debugger;
+    
     if(this.dialogAlmacen){
       this.btnactivaralmacen=false;
     }
@@ -568,20 +564,19 @@ export default class CrearServicioMateComponent extends Vue {
     this.btnactivarcompania=false
   }
   activar_tipo_requisicion(value){
-    debugger;
+    
     setTimeout(() => {
       this.productoModel.strMaterial_Class="";
       this.productoModel.intIdMatClass_ID=-1;
       this.productoModel.strMatClass_Desc="";
       this.desclasematerial="";
       this.dialogClaseMaterial=false;
-      console.log('activar_tipo_requisicion',this.tiporequisicion);
     }, 200)
   }
 
   /*tabla metodos*/
   handleBlur(event) {
-    debugger;
+    
     this.bln_tbl_categoria_cuenta=false;
     event.edit=false;
     this.editing.row='';
@@ -592,7 +587,7 @@ export default class CrearServicioMateComponent extends Vue {
     return this.editing !== null
   }
   onCellBlur(row, column, cell, event) {
-    debugger;
+    
     this.editing = null
     console.log('onCellBlur',row, column, cell, event);
   }
@@ -641,84 +636,84 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogCentroCostos=true;
   }
   alerta(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_cuenta=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcategorialinea(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_linea=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcuentacontable(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cuenta_contable=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterial(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterialdescripcion(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material_descripcion=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcantidad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cantidad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickunidadmedida(event,edit,column){
-    debugger;
+    
     this.bln_tbl_unidad_medida=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickproveedor(event,edit,column){
-    debugger;
+    
     this.bln_tbl_proveedor=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmoneda(event,edit,column){
-    debugger;
+    
     this.bln_tbl_moneda=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickprioridad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_prioridad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickfechaestimada(event,edit,column){
-    debugger;
+    
     this.bln_tbl_fecha_estimada=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcentrocosto(event,edit,column){
-    debugger;
+    
     this.bln_tbl_centro_costo=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -728,7 +723,7 @@ export default class CrearServicioMateComponent extends Vue {
     return Global.getParseDate(fecha);
   }
   companiaSeleccionado(val){
-    debugger;
+    
     console.log('traer',val);
     this.productoModel.strCompany_Cod=val.strCompany_Cod
     this.productoModel.strCompany_Desc=val.strCompany_Desc
@@ -749,7 +744,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoImpuesto(val){
-    debugger;
+    
     this.productoModel.strWH_Cod=val.strWH_Cod
     this.productoModel.strWH_Desc=val.strWH_Desc
     this.productoModel.intIdCommTax_ID=val.intIdWH_ID
@@ -757,7 +752,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogImpuesto=false;
   }
   SeleccionadoCategoriaMaterial(val){
-    debugger;
+    
     this.productoModel.strMaterial_Categ=val.strCategItem_Cod;
     this.productoModel.intIdCategMat_ID=val.intIdCategLine_ID;
     this.productoModel.strCategMat_Desc=val.strCategItem_Desc;
@@ -765,7 +760,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogCategoriaMaterial=false;
   }
   SeleccionadoControlPrecio(val){
-    debugger;
+    
     this.productoModel.fltPriceControl=val.strCtlPrec_Cod;
     this.productoModel.intIdCtlPrec_ID=val.intIdCtlPrec_ID;
     this.productoModel.strCtlPrec_Desc=val.strCtlPrec_Desc;
@@ -773,7 +768,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogControlPrecio=false;
   }
   grupocompradorSeleccionado(val){
-    debugger;
+    
     this.productoModel.strGrpPurch_Cod=val.strGrpPurch_Cod;
     this.productoModel.intIdGrpPurch_ID=val.intIdGrpPurch_ID;
     this.productoModel.strGrpPurch_Desc=val.strGrpPurch_Desc;
@@ -790,7 +785,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogUnidadMedida=false;
   }
   criticidadSeleccionado(val){
-    debugger;
+    
     this.productoModel.strCritical_Item=val.strCritical_Cod;
     this.productoModel.intIdCritical_ID=val.intIdCritical_ID;
     this.productoModel.strCritical_Desc=val.strCritical_Desc;
@@ -798,7 +793,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogCriticidad=false;
   }
   SeleccionadoAlmacen(val){
-    debugger;
+    
     console.log('traer',val);
     this.productoModel.strWHS_Cod=val.strWHS_Cod;
     this.productoModel.intIdWHS_Stat_ID=val.intIdWHS_ID;
@@ -807,7 +802,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
-    debugger;
+    
     this.productoModel.strMaterial_Class=this.clasematerialSelectModel.strMatClass_Cod;
     this.productoModel.intIdMatClass_ID=this.clasematerialSelectModel.intIdMatClass_ID;
     this.productoModel.strMatClass_Desc=this.clasematerialSelectModel.strMatClass_Desc;
@@ -821,17 +816,17 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogCategoriaCuenta=false;
   }
   SeleccionadoCategoriaLinea(val){
-    debugger;
+    
     this.selectrow.categorialinea=val.CODIGO;
     this.dialogCategoriaLinea=false;
   }
   SeleccionadoCentroCosto(val){
-    debugger;
+    
     this.selectrow.centrocosto=val.CostCenter_NO;
     this.dialogCentroCostos=false;
   }
   SeleccionadoCuentaContable(val){
-    debugger;
+    
     this.productoModel.strExp_Acct=val.strAcc_Local_NO;
     this.productoModel.intIdAcctCont_ID=val.intIdAcctCont_ID;
     this.productoModel.strAcc_Desc=val.strAcc_Local_Name;
@@ -839,12 +834,12 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
-    debugger;
+    
     this.selectrow.material=val.Stock_Cod;
     this.dialogMaterial=false;
   }
   SeleccionadoUnidadMedida(val){
-    debugger;
+    
     this.productoModel.strUM_Cod=val.strUM_Cod;
     this.productoModel.intIdUnidadMedida=val.intUnit_Measure_ID;
     this.productoModel.strUM_Desc=val.strUM_Desc;
@@ -852,7 +847,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
-    debugger;
+    
 
     this.productoModel.strVendor_NO=val.strVendor_NO;
     this.productoModel.intIdVendor_ID=val.intIdVendor_ID;
@@ -861,12 +856,12 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogProveedor=false;
   }
   SeleccionadoMoneda(val){
-    debugger;
+    
     this.selectrow.moneda=val.CODIGO;
     this.dialogMoneda=false;
   }
   SeleccionadoPrioridad(val){
-    debugger;
+    
     this.selectrow.prioridad=val.CODIGO;
     this.dialogPrioridad=false;
   }
@@ -923,7 +918,7 @@ export default class CrearServicioMateComponent extends Vue {
   }
   
   closeImpuesto(){
-    debugger;
+    
     this.btnactivarimpuesto=false;
     return false;
   }
@@ -940,59 +935,59 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogGrupoComprador=false;
   }
   closeControlPrecio(){
-    debugger;
+    
     this.btnactivarcontrolprecio=false;
     return false;
   }
   closeGrupoComprador(){
-    debugger;
+    
     this.btnactivargrupocomprador=false;
     return false;
   }
   closeCriticidad(){
-    debugger;
+    
     this.btnactivarcriticidad=false;
     return false;
   }
   closeCategoriaMaterial(){
-    debugger;
+    
     this.btnactivarcategoriamaterial=false;
     this.dialogCategoriaMaterial=false;
     return false;
   }
   closeClaseMaterial(){
-    debugger;
+    
     this.btnactivarclasematerial=false;
     this.dialogClaseMaterial=false;
     return false;
   }
   closeCentroCostos(){
-    debugger;
+    
     this.btnactivarcentrocosto=false;
     return false;
   }
   closePrioridad(){
-    debugger;
+    
     this.btnactivarprioridad=false;
     return false;
   }
   closeMoneda(){
-    debugger;
+    
     this.btnactivarmoneda=false;
     return false;
   }
   closeUnidadMedida(){
-    debugger;
+    
     this.btnactivarunidadmedida=false;
     return false;
   }
   closeMaterial(){
-    debugger;
+    
     this.btnactivarmaterial=false;
     return false;
   }
   closeCuentaContable(){
-    debugger;
+    
     this.btnactivarcuentacontable=false;
     return false;
   }
@@ -1004,7 +999,7 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterCompania(code){
     //alert('Bien'+code);
-    debugger;
+    
     console.log('compania_enter_1',code);
     companiaService.GetOnlyOneCompania(code)
     .then(response=>{
@@ -1034,10 +1029,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterAlmacen(code){
     //alert('Bien'+code);
-    debugger;
+    
     almacenService.GetOnlyOneAlmacen(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strWHS_Cod=response[0].strWHS_Cod
@@ -1065,10 +1060,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterClaseMaterial(code){
     //alert('Bien'+code);
-    debugger;
+    
     clasematerialService.GetOnlyOneClaseMaterial(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strMaterial_Class=response[0].strMatClass_Cod;
@@ -1096,10 +1091,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterCriticidad(code){
     //alert('Bien'+code);
-    debugger;
+    
     criticidadService.GetOnlyOneCriticidad(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strCritical_Item=response[0].strCritical_Cod;
@@ -1127,10 +1122,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterProveedor(code){
     //alert('Bien'+code);
-    debugger;
+    
     proveedorService.GetOnlyOneProveedor(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strVendor_NO=response[0].strVendor_NO;
@@ -1158,10 +1153,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterCuentaGastos(code){
     //alert('Bien'+code);
-    debugger;
+    
     cuentacontableService.GetOnlyOneCuentaGastos(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strExp_Acct=response[0].strAcct_NO_Corp;
@@ -1190,10 +1185,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterCategoriaMaterial(code){
     //alert('Bien'+code);
-    debugger;
+    
     categoriamaterialService.GetOnlyOneCategoriaMaterial(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strMaterial_Categ=response[0].strCategMat_Cod;
@@ -1222,10 +1217,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterGrupoComprador(code){
     //alert('Bien'+code);
-    debugger;
+    
     grupocompradorService.GetOnlyOneGrupoComprador(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strGrpPurch_Cod=response[0].strGrpPurch_Cod;
@@ -1254,10 +1249,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterControlPrecio(code){
     //alert('Bien'+code);
-    debugger;
+    
     controlprecioService.GetOnlyOneControlPrecio(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.fltPriceControl=response[0].strCtlPrec_Cod;
@@ -1284,10 +1279,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterImpuesto(code){
     //alert('Bien'+code);
-    debugger;
+    
     impuestoService.GetOnlyOneImpuesto(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strWH_Cod=response[0].strWH_Cod;
@@ -1316,10 +1311,10 @@ export default class CrearServicioMateComponent extends Vue {
   }
   enterUnidadMedida(code){
     //alert('Bien'+code);
-    debugger;
+    
     unidadmedidaService.GetOnlyOneUnidadMedida(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strUM_Cod=response[0].strUM_Cod;
@@ -1350,7 +1345,7 @@ export default class CrearServicioMateComponent extends Vue {
     console.log('select',selected);
   }
   validador(){
-    debugger;
+    
     if(this.productoModel.strUM_Cod==undefined){
       return true;
     }
@@ -1376,7 +1371,7 @@ export default class CrearServicioMateComponent extends Vue {
   }
 
   guardarTodo(val){
-debugger;
+
     this.vifprogress=true;
     this.issave=false;
     this.iserror=false;
@@ -1394,21 +1389,35 @@ debugger;
           this.productoModel.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
         }
       }
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        );
       productoService.saveProducto(this.productoModel)
       .then(res=>{ 
-        debugger;
+        
         for(var i=0;i<50;i++){
           setTimeout(
             () => {this.percentage++;},1  
           )
         } 
+        loadingInstance.close();
         setTimeout(() => {   
           this.issave=true;
           this.textosave='Se guardo correctamente. '+ res.strStock_Cod;
+          this.$message({
+            showClose: true,
+            type: 'success',
+            message: 'Se guardo correctamente.'
+          });
           this.vifprogress=false;
         }, 600)
        
       }).catch(error=>{
+        loadingInstance.close();
         this.$message({
           showClose: true,
           type: 'error',

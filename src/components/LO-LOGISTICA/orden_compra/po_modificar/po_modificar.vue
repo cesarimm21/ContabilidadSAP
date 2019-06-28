@@ -62,11 +62,11 @@
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrPO_Desc"
-                                            prop="strPO_Desc"  min-width="220"
+                                            prop="strPO_Desc"  min-width="260"
                                             label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
-                                            :render-header="filterstrVendor_Desc"
+                                            :render-header="filterstrVendor_Desc" min-width="260"
                                             prop="strVendor_Desc" 
                                             label="Proveedor">
                                         </el-table-column>
@@ -85,11 +85,10 @@
                                              <template scope="scope">
                                                 <span>{{ getDateString(scope.row.dtmProcess_Date) }}</span>
                                             </template>
-                                        </el-table-column>   
-                                        
+                                        </el-table-column>  
                                         <el-table-column
                                             prop="strCreation_User" align="center"  min-width="60"
-                                            label="Usuario Creador">
+                                            label="Usuario ">
                                         </el-table-column>
                                         <el-table-column 
                                             prop="chrPO_Status" align="center"  width="80"

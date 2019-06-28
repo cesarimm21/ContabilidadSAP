@@ -48,6 +48,9 @@ export default class VisualizarPOComponent extends Vue {
     clickColumn:string='';
     txtbuscar:string='';
     Column:string='';
+    pagina: number =1;
+    RegistersForPage: number = 100;
+    totalRegistros: number = 100;
     vifprogress:boolean=false;
     issave:boolean=false;
     iserror:boolean=false;
@@ -57,8 +60,11 @@ export default class VisualizarPOComponent extends Vue {
     blnilterstrVendor_Desc:boolean=false;
     blnilterdtmProcess_Date:boolean=false;
     blnilterfltTotal_Val:boolean=false;
+    dialogBusquedaFilter:boolean=false;
     //**[ORDEN COMPRA] */
     public OrdenCompra: Array<OrdenCompraModel>;
+    public OrdenCompra1: Array<OrdenCompraModel>;
+    public OrdenCompra2: Array<OrdenCompraModel>;
     public opSelect: OrdenCompraModel=new OrdenCompraModel();
     constructor() {
         super();
@@ -73,12 +79,17 @@ export default class VisualizarPOComponent extends Vue {
     this.textTitle='Visualizar'
     ordencompraService.GetOCView(this.codigoCompania)
     .then(resp=>{
-        this.OrdenCompra=[];
-        this.OrdenCompra=resp;
+      this.OrdenCompra=[];
+      this.OrdenCompra1=[];
+      this.OrdenCompra2=[];
+      this.OrdenCompra=resp;
+      this.OrdenCompra1=resp;
+      this.OrdenCompra2=resp;
     })
    }
    handleCurrentChange(val:OrdenCompraModel){
-    this.opSelect=val;    
+    this.opSelect=val;   
+    this.textosave='Orden Compra '+this.opSelect.strPO_NO; 
    }
    getDateString(fecha:string){
     var dateString = new Date(fecha);
@@ -139,10 +150,39 @@ export default class VisualizarPOComponent extends Vue {
         });
       }
       Limpiar(){
-
+        this.OrdenCompra=[];
+        this.blnilterstrPO_NO=false;
+        this.blnilterstrRequis_NO=false;
+        this.blnilterstrPO_Desc=false;
+        this.blnilterstrVendor_Desc=false;
+        this.blnilterdtmProcess_Date=false;
+        this.blnilterfltTotal_Val=false;
+        this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
       Buscar(){
-
+        if(this.Column!=""){
+          this.dialogBusquedaFilter=true;
+          this.txtbuscar='';
+        }
+        else{
+          this.$message('Seleccione columna')
+        }
+      }
+      like(array, key,keyword) {
+    
+        var responsearr:any = []
+        for(var i=0;i<array.length;i++) {
+            if(array[i][key].toString().indexOf(keyword) > -1 ) {
+              responsearr.push(array[i])
+          }
+        }
+        return responsearr
+      }
+      btnBuscar(){    
+        var data=this.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
+        this.OrdenCompra=[];
+        this.OrdenCompra=data;
+        this.dialogBusquedaFilter=false;
       }
     headerclick(val){    
         this.Column=val.label;
@@ -212,8 +252,7 @@ export default class VisualizarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-      filterstrRequis_NO(h,{column,$index}){
-        
+      filterstrRequis_NO(h,{column,$index}){        
         if(this.blnilterstrRequis_NO){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
           [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -223,8 +262,7 @@ export default class VisualizarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-      filterstrPO_Desc(h,{column,$index}){
-        
+      filterstrPO_Desc(h,{column,$index}){        
         if(this.blnilterstrPO_Desc){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
           [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -244,8 +282,7 @@ export default class VisualizarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-      filterdtmProcess_Date(h,{column,$index}){
-        
+      filterdtmProcess_Date(h,{column,$index}){        
         if(this.blnilterdtmProcess_Date){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
           [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -255,8 +292,7 @@ export default class VisualizarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-      filterfltTotal_Val(h,{column,$index}){
-        
+      filterfltTotal_Val(h,{column,$index}){        
         if(this.blnilterfltTotal_Val){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
           [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -266,7 +302,6 @@ export default class VisualizarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-
     backPage(){
         window.history.back();
       }
@@ -282,9 +317,11 @@ export default class VisualizarPOComponent extends Vue {
       }
     data() {
         return {
-            nameComponent: 'crear-po',
+            nameComponent: 'visualizar-po',
             textTitle:'',
             OrdenCompra:[],
+            OrdenCompra1:[],
+            OrdenCompra2:[],
             codigoCompania:'',
             descripcionCompania:''
         }

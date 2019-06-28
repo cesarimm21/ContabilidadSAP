@@ -475,6 +475,7 @@ getNumber(num){
     this.factura.strVendor_NO=this.ordencompraSelect.strVendor_NO;
     this.factura.strVendor_Desc=this.ordencompraSelect.strVendor_Desc;
     this.factura.strDesc_Doc=this.ordencompraSelect.strPO_Desc;
+    this.factura.strCurrency_Doc=this.ordencompraSelect.strCurrency_Cod;
     this.dialogOrdenCompra=false;    
     this.loadOrdenCompraDetalle(this.ordencompraSelect.intIdPOH_ID);
     this.factura.strTax_Cod=this.ordencompraSelect.strWH_Cod;

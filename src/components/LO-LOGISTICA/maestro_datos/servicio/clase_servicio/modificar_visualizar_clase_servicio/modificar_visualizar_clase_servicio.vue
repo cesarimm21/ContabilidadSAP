@@ -3,7 +3,7 @@
 
   <div class="al-crear">
     <ol style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:validarView="BuscarProducto" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:validarView="BuscarProducto" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
 
     <el-card class="box-card">
@@ -84,7 +84,7 @@
                         </div>
 
 
-                        <div class="form-group row Second">
+                        <!-- <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha </label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
@@ -111,7 +111,7 @@
                             </div>
                             <el-checkbox class="newCheckBox" @change="changeFecha()" v-model="checkFecha">
                             </el-checkbox>               
-                        </div>    
+                        </div>     -->
                     </div>
                 </div>
                 <br/>
@@ -132,12 +132,12 @@
                                          highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         
                                         <el-table-column 
                                             prop="strMatClass_Cod"  
-                                            label="Cod. Clase Material">
+                                            label="Clase Material">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Cod }}</label>
                                             </template>

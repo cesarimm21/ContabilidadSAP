@@ -199,7 +199,7 @@
                                             label="Prioridad">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Desc" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" size="small" v-model="scope.row.strPriority_Desc" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
                                                 <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" 

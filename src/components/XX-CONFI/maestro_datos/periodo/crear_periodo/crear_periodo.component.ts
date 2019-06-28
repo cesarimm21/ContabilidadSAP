@@ -46,28 +46,38 @@ export default class CrearPeriodoComponent extends Vue {
       var yyyy=dateString.getFullYear();
       var user:any=localStorage.getItem('User_Usuario');
       this.periodo.strCreation_User=user;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+    }
+    );
       periodoService.ConsulaPeriodo(yyyy)
       .then(response=>{
         if(response){
+          loadingInstance.close();
           this.$message({
             showClose: true,
             type: 'info',
-            message: 'Ya existe periodo'
+            message: 'Ya existe Año Fiscal Contable'
           });
         }
         else{
           periodoService.CreatePeriodo(yyyy,this.periodo.strCreation_User)
           .then(resp=>{
+            loadingInstance.close();
             this.$message({
                 showClose: true,
                   type: 'success',
-                  message: 'Se guardo Correctamente '+yyyy
+                  message: 'Se guardo Correctamente Año Fiscal Contable '+yyyy
                 });
                 this.issave = true;
                 this.iserror = false;
                 this.value3=(new Date()).toString(); 
-                this.textosave = 'Se guardo correctamente. '+yyyy;
+                this.textosave = 'Se guardo correctamente Año Fiscal Contable. '+yyyy;
             }).catch(error=>{
+              loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',

@@ -83,7 +83,7 @@
                             </div>
                         </div>
 
-
+<!-- 
                         <div class="form-group row Second">
                             <label class="el-form-item__label col-md-2" >Fecha </label>
                             <div class="col-md-2 grupolabel">
@@ -111,7 +111,7 @@
                             </div>
                             <el-checkbox class="newCheckBox" @change="changeFecha()" v-model="checkFecha">
                             </el-checkbox>               
-                        </div>    
+                        </div>     -->
                     </div>
                 </div>
                 <br/>
@@ -132,12 +132,12 @@
                                          highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         
                                         <el-table-column 
                                             prop="strMatClass_Cod"  
-                                            label="Cod. Clase Material">
+                                            label="Clase Material">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Cod }}</label>
                                             </template>

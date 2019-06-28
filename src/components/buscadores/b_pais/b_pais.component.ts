@@ -46,8 +46,6 @@ export default class  BPaisComponent extends Vue {
   searchPais(){
     if(this.clickColumn=="strCountry_Cod"){  this.searchPaisModel.strCountry_Cod=this.inputAtributo; }
     if(this.clickColumn=="strCountry_Name"){ this.searchPaisModel.strCountry_Name=this.inputAtributo; }
-    console.log(this.searchPaisModel);
-    
     paisService.searchPais(this.searchPaisModel)
     .then(resp=>{
       this.paisModel=[];

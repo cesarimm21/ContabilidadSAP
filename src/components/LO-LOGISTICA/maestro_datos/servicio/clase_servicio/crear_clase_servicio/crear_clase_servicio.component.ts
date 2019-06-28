@@ -150,7 +150,6 @@ export default class CrearClaseServicioComponent extends Vue {
   iserror:boolean=false;
   textosave:string='';
   tiporequisicion:string='';
-  tiporequisicionant:string='';
   cuentacontable:string='';
 
   btnstrIssue_Cred:boolean=false;
@@ -184,8 +183,7 @@ export default class CrearClaseServicioComponent extends Vue {
     .then(res=>{
       debugger;
       this.tabletipoRequisicion=res;
-      this.tiporequisicion="A";    
-      this.tiporequisicionant='A';
+      this.tiporequisicion="S";    
     })
     .catch(error=>{})
   }
@@ -821,13 +819,22 @@ export default class CrearClaseServicioComponent extends Vue {
         this.clasematerial.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
       }
     }
-
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Guardando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      );
     clasematerialService.CreateClaseMaterial(this.clasematerial)
     .then(response=>{
+      loadingInstance.close();
       this.issave=true;
-      this.textosave='Se guardo correctamente.'+response.strMatClass_Cod
+      this.textosave='Se guardo correctamente.'+response.strMatClass_Cod;
+      this.openMessageSuccess('Se guardo Correctamente');      
       this.limpiar();
     }).catch(error=>{
+      loadingInstance.close();
       this.$message({
         showClose: true,
         type: 'error',

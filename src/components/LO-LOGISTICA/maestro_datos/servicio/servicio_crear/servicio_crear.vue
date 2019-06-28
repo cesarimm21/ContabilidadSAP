@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Crear Material</span>
+            <span class="labelheadercard" >Crear Servicio</span>
         </div>
         <div class="row bodycard">
             <div class="container">
@@ -27,23 +27,10 @@
                         </div> 
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-sm-6" >
-                        <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Código Material</label>
-                            <div class="col-md-3 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod"  placeholder="">
-                                </el-input>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </div> -->
                 <div class="row">
                     <div class="col-sm-6" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-3" >Descripcion Material</label>
+                            <label class="el-form-item__label col-md-3" >Descripcion Servicio</label>
                             <div class="col-md-6 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Desc"  placeholder="">
@@ -83,7 +70,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Código Almacen</label>
+                                        <label class="el-form-item__label col-md-2" >Codigo Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input class="validador" size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
@@ -120,17 +107,10 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Tipo Requisicion</label>
-                                        <!--<div class="col-md-2 grupolabel">
-                                            <div class="input-group mb-3" >
-                                            <el-input size ="small" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strStock_Type"  placeholder="">
-                                                <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
-                                            </el-input>
-                                            </div> 
-                                        </div>-->
+                                        <label class="el-form-item__label col-md-2" >Tipo Requisicion</label>                                        
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-select class="validador" v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
+                                                <el-select class="validador" v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable disabled>
                                                     <el-option style="font-size:13px"
                                                     v-for="item in tabletipoRequisicion"
                                                     :key="item.strTypeReq_Cod"

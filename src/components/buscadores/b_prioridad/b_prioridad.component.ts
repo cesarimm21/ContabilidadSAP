@@ -205,6 +205,7 @@ filterstrPriority_Name(h,{column,$index}){
 data() {
  return {
    companiaModel:[],
+   inputAtributo:'',
    prioridadModel:[],
    prioridadModel1:[],
    categorias: [{

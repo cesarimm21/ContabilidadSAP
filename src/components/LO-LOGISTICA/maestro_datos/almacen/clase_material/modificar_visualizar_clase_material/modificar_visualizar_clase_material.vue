@@ -132,7 +132,7 @@
                                          highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         
                                         <el-table-column 

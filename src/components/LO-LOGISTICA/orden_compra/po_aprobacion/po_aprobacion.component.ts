@@ -383,18 +383,15 @@ export default class AprobarPOComponent extends Vue {
     }
   }
   Limpiar(){
-    this.tableData = this.tableData11.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    var document:any = this.$refs.missionTable;
-    // document.setCurrentRow(this.OrdenCompra[this.intlineaselect]);    
+    this.tableData=[];
     this.blnilterstrPO_NO=false;
     this.blnilterstrRequis_NO=false;
     this.blnilterstrPO_Desc=false;
     this.blnilterstrVendor_Desc=false;
     this.blnilterdtmProcess_Date=false;
     this.blnilterfltTotal_Val=false;
-    this.tableData12=this.tableData11;
     this.tableData = this.tableData12.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    var document:any = this.$refs.missionTable;
+    
   }
   async AscItem(){
     debugger;

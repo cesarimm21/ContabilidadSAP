@@ -128,8 +128,8 @@ export default class VisualizarClaseMaterialComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   pagina: number =1;
-  RegistersForPage: number = 10;
-  totalRegistros: number = 100;
+  RegistersForPage: number = 100;
+  totalRegistros: number = 1000;
   
   //#endregion
   constructor(){
