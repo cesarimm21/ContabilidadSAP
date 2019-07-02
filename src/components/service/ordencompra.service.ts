@@ -67,6 +67,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllOrdenDetalleHES(idHeader){
+    return axios.get(CONFIG.API_URL+'ordencompradetalle/hes/'+idHeader)
+    .then(response=>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   aprobarPO(data){
     return axios.post(CONFIG.API_URL+'ordencompra/aprobar',data)
     .then(response =>{

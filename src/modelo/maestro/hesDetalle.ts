@@ -7,6 +7,7 @@ export class HesDetalleModel {
     strDesc_Detail:string;
     strHES_Status:string;
     intQuantity:number;
+    intIdPOD_ID:number;
     strUM:string;
     strCurrency:string;
     intIdCostCenter_ID:number;
@@ -14,6 +15,7 @@ export class HesDetalleModel {
     fltGross_Price:number;
     fltNet_Value:number;
     fltRec_Value:number;
+    fltRecTemp_Value:number;
     fltFacture_Net_PR_I:number;
     strCreation_User:string;
     dtmCreation_Date:Date;
@@ -23,6 +25,7 @@ export class HesDetalleModel {
     constructor(){
         this.intIdHESD_ID=-1;
         this.intIdHESH_ID=-1;
+        this.intIdPOD_ID=-1;
         this.strHES_NO='';
         this.intHES_Item_NO=0;
         this.strService_NO='';
@@ -36,6 +39,7 @@ export class HesDetalleModel {
         this.fltGross_Price=0;
         this.fltNet_Value=0;
         this.fltRec_Value=0;
+        this.fltRecTemp_Value=0;
         this.fltFacture_Net_PR_I=0;
         this.strCreation_User='';
         this.dtmCreation_Date=new Date;

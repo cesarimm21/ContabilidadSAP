@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllHesView(strCompany_Cod){      
+    return axios.get(CONFIG.API_URL+'hes/view/'+strCompany_Cod)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateHes(hesModel){    
     return axios.post(CONFIG.API_URL+'hes',hesModel)
     .then(response =>{            

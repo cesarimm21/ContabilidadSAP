@@ -23,6 +23,7 @@ import {HesDetalleModel} from '@/modelo/maestro/hesDetalle';
 import {CentroCostosModel} from '@/modelo/maestro/centrocostos';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
+import { User } from '@/modelo/user';
 
 @Component({
   name: 'viewandedit-hes',
@@ -120,6 +121,21 @@ export default class ViewAndEditHesComponent extends Vue {
         this.vifaprobarrechasar=true;
         this.impDisabled=true;
     }
+    if(this.hesModel.strHES_Status=='00'){
+      this.isactivered=true;
+      this.isactiveyellow=false;
+      this.isactivegreen=false;
+    }
+    if(this.hesModel.strHES_Status=='30'){
+      this.isactiveyellow=true;
+      this.isactivered=false;
+      this.isactivegreen=false;
+    }
+    if(this.hesModel.strHES_Status=='50'){
+      this.isactivegreen=true;
+      this.isactivered=false;
+      this.isactiveyellow=false;
+    }
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');
     this.fecha_ejecucion=Global.getParseDate(this.hesModel.dtmProcess_Date);
@@ -159,10 +175,11 @@ export default class ViewAndEditHesComponent extends Vue {
 //#endregion
   //#region [ACTUALIZAR HES]
   UpdateHes(){
+    var user:any=localStorage.getItem('User_Usuario');
       if(this.$route.query.vista=='Modificar'){
         this.hesModel.intChange_Count=Number(this.hesModel.intChange_Count)+1;
         this.hesModel.dtmModified_Date=new Date();
-        this.hesModel.strModified_User='egaona';
+        this.hesModel.strModified_User=user;
         this.hesModel.dtmSince_Date=new Date(this.fecha_since);
         this.hesModel.dtmUntil_Date=new Date(this.fecha_until);
         this.hesModel.listaDetalle=[];
@@ -174,8 +191,7 @@ export default class ViewAndEditHesComponent extends Vue {
           background: 'rgba(0, 0, 0, 0.8)'
           }
           );
-          if(this.hesModel.listaDetalle.length>0){
-              console.log(this.hesModel);              
+          if(this.hesModel.listaDetalle.length>0){      
             hesService.UpdateHes(this.hesModel)
             .then(response=>{
               loadingInstance.close();
@@ -199,19 +215,23 @@ export default class ViewAndEditHesComponent extends Vue {
               message:'Debe ingresar al menos un detalle'
           });      
           }
-      }    
-      else{
+      }
+      if(this.$route.query.vista=='Visualizar') {
         this.$message({
-            showClose:true,
-            type:'info',
-            message:'Accion no permitida'
-        });   
+          showClose:true,
+          type:'info',
+          message:'Accion no permitida'
+      });  
+      }   
+      if(this.$route.query.vista=='Aprobar'){
+        
       }
     
     }
     async aprobar(){
+      var user:any=localStorage.getItem('User_Usuario');
         this.valuem=0;
-        this.hesModel.strModified_User='ADMINISTRADOR'
+        this.hesModel.strModified_User=user;
         await setTimeout(() => {
             for(var i=0;i<100;i++){
             this.valuem++; 

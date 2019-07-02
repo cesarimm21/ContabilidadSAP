@@ -86,13 +86,20 @@ export default class CrearHesComponent extends Vue {
   public ordenCompraDetalle:OrdenCompraDetalleModel[];
   // public ordencompraDetalleSelect:OrdenCompraDetalleModel =new OrdenCompraDetalleModel();
   public ordencompra:OrdenCompraModel[];
+  public ordencompra1:OrdenCompraModel[];
   public ordencompraSelect:OrdenCompraModel=new OrdenCompraModel();
 
   //activar colores
   isactivered:boolean=true;
   isactiveyellow:boolean=false;
   isactivegreen:boolean=false;
-
+  blnilterstrPO_NO:boolean=true;
+  blnilterstrPO_Desc:boolean=false;
+  blnilterstrVendor_NO:boolean=false;
+  blnilterstrVendor_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   //HES
   public hesModel:HESModel =new HESModel();
   public hesDetalleModel:HesDetalleModel=new HesDetalleModel();
@@ -119,7 +126,7 @@ export default class CrearHesComponent extends Vue {
     this.descripcionCompania=localStorage.getItem('compania_name');
     this.fecha_since=(new Date()).toString();
     this.fecha_until=(new Date()).toString(); 
-    for(var i=0;i<10;i++){
+    for(var i=0;i<50;i++){
       var reqDetalle:HesDetalleModel=new HesDetalleModel();
       reqDetalle.chrStatus="A";
       this.TableIngreso.push(reqDetalle);
@@ -153,6 +160,7 @@ export default class CrearHesComponent extends Vue {
     ordencompraService.getOrdenCompraTypeRequisicion()
     .then(respose=>{
       this.ordencompra=respose;      
+      this.ordencompra1=respose;      
       loadingInstance.close();
       this.dialogOrdenCompra=true;
     }).catch(error=>{
@@ -243,22 +251,27 @@ export default class CrearHesComponent extends Vue {
   dbclickSelect(){
     this.dialogOrdenC=false;
   }
+  getNumber(num){
+    return parseFloat(num);
+}
   loadOrdenDet(id){    
-    ordencompraService.GetAllOrdenDetalle(id)
+    ordencompraService.GetAllOrdenDetalleHES(id)
     .then(response=>{
       this.ordenCompraDetalle=[];
       this.ordenCompraDetalle=response;
       this.TableIngreso=[];
       for(var i=0;i<this.ordenCompraDetalle.length;i++){
         var reqDetalle:HesDetalleModel=new HesDetalleModel();
+        reqDetalle.intIdPOD_ID=this.ordenCompraDetalle[i].intIdPOD_ID;
         reqDetalle.strService_NO=this.ordenCompraDetalle[i].intPO_Item_NO.toString();
         reqDetalle.strDesc_Detail=this.ordenCompraDetalle[i].strPO_Item_Desc;
         reqDetalle.strUM=this.ordenCompraDetalle[i].strUM_Cod;
         reqDetalle.intQuantity=this.ordenCompraDetalle[i].fltPO_QTY_I;
-        reqDetalle.fltGross_Price=this.ordenCompraDetalle[i].fltPO_Net_PR_I;
-        reqDetalle.fltNet_Value=this.ordenCompraDetalle[i].fltCurr_Net_PR_P;
-        reqDetalle.fltRec_Value=this.ordenCompraDetalle[i].fltPO_Net_PR_I-this.ordenCompraDetalle[i].fltRec_Value;
-        reqDetalle.fltFacture_Net_PR_I=this.ordenCompraDetalle[i].fltFacture_Net_PR_I;
+        reqDetalle.fltGross_Price=this.ordenCompraDetalle[i].fltPO_Net_PR_I;//precio unitario
+        reqDetalle.fltNet_Value=this.ordenCompraDetalle[i].fltCurr_Net_PR_P;//total por producto
+        reqDetalle.fltRec_Value=this.ordenCompraDetalle[i].fltRec_Value;//pendiente
+        reqDetalle.fltRecTemp_Value=this.ordenCompraDetalle[i].fltRec_Value;//pendiente
+        reqDetalle.fltFacture_Net_PR_I=0;//hes aceptar
         reqDetalle.strCurrency=this.ordenCompraDetalle[i].strCurrency_Cod;
         reqDetalle.intIdCostCenter_ID=this.ordenCompraDetalle[i].intIdCostCenter_ID;
         reqDetalle.strCostCenter_NO=this.ordenCompraDetalle[i].strCostCenter_NO;
@@ -329,9 +342,14 @@ export default class CrearHesComponent extends Vue {
   handleSelectionChangeDet(val){
     this.multipleSelectionAcept=val;
     this.hesModel.fltTot_QTY=0;
+    this.hesModel.fltTot_Value=0
+    this.hesModel.fltTot_Peding_Value=0;
     for(var i=0;i< this.multipleSelectionAcept.length;i++){
       this.hesModel.fltTot_QTY+=Number(this.multipleSelectionAcept[i].fltGross_Price);
+      this.hesModel.fltTot_Value+=Number(this.multipleSelectionAcept[i].fltFacture_Net_PR_I);
+      this.hesModel.fltTot_Peding_Value+=Number(this.multipleSelectionAcept[i].fltRec_Value);
     }
+    // this.hesModel.fltTot_Peding_Value=Math.round((Number(this.hesModel.fltTot_QTY)-Number(this.hesModel.fltTot_Value))*100)/100
   }
 //#endregion
   //#region [GUARDAR HES]
@@ -355,8 +373,6 @@ export default class CrearHesComponent extends Vue {
       }
       );
       if(this.hesModel.listaDetalle.length>0){
-        console.log(this.hesModel);
-        
         hesService.CreateHes(this.hesModel)
         .then(response=>{
           loadingInstance.close();
@@ -364,7 +380,7 @@ export default class CrearHesComponent extends Vue {
           this.iserror = false;
           this.hesModel=new HESModel();
           this.TableIngreso=[];
-          for(var i=0;i<10;i++){
+          for(var i=0;i<50;i++){
             var reqDetalle:HesDetalleModel=new HesDetalleModel();
             reqDetalle.chrStatus="A";
             this.TableIngreso.push(reqDetalle);
@@ -476,14 +492,11 @@ export default class CrearHesComponent extends Vue {
     this.editing.column='';
   }
   handleBlurImporte(event) {
-    debugger;
-    var inttotal=0;   
-    // this.totalItems=0;
-    for(var i=0;i< this.multipleSelectionAcept.length;i++){
-      inttotal+=Number((this.multipleSelectionAcept[i].intQuantity)*(this.multipleSelectionAcept[i].fltGross_Price));            
-    }
-    this.hesModel.fltTot_QTY=Math.round(inttotal*100)/100;
-    // this.totalPrice=inttotal;
+    // var inttotal=0;   
+    // for(var i=0;i< this.multipleSelectionAcept.length;i++){
+    //   inttotal+=Number((this.multipleSelectionAcept[i].intQuantity)*(this.multipleSelectionAcept[i].fltGross_Price));            
+    // }
+    // this.hesModel.fltTot_QTY=Math.round(inttotal*100)/100;
   }
   clickDescripcion(event,edit,column){
     this.bln_tbl_Descripcion=true;
@@ -546,17 +559,26 @@ export default class CrearHesComponent extends Vue {
 handleChangeValUni(val){
   for (let i = 0; i < this.TableIngreso.length; i++) {
       if(this.TableIngreso[i].strService_NO == this.rowSelect){
-          this.TableIngreso[i].fltNet_Value=Math.round(val*this.TableIngreso[i].intQuantity*100)/100;
-          this.TableIngreso[i].fltRec_Value=Math.round((this.TableIngreso[i].fltGross_Price-val)*100)/100;
+          // this.TableIngreso[i].fltNet_Value=Math.round(val*this.TableIngreso[i].intQuantity*100)/100;
+          this.TableIngreso[i].fltRec_Value=Math.round((this.TableIngreso[i].fltRecTemp_Value-val)*100)/100;
           this.requiTemp=this.TableIngreso; 
           this.TableIngreso=[];              
           this.TableIngreso=this.requiTemp;  
           this.requiTemp=[];
       }
     }
+    this.hesModel.fltTot_QTY=0;
+    this.hesModel.fltTot_Value=0;
+    this.hesModel.fltTot_Peding_Value=0;
     for(let i = 0; i < this.multipleSelectionAcept.length; i++){
-      // this.hesModel.fltTot_Value=0 falta aqui
+      if(this.multipleSelectionAcept[i].strService_NO == this.rowSelect){
+        this.multipleSelectionAcept[i].fltFacture_Net_PR_I=val;
+      }
+      this.hesModel.fltTot_QTY+=Number(this.multipleSelectionAcept[i].fltNet_Value);
+      this.hesModel.fltTot_Value+=Number(this.multipleSelectionAcept[i].fltFacture_Net_PR_I);
+      this.hesModel.fltTot_Peding_Value+=Number(this.multipleSelectionAcept[i].fltRec_Value);
     }  
+    // this.hesModel.fltTot_Peding_Value=Math.round((Number(this.hesModel.fltTot_QTY)-Number(this.hesModel.fltTot_Value))*100)/100;
 }
   changeAcepte(val){
     if(this.hesModel.fltTot_QTY<this.hesModel.fltTot_Value){
@@ -571,6 +593,109 @@ handleChangeValUni(val){
     }
   }
   //#endregion
+  like(array, key,keyword) {    
+    var responsearr:any = []
+    for(var i=0;i<array.length;i++) {
+      if(array[i][key]!=undefined){
+        if(array[i][key].toString().indexOf(keyword) > -1 ) {
+          responsearr.push(array[i])
+        }
+      }
+    }
+    return responsearr
+
+  }
+  buscarOrdenC(){
+    var data=this.like(this.ordencompra1,this.clickColumn,this.inputAtributo)
+    this.ordencompra=[];
+    this.ordencompra=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strPO_NO"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrPO_NO=true;
+      this.blnilterstrPO_Desc=false;
+      this.blnilterstrVendor_NO=false;
+      this.blnilterstrVendor_Desc=false;
+    }
+    if(val.property=="strPO_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrPO_NO=false;
+      this.blnilterstrPO_Desc=true;
+      this.blnilterstrVendor_NO=false;
+      this.blnilterstrVendor_Desc=false;
+    }
+    if(val.property=="strVendor_NO"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrPO_NO=false;
+      this.blnilterstrPO_Desc=false;
+      this.blnilterstrVendor_NO=true;
+      this.blnilterstrVendor_Desc=false;
+    }
+    if(val.property=="strVendor_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrPO_NO=false;
+      this.blnilterstrPO_Desc=false;
+      this.blnilterstrVendor_NO=false;
+      this.blnilterstrVendor_Desc=true;
+    }
+  }
+  filterstrPO_NO(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrPO_NO){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrPO_Desc(h,{column,$index}){
+    if(this.blnilterstrPO_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrVendor_NO(h,{column,$index}){      
+    if(this.blnilterstrVendor_NO){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrVendor_Desc(h,{column,$index}){      
+    if(this.blnilterstrVendor_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   backPage(){
     window.history.back();
   }
@@ -583,6 +708,7 @@ handleChangeValUni(val){
       dialogTableVisible: false,
       TableIngreso:[],
       codigoCompania:'',
+      inputAtributo:'',
       descripcionCompania:'',
       value:'',
       dataOrdenCompra:[],
@@ -592,6 +718,7 @@ handleChangeValUni(val){
       montopendiente:0,
       CodigoPO:'',
       ordencompra:[],
+      ordencompra1:[],
       multipleSelectionItem: [],
       multipleSelectionAcept:[],
       fecha_since:'',

@@ -19,6 +19,7 @@ export class OrdenCompraDetalleModel {
     strVendor_Desc:string;//
     strCurrency_Cod:string;//
     strPriority_Cod:string;//    
+    strPriority_Desc:string;//    
     strPO_Item_Desc:string;//
     chrPO_Item_Status:string;//
     strPO_Curr:string;  //
@@ -94,6 +95,7 @@ export class OrdenCompraDetalleModel {
         this.strVendor_Desc='';
         this.strCurrency_Cod='';
         this.strPriority_Cod='';    
+        this.strPriority_Desc='';    
         this.strPO_Item_Desc='';//
         this.chrPO_Item_Status='';//
         this.strPO_Curr='';    //

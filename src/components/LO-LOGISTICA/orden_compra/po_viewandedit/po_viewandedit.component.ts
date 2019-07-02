@@ -388,9 +388,6 @@ export default class ViewAndEditPOComponent extends Vue {
           this.OrdenCompra.strModified_User=use;
           this.OrdenCompra.listaDetalle=this.detalleOrdenCompra;
           this.OrdenCompra.intChange_Count=Number(this.OrdenCompra.intChange_Count)+1;
-            // else {
-            //     this.OrdenCompra.listaDetalle = [];                
-                
                 let loadingInstance = Loading.service({
                     fullscreen: true,
                     text: 'Guardando...',
@@ -520,27 +517,34 @@ export default class ViewAndEditPOComponent extends Vue {
         }, 200)
         await ordenCompraService.aprobarPO(this.OrdenCompra)
         .then(res=>{
-            this.OrdenCompra.listaDetalle=this.ordencompraDetalle;
-            if(this.OrdenCompra.listaDetalle.length>0){
-                ordenCompraService.inventarioPO(this.OrdenCompra)
-                .then(res=>{
-                    setTimeout(() => {
-                        this.vifprogress=false;
-                        this.issave=true;
-                        this.textosave='Se aprobo correctamente. '+res.strPO_NO;
-                        this.openMessage('Se aprobo correctamente '+res.strPO_NO);
-                        // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
-                    }, 600)
-                })
-                .catch(error=>{
-                    this.textosave='Ocurrio un error inesperado. ';
-                })
-            }
-            else{
-                this.textosave='Se aprobo correctamente. '+res.strPO_NO;
-                this.openMessage('Se aprobo correctamente '+res.strPO_NO);
-                // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
-            }
+          setTimeout(() => {
+            this.vifprogress=false;
+            this.issave=true;
+            this.textosave='Se aprobo correctamente. '+res.strPO_NO;
+            this.openMessage('Se aprobo correctamente '+res.strPO_NO);
+            // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+        }, 600)
+            // this.OrdenCompra.listaDetalle=this.ordencompraDetalle;
+            // if(this.OrdenCompra.listaDetalle.length>0){
+            //     ordenCompraService.inventarioPO(this.OrdenCompra)
+            //     .then(res=>{
+            //         setTimeout(() => {
+            //             this.vifprogress=false;
+            //             this.issave=true;
+            //             this.textosave='Se aprobo correctamente. '+res.strPO_NO;
+            //             this.openMessage('Se aprobo correctamente '+res.strPO_NO);
+            //             // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+            //         }, 600)
+            //     })
+            //     .catch(error=>{
+            //         this.textosave='Ocurrio un error inesperado. ';
+            //     })
+            // }
+            // else{
+            //     this.textosave='Se aprobo correctamente. '+res.strPO_NO;
+            //     this.openMessage('Se aprobo correctamente '+res.strPO_NO);
+            //     // router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_aprobacion`});
+            // }
            
         })
         .catch(error=>{
@@ -613,6 +617,7 @@ export default class ViewAndEditPOComponent extends Vue {
       }
       SeleccionadoPrioridad(val){
         this.selectrow.strPriority_Cod=val.strPriority_Cod;
+        this.selectrow.strPriority_Desc=val.strPriority_Desc;
         this.dialogPrioridad=false;
       }
       handleChangeCantidad(val){

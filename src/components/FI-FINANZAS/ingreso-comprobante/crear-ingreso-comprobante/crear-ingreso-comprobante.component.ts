@@ -980,9 +980,7 @@ getNumber(num){
             );     
             facturaService.CreateFactura(this.factura)
             .then(response=>{
-              this.voucher=response;
-              loadingInstance.close();
-              this.openMessageSuccess('Se guardo correctamente '+response);
+              this.voucher=response;              
               this.issave = true;
               this.iserror = false;
               this.textosave = 'Se guardo correctamente. Voucher Nro. '+response;
@@ -999,6 +997,8 @@ getNumber(num){
                 movimientoService.updateMovimiento(this.movimientoInven[i])
                 .then(response1=>{}).catch(ex=>{})
               }
+              loadingInstance.close();
+              this.openMessageSuccess('Se guardo correctamente '+response);
               this.factura=new FacturaModel();
               this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale; 
               this.factura.fltValue_Doc=0;
