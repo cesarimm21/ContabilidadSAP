@@ -46,6 +46,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  busquedaHESByPO(strPO_NO){
+    return axios.get(CONFIG.API_URL+'hes/po/'+strPO_NO)
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   aprobarHES(data){
     debugger;
     return axios.post(CONFIG.API_URL+'hes/aprobar',data)

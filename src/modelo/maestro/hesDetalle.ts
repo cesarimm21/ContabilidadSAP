@@ -8,10 +8,12 @@ export class HesDetalleModel {
     strHES_Status:string;
     intQuantity:number;
     intIdPOD_ID:number;
+    intPO_Item_NO:number; //agregar
     strUM:string;
     strCurrency:string;
     intIdCostCenter_ID:number;
     strCostCenter_NO:string;
+    strCostCenter_Desc:string;//agregar
     fltGross_Price:number;
     fltNet_Value:number;
     fltRec_Value:number;

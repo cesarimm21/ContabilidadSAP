@@ -107,7 +107,8 @@ export default class ButtonsAccionsComponent extends Vue {
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      falseortruePO:false
     }
   }
   

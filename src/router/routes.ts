@@ -836,7 +836,6 @@ export default [
         component:ViewAndEditCompaniaComponent,
         name:'modif-compania'
       }, 
-
       {
         path:'XX-CONFI/maestro_datos/compania/modif_compania',
         component:ModificarCompaniaComponent,
