@@ -302,28 +302,36 @@ export default class VisualizarPRComponent extends Vue {
     data.hasta= '*'
     this.vifprogress=true;
     this.percentage=0;
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-    }
+    // for(var i=0;i<50;i++){
+    //   this.valuem++; 
+    //   this.percentage++;
+    // }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
-      for(var i=0;i<50;i++){
-        setTimeout(
-          () => {this.percentage++;},1  
-        )
-      }
+      // for(var i=0;i<50;i++){
+      //   setTimeout(
+      //     () => {this.percentage++;},1  
+      //   )
+      // }
       setTimeout(() => {    
         this.CompleteData=res;
         this.CompleteData1=this.CompleteData;
         this.totalRegistros=this.CompleteData1.length;
         this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-        this.vifprogress=false;}, 600)
+        this.vifprogress=false;}, 6)
 
+        loading.close();
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   getEstado(estado){
@@ -362,18 +370,26 @@ export default class VisualizarPRComponent extends Vue {
     }
     this.vifprogress=true;
     this.percentage=0;
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-    }
+    // for(var i=0;i<50;i++){
+    //   this.valuem++; 
+    //   this.percentage++;
+    // }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await requisicionService.busquedaRequisicion(data)
     .then(res=>{
       debugger;
-      for(var i=0;i<50;i++){
-        setTimeout(
-          () => {this.percentage++;},1  
-        )
-      }
+      // for(var i=0;i<50;i++){
+      //   setTimeout(
+      //     () => {this.percentage++;},1  
+      //   )
+      // }
+      loading.close();
       console.log(res);
       
       setTimeout(() => {    
@@ -381,10 +397,10 @@ export default class VisualizarPRComponent extends Vue {
         this.CompleteData1=this.CompleteData;
         this.totalRegistros=this.CompleteData1.length;
         this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-        this.vifprogress=false;}, 600)
+        this.vifprogress=false;}, 50)
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   warningMessage(newMsg : string) {

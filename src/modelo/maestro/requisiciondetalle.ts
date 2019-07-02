@@ -43,7 +43,8 @@ export class RequisicionDetalleModel {
     strModified_User:Date ;
     dmModified_Date:string ;
     chrStatus:string ;
-    
+    strAcc_Local_Name:string;
+
     constructor(){
         this.intIdPurReqD_ID=0
         this.intRequis_Item_NO=0
@@ -85,5 +86,6 @@ export class RequisicionDetalleModel {
         this.strMatClass_Cod='';
         this.strMatClass_Desc='';
         this.strVendor_Desc='';
+        this.strAcc_Local_Name='';
     }
 }

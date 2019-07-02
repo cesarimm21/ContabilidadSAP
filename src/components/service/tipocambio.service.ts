@@ -16,6 +16,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllTipoCambioS(date){   
+    return axios.get(CONFIG.API_URL+'tipocambioByDates/'+date)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllTipoCambio1(){
     return axios.get(CONFIG.API_URL+'tipocambiotoday')
     .then(response =>{            

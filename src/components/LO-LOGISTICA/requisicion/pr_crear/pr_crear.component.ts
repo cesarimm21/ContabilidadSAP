@@ -957,6 +957,8 @@ export default class CrearPRComponent extends Vue {
   SeleccionadoCuentaContable(val){
     
     this.selectrow.strAccount_NO=val.strAcc_NO_Local;
+    this.selectrow.strAcc_Local_Name=val.strAcc_Local_Name;
+
     this.dialogCuentaContable=false;
 
     this.strAccount_NOs=val.strAcc_NO_Local==undefined?'':val.strAcc_NO_Local;
@@ -1075,15 +1077,21 @@ export default class CrearPRComponent extends Vue {
     this.iserror=false;
     this.textosave=''
     this.percentage=0;  
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     var tabla:Array<RequisicionDetalleModel>=[];
     for(var i=0;i<this.tableData1.length;i++){
       if(this.tableData1[i].strCateg_Account!="" && this.tableData1[i].strDescription!="" && this.tableData1[i].strMaterial_Cod!=""){
         tabla.push(this.tableData1[i]);
       }
     }
-    for(var i=0;i<50;i++){
-      this.valuem=this.valuem+1; 
-    }
+    console.log(this.tableData1);
+   
     this.requisicionModel.strTypeReq_Cod=this.tiporequisicion;
     for(var i=0;i<this.tabletipoRequisicion.length;i++){
       if(this.tiporequisicion==this.tabletipoRequisicion[i].strTypeReq_Cod){
@@ -1091,9 +1099,7 @@ export default class CrearPRComponent extends Vue {
         this.requisicionModel.intIdTypeReq_ID=this.tabletipoRequisicion[i].intIdTypeReq_ID;
       }
     }
-    for(var i=0;i<50;i++){
-      this.percentage++;
-    }
+  
     this.requisicionModel.strCreation_User=this.nameuser;
     this.requisicionModel.strTypeMov_Cod=this.strTypeMov_Cod;
     this.requisicionModel.strTypeMov_Desc=this.strTypeMov_Desc;
@@ -1107,77 +1113,20 @@ export default class CrearPRComponent extends Vue {
     requisicionService.crearRequisicion(this.requisicionModel)
     .then(res=>{
       
-      for(var i=0;i<50;i++){
-        setTimeout(
-          () => {this.percentage++;},1  
-        )
-      } 
+      loading.close(); 
       setTimeout(() => {   
         this.issave=true;
         this.textosave='Se guardo correctamente. '+res.strRequis_NO;
         this.openMessage('Se guardo correctamente '+res.strRequis_NO);
         this.vifprogress=false;
         this.nuevoPR();
-        //window.location.reload();  
-      }, 600)
+      }, 6)
 
-      // for(var i=0;i<50;i++){
-      //   this.valuem++; 
-      // }
-      // if(this.valuem>=100){
-      //   setTimeout(() => {
-      //     this.vifprogress=false;
-      //     this.issave=true;
-          
-      //     this.textosave='Se guardo correctamente. '+res.strRequis_NO;
-      //     this.openMessage('Se guardo correctamente '+res.strRequis_NO);
-      //   }, 600)
-      // }
+    
     })
     .catch(error=>{
-      
+      loading.close();
     })
-
-    // var vcabecera=await this.validate();
-    // var vdetalle=await this.validateTabla(tabla,0);
-    // if(!vcabecera && !vdetalle){
-    //   this.salidaModel.listaDetalle=tabla;
-    //   let loading = Loading.service({
-    //     fullscreen: true,
-    //     text: 'Cargando...',
-    //     spinner: 'el-icon-loading',
-    //     background: 'rgba(0, 0, 0, 0.8)'
-    //     }
-    //   );
-    //   for(var i=0;i<50;i++){
-    //     this.valuem=this.valuem+1; 
-    //   }
-
-    //   salidaService.CrearSalida(this.salidaModel)
-    //   .then(res=>{
-    //     
-    //     for(var i=0;i<50;i++){
-    //       this.valuem++; 
-    //     }
-    //     loading.close();
-    //     if(this.valuem>=100){
-    //       setTimeout(() => {
-    //         this.vifprogress=false;
-    //         this.issave=true;
-    //         this.textosave='Se guardo correctamente.'
-    //         this.openMessage('Se guardo correctamente');
-    //       }, 2000)
-    //     }
-    //   })
-    //   .catch(error=>{
-    //     loading.close();
-    //     this.$message({
-    //       showClose: true,
-    //       type: 'error',
-    //       message: 'No se pudo guardar salida'
-    //     });
-    //   })
-    // }
     
   }
   backPage(){

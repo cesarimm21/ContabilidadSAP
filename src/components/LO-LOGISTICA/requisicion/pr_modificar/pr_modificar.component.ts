@@ -1095,9 +1095,9 @@ export default class ModificarPRComponent extends Vue {
         }
       }
     }
-    for(var i=0;i<50;i++){
-      this.valuem=this.valuem+1; 
-    }
+    // for(var i=0;i<50;i++){
+    //   this.valuem=this.valuem+1; 
+    // }
     this.requisicionModel.strTypeReq_Cod=this.tiporequisicion;
     for(var i=0;i<this.tabletipoRequisicion.length;i++){
       if(this.tiporequisicion==this.tabletipoRequisicion[i].strTypeReq_Cod){
@@ -1110,18 +1110,27 @@ export default class ModificarPRComponent extends Vue {
     this.requisicionModel.strModified_User=this.nameuser;
     this.requisicionModel.strCreation_User=this.nameuser;
 
-    for(var i=0;i<50;i++){
-      this.percentage++;
-    }
+    // for(var i=0;i<50;i++){
+    //   this.percentage++;
+    // }
+
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     console.log('---***---',this.requisicionModel);
     requisicionService.updateRequisicion(this.requisicionModel)
     .then(res=>{
       debugger;
-      for(var i=0;i<50;i++){
-        setTimeout(
-          () => {this.percentage++;},1  
-        )
-      } 
+      // for(var i=0;i<50;i++){
+      //   setTimeout(
+      //     () => {this.percentage++;},1  
+      //   )
+      // } 
+      loading.close();
       setTimeout(() => {   
         this.issave=true;
         this.textosave='Se modifico correctamente. '+res.strRequis_NO;
@@ -1131,20 +1140,26 @@ export default class ModificarPRComponent extends Vue {
       }, 600)
     })
     .catch(error=>{
-      
+      loading.close();
     })
     
   }
   async aprobar(){
     this.valuem=0;
     this.requisicionModel.strAuthsd_By='ADMINISTRADOR';
-    await setTimeout(() => {
-      for(var i=0;i<100;i++){
-        this.valuem++; 
-      }
-    }, 200)
+    // await setTimeout(() => {
+    //   for(var i=0;i<100;i++){
+    //     this.valuem++; 
+    //   }
+    // }, 200)
     console.log('aprobar',this.requisicionModel);
-    
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     this.requisicionModel.strModified_User=this.nameuser;
     this.requisicionModel.strCreation_User=this.nameuser;
     await requisicionService.aprobarRequisicion(this.requisicionModel)
@@ -1157,23 +1172,33 @@ export default class ModificarPRComponent extends Vue {
         this.textosave='Se aprobo correctamente. '+res.strRequis_NO;
         this.openMessage('Se aprobo correctamente '+res.strRequis_NO);
       }, 600)
+      loading.close();
     })
     .catch(error=>{
+      loading.close();
       this.textosave='Ocurrio un error inesperado. ';
     })
   }
   async rechasar(){
     this.valuem=0;
     this.requisicionModel.strAuthsd_By='ADMINISTRADOR';
-    await setTimeout(() => {
-      for(var i=0;i<100;i++){
-        this.valuem++; 
+    // await setTimeout(() => {
+    //   for(var i=0;i<100;i++){
+    //     this.valuem++; 
+    //   }
+    // }, 200)
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
-    }, 200)
+    );
     await requisicionService.rechasarRequisicion(this.requisicionModel)
     .then(res=>{
       debugger;
       console.log(this.valuem);
+      loading.close();
       setTimeout(() => {
         this.vifprogress=false;
         this.issave=true;
@@ -1182,6 +1207,7 @@ export default class ModificarPRComponent extends Vue {
       }, 600)
     })
     .catch(error=>{
+      loading.close();
       this.textosave='Ocurrio un error inesperado. ';
     })
   }

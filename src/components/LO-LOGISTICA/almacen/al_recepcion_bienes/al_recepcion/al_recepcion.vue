@@ -129,11 +129,11 @@
                                     </div>
                                 </div>
                             </div> 
-                             <div class="form-group row ">
+                            <div class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Total Pendiente</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <div class="input-group mb-3" >
+                                        <div class="input-group " >
                                             <el-input-number :disabled="true"  size="small" v-model="fltTot_Rec_Pend_QTY" >
                                             </el-input-number>
                                         </div>
@@ -141,14 +141,59 @@
                                 </div>
                                 <label class="el-form-item__label col-md-3" >Valor Total</label>
                                 <div class="col-md-3 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <div class="input-group mb-3" >
+                                    <div class="input-group " >
+                                        <div class="input-group " >
                                             <el-input-number :disabled="true"  size="small" v-model="fltTot_Rec_Value" >
                                             </el-input-number>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Tipo Cambio</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-2" >
+                                        <div class="input-group mb-2" >
+                                            <el-input :disabled="true"  size="small" v-model="tipocambio" >
+                                            </el-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-3" >Factura</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-2" >
+                                        <div class="input-group mb-2" >
+                                            <el-input  size="small" v-model="strVoucher_NO" >
+                                            </el-input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="el-form-item__label col-md-3" >Fecha Factura</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-2" >
+                                        <div class="input-group mb-2" >
+                                            <el-date-picker
+                                                size="mini"
+                                                style="width:128px !important"
+                                                format="dd.MM.yyyy"
+                                                v-model="dtmDoc_Date" >
+                                            </el-date-picker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <label class="el-form-item__label col-md-3" >Tipo Documento</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input  size ="small" @blur="desactivar_tipo_documento" @focus="activar_tipo_documento" v-model="strDocument_NO_Ref"   placeholder="">
+                                        <el-button  v-if="btnactivartipodoc && !dialogTipoDocumentoIdentidad" slot="append" class="boton" icon="fa fa-clone" @click="loadSeleccion()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div> 
                         </div>
                     </div>
                     <div class="row">
@@ -201,6 +246,14 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
+                                            prop="strGuiaRem_Serie"   width="100"
+                                            label="Serie">
+                                            <template scope="scope">
+                                                <el-input  size="small" v-model="scope.row.strGuiaRem_Serie" >
+                                                </el-input> 
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
                                             prop="strGuiaRem_NO"   width="100"
                                             label="Guia Remitente">
                                             <template scope="scope">
@@ -229,7 +282,6 @@
                                                     size="small" 
                                                     v-model="scope.row.dtmGuiaRem_Date" >
                                                 </el-date-picker>
-                                                
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -471,6 +523,10 @@
                 </el-button>
             </footer>
             </div>
+        </el-dialog>
+        <el-dialog title="Busqueda Tipo Documento Identidad"  :visible.sync="dialogTipoDocumentoIdentidad" @close="closeTipoDocumentoIdentidad" size="small" >
+            <btipodocumento v-on:tipoSeleccionado="tipoSeleccionado($event)" v-on:categorialineaclose="closeTipoDocumentoIdentidad()">
+            </btipodocumento>
         </el-dialog>
     </div>
 </template>

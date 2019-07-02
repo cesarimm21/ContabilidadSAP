@@ -231,6 +231,7 @@ export default class CrearPOComponent extends Vue {
                     strMatClass_Desc:this.requiDetalle[i].strMatClass_Desc,
                     strCostCenter_Desc:this.requiDetalle[i].strCostCenter_Desc,
                     strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
+                    strAcc_Local_Name:this.requiDetalle[i].strAcc_Local_Name,
                     intConv_Factor:this.requiDetalle[i].fltFactor,
                     chrStatus:this.requiDetalle[i].chrStatus
                 })

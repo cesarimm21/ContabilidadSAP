@@ -17,6 +17,8 @@ import requisicionService from '@/components/service/requisicion.service';
 import proveedorService from '@/components/service/proveedor.service';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
+import BTipoDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
+
 import { CompaniaModel } from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
@@ -24,13 +26,16 @@ import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import maestroService from '@/components/service/maestro.service';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
+import tipocambioService from '@/components/service/tipocambio.service';
+
 @Component({
     name: 'al-recepcion',
     components: {
         'buttons-accions': ButtonsAccionsComponent,
         'bmoneda': BMonedaComponent,
         'quickaccessmenu': QuickAccessMenuComponent,
-        'bimpuesto': BImpuestoComponent
+        'bimpuesto': BImpuestoComponent,
+        'btipodocumento':BTipoDocumentoComponent
     }
 })
 export default class RecepcionMaterialComponent extends Vue {
@@ -105,14 +110,37 @@ export default class RecepcionMaterialComponent extends Vue {
     blnchangerec:boolean=true;
     strTypeMov_Cod:string='';
     strTypeMov_Desc:string='';
+    strVoucher_NO:string='';
+    dtmDoc_Date:Date=new Date();
+    nameuser:any;
+    tipocambio:number=0;
+    dialogTipoDocumentoIdentidad:boolean=false;
+    strDocument_NO_Ref:string='';
+    btnactivartipodoc:boolean=false;
     constructor() {
         super();
+        this.dtmDoc_Date.setDate(this.dtmDoc_Date.getDate() - 1);
+
+        this.nameuser=localStorage.getItem('User_Usuario');
         Global.nameComponent = 'crear-po';
         this.OrdenCompra.chrPO_Status = '00';
         this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
         setTimeout(() => {
             this.loadPO();
         }, 200)
+    }
+    DateforGetChanceDolar(){
+        tipocambioService.GetAllTipoCambioS(this.dtmDoc_Date)
+        .then(response=>{
+          this.tipocambio=response.fltExchRate_Sale; 
+        }).catch(error=>{
+          this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'no se pudo cargar tipocambio '+error
+          });
+        })
+        
     }
     getParseDate(date){
         if(date!='' && date!=null && date!=undefined){
@@ -310,13 +338,11 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.listaDetalle = [];
             console.log('multiple selec',this.multipleSelection.length)
             for (var i = 0; i < this.multipleSelection.length; i++) {
-                // this.multipleSelection[i].strGuiaRem_NO=this.strGuiaRemitente;
-                // this.multipleSelection[i].strGuiaTrans_NO=this.strGuiaTransportista;
-                // this.multipleSelection[i].dtmGuiaRem_Date=this.dtmFechaRecepcion;
-                // this.multipleSelection[i].dtmGuiaTrans_Date=this.dtmFechaGuiaTransportista;
-                // this.multipleSelection[i].strRec_Driver=this.strConductor;
-                // this.multipleSelection[i].strPlaca=this.strPlaca;
                 if(this.multipleSelection[i].fltRec_QYT!=undefined && this.multipleSelection[i].fltPO_QTY_I!=undefined && this.multipleSelection[i].fltRec_QYT!=null && this.multipleSelection[i].fltPO_QTY_I!=null) {
+                    this.multipleSelection[i].strDocument_NO_Ref=this.strVoucher_NO;
+                    this.multipleSelection[i].dtmGuiaRem_Date=this.dtmDoc_Date;
+                    this.multipleSelection[i].strGuiaRem_Type=this.strDocument_NO_Ref;
+                    this.multipleSelection[i].fltExchange_Rate=this.tipocambio;
                     this.multipleSelection[i].fltRec_Pend_QTY=this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT;
                     if(this.multipleSelection[i].fltRec_Pend_QTY==0){
                         this.multipleSelection[i].chrReceipt_Status='50';
@@ -330,7 +356,7 @@ export default class RecepcionMaterialComponent extends Vue {
                 }
                 this.OrdenCompra.listaDetalle.push(this.multipleSelection[i]);
             }
-            this.OrdenCompra.strAuthsd_By = 'egaona';
+            this.OrdenCompra.strAuthsd_By = this.nameuser;
             this.OrdenCompra.intChange_Count = 0;
             this.OrdenCompra.dtmProcess_Date = new Date();
             this.OrdenCompra.intIdPurReqH_ID = this.requiSelect.intIdPurReqH_ID;
@@ -338,7 +364,7 @@ export default class RecepcionMaterialComponent extends Vue {
             this.OrdenCompra.chrPO_Status = '00';
             this.OrdenCompra.fltCURR_QTY_I = 0;
             this.OrdenCompra.fltTotal_Val = 0;
-            this.OrdenCompra.strCreation_User = 'egaona';
+            this.OrdenCompra.strCreation_User = this.nameuser;
             this.OrdenCompra.fltTot_Rec_QYT=this.fltTot_Rec_QYT;
             this.OrdenCompra.fltTot_Rec_Pend_QTY=this.fltTot_Rec_Pend_QTY;
             if(this.fltTot_Rec_Pend_QTY==0){
@@ -360,6 +386,7 @@ export default class RecepcionMaterialComponent extends Vue {
            this.OrdenCompra.strTypeMov_Desc=this.strTypeMov_Desc;
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
+                console.log('crear-inventario,',this.OrdenCompra);
                 ordenCompraService.inventarioPO(this.OrdenCompra)
                 .then(res=>{
                     setTimeout(() => {
@@ -507,6 +534,8 @@ export default class RecepcionMaterialComponent extends Vue {
             this.vifaprobarrechasar=true;
             this.txtmodulo='Aprobar Orden Compra';
         }
+        this.OrdenCompra=object;
+        console.log('orden-compra',this.OrdenCompra);
         this.intIdVendor_ID=object.intIdVendor_ID;
         this.intIdTypeReq_ID=object.intIdTypeReq_ID;
         this.intIdPurReqH_ID=object.intIdPurReqH_ID;
@@ -522,16 +551,18 @@ export default class RecepcionMaterialComponent extends Vue {
         this.strGuiaRemitente=object.strGuiaRem_NO;
         this.strGuiaTransportista=object.strGuiaTrans_NO;
         this.cargar(object.intIdPOH_ID);
-        maestroService.GetMaestro('VIEW','LA05') 
-        .then(res=>{
-          if(res!=undefined){
-            this.strTypeMov_Cod=res.strTypeMov_Cod;
-            this.strTypeMov_Desc=res.strTypeMov_Desc;
-            console.log(this.strTypeMov_Cod,this.strTypeMov_Desc);
-          }
-        })
-        .catch(error=>{
-        });
+        // maestroService.GetMaestro('VIEW','LA05') 
+        // .then(res=>{
+        //   if(res!=undefined){
+        //     this.strTypeMov_Cod=res.strTypeMov_Cod;
+        //     this.strTypeMov_Desc=res.strTypeMov_Desc;
+        //     console.log(this.strTypeMov_Cod,this.strTypeMov_Desc);
+        //   }
+        // })
+        // .catch(error=>{
+        // });
+        
+        this.DateforGetChanceDolar();
       }
       cargar(code){
         ordenCompraService.getPOId(code)
@@ -597,6 +628,24 @@ export default class RecepcionMaterialComponent extends Vue {
         window.location.reload();
       }
     //#endregion
+    loadSeleccion(){
+        this.dialogTipoDocumentoIdentidad=true;
+    }
+    tipoSeleccionado(val){
+        this.strDocument_NO_Ref=val.strDocIdent_NO;
+        this.dialogTipoDocumentoIdentidad=false;
+    }
+    closeTipoDocumentoIdentidad(){
+        this.dialogTipoDocumentoIdentidad=false;
+    }
+    activar_tipo_documento(){
+        this.btnactivartipodoc=true;
+    }
+    desactivar_tipo_documento(){
+        if(this.dialogTipoDocumentoIdentidad){
+            this.btnactivartipodoc=false;
+        }
+    }
     data() {
         return {
             nameComponent: 'crear-po',

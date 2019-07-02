@@ -171,7 +171,7 @@
                                                 <el-input  v-if="bln_tbl_material_descripcion  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDescription" >
                                                 </el-input>
-                                                <label style="width:100%;text-overflow: ellipsis;white-space: nowrap; overflow: hidden;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDescription=="~"?"":scope.row.strDescription }}</label>
+                                                <label style="width:100%;text-overflow: ellipsis;white-space: nowrap; overflow: hidden;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;margin-top: 5px;" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDescription=="~"?"":scope.row.strDescription }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrUM"
@@ -193,7 +193,7 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strVendor_Desc" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadProveedor(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label  style="width:100%;margin: 0rem;text-overflow: ellipsis;white-space: nowrap; overflow: hidden;" v-bind:style="{'border-color': cell_ocultar,'border-style': 'solid','border-radius': '0.3em','border-width': border_width,width:'100%',margin: '0rem'}" v-else @click="clickproveedor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strVendor_Desc }}</label>
+                                                <label  style="width:100%;margin: 0rem;text-overflow: ellipsis;white-space: nowrap; overflow: hidden;margin-top: 5px;" v-bind:style="{'border-color': cell_ocultar,'border-style': 'solid','border-radius': '0.3em','border-width': border_width,width:'100%',margin: '0rem'}" v-else @click="clickproveedor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strVendor_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrCurr"

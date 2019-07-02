@@ -74,6 +74,14 @@ export class OrdenCompraDetalleModel {
     strModified_User:Date ;
     dmModified_Date: Date ;
     chrStatus:string ;
+    strVoucher_NO:string;
+    dtmDoc_Date:Date;
+    fltExchange_Rate:number;
+    strGuiaRem_Type:string;
+    strGuiaRem_Serie:string;
+    strDocument_NO_Ref:string;
+    dtmDoc_Date_Ref:Date;
+    strAcc_Local_Name:string;
     constructor(){
         this.intIdPOD_ID=0;//
         this.intIdPurReqD_ID=-1;//
@@ -127,7 +135,7 @@ export class OrdenCompraDetalleModel {
         this.fltTot_PO_Item=0 ;//
         this.strAccount_Cod='';//
         this.strWBS_Project='';//
-        
+        this.fltExchange_Rate=0;
         this.fltRec_QYT=0;
         this.fltRec_Value=0;
         this.fltRec_Pend_QTY=0;
@@ -142,7 +150,8 @@ export class OrdenCompraDetalleModel {
         this.strRec_Driver='';
         this.strPlaca='';
         this.blnSelection=false;
-        this.blnCheck=true;    
+        this.blnCheck=true; 
+        this.strAcc_Local_Name='';  
     }
 }
 
