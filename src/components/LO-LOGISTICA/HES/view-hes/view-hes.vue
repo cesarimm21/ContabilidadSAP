@@ -51,10 +51,10 @@
                                         class="ExcelTable2007"
                                         @header-click="headerclick"
                                         @current-change="handleCurrentChange" >    
-                                         <el-table-column type="index" label="Linea" width="38">   </el-table-column>   
+                                         <el-table-column type="index" label="Item" width="38">   </el-table-column>   
                                         <el-table-column
                                             :render-header="filterstrHES_NO"
-                                            prop="strHES_NO"   min-width="60"
+                                            prop="strHES_NO"   width="80"
                                             label="HES">
                                         </el-table-column>
                                         <el-table-column
@@ -64,7 +64,7 @@
                                         </el-table-column>
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="60" label="PO">
+                                         prop="strPO_NO" width="80" label="PO">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrPO_Item_Desc"
@@ -76,26 +76,37 @@
                                             prop="strCategItem_Cod" 
                                             label="Categoria">
                                         </el-table-column>
-                                        <!-- <el-table-column
-                                            :render-header="filterstrPO_Item_NO"
-                                            prop="strPO_Item_NO"  width="100"
-                                            label="Item PO">
-                                        </el-table-column>    -->
+                                        <el-table-column
+                                            prop="fltTot_QTY"  width="100"
+                                            label="Cantidad Total" align="right">
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="fltTot_Value"  width="100"
+                                            label="Cantidad Estimada" align="right">
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="fltTot_Peding_Value"  width="100"
+                                            label="Cantidad saldo" align="right">
+                                        </el-table-column>
                                         <el-table-column
                                             :render-header="filterdtmAuthsd_Date"
                                             prop="dtmAuthsd_Date"  width="100"
-                                            label="Fecha Creacion">
+                                            label="Fecha Creacion" align="center">
                                              <template scope="scope">
                                                 <span>{{ getDateString(scope.row.dtmAuthsd_Date) }}</span>
                                             </template>
                                         </el-table-column>  
+                                         <el-table-column
+                                            prop="strCreation_User" align="center"  min-width="60"
+                                            label="Usuario " >
+                                        </el-table-column>
                                         <el-table-column 
-                                            prop="chrStatus" align="center"  width="70"
+                                            prop="strHES_Status" align="center"  width="80"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
-                                                :type="scope.row.chrStatus === 'A' ? 'success' : 'danger'"
-                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                                :type="scope.row.strHES_Status === '00' ? 'warning' : 'success'"
+                                                disable-transitions>{{scope.row.strHES_Status=== '00'?'Pendiente':'Aprobado'}}</el-tag>
                                             </template>
                                         </el-table-column> 
 

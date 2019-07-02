@@ -42,8 +42,7 @@ var EditableColumn = {
     'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
     'bproveedor':BProveedorComponent,
-  } ,
- 
+  }, 
 })
 export default class VisualizarServicioMateComponent extends Vue {
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';

@@ -43,7 +43,20 @@ export default class AprobarHesComponent extends Vue{
     codigoCompania:any;
     descripcionCompania:any;
     public tableData:Array<HESModel>=[]; 
+    public tableData2:Array<HESModel>=[]; 
+    public tableData3:Array<HESModel>=[]; 
     public newHes:HESModel=new HESModel();
+    clickColumn:string='';
+    txtbuscar:string='';
+    Column:string='';
+    blnilterstrHES_NO:boolean=false;
+    blnilterstrDesc_Header:boolean=false;
+    blnilterstrPO_NO:boolean=false;
+    blnilterstrPO_Item_Desc:boolean=false;
+    blnilterstrCategItem_Cod:boolean=false;
+    blnilterstrPO_Item_NO:boolean=false;
+    blnilterdtmAuthsd_Date:boolean=false;
+    dialogBusquedaFilter:boolean=false;
     tableData1:any=[
         {
           date:Global.getParseDate(new Date().toDateString()),
@@ -90,12 +103,14 @@ export default class AprobarHesComponent extends Vue{
       hesService.GetAllHes(this.codigoCompania)
       .then(response=>{
         this.tableData=response;
+        this.tableData1=response;
+        this.tableData2=response;
         
         var cont=this.tableData.length;        
         for(var i=0;i<this.tableData.length;i++){
           this.tableData[i].strModified_User=this.getDateString(this.tableData[i].dtmProcess_Date);
         }
-        for(var i=0;i<10-cont;i++){
+        for(var i=0;i<50-cont;i++){
           this.tableData.push(this.newHes);
         }
       })
@@ -164,13 +179,179 @@ export default class AprobarHesComponent extends Vue{
           for(var i=0;i<this.tableData.length;i++){
             this.tableData[i].strModified_User=Global.getParseDate(this.tableData[i].dtmProcess_Date);
           }
-          for(var i=0;i<10-cont;i++){
+          for(var i=0;i<50-cont;i++){
             this.tableData.push(this.newHes);
           }
         })
         .catch(error=>{          
         })
       }
+      like(array, key,keyword) {
+    
+        var responsearr:any = []
+        for(var i=0;i<array.length;i++) {
+            if(array[i][key].toString().indexOf(keyword) > -1 ) {
+              responsearr.push(array[i])
+          }
+        }
+        return responsearr
+      }
+      btnBuscar(){
+        var data=this.like(this.tableData1,this.clickColumn,this.txtbuscar)
+        this.tableData=[];
+        this.tableData=data;
+        this.dialogBusquedaFilter=false;
+      }
+      headerclick(val){    
+        this.Column=val.label;
+        Global.setColumna(this.Column);
+        if(val.property=="strHES_NO"){
+            this.clickColumn="strHES_NO";
+            this.blnilterstrHES_NO=true;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strDesc_Header"){
+            this.clickColumn="strDesc_Header";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=true;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strPO_NO"){
+            this.clickColumn="strPO_NO";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=true;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strAuthsd_BYInt"){
+            this.clickColumn="strAuthsd_BYInt";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=true;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strCategItem_Cod"){
+            this.clickColumn="strCategItem_Cod";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=true;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="strPO_Item_NO"){
+            this.clickColumn="strPO_Item_NO";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=true;
+            this.blnilterdtmAuthsd_Date=false;
+        }
+        if(val.property=="dtmAuthsd_Date"){
+            this.clickColumn="dtmAuthsd_Date";
+            this.blnilterstrHES_NO=false;
+            this.blnilterstrDesc_Header=false;
+            this.blnilterstrPO_NO=false;
+            this.blnilterstrPO_Item_Desc=false;
+            this.blnilterstrCategItem_Cod=false;
+            this.blnilterstrPO_Item_NO=false;
+            this.blnilterdtmAuthsd_Date=true;
+        }
+    }
+    filterstrHES_NO(h,{column,$index}){
+        if(this.blnilterstrHES_NO){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrDesc_Header(h,{column,$index}){
+        
+        if(this.blnilterstrDesc_Header){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrPO_NO(h,{column,$index}){
+        
+        if(this.blnilterstrPO_NO){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrPO_Item_Desc(h,{column,$index}){
+        if(this.blnilterstrPO_Item_Desc){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrCategItem_Cod(h,{column,$index}){
+        
+        if(this.blnilterstrCategItem_Cod){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterstrPO_Item_NO(h,{column,$index}){
+        
+        if(this.blnilterstrPO_Item_NO){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+      filterdtmAuthsd_Date(h,{column,$index}){
+        
+        if(this.blnilterdtmAuthsd_Date){
+          return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+          [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+            , column.label)])
+        }
+        else{
+          return h('span',{style: 'padding-left: 5px;'}, column.label);
+        } 
+      }
+
       backPage(){
         window.history.back();
       }
@@ -180,6 +361,9 @@ export default class AprobarHesComponent extends Vue{
       data(){
         return{
           codigoCompania:'',
+          tableData:[],
+          tableData1:[],
+          tableData2:[],
           descripcionCompania:''
         }
     }    

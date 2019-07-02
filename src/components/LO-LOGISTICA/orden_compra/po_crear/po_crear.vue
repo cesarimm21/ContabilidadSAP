@@ -269,15 +269,15 @@
                                             align="right">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="strPriority_Cod"  width="100"
+                                            prop="strPriority_Desc"  width="100"
                                             label="Prioridad"
                                             align="center">
                                             <template scope="scope">
                                                 <el-input  v-if="bln_tbl_prioridad  && (scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Cod" >
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Desc" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Cod }}</label>
+                                                <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column prop="intConv_Factor"  width="100"

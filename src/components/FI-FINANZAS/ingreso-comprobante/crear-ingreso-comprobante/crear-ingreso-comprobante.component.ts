@@ -475,6 +475,7 @@ getNumber(num){
     this.factura.strVendor_NO=this.ordencompraSelect.strVendor_NO;
     this.factura.strVendor_Desc=this.ordencompraSelect.strVendor_Desc;
     this.factura.strDesc_Doc=this.ordencompraSelect.strPO_Desc;
+    this.factura.strCurrency_Doc=this.ordencompraSelect.strCurrency_Cod;
     this.dialogOrdenCompra=false;    
     this.loadOrdenCompraDetalle(this.ordencompraSelect.intIdPOH_ID);
     this.factura.strTax_Cod=this.ordencompraSelect.strWH_Cod;
@@ -979,9 +980,7 @@ getNumber(num){
             );     
             facturaService.CreateFactura(this.factura)
             .then(response=>{
-              this.voucher=response;
-              loadingInstance.close();
-              this.openMessageSuccess('Se guardo correctamente '+response);
+              this.voucher=response;              
               this.issave = true;
               this.iserror = false;
               this.textosave = 'Se guardo correctamente. Voucher Nro. '+response;
@@ -998,6 +997,8 @@ getNumber(num){
                 movimientoService.updateMovimiento(this.movimientoInven[i])
                 .then(response1=>{}).catch(ex=>{})
               }
+              loadingInstance.close();
+              this.openMessageSuccess('Se guardo correctamente '+response);
               this.factura=new FacturaModel();
               this.factura.fltExchange_Rate=this.tipocambio.fltExchRate_Sale; 
               this.factura.fltValue_Doc=0;

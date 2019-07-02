@@ -254,7 +254,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   loadTipoMovimientoC(){
     tipomovimientoService.GetAllTipoMovimiento()
     .then(response=>{
-      debugger;
+      
       console.log('tipomovimiento',response);
       //this.tipomovimientoModel=response; 
       for(var i=0;i<response.length;i++){
@@ -358,7 +358,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     //   });
   }
   tableRowClassName(row, rowIndex) {
-      debugger;
+      
       return 'rechazado-row';
     
   }
@@ -380,25 +380,25 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     }, 120)
   }
   desactivar_compania(){
-    debugger;
+    
     if(this.dialogCompania){
       this.btnactivarcompania=false;
     }
   }
   desactivar_planta(){
-    debugger;
+    
     if(this.dialogPlanta){
       this.btnactivarplanta=false;
     }
   }
   desactivar_tipo_movimiento(){
-    debugger;
+    
     if(this.dialogTipoMovimiento){
       this.btnactivartipomovimiento=false;
     }
   }
   closeCompania(){
-    debugger;
+    
     this.btnactivarcompania=false;
     return false;
   }
@@ -419,13 +419,13 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     }, 120)
   }
   desactivar_proveedor(){
-    debugger;
+    
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
   }
   closeProveedor(){
-    debugger;
+    
     this.btnactivarproveedor=false;
     return false;
   }
@@ -440,13 +440,13 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     }, 120)
   }
   desactivar_almacen(){
-    debugger;
+    
     if(this.dialogAlmacen){
       this.btnactivaralmacen=false;
     }
   }
   closeAlmacen(){
-    debugger;
+    
     console.log("closeAlmacen");
     this.btnactivaralmacen=false;
     return false;
@@ -457,7 +457,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.btnactivarcompania=false
   }
   activar_tipo_requisicion(value){
-    debugger;
+    
     console.log("activar_tipo_requisicion");
     this.tiporequisicion=value;
     if(value=='N'){
@@ -475,7 +475,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
 
   /*tabla metodos*/
   handleBlur(event) {
-    debugger;
+    
     // this.bln_tbl_categoria_cuenta=false;
     // event.edit=false;
     // this.editing.row='';
@@ -486,7 +486,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     return this.editing !== null
   }
   onCellBlur(row, column, cell, event) {
-    debugger;
+    
     this.editing = null
     console.log('onCellBlur',row, column, cell, event);
   }
@@ -536,28 +536,28 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.dialogCentroCostos=true;
   }
   alerta(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_cuenta=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcategorialinea(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_linea=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcuentacontable(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cuenta_contable=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterial(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -565,56 +565,56 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     console.log("---edit",this.editing);
   }
   clickmaterialdescripcion(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material_descripcion=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcantidad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cantidad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickunidadmedida(event,edit,column){
-    debugger;
+    
     this.bln_tbl_unidad_medida=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickproveedor(event,edit,column){
-    debugger;
+    
     this.bln_tbl_proveedor=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmoneda(event,edit,column){
-    debugger;
+    
     this.bln_tbl_moneda=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickprioridad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_prioridad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickfechaestimada(event,edit,column){
-    debugger;
+    
     this.bln_tbl_fecha_estimada=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcentrocosto(event,edit,column){
-    debugger;
+    
     this.bln_tbl_centro_costo=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -641,19 +641,19 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   //   this.dialogCategoriaLinea=false;
   // }
   SeleccionadoCentroCosto(val){
-    debugger;
+    
     this.selectrow.strCostCenter_NO=val.strCostCenter_NO;
     this.selectrow.intIdCostCenter_ID=val.intIdCostCenter_ID;
 
     this.dialogCentroCostos=false;
   }
   SeleccionadoCuentaContable(val){
-    debugger;
+    
     this.selectrow.strAcc_NO_Local=val.strAcc_Local_NO;
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
-    debugger;
+    
     this.selectrow.strStock_Cod='';
     this.selectrow.strStock_Desc='';
     this.selectrow.strUM_Cod='';
@@ -673,7 +673,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     
   }
   SeleccionadoUnidadMedida(val){
-    debugger;
+    
     this.selectrow.strUM_Cod=val.strUM_Cod;
     this.dialogUnidadMedida=false;
   }
@@ -688,7 +688,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   //   this.dialogMoneda=false;
   // }
   SeleccionadoPrioridad(val){
-    debugger;
+    
     
     this.selectrow.strPriority_Desc=val.strPriority_Desc;
     this.selectrow.strPriority_Cod=val.strPriority_Cod;
@@ -730,7 +730,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.validate();
   }
   companiaSeleccionado(val){
-    debugger;
+    
     this.salidaModel.strCompany_Cod=val.strCompany_Cod;
     this.salidaModel.strCompany_Desc=val.strCompany_Desc;
     this.descompania=val.strCompany_Desc;
@@ -750,7 +750,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.dialogPlanta=false;
   }
   almacenseleccionado(val){
-    debugger;
+    
     this.salidaModel.strWHS_Cod=val.strWHS_Cod;
     this.salidaModel.intIdWHS_ID=val.intIdWHS_ID;
     this.salidaModel.strWHS_Desc=val.strWHS_Desc;
@@ -776,7 +776,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
 
   async validateTabla(tabla,index){
-    debugger;
+    
     var bandera=false;
     for(var i=index;i<tabla.length;i++){
       if(tabla[i].strCostCenter_NO=="" || tabla[i].strCostCenter_NO==undefined){
@@ -802,7 +802,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
 
   async validate() {
-    debugger;
+    
     var validation=false;
     if(this.salidaModel.strCompany_Cod==undefined || this.salidaModel.strCompany_Cod==""){
       validation=true;
@@ -858,7 +858,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.salidaModel=new SalidaModel();
   }
   async guardarTodo(val){
-    debugger;
+    
     this.vifprogress=true;
     this.issave=false;
     this.iserror=false;
@@ -897,7 +897,7 @@ export default class CrearSalidaAlmacenComponent extends Vue {
       this.salidaModel.strCreation_User=this.nameuser;
       salidaService.CrearSalida(this.salidaModel)
       .then(res=>{
-        debugger;
+        
         // for(var i=0;i<50;i++){
         //   this.valuem++; 
         // }
@@ -951,8 +951,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
 
   filterstrStock_Cod(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterstrStock_Cod){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -965,8 +963,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterstrStock_Desc(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterstrStock_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -979,8 +975,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterfltQuantity(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterfltQuantity){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -993,8 +987,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterfltIssueRequest_QTY(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterfltIssueRequest_QTY){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1007,8 +999,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterstrUM_Cod(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterstrUM_Cod){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1021,8 +1011,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterstrCostCenter_NO(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterstrCostCenter_NO){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1035,8 +1023,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterstrAcc_NO_Local(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterstrAcc_NO_Local){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1049,8 +1035,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterstrDelivery_Place(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterstrDelivery_Place){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1063,8 +1047,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterdtmDelivery_Date(h,{column,$index}){
-    debugger;
-    
     if(this.blnfilterdtmDelivery_Date){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -1077,7 +1059,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   filterstrPriority_Cod(h,{column,$index}){
-    debugger;
     
     if(this.blnfilterstrPriority_Cod){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
@@ -1091,7 +1072,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     } 
   }
   headerclick(val){
-    debugger;
     this.Column=val.label;
     this.clickColumn=val.property;
     Global.setColumna(this.Column);
@@ -1242,7 +1222,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   sortByKeyAsc(array, key) {
     return array.sort(function (a, b) {
-        debugger;
         var x = a[key]; var y = b[key];
         if(x === "" || y === null) return 1;
         if(x === "" || y === null) return -1;
@@ -1263,7 +1242,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
 
   Buscar(){
-    debugger;
     if(this.Column!=""){
       this.dialogBusquedaFilter=true;
     }
@@ -1298,7 +1276,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     };
   };
   async AscItem(){
-    debugger;
     let loading = Loading.service({
       fullscreen: true,
       text: 'Cargando...',
@@ -1313,7 +1290,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     await loading.close();
   }
   DscItem(){
-    debugger;
     console.log("desc",this.clickColumn)
     var data=this.sortByKeyDesc(this.CompleteData,this.clickColumn) 
     this.CompleteData=data;
@@ -1328,7 +1304,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   
   nroLineaSelect(){
-    debugger;
     if(!isNaN(this.txtnroline)){
       this.intlineaselect=parseInt(this.txtnroline)-1;
       var res:any;
@@ -1356,7 +1331,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
 
   Limpiar(){
-    debugger;
     this.CompleteData=this.CompleteData1;
     this.tableData1 = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     var document:any = this.$refs.missionTable;
@@ -1383,7 +1357,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
   }
   
   EliminarItem(){
-    debugger;
     console.log(this.selectrow.intIssueAjust_Item);
     var item_nro=Number(this.selectrow.intIssueAjust_Item)-1;
     alert(item_nro);
@@ -1403,7 +1376,6 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     }
   }
   handleCurrentChange(val) {
-    debugger;
     if(val!=undefined){
       if(val.intIssueAjust_Item==0){
         this.intlineaselect=0;  
@@ -1428,7 +1400,23 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     return{
       dialogTableVisible: false,
       dialogVisible:false,
+      inputAtributo:'',
       tableDataServicio:[{}],
+      item:{
+        date: '',
+        categoriacuenta: '',
+        categorialinea: '',
+        cuentacontable: '',
+        material:'',
+        material_descripcion:'',
+        cantidad:0,
+        unidad_medida:'',
+        proveedor:'',
+        moneda:'',
+        prioridad:'',
+        fecha_estimada:'',
+        centrocosto:'',
+      },
       user: {
         authenticated: false
       },

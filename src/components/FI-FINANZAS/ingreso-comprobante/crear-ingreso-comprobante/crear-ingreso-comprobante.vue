@@ -571,11 +571,11 @@
                     @header-click="headerclick"
                     @row-dblclick="checkOrdenCompra"
                     @current-change="selectOrdenCompra">
-                    <el-table-column :render-header="filterstrPO_NO" prop="strPO_NO" label="PO" width="100">
+                    <el-table-column :render-header="filterstrPO_NO" prop="strPO_NO" label="Orden Compra" width="80">
                     </el-table-column>  
                     <el-table-column :render-header="filterstrPO_Desc" prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column>
-                    <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO"  label="Codigo Proveedor" width="100">
+                    <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO"  label="Proveedor" width="80">
                     </el-table-column>  
                     <el-table-column  :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre Proveedor" style="width: 70% !important;">
                     </el-table-column>

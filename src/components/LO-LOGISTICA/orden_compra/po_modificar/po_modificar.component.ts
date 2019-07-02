@@ -97,7 +97,7 @@ export default class ModificarPOComponent extends Vue {
             }
           }, 200)
           await setTimeout(() => {
-            debugger;
+            
             if(this.opSelect.strPO_NO!=undefined && this.opSelect.intIdPOH_ID!=undefined){
               router.push({ path: `/barmenu/LO-LOGISTICA/orden_compra/po_viewandedit`, query: { vista:this.textTitle ,data:JSON.stringify(this.opSelect) }  })
             }
@@ -138,21 +138,16 @@ export default class ModificarPOComponent extends Vue {
         });
       }
       Limpiar(){
-        this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-        var document:any = this.$refs.missionTable;
-        document.setCurrentRow(this.OrdenCompra[this.intlineaselect]);    
+        this.OrdenCompra=[];
         this.blnilterstrPO_NO=false;
         this.blnilterstrRequis_NO=false;
         this.blnilterstrPO_Desc=false;
         this.blnilterstrVendor_Desc=false;
         this.blnilterdtmProcess_Date=false;
         this.blnilterfltTotal_Val=false;
-        this.OrdenCompra2=this.OrdenCompra1;
         this.OrdenCompra = this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-        var document:any = this.$refs.missionTable;
       }
-      Buscar(){
-        debugger;
+      Buscar(){        
         if(this.Column!=""){
           this.dialogBusquedaFilter=true;
           this.txtbuscar='';
@@ -161,8 +156,7 @@ export default class ModificarPOComponent extends Vue {
           this.$message('Seleccione columna')
         }
       }
-      async AscItem(){
-        debugger;
+      async AscItem(){        
         let loading = Loading.service({
           fullscreen: true,
           text: 'Cargando...',
@@ -170,15 +164,13 @@ export default class ModificarPOComponent extends Vue {
           background: 'rgba(0, 0, 0, 0.8)'
           }
         );
-        console.log("asc",this.clickColumn)
         var data=await this.sortByKeyAsc(this.OrdenCompra1,this.clickColumn) 
         this.OrdenCompra2=[];
         this.OrdenCompra2=data;
         this.OrdenCompra = await this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
         await loading.close();
       }
-      DscItem(){
-        debugger;
+      DscItem(){        
         console.log("desc",this.clickColumn)
         var data=this.sortByKeyDesc(this.OrdenCompra1,this.clickColumn) 
         this.OrdenCompra2=[];
@@ -187,6 +179,7 @@ export default class ModificarPOComponent extends Vue {
       
       }
       btnBuscar(){
+        console.log(this.clickColumn);        
         var data=this.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
         this.OrdenCompra=[];
         this.OrdenCompra=data;
@@ -207,8 +200,7 @@ export default class ModificarPOComponent extends Vue {
       EliminarItem(){
 
       }
-      like(array, key,keyword) {
-    
+      like(array, key,keyword) {    
         var responsearr:any = []
         for(var i=0;i<array.length;i++) {
             if(array[i][key].toString().indexOf(keyword) > -1 ) {
@@ -223,13 +215,11 @@ export default class ModificarPOComponent extends Vue {
             if(x === "" || y === null) return 1;
             if(x === "" || y === null) return -1;
             if(x === y) return 0;
-              return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-           
+              return ((x > y) ? -1 : ((x < y) ? 1 : 0));           
         });
       }
       sortByKeyAsc(array, key) {
-        return array.sort(function (a, b) {
-            debugger;
+        return array.sort(function (a, b) {            
             var x = a[key]; var y = b[key];
             if(x === "" || y === null) return 1;
             if(x === "" || y === null) return -1;
@@ -306,8 +296,7 @@ export default class ModificarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-      filterstrRequis_NO(h,{column,$index}){
-        
+      filterstrRequis_NO(h,{column,$index}){        
         if(this.blnilterstrRequis_NO){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
           [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -317,8 +306,7 @@ export default class ModificarPOComponent extends Vue {
           return h('span',{style: 'padding-left: 5px;'}, column.label);
         } 
       }
-      filterstrPO_Desc(h,{column,$index}){
-        
+      filterstrPO_Desc(h,{column,$index}){        
         if(this.blnilterstrPO_Desc){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
           [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -376,7 +364,7 @@ export default class ModificarPOComponent extends Vue {
       }
     data() {
         return {
-            nameComponent: 'crear-po',
+            nameComponent: 'modificar-po',
             textTitle:'',
             OrdenCompra:[],
             OrdenCompra1:[],

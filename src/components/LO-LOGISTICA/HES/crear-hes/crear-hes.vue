@@ -149,7 +149,7 @@
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <!-- <el-input type="number"  size ="small" style="font-size:11px;" v-model="ordencompraDetalleSelect.fltCurr_Net_PR_P"></el-input> -->
-                                                <el-input type="number"  size ="small" style="font-size:11px; text-align: right; " class="inputAling" v-model="hesModel.fltTot_QTY"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px; text-align: right; " class="inputAling" v-model="hesModel.fltTot_QTY" disabled></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +158,7 @@
                                             <label class="el-form-item__label col-sm-3"  >Aceptado</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="number"  size ="small" style="font-size:11px;" class="inputAling" @change="changeAcepte" v-model="hesModel.fltTot_Value" :precision="2" :step="0.01"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" class="inputAling" @change="changeAcepte" v-model="hesModel.fltTot_Value" :precision="2" :step="0.01" disabled></el-input>
                                                 </div>
                                             </div>
                                             
@@ -198,69 +198,70 @@
                                                 <el-table-column type="index" label="Item" width="50">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="strService_NO" sortable width="80"
+                                                    prop="strService_NO"  width="80"
                                                     label="Servicio N.">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="strDesc_Detail" sortable min-width="200"
+                                                    prop="strDesc_Detail"  min-width="200"
                                                     label="Descripcion">
                                                     <template scope="scope">
                                                         <el-input v-if="bln_tbl_Descripcion  && (scope.row === editing.row) 
                                                         && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strDesc_Detail" >
                                                         </el-input>
-                                                        <label style="width:100%" v-else @click="clickDescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Detail }}</label>
+                                                        <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickDescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Detail }}</label>
                                                     </template>
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="strUM" sortable width="100"
+                                                    prop="strUM"  width="100"
                                                     label="Unidad">
                                                 </el-table-column>
                                                 <el-table-column
-                                                    prop="intQuantity" sortable width="100" 
-                                                    label="Cantidad">
-                                                    <template scope="scope">
+                                                    prop="intQuantity"  width="100" 
+                                                    label="Cantidad" align="right">
+                                                    <!-- <template scope="scope">
                                                         <el-input type="number"  v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                         && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeCantidad" size="small" v-model="scope.row.intQuantity" :precision="2">
                                                         </el-input>
-                                                        <label style="width:100%" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intQuantity }}</label>
+                                                        <label style="width:100%;" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intQuantity }}</label>
+                                                    </template> -->
+                                                </el-table-column>
+                                                
+                                                <!-- <el-table-column
+                                                    prop="fltGross_Price"  width="110"
+                                                    label="Importe Unitario" align="right">
+                                                </el-table-column>                                                  -->
+                                                <el-table-column
+                                                    prop="fltNet_Value"  width="100"
+                                                    label="Valor Total" align="right">
+                                                </el-table-column>
+                                                <el-table-column
+                                                    prop="fltFacture_Net_PR_I"  width="100"
+                                                    label="Adelanto" align="right">
+                                                    <template scope="scope">
+                                                        <el-input-number type="number" v-if="bln_tbl_total  && (scope.row === editing.row) 
+                                                        && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni"  size="small" v-model="scope.row.fltFacture_Net_PR_I" :min="0" :max="getNumber(scope.row.fltRecTemp_Value)" :precision="2" :step="0.01" >
+                                                        </el-input-number>
+                                                        <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltFacture_Net_PR_I }}</label>
                                                     </template>
+                                                </el-table-column> 
+                                                <el-table-column
+                                                    prop="fltRec_Value"  width="100"
+                                                    label="Pendiente" align="right">
                                                 </el-table-column>
                                                 
                                                 <el-table-column
-                                                    prop="fltGross_Price" sortable width="100"
-                                                    label="Importe">
-                                                </el-table-column> 
+                                                    prop="strCurrency"  width="80"
+                                                    label="Moneda" align="center">
+                                                </el-table-column>                                         
                                                 <el-table-column
-                                                    prop="fltFacture_Net_PR_I" sortable width="100"
-                                                    label="Adelanto">
-                                                    <template scope="scope">
-                                                        <el-input type="number" v-if="bln_tbl_total  && (scope.row === editing.row) 
-                                                        && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni"  size="small" v-model="scope.row.fltFacture_Net_PR_I" :precision="2" :step="0.01" >
-                                                        </el-input>
-                                                        <label style="width:100%" v-else @click="clickTtotal(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltFacture_Net_PR_I }}</label>
-                                                    </template>
-                                                </el-table-column> 
-                                                <el-table-column
-                                                    prop="fltRec_Value" sortable width="100"
-                                                    label="Pendiente">
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="fltNet_Value" sortable width="100"
-                                                    label="Valor total">
-                                                </el-table-column>
-                                                <el-table-column
-                                                    prop="strCurrency" sortable width="80"
-                                                    label="Moneda">
-                                                </el-table-column>                                          -->
-                                                <el-table-column
-                                                    prop="strCostCenter_NO" sortable width="100"
+                                                    prop="strCostCenter_NO"  width="100"
                                                     label="Centro de costo">
                                                      <template scope="scope">
                                                         <el-input  v-if="blncentrocosto && bln_tbl_centro_costo  && (scope.row === editing.row) 
                                                         && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strCostCenter_NO" >
                                                         <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadCentroCosto(scope.row)"></el-button>  
                                                         </el-input>
-                                                        <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
+                                                        <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickcentrocosto(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strCostCenter_NO }}</label>
                                                     </template>
                                                 </el-table-column>
                                             </el-table>
@@ -315,17 +316,14 @@
                 <div class="row bodycard">
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="el-form-item__label col-md-2" >Codigo</label>
+                            <label class="el-form-item__label col-md-2" >{{Column}}</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="" v-model="CodigoPO">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                @click="searchPO()"
-                                > </el-button>
-                                </el-input>
+                                <el-input size ="small" v-model="inputAtributo">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarOrdenC()"
+                                        > </el-button>
+                                    </el-input>
                                 </div>
                             </div>
                         </div>
@@ -337,12 +335,19 @@
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick"
                     @row-dblclick="checkOrdenCompra"
                     @current-change="selectOrdenCompra">
-                    <el-table-column  prop="strPO_NO" label="Codigo" width="180">
+                    <el-table-column :render-header="filterstrPO_NO" prop="strPO_NO" label="Orden Compra" width="80">
                     </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
-                    </el-table-column> 
+                    <el-table-column :render-header="filterstrPO_Desc" prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
+                    </el-table-column>
+                    <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO"  label="Proveedor" width="80">
+                    </el-table-column>  
+                    <el-table-column  :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre Proveedor" style="width: 70% !important;">
+                    </el-table-column>
+                    <el-table-column prop="strTipReq_Desc" label="Tipo Requisicion" width="80">
+                    </el-table-column>
                 </el-table>
             </el-card>
             <br/>

@@ -53,20 +53,20 @@
                                         <el-table-column type="index" label="Item" width="38">   </el-table-column>          
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="50" label="Orden Compra">
+                                         prop="strPO_NO" min-width="80" label="Orden Compra">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="50"
+                                            prop="strRequis_NO"   min-width="80"
                                             label="Requisicion">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrPO_Desc"
-                                            prop="strPO_Desc"  min-width="160"
+                                            prop="strPO_Desc"  min-width="260"
                                             label="Descripcion">
                                         </el-table-column>
                                         <el-table-column
-                                            :render-header="filterstrVendor_Desc"
+                                            :render-header="filterstrVendor_Desc" min-width="260"
                                             prop="strVendor_Desc" 
                                             label="Proveedor">
                                         </el-table-column>
@@ -88,17 +88,39 @@
                                         </el-table-column>   
                                         <el-table-column
                                             prop="strCreation_User"   min-width="60"
-                                            label="Usuario Creador">
+                                            label="Usuario"
+                                            align="center">
                                         </el-table-column>
+                                        
                                         <el-table-column 
                                             prop="chrPO_Status" align="center"  width="80"
-                                            label="Estado">
+                                            label="Estado PO">
                                             <template scope="scope">
                                                 <el-tag
                                                 :type="scope.row.chrPO_Status === '50' ? 'success' : 'warning'"
                                                 disable-transitions>{{scope.row.chrPO_Status=== '50'?'Aprobado':'Pendiente'}}</el-tag>
                                             </template>
                                         </el-table-column>
+                                        <el-table-column
+                                            :render-header="filterdtmProcess_Date"
+                                            prop="dtmReceipt_Date"  width="100"
+                                            label="Fecha Recepcion" 
+                                            align="center">
+                                             <template scope="scope">
+                                                <span>{{ getDateString(scope.row.dtmReceipt_Date) }}</span>
+                                            </template>
+                                        </el-table-column>  
+                                        <el-table-column 
+                                            prop="strReceipt_Status" align="center"  width="100"
+                                            label="Estado Recepcion">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.strReceipt_Status === '50' ? 'success' : 'warning'"
+                                                disable-transitions>{{scope.row.strReceipt_Status=== '50'?'Recepcionado':'Pendiente'}}</el-tag>
+                                            </template>
+                                        </el-table-column> 
+
+                                        
 
                                     </el-table>
                                 </div>
@@ -138,6 +160,43 @@
             </div>
         </div>
     </div>
+    <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="btnBuscar">
+      <div style="height:85px">
+        <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
+        <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="el-form-item__label col-md-2" >Columna</label>
+                    <div class="col-md-7 grupolabel">
+                        <div class="input-group mb-3" >
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="el-form-item__label col-md-2" >Buscar</label>
+                    <div class="col-md-7 grupolabel">
+                        <div class="input-group mb-3" >
+                            <el-input size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">
+                                
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
+      </footer>
+    </b-modal>
     </div>
 </template>
 <script>

@@ -64,7 +64,7 @@ export default class ViewAndEditHesComponent extends Vue {
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');
     this.textTitle='Visualizar';
-    hesService.GetAllHes(this.codigoCompania)
+    hesService.GetAllHesView(this.codigoCompania)
     .then(resp=>{
         this.GridHes=[];
         this.GridHes1=[];

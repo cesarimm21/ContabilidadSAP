@@ -51,6 +51,7 @@ export class OrdenCompraModel {
     fltTot_Inv_QTY:number;
     fltTot_Inv_Value:number;
     strReceipt_Status:string;
+    dtmReceipt_Date:Date;
     constructor(){
         this.fltPorcent=0;
     }

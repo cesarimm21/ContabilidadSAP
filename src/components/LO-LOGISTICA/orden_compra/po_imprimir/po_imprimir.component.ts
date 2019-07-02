@@ -37,6 +37,9 @@ export default class ImprimirPOComponent extends Vue {
     clickColumn:string='';
     txtbuscar:string='';
     Column:string='';
+    pagina: number =1;
+    RegistersForPage: number = 100;
+    totalRegistros: number = 1000;
     vifprogress:boolean=false;
     issave:boolean=false;
     iserror:boolean=false;
@@ -47,7 +50,10 @@ export default class ImprimirPOComponent extends Vue {
     blnilterdtmProcess_Date:boolean=false;
     blnilterfltTotal_Val:boolean=false;
     //**[ORDEN COMPRA] */
+    dialogBusquedaFilter:boolean=false;
     public OrdenCompra: Array<OrdenCompraModel>;
+    public OrdenCompra1: Array<OrdenCompraModel>;
+    public OrdenCompra2: Array<OrdenCompraModel>;
     tableData:OrdenCompraDetalleModel[];
     tableData1:OrdenCompraDetalleModel[];
     public proveedor:ProveedorModel=new ProveedorModel();
@@ -65,8 +71,12 @@ export default class ImprimirPOComponent extends Vue {
     this.textTitle='Visualizar'
     ordencompraService.GetOCView(this.codigoCompania)
     .then(resp=>{
-        this.OrdenCompra=[];
-        this.OrdenCompra=resp;
+      this.OrdenCompra=[];
+      this.OrdenCompra1=[];
+      this.OrdenCompra2=[];
+      this.OrdenCompra=resp;
+      this.OrdenCompra1=resp;
+      this.OrdenCompra2=resp;
     })
    }
    handleCurrentChange(val:OrdenCompraModel){
@@ -106,11 +116,96 @@ export default class ImprimirPOComponent extends Vue {
         });
       }
       Limpiar(){
+        this.OrdenCompra=[];
+        this.blnilterstrPO_NO=false;
+        this.blnilterstrRequis_NO=false;
+        this.blnilterstrPO_Desc=false;
+        this.blnilterstrVendor_Desc=false;
+        this.blnilterdtmProcess_Date=false;
+        this.blnilterfltTotal_Val=false;
+        this.OrdenCompra = this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+      Buscar(){        
+        if(this.Column!=""){
+          this.dialogBusquedaFilter=true;
+          this.txtbuscar='';
+        }
+        else{
+          this.$message('Seleccione columna')
+        }
+      }
+      async AscItem(){        
+        let loading = Loading.service({
+          fullscreen: true,
+          text: 'Cargando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );
+        var data=await this.sortByKeyAsc(this.OrdenCompra1,this.clickColumn) 
+        this.OrdenCompra2=[];
+        this.OrdenCompra2=data;
+        this.OrdenCompra = await this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        await loading.close();
+      }
+      DscItem(){        
+        console.log("desc",this.clickColumn)
+        var data=this.sortByKeyDesc(this.OrdenCompra1,this.clickColumn) 
+        this.OrdenCompra2=[];
+        this.OrdenCompra2=data;
+        this.OrdenCompra = this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      
+      }
+      btnBuscar(){
+        console.log(this.clickColumn);        
+        var data=this.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
+        this.OrdenCompra=[];
+        this.OrdenCompra=data;
+        this.dialogBusquedaFilter=false;
+      }
+      siguiente(){
+        if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+          this.pagina++;
+          this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        }
+      }
+      anterior(){
+        if(this.pagina>1){
+        this.pagina--;
+        this.OrdenCompra = this.OrdenCompra1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        }
+      }
+      EliminarItem(){
 
       }
-      Buscar(){
-
+      like(array, key,keyword) {    
+        var responsearr:any = []
+        for(var i=0;i<array.length;i++) {
+            if(array[i][key].toString().indexOf(keyword) > -1 ) {
+              responsearr.push(array[i])
+          }
+        }
+        return responsearr
       }
+      sortByKeyDesc(array, key) {
+        return array.sort(function (a, b) {
+            var x = a[key]; var y = b[key];
+            if(x === "" || y === null) return 1;
+            if(x === "" || y === null) return -1;
+            if(x === y) return 0;
+              return ((x > y) ? -1 : ((x < y) ? 1 : 0));           
+        });
+      }
+      sortByKeyAsc(array, key) {
+        return array.sort(function (a, b) {            
+            var x = a[key]; var y = b[key];
+            if(x === "" || y === null) return 1;
+            if(x === "" || y === null) return -1;
+            if(x === y) return 0;
+             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            
+        });
+    }
     headerclick(val){    
         this.Column=val.label;
         Global.setColumna(this.Column);
@@ -637,6 +732,8 @@ export default class ImprimirPOComponent extends Vue {
             tableData1:[],
             textTitle:'',
             OrdenCompra:[],
+            OrdenCompra1:[],
+            OrdenCompra2:[],
             codigoCompania:'',
             descripcionCompania:''
         }

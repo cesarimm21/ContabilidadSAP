@@ -141,7 +141,7 @@
                                         
                                         <el-table-column
                                             prop="strCreation_User" align="center"  min-width="60"
-                                            label="Usuario Creador">
+                                            label="Usuario">
                                         </el-table-column>
                                         <el-table-column 
                                             prop="chrPO_Status" align="center"  width="80"

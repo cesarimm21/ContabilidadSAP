@@ -213,6 +213,7 @@ export default class CrearPOComponent extends Vue {
                     strCateg_Line:this.requiDetalle[i].strCateg_Line,
                     strMaterial_Cod:this.requiDetalle[i].strMaterial_Cod,
                     strPriority_Cod:this.requiDetalle[i].strPriority_Cod,
+                    strPriority_Desc:this.requiDetalle[i].strPriority_Desc,
                     blncheck:false,
                     fltQuantity:Math.round(this.requiDetalle[i].fltQuantity * 100)/100,
                     strUM:this.requiDetalle[i].strUM,
@@ -434,7 +435,7 @@ export default class CrearPOComponent extends Vue {
                 item.intIdPurReqD_ID=this.multipleSelection[i].intIdPurReqD_ID;
                 item.intIdAcctCateg_ID= parseInt(IdAcctCateg_ID.intIdAcctCateg_ID)
                 item.intIdCategLine_ID=this.multipleSelection[i].intIdCategLine_ID
-                item.intIdCurrency_ID=this.moneda.intIdCurrency_ID
+                item.intIdCurrency_ID=this.moneda.intIdCurrency_ID                
                 item.intIdCostCenter_ID=this.multipleSelection[i].intIdCostCenter_ID
                 item.intPO_Item_NO=i+1;
                 item.strAcctCateg_Cod=this.valorSelectCodStock[i].intIdAcctCateg_ID.strAcctCateg_Cod
@@ -444,23 +445,17 @@ export default class CrearPOComponent extends Vue {
                 else {
                     item.strCategItem_Cod='';
                 }
-                if(this.valorSelectCodStock[i].intIdCostCenter_ID){
-                    item.intIdCostCenter_ID=this.valorSelectCodStock[i].intIdCostCenter_ID,   
-                    item.strCostCenter_NO=this.valorSelectCodStock[i].strCostCenter_NO,
-                    item.strCostCenter_Desc=this.valorSelectCodStock[i].strCostCenter_Desc
-                }
-                else{
-                    item.strCostCenter_NO='';
-                    item.strCostCenter_Desc='';
-                }              
+                item.strCostCenter_NO=this.multipleSelection[i].strCostCenter
+                item.strCostCenter_Desc=this.multipleSelection[i].strCostCenter_Desc     
                 item.strStock_Cod=this.valorSelectCodStock[i].intIdInvStock_ID.strStock_Cod
                 item.strUM_Cod=this.valorSelectCodStock[i].intIdInvStock_ID.strUM_Cod
                 item.strVendor_NO=this.OrdenCompra.strVendor_NO
                 item.strVendor_Desc=this.OrdenCompra.strVendor_Desc
                 item.strCurrency_Cod=this.OrdenCompra.strPO_Curr
                 item.strPriority_Cod=this.multipleSelection[i].strPriority_Cod
+                item.strPriority_Desc=this.multipleSelection[i].strPriority_Desc
                 item.strPO_Item_Desc=this.multipleSelection[i].strDescription
-                item.chrPO_Item_Status=this.multipleSelection[i].chrStatus
+                item.chrPO_Item_Status='N'
                 item.strPO_Curr=this.multipleSelection[i].strCurr
                 item.strRequis_NO=this.OrdenCompra.strRequis_NO
                 item.intRequis_Item_NO=this.requiSelect.intIdPurReqH_ID//requis
@@ -470,6 +465,9 @@ export default class CrearPOComponent extends Vue {
                 item.strPreq_Stock_Cod=this.multipleSelection[i].strMaterial_Cod
                 item.intIdInvStock_ID=this.valorSelectCodStock[i].intIdInvStock_ID.intIdInvStock_ID//id  de stock
                 item.dtmOrig_Due_Date=new Date()
+                item.fltFacture_Net_PR_I=0;
+                item.fltPay_Factura=0;
+                item.fltRec_Value=this.multipleSelection[i].fltValue_Total
                 item.strUnit_Of_Purch=this.multipleSelection[i].strUM//unidad de medida
                 item.fltPO_QTY_I=this.multipleSelection[i].fltQuantity//cantidad
                 item.fltPO_Net_PR_I=this.multipleSelection[i].fltUnitPrice//precio unitario
@@ -681,6 +679,7 @@ export default class CrearPOComponent extends Vue {
       }
       SeleccionadoPrioridad(val){
         this.selectrow.strPriority_Cod=val.strPriority_Cod;
+        this.selectrow.strPriority_Desc=val.strPriority_Desc;
         this.selectrow.intIdPriority_ID=val.intIdPriority_ID;
         this.dialogPrioridad=false;
       }
@@ -696,6 +695,8 @@ export default class CrearPOComponent extends Vue {
           }          
       }
       handleChangeValUni(val){
+        this.totalPrice=0;
+        this.totalItems=0;
         for (let i = 0; i < this.requiDetalle1.length; i++) {
             if(this.requiDetalle1[i].intIdPurReqD_ID == this.rowSelect){
                 this.requiDetalle1[i].fltValue_Total=Math.round(val*this.requiDetalle1[i].fltQuantity*this.requiDetalle1[i].intConv_Factor*100)/100;
@@ -704,9 +705,17 @@ export default class CrearPOComponent extends Vue {
                 this.requiDetalle1=this.requiTemp;  
                 this.requiTemp=[];
             }
-          }  
+          }
+          for(let y=0;y<this.multipleSelection.length;y++){
+            if(this.multipleSelection[y].blnCheck==true){
+                this.totalItems=this.totalItems+Math.round(this.multipleSelection[y].fltQuantity * 100)/100;
+                this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[y].fltValue_Total * 100)/100;
+            }
+          }    
       }
       handleChangeFactor(val){
+        this.totalPrice=0;
+        this.totalItems=0;
         for (let i = 0; i < this.requiDetalle1.length; i++) {
             if(this.requiDetalle1[i].intIdPurReqD_ID == this.rowSelect){
                 this.requiDetalle1[i].fltValue_Total=Math.round(val*this.requiDetalle1[i].fltQuantity*this.requiDetalle1[i].fltUnitPrice*100)/100;
@@ -715,7 +724,13 @@ export default class CrearPOComponent extends Vue {
                 this.requiDetalle1=this.requiTemp;  
                 this.requiTemp=[];
             }
-          }  
+          }
+          for(let y=0;y<this.multipleSelection.length;y++){
+            if(this.multipleSelection[y].blnCheck==true){
+                this.totalItems=this.totalItems+Math.round(this.multipleSelection[y].fltQuantity * 100)/100;
+                this.totalPrice= this.totalPrice+Math.round(this.multipleSelection[y].fltValue_Total * 100)/100;
+            }
+          }      
       }
     //#endregion
 

@@ -128,8 +128,8 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   pagina: number =1;
-  RegistersForPage: number = 10;
-  totalRegistros: number = 100;
+  RegistersForPage: number = 100;
+  totalRegistros: number = 1000;
   
   //#endregion
   constructor(){
@@ -198,7 +198,6 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
     );
     await clasematerialService.busquedaProducto(data.strStock_Cod,data.desde,data.hasta)
     .then(res=>{
-      debugger;
       loading.close();
       console.log(res);
      // if(this.valuem>=100){
