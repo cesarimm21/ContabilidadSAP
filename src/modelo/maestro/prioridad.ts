@@ -3,6 +3,7 @@ export class PrioridadModel {
     strPriority_Cod: string;
     strPriority_Name:string;
     strPriority_Desc:string;
+    intPriority_Days:number;
     
     strCreation_User:string;
     dtmCreation_Date:Date;

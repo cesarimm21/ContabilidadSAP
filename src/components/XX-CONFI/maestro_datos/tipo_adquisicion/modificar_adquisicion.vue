@@ -57,22 +57,22 @@
                             <el-table-column type="index" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrTypeAdq_PDB_Cod"
-                            prop="strTypeAdq_PDB_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strTypeAdq_PDB_Cod" label="Tipo Adquisicion PDB" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrTypeAdq_PDB_Desc"
                              prop="strTypeAdq_PDB_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
+                            <el-table-column :render-header="filterstrModify_User"
                             width="100" align="center"
-                                prop="strCreation_User" 
-                                label="Usuario">
+                                prop="strModify_User" 
+                                label="Usuario"> 
                             </el-table-column>
                             <el-table-column
                                 align="center"

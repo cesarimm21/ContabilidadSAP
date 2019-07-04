@@ -68,9 +68,15 @@
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strPriority_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                       
                                         <el-table-column
-                                            prop="strModified_User" sortable  
+                                            prop="intPriority_Days" sortable  width="80"
+                                            label="Dias">
+                                            <template scope="scope">
+                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.intPriority_Days }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                            prop="strModified_User" sortable   width="100"
                                             label="Usuario">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>

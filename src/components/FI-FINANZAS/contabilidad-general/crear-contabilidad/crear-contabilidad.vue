@@ -43,7 +43,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{strDaily_Cod_Desc}}</span>
                             </div>
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Periodo</label>
+                                <!-- <label class="el-form-item__label col-md-2" >Periodo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                         <el-date-picker
@@ -52,6 +52,18 @@
                                             format="dd.MM.yyyy"
                                             style="width:128px !important">
                                         </el-date-picker>
+                                    </div>
+                                </div> -->
+                                <label class="el-form-item__label col-md-2" >Periodo</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input  
+                                    size ="small" 
+                                    @blur="desactivar_Periodo" 
+                                    @focus="activar_Periodo" 
+                                    v-model="strPeriodo">
+                                        <el-button v-if="btnactivarPeriodo && !dialogPeriodo" slot="append" class="boton" icon="fa fa-clone" @click="loadPeriodo()"></el-button> 
+                                    </el-input>
                                     </div>
                                 </div>
                             </div>

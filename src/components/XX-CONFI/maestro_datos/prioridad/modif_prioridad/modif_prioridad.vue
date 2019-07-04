@@ -42,6 +42,17 @@
                                     </div>
                                 </div>
                             </div>    
+                            <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Dias</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input  type="number" class="validador"  v-focus size="small"  v-model="prioridad.intPriority_Days" >
+                                        </el-input>
+                                    <!-- <el-input class="validador" size ="small" v-model="prioridad.intPriority_Days"  type="text">  
+                                    </el-input> -->
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                     </div>
                 </div>

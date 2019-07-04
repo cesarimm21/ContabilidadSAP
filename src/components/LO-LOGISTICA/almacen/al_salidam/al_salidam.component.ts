@@ -624,22 +624,32 @@ export default class ModificarSalidaMaterialComponent extends Vue {
                 producto.strStock_Cod=resiv.strStock_Cod;
                 producto.fltQuantity=resiv.fltQuantity_Balance;
                 console.log("producto",producto);
-                productoService.UpdateStock(this.salidaModel)
-                .then(resstock=>{
-                  setTimeout(() => {
-                    this.vifprogress=false;
-                    this.issave=true;
-                    this.textosave='Se despacho correctamente.'
-                    this.openMessage('Se despacho correctamente');
+                setTimeout(() => {
+                  this.vifprogress=false;
+                  this.issave=true;
+                  this.textosave='Se despacho correctamente.'
+                  this.openMessage('Se despacho correctamente');
+                
+                  // setTimeout(() => {
+                  //   router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidadespacho');
+                  // }, 300)
+                }, 600)
+                // productoService.UpdateStock(this.salidaModel)
+                // .then(resstock=>{
+                //   setTimeout(() => {
+                //     this.vifprogress=false;
+                //     this.issave=true;
+                //     this.textosave='Se despacho correctamente.'
+                //     this.openMessage('Se despacho correctamente');
                   
-                    // setTimeout(() => {
-                    //   router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidadespacho');
-                    // }, 300)
-                  }, 600)
-                })
-                .catch(error=>{
-                  this.textosave='Ocurrio un error inesperado. ';
-                })
+                //     // setTimeout(() => {
+                //     //   router.push('/barmenu/LO-LOGISTICA/almacen/salida/al_salidadespacho');
+                //     // }, 300)
+                //   }, 600)
+                // })
+                // .catch(error=>{
+                //   this.textosave='Ocurrio un error inesperado. ';
+                // })
               }
               else{
                 this.vifprogress=false;

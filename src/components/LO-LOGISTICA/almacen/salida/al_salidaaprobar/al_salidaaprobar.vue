@@ -1,14 +1,14 @@
 <template>
   <div class="aprobador-pr">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"  v-on:validarView="validarView()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"  v-on:validarView="Buscar()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
             <span class="labelheadercard" >Aprobador Salida</span>
-            <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
+            <!-- <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-top: -3px;" @click="Buscar()">
                 <img class="imagenfilter" src="../../../../../images/buscari.png" style="margin-left: 0px;width: 15px;height: 16px;" alt="" >
-            </el-button>
+            </el-button> -->
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -78,7 +78,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView" v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">

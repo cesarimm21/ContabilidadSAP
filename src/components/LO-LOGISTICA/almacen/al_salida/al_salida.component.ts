@@ -665,9 +665,10 @@ export default class CrearSalidaAlmacenComponent extends Vue {
     this.selectrow.strUM_Cod=val.strUM_Cod;
     this.selectrow.strAcc_NO_Local=val.strExp_Acct;
     this.selectrow.fltQuantity=val.fltQuantity_Virtual;
+    
     //this.selectrow.fltPrecUnit_Local=val.fltPrecUnit_Local;
     //this.selectrow.fltPrecUnit_USD=val.fltPrecUnit_USD;
-    //this.selectrow.strMatClass_Cod=val.strMaterial_Class;
+    this.selectrow.strMatClass_Cod=val.strMaterial_Class;
     this.dialogMaterial=false;
     console.log('SeleccionadoMaterial',this.selectrow)
     

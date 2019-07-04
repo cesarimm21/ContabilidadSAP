@@ -104,6 +104,9 @@ export default class CrearContabilidadComponent extends Vue {
   dialogGrupoProceso:boolean=false;
   btnactivarGrupoProceso:boolean=false;
   dialogGrupoArea:boolean=false;
+  dialogPeriodo:boolean=false;
+  btnactivarPeriodo:boolean=false;
+  strPeriodo:string;
   btnactivarGrupoArea:boolean=false;
   dialogCategoriaCentroCosto:boolean=false;
   btnactivarCategoriaCentroCosto:boolean=false;
@@ -218,6 +221,7 @@ export default class CrearContabilidadComponent extends Vue {
       this.tipocambio=response;  
     }).catch(error=>{})
   }
+
   DateContabilizacionClick(){ 
     var date1=Global.getDateVencida(this.factura.dtmDoc_Acc_Date,this.proveedor.intDayToPay);
     this.factura.dtmDue_Date=date1;
@@ -258,6 +262,9 @@ clickcantidadHaber(event,edit,column){
 loadDocumentoTransaccion(){
   debugger;
   this.dialogDocumentoTransaccion=true;
+}
+loadPeriodo(){
+  this.dialogPeriodo=true;
 }
 
 SeleccionadoCategoriaCuenta(val){
@@ -305,10 +312,26 @@ closeCategoriaCuenta(){
       this.btnactivarImpuesto=false;
     }, 120)
   }
+  activar_Periodo(){
+    setTimeout(() => {
+      this.btnactivarPeriodo=true;
+      this.btnactivarMoneda=false;
+      this.btnactivarOrdenCompra=false;
+      this.btnactivarTipoDocumento=false;
+      this.btnactivarDiario=false;
+      this.btnactivarImpuesto=false;
+    }, 120)
+  }
   desactivar_GrupoArea(){
     debugger;
     if(this.dialogGrupoArea){
       this.btnactivarGrupoArea=false;      
+    }
+  }
+  desactivar_Periodo(){
+    debugger;
+    if(this.dialogPeriodo){
+      this.btnactivarPeriodo=false;      
     }
   }
   loadGrupoArea()

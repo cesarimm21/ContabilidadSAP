@@ -35,10 +35,12 @@ export default class ModificarPrioridadComponent extends Vue {
     public gridSelectPais:PaisModel=new PaisModel();
     paisVisible:boolean=false;
     btnactivarpais:boolean=false;
+    nameuser:any;
     constructor(){    
         super();
         Global.nameComponent='modificar-prioridad';
         
+        this.nameuser=localStorage.getItem('User_Usuario');
         setTimeout(() => {
             this.load();
         }, 100)
@@ -84,6 +86,7 @@ export default class ModificarPrioridadComponent extends Vue {
         if(this.prioridad.strPriority_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
         else{
             this.prioridad.chrStatus='A';
+            this.prioridad.strModified_User=this.nameuser
             console.log('update',this.prioridad);
             prioridadService.Updateprioridad(this.prioridad)
             .then(resp=>{

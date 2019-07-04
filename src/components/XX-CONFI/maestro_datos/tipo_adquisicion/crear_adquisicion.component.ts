@@ -41,6 +41,8 @@ export default class CrearAdquisicionComponent extends Vue {
     
     guardarComprobante(){
       var user:any=localStorage.getItem('User_Usuario');
+
+
       var id:any=localStorage.getItem('compania_ID');
       this.adquisicion.strCreation_User=user;
       let loadingInstance = Loading.service({
@@ -51,6 +53,7 @@ export default class CrearAdquisicionComponent extends Vue {
         }
         );     
       if(this.adquisicion.strTypeAdq_PDB_Desc!=''&&this.adquisicion.strTypeAdq_PDB_Cod!=''){
+
         adquisicionService.CreateTipoAdquisicion(this.adquisicion)
         .then(resp=>{
           loadingInstance.close();

@@ -35,6 +35,7 @@ export default class CrearPrioridadComponent extends Vue {
     btnactivarpais:boolean=false;
   constructor(){    
         super();
+        
         Global.nameComponent='crear-prioridad';
         setTimeout(() => {
             this.load();
