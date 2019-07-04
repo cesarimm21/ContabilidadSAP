@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Metodo Depresacion</span>
+                <span class="labelheadercard" > Crear Metodo Depreciacion</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Metodo</label>
+                                <label class="el-form-item__label col-md-2" >Metodo Depreciacion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="metodo.strDeprMeth_Cod" style="text-transform: capitalize" type="text" >  

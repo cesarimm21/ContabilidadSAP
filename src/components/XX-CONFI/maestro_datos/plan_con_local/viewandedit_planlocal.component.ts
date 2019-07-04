@@ -4,16 +4,16 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
-import {MedioPagoModel} from '@/modelo/maestro/medioPago';
+import {PlanConLocalModel} from '@/modelo/maestro/plancontlocal';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import mediopagoService from '@/components/service/mediopago.service';
+import planService from '@/components/service/planCuentaContable.service';
 @Component({
-  name: 'viewandedit-mediopago',
+  name: 'viewandedit-planlocal',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   }
 })
-export default class ViewAndEditMedioPagoComponent extends Vue {
+export default class ViewAndEditPlanLocalComponent extends Vue {
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
@@ -21,7 +21,7 @@ export default class ViewAndEditMedioPagoComponent extends Vue {
   companyCod:any;
   textTitle:string='';
   enabledtf:boolean=false;
-  public documento:MedioPagoModel=new MedioPagoModel();
+  public documento:PlanConLocalModel=new PlanConLocalModel();
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -31,7 +31,7 @@ export default class ViewAndEditMedioPagoComponent extends Vue {
   sucursalVisible:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='viewandedit-mediopago';
+        Global.nameComponent='viewandedit-planconlocal';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -43,11 +43,11 @@ export default class ViewAndEditMedioPagoComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Tipo de Medio de Pago';
+            this.textTitle='Modificar Aduana';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Tipo de Medio de Pago';
+            this.textTitle='Visualizar Aduana';
         }
 
     }  
@@ -61,13 +61,13 @@ export default class ViewAndEditMedioPagoComponent extends Vue {
         
         let loadingInstance = Loading.service({
           fullscreen: true,
-          text: 'Guardando...',
+          text: 'Actualizando...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.8)'
           }
           );     
-        if(this.documento.strPayWay_Cod!=''&&this.documento.strPayWay_Desc!=''){
-          mediopagoService.UpdateMedioPago(this.documento)
+        if(this.documento.strChartAcct_L_Cod!=''&&this.documento.strChartAcct_L_Desc!=''){
+          planService.updatetblPlanConLocal(this.documento)
           .then(resp=>{
             loadingInstance.close();
             this.$message({

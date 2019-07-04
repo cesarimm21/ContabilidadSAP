@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Visualizar Metodos Depresacion</span>
+                <span class="labelheadercard" > Visualizar Metodo Depreciacion</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Metodo Depreciacion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="documento.strDeprMeth_Cod" style="text-transform: capitalize" type="text" >  
@@ -42,7 +42,7 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Tipos de Metodos Depresacion</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Tipos de Metodo Depreciacion</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
@@ -54,10 +54,10 @@
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrDeprMeth_Cod"
-                            prop="strDeprMeth_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strDeprMeth_Cod" label="Metodo Depreciacion" width="120" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrDeprMeth_Desc"
                              prop="strDeprMeth_Desc" min-width="200" label="Descripcion">

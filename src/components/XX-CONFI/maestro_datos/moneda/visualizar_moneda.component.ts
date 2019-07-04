@@ -41,7 +41,6 @@ export default class VisualizarMonedaComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrCurrency_Cod:boolean=false;
   blnilterstrCurrency_Desc:boolean=false;
-  blnilterstrReference:boolean=false;
   blnilterstrCountry:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
@@ -55,7 +54,7 @@ export default class VisualizarMonedaComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        monedaService.GetAllMoneda()
+        monedaService.GetAllMonedaView()
         .then(response=>{
           this.gridMoneda=[];
           this.gridMoneda1=[];
@@ -148,7 +147,6 @@ export default class VisualizarMonedaComponent extends Vue {
       this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrCurrency_Cod=false;
       this.blnilterstrCurrency_Desc=false; 
-      this.blnilterstrReference=false; 
       this.blnilterstrCountry=false; 
       this.blnilterdtmCreation_Date=false;
       this.blnilterstrCreation_User=false; 
@@ -157,42 +155,7 @@ export default class VisualizarMonedaComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+      this.warningMessage('Accion no permitida')
   }
   async validad(){      
     var data=this.like(this.gridMoneda1,'strCurrency_Cod',this.moneda.strCurrency_Cod)
@@ -251,7 +214,6 @@ export default class VisualizarMonedaComponent extends Vue {
           this.clickColumn="strCurrency_Cod";
           this.blnilterstrCurrency_Cod=true;
           this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrReference=false; 
           this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
@@ -260,16 +222,6 @@ export default class VisualizarMonedaComponent extends Vue {
           this.clickColumn="strCurrency_Desc";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=true; 
-          this.blnilterstrReference=false; 
-          this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
-      }
-      if(val.property=="strReference"){
-          this.clickColumn="strReference";
-          this.blnilterstrCurrency_Cod=false;
-          this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrReference=true; 
           this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
@@ -278,7 +230,6 @@ export default class VisualizarMonedaComponent extends Vue {
           this.clickColumn="strCountry";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrReference=false; 
           this.blnilterstrCountry=true; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=false;
@@ -288,7 +239,6 @@ export default class VisualizarMonedaComponent extends Vue {
           this.clickColumn="dtmCreation_Date";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrReference=false; 
           this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=true;
           this.blnilterstrCreation_User=false;
@@ -297,7 +247,6 @@ export default class VisualizarMonedaComponent extends Vue {
           this.clickColumn="strCreation_User";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrReference=false; 
           this.blnilterstrCountry=false; 
           this.blnilterdtmCreation_Date=false;
           this.blnilterstrCreation_User=true;
@@ -315,16 +264,6 @@ export default class VisualizarMonedaComponent extends Vue {
     }
     filterstrCurrency_Desc(h,{column,$index}){        
       if(this.blnilterstrCurrency_Desc){
-        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-          , column.label)])
-      }
-      else{
-        return h('span',{style: 'padding-left: 5px;'}, column.label);
-      } 
-    }
-    filterstrReference(h,{column,$index}){        
-      if(this.blnilterstrReference){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])

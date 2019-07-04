@@ -4,34 +4,32 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
-import {PaisModel} from '@/modelo/maestro/pais';
+import {PlanConLocalModel} from '@/modelo/maestro/plancontlocal';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import paisService from '@/components/service/pais.service';
-import {MonedaModel} from '@/modelo/maestro/moneda';
-import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
+import planService from '@/components/service/planCuentaContable.service';
 @Component({
-  name: 'crear-um',
+  name: 'crear-planconlocal',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
-  'bmoneda':BMonedaComponent,
   }
 })
-export default class CrearPaisComponent extends Vue {
+export default class CrearPlanLocalComponent extends Vue {
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
   companyName:any;
   companyCod:any;
-  public pais:PaisModel=new PaisModel();
-  public selectMoneda:MonedaModel=new MonedaModel();
+  public planconlocal:PlanConLocalModel=new PlanConLocalModel();
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-  monedaVisible:boolean=false;
-  btnactivarmonedaA:boolean=false;
+  btnactivarsucursal:boolean=false;
+  btnactivarplanta:boolean=false;
+  plantaVisible:boolean=false;
+  sucursalVisible:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='crear-um';
+        Global.nameComponent='crear-planconlocal';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -39,64 +37,42 @@ export default class CrearPaisComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');  
-    }
-    upperCaseF(a){
-      setTimeout(function(){
-          a.value = a.value.toUpperCase();
-      }, 1);
-    }
-    desactivar_monedaA(){
-        if(this.monedaVisible){
-          this.btnactivarmonedaA=false;
-        }
-    } 
-    activar_monedaA(){
-        setTimeout(() => {
-          this.btnactivarmonedaA=true;
-        }, 120)
-      } 
-    monedaDialog(){
-        this.monedaVisible=true;  
-    }
-    handleCloseMoneda(){
-        this.monedaVisible=false;
-      }
-    monedaSelect(val:MonedaModel){
-        this.selectMoneda=val;  
-        this.pais.strCountry_Curr=this.selectMoneda.strCurrency_Cod;     
-        this.monedaVisible=false;
-      }
-      
-    guardarUM(){
+    }  
+    
+    guardarComprobante(){
       var user:any=localStorage.getItem('User_Usuario');
-      this.pais.strCreation_User=user;
-      if(this.pais.strCountry_Cod!=''&&this.pais.strCountry_Name!=''){
-        let loadingInstance = Loading.service({
+      this.planconlocal.strCreation_User=user;
+      let loadingInstance = Loading.service({
           fullscreen: true,
           text: 'Guardando...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.8)'
           }
-          ); 
-        paisService.createtblPais(this.pais)
+        );     
+      if(this.planconlocal.strChartAcct_L_Cod!=''&&this.planconlocal.strChartAcct_L_Desc!=''){
+        planService.createtblPlanConLocal(this.planconlocal)
         .then(resp=>{
           loadingInstance.close();
           this.$message({
               showClose: true,
                 type: 'success',
-                message: 'Se guardo Correctamente '
+                message: 'Se guardo Correctamente '+resp
               });
-              this.pais=new PaisModel();
+              this.planconlocal=new PlanConLocalModel();
               this.issave = true;
               this.iserror = false;
-              this.textosave = 'Se guardo correctamente. '+resp.strCountry_Cod;
-          }).catch(erroz=>{
+              this.textosave = 'Se guardo correctamente. '+resp;
+          }).catch(errorss=>{
             loadingInstance.close();
             this.$message({
-            showClose: true,
-            type: 'error',
-            message: 'No se pudo guardar'
-          });})
+              showClose: true,
+                type:'error',
+                message: 'No se guardo Correctamente '
+              });
+              this.issave = false;
+              this.iserror = true;
+              this.textosave = 'No se guardo Correctamente ';
+          })
       }
       else{
         this.$message({

@@ -98,13 +98,13 @@ export default class ViewAndEditMonedaComponent extends Vue {
             this.$message({
                 showClose: true,
                   type: 'success',
-                  message: 'Se actualizo Correctamente '+resp
+                  message: ' '+resp
                 });
                 this.moneda=new MonedaModel();
                 this.pais=new PaisModel();
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se actualizo correctamente. '+resp;
+                this.textosave = ' '+resp;
             }).catch(errorss=>{
               loadingInstance.close();
               this.$message({

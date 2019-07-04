@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Visualizar Medio Pago</span>
+                <span class="labelheadercard" > Visualizar Tipo de Medio de Pago</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Tipo Medio de Pago</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="documento.strPayWay_Cod" style="text-transform: capitalize" type="text" >  
@@ -54,10 +54,10 @@
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filtersstrPayWay_Cod"
-                            prop="strPayWay_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strPayWay_Cod" label="Tipo de Medio de Pago" width="120" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrPayWay_Desc"
                              prop="strPayWay_Desc" min-width="200" label="Descripcion">

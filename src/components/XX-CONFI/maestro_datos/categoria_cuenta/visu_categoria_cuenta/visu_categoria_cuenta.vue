@@ -27,7 +27,7 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                         </div>
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Categoria Cuenta</label>
+                            <label class="el-form-item__label col-md-2" >Cat. Cta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="cod_categoriacuenta"  placeholder="">
@@ -56,13 +56,13 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strAcctCateg_Cod" width="100" label="Tipo Renta">
+                                        <el-table-column   prop="strAcctCateg_Cod" width="100" label="Cat. Cta">
                                             <template scope="scope">
                                             <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strAcctCateg_Cod }}</label>
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
-                                            prop="strAcctCateg_Desc" sortable  
+                                            prop="strAcctCateg_Desc"   
                                             label="Descripcion">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strAcctCateg_Desc }}</label>
@@ -70,7 +70,7 @@
                                         </el-table-column>
                                        
                                         <el-table-column
-                                            prop="strModified_User" sortable  
+                                            prop="strModified_User"   
                                             label="Usuario">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>

@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text" :maxlength="4" :disabled="enabledtf">  
+                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text" :maxlength="4" disabled>  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,15 +42,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Referencia</label>
-                                <div class="col-sm-4 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="moneda.strReference" :disabled="enabledtf" >
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>   
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">

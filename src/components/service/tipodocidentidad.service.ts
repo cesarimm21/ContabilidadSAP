@@ -16,6 +16,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  deleteTipoDocumento(intIdDocIdent_ID){
+    return axios.get(CONFIG.API_URL+'tipodocidentidad/delete/'+intIdDocIdent_ID)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateTipoDocumento(documento){
     return axios.post(CONFIG.API_URL+'tipodocidentidad/create', documento)
     .then(response =>{

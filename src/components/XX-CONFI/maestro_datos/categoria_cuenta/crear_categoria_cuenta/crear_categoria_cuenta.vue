@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Categoria Cuenta</label>
+                                <label class="el-form-item__label col-md-2" >Cat. Cta</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="categoriacuenta.strAcctCateg_Cod"  type="text">  

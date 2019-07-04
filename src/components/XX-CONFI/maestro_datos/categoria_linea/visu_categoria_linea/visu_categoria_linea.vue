@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Criticidad</span>
+            <span class="labelheadercard" >Modificar Categoria Linea</span>
         </div>
         <div class="row bodycard">
            <div class="container">

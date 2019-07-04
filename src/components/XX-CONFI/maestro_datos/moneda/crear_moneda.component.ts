@@ -19,6 +19,10 @@ import BSucursalComponent from '@/components/buscadores/b_sucursal/b_sucursal.vu
   }
 })
 export default class CrearMonedaComponent extends Vue {
+  //Focus Input
+  inputCod:boolean=true;
+  inputDes:boolean=false;
+  inputCountry:boolean=false;
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
@@ -65,7 +69,9 @@ export default class CrearMonedaComponent extends Vue {
       this.paisVisible=false;
     }
     //#endregion   
-    
+
+    nextFocus(val) {       
+    }
     guardarMoneda(){
       var user:any=localStorage.getItem('User_Usuario');
       var id:any=localStorage.getItem('compania_ID');
@@ -84,23 +90,23 @@ export default class CrearMonedaComponent extends Vue {
           this.$message({
               showClose: true,
                 type: 'success',
-                message: 'Se guardo Correctamente '+resp
+                message: 'Se Creo Correctamente '+resp
               });
               this.moneda=new MonedaModel();
               this.pais=new PaisModel();
               this.issave = true;
               this.iserror = false;
-              this.textosave = 'Se guardo correctamente. '+resp;
-          }).catch(errorss=>{
+              this.textosave = 'Se Creao Correctamente '+resp;
+          }).catch(errorss=>{         
             loadingInstance.close();
             this.$message({
               showClose: true,
                 type:'error',
-                message: 'No se guardo Correctamente '
+                message: 'La moneda ingresada ya existe en la base de datos'
               });
               this.issave = false;
               this.iserror = true;
-              this.textosave = 'No se guardo Correctamente ';
+              this.textosave = 'La moneda ingresada ya existe en la base de datos';
           })
       }
       else{

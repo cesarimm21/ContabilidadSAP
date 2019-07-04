@@ -168,6 +168,11 @@ import ModificarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/mod
 import VisualizarAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/visualizar_al.vue'
 import ViewAndEditAlmacenComponent from '@/components/XX-CONFI/entidad/almacen/viewandedit_al.vue'
 
+import CrearPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/crear_planlocal.vue'
+import ModificarPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/modificar_planlocal.vue'
+import VisualizarPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/visualizar_planlocal.vue'
+import ViewAndEditPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal.vue'
+
 
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
@@ -1257,6 +1262,27 @@ export default [
         path:'XX-CONFI/entidad/almacen/viewandedit_al',
         component:ViewAndEditAlmacenComponent,
         name:'viewandedit-almacen'
+      }, 
+      //CUENTA CONTABLE LOCAL
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_local/crear_planlocal',
+        component:CrearPlanLocalComponent,
+        name:'crear-planconlocal'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_local/modificar_planlocal',
+        component:ModificarPlanLocalComponent,
+        name:'modificar-planconlocal'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_local/visualizar_planlocal',
+        component:VisualizarPlanLocalComponent,
+        name:'visualizar-planconlocal'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal',
+        component:ViewAndEditPlanLocalComponent,
+        name:'viewandedit-planconlocal'
       }, 
       {
         path:'XX-CONFI/maestro_datos/moneda/crear_moneda',

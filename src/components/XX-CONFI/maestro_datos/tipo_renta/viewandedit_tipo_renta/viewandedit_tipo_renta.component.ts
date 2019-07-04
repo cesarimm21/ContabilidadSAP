@@ -57,14 +57,12 @@ export default class ViewAndEditTipoRentaComponent extends Vue {
     }
     
     handleCurrentChange(val) {
-        debugger;
         if(val!=null){
         this.selectrow=val;
         this.currentRow = val;
         }
     }
     async cargarList(){
-        debugger;
         if(this.cod_tiporenta!=''){
             await tiporentaService.GetOnlyOnetiporenta(this.cod_tiporenta)
             .then(res=>{
@@ -94,7 +92,6 @@ export default class ViewAndEditTipoRentaComponent extends Vue {
         }
     }
     async validarView(){
-        debugger;
         if(this.selectrow!=undefined && this.selectrow!=null ){
             debugger;
             if(this.selectrow!=undefined && this.selectrow!=null ){
@@ -109,10 +106,7 @@ export default class ViewAndEditTipoRentaComponent extends Vue {
 
     }
     handleChange(value) {
-        console.log(value);
-    }
-
-    
+    }    
   EliminarItem(){
     if(this.selectrow!=undefined){
       this.dialogEliminar=true;
@@ -124,8 +118,6 @@ export default class ViewAndEditTipoRentaComponent extends Vue {
   async btnEliminar(){
     await tiporentaService.Eliminartiporenta(this.currentRow)
     .then(response=>{
-      debugger;
-      console.log('eliminar',response);
       if(response!=undefined){
          this.textosave='Se elimino correctamento.' + response.strReveType_Cod;
          this.issave=true;

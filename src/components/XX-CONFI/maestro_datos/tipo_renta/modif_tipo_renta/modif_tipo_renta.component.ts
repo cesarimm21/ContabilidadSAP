@@ -13,7 +13,7 @@ import {PaisModel} from '@/modelo/maestro/pais';
 import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 
 @Component({
-  name: 'modificar-tipooperacion',
+  name: 'modificar-tipo-renta',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'bpais':BPaisComponent
@@ -37,7 +37,7 @@ export default class ModificarTipoRentaComponent extends Vue {
     btnactivarpais:boolean=false;
     constructor(){    
         super();
-        Global.nameComponent='modificar-tiporenta';
+        Global.nameComponent='modificar-tipo-renta';
         
         setTimeout(() => {
             this.load();

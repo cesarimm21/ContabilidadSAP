@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  deleteMedioPago(intIdPayWay_ID){ 
+    return axios.get(CONFIG.API_URL+'mediopago/delete/'+intIdPayWay_ID)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateMedioPago(comprobante){
     return axios.post(CONFIG.API_URL+'mediopago/create', comprobante)
     .then(response =>{

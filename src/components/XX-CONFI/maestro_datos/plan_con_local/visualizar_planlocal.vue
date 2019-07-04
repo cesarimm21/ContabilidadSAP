@@ -1,11 +1,12 @@
+
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="planconlocal">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu  v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Tipo de Medio de Pago</span>
+                <span class="labelheadercard" > Visualizar Plan Contable Local</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,10 +26,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Tipo Medio de Pago</label>
+                                <label class="el-form-item__label col-md-2" >Plan Contable Local</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strPayWay_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="documento.strChartAcct_L_Cod" style="text-transform: capitalize" type="text" >  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,7 +43,7 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Tipos de Medio de Pago</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Plan Contables Locales</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
@@ -56,11 +57,11 @@
                             >
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
-                            <el-table-column :render-header="filtersstrPayWay_Cod"
-                            prop="strPayWay_Cod" label="Tipo de Medio de Pago" width="120" align="center">                                
+                            <el-table-column :render-header="filterstrChartAcct_L_Cod"
+                            prop="strChartAcct_L_Cod" label="Plan Contable Local" width="130" align="center">                                
                             </el-table-column>
-                            <el-table-column  :render-header="filterstrPayWay_Desc"
-                             prop="strPayWay_Desc" min-width="200" label="Descripcion">
+                            <el-table-column  :render-header="filterstrChartAcct_L_Desc"
+                             prop="strChartAcct_L_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterdtmCreation_Date"
                                 prop="dtmCreation_Date"   min-width="80"
@@ -76,13 +77,13 @@
                             </el-table-column>
                             <el-table-column
                                 align="center"
-                                label="Estato"
+                                label="Estado"
                                 width="100">
                                 <template scope="scope">
                                     <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
+                                    :type="scope.row.chrStatus === 'E' ? 'danger' : 'success'"
                                     size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
+                                    >{{scope.row.chrStatus=== 'E'?'Inactivo':'Activo'}}                                    
                                     </el-button>
                                     </template>
                             </el-table-column>
@@ -150,24 +151,12 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>
-    <b-modal ref="myModalRef" hide-footer title="Eliminar Tipo de Medio de Pago" size="sm"  v-model="medioDialog" @keydown.native.enter="deleteMedioPago">
-      <div style="height:85px">
-        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea eliminar la tipo de medio de pago {{documento.strPayWay_Cod}}? </span>
-      </div>
-      <footer class="modal-footer">
-        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteMedioPago()"/>
-        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="medioDialog = false"/>
-      </footer>
-    </b-modal>     
+    </b-modal>    
     </div>  
 </template>
 <script>
-
-import ModificarMedioPagoComponent from '@/components/XX-CONFI/maestro_datos/medio_pago/modificar_mediopago.component'
-export default ModificarMedioPagoComponent
+import VisualizarPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/visualizar_planlocal.component'
+export default VisualizarPlanLocalComponent
 </script>
-<style scoped>
-    
+<style scoped>    
 </style>

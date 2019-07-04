@@ -43,11 +43,11 @@ export default class ViewAndEditServicioComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Servicio Prestado';
+            this.textTitle='Modificar Serv. Prestado ND';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Servicio Prestado';
+            this.textTitle='Visualizar Serv. Prestado ND';
         }
 
     }  
