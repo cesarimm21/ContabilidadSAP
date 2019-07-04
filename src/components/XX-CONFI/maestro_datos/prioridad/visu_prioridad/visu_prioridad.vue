@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
-                                    <el-table
+                                      <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
@@ -69,10 +69,17 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column
-                                            prop="dtmModifies_Date" sortable   width="100"
-                                            label="Fecha">
+                                            prop="intPriority_Days" sortable  width="80"
+                                            label="Dias">
                                             <template scope="scope">
-                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.dtmModifies_Date }}</label>
+                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.intPriority_Days }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column :render-header="filterdtmModified_Date"
+                                            prop="dtmModified_Date"   width="80"
+                                            label="Fecha ">
+                                            <template scope="scope">
+                                                <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                             </template>
                                         </el-table-column>
                                         <el-table-column

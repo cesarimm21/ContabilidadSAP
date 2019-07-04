@@ -62,15 +62,15 @@
                             <el-table-column  :render-header="filterstrDocIdent_Name"
                              prop="strDocIdent_Name" min-width="180" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
-                                prop="strCreation_User" 
+                            <el-table-column :render-header="filterstrModified_User"
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
                             <el-table-column

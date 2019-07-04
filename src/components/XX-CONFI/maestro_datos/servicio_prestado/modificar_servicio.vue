@@ -60,18 +60,18 @@
                             prop="strNDServ_Cod" label="Serv. Prestado ND" width="120" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrNDServ_Desc"
-                             prop="strNDServ_Desc" min-width="200" label="Descripcion">
+                             prop="strNDServ_Desc"  label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column :render-header="filterstrCreation_User"
                             width="100" align="center"
-                                prop="strCreation_User" 
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
                             <el-table-column
