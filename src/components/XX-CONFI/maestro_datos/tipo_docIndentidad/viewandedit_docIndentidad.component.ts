@@ -43,11 +43,11 @@ export default class ViewAndEditDocIdentidadComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Tipo de Documento Identidad';
+            this.textTitle='Modificar Tipo Doc. Identidad';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Tipo de Documento Identidad';
+            this.textTitle='Visualizar Tipo Doc. Identidad';
         }
 
     }  
@@ -59,7 +59,7 @@ export default class ViewAndEditDocIdentidadComponent extends Vue {
         this.documento.strModified_User=user;
         let loadingInstance = Loading.service({
           fullscreen: true,
-          text: 'Guardando...',
+          text: 'Actualizando...',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.8)'
           }

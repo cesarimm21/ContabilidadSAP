@@ -76,9 +76,17 @@ export default class ModificarCategoriaLineaComponent extends Vue {
     guardarTodo(){
         if(this.categorialinea.strCategItem_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Guardando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+            );   
             this.categorialinea.chrStatus='A';
             categoriaLineaService.UpdateCategoriaLinea(this.categorialinea)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -89,6 +97,7 @@ export default class ModificarCategoriaLineaComponent extends Vue {
                 this.textosave = 'Se guardo correctamente. '+resp.strCategItem_Cod;
                 this.categorialinea=new CategoriaLineaModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',

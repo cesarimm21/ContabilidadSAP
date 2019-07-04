@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text">  
@@ -54,23 +54,20 @@
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrCurrency_Cod"
-                            prop="strCurrency_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strCurrency_Cod" label="Moneda" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrCurrency_Desc"
                              prop="strCurrency_Desc" min-width="180" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterstrReference"
-                            prop="strReference" label="Reference" width="100" align="center">                                
-                            </el-table-column>
                             <el-table-column :render-header="filterstrCountry"
-                            prop="strCountry" label="Pais" width="100" align="center">                                
+                            prop="strCountry" label="Pais" width="130" align="center">                                
                             </el-table-column>                           
                             <el-table-column :render-header="filterdtmCreation_Date"
                                 prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                                label="Fecha Creado">
                                 <template scope="scope">
                                     <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
                                 </template>
@@ -155,7 +152,17 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal> 
+    <b-modal ref="myModalRef" hide-footer title="Eliminar Moneda" size="sm"  v-model="monedaDialog" @keydown.native.enter="deleteMoney">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea eliminar la moneda? {{moneda.strCurrency_Cod}}</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteMoney()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="monedaDialog = false"/>
+      </footer>
+    </b-modal>   
     </div>  
 </template>
 <script>

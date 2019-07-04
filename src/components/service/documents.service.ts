@@ -4,7 +4,7 @@ import GLOBAL from '../../Global';
 export default{
     headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
     deleteDocuments(intDocID){
-        return axios.delete(CONFIG.API_URL+'documentos/delete/'+intDocID+'/'+localStorage.getItem('User_Usuario'), {headers: this.headers})
+        return axios.get(CONFIG.API_URL+'documentos/delete/'+intDocID+'/'+localStorage.getItem('User_Usuario'), {headers: this.headers})
       .then(response => {
         return response.data
       })

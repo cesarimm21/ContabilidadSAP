@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Moneda</span>
+                <span class="labelheadercard" > Visualizar Moneda</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text">  
@@ -54,23 +54,20 @@
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrCurrency_Cod"
-                            prop="strCurrency_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strCurrency_Cod" label="Moneda" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrCurrency_Desc"
                              prop="strCurrency_Desc" min-width="180" label="Descripcion">
-                            </el-table-column>
-                            <el-table-column :render-header="filterstrReference"
-                            prop="strReference" label="Reference" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrCountry"
                             prop="strCountry" label="Pais" width="100" align="center">                                
                             </el-table-column>                           
                             <el-table-column :render-header="filterdtmCreation_Date"
                                 prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                                label="Fecha Creado">
                                 <template scope="scope">
                                     <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
                                 </template>
@@ -81,13 +78,13 @@
                             </el-table-column>
                             <el-table-column
                                 align="center"
-                                label="Estato"
+                                label="Estado"
                                 width="100">
                                 <template scope="scope">
                                     <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
+                                    :type="scope.row.chrStatus === 'E' ? 'danger' : 'success'"
                                     size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
+                                    >{{scope.row.chrStatus=== 'E'?'Inactivo':'Activo'}}                                    
                                     </el-button>
                                     </template>
                             </el-table-column>

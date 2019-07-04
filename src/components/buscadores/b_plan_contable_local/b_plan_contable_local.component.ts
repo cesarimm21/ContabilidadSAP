@@ -2,7 +2,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
-import {PlanCuentaModel} from '@/modelo/maestro/plancuenta';
+import {PlanConLocalModel} from '@/modelo/maestro/plancontlocal';
 import plancontableService from '@/components/service/planCuentaContable.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
@@ -33,9 +33,9 @@ export default class  BPlanContableLocalComponent extends Vue {
   //Modelos
   articulos:any =[];
 
-  public cuentacontableModel:Array<PlanCuentaModel>=[];
-  public cuentacontableModel1:Array<PlanCuentaModel>=[];
-  public cuentacontableSelectModel:PlanCuentaModel=new PlanCuentaModel();
+  public cuentacontableModel:Array<PlanConLocalModel>=[];
+  public cuentacontableModel1:Array<PlanConLocalModel>=[];
+  public cuentacontableSelectModel:PlanConLocalModel=new PlanConLocalModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();  
@@ -45,7 +45,7 @@ export default class  BPlanContableLocalComponent extends Vue {
   clickColumn:string='';
   Column:string='';
 
-  public search:PlanCuentaModel=new PlanCuentaModel();
+  public search:PlanConLocalModel=new PlanConLocalModel();
   inputAtributo:any;
 
   constructor() {
@@ -180,7 +180,7 @@ export default class  BPlanContableLocalComponent extends Vue {
     if(this.blnfilterstrChartAcct_L_Desc){
       this.Column=column1;
       this.clickColumn=column.property;
-      this.search=new PlanCuentaModel();
+      this.search=new PlanConLocalModel();
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -197,7 +197,7 @@ export default class  BPlanContableLocalComponent extends Vue {
     if(this.blnfilterstrChartAcct_L_Cod){
       this.Column=column1;
       this.clickColumn=column.property;
-      this.search=new PlanCuentaModel();
+      this.search=new PlanConLocalModel();
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -212,14 +212,14 @@ export default class  BPlanContableLocalComponent extends Vue {
     this.Column=val.label;
     if(val.property=="strChartAcct_L_Cod"){
       this.clickColumn=val.property;  
-      this.search=new PlanCuentaModel();  
+      this.search=new PlanConLocalModel();  
       this.inputAtributo='';  
       this.blnfilterstrChartAcct_L_Cod=true;
       this.blnfilterstrChartAcct_L_Desc=false;
     }
     if(val.property=="strChartAcct_L_Desc"){
       this.clickColumn=val.property;
-      this.search=new PlanCuentaModel();
+      this.search=new PlanConLocalModel();
       this.inputAtributo='';
       this.blnfilterstrChartAcct_L_Cod=false;
       this.blnfilterstrChartAcct_L_Desc=true;

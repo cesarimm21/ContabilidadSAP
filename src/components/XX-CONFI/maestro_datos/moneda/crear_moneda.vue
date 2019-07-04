@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text" :maxlength="4">  
+                                    <el-input @keyup.enter="$refs.text.focus" class="validador" size ="small" v-model="moneda.strCurrency_Cod" type="text" :maxlength="4" :autofocus="true">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -36,26 +36,17 @@
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-4 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="moneda.strCurrency_Desc"  >
+                                    <div class="input-group mb-3">
+                                        <el-input ref="text" @keydown.native.enter="nextFocus('B')" class="validador" size="small" v-model="moneda.strCurrency_Desc" >
                                         </el-input>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Referencia</label>
-                                <div class="col-sm-4 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="moneda.strReference"  >
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>   
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_pais" @focus="activar_pais" v-model="moneda.strCountry">                            
+                                    <el-input  class="validador" size ="small" @blur="desactivar_pais" @focus="activar_pais" v-model="moneda.strCountry" >                            
                                         <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                     </el-input>
                                     </div>

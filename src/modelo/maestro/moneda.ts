@@ -5,7 +5,6 @@ export class MonedaModel {
     strAcc_Corp_NO:string;
     strCurrency_Cod:string ;
     strCurrency_Desc:string ;
-    strReference:string ;
 	strCountry:string ;
 	
     strCreation_User:string ;      
@@ -20,7 +19,6 @@ export class MonedaModel {
         this.strAcc_Corp_NO='';
         this.strCurrency_Cod='';
         this.strCurrency_Desc='';
-        this.strReference='';
         this.strCountry='';
     }
 }

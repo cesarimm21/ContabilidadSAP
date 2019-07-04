@@ -10,8 +10,20 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllMonedaView(){   
+    return axios.get(CONFIG.API_URL+'moneda/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneMoneda(code){
     return axios.get(CONFIG.API_URL+'moneda/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  deleteMoneda(intIdCurrency_ID){
+    return axios.get(CONFIG.API_URL+'moneda/delete/'+intIdCurrency_ID)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

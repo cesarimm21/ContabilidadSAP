@@ -36,8 +36,9 @@
                                 <label class="el-form-item__label col-md-3" >Servicio</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="factura.strPO_NO" type="text" disabled>  
-                                     </el-input>
+                                     <el-input class="validador" size ="small" @blur="desactivar_hes" @focus="activar_hes" v-model="factura.strPO_NO" type="text" :disabled="tipoRequiDisabled">  
+                                        <el-button v-if="btnactivarHes && !dialogHes" slot="append" class="boton" icon="fa fa-clone" @click="loadHes()" :disabled="tipoRequiDisabled"></el-button>                           
+                                    </el-input>
                                     </div>
                                 </div> 
                             </div>
@@ -509,11 +510,7 @@
         <div class="footer1">
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
-                <div class="col-sm-2">
-                    <!-- <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
-                         <b-progress-bar :value="valuem" :label="valuem + '%'" />
-                    </b-progress> -->
-                </div>
+                
                 <img  src="../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <img src="../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <span class="footertext2" style="" >{{textosave}}</span>
@@ -540,7 +537,7 @@
             </bimpuesto>
         </el-dialog>
     
-         <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
+         <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="medium" >
             <div>
                 <el-card class="box-card">
                 <div slot="header" class="headercard">
@@ -571,13 +568,71 @@
                     @header-click="headerclick"
                     @row-dblclick="checkOrdenCompra"
                     @current-change="selectOrdenCompra">
-                    <el-table-column :render-header="filterstrPO_NO" prop="strPO_NO" label="Orden Compra" width="80">
+                    <el-table-column :render-header="filterstrPO_NO" prop="strPO_NO" label="Orden Compra" width="100">
                     </el-table-column>  
-                    <el-table-column :render-header="filterstrPO_Desc" prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
+                    <el-table-column :render-header="filterstrPO_Desc" prop="strPO_Desc" label="Descripcion" width="320">
                     </el-table-column>
                     <el-table-column :render-header="filterstrVendor_NO" prop="strVendor_NO"  label="Proveedor" width="80">
                     </el-table-column>  
-                    <el-table-column  :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre Proveedor" style="width: 70% !important;">
+                    <el-table-column  :render-header="filterstrVendor_Desc" prop="strVendor_Desc" label="Nombre Proveedor" width="320">
+                    </el-table-column>
+                    <el-table-column prop="strTipReq_Desc" label="Tipo Requisicion" width="120">
+                    </el-table-column>
+                    
+                </el-table>
+            </el-card>
+            <br/>
+            <footer class="modal-footer">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenCompra()">
+                <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                </el-button>
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenCompra()">
+                <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                </el-button>
+            </footer>
+            </div>
+        </el-dialog>
+
+         <el-dialog title="Busqueda Servicio"  :visible.sync="dialogHes" size="small" >
+            <div>
+                <el-card class="box-card">
+                <div slot="header" class="headercard">
+                    <span class="labelheadercard" >Buscar servicios</span>
+                </div>
+                <div class="row bodycard">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="el-form-item__label col-md-3" >{{ColumnHes}}</label>
+                            <div class="col-md-2 grupolabel">
+                                <div class="input-group mb-3" >
+                                <el-input size ="small" v-model="inputAtributoHes">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarHes()"
+                                        > </el-button>
+                                    </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <el-table
+                    :data="gridHes"
+                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
+                    height="250"
+                    highlight-current-row
+                    @header-click="headerclick"
+                    @row-dblclick="checkHes"
+                    @current-change="selectHes">
+                    <el-table-column :render-header="filterstrHES_NO" prop="strHES_NO" label="HES" width="100">
+                    </el-table-column>  
+                    <el-table-column :render-header="filterstrDesc_Header" prop="strDesc_Header" label="Descripcion" width="260">
+                    </el-table-column>
+                    <el-table-column :render-header="filterstrPO_Item_Desc" prop="strAuthsd_BYInt"  label="Responsable" width="200">
+                    </el-table-column>  
+                    <el-table-column  :render-header="filterstrCategItem_Cod" prop="strCategItem_Cod" label="Categoria Linea" width="100">
+                    </el-table-column>
+                    <el-table-column prop="fltTot_QTY" label="Cantidad Total" width="120" align="right">
                     </el-table-column>
                     
                 </el-table>

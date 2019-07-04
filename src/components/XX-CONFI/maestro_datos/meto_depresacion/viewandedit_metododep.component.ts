@@ -43,11 +43,11 @@ export default class ViewAndEditMetodoDepComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Metodo Depresacion';
+            this.textTitle='Modificar Metodo Depreciacion';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Metodo Depresacion';
+            this.textTitle='Visualizar Metodo Depreciacion';
         }
 
     }  

@@ -62,26 +62,35 @@ export default class CrearTipoCambioComponent extends Vue {
     guardarTodo(){
         if(this.TipoCambio.fltExchRate_Buy<=0){ this.$message('Valor de compra debe ser mayor a 0')}
         if(this.TipoCambio.fltExchRate_Sale<=0){ this.$message('Valor de venta debe ser mayor a 0')}
-        else{           
+        else{        
+          let loadingInstance = Loading.service({
+            fullscreen: true,
+            text: 'Guardando...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.8)'
+            }
+            );        
             var user:any=localStorage.getItem('User_Usuario');
             this.TipoCambio.dtmExchRate_Date=new Date(this.fecha_actual);
             this.TipoCambio.strCreation_User=user;
             this.TipoCambio.chrStatus='A';   
             TipoCambioService.CreateTipoCambio(this.TipoCambio)
             .then(resp=>{
+              loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '
+                    message: ' '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. ';
+                this.textosave = ' '+resp;
                 this.TipoCambio=new TipoCambioModel();
                 this.fecha_año= (this.TipoCambio.intExchRate_Year+1).toString();
                 this.btnactivarmoneda1=false;
                 this.btnactivarmoneda2=false;
             }).catch(error=>{
+              loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',

@@ -68,11 +68,11 @@ export default class CrearMetodoDepComponent extends Vue {
             this.$message({
               showClose: true,
                 type:'error',
-                message: 'No se guardo Correctamente '
+                message: 'Ya existe Metodo Depreciacion '
               });
               this.issave = false;
               this.iserror = true;
-              this.textosave = 'No se guardo Correctamente ';
+              this.textosave = 'Ya existe Metodo Depreciacion';
           })
       }
       else{

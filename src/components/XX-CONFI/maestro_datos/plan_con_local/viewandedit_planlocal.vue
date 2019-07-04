@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Tipo de Medio de Pago</label>
+                                <label class="el-form-item__label col-md-2" >Aduana</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strPayWay_Cod" style="text-transform: capitalize" type="text" disabled>  
+                                    <el-input class="validador" size ="small" v-model="documento.strChartAcct_L_Cod" style="text-transform: capitalize" type="text" :maxlength="1" disabled>  
                                     </el-input>
                                     </div>
                                 </div>
@@ -38,7 +38,7 @@
                                 
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-6" >
-                                        <el-input  class="validador" size="small" v-model="documento.strPayWay_Desc" :disabled="enabledtf" >
+                                        <el-input  class="validador" size="small" v-model="documento.strChartAcct_L_Desc" :disabled="enabledtf" >
                                         </el-input>
                                     </div>
                                 </div>
@@ -76,8 +76,8 @@
 </template>
 <script>
 
-import ViewAndEditMedioPagoComponent from '@/components/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago.component'
-export default ViewAndEditMedioPagoComponent
+import ViewAndEditPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal.component'
+export default ViewAndEditPlanLocalComponent
 </script>
 <style scoped>
    .sinLinea{

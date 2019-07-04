@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  DeleteMetodoDep(intIdDeprMeth_ID){ 
+    return axios.get(CONFIG.API_URL+'metododepreciacion/delete/'+intIdDeprMeth_ID)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateMetodoDep(comprobante){
     return axios.post(CONFIG.API_URL+'metododepresacion/create', comprobante)
     .then(response =>{

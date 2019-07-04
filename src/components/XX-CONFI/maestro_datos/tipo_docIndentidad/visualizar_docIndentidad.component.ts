@@ -153,71 +153,36 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+      this.warningMessage('Accion no permitida')
   }
   async validad(){      
     var data=this.like(this.gridDocumento1,'strDocIdent_NO',this.documento.strDocIdent_NO)
     this.documento=data[0];
-    if(this.documento.intIdDocIdent_ID!=undefined){
+    if(this.documento.intIdDocIdent_ID!=-1){
       await setTimeout(() => {
         debugger;
-        if(this.documento.strDocIdent_NO!=undefined){
+        if(this.documento.strDocIdent_NO!=''){
           router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Tipo Documento Identidad. ';
-      this.warningMessage('No existe Tipo Documento Identidad. ');
+      this.textosave='No existe Tipo Doc. Identidad. ';
+      this.warningMessage('No existe Tipo Do. Identidad. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdDocIdent_ID!=undefined){
+      if(this.documento.intIdDocIdent_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strDocIdent_NO!=undefined){
+            if(this.documento.strDocIdent_NO!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Tipo Documento Identidad. ';
-          this.warningMessage('Seleccione Tipo Documento Identidad. ');
+          this.textosave='Seleccione Tipo Doc. Identidad. ';
+          this.warningMessage('Seleccione Tipo Doc. Identidad. ');
         }
       }
     siguiente(){

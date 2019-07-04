@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Comprobante</label>
+                                <label class="el-form-item__label col-md-2" >Serv. Prestado ND</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strNDServ_Cod" style="text-transform: capitalize" type="text" :disabled="enabledtf">  
+                                    <el-input class="validador" size ="small" v-model="documento.strNDServ_Cod" style="text-transform: capitalize" type="text" disabled>  
                                     </el-input>
                                     </div>
                                 </div>

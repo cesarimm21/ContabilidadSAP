@@ -43,6 +43,7 @@ export default class ModificarMetodoDepComponent extends Vue {
   blnilterstrDeprMeth_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  metodoDialog:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-metododep';
@@ -152,44 +153,48 @@ export default class ModificarMetodoDepComponent extends Vue {
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
-  }
+    async EliminarItem(){
+      this.metodoDialog=true;
+    }
+    deleteServicio(){
+      if(this.documento.strDeprMeth_Cod!=''){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Eliminando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          ); 
+        metodoService.DeleteMetodoDep(this.documento.intIdDeprMeth_ID)
+        .then(resp=>{
+          loadingInstance.close();
+          this.metodoDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'Se Elimino correctamente '+resp,
+              type: 'success'
+            });
+  
+            this.documento=new MetodoDepreciacionModel();
+            this.load();
+            this.issave = true;
+            this.iserror = false;
+            this.textosave = 'Se Elimino Correctamente '+resp;
+        })
+        .catch(error=>{
+          loadingInstance.close();
+          this.metodoDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'No se elimino',
+              type: 'error'
+            });
+        })
+        }
+        else{
+            this.warningMessage('Seleccione. ');
+        }
+    }
   async validad(){      
     var data=this.like(this.gridDocumento1,'strDeprMeth_Cod',this.documento.strDeprMeth_Cod)
     this.documento=data[0];
@@ -202,8 +207,8 @@ export default class ModificarMetodoDepComponent extends Vue {
       }, 600)
     }
     else{
-      this.textosave='No existe Metodo Depresacion. ';
-      this.warningMessage('No existe Metodo Depresacion. ');
+      this.textosave='No existe Metodo Depreciacion. ';
+      this.warningMessage('No existe Metodo Depreciacion. ');
     }
   }
    async validarView(){
@@ -216,8 +221,8 @@ export default class ModificarMetodoDepComponent extends Vue {
           }, 600)
         }
         else{
-          this.textosave='Seleccione Metodo Depresacion. ';
-          this.warningMessage('Seleccione Metodo Depresacion. ');
+          this.textosave='Seleccione Metodo Depreciacion. ';
+          this.warningMessage('Seleccione Metodo Depreciacion. ');
         }
       }
     siguiente(){

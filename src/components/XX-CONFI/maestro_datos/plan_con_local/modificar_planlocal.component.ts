@@ -4,19 +4,19 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-import {MonedaModel} from '@/modelo/maestro/moneda';
+import {PlanConLocalModel} from '@/modelo/maestro/plancontlocal';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import monedaService from '@/components/service/moneda.service';
+import planService from '@/components/service/planCuentaContable.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'modificar-moneda',
+  name: 'modificar-planconlocal',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
-export default class ModificarMonedaComponent extends Vue {
+export default class ModificarPlanLocalComponent extends Vue {
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
@@ -25,10 +25,10 @@ export default class ModificarMonedaComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
-  public moneda:MonedaModel=new MonedaModel();
-  gridMoneda:MonedaModel[];
-  gridMoneda1:MonedaModel[];
-  gridMoneda2:MonedaModel[];
+  public documento:PlanConLocalModel=new PlanConLocalModel();
+  gridDocumento:PlanConLocalModel[];
+  gridDocumento1:PlanConLocalModel[];
+  gridDocumento2:PlanConLocalModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -39,15 +39,14 @@ export default class ModificarMonedaComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blnilterstrCurrency_Cod:boolean=false;
-  blnilterstrCurrency_Desc:boolean=false;
-  blnilterstrCountry:boolean=false;
+  blnilterstrChartAcct_L_Cod:boolean=false;
+  blnilterstrChartAcct_L_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
-  monedaDialog:boolean=false;
+  planDialog:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='modificar-almacen';
+        Global.nameComponent='modificar-planconlocal';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -55,14 +54,14 @@ export default class ModificarMonedaComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        monedaService.GetAllMoneda()
+        planService.GetAllPlanConLocal()
         .then(response=>{
-          this.gridMoneda=[];
-          this.gridMoneda1=[];
-          this.gridMoneda2=[];
-          this.gridMoneda=response;
-          this.gridMoneda1=response;
-          this.gridMoneda2=response;
+          this.gridDocumento=[];
+          this.gridDocumento1=[];
+          this.gridDocumento2=[];
+          this.gridDocumento=response;
+          this.gridDocumento1=response;
+          this.gridDocumento2=response;
         })
     }
     getDateStringView(fecha:string){
@@ -74,13 +73,13 @@ export default class ModificarMonedaComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
-    handleCurrentChange(val:MonedaModel){
-      this.moneda=val;
+    handleCurrentChange(val:PlanConLocalModel){
+      this.documento=val;
      }
     btnBuscar(){
-      var data=this.like(this.gridMoneda1,this.clickColumn,this.txtbuscar)
-      this.gridMoneda=[];
-      this.gridMoneda=data;
+      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      this.gridDocumento=[];
+      this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
     }
     like(array, key,keyword) {
@@ -131,35 +130,34 @@ export default class ModificarMonedaComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
       );
-      var data=await this.sortByKeyAsc(this.gridMoneda1,this.clickColumn) 
-      this.gridMoneda2=[];
-      this.gridMoneda2=data;
-      this.gridMoneda = await this.gridMoneda2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       await loading.close();
     }
     DscItem(){
-      var data=this.sortByKeyDesc(this.gridMoneda1,this.clickColumn) 
-      this.gridMoneda2=[];
-      this.gridMoneda2=data;
-      this.gridMoneda = this.gridMoneda2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     
     }
     Limpiar(){
-      this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blnilterstrCurrency_Cod=false;
-      this.blnilterstrCurrency_Desc=false; 
-      this.blnilterstrCountry=false; 
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrChartAcct_L_Cod=false;
+      this.blnilterstrChartAcct_L_Desc=false;
       this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false; 
+      this.blnilterstrCreation_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-    this.monedaDialog=true;    
+    this.planDialog=true;
   }
-  deleteMoney(){
-    if(this.moneda.strCurrency_Cod!=''){
+  deletePlan(){
+    if(this.documento.strChartAcct_L_Cod!=''){
       let loadingInstance = Loading.service({
         fullscreen: true,
         text: 'Eliminando...',
@@ -167,17 +165,17 @@ export default class ModificarMonedaComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
         ); 
-      monedaService.deleteMoneda(this.moneda.intIdCurrency_ID)
+      planService.deletePlanConLocal(this.documento.intIdChartAcct_L_ID)
       .then(resp=>{
         loadingInstance.close();
-        this.monedaDialog=false;
+        this.planDialog=false;
         this.$message({
             showClose: true,
             message: 'Se Elimino correctamente '+resp,
             type: 'success'
           });
 
-          this.moneda=new MonedaModel();
+          this.documento=new PlanConLocalModel();
           this.load();
           this.issave = true;
           this.iserror = false;
@@ -185,7 +183,7 @@ export default class ModificarMonedaComponent extends Vue {
       })
       .catch(error=>{
         loadingInstance.close();
-        this.monedaDialog=false;
+        this.planDialog=false;
         this.$message({
             showClose: true,
             message: 'No se elimino',
@@ -194,49 +192,49 @@ export default class ModificarMonedaComponent extends Vue {
       })
       }
       else{
-          this.warningMessage('Seleccione moneda. ');
+          this.warningMessage('Seleccione. ');
       }
   }
-  async validad(){   
-    var data=this.like(this.gridMoneda1,'strCurrency_Cod',this.moneda.strCurrency_Cod)
-    this.moneda=data[0];
-    if(this.moneda.intIdCurrency_ID!=undefined){
+  async validad(){      
+    var data=this.like(this.gridDocumento1,'strChartAcct_L_Cod',this.documento.strChartAcct_L_Cod)
+    this.documento=data[0];
+    if(this.documento.intIdChartAcct_L_ID!=-1){
       await setTimeout(() => {
         debugger;
-        if(this.moneda.strCurrency_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/moneda/viewandedit_moneda`, query: { vista:'modificar' ,data:JSON.stringify(this.moneda) }  })
+        if(this.documento.strChartAcct_L_Cod!=''){
+          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Moneda. ';
-      this.warningMessage('No existe Moneda. ');
+      this.textosave='No existe Plan Contable Local. ';
+      this.warningMessage('No existe Plan Contable Local. ');
     }
   }
    async validarView(){
-      if(this.moneda.intIdCurrency_ID!=undefined){
+      if(this.documento.intIdChartAcct_L_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.moneda.strCurrency_Cod!=undefined){
-              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/moneda/viewandedit_moneda`, query: { vista:'modificar' ,data:JSON.stringify(this.moneda) }  })
+            if(this.documento.strChartAcct_L_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Moneda. ';
-          this.warningMessage('Seleccione Moneda. ');
+          this.textosave='Seleccione Plan Contable Local. ';
+          this.warningMessage('Seleccione Plan Contable Local. ');
         }
       }
     siguiente(){
       if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
         this.pagina++;
-        this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     anterior(){
       if(this.pagina>1){
       this.pagina--;
-      this.gridMoneda = this.gridMoneda1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     warningMessage(newMsg : string) {
@@ -250,50 +248,37 @@ export default class ModificarMonedaComponent extends Vue {
   headerclick(val){    
       this.Column=val.label;
       Global.setColumna(this.Column);     
-      if(val.property=="strCurrency_Cod"){
-          this.clickColumn="strCurrency_Cod";
-          this.blnilterstrCurrency_Cod=true;
-          this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+      if(val.property=="strChartAcct_L_Cod"){
+          this.clickColumn="strChartAcct_L_Cod";
+          this.blnilterstrChartAcct_L_Cod=true;
+      this.blnilterstrChartAcct_L_Desc=false;
+      this.blnilterdtmCreation_Date=false;
+      this.blnilterstrCreation_User=false;
       }
-      if(val.property=="strCurrency_Desc"){
-          this.clickColumn="strCurrency_Desc";
-          this.blnilterstrCurrency_Cod=false;
-          this.blnilterstrCurrency_Desc=true; 
-          this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+      if(val.property=="strCustom_Desc"){
+          this.clickColumn="strCustom_Desc";
+          this.blnilterstrChartAcct_L_Cod=false;
+      this.blnilterstrChartAcct_L_Desc=true;
+      this.blnilterdtmCreation_Date=false;
+      this.blnilterstrCreation_User=false;
       }
-      if(val.property=="strCountry"){
-          this.clickColumn="strCountry";
-          this.blnilterstrCurrency_Cod=false;
-          this.blnilterstrCurrency_Desc=false;
-          this.blnilterstrCountry=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
-      }
-      
       if(val.property=="dtmCreation_Date"){
           this.clickColumn="dtmCreation_Date";
-          this.blnilterstrCurrency_Cod=false;
-          this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=true;
-          this.blnilterstrCreation_User=false;
+          this.blnilterstrChartAcct_L_Cod=false;
+      this.blnilterstrChartAcct_L_Desc=false;
+      this.blnilterdtmCreation_Date=true;
+      this.blnilterstrCreation_User=false;
       }
       if(val.property=="strCreation_User"){
           this.clickColumn="strCreation_User";
-          this.blnilterstrCurrency_Cod=false;
-          this.blnilterstrCurrency_Desc=false; 
-          this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=true;
+          this.blnilterstrChartAcct_L_Cod=false;
+      this.blnilterstrChartAcct_L_Desc=false;
+      this.blnilterdtmCreation_Date=false;
+      this.blnilterstrCreation_User=true;
       }        
   }
-  filterstrCurrency_Cod(h,{column,$index}){
-      if(this.blnilterstrCurrency_Cod){
+  filterstrChartAcct_L_Cod(h,{column,$index}){
+      if(this.blnilterstrChartAcct_L_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -302,18 +287,8 @@ export default class ModificarMonedaComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCurrency_Desc(h,{column,$index}){        
-      if(this.blnilterstrCurrency_Desc){
-        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-          , column.label)])
-      }
-      else{
-        return h('span',{style: 'padding-left: 5px;'}, column.label);
-      } 
-    }
-    filterstrCountry(h,{column,$index}){        
-      if(this.blnilterstrCountry){
+    filterstrChartAcct_L_Desc(h,{column,$index}){        
+      if(this.blnilterstrChartAcct_L_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -322,6 +297,7 @@ export default class ModificarMonedaComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }    
+   
     filterdtmCreation_Date(h,{column,$index}){
       
       if(this.blnilterdtmCreation_Date){
@@ -356,9 +332,9 @@ export default class ModificarMonedaComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            gridMoneda:[],
-            gridMoneda1:[],
-            gridMoneda2:[],
+            gridDocumento:[],
+            gridDocumento1:[],
+            gridDocumento2:[],
         }
     }
   

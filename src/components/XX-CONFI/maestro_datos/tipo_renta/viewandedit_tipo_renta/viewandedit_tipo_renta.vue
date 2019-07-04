@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Tipo Renta</span>
+            <span class="labelheadercard" >Modificar Tipo de Renta</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -27,7 +27,7 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                         </div>
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Tipo Operacion</label>
+                            <label class="el-form-item__label col-md-2" >Tipo Renta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="cod_tiporenta"  placeholder="">
@@ -56,13 +56,13 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strReveType_Cod" width="100" label="Tipo Renta">
+                                        <el-table-column   prop="strReveType_Cod" width="100" label="Tipo Renta">
                                             <template scope="scope">
                                             <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strReveType_Cod }}</label>
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
-                                            prop="strReveType_Desc" sortable  
+                                            prop="strReveType_Desc"   
                                             label="Descripcion">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strReveType_Desc }}</label>

@@ -43,6 +43,7 @@ export default class ModificarServicioComponent extends Vue {
   blnilterstrNDServ_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  servicioDialog:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-adquisicion';
@@ -152,72 +153,76 @@ export default class ModificarServicioComponent extends Vue {
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
-  }
+    async  EliminarItem(){
+      this.servicioDialog=true;
+    }
+    deleteServicio(){
+      if(this.documento.strNDServ_Cod!=''){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Eliminando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          ); 
+        servicioService.DeleteServicioPrestado(this.documento.intIdNDServ_ID)
+        .then(resp=>{
+          loadingInstance.close();
+          this.servicioDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'Se Elimino correctamente '+resp,
+              type: 'success'
+            });
+  
+            this.documento=new ServicioPrestadoModel();
+            this.load();
+            this.issave = true;
+            this.iserror = false;
+            this.textosave = 'Se Elimino Correctamente '+resp;
+        })
+        .catch(error=>{
+          loadingInstance.close();
+          this.servicioDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'No se elimino',
+              type: 'error'
+            });
+        })
+        }
+        else{
+            this.warningMessage('Seleccione. ');
+        }
+    }
   async validad(){      
     var data=this.like(this.gridDocumento1,'strNDServ_Cod',this.documento.strNDServ_Cod)
     this.documento=data[0];
-    if(this.documento.intIdNDServ_ID!=undefined){
+    if(this.documento.intIdNDServ_ID!=-1){
       await setTimeout(() => {
         debugger;
-        if(this.documento.strNDServ_Cod!=undefined){
+        if(this.documento.strNDServ_Cod!=''){
           router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Servicio Prestado ';
-      this.warningMessage('No existe Servicio Prestado. ');
+      this.textosave='No existe Serv. Prestado ND ';
+      this.warningMessage('No existe Serv. Prestado ND. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdNDServ_ID!=undefined){
+      if(this.documento.intIdNDServ_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strNDServ_Cod!=undefined){
+            if(this.documento.strNDServ_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Servicio Prestado. ';
-          this.warningMessage('Seleccione Servicio Prestado. ');
+          this.textosave='Seleccione Serv. Prestado ND. ';
+          this.warningMessage('Seleccione Serv. Prestado ND. ');
         }
       }
     siguiente(){
