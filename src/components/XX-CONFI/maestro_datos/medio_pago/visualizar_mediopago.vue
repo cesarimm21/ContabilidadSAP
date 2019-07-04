@@ -57,7 +57,7 @@
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filtersstrPayWay_Cod"
-                            prop="strPayWay_Cod" label="Tipo de Medio de Pago" width="120" align="center">                                
+                            prop="strPayWay_Cod" label="Medio Pago" width="120" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrPayWay_Desc"
                              prop="strPayWay_Desc" min-width="200" label="Descripcion">

@@ -69,8 +69,15 @@
                                             </template>
                                         </el-table-column>
                                        
+                                        <el-table-column :render-header="filterdtmModified_Date"
+                                            prop="dtmModified_Date"   width="100"
+                                            label="Fecha">
+                                            <template scope="scope">
+                                                <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
+                                            </template>
+                                        </el-table-column>
                                         <el-table-column
-                                            prop="strModified_User" sortable  
+                                            prop="strModified_User" sortable  width="100"
                                             label="Usuario">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>

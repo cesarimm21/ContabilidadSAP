@@ -64,7 +64,7 @@
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
-                                label="Fecha Creada">
+                                label="Fecha">
                                 <template scope="scope">
                                     <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>

@@ -56,7 +56,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strTypeOper_Cod" width="100" label="Region">
+                                        <el-table-column  sortable prop="strTypeOper_Cod" width="100" label="Tipo Operacion">
                                             <template scope="scope">
                                             <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strTypeOper_Cod }}</label>
                                             </template>
@@ -68,9 +68,15 @@
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strTypeOper_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                       
+                                        <el-table-column :render-header="filterdtmModified_Date"
+                                            prop="dtmModified_Date"   width="100"
+                                            label="Fecha">
+                                            <template scope="scope">
+                                                <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
+                                            </template>
+                                        </el-table-column>
                                         <el-table-column
-                                            prop="strModified_User" sortable  
+                                            prop="strModified_User" sortable  width="100"
                                             label="Usuario">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>
