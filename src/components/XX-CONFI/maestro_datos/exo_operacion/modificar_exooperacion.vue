@@ -57,21 +57,21 @@
                             <el-table-column type="index" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrNDExonIR_Cod"
-                            prop="strNDExonIR_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strNDExonIR_Cod" label="Exoneracion Oper. ND" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrNDExonIR_Desc"
                              prop="strNDExonIR_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
+                            <el-table-column :render-header="filterstrModified_User"
                             width="100" align="center"
-                                prop="strCreation_User" 
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
                             <el-table-column
