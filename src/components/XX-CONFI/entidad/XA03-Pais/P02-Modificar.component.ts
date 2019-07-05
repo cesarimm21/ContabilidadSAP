@@ -45,6 +45,7 @@ export default class ModificarPaisComponent extends Vue {
   blnilterstrCountry_Curr:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  paisDialog:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-pais';
@@ -156,72 +157,76 @@ export default class ModificarPaisComponent extends Vue {
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
-  }
+    async EliminarItem(){
+      this.paisDialog=true;    
+    }
+    deletPais(){
+      if(this.pais.strCountry_Cod!=''){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Eliminando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          ); 
+        paisService.deletePais(this.pais.intIdCountry_ID)
+        .then(resp=>{
+          loadingInstance.close();
+          this.paisDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'Se Elimino correctamente '+resp,
+              type: 'success'
+            });
+  
+            this.pais=new PaisModel();
+            this.load();
+            this.issave = true;
+            this.iserror = false;
+            this.textosave = 'Se Elimino Correctamente '+resp;
+        })
+        .catch(error=>{
+          loadingInstance.close();
+          this.paisDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'No se elimino',
+              type: 'error'
+            });
+        })
+        }
+        else{
+            this.warningMessage('Seleccione Pais. ');
+        }
+    }
   async validad(){      
     var data=this.like(this.gridPais1,'strCountry_Cod',this.pais.strCountry_Cod)
     this.pais=data[0];
-    if(this.pais.intIdCountry_ID!=undefined){
+    if(this.pais.intIdCountry_ID!=-1){
       await setTimeout(() => {
         debugger;
-        if(this.pais.strCountry_Cod!=undefined){
+        if(this.pais.strCountry_Cod!=''){
           router.push({ path: `/barmenu/XX-CONFI/entidad/XA03-Pais/viewandedit_pais`, query: { vista:'modificar' ,data:JSON.stringify(this.pais) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Unidad de Medida. ';
-      this.warningMessage('No existe Unidad de Medida. ');
+      this.textosave='No existe Pais. ';
+      this.warningMessage('No existe Pais. ');
     }
   }
    async validarView(){
-      if(this.pais.intIdCountry_ID!=undefined){
+      if(this.pais.intIdCountry_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.pais.strCountry_Cod!=undefined){
+            if(this.pais.strCountry_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/entidad/XA03-Pais/viewandedit_pais`, query: { vista:'modificar' ,data:JSON.stringify(this.pais) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione unidad de medida. ';
-          this.warningMessage('Seleccione unidad de medida. ');
+          this.textosave='Seleccione Pais. ';
+          this.warningMessage('Seleccione Pais. ');
         }
       }
     siguiente(){

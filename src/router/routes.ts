@@ -178,6 +178,11 @@ import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
 import ViewAndEditUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um.vue'
 
+import CrearMetodoEvaComponent from '@/components/XX-CONFI/logistica/metodo_eva/crear_metodo_eva.vue'
+import ModificarMetodoEvaComponent from '@/components/XX-CONFI/logistica/metodo_eva/modificar_metodo_eva.vue'
+import VisualizarMetodoEvaComponent from '@/components/XX-CONFI/logistica/metodo_eva/visualizar_metodo_eva.vue'
+import ViewAndEditMetodoEvaComponent from '@/components/XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva.vue'
+
 import CrearMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/crear_moneda.vue'
 import ModificarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/modificar_moneda.vue'
 import VisualizarMonedaComponent from '@/components/XX-CONFI/maestro_datos/moneda/visualizar_moneda.vue'
@@ -1284,6 +1289,28 @@ export default [
         component:ViewAndEditPlanLocalComponent,
         name:'viewandedit-planconlocal'
       }, 
+      //metodo de evaluacion
+      {
+        path:'XX-CONFI/logistica/metodo_eva/crear_metodo_eva',
+        component:CrearMetodoEvaComponent,
+        name:'crear-metodo-eva'
+      }, 
+      {
+        path:'XX-CONFI/logistica/metodo_eva/modificar_metodo_eva',
+        component:ModificarMetodoEvaComponent,
+        name:'modificar-metodo-eva'
+      }, 
+      {
+        path:'XX-CONFI/logistica/metodo_eva/visualizar_metodo_eva',
+        component:VisualizarMetodoEvaComponent,
+        name:'visualizar-metodo-eva'
+      }, 
+      {
+        path:'XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva',
+        component:ViewAndEditMetodoEvaComponent,
+        name:'viewandedit-metodo-eva'
+      }, 
+      //moneda
       {
         path:'XX-CONFI/maestro_datos/moneda/crear_moneda',
         component:CrearMonedaComponent,

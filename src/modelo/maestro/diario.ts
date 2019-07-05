@@ -7,8 +7,8 @@ export class DiarioModel {
     strDaily_AccForen:string;
     strCreation_User:string;
     dtmCreation_Date:Date;
-    strModify_User:string;
-    dmModified_Date:Date;
+    strModified_User:string;
+    dtmModified_Date:Date;
     chrStatus:string;
     constructor(){
         this.intDaily_ID=-1;
@@ -19,8 +19,8 @@ export class DiarioModel {
         this.strDaily_AccForen='';
         this.strCreation_User='';
         this.dtmCreation_Date=new Date();
-        this.strModify_User='';
-        this.dmModified_Date=new Date();
+        this.strModified_User='';
+        this.dtmModified_Date=new Date();
         this.chrStatus='';
     }
 }

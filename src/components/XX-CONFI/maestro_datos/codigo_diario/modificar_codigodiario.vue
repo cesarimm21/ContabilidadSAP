@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Diario</span>
+                <span class="labelheadercard" > Modificar Codigo Diario</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Codigo Diario</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="documento.strDaily_Cod" style="text-transform: capitalize" type="text" >  
@@ -42,7 +42,7 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Diarios</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Codigo Diarios</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
@@ -54,35 +54,38 @@
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrDaily_Cod"
-                            prop="strDaily_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strDaily_Cod" label="Codigo Diario" width="100" align="center">                                
+                            </el-table-column>
+                            <el-table-column :render-header="filterstrDaily_Type"
+                            prop="strDaily_Type" label="Tipo" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrDaily_Desc"
                              prop="strDaily_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterstrDaily_Cod"
-                            prop="strDaily_AccLocal" label="local" width="100" align="center">                                
+                            <el-table-column :render-header="filterstrDaily_AccLocal"
+                            prop="strDaily_AccLocal" label="Cta. Contable PEN" width="110" align="center">                                
                             </el-table-column>
-                            <el-table-column :render-header="filterstrDaily_Cod"
-                            prop="strDaily_AccForen" label="Coorporativo" width="100" align="center">                                
+                            <el-table-column :render-header="filterstrDaily_AccForen"
+                            prop="strDaily_AccForen" label="Cta. Contable USD" width="110" align="center">                                
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column :render-header="filterstrCreation_User"
                             width="100" align="center"
-                                prop="strCreation_User" 
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
+                            <!-- <el-table-column
                                 align="center"
-                                label="Estato"
+                                label="Estado"
                                 width="100">
                                 <template scope="scope">
                                     <el-button
@@ -91,6 +94,15 @@
                                     >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
                                     </el-button>
                                     </template>
+                            </el-table-column> -->
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
+                                <template scope="scope">
+                                    <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  
@@ -156,7 +168,17 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal> 
+    <b-modal ref="myModalRef" hide-footer title="Eliminar Codigo Diario" size="sm"  v-model="diarioDialog" @keydown.native.enter="deleteDiario">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea eliminar Codigo Diario {{documento.strDaily_Cod}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteDiario()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="diarioDialog = false"/>
+      </footer>
+    </b-modal>      
     </div>  
 </template>
 <script>

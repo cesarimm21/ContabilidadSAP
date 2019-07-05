@@ -5,7 +5,6 @@ import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
 import {DiarioModel} from '@/modelo/maestro/diario';
-import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import diarioService from '@/components/service/diario.service';
@@ -41,9 +40,13 @@ export default class ModificarCodigoDiarioComponent extends Vue {
   Column:string='';
   dialogBusquedaFilter:boolean=false;
   blnilterstrDaily_Cod:boolean=false;
+  blnilterstrDaily_Type:boolean=false;
   blnilterstrDaily_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterstrDaily_AccLocal:boolean=false;
+  blnilterstrDaily_AccForen:boolean=false;
+  blnilterdmModified_Date:boolean=false;
+  blnilterstrModify_User:boolean=false;
+  diarioDialog:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-codigodiario';
@@ -146,79 +149,84 @@ export default class ModificarCodigoDiarioComponent extends Vue {
     Limpiar(){
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrDaily_Cod=false;
+      this.blnilterstrDaily_Type=false;
       this.blnilterstrDaily_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=false;
     }
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
-  }
+    async EliminarItem(){
+      this.diarioDialog=true;    
+    }
+    deleteDiario(){
+      if(this.documento.strDaily_Cod!=''){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Eliminando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          ); 
+        diarioService.deleteDiarios(this.documento.intDaily_ID)
+        .then(resp=>{
+          loadingInstance.close();
+          this.diarioDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'Se Elimino correctamente '+resp,
+              type: 'success'
+            });
+  
+            this.documento=new DiarioModel();
+            this.load();
+            this.issave = true;
+            this.iserror = false;
+            this.textosave = 'Se Elimino Correctamente '+resp;
+        })
+        .catch(error=>{
+          loadingInstance.close();
+          this.diarioDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'No se elimino',
+              type: 'error'
+            });
+        })
+        }
+        else{
+            this.warningMessage('Seleccione Codigo Diario. ');
+        }
+    }
   async validad(){      
     var data=this.like(this.gridDocumento1,'strDaily_Cod',this.documento.strDaily_Cod)
     this.documento=data[0];
-    if(this.documento.intDaily_ID!=undefined){
+    if(this.documento.intDaily_ID!=-1){
       await setTimeout(() => {
-        debugger;
-        if(this.documento.strDaily_Cod!=undefined){
+        if(this.documento.strDaily_Cod!=''){
           router.push({ path: `/barmenu/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Aduana. ';
-      this.warningMessage('No existe Aduana. ');
+      this.textosave='No existe Codigo Diario. ';
+      this.warningMessage('No existe Codigo Diario. ');
     }
   }
    async validarView(){
-      if(this.documento.intDaily_ID!=undefined){
+      if(this.documento.intDaily_ID!=-1){
           await setTimeout(() => {
-            debugger;
-            if(this.documento.strDaily_Cod!=undefined){
+            if(this.documento.strDaily_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Aduana. ';
-          this.warningMessage('Seleccione Aduana. ');
+          this.textosave='Seleccione Codigo Diario. ';
+          this.warningMessage('Seleccione Codigo Diario. ');
         }
       }
     siguiente(){
@@ -247,34 +255,86 @@ export default class ModificarCodigoDiarioComponent extends Vue {
       if(val.property=="strDaily_Cod"){
           this.clickColumn="strDaily_Cod";
           this.blnilterstrDaily_Cod=true;
+          this.blnilterstrDaily_Type=false;
       this.blnilterstrDaily_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=false;
+      }
+      if(val.property=="strDaily_Type"){
+          this.clickColumn="strDaily_Type";
+          this.blnilterstrDaily_Cod=false;
+          this.blnilterstrDaily_Type=true;
+      this.blnilterstrDaily_Desc=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=false;
       }
       if(val.property=="strDaily_Desc"){
           this.clickColumn="strDaily_Desc";
           this.blnilterstrDaily_Cod=false;
+          this.blnilterstrDaily_Type=false;
       this.blnilterstrDaily_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="strDaily_AccLocal"){
+          this.clickColumn="strDaily_AccLocal";
           this.blnilterstrDaily_Cod=false;
+          this.blnilterstrDaily_Type=false;
       this.blnilterstrDaily_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterstrDaily_AccLocal=true;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strDaily_AccForen"){
+          this.clickColumn="strDaily_AccForen";
           this.blnilterstrDaily_Cod=false;
+          this.blnilterstrDaily_Type=false;
       this.blnilterstrDaily_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterstrDaily_AccForen=true;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=false;
+      }
+      if(val.property=="dmModified_Date"){
+          this.clickColumn="dmModified_Date";
+          this.blnilterstrDaily_Cod=false;
+          this.blnilterstrDaily_Type=false;
+      this.blnilterstrDaily_Desc=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterdmModified_Date=true;
+      this.blnilterstrModify_User=false;
+      }
+      if(val.property=="strModify_User"){
+          this.clickColumn="strModify_User";
+          this.blnilterstrDaily_Cod=false;
+          this.blnilterstrDaily_Type=false;
+      this.blnilterstrDaily_Desc=false;
+      this.blnilterstrDaily_AccForen=false;
+      this.blnilterstrDaily_AccLocal=false;
+      this.blnilterdmModified_Date=false;
+      this.blnilterstrModify_User=true;
       }        
   }
   filterstrDaily_Cod(h,{column,$index}){
       if(this.blnilterstrDaily_Cod){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrDaily_Type(h,{column,$index}){
+      if(this.blnilterstrDaily_Type){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -294,9 +354,31 @@ export default class ModificarCodigoDiarioComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterstrDaily_AccLocal(h,{column,$index}){        
+      if(this.blnilterstrDaily_AccLocal){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+   
+    filterstrDaily_AccForen(h,{column,$index}){        
+      if(this.blnilterstrDaily_AccForen){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+   
+    filterdmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -305,8 +387,8 @@ export default class ModificarCodigoDiarioComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModify_User(h,{column,$index}){
+      if(this.blnilterstrModify_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])

@@ -271,6 +271,7 @@ export default class  BCuentaContableComponent extends Vue {
     return {
       gridCuenta:[],
       gridCuenta1:[],
+      inputAtributo:'',
       categorias: [{
         id_categoria:0,
         nombre: 'CODIGO',

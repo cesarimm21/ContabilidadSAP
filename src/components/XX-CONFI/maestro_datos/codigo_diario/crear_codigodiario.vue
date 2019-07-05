@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Diario</span>
+                <span class="labelheadercard" > Crear Codigo Diario</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Diario</label>
+                                <label class="el-form-item__label col-md-2" >Codigo Diario</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="diario.strDaily_Cod" style="text-transform: capitalize" type="text" >  
@@ -42,8 +42,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row " style="margin-top:10px;">
-                                <label class="el-form-item__label col-md-2" >Cuenta local</label>
+                            <div  class="form-group row " style="margin-top:10px;">
+                                <label class="el-form-item__label col-md-2" >Tipo</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input class="validador" size ="small" v-model="diario.strDaily_Type" style="text-transform: capitalize" type="text" >  
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>   
+                            <div class="form-group row " >
+                                <label class="el-form-item__label col-md-2" >Cta. Contable PEN</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input  
@@ -58,7 +67,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{cuentaA.strAcc_Local_Name}}</span>
                             </div>   
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Cuenta Coorporativa</label>
+                                <label class="el-form-item__label col-md-2" >Cta. Contable USD</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input  
@@ -70,7 +79,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{cuentaB.strAcc_Corp_Name}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{cuentaB.strAcc_Local_Name}}</span>
                             </div>     
                         </div>                         
                     </div>

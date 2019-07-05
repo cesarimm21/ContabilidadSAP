@@ -4,14 +4,14 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllPais(){    
-    return axios.get(CONFIG.API_URL+'pais')
+  getMetodoValuacions(){    
+    return axios.get(CONFIG.API_URL+'metodovaluacion')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  deletePais(intIdCountry_ID){    
-    return axios.get(CONFIG.API_URL+'pais/delete/'+intIdCountry_ID)
+  deletetblMetodoValuacion(intIdValMeth_ID){    
+    return axios.get(CONFIG.API_URL+'metodovaluacion/delete/'+intIdValMeth_ID)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -28,14 +28,14 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  createtblPais(data){
-    return axios.post(CONFIG.API_URL+'pais',data)
+  createtblMetodoValuacion(data){
+    return axios.post(CONFIG.API_URL+'metodovaluacion',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  updatetblPais(data){
-    return axios.post(CONFIG.API_URL+'pais/update',data)
+  updatetblMetodoValuacion(data){
+    return axios.post(CONFIG.API_URL+'metodovaluacion/update',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

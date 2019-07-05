@@ -83,7 +83,7 @@ export default class CrearCodigoDiarioComponent extends Vue {
       }
       if(this.flag=='B'){
         this.cuentaB=val;
-        this.diario.strDaily_AccForen=this.cuentaA.strAcc_Corp_NO;
+        this.diario.strDaily_AccForen=this.cuentaA.strAcc_Local_NO;
       }
       this.dialogDocumentoTransaccion=false;  
     }

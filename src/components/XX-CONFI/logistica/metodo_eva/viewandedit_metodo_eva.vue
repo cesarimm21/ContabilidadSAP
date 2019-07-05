@@ -1,11 +1,11 @@
 <template>
     <div class="crear-ingreso-comprobante">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-            <quickaccessmenu v-on:guardarTodo="guardarUM($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+            <quickaccessmenu v-on:guardarTodo="guardarTipoDocIdent($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Pais</span>
+                <span class="labelheadercard" >{{textTitle}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -24,45 +24,26 @@
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Pais</label>
+                           <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Metodo Valuacione</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="pais.strCountry_Cod" style="text-transform: capitalize" type="text" :maxlength="2">  
+                                    <el-input class="validador" size ="small" v-model="documento.strValMeth_Cod" style="text-transform: capitalize" type="text" disabled>  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
-                                <div class="col-sm-4 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="pais.strCountry_Name"  >
+                                
+                                <div class="col-sm-6 grupolabel">
+                                    <div class="input-group mb-6" >
+                                        <el-input  class="validador" size="small" v-model="documento.strValMeth_Desc" :disabled="enabledtf" >
                                         </el-input>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Idioma</label>
-                                <div class="col-sm-4 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="pais.strLanguage"  >
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>       
-                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Moneda</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_monedaA" @focus="activar_monedaA" v-model="pais.strCountry_Curr">                            
-                                        <el-button v-if="btnactivarmonedaA && !monedaVisible" slot="append" class="boton" icon="fa fa-clone" @click="monedaDialog()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div>  
-                        </div>
-                         
+                        </div>                         
                     </div>
                 </div>
             </div>
@@ -91,19 +72,16 @@
                 </div>
             </div>            
         </div>   
-        
-    <!--DIALOG BUSQUEDA MONEDA-->
-    <el-dialog title="Busqueda moneda"  :visible.sync="monedaVisible" @close="handleCloseMoneda" size="small" >
-        <bmoneda v-on:MonedaSeleccionado="monedaSelect($event)" v-on:closeMoneda="handleCloseMoneda()">
-        </bmoneda>
-    </el-dialog> 
     </div>  
 </template>
 <script>
 
-import CrearPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P01-Crear.component'
-export default CrearPaisComponent
+import ViewAndEditMetodoEvaComponent from '@/components/XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva.component'
+export default ViewAndEditMetodoEvaComponent
 </script>
 <style scoped>
-    
+   .sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+} 
 </style>
