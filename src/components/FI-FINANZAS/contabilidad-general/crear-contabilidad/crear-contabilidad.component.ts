@@ -50,6 +50,7 @@ import BDocumentoTransaccionComponent from '@/components/buscadores/b_documento_
 import { Notification } from 'element-ui';
 import centrocostosService from '@/components/service/centrocostos.service';
 import diariogeneralService from '@/components/service/diariogeneral.service';
+import documentoTransaccionService from '@/components/service/documentotransaccion.service';
 import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
 
 @Component({
@@ -206,7 +207,7 @@ export default class CrearContabilidadComponent extends Vue {
     Global.nameComponent='crear-ingreso-comprobante';
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
-    this.loadTipocambio();
+    
     this.strCompany_Cod=localStorage.getItem('compania_cod');
     this.strCompany_Desc=localStorage.getItem('compania_name'); 
 
@@ -214,12 +215,23 @@ export default class CrearContabilidadComponent extends Vue {
       var diario:DiarioGeneralModel=new DiarioGeneralModel();
       this.CompleteData.push(diario);
     }
+    setTimeout(() => {
+      this.loadTipocambio();
+    }, 200)
   }
   loadTipocambio(){
     tipocambioService.GetAllTipoCambio1()
     .then(response=>{
       this.tipocambio=response;  
     }).catch(error=>{})
+    documentoTransaccionService.GetOnlyOneDocumentoTransaccion2('FG01')    
+    .then(response=>{
+      this.Doc_Trans_Cod=response.strDoc_Trans_Cod;
+      
+    }).catch(error=>{
+      
+    })
+
   }
 
   DateContabilizacionClick(){ 
@@ -1008,7 +1020,7 @@ closeCategoriaCuenta(){
         strType_Cod:"D",
         strType_Desc:"Detalle"
       }],
-      
+      Doc_Trans_Cod:'',
       ordencompraDetalle:[],
       codigoCompania:'001',
       totalDinero:0,

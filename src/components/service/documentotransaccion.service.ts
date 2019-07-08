@@ -16,6 +16,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetOnlyOneDocumentoTransaccion2(code){
+    return axios.get(CONFIG.API_URL+'documentotransaccion2/'+code)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CrearDocumentoTransaccion(data){
     return axios.post(CONFIG.API_URL+'documentotransaccion',data)
     .then(response =>{            

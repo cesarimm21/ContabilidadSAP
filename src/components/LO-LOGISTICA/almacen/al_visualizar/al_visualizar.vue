@@ -182,7 +182,21 @@
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strUM_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterfltQuantity" 
+                                        <el-table-column :render-header="filterdtmRequested_Date"
+                                            prop="dtmModified_Date"  width="100"
+                                            label="Fecha ">
+                                            <template scope="scope">
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ getDateString(scope.row.dtmModified_Date) }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strModified_User"  width="100"
+                                            label="Usuario">
+                                            <template scope="scope">
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{scope.row.strModified_User }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <!-- <el-table-column :render-header="filterfltQuantity" 
                                             prop="fltQuantity"  align="right"  width="100"
                                             label="Cantidad ">
                                             <template scope="scope">
@@ -195,7 +209,7 @@
                                             <template scope="scope">
                                                 <label style="width:100%"  >&nbsp;{{ scope.row.fltPrecUnit_Local}}</label>
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column> -->
                                         <!-- <el-table-column
                                             prop="fltPrecUnit_Local" align="center"  width="70"
                                             label="Estado">
