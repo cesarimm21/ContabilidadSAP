@@ -6,6 +6,7 @@ import {CategoriaLineaModel} from '@/modelo/maestro/categorialinea';
 import categorialineaService from '@/components/service/categorialinea.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bcategorialinea'
 })
@@ -14,7 +15,7 @@ export default class  BCategoriaLineaComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
 
    CompleteData:any;
@@ -25,18 +26,11 @@ export default class  BCategoriaLineaComponent extends Vue {
     cambioPagina:55,};
 
   numeroPagina:number=20;
-
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
   //Modelos
   articulos:any =[];
-
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
   categorialineaModel:CategoriaLineaModel[];
   categorialineaModel1:CategoriaLineaModel[];
   public categorialineaSelectModel:CategoriaLineaModel=new CategoriaLineaModel();
@@ -64,8 +58,6 @@ export default class  BCategoriaLineaComponent extends Vue {
       });
     })
   }
-
-
   redirectLogin(msg){
     Notification.warning(msg)
     window.sessionStorage.clear();
@@ -82,47 +74,6 @@ export default class  BCategoriaLineaComponent extends Vue {
     this.$emit('cartaSelecionado',rows[index]);
   }
 
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -130,26 +81,18 @@ export default class  BCategoriaLineaComponent extends Vue {
   cleanData(){
     this.formularioBusqueda.VALUE = '';
   }
-
-  getProveedorSupplier(){
-
-  }
+  getProveedorSupplier(){ }
 
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
-
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
-  }
-  
+  }  
   seleccionar(row,index){
     this.$emit('categorialineaselecionado',row);
   }
-
   openMessageError(strMessage:string){
     this.$message({
         showClose: true,
@@ -157,8 +100,6 @@ export default class  BCategoriaLineaComponent extends Vue {
         message: strMessage
       });
   }
-
-
   handleCurrentChange(val:CategoriaLineaModel){
     this.categorialineaSelectModel=val;
   }
@@ -169,18 +110,8 @@ export default class  BCategoriaLineaComponent extends Vue {
   closePopup(){
     this.$emit('categorialineaclose');
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarCategoria(){
-    var data=this.like(this.categorialineaModel1,this.clickColumn,this.inputAtributo)
+    var data=Global.like(this.categorialineaModel1,this.clickColumn,this.inputAtributo)
     this.categorialineaModel=[];
     this.categorialineaModel=data;
   }
@@ -230,44 +161,7 @@ export default class  BCategoriaLineaComponent extends Vue {
     return {
       categorialineaModel:[],
       categorialineaModel1:[],
-      inputAtributo:'',
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      CODIGO :'B',
-      DESCRIPCION:'BIENES',
-    },
-    {
-      CODIGO :'S',
-      DESCRIPCION:'SERVICIOS',
-    },
-    {
-      CODIGO :'C',
-      DESCRIPCION:'CONSIGNACION',
-    },
-    {
-      CODIGO :'T',
-      DESCRIPCION:'TRASNFERENCIA DE STOCK',
-    },
-    ]
-    };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
+      inputAtributo:'',     
+  };
   }
 }

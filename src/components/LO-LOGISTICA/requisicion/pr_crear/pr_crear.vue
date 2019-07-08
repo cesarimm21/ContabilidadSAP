@@ -58,7 +58,7 @@
                             <label class="el-form-item__label col-md-1" >Almacen</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" @blur="desactivar_almacen" v-model="strWHS_Cod" @focus="activar_almacen"  placeholder="">
+                                <el-input size ="small" @blur="desactivar_almacen" v-model="strWHS_Cod" @focus="activar_almacen" :autofocus="true" @keydown.native.enter="buscarAlmacen()">
                                     <el-button v-if="btnactivaralmacen && !dialogAlmacen" slot="append" class="boton" icon="fa fa-clone" @click="loadAlmacen()"></el-button> 
                                 </el-input>
                                 </div>
@@ -71,7 +71,7 @@
                             <label class="el-form-item__label col-md-2" >Descripcion</label>
                             <div class="col-md-10 grupolabel" style="margin-left: -17px;">
                                 <div class="input-group mb-9">
-                                    <el-input size ="small" @focus="activar_descripcion" v-model="requisicionModel.strDesc_Header"  placeholder="">                
+                                    <el-input ref="des" size ="small" @focus="activar_descripcion" v-model="requisicionModel.strDesc_Header"   >                
                                     </el-input>
                                 </div>
                             </div>

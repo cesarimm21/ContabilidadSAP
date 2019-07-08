@@ -2,7 +2,7 @@
     <div style="padding: 5px 2px;">
        <el-card class="box-card" style="    margin-left: 4px;">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" ></span>
+                <span class="labelheadercard" >Busqueda de Almacen</span>
             </div>
             <div class="row bodycard">
                 <div class="col-md-12">
@@ -10,7 +10,7 @@
                         <label class="el-form-item__label col-md-3" >{{Column}}</label>
                         <div class="col-md-3 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="inputAtributo">
+                            <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarAlmacen()">
                              <el-button slot="append" class="boton" icon="fa fa-search" 
                                     @click="buscarAlmacen()"
                                 > </el-button>
@@ -29,7 +29,7 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"> 
-            <el-table-column :render-header="filterstrWHS_Cod"  prop="strWHS_Cod" label="Codigo" width="180">
+            <el-table-column :render-header="filterstrWHS_Cod"  prop="strWHS_Cod" label="Codigo" width="120">
             </el-table-column>  
             <el-table-column :render-header="filterstrWHS_Name" prop="strWHS_Name" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 

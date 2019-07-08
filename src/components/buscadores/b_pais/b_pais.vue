@@ -10,7 +10,7 @@
                         <label class="el-form-item__label col-md-3" >{{Column}}</label>
                         <div class="col-md-4 grupolabel">
                             <div class="input-group mb-4" >
-                            <el-input size ="small"  v-model="inputAtributo"  @keydown.native.enter="searchPais()">
+                            <el-input size ="small"  v-model="inputAtributo"  :autofocus="true" @keydown.native.enter="searchPais()">
                             <el-button slot="append" class="boton" icon="fa fa-search" 
                              @click="searchPais()"
                              > </el-button>

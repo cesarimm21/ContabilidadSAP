@@ -26,6 +26,7 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
   companyName:any;
   companyCod:any;
   public documento:TipoDocIdentidadModel=new TipoDocIdentidadModel();
+  strDocIdent_NO:string='';
   gridDocumento:TipoDocIdentidadModel[];
   gridDocumento1:TipoDocIdentidadModel[];
   gridDocumento2:TipoDocIdentidadModel[];
@@ -156,20 +157,32 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
       this.warningMessage('Accion no permitida')
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDocIdent_NO',this.documento.strDocIdent_NO)
-    this.documento=data[0];
-    if(this.documento.intIdDocIdent_ID!=-1){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strDocIdent_NO!=''){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=this.like(this.gridDocumento1,'strDocIdent_NO',this.strDocIdent_NO)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strDocIdent_NO==this.strDocIdent_NO){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strDocIdent_NO!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strDocIdent_NO==''){
+          this.textosave='Inserte Tipo Doc. Identidad. ';
+          this.warningMessage('Inserte Tipo Doc. Identidad. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Tipo Doc. Identidad. ';
+          this.warningMessage('No existe Tipo Doc. Identidad. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Tipo Doc. Identidad. ';
-      this.warningMessage('No existe Tipo Do. Identidad. ');
-    }
+      this.warningMessage('No existe Tipo Doc. Identidad. ');
+    }   
   }
    async validarView(){
       if(this.documento.intIdDocIdent_ID!=-1){
@@ -292,6 +305,7 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
+            strDocIdent_NO:'',
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],

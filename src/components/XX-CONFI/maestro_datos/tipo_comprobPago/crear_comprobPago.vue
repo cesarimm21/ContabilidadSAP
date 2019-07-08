@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Comprobante</label>
+                                <label class="el-form-item__label col-md-2" >Tipo Comp. Pago</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="comprobante.strDocType_Cod" style="text-transform: capitalize" type="text" :maxlength="2">  
+                                    <el-input class="validador" size ="small" v-model="comprobante.strDocType_Cod" style="text-transform: capitalize" type="text" :autofocus="true">  
                                     </el-input>
                                     </div>
                                 </div>

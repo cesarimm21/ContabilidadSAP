@@ -272,9 +272,12 @@ export default class CrearHesComponent extends Vue {
         reqDetalle.fltRec_Value=this.ordenCompraDetalle[i].fltRec_Value;//pendiente
         reqDetalle.fltRecTemp_Value=this.ordenCompraDetalle[i].fltRec_Value;//pendiente
         reqDetalle.fltFacture_Net_PR_I=0;//hes aceptar
+        reqDetalle.intPO_Item_NO=this.ordenCompraDetalle[i].intPO_Item_NO;//hes aceptar
+        reqDetalle.strPO_NO=this.hesModel.strPO_NO;//hes aceptar
         reqDetalle.strCurrency=this.ordenCompraDetalle[i].strCurrency_Cod;
         reqDetalle.intIdCostCenter_ID=this.ordenCompraDetalle[i].intIdCostCenter_ID;
         reqDetalle.strCostCenter_NO=this.ordenCompraDetalle[i].strCostCenter_NO;
+        reqDetalle.strCostCenter_Desc=this.ordenCompraDetalle[i].strCostCenter_Desc;
         reqDetalle.chrStatus="A";
         this.TableIngreso.push(reqDetalle);
       }  

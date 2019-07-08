@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Tipo Comp. Pago</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strDocType_Cod" style="text-transform: capitalize" type="text" :maxlength="1">  
+                                    <el-input class="validador" size ="small" v-model="strDocType_Cod" style="text-transform: capitalize" type="text" :autofocus="true">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -54,37 +54,34 @@
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrDocType_Cod"
-                            prop="strDocType_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strDocType_Cod" label="Tipo Comp. Pago" width="120" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrDocType_Desc"
                              prop="strDocType_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
+                            <el-table-column :render-header="filterstrModified_User"
                             width="100" align="center"
-                                prop="strCreation_User" 
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                label="Estato"
-                                width="100">
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
                                 <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
+                                    <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  

@@ -10,7 +10,7 @@
                         <label class="el-form-item__label col-md-3" >{{Column}}</label>
                         <div class="col-md-3 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="inputAtributo">
+                            <el-input size ="small" v-model="inputAtributo"  :autofocus="true" @keydown.native.enter="buscarfilterCuenta()">
                              <el-button slot="append" class="boton" icon="fa fa-search" 
                                     @click="buscarfilterCuenta()"
                                 > </el-button>
@@ -29,7 +29,7 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-                <el-table-column :render-header="filterstrComp_Cod"   prop="strComp_Cod" label="Codigo" width="180">
+                <el-table-column :render-header="filterstrComp_Cod"   prop="strComp_Cod" label="Codigo" width="120">
                 </el-table-column>  
                 <el-table-column :render-header="filterstrComp_Name" prop="strComp_Name" label="Nombre" style="width: 70% !important;">
                 </el-table-column>  

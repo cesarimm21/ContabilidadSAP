@@ -37,7 +37,7 @@
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="documento.strDocIdent_Desc"  :disabled="enabledtf">
+                                        <el-input class="validador" size="small" v-model="documento.strDocIdent_Desc"  :disabled="enabledtf" :autofocus="true">
                                         </el-input>
                                     </div>
                                 </div>

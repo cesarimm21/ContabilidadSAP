@@ -129,4 +129,13 @@ export default {
       var mm = (mes<10) ? '0'+mes : mm=mes;
       return year+'-'+mm+'-'+dd;
     },
+    like(array, key,keyword) {    
+      var responsearr:any = []
+      for(var i=0;i<array.length;i++) {
+          if(array[i][key].toString().toLowerCase().indexOf(keyword.toLowerCase()) > -1 ) {
+            responsearr.push(array[i])
+        }
+      }
+      return responsearr
+    }
 }

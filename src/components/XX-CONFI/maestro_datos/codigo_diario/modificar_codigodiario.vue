@@ -78,23 +78,11 @@
                                     <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
+                            <el-table-column :render-header="filterstrModified_User"
                             width="100" align="center"
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <!-- <el-table-column
-                                align="center"
-                                label="Estado"
-                                width="100">
-                                <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
-                            </el-table-column> -->
                             <el-table-column 
                                 prop="chrStatus" align="center"  width="100"
                                 label="Estado">

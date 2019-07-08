@@ -7,10 +7,10 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-1" >Codigo</label>
-                        <div class="col-md-2 grupolabel">
+                        <label class="el-form-item__label col-md-3" >{{Column}}</label>
+                        <div class="col-md-3 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="inputAtributo">
+                            <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarCentro()">
                              <el-button slot="append" class="boton" icon="fa fa-search" 
                                     @click="buscarCentro()"
                                 > </el-button>

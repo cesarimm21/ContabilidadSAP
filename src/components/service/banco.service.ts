@@ -7,7 +7,7 @@ export default{
   GetAllBanco(){      
     return axios.get(CONFIG.API_URL+'banco')
     .then(response =>{            
-        return JSON.parse(JSON.stringify(response));
+        return JSON.parse(JSON.stringify(response.data));
     })
   },
   GetAllBancoType(){      

@@ -26,6 +26,7 @@ export default class VisualizarMonedaComponent extends Vue {
   companyName:any;
   companyCod:any;
   public moneda:MonedaModel=new MonedaModel();
+  strCurrency_Cod:string='';
   gridMoneda:MonedaModel[];
   gridMoneda1:MonedaModel[];
   gridMoneda2:MonedaModel[];
@@ -42,8 +43,8 @@ export default class VisualizarMonedaComponent extends Vue {
   blnilterstrCurrency_Cod:boolean=false;
   blnilterstrCurrency_Desc:boolean=false;
   blnilterstrCountry:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='visualizar-almacen';
@@ -75,22 +76,13 @@ export default class VisualizarMonedaComponent extends Vue {
     }
     handleCurrentChange(val:MonedaModel){
       this.moneda=val;
+      this.strCurrency_Cod=this.moneda.strCurrency_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridMoneda1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridMoneda1,this.clickColumn,this.txtbuscar)
       this.gridMoneda=[];
       this.gridMoneda=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -148,8 +140,8 @@ export default class VisualizarMonedaComponent extends Vue {
       this.blnilterstrCurrency_Cod=false;
       this.blnilterstrCurrency_Desc=false; 
       this.blnilterstrCountry=false; 
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false; 
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false; 
     }
     Print(){
       window.print();
@@ -158,19 +150,24 @@ export default class VisualizarMonedaComponent extends Vue {
       this.warningMessage('Accion no permitida')
   }
   async validad(){      
-    var data=this.like(this.gridMoneda1,'strCurrency_Cod',this.moneda.strCurrency_Cod)
+    var data=Global.like(this.gridMoneda1,'strCurrency_Cod',this.strCurrency_Cod)
     this.moneda=data[0];
-    if(this.moneda.intIdCurrency_ID!=undefined){
+    if(this.moneda.strCurrency_Cod==this.strCurrency_Cod){
       await setTimeout(() => {
-        debugger;
-        if(this.moneda.strCurrency_Cod!=undefined){
+        if(this.moneda.strCurrency_Cod!=''){
           router.push({ path: `/barmenu/XX-CONFI/maestro_datos/moneda/viewandedit_moneda`, query: { vista:'visualizar' ,data:JSON.stringify(this.moneda) }  })
         }
       }, 600)
     }
     else{
-      this.textosave='No existe Moneda. ';
-      this.warningMessage('No existe Moneda. ');
+      if(this.strCurrency_Cod==''){
+        this.textosave='Inserte Moneda. ';
+        this.warningMessage('Inserte Moneda. ');
+      }
+      else{
+        this.textosave='No existe Moneda. ';
+        this.warningMessage('No existe Moneda. ');
+      }      
     }
   }
    async validarView(){
@@ -215,41 +212,41 @@ export default class VisualizarMonedaComponent extends Vue {
           this.blnilterstrCurrency_Cod=true;
           this.blnilterstrCurrency_Desc=false; 
           this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strCurrency_Desc"){
           this.clickColumn="strCurrency_Desc";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=true; 
           this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strCountry"){
           this.clickColumn="strCountry";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=false; 
           this.blnilterstrCountry=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=false; 
           this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=true;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=true;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrCurrency_Cod=false;
           this.blnilterstrCurrency_Desc=false; 
           this.blnilterstrCountry=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=true;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=true;
       }        
   }
   filterstrCurrency_Cod(h,{column,$index}){
@@ -282,9 +279,9 @@ export default class VisualizarMonedaComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -293,8 +290,8 @@ export default class VisualizarMonedaComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -316,6 +313,7 @@ export default class VisualizarMonedaComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
+            strCurrency_Cod:'',
             gridMoneda:[],
             gridMoneda1:[],
             gridMoneda2:[],

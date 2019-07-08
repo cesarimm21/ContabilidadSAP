@@ -27,7 +27,7 @@
                                     <el-button v-if="filter"  class="buttonfilter btn btn-outline-secondary orange" @click="Buscar()">
                                         <img class="imagenfilter" src="../../images/filter2.png" alt="" >
                                     </el-button>
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Limpiar()" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Limpiar()" @keyup.native.esc="Limpiar()">
                                         <img class="imagenfilter" src="../../images/limpiar.png" alt="" >
                                     </el-button> 
                                     

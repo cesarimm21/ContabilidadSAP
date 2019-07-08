@@ -16,6 +16,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getClassProductoServicio(){ 
+    return axios.get(CONFIG.API_URL+'cmaterial/servicio')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneClaseMaterial(code){
     return axios.get(CONFIG.API_URL+'clasematerial/'+code)
     .then(response =>{           
@@ -25,6 +31,12 @@ export default {
 
   GetTypeClaseMaterial(code){
     return axios.get(CONFIG.API_URL+'clasematerial/type/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  deleteClaseMaterial(intIdMatClass_ID,strModified_User){
+    return axios.get(CONFIG.API_URL+'clasematerial/delete/'+intIdMatClass_ID+'/'+strModified_User)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

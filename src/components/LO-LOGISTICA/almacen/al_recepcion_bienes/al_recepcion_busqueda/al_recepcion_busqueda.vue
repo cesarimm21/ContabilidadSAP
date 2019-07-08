@@ -28,7 +28,7 @@
                             <label class="el-form-item__label col-md-2" >Orden Compra</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"  v-model="opSelect.strPO_NO"  placeholder="">
+                                <el-input size ="small"  v-model="strPO_forsearch"  placeholder="">
                                 </el-input>
                                 </div>
                             </div>
@@ -169,7 +169,6 @@
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
-                                        :render-header="filterdtmAuthsd_Date"
                                             prop="dtmAuthsd_Date"  width="100"
                                             label="Fecha Aprob."
                                             align="center">

@@ -503,7 +503,7 @@
                                 <label class="el-form-item__label col-md-3" >{{Column}}</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="inputAtributo">
+                                    <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarClaseMaterial()">
                                         <el-button slot="append" class="boton" icon="fa fa-search" 
                                                 @click="buscarClaseMaterial()"
                                             > </el-button>
@@ -525,9 +525,9 @@
                     <!-- @current-change="handleCurrentChange"> -->
                     <el-table-column :render-header="filterstrMatClass_Cod"  prop="strMatClass_Cod" label="Codigo" width="100" >
                     </el-table-column>  
-                    <el-table-column :render-header="filterstrExp_Cod_Loc" prop="strExp_Cod_Loc" label="Cuenta" >
+                    <el-table-column :render-header="filterstrExp_Cod_Loc" prop="strExp_Cod_Loc" label="Cuenta" width="120"  >
                     </el-table-column> 
-                    <el-table-column :render-header="filterstrMatClass_Desc" prop="strMatClass_Desc" label="Descripcion" >
+                    <el-table-column :render-header="filterstrMatClass_Desc" prop="strMatClass_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                     </el-table>
                 </el-card>

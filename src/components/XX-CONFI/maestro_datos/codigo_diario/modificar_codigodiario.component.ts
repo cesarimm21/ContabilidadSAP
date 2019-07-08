@@ -59,12 +59,13 @@ export default class ModificarCodigoDiarioComponent extends Vue {
         this.companyCod=localStorage.getItem('compania_cod');
         diarioService.GetAllDiarios()
         .then(response=>{
-          this.gridDocumento=[];
+          this.gridDocumento=[];   
           this.gridDocumento1=[];
           this.gridDocumento2=[];
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          console.log(this.gridDocumento);
         })
     }
     getDateStringView(fecha:string){
@@ -177,7 +178,7 @@ export default class ModificarCodigoDiarioComponent extends Vue {
           this.diarioDialog=false;
           this.$message({
               showClose: true,
-              message: 'Se Elimino correctamente '+resp,
+              message: 'Se Elimino correctamente ',
               type: 'success'
             });
   
@@ -185,7 +186,7 @@ export default class ModificarCodigoDiarioComponent extends Vue {
             this.load();
             this.issave = true;
             this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente '+resp;
+            this.textosave = 'Se Elimino Correctamente ';
         })
         .catch(error=>{
           loadingInstance.close();
@@ -387,7 +388,7 @@ export default class ModificarCodigoDiarioComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrModify_User(h,{column,$index}){
+    filterstrModified_User(h,{column,$index}){
       if(this.blnilterstrModify_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}

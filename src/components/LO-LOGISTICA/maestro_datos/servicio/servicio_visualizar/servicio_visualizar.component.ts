@@ -183,7 +183,7 @@ export default class VisualizarServicioMateComponent extends Vue {
       this.percentage++;
       this.per++;
     }
-    await productoService.busquedaProducto(data)
+    await productoService.getProductoService()
     .then(res=>{
       debugger;
      
@@ -348,14 +348,8 @@ export default class VisualizarServicioMateComponent extends Vue {
         }
       }, 200)
       await setTimeout(() => {
-        debugger;
-        // this.selectrow.intIdPurReqH_ID=this.selectrow.intIdPurReqH_ID.intIdPurReqH_ID;
-        // this.selectrow.intIdVendor_ID=this.selectrow.intIdVendor_ID.intIdVendor_ID;
-        // this.selectrow.intIdTypeReq_ID=this.selectrow.intIdTypeReq_ID.intIdTypeReq_ID;
-        // this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
-        console.log('----,,,',this.selectrow);
         if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
-          router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_modificar`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
+          router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/servicio/servicio_modificar`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
         }
       }, 600)
     }
