@@ -26,6 +26,7 @@ export default class ModificarMetodoDepComponent extends Vue {
   companyName:any;
   companyCod:any;
   public documento:MetodoDepreciacionModel=new MetodoDepreciacionModel();
+
   gridDocumento:MetodoDepreciacionModel[];
   gridDocumento1:MetodoDepreciacionModel[];
   gridDocumento2:MetodoDepreciacionModel[];
@@ -77,20 +78,10 @@ export default class ModificarMetodoDepComponent extends Vue {
       this.documento=val;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -196,7 +187,7 @@ export default class ModificarMetodoDepComponent extends Vue {
         }
     }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDeprMeth_Cod',this.documento.strDeprMeth_Cod)
+    var data=Global.like(this.gridDocumento1,'strDeprMeth_Cod',this.documento.strDeprMeth_Cod)
     this.documento=data[0];
     if(this.documento.intIdDeprMeth_ID!=undefined){
       await setTimeout(() => {

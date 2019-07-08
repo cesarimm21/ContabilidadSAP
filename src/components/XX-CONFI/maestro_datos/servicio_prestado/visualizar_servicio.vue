@@ -74,17 +74,14 @@
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                label="Estato"
-                                width="100">
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
                                 <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
+                                    <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  
