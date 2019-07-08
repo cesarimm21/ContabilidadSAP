@@ -68,15 +68,16 @@
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Tipo Transaccion</label>
+                                <label class="el-form-item__label col-md-2" >Tipo Documento</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input  
                                     size ="small" 
+                                    :disabled="true"
                                     @blur="desactivar_documentoTransacional" 
                                     @focus="activar_documentoTransacional" 
                                     v-model="Doc_Trans_Cod">
-                                        <el-button v-if="btndocumentotransaccion && !dialogDocumentoTransaccion" slot="append" class="boton" icon="fa fa-clone" @click="loadDocumentoTransaccion()"></el-button> 
+                                        <!-- <el-button v-if="btndocumentotransaccion && !dialogDocumentoTransaccion" slot="append" class="boton" icon="fa fa-clone" @click="loadDocumentoTransaccion()"></el-button>  -->
                                     </el-input>
                                     </div>
                                 </div>
