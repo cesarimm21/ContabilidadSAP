@@ -10,7 +10,7 @@
                         <label class="el-form-item__label col-md-3" >{{Column}}</label>
                         <div class="col-md-4 grupolabel">
                             <div class="input-group mb-4" >
-                            <el-input size ="small" v-model="inputAtributo">
+                            <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="searchBanco()">
                             <el-button slot="append" class="boton" icon="fa fa-search" 
                                 @click="searchBanco()"
                             > </el-button>
@@ -29,7 +29,7 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange"> 
-            <el-table-column :render-header="filterstrBank_Cod" prop="strBank_Cod" label="Codigo" width="150" align="center">
+            <el-table-column :render-header="filterstrBank_Cod" prop="strBank_Cod" label="Banco" width="150" align="center">
             </el-table-column>  
             <el-table-column :render-header="filterstrBank_Name" prop="strBank_Name" label="Descripcion">
             </el-table-column> 

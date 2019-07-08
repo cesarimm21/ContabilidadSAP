@@ -60,7 +60,6 @@ export default class VisualizarClaseServicioComponent extends Vue {
   vmaterial:string='';
   checkFecha:boolean=true;
   /*dialog*/
-  dialogCompania:boolean=false;
  
   /*input*/
   btnactivarcompania:boolean=false;
@@ -97,7 +96,6 @@ export default class VisualizarClaseServicioComponent extends Vue {
   striped=true;
   per:number=3;
   percentage:number;
-  btnbuscarb:boolean=false;
   fechaHasta:any=new Date();
   strStock_Cod:string='';
   fechaDesde:any=new Date();
@@ -114,13 +112,13 @@ export default class VisualizarClaseServicioComponent extends Vue {
   vifprogress:boolean=true;
 
   ///#region
-  blnfilterstrWHS_Cod:boolean=false;
-  blnfilterstrWHS_Desc:boolean=false;
-  blnfilterstrStock_Cod:boolean=false;
-  blnfilterstrStock_Desc:boolean=false;
-  blnfilterstrUM_Cod:boolean=false;
-  blnfilterfltQuantity:boolean=false;
-  blnfilterfltPrecUnit_Local:boolean=false;
+  blnfilterstrMatClass_Cod:boolean=false;
+  blnfilterstrMatClass_Desc:boolean=false;
+  blnfilterstrStock_Type_Desc:boolean=false;
+  blnfilterstrAcct_Loc:boolean=false;
+  blnfilterstrExp_Cod_Loc:boolean=false;
+  blnfilterdtmModified_Date:boolean=false;
+  blnfilterstrModified_User:boolean=false;
   dialogBusquedaFilter:boolean=false;
   public CompleteData:Array<ClaseMaterialModel>=[]; 
   public CompleteData1:Array<ClaseMaterialModel>=[]; 
@@ -130,7 +128,7 @@ export default class VisualizarClaseServicioComponent extends Vue {
   pagina: number =1;
   RegistersForPage: number = 10;
   totalRegistros: number = 100;
-  
+  claseDialog:boolean=false;
   //#endregion
   constructor(){
     super();
@@ -173,53 +171,20 @@ export default class VisualizarClaseServicioComponent extends Vue {
       data.desde=await Global.getDateString(this.fechaDesde)
       data.hasta= await Global.getDateString(this.fechaHasta)
     }
-    else{
-      data.desde="*";
-      data.hasta="*";
-    }
-    if(this.strWHS_Cod==''){
-      data.strWHS_Cod='*';
-    }
-    else{
-      data.strWHS_Cod=this.strWHS_Cod;
-    }
-    
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-      this.per++;
-    }
-    await clasematerialService.busquedaProducto(data.strStock_Cod,data.desde,data.hasta)
+    await clasematerialService.getClassProductoServicio()
     .then(res=>{
-      debugger;
-     
-      console.log(res);
-     // if(this.valuem>=100){
-        // setTimeout(() => {
-          for(var i=0;i<50;i++){
-            setTimeout(
-              () => {this.percentage++;},1  
-            )
-          }
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-         // }, 1200)
-        setTimeout(() => {    this.CompleteData=res;
+        setTimeout(() => {    
+          this.CompleteData=res;
           this.CompleteData1=this.CompleteData;
           this.totalRegistros=this.CompleteData1.length;
           this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-      this.vifprogress=false;}, 600)
-      //}
+      this.vifprogress=false;}, 100)
     })
-    .catch(error=>{
-      
+    .catch(error=>{ 
+      console.log(error);     
     })
   }
-  async BuscarProducto(){
-    debugger;
-    this.btnbuscarb=true;
-    this.cargarList();
-  }
+ 
 
   openMessage(newMsg : string) {
     this.$message({
@@ -257,84 +222,13 @@ export default class VisualizarClaseServicioComponent extends Vue {
     localStorage.clear();
     router.push('/')
   }
-  loadCompania(){
-    this.dialogCompania=true;
-  }
   handleCurrentChange(val) {
-    debugger;
-    if(val!=null){
-      this.selectrow=val;
-      this.currentRow = val;
-    }
+    this.clasematerialmodel=val;
   }
   /*Compania imput*/
-  activar_compania(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarcompania=true;
-    }, 120)
-  }
-  desactivar_compania(){
-    debugger;
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;
-    }
-  }
-  closeCompania(){
-    debugger;
-    this.btnactivarcompania=false;
-    return false;
-  }
- 
-  
   getParseDate(fecha){
     return Global.getParseDate(fecha);
   }
-  companiaSeleccionado(val){
-    debugger;
-    console.log('traer',val);
-    this.clasematerialmodel.strCompany_Cod=val.strCompany_Cod
-    this.descompania=val.strCompany_Desc;
-   
-    this.dialogCompania=false;
-  }
-  companiaClose(val){
-    this.dialogCompania=false;
-  }
-  borrarCompania(){
-    this.descompania='';
-    this.dialogCompania=false;
-    this.btnactivarcompania=false;
-  }
-  enterCompania(code){
-    //alert('Bien'+code);
-    debugger;
-    console.log('compania_enter_1',code);
-    companiaService.GetOnlyOneCompania(code)
-    .then(response=>{
-      if(response!=undefined){
-        if(response.length>0){
-          this.clasematerialmodel.strCompany_Cod=response[0].strCompany_Cod
-          this.descompania=response[0].strCompany_Desc;
-          this.dialogCompania=false;
-          this.btnactivarcompania=false;
-        }
-      }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar compañia'
-      });
-    })
-  }
-  // validarView(){
-  //   debugger;
-  //   Global.codematerial=this.productoModel.strStock_Cod;
-  //   router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'modificar' }  })
- 
-  // }
   created() {
     debugger;
     if(typeof window != 'undefined') {
@@ -343,44 +237,37 @@ export default class VisualizarClaseServicioComponent extends Vue {
       this.vmaterial=Global.vmmaterial;
     }
   }
-  async validarView(){
-    debugger;
-    if(this.selectrow!=undefined && this.selectrow!=null ){
-      this.vifprogress=true;
-      this.valuem=0;
-      await setTimeout(() => {
-        for(var i=0;i<100;i++){
-          this.valuem++; 
+   async BuscarProducto(){
+    if(this.clasematerialmodel.strMatClass_Cod!=undefined){
+      clasematerialService.GetOnlyOneClaseMaterial(this.clasematerialmodel.strMatClass_Cod)
+      .then(respo=>{
+        this.clasematerialmodel=respo;      
+        if(this.clasematerialmodel.strMatClass_Cod!=undefined){
+        router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/servicio/clase_servicio/modificar_clase_servicio`, query: { vista: 'visualizar',data:JSON.stringify(this.clasematerialmodel) }  })
         }
-      }, 200)
+        else{
+          this.openMessageError('No existe Clase Material')
+        }
+      })      
+    }
+    else{
+      this.textosave='Ingrese Codigo Clase Material. ';
+      this.warningMessage('Ingrese Codigo Clase Material.');
+    }
+  }
+
+  async validarView(){
+    if(this.clasematerialmodel.strMatClass_Cod!=undefined){
       await setTimeout(() => {
-        debugger;
-        // this.selectrow.intIdPurReqH_ID=this.selectrow.intIdPurReqH_ID.intIdPurReqH_ID;
-        // this.selectrow.intIdVendor_ID=this.selectrow.intIdVendor_ID.intIdVendor_ID;
-        // this.selectrow.intIdTypeReq_ID=this.selectrow.intIdTypeReq_ID.intIdTypeReq_ID;
-        // this.selectrow.intIdWHS_ID=this.selectrow.intIdWHS_ID.intIdWHS_ID;
-        console.log('----,,,',this.selectrow);
-        if(this.selectrow!=undefined && this.selectrow!=null ){
-          router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/almacen/clase_material/modificar_clase_material`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
+        if(this.clasematerialmodel.strMatClass_Cod!=undefined){
+          router.push({ path: `/barmenu/LO-LOGISTICA/maestro_datos/servicio/clase_servicio/modificar_clase_servicio`, query: { vista: 'visualizar',data:JSON.stringify(this.clasematerialmodel) }  })
         }
       }, 600)
     }
     else{
-      this.vifprogress=false;
-      this.textosave='Seleccione algun item. ';
+      this.textosave='Seleccione alguna item. ';
+      this.warningMessage('Seleccione alguna item.');
     }
-  }
-  desactivar_proveedor(){
-    debugger;
-    if(this.dialogProveedor){
-      this.btnactivarproveedor=false;
-    }
-  }
-  activar_proveedor(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarproveedor=true;
-    }, 120)
   }
   limpiarBotones(){
     this.btnactivarproveedor=false;
@@ -471,55 +358,69 @@ export default class VisualizarClaseServicioComponent extends Vue {
     this.strWHS_Desc=val.strWHS_Desc;
     this.desalmacen=val.strWHS_Desc;
     this.dialogAlmacen=false;
+  }  
+  async EliminarItem(){
+    this.claseDialog=true;    
   }
+  deletClaseServico(){
+    var user:any=localStorage.getItem('User_Usuario');
+    if(this.clasematerialmodel.strMatClass_Cod!=''){
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Eliminando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        ); 
+    clasematerialService.deleteClaseMaterial(this.clasematerialmodel.intIdMatClass_ID,user)
+      .then(resp=>{
+        loadingInstance.close();
+        this.claseDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Elimino correctamente '+resp,
+            type: 'success'
+          });
 
-  EliminarItem(){
-    debugger;
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
-    
+          this.clasematerialmodel=new ClaseMaterialModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Elimino Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.claseDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se elimino',
+            type: 'error'
+          });
+      })
+      }
+      else{
+          this.warningMessage('Seleccione Clase Servicio. ');
+      }
   }
-//   async btnEliminar(){
-//     await productoService.eliminarProducto(this.selectrow)
-//     .then(response=>{
-//       debugger;
-//       console.log('eliminar',response);
-//       if(response!=undefined){
-//          this.textosave='Se elimino correctamento.' + response.strStock_Cod;
-//          this.issave=true;
-//          this.iserror=false;
-//       }
-//       else{
-//         this.issave=false;
-//         this.iserror=true;
-//         this.textosave='Ocurrio un error al eliminar.';
-//       }
-//       this.dialogEliminar=false;
-//       //this.unidadmedidaModel=response;       
-//     }).catch(error=>{
-      
-//       this.dialogEliminar=false;
-//       this.issave=false;
-//       this.iserror=true;
-//       this.textosave='Ocurrio un error al eliminar.';
-//       this.$message({
-//         showClose: true,
-//         type: 'error',
-//         message: 'No se pudo cargar almacen'
-//       });
-//     })
-//     await this.cargarList();
-//   }
-
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
   ///#region  button accion
-  filterstrWHS_Cod(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterstrWHS_Cod){
+  getDateStringView(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+}
+  filterstrMatClass_Cod(h,{column,$index}){
+    if(this.blnfilterstrMatClass_Cod){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -530,10 +431,8 @@ export default class VisualizarClaseServicioComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrWHS_Desc(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterstrWHS_Desc){
+  filterstrMatClass_Desc(h,{column,$index}){
+    if(this.blnfilterstrMatClass_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -544,10 +443,8 @@ export default class VisualizarClaseServicioComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrStock_Cod(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterstrStock_Cod){
+  filterstrStock_Type_Desc(h,{column,$index}){
+    if(this.blnfilterstrStock_Type_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -558,10 +455,8 @@ export default class VisualizarClaseServicioComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrStock_Desc(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterstrStock_Desc){
+  filterstrAcct_Loc(h,{column,$index}){
+    if(this.blnfilterstrAcct_Loc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -572,10 +467,8 @@ export default class VisualizarClaseServicioComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrUM_Cod(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterstrUM_Cod){
+  filterstrExp_Cod_Loc(h,{column,$index}){
+    if(this.blnfilterstrExp_Cod_Loc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -586,10 +479,8 @@ export default class VisualizarClaseServicioComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterfltQuantity(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterfltQuantity){
+  filterdtmModified_Date(h,{column,$index}){
+    if(this.blnfilterdtmModified_Date){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -600,10 +491,8 @@ export default class VisualizarClaseServicioComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterfltPrecUnit_Local(h,{column,$index}){
-    debugger;
-    
-    if(this.blnfilterfltPrecUnit_Local){
+  filterstrModified_User(h,{column,$index}){
+    if(this.blnfilterstrModified_User){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
         h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -621,69 +510,69 @@ export default class VisualizarClaseServicioComponent extends Vue {
     Global.setColumna(this.Column);
     this.clickColumn=val.property;
      
-    if(val.property=="strWHS_Cod"){
-      this.blnfilterstrWHS_Cod=true;
-      this.blnfilterstrWHS_Desc=false;
-      this.blnfilterstrStock_Cod=false;
-      this.blnfilterstrStock_Desc=false;
-      this.blnfilterstrUM_Cod=false;
-      this.blnfilterfltQuantity=false;
-      this.blnfilterfltPrecUnit_Local=false;
+    if(val.property=="strMatClass_Cod"){
+      this.blnfilterstrMatClass_Cod=true;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=false;
     }
-    if(val.property=="strWHS_Desc"){
-      this.blnfilterstrWHS_Cod=false;
-      this.blnfilterstrWHS_Desc=true;
-      this.blnfilterstrStock_Cod=false;
-      this.blnfilterstrStock_Desc=false;
-      this.blnfilterstrUM_Cod=false;
-      this.blnfilterfltQuantity=false;
-      this.blnfilterfltPrecUnit_Local=false;
+    if(val.property=="strMatClass_Desc"){
+      this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=true;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=false;
     }
-    if(val.property=="strStock_Cod"){
-      this.blnfilterstrWHS_Cod=false;
-      this.blnfilterstrWHS_Desc=false;
-      this.blnfilterstrStock_Cod=true;
-      this.blnfilterstrStock_Desc=false;
-      this.blnfilterstrUM_Cod=false;
-      this.blnfilterfltQuantity=false;
-      this.blnfilterfltPrecUnit_Local=false;
+    if(val.property=="strStock_Type_Desc"){
+      this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=true;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=false;
     }
     
-    if(val.property=="strStock_Desc"){
-      this.blnfilterstrWHS_Cod=false;
-      this.blnfilterstrWHS_Desc=false;
-      this.blnfilterstrStock_Cod=false;
-      this.blnfilterstrStock_Desc=true;
-      this.blnfilterstrUM_Cod=false;
-      this.blnfilterfltQuantity=false;
-      this.blnfilterfltPrecUnit_Local=false;
+    if(val.property=="strAcct_Loc"){
+      this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=true;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=false;
     }
-    if(val.property=="strUM_Cod"){
-      this.blnfilterstrWHS_Cod=false;
-      this.blnfilterstrWHS_Desc=false;
-      this.blnfilterstrStock_Cod=false;
-      this.blnfilterstrStock_Desc=false;
-      this.blnfilterstrUM_Cod=true;
-      this.blnfilterfltQuantity=false;
-      this.blnfilterfltPrecUnit_Local=false;
+    if(val.property=="strExp_Cod_Loc"){
+      this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=true;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=false;
     }
-    if(val.property=="fltQuantity"){
-      this.blnfilterstrWHS_Cod=false;
-      this.blnfilterstrWHS_Desc=false;
-      this.blnfilterstrStock_Cod=false;
-      this.blnfilterstrStock_Desc=false;
-      this.blnfilterstrUM_Cod=false;
-      this.blnfilterfltQuantity=true;
-      this.blnfilterfltPrecUnit_Local=false;
+    if(val.property=="dtmModified_Date"){
+      this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=true;
+      this.blnfilterstrModified_User=false;
     }
-    if(val.property=="fltPrecUnit_Local"){
-      this.blnfilterstrWHS_Cod=false;
-      this.blnfilterstrWHS_Desc=false;
-      this.blnfilterstrStock_Cod=false;
-      this.blnfilterstrStock_Desc=false;
-      this.blnfilterstrUM_Cod=false;
-      this.blnfilterfltQuantity=false;
-      this.blnfilterfltPrecUnit_Local=true;
+    if(val.property=="strModified_User"){
+      this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=true;
     }
     
   }
@@ -782,13 +671,13 @@ export default class VisualizarClaseServicioComponent extends Vue {
     }
   }
   Limpiar(){
-    this.blnfilterstrWHS_Cod=false;
-    this.blnfilterstrWHS_Desc=false;
-    this.blnfilterstrStock_Cod=false;
-    this.blnfilterstrStock_Desc=false;
-    this.blnfilterstrUM_Cod=false;
-    this.blnfilterfltQuantity=false;
-    this.blnfilterfltPrecUnit_Local=false;
+    this.blnfilterstrMatClass_Cod=false;
+      this.blnfilterstrMatClass_Desc=false;
+      this.blnfilterstrStock_Type_Desc=false;
+      this.blnfilterstrAcct_Loc=false;
+      this.blnfilterstrExp_Cod_Loc=false;
+      this.blnfilterdtmModified_Date=false;
+      this.blnfilterstrModified_User=false;
     this.CompleteData=this.CompleteData1;
     this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     var document:any = this.$refs.missionTable;

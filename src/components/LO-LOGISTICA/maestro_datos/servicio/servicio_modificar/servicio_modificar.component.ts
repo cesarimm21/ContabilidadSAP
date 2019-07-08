@@ -215,8 +215,6 @@ export default class ModificarServicioMateComponent extends Vue {
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
-    debugger;
-    this.tiporequisicion="A";
     for(var i=0;i<10;i++){
       var item:any={
         date:Global.getParseDate(new Date().toDateString()),
@@ -241,7 +239,6 @@ export default class ModificarServicioMateComponent extends Vue {
     }, 200)
   }
   Load(){
-    debugger;
     var view = this.$route.query.vista;
     var object = JSON.parse(this.$route.query.data);
     if(view==="visualizar"){
@@ -258,7 +255,6 @@ export default class ModificarServicioMateComponent extends Vue {
     var id=object.strStock_Cod;
     productoService.GetOnlyOneProducto(id)
     .then(response=>{
-      debugger;
       if(response!=undefined){
         this.productoModel=response[0];
         this.desimpuesto=this.productoModel.strWH_Desc;
@@ -274,15 +270,11 @@ export default class ModificarServicioMateComponent extends Vue {
           var _class=response[0].intIdMatClass_ID;
           this.productoModel.intIdMatClass_ID=_class.intIdMatClass_ID;
           
-        }
-        console.log('cargar-Material:',response);
+        }   
         loading.close();
         tipoRequisicionService.GetAllTipoRequisicion()
         .then(res=>{
-          debugger;
           this.tabletipoRequisicion=res;
-          this.tiporequisicion="A";    
-          this.tiporequisicionant='A';
           clasematerialService.GetAllClaseMaterial()
           .then(response=>{
             this.tableClaseMaterial=response;    
@@ -1373,41 +1365,54 @@ export default class ModificarServicioMateComponent extends Vue {
     this.issave=false;
     this.iserror=false;
     this.textosave=''
-    this.percentage=0;      
-    if(!this.validador()){
-      for(var i=0;i<50;i++){
-        this.percentage++;
+    this.percentage=0;   
+    var vista=this.$route.query.vista;    
+    if(vista=='modificar'){
+
+      if(!this.validador()){
+        let loading = Loading.service({
+          fullscreen: true,
+          text: 'Cargando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );
+        this.productoModel.intIdWHS_Stat_ID=1;
+        this.productoModel.intIdCommTax_ID=1;
+        productoService.UpdateProducto(this.productoModel)
+        .then(res=>{ 
+          setTimeout(() => {   
+            loading.close();
+            this.issave=true;
+            this.textosave='Se guardo correctamente.'
+            this.$message({
+              showClose: true,
+                type: 'success',
+                message: 'Se guardo correctamente. '
+              });
+          }, 600)
+          
+        }).catch(error=>{
+          loading.close();
+          this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'No se pudo guardar servicio'
+          });
+        })
       }
-      debugger;
-      this.productoModel.intIdWHS_Stat_ID=1;
-      this.productoModel.intIdCommTax_ID=1;
-      productoService.UpdateProducto(this.productoModel)
-      .then(res=>{ 
-        debugger;
-        for(var i=0;i<50;i++){
-          setTimeout(
-            () => {this.percentage++;},1  
-          )
-        } 
-        setTimeout(() => {   
-          this.issave=true;
-          this.textosave='Se guardo correctamente.'
-          this.vifprogress=false;
-        }, 600)
-        
-      }).catch(error=>{
-        this.$message({
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='No se pudo guardar. Revise los datos-Error'
+      }
+      }else{
+      this.$message({
           showClose: true,
-          type: 'error',
-          message: 'No se pudo guardar producto'
+          type: 'info',
+          message: 'Accion no permitida'
         });
-      })
-    }
-    else{
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='No se pudo guardar. Revise los datos-Error'
-    }
+  }
   }
   clickable(){
     return false;

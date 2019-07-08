@@ -12,6 +12,7 @@ import Global from '@/Global';
 
 export default class  BBancoComponent extends Vue {
     gridBanco:BancoModel[];
+    gridBanco1:BancoModel[];
     clickColumn:string='';
     editing:any= {
       row:'',
@@ -31,7 +32,9 @@ export default class  BBancoComponent extends Vue {
     bancoService.GetAllBanco()
     .then(resp=>{
         this.gridBanco=[];
-        this.gridBanco=resp.data;
+        this.gridBanco1=[];
+        this.gridBanco=resp;
+        this.gridBanco1=resp;
     })
   }
   handleCurrentChange(val){
@@ -61,15 +64,9 @@ export default class  BBancoComponent extends Vue {
     this.$emit('closeBanco');
   }
   searchBanco(){
-    if(this.clickColumn=="strBank_Cod"){  this.bancoSearch.strBank_Cod=this.inputAtributo; }
-    if(this.clickColumn=="strBank_Name"){  
-      this.bancoSearch.strBank_Name=this.inputAtributo; }
-    bancoService.searchBanco(this.bancoSearch)
-    .then(resp=>{
-      this.gridBanco=[];
-      this.gridBanco=resp;     
-    })
-
+    var data=Global.like(this.gridBanco1,this.clickColumn,this.inputAtributo)
+    this.gridBanco=[];
+    this.gridBanco=data;
   }
   headerclick(val){
     this.Column=val.label;
@@ -122,6 +119,7 @@ export default class  BBancoComponent extends Vue {
   data() {
     return {
         gridBanco:[],
+        gridBanco1:[],
         inputAtributo:''
     };
   }

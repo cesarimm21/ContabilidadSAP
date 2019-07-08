@@ -65,6 +65,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  getProductoService(){
+    return axios.get(CONFIG.API_URL+'service/producto')
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   eliminarProducto(data){
     debugger;
     return axios.post(CONFIG.API_URL+'producto/eliminar',data)

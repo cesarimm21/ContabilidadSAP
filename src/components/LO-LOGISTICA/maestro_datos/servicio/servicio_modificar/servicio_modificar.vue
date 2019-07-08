@@ -128,7 +128,7 @@
                                         </div>-->
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-select :disabled="visualizar" class="validador" v-model="tiporequisicion" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable>
+                                                <el-select class="validador" v-model="productoModel.strStock_Type" style="font-size:13px" @visible-change="activar_tipo_requisicion(tiporequisicion)" allow-create clearable placeholder="" size="mini" filterable disabled>
                                                     <el-option style="font-size:13px"
                                                     v-for="item in tabletipoRequisicion"
                                                     :key="item.strTypeReq_Cod"

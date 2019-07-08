@@ -211,6 +211,7 @@
                                             prop="strMaterial_Cod" 
                                             label="Material">
                                         </el-table-column>
+                                        
                                         <el-table-column
                                             prop="strDescription"  width="200"
                                             label="Descripcion">
@@ -260,7 +261,7 @@
                                                 <el-input  type="number" v-if="bln_tbl_Precio  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeValUni" size="small" v-model="scope.row.fltUnitPrice" :precision="2" :step="0.01">
                                                 </el-input>
-                                                <label style="width:100%;  border-color: #349025; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
+                                                <label style="width:100%;  border-color: rgb(255, 157, 164); border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;"  v-else @click="clickPrice(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltUnitPrice }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
@@ -277,7 +278,7 @@
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.strPriority_Desc" >
                                                 <el-button slot="append" class="boton" icon="fa fa-clone" @click="LoadPrioridad(scope.row)"></el-button>  
                                                 </el-input>
-                                                <label style="width:100%" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Desc }}</label>
+                                                <label style="width:100%;  border-color: rgb(255, 157, 164); border-style: solid;  border-radius: 0.3em; border-width: 1px;" v-else @click="clickprioridad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strPriority_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column prop="intConv_Factor"  width="100"
@@ -287,7 +288,7 @@
                                                 <el-input  type="number" v-if="bln_tbl_factor  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlurImporte(scope.row)" v-focus @change="handleChangeFactor" size="small" v-model="scope.row.intConv_Factor" >
                                                 </el-input>
-                                                <label style="width:100%"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
+                                                <label style="width:100%;  border-color: rgb(255, 157, 164); border-style: solid;  border-radius: 0.3em; border-width: 1px;"  v-else @click="clickFactor(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.intConv_Factor }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column 

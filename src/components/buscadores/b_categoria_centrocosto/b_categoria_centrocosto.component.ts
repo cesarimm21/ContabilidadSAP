@@ -6,6 +6,7 @@ import {CategoriaCentroCostoModel} from '@/modelo/maestro/categoriacentrocosto';
 import categoriacentrocostoService from '@/components/service/categoriacentrocosto.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bcategoriacentrocosto'
 })
@@ -34,6 +35,12 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
   articulos:any =[];
 
   public cuentacontableModel:Array<CategoriaCentroCostoModel>=[];
+  public cuentacontableModel1:CategoriaCentroCostoModel[];
+  inputAtributo:string='';
+  clickColumn:string='';
+  Column:string='';
+  blnilterstrCCCategory_Cod:boolean=false;
+  blnilterstrCCCategory_Desc:boolean=false;
   public cuentacontableSelectModel:CategoriaCentroCostoModel=new CategoriaCentroCostoModel();
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
@@ -76,48 +83,53 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('cartaSelecionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
+  buscarCentroCostos(){
+    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+    this.cuentacontableModel=[];
+    this.cuentacontableModel=data;
   }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strCCCategory_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrCCCategory_Cod=true;
+      this.blnilterstrCCCategory_Desc=false;
+    }
+    if(val.property=="strCCCategory_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrCCCategory_Cod=false;
+      this.blnilterstrCCCategory_Desc=true;
+    }
   }
-
+  filterstrCCCategory_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrCCCategory_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrCCCategory_Desc(h,{column,$index}){
+    if(this.blnilterstrCCCategory_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -164,48 +176,8 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
   data() {
     return {
       cuentacontableModel:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110100',
-      Nombre:'Petty Cash & Imprest',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110101',
-      Nombre:'Petty Cash Tintaya',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110102',
-      Nombre:'Petty Cash Arequipa',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110103',
-      Nombre:'Petty Cash Matarani',
-    },
-    ]
-
+      cuentacontableModel1:[],
+      inputAtributo:''
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

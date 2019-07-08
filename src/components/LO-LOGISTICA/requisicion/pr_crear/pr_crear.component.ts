@@ -83,7 +83,8 @@ var EditableColumn = {
 })
 export default class CrearPRComponent extends Vue {
   timer=0;
-  
+  focusA:boolean=true;
+  focusB:boolean=false;
   sizeScreen:string = (window.innerHeight - 420).toString();//'0';
   sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   currentRow:any;
@@ -166,6 +167,7 @@ export default class CrearPRComponent extends Vue {
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
 
   almacenModel:AlmacenModel[];
+  almacenModel1:AlmacenModel[];
   getTotals:number=0;
   
   /*tabla*/
@@ -635,7 +637,7 @@ export default class CrearPRComponent extends Vue {
     }, 120)
   }
   desactivar_almacen(){
-    
+    this.buscarAlmacen();    
     if(this.dialogAlmacen){
       this.btnactivaralmacen=false;
     }
@@ -900,7 +902,8 @@ export default class CrearPRComponent extends Vue {
   loadAlmacenTodo(){
     almacenService.GetAllAlmacen()
     .then(response=>{
-      this.almacenModel=response;            
+      this.almacenModel=response;    
+      this.almacenModel1=response;        
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -908,6 +911,36 @@ export default class CrearPRComponent extends Vue {
         message: 'No se pudo cargar los almacenes'
       });
     })
+  }
+  focuschange(val){
+    if(val=='A'){
+      this.focusA=false;
+      this.focusB=true;
+    }
+    if(val=='B'){
+      this.focusA=false;
+      this.focusB=false;
+    }
+  }
+  buscarAlmacen(){
+    if(this.strWHS_Cod!=''){
+      var data=Global.like(this.almacenModel1,'strWHS_Cod',this.strWHS_Cod)
+      if(data.length>0){
+        this.strWHS_Cod=data[0].strWHS_Cod;
+        this.strWHS_Desc=data[0].strWHS_Desc;
+        this.requisicionModel.intIdWHS_ID=data[0].intIdWHS_ID; 
+      }
+      else{
+        this.strWHS_Cod='';
+        this.strWHS_Desc='';
+        this.requisicionModel.intIdWHS_ID=-1;
+      }
+    }
+    else{
+      this.strWHS_Cod='';
+      this.strWHS_Desc='';
+      this.requisicionModel.intIdWHS_ID=-1;
+    }    
   }
   SeleccionadoAlmacen(val){
     this.strWHS_Cod=val.strWHS_Cod;
@@ -1547,8 +1580,7 @@ export default class CrearPRComponent extends Vue {
     });
   }
   sortByKeyAsc(array, key) {
-    return array.sort(function (a, b) {
-        
+    return array.sort(function (a, b) {        
         var x = a[key]; var y = b[key];
         if(x === "" || y === null) return 1;
         if(x === "" || y === null) return -1;
@@ -1556,18 +1588,7 @@ export default class CrearPRComponent extends Vue {
          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         
     });
-  }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
-
+  }    
   Buscar(){
     
     if(this.Column!=""){
@@ -1578,20 +1599,13 @@ export default class CrearPRComponent extends Vue {
     }
   }
   btnBuscar(){
-    var data=this.like(this.CompleteData,this.clickColumn,this.txtbuscar)
+    var data=Global.like(this.CompleteData,this.clickColumn,this.txtbuscar)
     this.tableData1=data;
     this.dialogBusquedaFilter=false;
   }
   sortBy = (key, reverse) => {
-
       const moveSmaller = reverse ? 1 : -1;
-  
-    // Move larger items towards the front
-    // or back of the array depending on if
-    // we want to sort the array in reverse
-    // order or not.
-    const moveLarger = reverse ? -1 : 1;
-  
+    const moveLarger = reverse ? -1 : 1;  
     return (a, b) => {
       if (a[key] < b[key]) {
         return moveSmaller;
@@ -1743,6 +1757,9 @@ export default class CrearPRComponent extends Vue {
       dialogVisible:false,
       currentRow: null,
       tableData:[{}],
+      almacenModel1:[],
+      focusA:true,
+      focusB:false,
       tableDataServicio:[{}],
       item:{
         date: '',
