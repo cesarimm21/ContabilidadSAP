@@ -1,7 +1,7 @@
 <template>
   <div class="recepcion-b">
     <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-        <quickaccessmenu v-on:validarView="validad()" v-on:guardarTodo="guardarTodo()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+        <quickaccessmenu v-on:validarView="validarView()" v-on:guardarTodo="guardarTodo()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
     <el-card class="box-card">
         <div slot="header" class="headercard">
@@ -93,7 +93,7 @@
                                         <el-table-column type="index" label="Item" width="38" >
                                         </el-table-column>
                                         <el-table-column  :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" width="100" label="Orden Compra">
+                                         prop="strPO_NO" v-bind:style="{width:'100%',margin: '0rem'}" width="100" label="Orden Compra">
                                             <!-- <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strPO_NO }}</label>
                                             </template> -->
@@ -104,17 +104,17 @@
                                             label="Fecha OC"
                                             align="center">
                                             <template scope="scope">
-                                                <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmProcess_Date) }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getParseDate(scope.row.dtmProcess_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="60"
+                                            prop="strRequis_NO" v-bind:style="{width:'100%',margin: '0rem'}"   width="100"
                                             label="Requisicion">
                                         </el-table-column>
                                          <el-table-column
                                          :render-header="filterstrPO_Desc"
-                                            prop="strPO_Desc"  min-width="160"
+                                            prop="strPO_Desc" v-bind:style="{width:'100%',margin: '0rem'}"  min-width="280"
                                             label="Descripcion">
                                         </el-table-column>
                                         <!-- <el-table-column
@@ -130,7 +130,7 @@
                                         </el-table-column> -->
                                         <el-table-column
                                         :render-header="filterstrWHS_Desc"
-                                            prop="strWHS_Desc"  width="200"
+                                            prop="strWHS_Desc" v-bind:style="{width:'100%',margin: '0rem'}"  width="200"
                                             label="Almacen">
                                         </el-table-column>
                                         <!-- <el-table-column
@@ -149,7 +149,7 @@
                                         </el-table-column>                                         -->
                                         <el-table-column
                                         :render-header="filterstrVendor_Desc"
-                                            prop="strVendor_Desc" 
+                                            prop="strVendor_Desc" width="250" v-bind:style="{width:'100%',margin: '0rem'}"
                                             label="Proveedor">
                                         </el-table-column>
                                         <el-table-column
@@ -158,14 +158,14 @@
                                             label="Cantidad Total" 
                                             align="right">
                                             <template scope="scope">
-                                                <label style="width:100%"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltTotal_Val }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltTotal_Val }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strAuthsd_By"  width="150"
                                             label="Usuario Aprob.">
                                             <template scope="scope">
-                                                <label style="width:100%" >&nbsp;{{ scope.row.strAuthsd_By }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strAuthsd_By }}</label>
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
@@ -174,7 +174,7 @@
                                             label="Fecha Aprob."
                                             align="center">
                                             <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmAuthsd_Date) }}</label>
+                                                <label style="width:100%"  v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ getParseDate(scope.row.dtmAuthsd_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                     </el-table>

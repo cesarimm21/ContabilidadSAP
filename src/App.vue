@@ -887,6 +887,73 @@ body {
 .validador input{
     border-color:#ff9da4;
 }
+.el-tooltip__popper {
+    position: absolute;
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 2000;
+    font-size: 12px;
+    line-height: 1.2;
+    transform-origin: left top !important;
+}
+
+/* kaksd */
+.el-notification {
+   
+    width: 330px !important;
+    padding: 14px 26px 14px 13px !important;
+    border-radius: 8px !important;
+    box-sizing: border-box !important;
+    border: 1px solid #ebeef5 !important;
+    position: fixed !important;
+    background-color: #fff !important;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1) !important;
+    transition: opacity .3s,transform .3s,left .3s,right .3s,top .4s,bottom .3s !important;
+    overflow: hidden !important;
+}
+
+.el-notification__icon {
+    width: 8px !important;
+    height: 26px !important;
+    font-size: 31px !important;
+    float: left !important;
+    position: relative !important;
+    top: 3px !important;
+}
+
+.el-notification__group.is-with-icon {
+    margin-left: 39px !important;
+}
+.el-notification__title {
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    color: #1f2d3d !important;
+    margin: 0 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    color: #303133 !important;
+    margin: 0 !important;
+}
+.el-notification__content {
+    font-size: 14px !important;
+    line-height: 21px !important;
+    margin: 10px 0 0 !important;
+    color: #8391a5 !important;
+    text-align: justify !important;
+    font-size: 11px !important;
+    line-height: 21px !important;
+    margin: 6px 0 0 !important;
+    color: #606266 !important;
+    text-align: justify !important;
+}
+.el-notification__closeBtn {
+    top: 17px !important;
+    right: 20px !important;
+    position: absolute !important;
+    cursor: pointer !important;
+    color: #bfcbd9 !important;
+    font-size: 9px !important;
+}
 /* .el-table .success-row td{
     background: #2e6610;
   } */

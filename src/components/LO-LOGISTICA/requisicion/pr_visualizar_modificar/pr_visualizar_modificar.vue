@@ -113,7 +113,7 @@
                                             prop="strDesc_Header"  
                                             label="Descripcion">
                                             <template scope="scope">
-                                                <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Header }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strDesc_Header }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmRequested_Date"
@@ -125,14 +125,14 @@
                                                     v-if="bln_tbl_fecha_estimada  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.dtmRequested_Date" >
                                                 </el-date-picker>
-                                                <label style="width:100%" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickfechaestimada(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ getDateString(scope.row.dtmRequested_Date) }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrCreation_User"
                                             prop="strCreation_User"  width="100"
                                             label="Usuario">
                                             <template scope="scope">
-                                                <label style="width:100%">&nbsp;{{scope.row.strCreation_User }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}">&nbsp;{{scope.row.strCreation_User }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column 

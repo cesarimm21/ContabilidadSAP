@@ -17,8 +17,9 @@ import requisicionService from '@/components/service/requisicion.service';
 import proveedorService from '@/components/service/proveedor.service';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
-import BTipoDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
+import BComprobantepagoComponent from '@/components/buscadores/b_comprobante_pago/b_comprobante_pago.vue';
 
+import { Notification } from 'element-ui';
 import { CompaniaModel } from '@/modelo/maestro/compania';
 import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
@@ -35,7 +36,7 @@ import tipocambioService from '@/components/service/tipocambio.service';
         'bmoneda': BMonedaComponent,
         'quickaccessmenu': QuickAccessMenuComponent,
         'bimpuesto': BImpuestoComponent,
-        'btipodocumento':BTipoDocumentoComponent
+        'bcomprobantepago':BComprobantepagoComponent
     }
 })
 export default class RecepcionMaterialComponent extends Vue {
@@ -117,6 +118,9 @@ export default class RecepcionMaterialComponent extends Vue {
     dialogTipoDocumentoIdentidad:boolean=false;
     strDocument_NO_Ref:string='';
     btnactivartipodoc:boolean=false;
+    strSerie:string='';
+    strDocument_NO_Ref_desc:string='';
+
     constructor() {
         super();
         this.dtmDoc_Date.setDate(this.dtmDoc_Date.getDate() - 1);
@@ -184,6 +188,7 @@ export default class RecepcionMaterialComponent extends Vue {
             .then(response => {
                 this.requiDetalle = response;
                 this.requiDetalle1 = response;
+                console.log(this.requiDetalle1)
                 for (var i = 0; i <= this.requiDetalle.length; i++) {
                     if (this.requiDetalle[i].strVendor_Suggested != undefined) {
                         proveedorService.GetOnlyOneProveedor(this.requiDetalle[i].strVendor_Suggested)
@@ -342,17 +347,33 @@ export default class RecepcionMaterialComponent extends Vue {
                     this.multipleSelection[i].strDocument_NO_Ref=this.strVoucher_NO;
                     this.multipleSelection[i].dtmGuiaRem_Date=this.dtmDoc_Date;
                     this.multipleSelection[i].strGuiaRem_Type=this.strDocument_NO_Ref;
+                    this.multipleSelection[i].strDocument_NO_Ref_desc=this.strDocument_NO_Ref_desc;
+                    
                     this.multipleSelection[i].fltExchange_Rate=this.tipocambio;
-                    this.multipleSelection[i].fltRec_Pend_QTY=this.multipleSelection[i].fltPO_QTY_I-this.multipleSelection[i].fltRec_QYT;
-                    if(this.multipleSelection[i].fltRec_Pend_QTY==0){
+                    var item=Number(this.multipleSelection[i].fltRec_Pend_QTY)-Number(this.multipleSelection[i].fltRec_QYT1);
+                    console.log('*************')
+                    console.log(item,this.multipleSelection[i].fltRec_Pend_QTY,this.multipleSelection[i].fltRec_QYT1)
+                    console.log('*************')
+                    if(item<=0){
                         this.multipleSelection[i].chrReceipt_Status='50';
                     }
                     else{
-                        if(this.multipleSelection[i].fltRec_Pend_QTY>0)
+                        if(item>0)
                         {
                             this.multipleSelection[i].chrReceipt_Status='30';
                         }
                     }
+                    this.multipleSelection[i].strGuiaRem_Serie=this.strSerie;
+                    this.multipleSelection[i].strGuiaRem_NO=this.strGuiaRemitente;
+                    this.multipleSelection[i].strGuiaTrans_NO=this.strGuiaTransportista;
+                    this.multipleSelection[i].dtmGuiaRem_Date=this.dtmFechaRecepcion;
+                    this.multipleSelection[i].dtmGuiaTrans_Date=this.dtmFechaGuiaTransportista;
+
+                    this.multipleSelection[i].strRec_Driver=this.strConductor;
+                    this.multipleSelection[i].strPlaca=this.strPlaca;
+                    this.multipleSelection[i].fltRec_QYT=this.multipleSelection[i].fltRec_QYT1;
+                   //this.multipleSelection[i].fltRec_Pend_QTY=Number(this.multipleSelection[i].fltRec_Pend_QTY)-Number(this.multipleSelection[i].fltRec_QYT);
+                    
                 }
                 this.OrdenCompra.listaDetalle.push(this.multipleSelection[i]);
             }
@@ -394,9 +415,21 @@ export default class RecepcionMaterialComponent extends Vue {
                         this.issave = true;
                         this.iserror = false;
                         this.vifprogress=false;
-                        
-                        this.textosave = 'Se guardo correctamente. '+ this.strCode;
+                        this.strVoucher_NO='';
+                        this.dtmDoc_Date=new Date();
+                        this.strDocument_NO_Ref='';
+                        this.textosave = 'Se recepciono correctamente. '+ this.strCode;
                         this.loadPO();
+                        // this.$notify({
+                        //     title: 'Success',
+                        //     message: 'This is a success message',
+                        //     type: 'success'
+                        //   });
+                        
+                        Notification.success({title: 'Recepcion',message:this.textosave,duration: 0})
+                        //this.openMessage(this.textosave);
+                        router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda` })
+        
                     }, 600)
                 })
                 .catch(error=>{
@@ -445,18 +478,24 @@ export default class RecepcionMaterialComponent extends Vue {
     }
     //#endregion
     //#region [LOAD GET]
-    changeRecibida(){
+    changeRecibida(val){
+        debugger;
+        this.selectRow=val;
         var total=0;
         var valueTotal=0;
         this.blnchangerec=false;
         this.multipleSelection=[];
+        console.log(val.fltRec_QYT1);
+        if(Number(val.fltRec_QYT1)>Number(val.fltRec_Pend_QTY)){
+            val.fltRec_QYT1=Number(val.fltRec_Pend_QTY);
+        }
         setTimeout(() => {
             for(var i=0;i<this.requiDetalle1.length;i++){
                 if(this.requiDetalle1[i].blnCheck){
                     this.multipleSelection.push(this.requiDetalle1[i])
-                    if(this.requiDetalle1[i].fltRec_QYT >0){
-                        total+=this.requiDetalle1[i].fltRec_QYT;
-                        valueTotal+=this.requiDetalle1[i].fltRec_QYT*this.requiDetalle1[i].fltPO_Net_PR_I;
+                    if(this.requiDetalle1[i].fltRec_QYT1 >0){
+                        total+=this.requiDetalle1[i].fltRec_QYT1;
+                        valueTotal+=this.requiDetalle1[i].fltRec_QYT1*this.requiDetalle1[i].fltPO_Net_PR_I;
                     }
                 }
             } 
@@ -487,11 +526,17 @@ export default class RecepcionMaterialComponent extends Vue {
         this.fltTot_Rec_QYT=Math.round(total*100)/100;
         this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
         this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100;
-        
+        console.log('##########################')
+        console.log(this.fltTot_Rec_Pend_QTY)
+        console.log('##########################')
     }
     getDisabled(num1,num2,row){
         if(this.blnchangerec){
-            if(num1==num2){
+            // if(num1==num2){
+            //     row.blnSelection=false;
+            //     return true;
+            // }
+            if(num1<=0){
                 row.blnSelection=false;
                 return true;
             }
@@ -571,6 +616,18 @@ export default class RecepcionMaterialComponent extends Vue {
             ordenCompraService.getPODetalleId(res[0].intIdPOH_ID)
             .then(resd=>{
               this.OrdenCompra=res[0];
+              console.log(resd);
+              this.strSerie=resd[0].strGuiaRem_Serie;
+              this.strPlaca=resd[0].strPlaca;
+              this.strConductor=resd[0].strRec_Driver;
+              this.strGuiaRemitente=resd[0].strGuiaRem_NO;
+              this.strGuiaTransportista=resd[0].strGuiaTrans_NO;
+              this.strDocument_NO_Ref=resd[0].strGuiaRem_Type;
+              this.strDocument_NO_Ref_desc=resd[0].strDocument_NO_Ref_desc;
+
+              var itemd:OrdenCompraDetalleModel=resd[0];
+              this.dtmFechaGuiaTransportista=itemd.dtmGuiaTrans_Date;
+              this.dtmFechaRecepcion=itemd.dtmGuiaRem_Date;
               //this.requiDetalle1=resd;
               for(var i=0;i<resd.length;i++){
                 var item:any;
@@ -632,7 +689,8 @@ export default class RecepcionMaterialComponent extends Vue {
         this.dialogTipoDocumentoIdentidad=true;
     }
     tipoSeleccionado(val){
-        this.strDocument_NO_Ref=val.strDocIdent_NO;
+        this.strDocument_NO_Ref=val.strDocType_Cod;
+        this.strDocument_NO_Ref_desc=val.strDocType_Desc;
         this.dialogTipoDocumentoIdentidad=false;
     }
     closeTipoDocumentoIdentidad(){

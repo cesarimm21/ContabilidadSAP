@@ -185,7 +185,7 @@
                                             prop="fltQuantity"  align="right"  width="100"
                                             label="Cantidad ">
                                             <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltTotal_Val }}</label>
+                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltQuantity }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterfltPrecUnit_Local" 
