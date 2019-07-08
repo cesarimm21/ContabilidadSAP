@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="strCurrency_Cod" style="text-transform: capitalize" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -65,28 +65,25 @@
                             <el-table-column :render-header="filterstrCountry"
                             prop="strCountry" label="Pais" width="130" align="center">                                
                             </el-table-column>                           
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creado">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha ">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
-                                prop="strCreation_User" 
+                            <el-table-column :render-header="filterstrModified_User"
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                label="Estato"
-                                width="100">
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
                                 <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
+                                    <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  

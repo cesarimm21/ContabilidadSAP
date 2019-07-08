@@ -6,40 +6,37 @@ import {ClaseMaterialModel} from '@/modelo/maestro/clasematerial';
 import clasematerialService from '@/components/service/clasematerial.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bclasematerial'
 })
 
 export default class  BClaseMaterialComponent extends Vue {
-
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
-
    CompleteData:any;
   //Busqueda
   formularioBusqueda:any={
     categoria:'CODIGO',
     descripcion:'',
     cambioPagina:55,};
-
   numeroPagina:number=20;
-
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
   //Modelos
   articulos:any =[];
-
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
   public clasematerialModel:Array<ClaseMaterialModel>=[];
+  public clasematerialModel1:Array<ClaseMaterialModel>=[];
   public clasematerialSelectModel:ClaseMaterialModel=new ClaseMaterialModel();
-
+  blnilterstrMatClass_Cod:boolean=true;
+  blnilterstrExp_Cod_Loc:boolean=false;
+  blnilterstrMatClass_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     this.load();
@@ -48,8 +45,8 @@ export default class  BClaseMaterialComponent extends Vue {
     debugger;
     clasematerialService.GetAllClaseMaterial()
     .then(response=>{
-      console.log('clasematerial',response);
       this.clasematerialModel=response;       
+      this.clasematerialModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -58,13 +55,11 @@ export default class  BClaseMaterialComponent extends Vue {
       });
     })
   }
-
   redirectLogin(msg){
     Notification.warning(msg)
     window.sessionStorage.clear();
     router.push('/')
   }
-
   beforeMount(){
     this.getProveedorSupplier()
   }
@@ -74,48 +69,6 @@ export default class  BClaseMaterialComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('clasematerialseleccionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -123,14 +76,9 @@ export default class  BClaseMaterialComponent extends Vue {
   cleanData(){
     this.formularioBusqueda.VALUE = '';
   }
-
-  getProveedorSupplier(){
-
-  }
-
+  getProveedorSupplier(){  }
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
   handleCurrentChange(val:ClaseMaterialModel){
     this.clasematerialSelectModel=val;
@@ -141,16 +89,13 @@ export default class  BClaseMaterialComponent extends Vue {
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
-  }
-  
+  }  
   checkPopup(){
     this.$emit('clasematerialseleccionado',this.clasematerialSelectModel);
-    //this.$emit('companiaSeleccionado',this.companiaSelectModel);
   }
   closePopup(){
     this.$emit('clasematerialClose');
   }
-
   openMessageError(strMessage:string){
     this.$message({
         showClose: true,
@@ -158,50 +103,81 @@ export default class  BClaseMaterialComponent extends Vue {
         message: strMessage
       });
   }
+  buscarClaseMaterial(){
+    alert('aqui')
+    var data=Global.like(this.clasematerialModel1,this.clickColumn,this.inputAtributo)
+    this.clasematerialModel=[];
+    this.clasematerialModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    this.clickColumn=val.property; 
+    if(val.property=="strMatClass_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrMatClass_Cod=true;
+      this.blnilterstrExp_Cod_Loc=false;
+      this.blnilterstrMatClass_Desc=false;
+    }
+    if(val.property=="strExp_Cod_Loc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrMatClass_Cod=false;
+      this.blnilterstrExp_Cod_Loc=true;
+      this.blnilterstrMatClass_Desc=false;
+    }
+    if(val.property=="strMatClass_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrMatClass_Cod=false;
+      this.blnilterstrExp_Cod_Loc=false;
+      this.blnilterstrMatClass_Desc=true;
+    }
+  }
+  filterstrMatClass_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrMatClass_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrExp_Cod_Loc(h,{column,$index}){
+    if(this.blnilterstrExp_Cod_Loc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrMatClass_Desc(h,{column,$index}){
+    if(this.blnilterstrMatClass_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   data() {
     return {
       clasematerialModel:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      CODIGO :'CC',
-      DESCRIPCION:'CENTRO DE COSTO',
-    },
-    {
-      CODIGO :'PY',
-      DESCRIPCION:'PROYECTO',
-    },
-    {
-      CODIGO :'FA',
-      DESCRIPCION:'ACTIVOS FIJO',
-    },
-    {
-      CODIGO :'ST',
-      DESCRIPCION:'ALMACEN',
-    },
-    {
-      CODIGO :'CB',
-      DESCRIPCION:'CUENTA DE BALANCE',
-    },
-    ]
-    };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
+      clasematerialModel1:[],
+      inputAtributo:''
+      };
   }
 }

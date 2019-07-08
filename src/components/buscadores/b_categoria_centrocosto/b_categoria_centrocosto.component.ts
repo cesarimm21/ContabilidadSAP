@@ -15,7 +15,7 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
 
    CompleteData:any;

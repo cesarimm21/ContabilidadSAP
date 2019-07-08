@@ -118,6 +118,7 @@ export default class RecepcionBusquedaComponent extends Vue {
   codigoCompania:any;
   descripcionCompania:any;
   public opSelect: OrdenCompraModel=new OrdenCompraModel();
+  strPO_forsearch:string;
   fecha_actual:string;
   selectrow:any;
   currentRow:any;
@@ -143,7 +144,7 @@ export default class RecepcionBusquedaComponent extends Vue {
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
     this.tiporequisicion="A";
-    for(var i=0;i<10;i++){
+    for(var i=0;i<100;i++){
       var item:any={
         date:Global.getParseDate(new Date().toDateString()),
         categoriacuenta: '',
@@ -167,14 +168,7 @@ export default class RecepcionBusquedaComponent extends Vue {
   }
   load(){
     this.codigoCompania=localStorage.getItem('compania_cod');
-    this.descripcionCompania=localStorage.getItem('compania_name');    
-    var view = this.$route.query.vista;
-    if(view==="visualizar"){
-      this.visualizar=true;
-    }
-    else{
-      this.visualizar=false;
-    }
+    this.descripcionCompania=localStorage.getItem('compania_name');  
     this.cargarList();
   }
   desactivar_proveedor(){
@@ -196,7 +190,6 @@ export default class RecepcionBusquedaComponent extends Vue {
     return false;
   }
   SeleccionadoProveedor(val){
-
     this.strVendor_NO=val.strVendor_NO;
     this.strVendor_Desc=val.strVendor_Desc;
     this.dialogProveedor=false;
@@ -264,6 +257,7 @@ export default class RecepcionBusquedaComponent extends Vue {
   }
   handleCurrentChange(val) {
     this.opSelect=val;
+    this.strPO_forsearch=this.opSelect.strPO_NO;
     if(val!=null){
       this.selectrow=val;
       this.currentRow = val;
@@ -301,15 +295,11 @@ export default class RecepcionBusquedaComponent extends Vue {
     duration: 0})
   }
   async validarView(){
-    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPOH_ID!=-1){
-      this.vifprogress=true;
-      this.valuem=0;
-      await setTimeout(() => {
-        for(var i=0;i<100;i++){
-          this.valuem++; 
-        }
-      }, 200)
-      await setTimeout(() => {
+    var data=Global.like(this.tableData11,'strPO_NO',this.strPO_forsearch)
+    if(data.length>0){
+      this.selectrow=data[0];
+    if(this.selectrow.strPO_NO==this.strPO_forsearch){      
+      await setTimeout(() => {        
         this.selectrow.intIdPurReqH_ID=this.selectrow.intIdPurReqH_ID.intIdPurReqH_ID;
         this.selectrow.intIdVendor_ID=this.selectrow.intIdVendor_ID.intIdVendor_ID;
         this.selectrow.intIdTypeReq_ID=this.selectrow.intIdTypeReq_ID.intIdTypeReq_ID;
@@ -317,13 +307,23 @@ export default class RecepcionBusquedaComponent extends Vue {
         if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPOH_ID!=-1){
           router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
         }
-      }, 600)
+      }, 300)
     }
     else{
-      this.vifprogress=false;
-      this.textosave='Seleccione alguna salida. ';
-      this.warningMessage('Seleccione  alguna salida. ');
+      if(this.strPO_forsearch==''){
+        this.textosave='Inserte Orden de Compr. ';
+        this.warningMessage('Inserte Orden de Compr. ');
+      }
+      else{
+        this.textosave='No existe Orden de Compra. ';
+        this.warningMessage('No existe Orden de Compra.. ');
+      }
     }
+    }else{
+      this.textosave='No existe Orden de Compra. ';
+      this.warningMessage('No existe Orden de Compra.. ');
+    }    
+    
   }
   validad(){
     if(this.opSelect.strPO_NO!=undefined){
@@ -401,9 +401,6 @@ export default class RecepcionBusquedaComponent extends Vue {
     })
   }
   Limpiar(){
-    this.tableData = this.tableData11.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    var document:any = this.$refs.missionTable;
-    // document.setCurrentRow(this.OrdenCompra[this.intlineaselect]);    
     this.blnilterstrPO_NO=false;
     this.blnilterstrRequis_NO=false;
     this.blnilterstrPO_Desc=false;
@@ -412,8 +409,7 @@ export default class RecepcionBusquedaComponent extends Vue {
     this.blnilterdtmProcess_Date=false;
     this.blnilterfltTotal_Val=false;
     this.tableData12=this.tableData11;
-    this.tableData = this.tableData12.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    var document:any = this.$refs.missionTable;
+    this.tableData = this.tableData12.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
   }
   Buscar(){
     if(this.Column!=""){
@@ -446,7 +442,7 @@ export default class RecepcionBusquedaComponent extends Vue {
   
   }
   btnBuscar(){
-    var data=this.like(this.tableData11,this.clickColumn,this.txtbuscar)
+    var data=Global.like(this.tableData11,this.clickColumn,this.txtbuscar)
     this.tableData=[];
     this.tableData=data;
     this.dialogBusquedaFilter=false;
@@ -463,19 +459,7 @@ export default class RecepcionBusquedaComponent extends Vue {
     this.tableData = this.tableData11.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     }
   }
-  EliminarItem(){
-
-  }
-  like(array, key,keyword) {
-
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
+  EliminarItem(){  }
   sortByKeyDesc(array, key) {
     return array.sort(function (a, b) {
         var x = a[key]; var y = b[key];
@@ -667,6 +651,7 @@ filterstrPO_NO(h,{column,$index}){
     return{
       dialogTableVisible: false,
       dialogVisible:false,
+      strPO_forsearch:'',
       codigoCompania:'',
       descripcionCompania:'',
       tableData:[],

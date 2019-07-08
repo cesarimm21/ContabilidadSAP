@@ -6,6 +6,7 @@ import {DiarioModel} from '@/modelo/maestro/diario';
 import diarioService from '@/components/service/diario.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bdiario'
 })
@@ -14,7 +15,7 @@ export default class  BDiarioComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
 
    CompleteData:any;
@@ -25,20 +26,19 @@ export default class  BDiarioComponent extends Vue {
     cambioPagina:55,};
 
   numeroPagina:number=20;
-
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
   //Modelos
   articulos:any =[];
-
   gridModel:DiarioModel[];
+  gridModel1:DiarioModel[];
   public diarioSelectModel:DiarioModel=new DiarioModel();
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
+  blnilterstrDaily_Cod:boolean=true;
+  blnilterstrDaily_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     setTimeout(() => {
@@ -46,13 +46,12 @@ export default class  BDiarioComponent extends Vue {
     }, 200)
   }
   load(){
-    debugger
     diarioService.GetAllDiarios()
     .then(response=>{
-      debugger
-      console.log('diario',response);
       this.gridModel=[];
+      this.gridModel1=[];
       this.gridModel=response;       
+      this.gridModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -61,13 +60,11 @@ export default class  BDiarioComponent extends Vue {
       });
     })
   }
-
   redirectLogin(msg){
     Notification.warning(msg)
     window.sessionStorage.clear();
     router.push('/')
   }
-
   beforeMount(){
     this.getProveedorSupplier()
   }
@@ -77,48 +74,6 @@ export default class  BDiarioComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('cartaSelecionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -126,17 +81,11 @@ export default class  BDiarioComponent extends Vue {
   cleanData(){
     this.formularioBusqueda.VALUE = '';
   }
-
-  getProveedorSupplier(){
-
-  }
+  getProveedorSupplier(){}
 
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
-
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
@@ -150,64 +99,71 @@ export default class  BDiarioComponent extends Vue {
       });
   }
   seleccionar(row,index){
+    this.diarioSelectModel=row;
     this.$emit('cuentacontableselecionado',row);
   }
   handleCurrentChange(val){
     this.diarioSelectModel=val;
   }
   checkPopup(){
-    debugger;
     this.$emit('cuentacontableselecionado',this.diarioSelectModel);
   }
   closePopup(){
     this.$emit('cuentacontableClose');
   }
+  buscarDiario(){
+    var data=Global.like(this.gridModel1,this.clickColumn,this.inputAtributo)
+    this.gridModel=[];
+    this.gridModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strDaily_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrDaily_Cod=true;
+      this.blnilterstrDaily_Desc=false;
+    }
+    if(val.property=="strDaily_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrDaily_Cod=false;
+      this.blnilterstrDaily_Desc=true;
+    }
+  }
+  filterstrDaily_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrDaily_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrDaily_Desc(h,{column,$index}){
+    if(this.blnilterstrDaily_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   data() {
     return {
       cuentacontableModel:[],
       gridModel:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110100',
-      Nombre:'Petty Cash & Imprest',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110101',
-      Nombre:'Petty Cash Tintaya',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110102',
-      Nombre:'Petty Cash Arequipa',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110103',
-      Nombre:'Petty Cash Matarani',
-    },
-    ]
-
+      gridModel1:[],
+      inputAtributo:''
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

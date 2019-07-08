@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  deleteComprobante(intIdDocIdent_IDType_ID){    
+    return axios.get(CONFIG.API_URL+'tipocomprobantepago/delete/'+intIdDocIdent_IDType_ID)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateTipoComprobante(comprobante){
     return axios.post(CONFIG.API_URL+'tipocomprobantepago/create', comprobante)
     .then(response =>{

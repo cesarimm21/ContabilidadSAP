@@ -26,6 +26,7 @@ export default class VisualizarComprobPagoComponent extends Vue {
   companyName:any;
   companyCod:any;
   public documento:TipoComprobantePagoModel=new TipoComprobantePagoModel();
+  strDocType_Cod:string='';
   gridDocumento:TipoComprobantePagoModel[];
   gridDocumento1:TipoComprobantePagoModel[];
   gridDocumento2:TipoComprobantePagoModel[];
@@ -41,8 +42,8 @@ export default class VisualizarComprobPagoComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrDocType_Cod:boolean=false;
   blnilterstrDocType_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-comprobpago';
@@ -74,23 +75,14 @@ export default class VisualizarComprobPagoComponent extends Vue {
     }
     handleCurrentChange(val:TipoComprobantePagoModel){
       this.documento=val;
+      this.strDocType_Cod=this.documento.strDocType_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
-    }
+    }    
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
           var x = a[key]; var y = b[key];
@@ -143,63 +135,43 @@ export default class VisualizarComprobPagoComponent extends Vue {
     
     }
     Limpiar(){
+      this.clickColumn='';
+      this.Column='';
+      this.txtbuscar='';
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrDocType_Cod=false;
       this.blnilterstrDocType_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+    this.warningMessage('Accion no permitida. ');
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDocType_Cod',this.documento.strDocType_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdDocIdent_IDType_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strDocType_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strDocType_Cod',this.strDocType_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strDocType_Cod==this.strDocType_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strDocType_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strDocType_Cod==''){
+          this.textosave='Inserte Tipo de Comprobante Pago. ';
+          this.warningMessage('Inserte TiTipo de Comprobante Pago. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Tipo de Comprobante Pago. ';
+          this.warningMessage('No existe Tipo de Comprobante Pago.. ');
+        }   
+      }
     }
     else{
       this.textosave='No existe Tipo de Comprobante Pago. ';
@@ -207,19 +179,19 @@ export default class VisualizarComprobPagoComponent extends Vue {
     }
   }
    async validarView(){
-      if(this.documento.intIdDocIdent_IDType_ID!=undefined){
-          await setTimeout(() => {
-            debugger;
-            if(this.documento.strDocType_Cod!=undefined){
-              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
-            }
-          }, 600)
+    if(this.documento.intIdDocIdent_IDType_ID!=-1){
+      await setTimeout(() => {
+        debugger;
+        if(this.documento.strDocType_Cod!=''){
+          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
         }
-        else{
-          this.textosave='Seleccione Tipo de Comprobante Pago. ';
-          this.warningMessage('Seleccione Tipo de Comprobante Pago. ');
-        }
-      }
+      }, 600)
+    }
+    else{
+      this.textosave='Seleccione Tipo de Comprobante Pago. ';
+      this.warningMessage('Seleccione Tipo de Comprobante Pago. ');
+    }
+  }
     siguiente(){
       if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
         this.pagina++;
@@ -247,29 +219,29 @@ export default class VisualizarComprobPagoComponent extends Vue {
           this.clickColumn="strDocType_Cod";
           this.blnilterstrDocType_Cod=true;
       this.blnilterstrDocType_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strDocType_Desc"){
           this.clickColumn="strDocType_Desc";
           this.blnilterstrDocType_Cod=false;
       this.blnilterstrDocType_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrDocType_Cod=false;
       this.blnilterstrDocType_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrDocType_Cod=false;
       this.blnilterstrDocType_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrDocType_Cod(h,{column,$index}){
@@ -293,9 +265,9 @@ export default class VisualizarComprobPagoComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -304,8 +276,8 @@ export default class VisualizarComprobPagoComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -327,6 +299,7 @@ export default class VisualizarComprobPagoComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
+            strDocType_Cod:'',
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],

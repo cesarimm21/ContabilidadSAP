@@ -6,7 +6,7 @@ import {AlmacenModel} from '@/modelo/maestro/almacen';
 import almacenService from '@/components/service/almacen.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
-iclickColumn
+import Global from '@/Global';
 @Component({
   name: 'balmacen'
 })
@@ -109,15 +109,6 @@ export default class  BAlmacenComponent extends Vue {
   handleCurrentChange(val:AlmacenModel){
     this.almacenSelectModel=val;
   }
-  findObjectByKey(array, key, value) {
-    var responsearr:any = []
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][key] === value) {
-          responsearr.push(array[i]);
-        }
-    }
-    return responsearr;
-}
   buscarAlmacen(){
     var data=Global.like(this.almacenModel1,this.clickColumn,this.inputAtributo)
     this.almacenModel=[];

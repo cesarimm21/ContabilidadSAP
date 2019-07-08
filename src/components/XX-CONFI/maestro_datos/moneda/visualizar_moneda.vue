@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="moneda.strCurrency_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="strCurrency_Cod" style="text-transform: capitalize" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -65,15 +65,15 @@
                             <el-table-column :render-header="filterstrCountry"
                             prop="strCountry" label="Pais" width="100" align="center">                                
                             </el-table-column>                           
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creado">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
-                                prop="strCreation_User" 
+                            <el-table-column :render-header="filterstrModified_User"
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
                             <el-table-column
