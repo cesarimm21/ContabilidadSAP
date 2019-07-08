@@ -294,6 +294,12 @@ export default class RecepcionBusquedaComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
+  notificacion(){
+    
+    Notification.success({title: 'Prompt',
+    message: 'This is a message that does not automatically close',
+    duration: 0})
+  }
   async validarView(){
     if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdPOH_ID!=-1){
       this.vifprogress=true;

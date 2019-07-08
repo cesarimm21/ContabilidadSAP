@@ -45,8 +45,15 @@
                                     </el-input>
                                     </div>
                                 </div>                                
+                                <label class="el-form-item__label col-md-3" >Serie</label>
+                                <div class="col-md-3 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input  size ="small" type="text" v-model="strSerie">
+                                    </el-input>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- <div class="form-group row ">
+                            <div class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Guia Remitente</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
@@ -102,7 +109,7 @@
                                     </el-input>
                                     </div>
                                 </div>                                
-                            </div> -->
+                            </div>
                             <div class="form-group row">
                                  <label class="el-form-item__label col-md-3" >Proveedor</label>
                                 <div class="col-md-3 grupolabel">
@@ -185,7 +192,7 @@
                                 </div>
                             </div>
                             <div class="row ">
-                                <label class="el-form-item__label col-md-3" >Tipo Documento</label>
+                                <label class="el-form-item__label col-md-3" >Tipo Comprobante</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input  size ="small" @blur="desactivar_tipo_documento" @focus="activar_tipo_documento" v-model="strDocument_NO_Ref"   placeholder="">
@@ -193,6 +200,7 @@
                                     </el-input>
                                     </div>
                                 </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{strDocument_NO_Ref_desc}}</span>
                             </div> 
                         </div>
                     </div>
@@ -238,14 +246,19 @@
                                             label="Ctd.Comprada">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltRec_QYT"  width="100"
+                                            prop="fltRec_Pend_QTY"  width="100"
+                                            label="Ctd.Pendiente">
+                                        </el-table-column>
+                                        
+                                        <el-table-column
+                                            prop="fltRec_QYT1"  width="100"
                                             label="Ctd.Recibida">
                                             <template scope="scope">
-                                                <el-input-number :disabled="getDisabled(scope.row.fltPO_QTY_I,scope.row.fltRec_QYT,scope.row)" @change="changeRecibida" :min="0" :max="getNumber(scope.row.fltPO_QTY_I)" size="small" v-model="scope.row.fltRec_QYT" >
-                                                </el-input-number>
+                                                <el-input  type="number" :disabled="getDisabled(scope.row.fltRec_Pend_QTY,scope.row.fltRec_QYT1,scope.row)"  @change="changeRecibida(scope.row)" :min="0" :max="getNumber(scope.row.fltRec_Pend_QTY)" v-focus size="small"  v-model="scope.row.fltRec_QYT1" >
+                                                </el-input>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
+                                        <!-- <el-table-column
                                             prop="strGuiaRem_Serie"   width="100"
                                             label="Serie">
                                             <template scope="scope">
@@ -272,9 +285,6 @@
                                         <el-table-column
                                              width="100"
                                             label="Fecha G.Transportista">
-                                            <!-- <template scope="scope">
-                                                 {{getParseDate(scope.row.dtmGuiaTrans_Date)}}
-                                            </template> -->
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
@@ -287,9 +297,7 @@
                                         <el-table-column
                                               width="100"
                                             label="Fecha Recepcion">
-                                            <!-- <template scope="scope">
-                                                 {{getParseDate(scope.row.dtmReceived_Date)}}
-                                            </template> -->
+                                           
                                             <template scope="scope">
                                                 <el-date-picker
                                                     type="date"
@@ -314,7 +322,7 @@
                                                 <el-input  size="small" v-model="scope.row.strPlaca" >
                                                 </el-input> 
                                             </template>
-                                        </el-table-column>
+                                        </el-table-column> -->
                                         <el-table-column
                                             prop="strUM_Cod"   width="60"
                                             label="UM">
@@ -524,9 +532,9 @@
             </footer>
             </div>
         </el-dialog>
-        <el-dialog title="Busqueda Tipo Documento Identidad"  :visible.sync="dialogTipoDocumentoIdentidad" @close="closeTipoDocumentoIdentidad" size="small" >
-            <btipodocumento v-on:tipoSeleccionado="tipoSeleccionado($event)" v-on:categorialineaclose="closeTipoDocumentoIdentidad()">
-            </btipodocumento>
+        <el-dialog title="Busqueda Tipo Comprobante Pago"  :visible.sync="dialogTipoDocumentoIdentidad" @close="closeTipoDocumentoIdentidad" size="small" >
+            <bcomprobantepago v-on:ComprobantePagoSeleccionado="tipoSeleccionado($event)" v-on:ComprobantePagoClose="closeTipoDocumentoIdentidad()">
+            </bcomprobantepago>
         </el-dialog>
     </div>
 </template>

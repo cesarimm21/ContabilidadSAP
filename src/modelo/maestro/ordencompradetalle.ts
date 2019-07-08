@@ -83,6 +83,8 @@ export class OrdenCompraDetalleModel {
     strDocument_NO_Ref:string;
     dtmDoc_Date_Ref:Date;
     strAcc_Local_Name:string;
+    fltRec_QYT1:number;
+    strDocument_NO_Ref_desc:string;
     constructor(){
         this.intIdPOD_ID=0;//
         this.intIdPurReqD_ID=-1;//
@@ -139,6 +141,7 @@ export class OrdenCompraDetalleModel {
         this.strWBS_Project='';//
         this.fltExchange_Rate=0;
         this.fltRec_QYT=0;
+        this.fltRec_QYT1=0;
         this.fltRec_Value=0;
         this.fltRec_Pend_QTY=0;
         this.strGuiaRem_NO='';
@@ -154,6 +157,7 @@ export class OrdenCompraDetalleModel {
         this.blnSelection=false;
         this.blnCheck=true; 
         this.strAcc_Local_Name='';  
+        this.strDocument_NO_Ref_desc='';
     }
 }
 
