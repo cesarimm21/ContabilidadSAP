@@ -957,4 +957,69 @@ body {
 /* .el-table .success-row td{
     background: #2e6610;
   } */
+.vue-numeric-input {
+    position: relative;
+    display: inherit !important;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.vue-numeric-input.updown .numeric-input {
+    padding-right: 1.8rem;
+    padding-left: 5px;
+    font-size: 12px !important;
+    color: #48576a;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #bfcbd9;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #1f2d3d;
+    font-size: inherit;
+    /* height: 36px; */
+    line-height: 1;
+    outline: 0;
+    padding: 3px 4px;
+    -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+}
+.vue-numeric-input.updown .btn-increment {
+    right: 1px !important;
+    top: 1px !important;
+    bottom: 50%;
+    border-radius: 2px 2px 0 0;
+    border-width: 1px 1px 0;
+}
+.vue-numeric-input.updown .btn-decrement {
+    right: 1px !important;
+    top: 50%;
+    bottom: 1px !important;
+    left: auto;
+    border-radius: 0 0 2px 2px;
+    border-width: 0 1px 1px;
+}
+
+.vue-numeric-input.updown .btn-decrement .btn-icon {
+    top: 50%;
+    left: 60% !important;
+    width: 0;
+    height: 0;
+    border-width: .30rem .30rem 0 !important;
+    border-color: #111 transparent transparent;
+    border-style: solid;
+    margin: -.25rem 0 0 -.4rem;
+}
+.vue-numeric-input.updown .btn-increment .btn-icon {
+    top: 55% !important;
+    left: 60% !important;
+    width: 0;
+    height: 0;
+    border-width: 0 .30rem .30rem !important;
+    border-color: transparent transparent #111;
+    border-style: solid;
+    margin: -.25rem 0 0 -.4rem;
+}
 </style>

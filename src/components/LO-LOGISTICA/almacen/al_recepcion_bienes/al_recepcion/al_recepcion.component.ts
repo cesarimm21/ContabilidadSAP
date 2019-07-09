@@ -28,6 +28,7 @@ import maestroService from '@/components/service/maestro.service';
 import { Loading } from 'element-ui';
 import Global from '@/Global';
 import tipocambioService from '@/components/service/tipocambio.service';
+import VueNumericInput from 'vue-numeric-input'
 
 @Component({
     name: 'al-recepcion',
@@ -36,7 +37,8 @@ import tipocambioService from '@/components/service/tipocambio.service';
         'bmoneda': BMonedaComponent,
         'quickaccessmenu': QuickAccessMenuComponent,
         'bimpuesto': BImpuestoComponent,
-        'bcomprobantepago':BComprobantepagoComponent
+        'bcomprobantepago':BComprobantepagoComponent,
+        VueNumericInput
     }
 })
 export default class RecepcionMaterialComponent extends Vue {
@@ -105,9 +107,11 @@ export default class RecepcionMaterialComponent extends Vue {
     strCompany:string='';
     strCode:string='';
     fltTot_Rec_QYT:number=0;
+    fltTot_Rec_QYT_R:number=0;
     fltTot_Rec_Pend_QTY:number=0;
     fltCURR_QTY_I:number=0;
     fltTot_Rec_Value:number=0;
+    fltTot_Rec_Value_R:number=0;
     blnchangerec:boolean=true;
     strTypeMov_Cod:string='';
     strTypeMov_Desc:string='';
@@ -335,9 +339,9 @@ export default class RecepcionMaterialComponent extends Vue {
         this.multipleSelection=[];
         console.log('multiple selec',this.multipleSelection.length)
         
-var total=0;
-var valueTotal=0;
-console.log('***-leng',this.requiDetalle1.length)
+        var total=0;
+        var valueTotal=0;
+        console.log('***-leng',this.requiDetalle1.length)
         for(var i=0;i<this.requiDetalle1.length;i++){
             if(this.requiDetalle1[i].blnCheck){
                 if(this.requiDetalle1[i].fltRec_QYT1 >0){
@@ -411,6 +415,8 @@ console.log('***-leng',this.requiDetalle1.length)
             this.OrdenCompra.strCreation_User = this.nameuser;
             this.OrdenCompra.fltTot_Rec_QYT=this.fltTot_Rec_QYT;
             this.OrdenCompra.fltTot_Rec_Pend_QTY=this.fltTot_Rec_Pend_QTY;
+            this.OrdenCompra.fltTot_Rec_Value=this.fltTot_Rec_Value;
+            
             if(this.fltTot_Rec_Pend_QTY==0){
                 this.OrdenCompra.strReceipt_Status='50'  
             }
@@ -502,37 +508,49 @@ console.log('***-leng',this.requiDetalle1.length)
     //#endregion
     //#region [LOAD GET]
 
-    Check(event){
-        alert('nad');
+    Check(p){
+        if(p.max==undefined){
+            p.max=parseInt(p.fltRec_QYT1);
+        }
+        return p.max;
     }
+    
     changeRecibida(val){
         debugger;
-        return 0;
         this.selectRow=val;
         //alert(val);
         var total=0;
-        var valueTotal=0;
+        var valueTotal=Number(this.fltTot_Rec_Value_R);
         this.blnchangerec=false;
         this.multipleSelection=[];
         console.log(val.fltRec_QYT1);
-        if(Number(val.fltRec_QYT1)>Number(val.fltRec_Pend_QTY)){
-            val.fltRec_QYT1=Number(val.fltRec_Pend_QTY);
-        }
+        var entrob:boolean=false;
+       
         setTimeout(() => {
             for(var i=0;i<this.requiDetalle1.length;i++){
+                debugger;
                 if(this.requiDetalle1[i].blnCheck){
+                    if(Number(this.requiDetalle1[i].fltRec_QYT1)>Number(this.requiDetalle1[i].fltRec_Pend_QTY)){
+                        this.requiDetalle1[i].fltRec_QYT1=Number(this.requiDetalle1[i].fltRec_Pend_QTY);
+                    }
                     if(this.requiDetalle1[i].fltRec_QYT1 >0){
                         total+=this.requiDetalle1[i].fltRec_QYT1;
-                        valueTotal+=this.requiDetalle1[i].fltRec_QYT1*this.requiDetalle1[i].fltPO_Net_PR_I;
+                        var num:number=Number(this.requiDetalle1[i].fltRec_QYT1)*Number(this.requiDetalle1[i].fltPO_Net_PR_I);
+                        console.log(num);
+                        valueTotal+=Number(this.requiDetalle1[i].fltRec_QYT1)*Number(this.requiDetalle1[i].fltPO_Net_PR_I);
                     }
                     this.multipleSelection.push(this.requiDetalle1[i])
                 }
             } 
             
             console.log('size-s-changeRecibida',this.multipleSelection.length)
-            this.fltTot_Rec_QYT=Math.round(total*100)/100;
+            this.fltTot_Rec_QYT=Number(this.fltTot_Rec_QYT_R)+Math.round(total*100)/100;
             this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100; 
             this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
+            // if(this.fltTot_Rec_Pend_QTY<0){
+            //     this.fltTot_Rec_QYT=Number(this.fltCURR_QTY_I);
+            //     this.fltTot_Rec_Pend_QTY=0;
+            // }
         }, 120)
     }
     getNumber(num){
@@ -541,7 +559,7 @@ console.log('***-leng',this.requiDetalle1.length)
     selectRow(row){
         this.multipleSelection=[];
         var total=0;
-        var valueTotal=0;
+        var valueTotal=this.fltTot_Rec_Value_R;
         debugger;
         for(var i=0;i<this.requiDetalle1.length;i++){
             if(this.requiDetalle1[i].blnCheck){
@@ -620,9 +638,13 @@ console.log('***-leng',this.requiDetalle1.length)
         this.strCompany=object.strCompany_Cod;
         this.strCode=object.strPO_NO;
         this.fltTot_Rec_QYT=object.fltTot_Rec_QYT;
+        this.fltTot_Rec_QYT_R=object.fltTot_Rec_QYT;
         this.fltTot_Rec_Pend_QTY=object.fltTot_Rec_Pend_QTY;
         this.fltCURR_QTY_I=object.fltCURR_QTY_I;
         this.fltTot_Rec_Pend_QTY=this.fltCURR_QTY_I-this.fltTot_Rec_QYT; 
+        this.fltTot_Rec_Value=object.fltTot_Rec_Value;
+        this.fltTot_Rec_Value_R=object.fltTot_Rec_Value;
+        
         this.strPlaca=object.strPlaca;
         this.strConductor=object.strRec_Driver;
         this.strGuiaRemitente=object.strGuiaRem_NO;

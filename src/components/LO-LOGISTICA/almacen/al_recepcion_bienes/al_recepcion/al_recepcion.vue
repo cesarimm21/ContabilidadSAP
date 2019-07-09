@@ -141,7 +141,7 @@
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                         <div class="input-group " >
-                                            <el-input-number :disabled="true"  size="small" v-model="fltTot_Rec_Pend_QTY" >
+                                            <el-input-number  :disabled="true"  size="small" v-model="fltTot_Rec_Pend_QTY" >
                                             </el-input-number>
                                         </div>
                                     </div>
@@ -221,7 +221,7 @@
                                         <el-table-column                                             
                                             width="40" style="margin-top: 5px;">
                                             <template scope="scope">
-                                                <el-checkbox @change="selectRow(scope.row)" v-if="scope.row.blnSelection" v-model="scope.row.blnCheck" ></el-checkbox>
+                                                <el-checkbox @change="changeRecibida(scope.row)" v-if="scope.row.blnSelection" v-model="scope.row.blnCheck" ></el-checkbox>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column type="index" label="Item" width="40">
@@ -254,8 +254,9 @@
                                             prop="fltRec_QYT1"  width="100"
                                             label="Ctd.Recibida">
                                             <template scope="scope">
-                                                <el-input type="number" @keydown.down="Check"   :disabled="getDisabled(scope.row.fltRec_Pend_QTY,scope.row.fltRec_QYT1,scope.row)"  @change="changeRecibida(scope.row)" :min="0"  :max="getNumber(scope.row.fltRec_Pend_QTY)" v-focus size="small"  v-model="scope.row.fltRec_QYT1" >
-                                                </el-input>
+                                                <vue-numeric-input @input="changeRecibida(scope.row)" :disabled="getDisabled(scope.row.fltRec_Pend_QTY,scope.row.fltRec_QYT1,scope.row)"  @change="changeRecibida(scope.row)" :min="0"  :max="getNumber(scope.row.fltRec_Pend_QTY)" v-focus size="small"  v-model.number="scope.row.fltRec_QYT1" controls-type="updown"></vue-numeric-input>
+                                                <!-- <input type="number"     >
+                                                </input> -->
                                             </template>
                                         </el-table-column>
                                         <!-- <el-table-column
@@ -396,9 +397,7 @@
         <div class="row">
             <div class="col-sm-9" style="text-align:left" >
                 <div class="col-sm-2">
-                    <b-progress v-if="vifprogress" :max="100" variant="success"   show-progress animated >
-                         <b-progress-bar :value="valuem" :label="valuem + '%'" />
-                    </b-progress>
+  
                 </div>
                 <img  src="../../../../../images/save.png" v-if="issave" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
                 <img src="../../../../../images/cancelar.png" v-if="iserror" style="width:16px; height:17px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 1.3rem;" @click="fnOcultar()"/>
