@@ -527,6 +527,8 @@ export default class CrearPOComponent extends Vue {
                         this.issave = true;
                         this.iserror = false;
                         this.OrdenCompra = new OrdenCompraModel();
+                        this.OrdenCompra.chrPO_Status = '00';
+                        this.OrdenCompra.strRequis_Item_NO="0";
                         // this.requiSelect = new RequisicionModel();
                         this.Impuesto = new ImpuestoModel();
                         this.almacen=new AlmacenModel();
