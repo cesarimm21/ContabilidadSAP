@@ -57,6 +57,7 @@
     "vue-moment": "^2.0.2",
     "vue-msgbox": "^0.2.14",
     "vue-multiple-progress": "^1.6.0",
+    "vue-numeric-input": "^1.0.5",
     "vue-pagination-2": "^0.3.2",
     "vue-pdf": "^3.3.1",
     "vue-perfect-scrollbar": "0.0.13",

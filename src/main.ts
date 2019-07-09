@@ -18,7 +18,10 @@ import VueChart from 'vue-chart-js'
 import locale from 'element-ui/lib/locale/lang/es'
 import VeeValidate from 'vee-validate'
 import { Validator } from 'vee-validate';
+import VueNumericInput from 'vue-numeric-input';
 
+
+Vue.use(VueNumericInput)
 Vue.use(VueChart)
 Vue.use(ElementUI, { locale })
 Vue.use(ElementUI)

@@ -137,16 +137,6 @@
                                                 <label style="width:100%" v-else @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strStock_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="fltQuantity" sortable width="100"
-                                            label="Stock">
-                                            <template scope="scope">
-                                                <!-- <el-input-number  v-if="(scope.row === editing.row) 
-                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
-                                                </el-input-number> -->
-                                                <label  >&nbsp;{{ getCantidadVirtual(scope.row)}}</label>
-                                            </template>
-                                        </el-table-column>
                                         <el-table-column v-if="vifCantidadDesp"
                                             prop="fltQuantityR" sortable width="100"
                                             label="Stock Real">
@@ -157,12 +147,22 @@
                                                 <label  >&nbsp;{{ getCantidadReal(scope.row)}}</label>
                                             </template>
                                         </el-table-column>
+                                        <el-table-column
+                                            prop="fltQuantity" sortable width="100"
+                                            label="Stock Virtual">
+                                            <template scope="scope">
+                                                <!-- <el-input-number  v-if="(scope.row === editing.row) 
+                                                && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltQuantity" >
+                                                </el-input-number> -->
+                                                <label  >&nbsp;{{ getCantidadVirtual(scope.row)}}</label>
+                                            </template>
+                                        </el-table-column>
                                         
                                         <el-table-column
                                             prop="cantidad" sortable width="100"
                                             label="Cantidad">
                                             <template scope="scope">
-                                                <el-input-number  v-if="(scope.row === editing.row) 
+                                                <el-input-number  :min="0" :max="scope.row.fltQuantity" v-if="(scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltIssueRequest_QTY" >
                                                 </el-input-number>
                                                 <label v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueRequest_QTY}}</label>
@@ -172,7 +172,7 @@
                                             prop="cantidad" sortable width="100"
                                             label="Cta. Despachada">
                                             <template scope="scope">
-                                                <el-input-number :max="scope.row.fltIssueRequest_QTY"  size="small" v-model="scope.row.fltIssueDelivery_QTY"  >
+                                                <el-input-number :min="0" :max="scope.row.fltIssueRequest_QTY"  size="small" v-model="scope.row.fltIssueDelivery_QTY"  >
                                                 </el-input-number>
                                             </template>
                                         </el-table-column>
