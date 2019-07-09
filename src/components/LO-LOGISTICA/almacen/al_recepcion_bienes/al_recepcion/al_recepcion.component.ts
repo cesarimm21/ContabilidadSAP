@@ -249,6 +249,7 @@ export default class RecepcionMaterialComponent extends Vue {
             }
         }
         this.multipleSelection = dataselect;
+        console.log('size-s-handleSelectionChange',this.multipleSelection.length)
     }
     //#endregion
     //#region [PROVEEDORES]
@@ -331,6 +332,28 @@ export default class RecepcionMaterialComponent extends Vue {
     //#region [ORDEN COMPRA]
     guardarPO(val) {
         this.vifprogress=true;
+        this.multipleSelection=[];
+        console.log('multiple selec',this.multipleSelection.length)
+        
+var total=0;
+var valueTotal=0;
+console.log('***-leng',this.requiDetalle1.length)
+        for(var i=0;i<this.requiDetalle1.length;i++){
+            if(this.requiDetalle1[i].blnCheck){
+                if(this.requiDetalle1[i].fltRec_QYT1 >0){
+                    total+=this.requiDetalle1[i].fltRec_QYT1;
+                    valueTotal+=this.requiDetalle1[i].fltRec_QYT1*this.requiDetalle1[i].fltPO_Net_PR_I;
+                }
+                this.multipleSelection.push(this.requiDetalle1[i])
+            }
+        } 
+        
+        console.log('***-size-s-changeRecibida',this.multipleSelection.length)
+        this.fltTot_Rec_QYT=Math.round(total*100)/100;
+        this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100; 
+        this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
+
+
         if (this.multipleSelection.length == 0) {
             this.$message({
                 showClose: true,
@@ -341,7 +364,7 @@ export default class RecepcionMaterialComponent extends Vue {
 
         else {
             this.OrdenCompra.listaDetalle = [];
-            console.log('multiple selec',this.multipleSelection.length)
+          
             for (var i = 0; i < this.multipleSelection.length; i++) {
                 if(this.multipleSelection[i].fltRec_QYT!=undefined && this.multipleSelection[i].fltPO_QTY_I!=undefined && this.multipleSelection[i].fltRec_QYT!=null && this.multipleSelection[i].fltPO_QTY_I!=null) {
                     this.multipleSelection[i].strDocument_NO_Ref=this.strVoucher_NO;
@@ -403,8 +426,8 @@ export default class RecepcionMaterialComponent extends Vue {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.8)'
             });
-           this.OrdenCompra.strTypeMov_Cod=this.strTypeMov_Cod;
-           this.OrdenCompra.strTypeMov_Desc=this.strTypeMov_Desc;
+            this.OrdenCompra.strTypeMov_Cod=this.strTypeMov_Cod;
+            this.OrdenCompra.strTypeMov_Desc=this.strTypeMov_Desc;
             ordenCompraService.recepcionar(this.OrdenCompra)
             .then(response => {
                 console.log('crear-inventario,',this.OrdenCompra);
@@ -478,9 +501,15 @@ export default class RecepcionMaterialComponent extends Vue {
     }
     //#endregion
     //#region [LOAD GET]
+
+    Check(event){
+        alert('nad');
+    }
     changeRecibida(val){
         debugger;
+        return 0;
         this.selectRow=val;
+        //alert(val);
         var total=0;
         var valueTotal=0;
         this.blnchangerec=false;
@@ -492,13 +521,15 @@ export default class RecepcionMaterialComponent extends Vue {
         setTimeout(() => {
             for(var i=0;i<this.requiDetalle1.length;i++){
                 if(this.requiDetalle1[i].blnCheck){
-                    this.multipleSelection.push(this.requiDetalle1[i])
                     if(this.requiDetalle1[i].fltRec_QYT1 >0){
                         total+=this.requiDetalle1[i].fltRec_QYT1;
                         valueTotal+=this.requiDetalle1[i].fltRec_QYT1*this.requiDetalle1[i].fltPO_Net_PR_I;
                     }
+                    this.multipleSelection.push(this.requiDetalle1[i])
                 }
             } 
+            
+            console.log('size-s-changeRecibida',this.multipleSelection.length)
             this.fltTot_Rec_QYT=Math.round(total*100)/100;
             this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100; 
             this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
@@ -523,6 +554,7 @@ export default class RecepcionMaterialComponent extends Vue {
                 //}, 50)
             }
         }
+        console.log('size-s-selectRow',this.multipleSelection.length)
         this.fltTot_Rec_QYT=Math.round(total*100)/100;
         this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
         this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100;

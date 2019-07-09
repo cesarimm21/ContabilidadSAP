@@ -254,7 +254,7 @@
                                             prop="fltRec_QYT1"  width="100"
                                             label="Ctd.Recibida">
                                             <template scope="scope">
-                                                <el-input  type="number" :disabled="getDisabled(scope.row.fltRec_Pend_QTY,scope.row.fltRec_QYT1,scope.row)"  @change="changeRecibida(scope.row)" :min="0" :max="getNumber(scope.row.fltRec_Pend_QTY)" v-focus size="small"  v-model="scope.row.fltRec_QYT1" >
+                                                <el-input type="number" @keydown.down="Check"   :disabled="getDisabled(scope.row.fltRec_Pend_QTY,scope.row.fltRec_QYT1,scope.row)"  @change="changeRecibida(scope.row)" :min="0"  :max="getNumber(scope.row.fltRec_Pend_QTY)" v-focus size="small"  v-model="scope.row.fltRec_QYT1" >
                                                 </el-input>
                                             </template>
                                         </el-table-column>

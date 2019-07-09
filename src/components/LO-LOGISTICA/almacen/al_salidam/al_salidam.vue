@@ -172,7 +172,7 @@
                                             prop="cantidad" sortable width="100"
                                             label="Cta. Despachada">
                                             <template scope="scope">
-                                                <el-input-number  size="small" v-model="scope.row.fltIssueDelivery_QTY"  >
+                                                <el-input-number :max="scope.row.fltIssueRequest_QTY"  size="small" v-model="scope.row.fltIssueDelivery_QTY"  >
                                                 </el-input-number>
                                             </template>
                                         </el-table-column>
