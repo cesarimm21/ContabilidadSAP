@@ -132,7 +132,7 @@
                                             prop="fltIssueRequest_QTY"  width="110" :render-header="filterfltIssueRequest_QTY"
                                             label="Cantidad">
                                             <template scope="scope">
-                                                <el-input-number :max="scope.row.fltQuantity" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
+                                                <el-input-number :min="0" :max="scope.row.fltQuantity" v-if="bln_tbl_cantidad  && (scope.row === editing.row) 
                                                 && (scope.column.property === editing.column)" @blur="handleBlur(scope.row)" v-focus size="small" v-model="scope.row.fltIssueRequest_QTY" >
                                                 </el-input-number>
                                                 <label style="width:100%;  border-color: #ff9da4; border-style: solid;  border-radius: 0.3em; border-width: 1px;  margin: 0rem;" v-else @click="clickcantidad(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.fltIssueRequest_QTY }}</label>

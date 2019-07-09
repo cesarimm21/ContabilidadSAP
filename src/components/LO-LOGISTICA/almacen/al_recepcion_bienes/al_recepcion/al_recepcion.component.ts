@@ -455,7 +455,7 @@ export default class RecepcionMaterialComponent extends Vue {
                         //     type: 'success'
                         //   });
                         
-                        Notification.success({title: 'Recepcion',message:this.textosave,duration: 0})
+                        Notification.success({title: 'Recepcion',message:this.textosave,duration: 2500})
                         //this.openMessage(this.textosave);
                         router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_recepcion_bienes/al_recepcion_busqueda` })
         
