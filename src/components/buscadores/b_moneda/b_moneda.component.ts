@@ -16,7 +16,7 @@ export default class  BMonedaComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
 
    CompleteData:any;
@@ -84,30 +84,8 @@ export default class  BMonedaComponent extends Vue {
     this.$emit('cartaSelecionado',rows[index]);
   }
 
-  // buscarProveedor(){
-  //   if(this.clickColumn=="strCurrency_Cod"){  this.searchMoneda.strCurrency_Cod=this.inputAtributo; }
-  //   if(this.clickColumn=="strCurrency_Desc"){ this.searchMoneda.strCurrency_Desc=this.inputAtributo; }
-  //   if(this.clickColumn=="strCountry"){ this.searchMoneda.strCountry=this.inputAtributo; }
-  //   console.log(this.searchMoneda);
-    
-  //   monedaService.searchMoneda(this.searchMoneda)
-  //   .then(resp=>{
-  //     this.monedaData=[];
-  //     this.monedaData=resp;     
-  //   })
-  // }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarProveedor(){
-    var data=this.like(this.monedaData1,this.clickColumn,this.inputAtributo)
+    var data=Global.like(this.monedaData1,this.clickColumn,this.inputAtributo)
     this.monedaData=[];
     this.monedaData=data;
   }
@@ -139,7 +117,6 @@ export default class  BMonedaComponent extends Vue {
     }
   }
   filterstrCurrency_Cod(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnilterstrCurrency_Cod){
       this.Column=column1;
@@ -156,8 +133,6 @@ export default class  BMonedaComponent extends Vue {
     } 
   }
   filterstrCurrency_Desc(h,{column,$index}){
-    debugger;
-    
     if(this.blnilterstrCurrency_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -170,8 +145,6 @@ export default class  BMonedaComponent extends Vue {
     } 
   }
   filterstrCountry(h,{column,$index}){
-    debugger;
-    
     if(this.blnilterstrCountry){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -216,7 +189,6 @@ export default class  BMonedaComponent extends Vue {
   seleccionar(val:MonedaModel){
     this.monedaSelectModel=val;
     this.$emit('MonedaSeleccionado',this.monedaSelectModel);
-    // if(Global.nameComponent=='pagos-individual'){
       this.$emit('monedaselecionado',this.monedaSelectModel);
     // }
   }

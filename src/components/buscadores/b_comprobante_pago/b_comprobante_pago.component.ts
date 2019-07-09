@@ -27,8 +27,8 @@ export default class  BComprobantepagoComponent extends Vue {
   loadComprobante(){
     comprobantepagoService.GetAllComprobante()
     .then(response=>{
-      this.ComprobantePagoModel=response;        
-      console.log(this.ComprobantePagoModel);
+      this.ComprobantePagoModel=response;      
+      this.ComprobantePagoModel1=response;      
       
     }).catch(error=>{
       this.$message({

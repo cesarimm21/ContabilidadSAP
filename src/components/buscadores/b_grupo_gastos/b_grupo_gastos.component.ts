@@ -6,6 +6,7 @@ import {GrupoGastosModel} from '@/modelo/maestro/grupogastos';
 import grupogastosService from '@/components/service/grupogastos.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bgrupogastos'
 })
@@ -14,42 +15,31 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
-
    CompleteData:any;
   //Busqueda
   formularioBusqueda:any={
     categoria:'CODIGO',
     descripcion:'',
     cambioPagina:55,};
-
   numeroPagina:number=20;
 
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
   //Modelos
   articulos:any =[];
-
   public cuentacontableModel:Array<GrupoGastosModel>=[];
   public cuentacontableModel1:Array<GrupoGastosModel>=[];
   public cuentacontableSelectModel:GrupoGastosModel=new GrupoGastosModel();
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
   blnfilterstrExpGroup_Cod:boolean=true;
   blnfilterstrExpGroup_Name:boolean=false;
   blnfilterstrExpGroup_Desc:boolean=false;
-
   clickColumn:string='';
   Column:string='';
-
   public search:GrupoGastosModel=new GrupoGastosModel();
   inputAtributo:any;
-
   constructor() {
     super();
     setTimeout(() => {
@@ -57,11 +47,8 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
     }, 200)
   }
   load(){
-    debugger
     grupogastosService.GetAllGrupoGastos()
     .then(response=>{
-      debugger
-      console.log('grupogastos',response);
       this.cuentacontableModel=response;   
       this.cuentacontableModel1=response;       
     }).catch(error=>{
@@ -88,48 +75,6 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('cartaSelecionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -137,22 +82,16 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
   cleanData(){
     this.formularioBusqueda.VALUE = '';
   }
-
-  getProveedorSupplier(){
-
-  }
+  getProveedorSupplier(){  }
 
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
 
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
   }
-
   openMessageError(strMessage:string){
     this.$message({
         showClose: true,
@@ -172,11 +111,9 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
   }
   closePopup(){
     this.$emit('close');
-  }
-  
+  }  
   
   filterstrExpGroup_Cod(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnfilterstrExpGroup_Cod){
       this.Column=column1;
@@ -193,7 +130,6 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
     } 
   }
   filterstrExpGroup_Name(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnfilterstrExpGroup_Name){
       this.Column=column1;
@@ -210,7 +146,6 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
     } 
   }
   filterstrExpGroup_Desc(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnfilterstrExpGroup_Desc){
       this.Column=column1;
@@ -255,19 +190,8 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
       this.blnfilterstrExpGroup_Desc=true;
     }
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toLowerCase().toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarfilter(){
-    var input=this.inputAtributo.toLowerCase();
-    var data=this.like(this.cuentacontableModel1,this.clickColumn,input)
+    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
     this.cuentacontableModel=[];
     this.cuentacontableModel=data;
   }
@@ -276,48 +200,7 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110100',
-      Nombre:'Petty Cash & Imprest',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110101',
-      Nombre:'Petty Cash Tintaya',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110102',
-      Nombre:'Petty Cash Arequipa',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110103',
-      Nombre:'Petty Cash Matarani',
-    },
-    ]
-
+      inputAtributo:''
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

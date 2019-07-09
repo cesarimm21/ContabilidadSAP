@@ -6,6 +6,7 @@ import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import cuentacontableService from '@/components/service/cuentacontable.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bcuentacontable'
 })
@@ -36,10 +37,6 @@ export default class  BCuentaContableComponent extends Vue {
   gridCuenta:CuentaContableModel[];
   gridCuenta1:CuentaContableModel[];
   public cuentacontableSelectModel:CuentaContableModel=new CuentaContableModel();
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
   blnfilterstrAcc_Local_NO:boolean=true;
   blnfilterstrAcc_Corp_NO:boolean=false;
   blnfilterstrAcc_Local_Name:boolean=false;
@@ -87,45 +84,6 @@ export default class  BCuentaContableComponent extends Vue {
     this.$emit('cartaSelecionado',rows[index]);
   }
 
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
 
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
@@ -260,9 +218,7 @@ export default class  BCuentaContableComponent extends Vue {
     return responsearr
   }
   buscarfilterCuenta(){
-    var input=this.inputAtributo.toLowerCase();
-    var data=this.like(this.gridCuenta1,this.clickColumn,input)
-  
+    var data=Global.like(this.gridCuenta1,this.clickColumn,this.inputAtributo)  
     this.gridCuenta=[];
     this.gridCuenta=data;
   }
@@ -271,44 +227,7 @@ export default class  BCuentaContableComponent extends Vue {
     return {
       gridCuenta:[],
       gridCuenta1:[],
-      inputAtributo:'',
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110100',
-      Nombre:'Petty Cash & Imprest',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110101',
-      Nombre:'Petty Cash Tintaya',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110102',
-      Nombre:'Petty Cash Arequipa',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110103',
-      Nombre:'Petty Cash Matarani',
-    },
-    ]
-
+      inputAtributo:''
     };
   }
 }

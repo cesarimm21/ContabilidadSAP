@@ -505,9 +505,7 @@ console.log('***-leng',this.requiDetalle1.length)
     Check(event){
         alert('nad');
     }
-    changeRecibida(val){
-        debugger;
-        return 0;
+    changeRecibida(val){        
         this.selectRow=val;
         //alert(val);
         var total=0;
@@ -534,6 +532,7 @@ console.log('***-leng',this.requiDetalle1.length)
             this.fltTot_Rec_Pend_QTY=Math.round((Number(this.fltCURR_QTY_I)-Number(this.fltTot_Rec_QYT))*100)/100; 
             this.fltTot_Rec_Value=Math.round(valueTotal*100)/100;
         }, 120)
+        return 0;
     }
     getNumber(num){
         return parseFloat(num);

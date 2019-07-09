@@ -71,7 +71,7 @@
                             </div>
                             
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-3" >Fecha G.Transportisita</label>
+                                <label class="el-form-item__label col-md-3" >Fecha G.Transportista</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                         <el-date-picker
@@ -118,7 +118,8 @@
                                     </el-input>
                                     </div>
                                 </div>    
-                                <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strVendor_Desc}}</span>
+                                <label class="sinLinea el-form-item__label col-md-6" >{{OrdenCompra.strVendor_Desc}}</label>
+                                <!-- <span style="font-size: 11px;margin-top: 5px;">{{OrdenCompra.strVendor_Desc}}</span> -->
                             </div>
                              <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-3" >Total Comprado</label>

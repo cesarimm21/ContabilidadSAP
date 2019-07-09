@@ -75,7 +75,7 @@
                 <div class="row" style="margin-top: 3px;">
                     <div class="col-sm-9" >
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Codigo Material</label>
+                            <label class="el-form-item__label col-md-2" >Material</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="strStock_Cod"  placeholder="">
@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Codigo Almacen</label>
+                            <label class="el-form-item__label col-md-2" >Almacen</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
@@ -146,30 +146,30 @@
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" label="Linea" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         
                                         <el-table-column :render-header="filterstrWHS_Cod"
                                             prop="strWHS_Cod"   width="80"
-                                            label="Cod Almacen">
+                                            label="Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strWHS_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrWHS_Desc"
                                             prop="strWHS_Desc"  width="150" 
-                                            label="Descripcion Almacen">
+                                            label="Desc Almacen">
                                             <template scope="scope">
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strWHS_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterstrStock_Cod"  prop="strStock_Cod" width="100" label="Codigo Material">
+                                        <el-table-column :render-header="filterstrStock_Cod"  prop="strStock_Cod" width="100" label="Material">
                                             <template scope="scope">
                                             <label >&nbsp;{{ scope.row.strStock_Cod }}</label>
                                             </template>
                                         </el-table-column>  
                                          <el-table-column :render-header="filterstrStock_Desc" 
-                                          prop="strStock_Desc" label="Descripcion Material">
+                                          prop="strStock_Desc" label="Desc Material">
                                             <template scope="scope">
                                             <label >&nbsp;{{ scope.row.strStock_Desc }}</label>
                                             </template>
@@ -182,7 +182,22 @@
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strUM_Cod }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterdtmRequested_Date"
+                                       
+                                        <el-table-column :render-header="filterfltQuantity" 
+                                            prop="fltQuantity"  align="right"  width="100"
+                                            label="Cant Stock">
+                                            <template scope="scope">
+                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltQuantity }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column :render-header="filterfltPrecUnit_Local" 
+                                            prop="fltPrecUnit_Local" align="right"  width="100"
+                                            label="Importe">
+                                            <template scope="scope">
+                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltPrecUnit_Local}}</label>
+                                            </template>
+                                        </el-table-column> 
+                                         <el-table-column :render-header="filterdtmRequested_Date"
                                             prop="dtmModified_Date"  width="100"
                                             label="Fecha ">
                                             <template scope="scope">
@@ -196,29 +211,15 @@
                                                 <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{scope.row.strModified_User }}</label>
                                             </template>
                                         </el-table-column>
-                                        <!-- <el-table-column :render-header="filterfltQuantity" 
-                                            prop="fltQuantity"  align="right"  width="100"
-                                            label="Cantidad ">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltQuantity }}</label>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column :render-header="filterfltPrecUnit_Local" 
-                                            prop="fltPrecUnit_Local" align="right"  width="100"
-                                            label="Importe">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ scope.row.fltPrecUnit_Local}}</label>
-                                            </template>
-                                        </el-table-column> -->
-                                        <!-- <el-table-column
-                                            prop="fltPrecUnit_Local" align="center"  width="70"
+                                        <el-table-column
+                                            prop="chrStatus" align="center"  width="70"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
                                                 :type="scope.row.chrStatus === 'A' ? 'success' : 'danger'"
                                                 disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
                                             </template>
-                                        </el-table-column> -->
+                                        </el-table-column>
                                          
                                     </el-table>
                                 </div>
