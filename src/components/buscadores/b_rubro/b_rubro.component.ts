@@ -6,6 +6,7 @@ import {RubroModel} from '@/modelo/maestro/rubro';
 import rubroService from '@/components/service/rubro.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'brubro'
 })
@@ -29,16 +30,17 @@ export default class  BRubroComponent extends Vue {
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
   //Modelos
   articulos:any =[];
-
   public cuentacontableModel:Array<RubroModel>=[];
+  public cuentacontableModel1:Array<RubroModel>=[];
   public cuentacontableSelectModel:RubroModel=new RubroModel();
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
+  blnilterstrAcctItem_Cod:boolean=true;
+  blnilterstrAcctItem_Name:boolean=false;
+  blnilterstrAcctItem_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     setTimeout(() => {
@@ -46,12 +48,10 @@ export default class  BRubroComponent extends Vue {
     }, 200)
   }
   load(){
-    debugger
     rubroService.GetAllRubro()
     .then(response=>{
-      debugger
-      console.log('grupogastos',response);
       this.cuentacontableModel=response;       
+      this.cuentacontableModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -76,48 +76,6 @@ export default class  BRubroComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('rubroselecionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -125,22 +83,15 @@ export default class  BRubroComponent extends Vue {
   cleanData(){
     this.formularioBusqueda.VALUE = '';
   }
-
-  getProveedorSupplier(){
-
-  }
+  getProveedorSupplier(){ }
 
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
-
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
   }
-
   openMessageError(strMessage:string){
     this.$message({
         showClose: true,
@@ -161,51 +112,79 @@ export default class  BRubroComponent extends Vue {
   closePopup(){
     this.$emit('rubroClose');
   }
+  buscarRubro(){
+    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+    this.cuentacontableModel=[];
+    this.cuentacontableModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strAcctItem_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrAcctItem_Cod=true;
+      this.blnilterstrAcctItem_Name=false;
+      this.blnilterstrAcctItem_Desc=false;
+    }
+    if(val.property=="strAcctItem_Name"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrAcctItem_Cod=false;
+      this.blnilterstrAcctItem_Name=true;
+      this.blnilterstrAcctItem_Desc=false;
+    }
+    if(val.property=="strAcctItem_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrAcctItem_Cod=false;
+      this.blnilterstrAcctItem_Name=false;
+      this.blnilterstrAcctItem_Desc=true;
+    }
+  }
+  filterstrAcctItem_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrAcctItem_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcctItem_Name(h,{column,$index}){
+    if(this.blnilterstrAcctItem_Name){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrAcctItem_Desc(h,{column,$index}){
+    if(this.blnilterstrAcctItem_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   data() {
     return {
       cuentacontableModel:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110100',
-      Nombre:'Petty Cash & Imprest',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110101',
-      Nombre:'Petty Cash Tintaya',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110102',
-      Nombre:'Petty Cash Arequipa',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110103',
-      Nombre:'Petty Cash Matarani',
-    },
-    ]
-
+      cuentacontableModel1:[],
+      inputAtributo:''
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

@@ -25,6 +25,7 @@ export default class VisualizarMetodoDepComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strDeprMeth_Cod:string='';
   public documento:MetodoDepreciacionModel=new MetodoDepreciacionModel();
   gridDocumento:MetodoDepreciacionModel[];
   gridDocumento1:MetodoDepreciacionModel[];
@@ -74,22 +75,13 @@ export default class VisualizarMetodoDepComponent extends Vue {
     }
     handleCurrentChange(val:MetodoDepreciacionModel){
       this.documento=val;
+      this.strDeprMeth_Cod=this.documento.strDeprMeth_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -153,66 +145,41 @@ export default class VisualizarMetodoDepComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+      this.warningMessage('Accion no permitida');
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDeprMeth_Cod',this.documento.strDeprMeth_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdDeprMeth_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strDeprMeth_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strDeprMeth_Cod',this.strDeprMeth_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strDeprMeth_Cod==this.strDeprMeth_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strDeprMeth_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strDeprMeth_Cod==''){
+          this.textosave='Inserte Metodo Depreciacion. ';
+          this.warningMessage('Inserte Metodo Depreciacion. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Metodo Depreciacion. ';
+          this.warningMessage('No existe Metodo Depreciacion. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Metodo Depresacion. ';
-      this.warningMessage('No existe Metodo Depresacion. ');
+      this.textosave='No existe Metodo Depreciacion. ';
+      this.warningMessage('No existe Metodo Depreciacion. ');
     }
   }
-   async validarView(){
-     console.log(this.documento);
-     
-      if(this.documento.intIdDeprMeth_ID!=undefined){
+   async validarView(){     
+      if(this.documento.intIdDeprMeth_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strDeprMeth_Cod!=undefined){
+            if(this.documento.strDeprMeth_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
@@ -332,6 +299,7 @@ export default class VisualizarMetodoDepComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strDeprMeth_Cod:''
         }
     }
   

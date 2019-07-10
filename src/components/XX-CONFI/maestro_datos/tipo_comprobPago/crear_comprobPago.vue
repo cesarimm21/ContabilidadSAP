@@ -37,7 +37,7 @@
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-6" >
-                                        <el-input type="textarea" :rows="2" class="validador" size="small" v-model="comprobante.strDocType_Desc"  >
+                                        <el-input type="text"  class="validador" size="small" v-model="comprobante.strDocType_Desc"  >
                                         </el-input>
                                     </div>
                                 </div>

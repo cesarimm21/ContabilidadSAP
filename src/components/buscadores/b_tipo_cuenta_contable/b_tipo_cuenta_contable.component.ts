@@ -30,8 +30,6 @@ export default class  BTipoCuentaContableComponent extends Vue {
   GetAllTipoDocumento(){      
     tipocuentacontableService.GetAllTipoCuentaContable()
     .then(response=>{
-        console.log(response);
-        
       this.TipoCuentaContable=response;
       this.TipoCuentaContable1=response;
     }).catch(error=>{
@@ -108,19 +106,8 @@ export default class  BTipoCuentaContableComponent extends Vue {
       this.blnfilterstrAcc_Type_Name=true;
     }
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toLowerCase().toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarfilter(){
-    var input=this.inputAtributo.toLowerCase();
-    var data=this.like(this.TipoCuentaContable1,this.clickColumn,input)
+    var data=Global.like(this.TipoCuentaContable1,this.clickColumn,this.inputAtributo)
     this.TipoCuentaContable=[];
     this.TipoCuentaContable=data;
   }
@@ -128,7 +115,8 @@ export default class  BTipoCuentaContableComponent extends Vue {
   data() {
     return {
       TipoCuentaContable:[],
-      TipoCuentaContable1:[]
+      TipoCuentaContable1:[],
+      inputAtributo:''
     };
   }
 }

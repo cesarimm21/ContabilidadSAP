@@ -25,6 +25,7 @@ export default class ModificarMetodoDepComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strDeprMeth_Cod:string='';
   public documento:MetodoDepreciacionModel=new MetodoDepreciacionModel();
 
   gridDocumento:MetodoDepreciacionModel[];
@@ -76,6 +77,7 @@ export default class ModificarMetodoDepComponent extends Vue {
     }
     handleCurrentChange(val:MetodoDepreciacionModel){
       this.documento=val;
+      this.strDeprMeth_Cod=this.documento.strDeprMeth_Cod;
      }
     btnBuscar(){
       var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
@@ -187,15 +189,27 @@ export default class ModificarMetodoDepComponent extends Vue {
         }
     }
   async validad(){      
-    var data=Global.like(this.gridDocumento1,'strDeprMeth_Cod',this.documento.strDeprMeth_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdDeprMeth_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strDeprMeth_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strDeprMeth_Cod',this.strDeprMeth_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strDeprMeth_Cod==this.strDeprMeth_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strDeprMeth_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strDeprMeth_Cod==''){
+          this.textosave='Inserte Metodo Depreciacion. ';
+          this.warningMessage('Inserte Metodo Depreciacion. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Metodo Depreciacion. ';
+          this.warningMessage('No existe Metodo Depreciacion. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Metodo Depreciacion. ';
@@ -203,10 +217,10 @@ export default class ModificarMetodoDepComponent extends Vue {
     }
   }
    async validarView(){
-      if(this.documento.intIdDeprMeth_ID!=undefined){
+      if(this.documento.intIdDeprMeth_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strDeprMeth_Cod!=undefined){
+            if(this.documento.strDeprMeth_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
@@ -326,6 +340,7 @@ export default class ModificarMetodoDepComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strDeprMeth_Cod:''
         }
     }
   

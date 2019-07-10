@@ -29,7 +29,7 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column :render-header="filterstrUM_Cod"  prop="strUM_Cod" label="Codigo" width="180">
+            <el-table-column :render-header="filterstrUM_Cod"  prop="strUM_Cod" label="Codigo" width="120">
             </el-table-column>  
             <el-table-column :render-header="filterstrUM_Desc" prop="strUM_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 

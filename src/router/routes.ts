@@ -176,6 +176,7 @@ import ViewAndEditPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/p
 
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
+import VisualizarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/visualizar_um.vue'
 import ViewAndEditUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um.vue'
 
 import CrearMetodoEvaComponent from '@/components/XX-CONFI/logistica/metodo_eva/crear_metodo_eva.vue'
@@ -1216,7 +1217,12 @@ export default [
       {
         path:'XX-CONFI/maestro_datos/unidad_medida/modificar_um',
         component:ModificarUMComponent,
-        name:'visu-um'
+        name:'modificar-um'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/unidad_medida/visualizar_um',
+        component:VisualizarUMComponent,
+        name:'isualizar-um'
       }, 
       {
         path:'XX-CONFI/maestro_datos/unidad_medida/viewandedit_um',

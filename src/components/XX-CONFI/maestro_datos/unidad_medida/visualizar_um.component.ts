@@ -4,19 +4,20 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-import {ServicioPrestadoModel} from '@/modelo/maestro/servicioPrestado';
+import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import servicioService from '@/components/service/servicioprestado.service';
+import umService from '@/components/service/unidadmedida.service';
 import { Loading } from 'element-ui';
+import unidadmedidaService from '@/components/service/unidadmedida.service';
 @Component({
-  name: 'visualizar-servicio',
+  name: 'modificar-um',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
-export default class VisualizarServicioComponent extends Vue {
+export default class VisualizarUMComponent extends Vue {
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
@@ -25,14 +26,16 @@ export default class VisualizarServicioComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
-  strNDServ_Cod:string='';
-  public documento:ServicioPrestadoModel=new ServicioPrestadoModel();
-  gridDocumento:ServicioPrestadoModel[];
-  gridDocumento1:ServicioPrestadoModel[];
-  gridDocumento2:ServicioPrestadoModel[];
+  strUM_Cod:string='';
+  unidadDialog:boolean=false;
+  public unidad:UnidadMedidaModel=new UnidadMedidaModel();
+  gridUnidad:UnidadMedidaModel[];
+  gridUnidad1:UnidadMedidaModel[];
+  gridUnidad2:UnidadMedidaModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+
   pagina: number =1;
   RegistersForPage: number = 100;
   totalRegistros: number = 100;
@@ -40,13 +43,15 @@ export default class VisualizarServicioComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blnilterstrNDServ_Cod:boolean=false;
-  blnilterstrNDServ_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterstrUM_Desc:boolean=false;
+  blnilterstrUM_Cod:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+
+
   constructor(){    
         super();
-        Global.nameComponent='visualizar-servicio';
+        Global.nameComponent='modificar-um';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -54,14 +59,14 @@ export default class VisualizarServicioComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        servicioService.GetAllServicioPrestado()
+        umService.GetAllUnidadMedida()
         .then(response=>{
-          this.gridDocumento=[];
-          this.gridDocumento1=[];
-          this.gridDocumento2=[];
-          this.gridDocumento=response;
-          this.gridDocumento1=response;
-          this.gridDocumento2=response;
+          this.gridUnidad=[];
+          this.gridUnidad1=[];
+          this.gridUnidad2=[];
+          this.gridUnidad=response;
+          this.gridUnidad1=response;
+          this.gridUnidad2=response;
         })
     }
     getDateStringView(fecha:string){
@@ -73,14 +78,14 @@ export default class VisualizarServicioComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
-    handleCurrentChange(val:ServicioPrestadoModel){
-      this.documento=val;
-      this.strNDServ_Cod=this.documento.strNDServ_Cod;
+    handleCurrentChange(val:UnidadMedidaModel){
+      this.unidad=val;
+      this.strUM_Cod=this.unidad.strUM_Cod;
      }
     btnBuscar(){
-      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
-      this.gridDocumento=[];
-      this.gridDocumento=data;
+      var data=Global.like(this.gridUnidad1,this.clickColumn,this.txtbuscar)
+      this.gridUnidad=[];
+      this.gridUnidad=data;
       this.dialogBusquedaFilter=false;
     }
     sortByKeyDesc(array, key) {
@@ -121,84 +126,84 @@ export default class VisualizarServicioComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
       );
-      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
-      this.gridDocumento2=[];
-      this.gridDocumento2=data;
-      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=await this.sortByKeyAsc(this.gridUnidad1,this.clickColumn) 
+      this.gridUnidad2=[];
+      this.gridUnidad2=data;
+      this.gridUnidad = await this.gridUnidad2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       await loading.close();
     }
     DscItem(){
-      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
-      this.gridDocumento2=[];
-      this.gridDocumento2=data;
-      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=this.sortByKeyDesc(this.gridUnidad1,this.clickColumn) 
+      this.gridUnidad2=[];
+      this.gridUnidad2=data;
+      this.gridUnidad = this.gridUnidad2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     
     }
     Limpiar(){
-      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blnilterstrNDServ_Cod=false;
-      this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrUM_Cod=false;
+      this.blnilterstrUM_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;       
     }
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      this.warningMessage('Accion no permitida');
-  }
-  async validad(){      
-    var data=Global.like(this.gridDocumento1,'strNDServ_Cod',this.strNDServ_Cod)
+    async EliminarItem(){
+      this.warningMessage('Accion no permitida')    
+    }
+  async validad(){    
+     var data=Global.like(this.gridUnidad1,'strUM_Cod',this.strUM_Cod)
     if(data.length>0){
-      this.documento=data[0];
-      if(this.documento.strNDServ_Cod==this.strNDServ_Cod){
+      this.unidad=data[0];
+      if(this.unidad.strUM_Cod==this.strUM_Cod){
         await setTimeout(() => {
           debugger;
-          if(this.documento.strNDServ_Cod!=''){
-            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          if(this.unidad.strUM_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'visualizar' ,data:JSON.stringify(this.unidad) }  })
           }
         }, 600)
       }
       else{
-        if(this.strNDServ_Cod==''){
-          this.textosave='Inserte Serv. Prestado ND. ';
-          this.warningMessage('Inserte Serv. Prestado ND. ');
+        if(this.strUM_Cod==''){
+          this.textosave='Inserte Unidad Medida. ';
+          this.warningMessage('Inserte Unidad Medida. ');
         }
         else{
-          this.textosave='No existe Serv. Prestado ND. ';
-          this.warningMessage('No existe Serv. Prestado ND. ');
+          this.textosave='No existe Unidad Medida. ';
+          this.warningMessage('No existe Unidad Medida. ');
         }        
       }
     }
     else{
-      this.textosave='No existe Serv. Prestado ND. ';
-      this.warningMessage('No existe Serv. Prestado ND. ');
+      this.textosave='No existe Unidad Medida. ';
+      this.warningMessage('No existe Unidad Medida. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdNDServ_ID!=-1){
+      if(this.unidad.intUnit_Measure_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strNDServ_Cod!=''){
-              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+            if(this.unidad.strUM_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'visualizar' ,data:JSON.stringify(this.unidad) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Servicio Prestado. ';
-          this.warningMessage('Seleccione Servicio Prestado. ');
+          this.textosave='Seleccione unidad de medida. ';
+          this.warningMessage('Seleccione unidad de medida. ');
         }
       }
     siguiente(){
       if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
         this.pagina++;
-        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     anterior(){
       if(this.pagina>1){
       this.pagina--;
-      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     warningMessage(newMsg : string) {
@@ -212,37 +217,37 @@ export default class VisualizarServicioComponent extends Vue {
   headerclick(val){    
       this.Column=val.label;
       Global.setColumna(this.Column);     
-      if(val.property=="strNDServ_Cod"){
-          this.clickColumn="strNDServ_Cod";
-          this.blnilterstrNDServ_Cod=true;
-      this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      if(val.property=="strUM_Cod"){
+          this.clickColumn="strUM_Cod";
+          this.blnilterstrUM_Cod=true;
+          this.blnilterstrUM_Desc=false; 
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strNDServ_Desc"){
-          this.clickColumn="strNDServ_Desc";
-          this.blnilterstrNDServ_Cod=false;
-      this.blnilterstrNDServ_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      if(val.property=="strUM_Desc"){
+          this.clickColumn="strUM_Desc";
+          this.blnilterstrUM_Cod=false;
+          this.blnilterstrUM_Desc=true; 
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
-          this.blnilterstrNDServ_Cod=false;
-      this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
+          this.blnilterstrUM_Cod=false;
+          this.blnilterstrUM_Desc=false; 
+          this.blnilterdtmModified_Date=true;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
-          this.blnilterstrNDServ_Cod=false;
-      this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
+          this.blnilterstrUM_Cod=false;
+          this.blnilterstrUM_Desc=false; 
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=true;
       }        
   }
-  filterstrNDServ_Cod(h,{column,$index}){
-      if(this.blnilterstrNDServ_Cod){
+  filterstrUM_Cod(h,{column,$index}){
+      if(this.blnilterstrUM_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -251,8 +256,8 @@ export default class VisualizarServicioComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrNDServ_Desc(h,{column,$index}){        
-      if(this.blnilterstrNDServ_Desc){
+    filterstrUM_Desc(h,{column,$index}){        
+      if(this.blnilterstrUM_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -260,11 +265,10 @@ export default class VisualizarServicioComponent extends Vue {
       else{
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
-    }    
-   
-    filterdtmCreation_Date(h,{column,$index}){
+    }
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -273,8 +277,8 @@ export default class VisualizarServicioComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -296,10 +300,10 @@ export default class VisualizarServicioComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            gridDocumento:[],
-            gridDocumento1:[],
-            gridDocumento2:[],
-            strNDServ_Cod:''
+            gridUnidad:[],
+            gridUnidad1:[],
+            gridUnidad2:[],
+            strUM_Cod:''
         }
     }
   

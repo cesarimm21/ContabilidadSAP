@@ -7,6 +7,7 @@ import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
 import unidadmedidaService from '@/components/service/unidadmedida.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bunidadmedida'
 })
@@ -133,18 +134,9 @@ export default class  BUnidadMedidaComponent extends Vue {
     this.$emit('unidadmedidaClose');
   }
   buscarUnidadMedida(){
-    var data=this.like(this.gridUM1,this.clickColumn,this.inputAtributo)
+    var data=Global.like(this.gridUM1,this.clickColumn,this.inputAtributo)
     this.gridUM=[];
     this.gridUM=data;
-  }
-  like(array, key,keyword) {    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
   }
   headerclick(val){
     this.Column=val.label;
@@ -193,39 +185,7 @@ export default class  BUnidadMedidaComponent extends Vue {
     return {
       gridUM:[],
       gridUM1:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      CODIGO :'4A',
-      DESCRIPCION :'BOBINAS',
-    },
-    {
-      CODIGO :'BJ',
-      DESCRIPCION :'BALDE',
-    },
-    {
-      CODIGO :'CEN',
-      DESCRIPCION :'CIENTO DE UNIDADES',
-    },
-    {
-      CODIGO :'PK',
-      DESCRIPCION :'PAQUETE',
-    },
-    ]
-
+      inputAtributo:''
     };
   }
 }

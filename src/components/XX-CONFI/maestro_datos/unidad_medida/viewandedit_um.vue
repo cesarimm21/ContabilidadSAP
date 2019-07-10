@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Unidad de Medida</span>
+                <span class="labelheadercard" > {{textTitle}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Unidad Med.</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="unidad.strUM_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="unidad.strUM_Cod" style="text-transform: capitalize" type="text" disabled>  
                                     </el-input>
                                     </div>
                                 </div>
@@ -37,7 +37,7 @@
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="unidad.strUM_Desc"  >
+                                        <el-input class="validador" size="small" v-model="unidad.strUM_Desc" :disabled="enabledtf" >
                                         </el-input>
                                     </div>
                                 </div>

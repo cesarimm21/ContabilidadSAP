@@ -3,6 +3,7 @@ import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
+import { Loading } from 'element-ui';
 import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import umService from '@/components/service/unidadmedida.service';
@@ -41,9 +42,17 @@ export default class CrearUMComponent extends Vue {
     guardarUM(){
       var user:any=localStorage.getItem('User_Usuario');
       this.unidad.strCreation_User=user;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        );    
       if(this.unidad.strUM_Cod!=''&&this.unidad.strUM_Desc!=''){
         umService.CreateUM(this.unidad)
         .then(resp=>{
+          loadingInstance.close();
           this.$message({
               showClose: true,
                 type: 'success',
@@ -53,6 +62,16 @@ export default class CrearUMComponent extends Vue {
               this.issave = true;
               this.iserror = false;
               this.textosave = 'Se guardo correctamente. '+resp.strUM_Cod;
+          }).catch(errorss=>{
+            loadingInstance.close();
+            this.$message({
+              showClose: true,
+                type:'error',
+                message: 'No se guardo Correctamente '
+              });
+              this.issave = false;
+              this.iserror = true;
+              this.textosave = 'No se guardo Correctamente ';
           })
       }
       else{

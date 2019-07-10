@@ -22,6 +22,8 @@ export default class ViewAndEditUMComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  textTitle:string='';
+  enabledtf:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='viewandedit-um';
@@ -34,34 +36,51 @@ export default class ViewAndEditUMComponent extends Vue {
         this.companyCod=localStorage.getItem('compania_cod'); 
         this.unidad= JSON.parse(this.$route.query.data); 
         var vista=this.$route.query.vista;
+        if(vista=='modificar'){
+          this.enabledtf=false;
+          this.textTitle='Modificar Unidad Medida';
+      }
+      if(vista=='visualizar'){
+          this.enabledtf=true;
+          this.textTitle='Visualizar Unidad Medida';
+      }
     }
     guardarUM(){
-      var user:any=localStorage.getItem('User_Usuario');
-      this.unidad.strModified_User=user;
-      if(this.unidad.strUM_Cod!=''&&this.unidad.strUM_Desc!=''){
-        umService.UpdateUM(this.unidad)
-        .then(resp=>{
+      var vista=this.$route.query.vista; 
+      if(vista=='modificar'){
+        var user:any=localStorage.getItem('User_Usuario');
+        this.unidad.strModified_User=user;
+        if(this.unidad.strUM_Cod!=''&&this.unidad.strUM_Desc!=''){
+          umService.UpdateUM(this.unidad)
+          .then(resp=>{
+            this.$message({
+                showClose: true,
+                  type: 'success',
+                  message: 'Se guardo Correctamente '+resp
+                });
+                this.issave = true;
+                this.iserror = false;
+                this.textosave = 'Se guardo correctamente. '+resp;
+            })
+        }
+        else{
           this.$message({
               showClose: true,
-                type: 'success',
-                message: 'Se guardo Correctamente '+resp
-              });
-              this.issave = true;
-              this.iserror = false;
-              this.textosave = 'Se guardo correctamente. '+resp;
-          })
+              type: 'error',
+              message: 'Complete datos'
+            });
+          this.issave = false;
+          this.iserror = true;
+          this.textosave = 'Complete datos.';
+        }    
       }
       else{
         this.$message({
-            showClose: true,
-            type: 'error',
-            message: 'Complete datos'
-          });
-        this.issave = false;
-        this.iserror = true;
-        this.textosave = 'Complete datos.';
-      }     
-        
+          showClose: true,
+          type: 'info',
+          message: 'Accion no permitida'
+        });
+      }
     } 
     fnOcultar(){
 
@@ -78,7 +97,8 @@ export default class ViewAndEditUMComponent extends Vue {
     data(){
         return{     
             companyName:'',
-            companyCod:''
+            companyCod:'',
+            textTitle:''
           }
     }
   

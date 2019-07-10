@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Metodo Depreciacion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strDeprMeth_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="strDeprMeth_Cod" style="text-transform: capitalize" type="text" >  
                                     </el-input>
                                     </div>
                                 </div>
@@ -74,17 +74,14 @@
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                label="Estato"
-                                width="100">
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
                                 <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
+                                    <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  

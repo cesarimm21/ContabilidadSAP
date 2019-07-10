@@ -45,7 +45,7 @@
                                 <label class="el-form-item__label col-md-2" >Tipo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strDaily_Type" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="documento.strDaily_Type" style="text-transform: capitalize" type="text" :disabled="enabledtf">  
                                     </el-input>
                                     </div>
                                 </div>

@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  deleteExoOperaciones(intIdNDExonIR_ID){   
+    return axios.get(CONFIG.API_URL+'exoneracionoperaciones/delete/'+intIdNDExonIR_ID)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateExoOperaciones(comprobante){
     return axios.post(CONFIG.API_URL+'exoneracionoperaciones/create', comprobante)
     .then(response =>{
