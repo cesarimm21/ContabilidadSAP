@@ -25,6 +25,7 @@ export default class ModificarServicioComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strNDServ_Cod:string='';
   public documento:ServicioPrestadoModel=new ServicioPrestadoModel();
   gridDocumento:ServicioPrestadoModel[];
   gridDocumento1:ServicioPrestadoModel[];
@@ -75,22 +76,13 @@ export default class ModificarServicioComponent extends Vue {
     }
     handleCurrentChange(val:ServicioPrestadoModel){
       this.documento=val;
+      this.strNDServ_Cod=this.documento.strNDServ_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -195,19 +187,32 @@ export default class ModificarServicioComponent extends Vue {
             this.warningMessage('Seleccione. ');
         }
     }
-  async validad(){      
-    var data=this.like(this.gridDocumento1,'strNDServ_Cod',this.documento.strNDServ_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdNDServ_ID!=-1){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strNDServ_Cod!=''){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+  async validad(){        
+    
+    var data=Global.like(this.gridDocumento1,'strNDServ_Cod',this.strNDServ_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strNDServ_Cod==this.strNDServ_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strNDServ_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strNDServ_Cod==''){
+          this.textosave='Inserte Serv. Prestado ND. ';
+          this.warningMessage('Inserte Serv. Prestado ND. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Serv. Prestado ND. ';
+          this.warningMessage('No existe Serv. Prestado ND. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Serv. Prestado ND ';
+      this.textosave='No existe Serv. Prestado ND. ';
       this.warningMessage('No existe Serv. Prestado ND. ');
     }
   }
@@ -335,6 +340,7 @@ export default class ModificarServicioComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strNDServ_Cod:''
         }
     }
   

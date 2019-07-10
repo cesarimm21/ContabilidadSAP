@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                            <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Tipo de Medio de Pago</label>
+                                <label class="el-form-item__label col-md-2" >Tipo Medio de Pago</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="documento.strPayWay_Cod" style="text-transform: capitalize" type="text" disabled>  

@@ -60,15 +60,15 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm-3" >
-                                    <!-- <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-6" >Codigo Antiguo</label>
+                                    <div v-if="visiblebool" class="form-group row ">
+                                        <label class="el-form-item__label col-md-6" >Cantidad Stock</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                            <el-input size ="small" @focus="limpiarBotones" v-model="productoModel.strStock_Cod_Old"  placeholder="">
+                                            <el-input size ="small" v-model="productoModel.fltQuantity" class="inputAling" disabled>
                                             </el-input>
                                             </div>
                                         </div>
-                                    </div>  -->
+                                    </div> 
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Numero Parte</label>
                                         <div class="col-md-6 grupolabel">
@@ -80,6 +80,15 @@
                                     </div> 
                                 </div>
                                 <div class="col-sm-9" >
+                                    <div v-if="visiblebool" class="form-group row">                                        
+                                        <label class="el-form-item__label col-md-2" >Importe</label>
+                                        <div class="col-md-2 grupolabel">
+                                            <div class="input-group mb-3" >
+                                            <el-input size ="small" v-model="productoModel.fltPrecUnit_Local" class="inputAling" disabled>
+                                            </el-input>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-2" >Codigo Almacen</label>
                                         <div class="col-md-2 grupolabel">

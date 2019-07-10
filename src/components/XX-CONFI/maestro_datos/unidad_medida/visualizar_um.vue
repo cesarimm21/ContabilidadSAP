@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Visualizar Serv. Prestado ND</span>
+                <span class="labelheadercard" > Visualizar Unidad de Medida</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Serv. Prestado ND</label>
+                                <label class="el-form-item__label col-md-2" >Unidad Med.</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="strNDServ_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="strUM_Cod" style="text-transform: capitalize" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,13 +42,13 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Serv. Prestados ND</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Unidades de Medida</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
                             :max-height="sizeScreen"
-                            :data="gridDocumento"
+                            :data="gridUnidad"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
@@ -56,21 +56,20 @@
                             >
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
-                            <el-table-column :render-header="filterstrNDServ_Cod"
-                            prop="strNDServ_Cod" label="Serv. Prestado ND" width="120" align="center">                                
+                            <el-table-column :render-header="filterstrUM_Cod"
+                            prop="strUM_Cod" label="Unidad Med." width="100" align="center">                                
                             </el-table-column>
-                            <el-table-column  :render-header="filterstrNDServ_Desc"
-                             prop="strNDServ_Desc" min-width="200" label="Descripcion">
+                            <el-table-column  :render-header="filterstrUM_Desc"
+                             prop="strUM_Desc" min-width="180" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
-                                prop="dtmModified_Date"   width="80"
-                                label="Fecha ">
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha">
                                 <template scope="scope">
                                     <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column :render-header="filterstrModified_User"
-                            width="100" align="center"
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
@@ -147,13 +146,13 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal>  
     </div>  
 </template>
 <script>
 
-import VisualizarServicioComponent from '@/components/XX-CONFI/maestro_datos/servicio_prestado/visualizar_servicio.component'
-export default VisualizarServicioComponent
+import VisualizarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/visualizar_um.component'
+export default VisualizarUMComponent
 </script>
 <style scoped>
     

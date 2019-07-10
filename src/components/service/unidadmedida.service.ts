@@ -27,6 +27,13 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  deleteUnidadMedida(intUnit_Measure_ID){
+    return axios.get(CONFIG.API_URL+'unidadmedida/delete/'+intUnit_Measure_ID)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+
 }
   

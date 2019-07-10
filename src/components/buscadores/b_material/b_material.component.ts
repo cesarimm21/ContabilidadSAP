@@ -4,20 +4,17 @@ import { Loading } from 'element-ui';
 
 import {ProductoModel} from '@/modelo/maestro/producto';
 import productoService from '@/components/service/producto.service';
-
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bmaterial',
   props: ['tipo']
 })
-
-
 export default class  BMaterialComponent extends Vue {
-
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
    tipo:any;
    CompleteData:any;
@@ -26,24 +23,15 @@ export default class  BMaterialComponent extends Vue {
     categoria:'CODIGO',
     descripcion:'',
     cambioPagina:55,};
-
   numeroPagina:number=20;
-
   //ComoboBox
   proveedorSupplier:Array<{id_categoria:string,nombre:string}>=[];
   valueCombo:string="";
-
   //Modelos
   articulos:any =[];
-
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
   productoModel:ProductoModel[];
   productoModel1:ProductoModel[];
   public productoSelectModel:ProductoModel=new ProductoModel();
-
   blnilterstrStock_Cod:boolean=true;
   blnilterstrStock_Desc:boolean=false;
   clickColumn:string='';
@@ -87,47 +75,6 @@ export default class  BMaterialComponent extends Vue {
     this.$emit('cartaSelecionado',rows[index]);
   }
 
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -163,22 +110,8 @@ export default class  BMaterialComponent extends Vue {
   handleCurrentChange(val:ProductoModel){
     this.productoSelectModel=val;
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarMaterial(){
-    console.log(this.clickColumn+' y '+this.inputAtributo);
-    
-    var data=this.like(this.productoModel1,this.clickColumn,this.inputAtributo)
-    console.log(data);
-    
+    var data=Global.like(this.productoModel1,this.clickColumn,this.inputAtributo)    
     this.productoModel=[];
     this.productoModel=data;
   }
@@ -236,43 +169,7 @@ export default class  BMaterialComponent extends Vue {
       productoModel:[],
       productoModel1:[],
       inputAtributo:'',
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    
-    dataTable:[{
-      Stock_Cod :'60155170',
-      Stock_Name :'',
-      Stock_Desc:'TIRE,45/65R45,RADIAL,',
-      Exp_Acct:''
-    },
-    {
-      Stock_Cod :'60155177',
-      Stock_Name :'',
-      Stock_Desc:'TIRE,35/65R33,RADIAL,XLD D2A L-5 TREAD,1',
-      Exp_Acct:''
-    },
-    ]
-
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-      //this.load();
-    }
   }
   mounted (){
     //alert('mounted');

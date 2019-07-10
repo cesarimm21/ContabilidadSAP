@@ -514,7 +514,6 @@ export default class RecepcionMaterialComponent extends Vue {
         }
         return p.max;
     }
-    
     changeRecibida(val){
         debugger;
         this.selectRow=val;
@@ -552,6 +551,7 @@ export default class RecepcionMaterialComponent extends Vue {
             //     this.fltTot_Rec_Pend_QTY=0;
             // }
         }, 120)
+        return 0;
     }
     getNumber(num){
         return parseFloat(num);

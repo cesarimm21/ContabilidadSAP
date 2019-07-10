@@ -25,6 +25,7 @@ export default class VisualizarExoOperacionComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strNDExonIR_Cod:string='';
   public documento:ExoneracionOperacionesModel=new ExoneracionOperacionesModel();
   gridDocumento:ExoneracionOperacionesModel[];
   gridDocumento1:ExoneracionOperacionesModel[];
@@ -74,22 +75,13 @@ export default class VisualizarExoOperacionComponent extends Vue {
     }
     handleCurrentChange(val:ExoneracionOperacionesModel){
       this.documento=val;
+      this.strNDExonIR_Cod=this.documento.strNDExonIR_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -153,71 +145,48 @@ export default class VisualizarExoOperacionComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+     this.warningMessage('Accion no permitida');
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strNDExonIR_Cod',this.documento.strNDExonIR_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdNDExonIR_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strNDExonIR_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strNDExonIR_Cod',this.strNDExonIR_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strNDExonIR_Cod==this.strNDExonIR_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strNDExonIR_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strNDExonIR_Cod==''){
+          this.textosave='Inserte Exoneracion Operaciones ND. ';
+          this.warningMessage('Inserte Exoneracion Operaciones ND. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Exoneracion Operaciones ND. ';
+          this.warningMessage('No existe Exoneracion Operaciones ND. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Aduana. ';
-      this.warningMessage('No existe Aduana. ');
+      this.textosave='No existe Exoneracion Operaciones ND. ';
+      this.warningMessage('No existe Exoneracion Operaciones ND. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdNDExonIR_ID!=undefined){
+      if(this.documento.intIdNDExonIR_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strNDExonIR_Cod!=undefined){
+            if(this.documento.strNDExonIR_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Aduana. ';
-          this.warningMessage('Seleccione Aduana. ');
+          this.textosave='Seleccione Exoneracion Operaciones ND. ';
+          this.warningMessage('Seleccione Exoneracion Operaciones ND. ');
         }
       }
     siguiente(){
@@ -330,6 +299,7 @@ export default class VisualizarExoOperacionComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strNDExonIR_Cod:''
         }
     }
   

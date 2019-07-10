@@ -102,7 +102,7 @@ export default class ModificarMaterialComponent extends Vue {
   ocultar:boolean=false;
   dialogVisible:boolean=false;
   SendDocument:boolean=false;
-
+  visiblebool:boolean=false;
   /*dialog*/
   dialogCompania:boolean=false;
   dialogProveedor:boolean=false;
@@ -246,9 +246,11 @@ export default class ModificarMaterialComponent extends Vue {
     var object = JSON.parse(this.$route.query.data);
     if(view==="visualizar"){
       this.visualizar=true;
+      this.visiblebool=true;
     }
     else{
       this.visualizar=false;
+      this.visiblebool=false;
     }
     let loading = Loading.service({
       fullscreen: true ,

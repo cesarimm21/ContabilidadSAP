@@ -38,7 +38,7 @@
                                 
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-6" >
-                                        <el-input type="textarea" :rows="2" class="validador" size="small" v-model="documento.strDocType_Desc" :disabled="enabledtf" >
+                                        <el-input type="text" class="validador" size="small" v-model="documento.strDocType_Desc" :disabled="enabledtf" >
                                         </el-input>
                                     </div>
                                 </div>

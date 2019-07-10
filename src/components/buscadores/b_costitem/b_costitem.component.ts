@@ -6,6 +6,7 @@ import {CostItemModel} from '@/modelo/maestro/costitem';
 import costitemService from '@/components/service/costitem.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bcostitem'
 })
@@ -55,11 +56,8 @@ export default class  BCostItemComponent extends Vue {
     }, 200)
   }
   load(){
-    debugger
     costitemService.GetAllCostItem()
-    .then(response=>{
-      debugger
-      console.log('costitem',response);
+    .then(response=>{ 
       this.tabla=response; 
       this.tabla1=response;       
     }).catch(error=>{
@@ -70,13 +68,11 @@ export default class  BCostItemComponent extends Vue {
       });
     })
   }
-
   redirectLogin(msg){
     Notification.warning(msg)
     window.sessionStorage.clear();
     router.push('/')
   }
-
   beforeMount(){
     this.getProveedorSupplier()
   }
@@ -86,48 +82,6 @@ export default class  BCostItemComponent extends Vue {
   seleccionarProveedor(index, rows){
     this.$emit('cartaSelecionado',rows[index]);
   }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
-
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
     this.cleanData();
@@ -135,17 +89,10 @@ export default class  BCostItemComponent extends Vue {
   cleanData(){
     this.formularioBusqueda.VALUE = '';
   }
-
-  getProveedorSupplier(){
-
-  }
-
+  getProveedorSupplier(){ }
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
-
   getNumberFloat(number){
     var num = parseFloat(number).toFixed(2);
     return num;
@@ -250,68 +197,17 @@ export default class  BCostItemComponent extends Vue {
       this.blnfilterstrCost_Item_Desc1=true;
     }
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().toLowerCase().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarfilterCuenta(){
-    var input=this.inputAtributo.toLowerCase();
-    var data=this.like(this.tabla1,this.clickColumn,input)
-   
+    var data=Global.like(this.tabla1,this.clickColumn,this.inputAtributo)   
     this.tabla=[];
     this.tabla=data;
   }
   data() {
     return {
       cuentacontableModel:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110100',
-      Nombre:'Petty Cash & Imprest',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110101',
-      Nombre:'Petty Cash Tintaya',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110102',
-      Nombre:'Petty Cash Arequipa',
-    },
-    {
-      Acc_NO_Local :'101000',
-      Acct_NO_Corp:'M1110103',
-      Nombre:'Petty Cash Matarani',
-    },
-    ]
-
+      tabla:[],
+      tabla1:[],
+      inputAtributo:''
     };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
-    }
   }
 }

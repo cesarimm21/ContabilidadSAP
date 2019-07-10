@@ -30,7 +30,6 @@ export default class  BTipoAdquisicionComponent extends Vue {
   GetAllTipoDocumento(){      
     tipoadquisicionService.busquedaTipoAquisicion()
     .then(response=>{
-      console.log(response);
       this.TipoAdquisicion=response;
       this.TipoAdquisicion1=response;
     }).catch(error=>{
@@ -107,19 +106,8 @@ export default class  BTipoAdquisicionComponent extends Vue {
       this.blnfilterstrTypeAdq_PDB_Desc=true;
     }
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toLowerCase().toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarfilter(){
-    var input=this.inputAtributo.toLowerCase();
-    var data=this.like(this.TipoAdquisicion1,this.clickColumn,input)
+    var data=Global.like(this.TipoAdquisicion1,this.clickColumn,this.inputAtributo)
     this.TipoAdquisicion=[];
     this.TipoAdquisicion=data;
   }
@@ -127,7 +115,8 @@ export default class  BTipoAdquisicionComponent extends Vue {
   data() {
     return {
       TipoAdquisicion:[],
-      TipoAdquisicion1:[]
+      TipoAdquisicion1:[],
+      inputAtributo:''
     };
   }
 }

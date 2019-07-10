@@ -43,11 +43,11 @@ export default class ViewAndEditMedioPagoComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Tipo de Medio de Pago';
+            this.textTitle='Modificar Tipo Medio de Pago';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Tipo de Medio de Pago';
+            this.textTitle='Visualizar Tipo Medio de Pago';
         }
 
     }  

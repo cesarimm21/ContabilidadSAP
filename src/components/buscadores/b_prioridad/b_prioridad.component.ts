@@ -8,6 +8,7 @@ import {PrioridadModel} from '@/modelo/maestro/prioridad';
 import prioridadService from '@/components/service/prioridad.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
 @Component({
   name: 'bprioridad'
 })
@@ -46,8 +47,7 @@ public prioridadSelectModel:PrioridadModel=new PrioridadModel();
 constructor() {
  super();
 // this.loadCompania();
- this.load();
- 
+ this.load(); 
 }
 load(){
   prioridadService.GetAllPrioridad()
@@ -55,9 +55,7 @@ load(){
     this.prioridadModel=[];    
     this.prioridadModel1=[];    
     this.prioridadModel=response;    
-    this.prioridadModel1=response;    
-    
-    
+    this.prioridadModel1=response; 
   }).catch(error=>{
     this.$message({
       showClose: true,
@@ -69,21 +67,17 @@ load(){
 handleCurrentChange(val:PrioridadModel){
  this.prioridadSelectModel=val;
 }
-
 checkCompania(){
  this.$emit('companiaSeleccionado',this.companiaSelectModel);
- //this.$emit('companiaSeleccionado',this.companiaSelectModel);
 }
 closeCompania(){
  this.$emit('companiaClose');
 }
-
 redirectLogin(msg){
  Notification.warning(msg)
  window.sessionStorage.clear();
  router.push('/')
 }
-
 beforeMount(){
  this.getProveedorSupplier()
 }
@@ -93,15 +87,11 @@ cambioPagina(){
 seleccionarProveedor(index, rows){
  this.$emit('companiaSelecionado',rows[index]);
 }
-
 buscarProveedor(){
  this.bind();
 }
-
 bind(){
-
 }
-
 CerrarVentana(){
  this.$emit('cerrarVentanaRoles', 'Close Dialog');
  this.cleanData();
@@ -109,11 +99,8 @@ CerrarVentana(){
 cleanData(){
  this.formularioBusqueda.VALUE = '';
 }
-
 getProveedorSupplier(){
-
 }
-
 cambioCategoria(value){
  this.formularioBusqueda.proveedorSupplier=value;
 }
@@ -121,7 +108,6 @@ getNumberFloat(number){
  var num = parseFloat(number).toFixed(2);
  return num;
 }
-
 openMessageError(strMessage:string){
  this.$message({
      showClose: true,
@@ -130,29 +116,16 @@ openMessageError(strMessage:string){
    });
 }
 seleccionar(row,index){
- debugger;
- console.log("doble",row);
  this.$emit('prioridadselecionado',row);
 }
 checkPopup(){
-  debugger;
   this.$emit('prioridadselecionado',this.prioridadSelectModel);
 }
 closePopup(){
   this.$emit('prioridadclose');
 }
-like(array, key,keyword) {
-    
-  var responsearr:any = []
-  for(var i=0;i<array.length;i++) {
-      if(array[i][key].toString().indexOf(keyword) > -1 ) {
-        responsearr.push(array[i])
-    }
-  }
-  return responsearr
-}
 buscarPrioridad(){
-  var data=this.like(this.prioridadModel1,this.clickColumn,this.inputAtributo)
+  var data=Global.like(this.prioridadModel1,this.clickColumn,this.inputAtributo)
   this.prioridadModel=[];
   this.prioridadModel=data;
 }
@@ -172,7 +145,6 @@ headerclick(val){
   }
 }
 filterstrPriority_Cod(h,{column,$index}){
-  debugger;
   var column1 = column.label; 
   if(this.blnilterstrPriority_Cod){
     this.Column=column1;
@@ -188,8 +160,6 @@ filterstrPriority_Cod(h,{column,$index}){
   } 
 }
 filterstrPriority_Name(h,{column,$index}){
-  debugger;
-  
   if(this.blnilterstrPriority_Name){
     return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
     [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -208,36 +178,6 @@ data() {
    inputAtributo:'',
    prioridadModel:[],
    prioridadModel1:[],
-   categorias: [{
-     id_categoria:0,
-     nombre: 'CODIGO',
-     label: 'CODIGO'
-   }, {
-     id_categoria:1,
-     nombre: 'ID',
-     label: 'ID'
-   },
-   {
-     id_categoria:2,
-     nombre: 'TITULO',
-     label: 'TITULO'
-   }
- ]
- ,
- dataTable:[{
-     Code:'1001',
-     Company_Name:'GADEL SOLUTIONS S.R.L.',
-     Company_Desc:'GADEL SOLUTIONS S.R.L.',
-     RUC:'20434853771',
-   },
-   {
-     Code:'1002',
-     Company_Name:'B&Y SOLUTIONS S.R.L.',
-     Company_Desc:'B&Y SOLUTIONS S.R.L.',
-     RUC:'50434853771',
-   },
- ]
- 
  };
 
 }

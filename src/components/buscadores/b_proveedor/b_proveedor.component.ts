@@ -125,18 +125,8 @@ export default class  BProveedorComponent extends Vue {
   closePopup(){
     this.$emit('proveedorClose');
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarProveedor(){
-    var data=this.like(this.proveedorModel1,this.clickColumn,this.inputAtributo)
+    var data=Global.like(this.proveedorModel1,this.clickColumn,this.inputAtributo)
     this.proveedorModel=[];
     this.proveedorModel=data;
   }
@@ -165,7 +155,6 @@ export default class  BProveedorComponent extends Vue {
     }
   }
   filterstrVendor_NO(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnilterstrVendor_NO){
       this.Column=column1;
@@ -181,8 +170,6 @@ export default class  BProveedorComponent extends Vue {
     } 
   }
   filterstrVendor_Desc(h,{column,$index}){
-    debugger;
-    
     if(this.blnilterstrVendor_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -195,8 +182,6 @@ export default class  BProveedorComponent extends Vue {
     } 
   }
   filterstrCountry(h,{column,$index}){
-    debugger;
-    
     if(this.blnilterstrCountry){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -212,7 +197,8 @@ export default class  BProveedorComponent extends Vue {
     return {
       codigoCompania:'',   
       proveedorModel:[],
-      proveedorModel1:[]
+      proveedorModel1:[],
+      inputAtributo:''
     };
   }
 }

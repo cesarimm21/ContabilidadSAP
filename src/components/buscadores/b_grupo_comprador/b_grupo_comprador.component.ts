@@ -6,6 +6,8 @@ import {GrupoCompradorModel} from '@/modelo/maestro/grupocomprador';
 import grupocompradorService from '@/components/service/grupocomprador.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
+import Global from '@/Global';
+
 @Component({
   name: 'bgrupocomprador'
 })
@@ -14,7 +16,7 @@ export default class  BGrupoCompradorComponent extends Vue {
 
    //PAGINATION
    pagina:number =1;
-   RegistersForPage:number = 5;
+   RegistersForPage:number = 100;
    totalRegistros:number = this.RegistersForPage;
 
    CompleteData:any;
@@ -33,12 +35,13 @@ export default class  BGrupoCompradorComponent extends Vue {
   //Modelos
   articulos:any =[];
   public grupocompradorModel:Array<GrupoCompradorModel>=[];
+  public grupocompradorModel1:Array<GrupoCompradorModel>=[];
   public grupocompradorSelectModel:GrupoCompradorModel=new GrupoCompradorModel();
-
-//   articuloService:ArticuloService=new ArticuloService()
-//   //Servicios
-//   categoriaService:CategoriaService=new CategoriaService();
-
+  blnilterstrGrpPurch_Cod:boolean=true;
+  blnilterstrGrpPurch_Desc:boolean=false;
+  clickColumn:string='';
+  Column:string='';
+  inputAtributo:any;
   constructor() {
     super();
     this.load();
@@ -46,8 +49,8 @@ export default class  BGrupoCompradorComponent extends Vue {
   load(){
     grupocompradorService.GetAllGrupoComprador()
     .then(response=>{
-      console.log('grupocomprador',response);
       this.grupocompradorModel=response;       
+      this.grupocompradorModel1=response;       
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -62,7 +65,6 @@ export default class  BGrupoCompradorComponent extends Vue {
     window.sessionStorage.clear();
     router.push('/')
   }
-
   beforeMount(){
     this.getProveedorSupplier()
   }
@@ -71,48 +73,7 @@ export default class  BGrupoCompradorComponent extends Vue {
   }
   seleccionarProveedor(index, rows){
     this.$emit('grupocompradorseleccionado',rows[index]);
-  }
-
-  buscarProveedor(){
-    this.bind();
-  }
-
-  bind(){
-    // var query=this.formularioBusqueda.categoria+"like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order="CODIGO asc";
-
-    // var query=this.formularioBusqueda.categoria+" like '%"+this.formularioBusqueda.descripcion+"%'";
-    // var order= this.formularioBusqueda.categoria+" asc";
-    // var form = {
-    //   C_IN:this.numeroPagina,
-    //   ID_Q:7,
-    //   WHERE_Q:query,
-    //   ORDER_BY_Q:order
-    // };
-    // let loadingInstancePdf = Loading.service({
-    //   fullscreen: true ,
-    //   spinner: 'el-icon-loading',
-    //   text:'Cargando cartas...'
-    // });
-
-    // this.articuloService.getArticulosv2(form)
-    // .then(response =>{
-    //   this.CompleteData = response;
-    //   this.totalRegistros = response.length;
-    //   this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-    //   loadingInstancePdf.close();
-    // })
-    // .catch(e =>{
-    //   console.log(e);
-    //   if(e.response.status === 404){ // token no valido
-    //     this.redirectLogin('Tiempo de session a expirado, Vuelva a Iniciar Sesion');
-    //   }
-    //   else{
-    //     this.openMessageError('Error al buscar proveedor');
-    //   }
-    //   loadingInstancePdf.close();
-    // })
-  }
+  } 
 
   CerrarVentana(){
     this.$emit('cerrarVentanaRoles', 'Close Dialog');
@@ -122,15 +83,11 @@ export default class  BGrupoCompradorComponent extends Vue {
     this.formularioBusqueda.VALUE = '';
   }
 
-  getProveedorSupplier(){
-
-  }
+  getProveedorSupplier(){  }
 
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
-
   seleccionar(row,index){
     this.$emit('grupocompradorSeleccionado',row);
   }
@@ -138,7 +95,6 @@ export default class  BGrupoCompradorComponent extends Vue {
     var num = parseFloat(number).toFixed(2);
     return num;
   }
-
   openMessageError(strMessage:string){
     this.$message({
         showClose: true,
@@ -156,50 +112,56 @@ export default class  BGrupoCompradorComponent extends Vue {
   closePopup(){
     this.$emit('grupocompradorClose');
   }
+  buscarComprador(){
+    var data=Global.like(this.grupocompradorModel1,this.clickColumn,this.inputAtributo)
+    this.grupocompradorModel=[];
+    this.grupocompradorModel=data;
+  }
+  headerclick(val){
+    this.Column=val.label;
+    if(val.property=="strGrpPurch_Cod"){
+      this.clickColumn=val.property;  
+      this.inputAtributo='';  
+      this.blnilterstrGrpPurch_Cod=true;
+      this.blnilterstrGrpPurch_Desc=false;
+    }
+    if(val.property=="strGrpPurch_Desc"){
+      this.clickColumn=val.property;
+      this.inputAtributo='';
+      this.blnilterstrGrpPurch_Cod=false;
+      this.blnilterstrGrpPurch_Desc=true;
+    }
+  }
+  filterstrGrpPurch_Cod(h,{column,$index}){
+    var column1 = column.label; 
+    if(this.blnilterstrGrpPurch_Cod){
+      this.Column=column1;
+      this.clickColumn=column.property;
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrGrpPurch_Desc(h,{column,$index}){
+    if(this.blnilterstrGrpPurch_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
+        h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label),
+       ])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  } 
   data() {
     return {
       grupocompradorModel:[],
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      CODIGO :'CC',
-      DESCRIPCION:'CENTRO DE COSTO',
-    },
-    {
-      CODIGO :'PY',
-      DESCRIPCION:'PROYECTO',
-    },
-    {
-      CODIGO :'FA',
-      DESCRIPCION:'ACTIVOS FIJO',
-    },
-    {
-      CODIGO :'ST',
-      DESCRIPCION:'ALMACEN',
-    },
-    {
-      CODIGO :'CB',
-      DESCRIPCION:'CUENTA DE BALANCE',
-    },
-    ]
-    };
-  }
-  created() {
-    if(typeof window != 'undefined') {
-      this.bind();
     }
   }
 }

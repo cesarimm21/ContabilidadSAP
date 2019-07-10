@@ -25,6 +25,7 @@ export default class ModificarMedioPagoComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strPayWay_Cod:string='';
   public documento:MedioPagoModel=new MedioPagoModel();
   gridDocumento:MedioPagoModel[];
   gridDocumento1:MedioPagoModel[];
@@ -41,8 +42,8 @@ export default class ModificarMedioPagoComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blniltersstrPayWay_Cod:boolean=false;
   blnilterstrPayWay_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
   medioDialog:boolean=false;
   constructor(){    
         super();
@@ -75,22 +76,13 @@ export default class ModificarMedioPagoComponent extends Vue {
     }
     handleCurrentChange(val:MedioPagoModel){
       this.documento=val;
+      this.strPayWay_Cod=this.documento.strPayWay_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -147,8 +139,8 @@ export default class ModificarMedioPagoComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blniltersstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
@@ -196,26 +188,38 @@ export default class ModificarMedioPagoComponent extends Vue {
         }
     }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strPayWay_Cod',this.documento.strPayWay_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdPayWay_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strPayWay_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strPayWay_Cod',this.strPayWay_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strPayWay_Cod==this.strPayWay_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strPayWay_Cod!=undefined){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strPayWay_Cod==''){
+          this.textosave='Inserte Medio Pago. ';
+          this.warningMessage('Inserte Medio Pago. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Medio Pago. ';
+          this.warningMessage('No existe Medio Pago. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Tipo de Medio de Pago. ';
-      this.warningMessage('No existe Tipo de Medio de Pago. ');
+      this.textosave='No existe Medio Pago. ';
+      this.warningMessage('No existe Medio Pago. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdPayWay_ID!=undefined){
+      if(this.documento.intIdPayWay_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strPayWay_Cod!=undefined){
+            if(this.documento.strPayWay_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
@@ -252,29 +256,29 @@ export default class ModificarMedioPagoComponent extends Vue {
           this.clickColumn="strPayWay_Cod";
           this.blniltersstrPayWay_Cod=true;
       this.blnilterstrPayWay_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strPayWay_Desc"){
           this.clickColumn="strPayWay_Desc";
           this.blniltersstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blniltersstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blniltersstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filtersstrPayWay_Cod(h,{column,$index}){
@@ -298,9 +302,9 @@ export default class ModificarMedioPagoComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -309,8 +313,8 @@ export default class ModificarMedioPagoComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -335,6 +339,7 @@ export default class ModificarMedioPagoComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strPayWay_Cod:''
         }
     }
   

@@ -9,6 +9,7 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import umService from '@/components/service/unidadmedida.service';
 import { Loading } from 'element-ui';
+import unidadmedidaService from '@/components/service/unidadmedida.service';
 @Component({
   name: 'modificar-um',
   components:{
@@ -25,6 +26,8 @@ export default class ModificarUMComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strUM_Cod:string='';
+  unidadDialog:boolean=false;
   public unidad:UnidadMedidaModel=new UnidadMedidaModel();
   gridUnidad:UnidadMedidaModel[];
   gridUnidad1:UnidadMedidaModel[];
@@ -42,8 +45,8 @@ export default class ModificarUMComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrUM_Desc:boolean=false;
   blnilterstrUM_Cod:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
 
 
   constructor(){    
@@ -77,22 +80,13 @@ export default class ModificarUMComponent extends Vue {
     }
     handleCurrentChange(val:UnidadMedidaModel){
       this.unidad=val;
+      this.strUM_Cod=this.unidad.strUM_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridUnidad1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridUnidad1,this.clickColumn,this.txtbuscar)
       this.gridUnidad=[];
       this.gridUnidad=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -149,71 +143,87 @@ export default class ModificarUMComponent extends Vue {
       this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrUM_Cod=false;
       this.blnilterstrUM_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;       
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;       
     }
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
-  }
-  async validad(){      
-    var data=this.like(this.gridUnidad1,'strUM_Cod',this.unidad.strUM_Cod)
-    this.unidad=data[0];
-    if(this.unidad.intUnit_Measure_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.unidad.strUM_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.unidad) }  })
+    async EliminarItem(){
+      this.unidadDialog=true;    
+    }
+    deleteUnidad(){
+      if(this.unidad.strUM_Cod!=''&&this.unidad.intUnit_Measure_ID!=-1){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Eliminando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          ); 
+        unidadmedidaService.deleteUnidadMedida(this.unidad.intUnit_Measure_ID)
+        .then(resp=>{
+          loadingInstance.close();
+          this.unidadDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'Se Elimino correctamente ',
+              type: 'success'
+            });
+  
+            this.unidad=new UnidadMedidaModel();
+            this.load();
+            this.issave = true;
+            this.iserror = false;
+            this.textosave = 'Se Elimino Correctamente ';
+        })
+        .catch(error=>{
+          loadingInstance.close();
+          this.unidadDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'No se elimino',
+              type: 'error'
+            });
+        })
         }
-      }, 600)
+        else{
+            this.warningMessage('Seleccione Unidad Medida. ');
+        }
+    }
+  async validad(){    
+     var data=Global.like(this.gridUnidad1,'strUM_Cod',this.strUM_Cod)
+    if(data.length>0){
+      this.unidad=data[0];
+      if(this.unidad.strUM_Cod==this.strUM_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.unidad.strUM_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.unidad) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strUM_Cod==''){
+          this.textosave='Inserte Unidad Medida. ';
+          this.warningMessage('Inserte Unidad Medida. ');
+        }
+        else{
+          this.textosave='No existe Unidad Medida. ';
+          this.warningMessage('No existe Unidad Medida. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Unidad de Medida. ';
-      this.warningMessage('No existe Unidad de Medida. ');
+      this.textosave='No existe Unidad Medida. ';
+      this.warningMessage('No existe Unidad Medida. ');
     }
   }
    async validarView(){
-      if(this.unidad.intUnit_Measure_ID!=undefined){
+      if(this.unidad.intUnit_Measure_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.unidad.strUM_Cod!=undefined){
+            if(this.unidad.strUM_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.unidad) }  })
             }
           }, 600)
@@ -250,29 +260,29 @@ export default class ModificarUMComponent extends Vue {
           this.clickColumn="strUM_Cod";
           this.blnilterstrUM_Cod=true;
           this.blnilterstrUM_Desc=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strUM_Desc"){
           this.clickColumn="strUM_Desc";
           this.blnilterstrUM_Cod=false;
           this.blnilterstrUM_Desc=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrUM_Cod=false;
           this.blnilterstrUM_Desc=false; 
-          this.blnilterdtmCreation_Date=true;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=true;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrUM_Cod=false;
           this.blnilterstrUM_Desc=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=true;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=true;
       }        
   }
   filterstrUM_Cod(h,{column,$index}){
@@ -295,9 +305,9 @@ export default class ModificarUMComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -306,8 +316,8 @@ export default class ModificarUMComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -332,6 +342,7 @@ export default class ModificarUMComponent extends Vue {
             gridUnidad:[],
             gridUnidad1:[],
             gridUnidad2:[],
+            strUM_Cod:''
         }
     }
   

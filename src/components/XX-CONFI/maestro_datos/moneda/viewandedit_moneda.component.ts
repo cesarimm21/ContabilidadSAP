@@ -47,11 +47,11 @@ export default class ViewAndEditMonedaComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Almacen';
+            this.textTitle='Modificar Moneda';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Almacen';
+            this.textTitle='Visualizar Moneda';
         } 
     }  
     //#region [PAIS]

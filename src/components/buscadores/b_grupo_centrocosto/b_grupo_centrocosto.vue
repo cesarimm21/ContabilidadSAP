@@ -2,20 +2,18 @@
     <div>
        <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" >Hola Mundo</span>
+                <span class="labelheadercard" >Grupo Centro de Costos</span>
             </div>
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-3" >Codigo</label>
+                        <label class="el-form-item__label col-md-3" >{{Column}}</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small"   placeholder="">
-                            <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                        background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                        background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                        background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                        > </el-button>
+                            <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarGrupoCC()">
+                             <el-button slot="append" class="boton" icon="fa fa-search" 
+                                    @click="buscarGrupoCC()"
+                                > </el-button>
                             </el-input>
                             </div>
                         </div>
@@ -28,13 +26,14 @@
             style="width: 100%" class="ExcelTable2007"
             height="250"
             highlight-current-row
+            @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-            <el-table-column   prop="strExpGroup_Cod" label="Codigo" width="180">
+            <el-table-column :render-header="filterstrExpGroup_Cod"  prop="strExpGroup_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column  prop="strExpGroup_Name" label="Nombre" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrExpGroup_Name" prop="strExpGroup_Name" label="Nombre" style="width: 70% !important;">
             </el-table-column>  
-            <el-table-column  prop="strExpGroup_Desc" label="Descripcion" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrExpGroup_Desc" prop="strExpGroup_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column> 
             </el-table>
         </el-card>
