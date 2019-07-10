@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                             </div>    
-                            <div  class="form-group row ">
+                            <!-- <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Modulo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
@@ -42,7 +42,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                            </div>    
+                            </div>     -->
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Nombre Proceso</label>
                                 <div class="col-sm-6 grupolabel">
@@ -62,7 +62,7 @@
                                 </div>
                             </div>           
                             <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >No Doc. Origen</label>
+                                <label class="el-form-item__label col-sm-2" >Documento Origen</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
                                         <el-input class="validador" size="small" v-model="correlativo.fltOrigenDocum_NO"  >

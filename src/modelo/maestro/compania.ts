@@ -16,6 +16,9 @@ export class CompaniaModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    strRegion_desc:string;
+    strCountry_desc:string;
+
     constructor(){
         this.intIdCompany_ID=-1;
         this.strCompany_Cod='';
@@ -33,5 +36,7 @@ export class CompaniaModel {
         this.strModified_User='';
         this.dtmModified_Date=new Date();
         this.chrStatus='';
+        this.strRegion_desc='';
+        this.strCountry_desc='';
     }
 }

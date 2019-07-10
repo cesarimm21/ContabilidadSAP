@@ -71,7 +71,7 @@ export default class  BPaisComponent extends Vue {
     }
   }
   filterstrCountry_Cod(h,{column,$index}){
-    debugger;
+    //debugger;
     var column1 = column.label; 
     if(this.blnilterstrCountry_Cod){
       this.Column=column1;
@@ -88,7 +88,7 @@ export default class  BPaisComponent extends Vue {
     } 
   }
   filterstrCountry_Name(h,{column,$index}){
-    debugger;
+    //debugger;
     
     if(this.blnilterstrCountry_Name){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},

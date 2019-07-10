@@ -51,6 +51,7 @@
                                         </el-input>
                                     </div>
                                 </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{strCountry_desc}}</span>
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-md-2" >Region</label>
@@ -61,6 +62,7 @@
                                         </el-input>
                                     </div>
                                 </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{strRegion_desc}}</span>
                             </div>           
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Direccion</label>

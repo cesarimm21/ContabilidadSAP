@@ -77,16 +77,16 @@
                                         </el-table-column>
                                         <el-table-column
                                             prop="fltOrigenDocum_NO" sortable  
-                                            label="No. Doc. Origen">
+                                            label="Documento Origen">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.fltOrigenDocum_NO }}</label>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="strModified_User" sortable  
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strModified_User"  width="100"
                                             label="Usuario">
                                             <template scope="scope">
-                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>
+                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}">&nbsp;{{scope.row.strModified_User }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column 
