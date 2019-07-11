@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Control Precio</span>
+            <span class="labelheadercard" >Modificar Componente Cuenta</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -18,19 +18,18 @@
                             <label class="el-form-item__label col-md-2" >Compañia</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input   :disabled="true"
+                                <el-input   
                                 size ="small" 
                                 v-model="companyCod">
                                 </el-input>
                                 </div>
                             </div>
-                            <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                         </div>
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Control Precio</label>
+                            <label class="el-form-item__label col-md-2" >Componente Cuenta</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"  v-model="cod_control_precio"  placeholder="">
+                                <el-input size ="small"  v-model="cod_modulo"  placeholder="">
                                 </el-input>
                                 </div>
                             </div>
@@ -56,19 +55,19 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCtlPrec_Cod" width="100" label="Tipo Renta">
+                                        <el-table-column  sortable prop="strComp_Cod" width="100" label="Componente Cuenta">
                                             <template scope="scope">
-                                            <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCtlPrec_Cod }}</label>
+                                            <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strComp_Cod }}</label>
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
-                                            prop="strCtlPrec_Desc" sortable  
+                                            prop="strComp_Desc" sortable  
                                             label="Descripcion">
                                             <template scope="scope">
-                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCtlPrec_Desc }}</label>
+                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strComp_Desc }}</label>
                                             </template>
                                         </el-table-column>
-                                       
+                                        
                                         <el-table-column :render-header="filterdtmCreation_Date"
                                             prop="dtmModified_Date"   min-width="80"
                                             label="Fecha">
@@ -137,6 +136,6 @@
 </template>
 <script>
 
-import VisuControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/visu_control_precio/visu_control_precio.component'
-export default VisuControlPrecioComponent
+import VisuComponenteCuentasComponent from '@/components/XX-CONFI/maestro_datos/componente_cuentas/visu_componente_cuentas/visu_componente_cuentas.component'
+export default VisuComponenteCuentasComponent
 </script>

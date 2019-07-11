@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Correlativo</span>
+                <span class="labelheadercard" > Crear Componente Cuenta</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -16,9 +16,9 @@
                                 <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input   :disabled="true"
+                                    <el-input   
                                         size ="small" 
-                                        v-model="companyCod">
+                                        v-model="compania.strCompany_Cod">
                                     </el-input>
                                     </div>
                                 </div>
@@ -26,50 +26,23 @@
                             </div>
                             
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo Modulo</label>
-                                <div class="col-md-2 grupolabel">
+                                <label class="el-form-item__label col-md-2" >Componente Cuenta</label>
+                                <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="correlativo.strCorrel_Cod"  type="text">  
+                                    <el-input class="validador" size ="small" v-model="componente.strComp_Cod"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>    
-                            <!-- <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Modulo</label>
+                            <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="correlativo.strModule"  type="text">  
+                                    <el-input class="validador" size ="small" v-model="componente.strComp_Desc"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>
-                            </div>     -->
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Nombre Proceso</label>
-                                <div class="col-sm-6 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.strProccess_Name"  >
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>    
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Transaccion</label>
-                                <div class="col-sm-6 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.strTransaction_Name"  >
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>           
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Documento Origen</label>
-                                <div class="col-sm-6 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.fltOrigenDocum_NO"  >
-                                        </el-input>
-                                    </div>
-                                </div>
-                            </div>           
+                            </div>            
                         </div>
                     </div>
                 </div>
@@ -97,13 +70,13 @@
                     </div>
                 </div>
             </div>            
-        </div>    
+        </div> 
     </div>  
 </template>
 <script>
 
-import CrearCorrelativoComponent from '@/components/XX-CONFI/maestro_datos/correlativo/crear_correlativo/crear_correlativo.component'
-export default CrearCorrelativoComponent
+import CrearComponenteCuentasComponent from '@/components/XX-CONFI/maestro_datos/componente_cuentas/crear_componente_cuentas/crear_componente_cuentas.component'
+export default CrearComponenteCuentasComponent
 </script>
 <style scoped>
     

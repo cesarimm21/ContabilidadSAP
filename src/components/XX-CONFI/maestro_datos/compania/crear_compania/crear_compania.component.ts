@@ -75,6 +75,8 @@ export default class CrearCorrelativoComponent extends Vue {
     strCurr_Loc:string='';
     strCurr_Funct:string='';
     strCurr_Grp:string='';
+    strCountry_desc:string='';
+    strRegion_desc:string='';
 
     dataMoneda:MonedaModel[];
     gridPais:PaisModel[]
@@ -95,15 +97,20 @@ export default class CrearCorrelativoComponent extends Vue {
         this.nameuser=localStorage.getItem('User_Usuario');
     }
     guardarTodo(){
-        if(this.compania.strCompany_Cod==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.compania.strCompany_Desc==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.compania.strAddress==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.compania.strCountry==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.compania.strRegion==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.compania.strRUC==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.strCurr_Funct==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.strCurr_Grp==''){ this.$message('Complete los campos obligatorios'); return false;}
-        if(this.strCurr_Loc==''){ this.$message('Complete los campos obligatorios'); return false;}
+        
+        //this.compania.strCompany_Cod=this.companyCod;
+        this.compania.strCountry_desc=this.strCountry_desc;
+        this.compania.strRegion_desc=this.strRegion_desc;
+
+        if(this.compania.strCompany_Cod==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strCompany_Desc==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strAddress==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strCountry==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strRegion==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strRUC==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.strCurr_Funct==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.strCurr_Grp==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.strCurr_Loc==''){ this.$message('Complete los campos obligatorios '); return false;}
         else{
 
             this.compania.strCurr_Loc=this.strCurr_Loc;
@@ -138,6 +145,12 @@ export default class CrearCorrelativoComponent extends Vue {
                 this.strCurr_Funct='';
                 this.textosave = 'Se guardo correctamente. '+resp.strCompany_Cod;
                 this.compania=new CompaniaModel();
+                this.strRegion_desc='';
+                this.strCountry_desc='';
+                this.strCountry_desc='';
+                this.strCurr_Loc='';
+                this.strCurr_Grp='';
+                this.strCurr_Funct='';
                 loadingInstance.close();
             }).catch(error=>{
                 this.$message({
@@ -198,9 +211,11 @@ export default class CrearCorrelativoComponent extends Vue {
         this.paisVisible=false;
       }
       paisSelect(val:PaisModel){
+        debugger;
         this.compania.strRegion='';
         this.gridSelectPais=val;
         this.compania.strCountry=this.gridSelectPais.strCountry_Cod;
+        this.strCountry_desc=val.strCountry_Name.toString();
         this.departEnabled=false;
         this.paisVisible=false;
       }
@@ -295,6 +310,7 @@ export default class CrearCorrelativoComponent extends Vue {
       departSelect(val:DepartamentoModel){
         this.selectDepartamento=val;
         this.compania.strRegion=this.selectDepartamento.strRegion_Cod;
+        this.strRegion_desc=this.selectDepartamento.strRegion_Desc;
       }
       departChosseCheck(){
         this.departVisible=false;
@@ -326,7 +342,7 @@ export default class CrearCorrelativoComponent extends Vue {
         }
       }
       filterstrRegion_Cod(h,{column,$index}){
-        debugger;
+        //debugger;
         var column1 = column.label; 
         if(this.blnilterstrRegion_Cod){
           this.Column=column1;
@@ -343,7 +359,7 @@ export default class CrearCorrelativoComponent extends Vue {
         } 
       }
       filterstrRegion_Desc(h,{column,$index}){
-        debugger;
+        //debugger;
         
         if(this.blnilterstrRegion_Desc){
           return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
@@ -390,6 +406,7 @@ export default class CrearCorrelativoComponent extends Vue {
   }
   
   MonedaSeleccionadoL(val:MonedaModel){
+      //debugger;
     this.strCurr_Loc=val.strCurrency_Cod;
     this.selectMonedaA=val;
     this.dialogMonedaL=false;

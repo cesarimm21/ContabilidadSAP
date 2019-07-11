@@ -239,6 +239,9 @@ export default class ModificarCompaniaComponent extends Vue {
         this.gridSelectPais=val;
         this.selectDepartamento=new DepartamentoModel();
         this.compania.strCountry=this.gridSelectPais.strCountry_Cod;
+        this.compania.strCountry_desc=this.gridSelectPais.strCountry_Name;
+        
+        this.compania.strRegion_desc='';
         this.departEnabled=false;
         this.paisVisible=false;
       }
@@ -279,6 +282,7 @@ export default class ModificarCompaniaComponent extends Vue {
       departSelect(val:DepartamentoModel){
         this.selectDepartamento=val;
         this.compania.strRegion=this.selectDepartamento.strRegion_Cod;
+        this.compania.strRegion_desc=this.selectDepartamento.strRegion_Desc;
       }
       departChosseCheck(){
         this.departVisible=false;

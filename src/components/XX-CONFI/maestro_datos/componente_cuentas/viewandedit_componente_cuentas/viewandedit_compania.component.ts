@@ -6,22 +6,22 @@ import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
 //***Modelos */
-import {DepartamentoModel} from '@/modelo/maestro/departamento';
+import {ComponenteCuentaContableModel} from '@/modelo/maestro/componentecuentacontable';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import impuestoService from '@/components/service/impuesto.service';
-import regionService from '@/components/service/departamento.service';
+import componenteService from '@/components/service/componentecuentacontable.service';
 
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 @Component({
-  name: 'visu-region',
+  name: 'viewandedit-correlativo',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions':ButtonsAccionsComponent,
   }
 })
-export default class VisuRegionComponent extends Vue {
+export default class ViewAndEditComponenteCuentasComponent extends Vue {
      nameComponent:string;
     fecha_actual:string;
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
@@ -33,18 +33,17 @@ export default class VisuRegionComponent extends Vue {
     issave:boolean=false;
     iserror:boolean=false;
     textosave:string='';
-    public region:DepartamentoModel=new DepartamentoModel();
-    public tableData:Array<DepartamentoModel>=[]; 
+    public componente:ComponenteCuentaContableModel=new ComponenteCuentaContableModel();
+    public tableData:Array<ComponenteCuentaContableModel>=[]; 
     namepage:string;
     impDisabled:boolean=false;
     cod_criticidad:string='';
     selectrow:any;
     currentRow:any;
     dialogEliminar:boolean=false;
-    cod_region:string='';
+    cod_modulo:string='';
   constructor(){    
         super();
-        Global.nameComponent='viewandedit-region';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -64,8 +63,8 @@ export default class VisuRegionComponent extends Vue {
     }
     async cargarList(){
         debugger;
-        if(this.cod_region!=''){
-            await regionService.GetOnlyOneDepartamento(this.cod_region)
+        if(this.cod_modulo!=''){
+            await componenteService.GetAllComponenteCuentaContableFiltro(this.cod_modulo)
             .then(res=>{
                 debugger;
                 console.log('/****************Busqueda***************/')
@@ -80,7 +79,7 @@ export default class VisuRegionComponent extends Vue {
             })
         }
         else{
-            await regionService.GetAllDepartamento()
+            await componenteService.GetAllComponenteCuentaContable()
             .then(res=>{
                 debugger;
                 console.log('/****************Busqueda***************/')
@@ -97,7 +96,7 @@ export default class VisuRegionComponent extends Vue {
         if(this.selectrow!=undefined && this.selectrow!=null ){
             debugger;
             if(this.selectrow!=undefined && this.selectrow!=null ){
-                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/region/modif_region`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
+                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/componente_cuentas/modif_componente_cuentas`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
             }
         }
         else{
@@ -121,12 +120,12 @@ export default class VisuRegionComponent extends Vue {
     }
   }
   async btnEliminar(){
-    await regionService.EliminarDepartamento(this.currentRow)
+    await componenteService.EliminarComponente(this.currentRow)
     .then(response=>{
       debugger;
       console.log('eliminar',response);
       if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strCorrel_Cod;
+         this.textosave='Se elimino correctamento.' + response.strCompany_Cod;
          this.issave=true;
          this.iserror=false;
       }
@@ -161,6 +160,8 @@ export default class VisuRegionComponent extends Vue {
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
 }
+
+
     data(){
         return{     
             companyName:'',
