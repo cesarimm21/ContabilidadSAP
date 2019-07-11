@@ -16,9 +16,9 @@
                                 <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input   
+                                    <el-input  class="validador"  
                                         size ="small" 
-                                        v-model="compania.strCompany_Cod">
+                                        v-model="compania.strCompany_Cod" :autofocus="true">
                                     </el-input>
                                     </div>
                                 </div>
@@ -46,21 +46,23 @@
                                 <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="compania.strCountry">                            
+                                        <el-input class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="compania.strCountry" @keydown.native.enter="buscarPais">                            
                                             <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{gridSelectPais.strCountry_Name}}</label>
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-md-2" >Region</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="compania.strRegion" :disabled="departEnabled">                            
+                                        <el-input size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="compania.strRegion" :disabled="departEnabled" @keydown.native.enter="buscarDepartamento">                            
                                             <el-button v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectDepartamento.strRegion_Desc}}</label>
                             </div>           
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Direccion</label>
@@ -75,43 +77,46 @@
                                <label class="el-form-item__label col-md-2" >Moneda Local</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  
+                                    <el-input  class="validador" 
                                     size ="small" 
                                     @blur="desactivar_MonedaL" 
                                     @focus="activar_MonedaL" 
-                                    v-model="strCurr_Loc">
+                                    v-model="strCurr_Loc" @keydown.native.enter="buscarMonedaLocal">
                                         <el-button v-if="btnactivarMonedaL && !dialogMonedaL" slot="append" class="boton" icon="fa fa-clone" @click="loadMonedaL()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectMonedaA.strCurrency_Desc}}</label>
                             </div>           
                             <div class="form-group row">
                                  <label class="el-form-item__label col-md-2" >Moneda Corporativa</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  
+                                    <el-input  class="validador" 
                                     size ="small" 
                                     @blur="desactivar_MonedaC" 
                                     @focus="activar_MonedaC" 
-                                    v-model="strCurr_Funct">
+                                    v-model="strCurr_Funct" @keydown.native.enter="buscarMonedaCor">
                                         <el-button v-if="btnactivarMonedaC && !dialogMonedaC" slot="append" class="boton" icon="fa fa-clone" @click="loadMonedaC()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectMonedaB.strCurrency_Desc}}</label>
                             </div>           
                             <div class="form-group row">
                                  <label class="el-form-item__label col-md-2" >Moneda Grupo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  
+                                    <el-input  class="validador" 
                                     size ="small" 
                                     @blur="desactivar_MonedaG" 
                                     @focus="activar_MonedaG" 
-                                    v-model="strCurr_Grp">
+                                    v-model="strCurr_Grp" @keydown.native.enter="buscarMonedaGrupo">
                                         <el-button v-if="btnactivarMonedaG && !dialogMonedaG" slot="append" class="boton" icon="fa fa-clone" @click="loadMonedaG()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectMonedaC.strCurrency_Desc}}</label>
                             </div>           
                         </div>
                     </div>
@@ -187,6 +192,10 @@
                     </div>
                 </div>
                 <el-table
+                    v-loading="loading1"
+                    element-loading-text="Cargando..."
+                    element-loading-spinner="el-icon-loading"
+                    element-loading-background="rgba(0,0,0, 0.8)"
                     :data="DepartamentoGrid"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%; cursor: pointer;" class="ExcelTable2007"
@@ -214,5 +223,8 @@ import CrearCompaniaComponent from '@/components/XX-CONFI/maestro_datos/compania
 export default CrearCompaniaComponent
 </script>
 <style scoped>
-    
+.sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+}
 </style>

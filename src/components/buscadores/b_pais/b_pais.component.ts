@@ -19,15 +19,21 @@ export default class  BPaisComponent extends Vue {
   inputAtributo:any;
   blnilterstrCountry_Cod:boolean=true;
   blnilterstrCountry_Name:boolean=false;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {      
+      this.load();
+    }, 600)    
   }
-  load(){
+  load(){    
     paisService.GetAllPais()
     .then(response=>{
       this.paisModel=[];
-      this.paisModel=response;             
+      this.paisModel=response; 
+      this.loading1=false;            
+    }).catch(erorr=>{
+      this.loading1=false;
     })
   }
   seleccionar(val:PaisModel){
@@ -104,7 +110,8 @@ export default class  BPaisComponent extends Vue {
   data() {
     return {
       monedaData:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

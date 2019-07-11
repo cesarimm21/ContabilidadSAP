@@ -52,16 +52,18 @@
                                         </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{gridSelectPais.strCountry_Name}}</label>
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-md-2" >Region</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input  size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="compania.strRegion">                            
+                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="compania.strRegion">                            
                                             <el-button  v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectDepartamento.strRegion_Desc}}</label>
                             </div>           
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Direccion</label>
@@ -86,6 +88,7 @@
                                     </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectMonedaA.strCurrency_Desc}}</label>
                             </div>           
                             <div class="form-group row">
                                  <label class="el-form-item__label col-md-2" >Moneda Corporativa</label>
@@ -101,6 +104,7 @@
                                     </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-4">{{selectMonedaB.strCurrency_Desc}}</label>
                             </div>           
                             <div class="form-group row">
                                  <label class="el-form-item__label col-md-2" >Moneda Grupo</label>
@@ -116,6 +120,7 @@
                                     </el-input>
                                     </div>
                                 </div>
+                                 <label class="sinLinea el-form-item__label col-md-4">{{selectMonedaC.strCurrency_Desc}}</label>
                             </div>           
                         </div>
                     </div>
@@ -181,7 +186,7 @@
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small"   v-model="inputAtributo">
-                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                    <el-button slot="append" class="boton" icon="fa fa-search" @keydown.native.enter="searchDepa()"
                                         @click="searchDepa()"
                                     > </el-button>
                                     </el-input>
@@ -201,7 +206,7 @@
                     @current-change="departSelect">
                     <el-table-column :render-header="filterstrRegion_Cod"  prop="strRegion_Cod" label="Codigo" width="180" >
                     </el-table-column>  
-                    <el-table-column :render-header="filterstrRegion_Desc" prop="strRegion_Desc" label="Nombre Departamento" style="width: 70% !important;">
+                    <el-table-column :render-header="filterstrRegion_Desc" prop="strRegion_Desc" label="Descripcion" style="width: 70% !important;">
                     </el-table-column> 
                     </el-table>
             </el-card>
@@ -218,5 +223,8 @@ import ModificarCompaniaComponent from '@/components/XX-CONFI/maestro_datos/comp
 export default ModificarCompaniaComponent
 </script>
 <style scoped>
-    
+.sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+}
 </style>

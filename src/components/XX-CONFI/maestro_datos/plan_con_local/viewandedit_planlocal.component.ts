@@ -43,11 +43,11 @@ export default class ViewAndEditPlanLocalComponent extends Vue {
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
             this.enabledtf=false;
-            this.textTitle='Modificar Aduana';
+            this.textTitle='Modificar Plan Contable Local';
         }
         if(vista=='visualizar'){
             this.enabledtf=true;
-            this.textTitle='Visualizar Aduana';
+            this.textTitle='Visualizar Plan Contable Local';
         }
 
     }  

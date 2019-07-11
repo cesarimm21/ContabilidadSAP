@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Visualizar Metodo de Valuacion</span>
+                <span class="labelheadercard" > Visualizar Metodo Valuacion</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Metodo Valuacion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strValMeth_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="strValMeth_Cod" style="text-transform: capitalize" type="text" >  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,7 +42,7 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Metodo de Valuaciones</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Metodo Valuaciones</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
@@ -57,7 +57,7 @@
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrValMeth_Cod"
-                            prop="strValMeth_Cod" label="Metodo de Valuacion" width="120" align="center">                                
+                            prop="strValMeth_Cod" label="Metodo Valuacion" width="120" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrValMeth_Desc"
                              prop="strValMeth_Desc" min-width="200" label="Descripcion">

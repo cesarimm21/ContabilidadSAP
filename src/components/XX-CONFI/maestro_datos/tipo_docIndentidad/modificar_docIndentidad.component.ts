@@ -43,9 +43,10 @@ export default class ModificarDocIdentidadComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrDocIdent_NO:boolean=false;
   blnilterstrDocIdent_Name:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
   tipodocDialog:boolean=false;
+  loading1:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-docidentidad';
@@ -54,6 +55,7 @@ export default class ModificarDocIdentidadComponent extends Vue {
           }, 200)
     }  
     load(){
+        this.loading1=true;
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
         tipodocService.GetAllTipoDocumento()
@@ -64,6 +66,7 @@ export default class ModificarDocIdentidadComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -137,11 +140,13 @@ export default class ModificarDocIdentidadComponent extends Vue {
     
     }
     Limpiar(){
+      this.Column="";
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrDocIdent_NO=false;
       this.blnilterstrDocIdent_Name=false; 
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;  
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;  
+
     }
     Print(){
       window.print();
@@ -258,29 +263,29 @@ export default class ModificarDocIdentidadComponent extends Vue {
           this.clickColumn="strDocIdent_NO";
           this.blnilterstrDocIdent_NO=true;
           this.blnilterstrDocIdent_Name=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;  
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;  
       }
       if(val.property=="strDocIdent_Name"){
           this.clickColumn="strDocIdent_Name";
           this.blnilterstrDocIdent_NO=false;
           this.blnilterstrDocIdent_Name=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false; 
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false; 
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrDocIdent_NO=false;
           this.blnilterstrDocIdent_Name=false; 
-          this.blnilterdtmCreation_Date=true;
-          this.blnilterstrCreation_User=false; 
+          this.blnilterdtmModified_Date=true;
+          this.blnilterstrModified_User=false; 
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrDocIdent_NO=false;
           this.blnilterstrDocIdent_Name=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=true; 
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=true; 
       }        
   }
   filterstrDocIdent_NO(h,{column,$index}){
@@ -304,9 +309,9 @@ export default class ModificarDocIdentidadComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -315,8 +320,8 @@ export default class ModificarDocIdentidadComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -342,6 +347,7 @@ export default class ModificarDocIdentidadComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            loading1:false
         }
     }
   

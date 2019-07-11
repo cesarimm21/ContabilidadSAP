@@ -12,6 +12,8 @@ import {CompaniaModel} from '@/modelo/maestro/compania';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import companiaService from '@/components/service/compania.service';
+import paisService from '@/components/service/pais.service';
+import monedaService from '@/components/service/moneda.service';
 import {PaisModel} from '@/modelo/maestro/pais';
 import {DepartamentoModel} from '@/modelo/maestro/departamento';
 import {MonedaModel} from '@/modelo/maestro/moneda';
@@ -74,14 +76,17 @@ export default class CrearCorrelativoComponent extends Vue {
     strCurr_Funct:string='';
     strCurr_Grp:string='';
 
-    dataMoneda:any[];
+    dataMoneda:MonedaModel[];
+    gridPais:PaisModel[]
     public moneda:MonedaModel=new MonedaModel();
-
+    loading1:boolean=false;
     constructor(){    
         super();
-        Global.nameComponent='crear-correlativo';
+        Global.nameComponent='crear-compania';
         setTimeout(() => {
             this.load();
+            this.loadPais();
+            this.loadMoneda();
           }, 200)
     }  
     load(){
@@ -123,6 +128,14 @@ export default class CrearCorrelativoComponent extends Vue {
                   });
                 this.issave = true;
                 this.iserror = false;
+                this.selectMonedaA=new MonedaModel();
+                this.selectMonedaB=new MonedaModel();
+                this.selectMonedaC=new MonedaModel();
+                this.gridSelectPais=new PaisModel();
+                this.selectDepartamento=new DepartamentoModel();
+                this.strCurr_Loc='';
+                this.strCurr_Grp='';
+                this.strCurr_Funct='';
                 this.textosave = 'Se guardo correctamente. '+resp.strCompany_Cod;
                 this.compania=new CompaniaModel();
                 loadingInstance.close();
@@ -152,6 +165,19 @@ export default class CrearCorrelativoComponent extends Vue {
       reloadpage(){
         window.location.reload();
       }
+
+      loadPais(){
+        paisService.GetAllPais()
+        .then(response=>{        
+          this.gridPais=response;   
+        })
+      }
+      loadMoneda(){
+        monedaService.GetAllMoneda()
+        .then(response=>{
+          this.dataMoneda=response;  
+        })
+      }
       paisDialog(){
         this.paisVisible=true;
       }
@@ -163,6 +189,7 @@ export default class CrearCorrelativoComponent extends Vue {
         
       }
       desactivar_Pais(){
+        this.buscarPais();
         if(this.paisVisible){
           this.btnactivarpais=false;
         }
@@ -177,21 +204,77 @@ export default class CrearCorrelativoComponent extends Vue {
         this.departEnabled=false;
         this.paisVisible=false;
       }
+      buscarPais(){
+        var data=Global.like(this.gridPais,'strCountry_Cod',this.compania.strCountry)
+        if(data.length>0&&this.compania.strCountry!=""){
+          this.gridSelectPais=data[0];
+          this.departEnabled=false;
+          this.compania.strCountry=this.gridSelectPais.strCountry_Cod;
+          this.GetAllDepartamento(this.gridSelectPais.strCountry_Cod);
+        }
+        else{
+          this.gridSelectPais=new PaisModel();
+          this.compania.strCountry="";
+        }
+      }
+      buscarDepartamento(){
+        var data=Global.like(this.DepartamentoGrid,'strRegion_Cod',this.compania.strRegion)
+        if(data.length>0&&this.compania.strRegion!=""){
+          this.selectDepartamento=data[0];
+          this.compania.strRegion=this.selectDepartamento.strRegion_Cod
+        }
+        else{
+          this.selectDepartamento=new DepartamentoModel();
+          this.compania.strRegion="";
+        }
+      }
+      buscarMonedaLocal(){
+        var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Loc)
+        if(data.length>0&&this.strCurr_Loc!=""){
+          this.selectMonedaA=data[0];
+          this.strCurr_Loc=this.selectMonedaA.strCurrency_Cod
+        }
+        else{
+          this.selectMonedaA=new MonedaModel();
+          this.strCurr_Loc="";
+        }
+      }
+      buscarMonedaCor(){
+        var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Funct)
+        if(data.length>0&&this.strCurr_Funct!=""){
+          this.selectMonedaB=data[0];
+          this.strCurr_Funct=this.selectMonedaB.strCurrency_Cod
+        }
+        else{
+          this.selectMonedaB=new MonedaModel();
+          this.strCurr_Funct="";
+        }
+      }
+      buscarMonedaGrupo(){
+        var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Grp)
+        if(data.length>0&&this.strCurr_Grp!=""){
+          this.selectMonedaC=data[0];
+          this.strCurr_Grp=this.selectMonedaC.strCurrency_Cod
+        }
+        else{
+          this.selectMonedaC=new MonedaModel();
+          this.strCurr_Grp="";
+        }
+      }
 
       GetAllDepartamento(val){
         departamentoService.GetAllDepartamentoByPais(val)
         .then(response=>{
           this.DepartamentoGrid=[];
-          this.DepartamentoGrid=response;
-          this.departVisible=true;
-          
+          this.DepartamentoGrid=response;       
+          this.loading1=false;
         }).catch(error=>{
+          this.loading1=false;
           this.$message({
             showClose: true,
             type: 'error',
             message: 'No se puede cargar lista de departamento'
           });
-          this.departVisible=false;
         })
       }
       activar_Departamento(){
@@ -221,7 +304,8 @@ export default class CrearCorrelativoComponent extends Vue {
         this.selectDepartamento=new DepartamentoModel();
       }
       departDialog(){
-
+        this.loading1=true;
+        this.departVisible=true;
         this.GetAllDepartamento(this.gridSelectPais.strCountry_Cod);
       }
       headerclick(val){
@@ -299,14 +383,15 @@ export default class CrearCorrelativoComponent extends Vue {
     }, 120)
   }
   desactivar_MonedaL(){
+    this.buscarMonedaLocal();
     if(this.dialogMonedaL){
       this.btnactivarMonedaL=false;
     }
   }
   
   MonedaSeleccionadoL(val:MonedaModel){
-      debugger;
     this.strCurr_Loc=val.strCurrency_Cod;
+    this.selectMonedaA=val;
     this.dialogMonedaL=false;
   }
 
@@ -324,6 +409,7 @@ export default class CrearCorrelativoComponent extends Vue {
     }, 120)
   }
   desactivar_MonedaC(){
+    this.buscarMonedaCor();
     if(this.dialogMonedaC){
       this.btnactivarMonedaC=false;
     }
@@ -331,6 +417,7 @@ export default class CrearCorrelativoComponent extends Vue {
   
   MonedaSeleccionadoC(val:MonedaModel){
     this.strCurr_Funct=val.strCurrency_Cod;
+    this.selectMonedaB=val;
     this.dialogMonedaC=false;
   }
 
@@ -348,6 +435,7 @@ export default class CrearCorrelativoComponent extends Vue {
     }, 120)
   }
   desactivar_MonedaG(){
+    this.buscarMonedaGrupo();
     if(this.dialogMonedaG){
       this.btnactivarMonedaG=false;
     }
@@ -355,13 +443,19 @@ export default class CrearCorrelativoComponent extends Vue {
   
   MonedaSeleccionadoG(val:MonedaModel){
     this.strCurr_Grp=val.strCurrency_Cod;
+    this.selectMonedaC=val;
     this.dialogMonedaG=false;
   }
   //#endregion
     data(){
         return{     
             companyName:'',
-            companyCod:''
+            companyCod:'',
+            gridPais:[],
+            dataMoneda:[],
+            DepartamentoGrid:[],
+            inputAtributo:'',
+            loading1:false
         }
     }
   

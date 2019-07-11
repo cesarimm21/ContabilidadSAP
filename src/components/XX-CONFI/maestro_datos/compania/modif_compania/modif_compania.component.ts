@@ -12,6 +12,8 @@ import {CompaniaModel} from '@/modelo/maestro/compania';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import companiaService from '@/components/service/compania.service';
+import paisService from '@/components/service/pais.service';
+import monedaService from '@/components/service/moneda.service';
 import {PaisModel} from '@/modelo/maestro/pais';
 import {DepartamentoModel} from '@/modelo/maestro/departamento';
 import {MonedaModel} from '@/modelo/maestro/moneda';
@@ -40,6 +42,7 @@ export default class ModificarCompaniaComponent extends Vue {
     public compania:CompaniaModel=new CompaniaModel();
     //**Pais */
     public gridSelectPais:PaisModel=new PaisModel();
+    public gridPais:PaisModel[];
     paisVisible:boolean=false;
     btnactivarpais:boolean=false;
     public DepartamentoGrid:Array<DepartamentoModel>[];
@@ -82,26 +85,27 @@ export default class ModificarCompaniaComponent extends Vue {
     
     constructor(){    
         super();
-        Global.nameComponent='modificar-correlativo';
-        
+        Global.nameComponent='modificar-correlativo';        
         setTimeout(() => {
             this.load();
+            this.loadPais();
+            this.loadMoneda();
         }, 100)
     }
 
     load(){
-        debugger;
         var object = JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         this.txtviewmodulo=modulo;
         if(modulo.toLowerCase()!='visualizar'){
-            this.txtmodulo='Modificar Compania';
+            this.txtmodulo='Visualizar Compania';
             this.visualizar=false;
         }
         else{
-            this.txtmodulo='Visualizar Compania';
+            this.txtmodulo='Modificar Compania';
             this.visualizar=true;
         }
+        
         this.cargar(object.strCompany_Cod);
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
@@ -115,6 +119,9 @@ export default class ModificarCompaniaComponent extends Vue {
             this.strCurr_Loc=this.compania.strCurr_Loc;
             this.strCurr_Grp=this.compania.strCurr_Grp;
             this.strCurr_Funct=this.compania.strCurr_Funct;
+            this.gridSelectPais.strCountry_Cod=this.compania.strCountry;
+            this.GetAllDepartamento(this.compania.strCountry)            
+                      
         })
         .catch(error=>{
             this.$message({
@@ -128,6 +135,7 @@ export default class ModificarCompaniaComponent extends Vue {
         })
     }
     guardarTodo(){
+      var user:any=localStorage.getItem('User_Usuario');
         if(this.compania.strCompany_Cod==''){ this.$message('Complete los campos obligatorios'); return false;}
         if(this.compania.strCompany_Desc==''){ this.$message('Complete los campos obligatorios'); return false;}
         if(this.compania.strAddress==''){ this.$message('Complete los campos obligatorios'); return false;}
@@ -142,7 +150,7 @@ export default class ModificarCompaniaComponent extends Vue {
             this.compania.strCurr_Loc=this.strCurr_Loc;
             this.compania.strCurr_Grp=this.strCurr_Grp;
             this.compania.strCurr_Funct=this.strCurr_Funct;
-
+            this.compania.strModified_User=user;
             companiaService.UpdateCompania(this.compania)
             .then(resp=>{
                 this.$message({
@@ -153,7 +161,6 @@ export default class ModificarCompaniaComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strCompany_Cod;
-                this.compania=new CompaniaModel();
                 this.strCurr_Loc="";
                 this.strCurr_Grp="";
                 this.strCurr_Funct="";
@@ -174,7 +181,6 @@ export default class ModificarCompaniaComponent extends Vue {
 
     }
     handleChange(value) {
-        console.log(value);
       }
       backPage(){
         window.history.back();
@@ -182,7 +188,34 @@ export default class ModificarCompaniaComponent extends Vue {
       reloadpage(){
         window.location.reload();
       }
-    
+    loadPais(){
+      paisService.GetAllPais()
+      .then(response=>{        
+        this.gridPais=response;          
+        if(this.compania.strCountry!=""){    
+          var data=Global.like(this.gridPais,'strCountry_Cod',this.compania.strCountry)
+          if(data.length>0){this.gridSelectPais=data[0]}
+        }  
+      })
+    }
+    loadMoneda(){
+      monedaService.GetAllMoneda()
+      .then(response=>{
+        this.dataMoneda=response;          
+        if(this.strCurr_Loc!=""){    
+          var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Loc)
+          if(data.length>0){this.selectMonedaA=data[0]}
+        }
+        if(this.strCurr_Funct!=""){    
+          var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Funct)
+          if(data.length>0){this.selectMonedaB=data[0]}
+        }
+        if(this.strCurr_Grp!=""){    
+          var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Grp)
+          if(data.length>0){this.selectMonedaC=data[0]}
+        }
+      })
+    }
       paisDialog(){
         this.paisVisible=true;
       }
@@ -204,6 +237,7 @@ export default class ModificarCompaniaComponent extends Vue {
       paisSelect(val:PaisModel){
         this.compania.strRegion='';
         this.gridSelectPais=val;
+        this.selectDepartamento=new DepartamentoModel();
         this.compania.strCountry=this.gridSelectPais.strCountry_Cod;
         this.departEnabled=false;
         this.paisVisible=false;
@@ -213,8 +247,11 @@ export default class ModificarCompaniaComponent extends Vue {
         departamentoService.GetAllDepartamentoByPais(val)
         .then(response=>{
           this.DepartamentoGrid=[];
-          this.DepartamentoGrid=response;
-          this.departVisible=true;
+          this.DepartamentoGrid=response;    
+          if(this.compania.strRegion!=""){    
+            var data=Global.like(this.DepartamentoGrid,'strRegion_Cod',this.compania.strRegion)
+            if(data.length>0){this.selectDepartamento=data[0]}
+          }        
           
         }).catch(error=>{
           this.$message({
@@ -222,7 +259,6 @@ export default class ModificarCompaniaComponent extends Vue {
             type: 'error',
             message: 'No se puede cargar lista de departamento'
           });
-          this.departVisible=false;
         })
       }
       activar_Departamento(){
@@ -252,7 +288,7 @@ export default class ModificarCompaniaComponent extends Vue {
         this.selectDepartamento=new DepartamentoModel();
       }
       departDialog(){
-
+        this.departVisible=true;
         this.GetAllDepartamento(this.gridSelectPais.strCountry_Cod);
       }
       headerclick(val){
@@ -336,7 +372,6 @@ export default class ModificarCompaniaComponent extends Vue {
   }
   
   MonedaSeleccionadoL(val:MonedaModel){
-      debugger;
     this.strCurr_Loc=val.strCurrency_Cod;
     this.dialogMonedaL=false;
   }
@@ -392,7 +427,11 @@ export default class ModificarCompaniaComponent extends Vue {
     data(){
         return{     
             companyName:'',
-            companyCod:''
+            companyCod:'',
+            inputAtributo:'',
+            DepartamentoGrid:[],
+            gridPais:[],
+            dataMoneda:[]
         }
     }
   

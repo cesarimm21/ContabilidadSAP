@@ -47,6 +47,10 @@
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridDocumento"
                             highlight-current-row
@@ -62,7 +66,7 @@
                             <el-table-column  :render-header="filterstrDocIdent_Name"
                              prop="strDocIdent_Name" min-width="180" label="Descripcion">
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
+                            <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
                                 label="Fecha">
                                 <template scope="scope">

@@ -47,10 +47,12 @@ export default class  BMonedaComponent extends Vue {
   public monedaData:Array<MonedaModel>=[];
   public monedaData1:Array<MonedaModel>=[];
   public monedaSelectModel:MonedaModel=new MonedaModel();
-
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {      
+      this.load();
+    }, 600)   
   }
   load(){
     monedaService.GetAllMoneda()
@@ -58,8 +60,10 @@ export default class  BMonedaComponent extends Vue {
       this.monedaData=[];
       this.monedaData1=[];
       this.monedaData=response;       
-      this.monedaData1=response;       
+      this.monedaData1=response;   
+      this.loading1=false;    
     }).catch(error=>{
+      this.loading1=false;
       this.$message({
         showClose: true,
         type: 'error',
@@ -209,7 +213,8 @@ export default class  BMonedaComponent extends Vue {
     return {
       monedaData:[],
       monedaData1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

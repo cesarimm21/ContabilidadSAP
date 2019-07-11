@@ -25,6 +25,7 @@ export default class ModificarPlanLocalComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strChartAcct_L_Cod:string='';
   public documento:PlanConLocalModel=new PlanConLocalModel();
   gridDocumento:PlanConLocalModel[];
   gridDocumento1:PlanConLocalModel[];
@@ -41,8 +42,8 @@ export default class ModificarPlanLocalComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrChartAcct_L_Cod:boolean=false;
   blnilterstrChartAcct_L_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
   planDialog:boolean=false;
   constructor(){    
         super();
@@ -75,22 +76,13 @@ export default class ModificarPlanLocalComponent extends Vue {
     }
     handleCurrentChange(val:PlanConLocalModel){
       this.documento=val;
+      this.strChartAcct_L_Cod=this.documento.strChartAcct_L_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -147,8 +139,8 @@ export default class ModificarPlanLocalComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrChartAcct_L_Cod=false;
       this.blnilterstrChartAcct_L_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
@@ -196,15 +188,26 @@ export default class ModificarPlanLocalComponent extends Vue {
       }
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strChartAcct_L_Cod',this.documento.strChartAcct_L_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdChartAcct_L_ID!=-1){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strChartAcct_L_Cod!=''){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strChartAcct_L_Cod',this.strChartAcct_L_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strChartAcct_L_Cod==this.strChartAcct_L_Cod){
+        await setTimeout(() => {
+          if(this.documento.strChartAcct_L_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strChartAcct_L_Cod==''){
+          this.textosave='Inserte Plan Contable Local. ';
+          this.warningMessage('Inserte Plan Contable Local. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Plan Contable Local. ';
+          this.warningMessage('No existe Plan Contable Local. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Plan Contable Local. ';
@@ -252,29 +255,29 @@ export default class ModificarPlanLocalComponent extends Vue {
           this.clickColumn="strChartAcct_L_Cod";
           this.blnilterstrChartAcct_L_Cod=true;
       this.blnilterstrChartAcct_L_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strCustom_Desc"){
           this.clickColumn="strCustom_Desc";
           this.blnilterstrChartAcct_L_Cod=false;
       this.blnilterstrChartAcct_L_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrChartAcct_L_Cod=false;
       this.blnilterstrChartAcct_L_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrChartAcct_L_Cod=false;
       this.blnilterstrChartAcct_L_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrChartAcct_L_Cod(h,{column,$index}){
@@ -298,9 +301,9 @@ export default class ModificarPlanLocalComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -309,8 +312,8 @@ export default class ModificarPlanLocalComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -335,6 +338,7 @@ export default class ModificarPlanLocalComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strChartAcct_L_Cod:''
         }
     }
   

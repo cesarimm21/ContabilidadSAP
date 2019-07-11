@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="pais.strCountry_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="strCountry_Cod" style="text-transform: capitalize" type="text">  
                                     </el-input>
                                     </div>
                                 </div>

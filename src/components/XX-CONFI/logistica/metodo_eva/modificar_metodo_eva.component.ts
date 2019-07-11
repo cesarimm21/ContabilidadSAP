@@ -25,6 +25,7 @@ export default class ModificarMetodoEvaComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strValMeth_Cod:string='';
   public documento:MetodoValuacionModel=new MetodoValuacionModel();
   gridDocumento:MetodoValuacionModel[];
   gridDocumento1:MetodoValuacionModel[];
@@ -75,22 +76,13 @@ export default class ModificarMetodoEvaComponent extends Vue {
     }
     handleCurrentChange(val:MetodoValuacionModel){
       this.documento=val;
+      this.strValMeth_Cod=this.documento.strValMeth_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -196,19 +188,31 @@ export default class ModificarMetodoEvaComponent extends Vue {
         }
     }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strValMeth_Cod',this.documento.strValMeth_Cod)
-    this.documento=data[0];
-    if(this.documento.intIdValMeth_ID!=-1){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strValMeth_Cod!=''){
-          router.push({ path: `/barmenu/XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strValMeth_Cod',this.strValMeth_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strValMeth_Cod==this.strValMeth_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.documento.strValMeth_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strValMeth_Cod==''){
+          this.textosave='Inserte Metodo Valuacion. ';
+          this.warningMessage('Inserte Metodo Valuacion. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Metodo Valuacion. ';
+          this.warningMessage('No existe Metodo Valuacion. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Metodo de Valuacion ';
-      this.warningMessage('No existe Metodo de Valuacion ');
+      this.textosave='No existe Metodo Valuacion. ';
+      this.warningMessage('No existe Metodo Valuacion. ');
     }
   }
    async validarView(){
@@ -335,6 +339,7 @@ export default class ModificarMetodoEvaComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strValMeth_Cod:''
         }
     }
   

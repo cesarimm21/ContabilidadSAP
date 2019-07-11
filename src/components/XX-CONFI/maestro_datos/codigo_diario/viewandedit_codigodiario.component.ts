@@ -98,7 +98,7 @@ export default class ViewAndEditCodigoDiarioComponent extends Vue {
       }
       if(this.flag=='B'){
         this.cuentaB=val;
-        this.documento.strDaily_AccForen=this.cuentaA.strAcc_Local_NO;
+        this.documento.strDaily_AccForen=this.cuentaB.strAcc_Local_NO;
       }
       this.dialogDocumentoTransaccion=false;  
     }

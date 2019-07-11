@@ -21,6 +21,10 @@
                 </div>
             </div>
             <el-table
+            v-loading="loading1"
+            element-loading-text="Cargando..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0,0,0, 0.8)"
             :data="paisModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%;cursor: pointer;" class="ExcelTable2007"
@@ -51,3 +55,5 @@
     import BPaisComponent from '@/components/buscadores/b_pais/b_pais.component'
     export default BPaisComponent
 </script>
+<style>
+</style>

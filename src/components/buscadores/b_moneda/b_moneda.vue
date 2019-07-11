@@ -22,6 +22,10 @@
             </div>
             <br>
             <el-table
+            v-loading="loading1"
+            element-loading-text="Cargando..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0,0,0, 0.8)"
             :data="monedaData"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%;cursor: pointer;" class="ExcelTable2007"

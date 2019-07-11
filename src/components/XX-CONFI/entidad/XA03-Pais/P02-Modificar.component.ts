@@ -25,6 +25,7 @@ export default class ModificarPaisComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strCountry_Cod:string='';
   public pais:PaisModel=new PaisModel();
   gridPais:PaisModel[];
   gridPais1:PaisModel[];
@@ -77,22 +78,13 @@ export default class ModificarPaisComponent extends Vue {
     }
     handleCurrentChange(val:PaisModel){
       this.pais=val;
+      this.strCountry_Cod=this.pais.strCountry_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridPais1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridPais1,this.clickColumn,this.txtbuscar)
       this.gridPais=[];
       this.gridPais=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -200,15 +192,27 @@ export default class ModificarPaisComponent extends Vue {
         }
     }
   async validad(){      
-    var data=this.like(this.gridPais1,'strCountry_Cod',this.pais.strCountry_Cod)
-    this.pais=data[0];
-    if(this.pais.intIdCountry_ID!=-1){
-      await setTimeout(() => {
-        debugger;
-        if(this.pais.strCountry_Cod!=''){
-          router.push({ path: `/barmenu/XX-CONFI/entidad/XA03-Pais/viewandedit_pais`, query: { vista:'modificar' ,data:JSON.stringify(this.pais) }  })
+    var data=Global.like(this.gridPais1,'strCountry_Cod',this.strCountry_Cod)
+    if(data.length>0){
+      this.pais=data[0];
+      if(this.pais.strCountry_Cod==this.strCountry_Cod){
+        await setTimeout(() => {
+          debugger;
+          if(this.pais.strCountry_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/entidad/XA03-Pais/viewandedit_pais`, query: { vista:'modificar' ,data:JSON.stringify(this.pais) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strCountry_Cod==''){
+          this.textosave='Inserte Pais. ';
+          this.warningMessage('Inserte Pais. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Pais. ';
+          this.warningMessage('No existe Pais. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Pais. ';
@@ -384,6 +388,7 @@ export default class ModificarPaisComponent extends Vue {
             gridPais:[],
             gridPais1:[],
             gridPais2:[],
+            strCountry_Cod:''
         }
     }
   
