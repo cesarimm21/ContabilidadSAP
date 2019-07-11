@@ -51,6 +51,7 @@
                                         :data="tableData" 
                                          highlight-current-row
                                          @header-click="headerclick"
+                                         @row-dblclick="validarView"
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
