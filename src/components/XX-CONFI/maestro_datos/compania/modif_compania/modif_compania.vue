@@ -29,7 +29,7 @@
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" :disabled="visualizar" size ="small" v-model="compania.strCompany_Desc"  type="text">  
+                                    <el-input class="validador" :disabled="visualizar" size ="small" v-model="compania.strCompany_Desc" :autofocus="true" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                 <label class="el-form-item__label col-md-2" >Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input :disabled="visualizar" class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="compania.strCountry">                            
+                                        <el-input :disabled="visualizar" class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="compania.strCountry" @keydown.native.enter="buscarPais">                            
                                             <el-button :disabled="visualizar" v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                         </el-input>
                                     </div>
@@ -58,7 +58,7 @@
                                 <label class="el-form-item__label col-md-2" >Region</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="compania.strRegion">                            
+                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_Departamento" @focus="activar_Departamento" v-model="compania.strRegion" @keydown.native.enter="buscarDepartamento">                            
                                             <el-button  v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
                                         </el-input>
                                     </div>
@@ -83,7 +83,7 @@
                                     size ="small" 
                                     @blur="desactivar_MonedaL" 
                                     @focus="activar_MonedaL" 
-                                    v-model="strCurr_Loc">
+                                    v-model="strCurr_Loc" @keydown.native.enter="buscarMonedaLocal">
                                         <el-button :disabled="visualizar" v-if="btnactivarMonedaL && !dialogMonedaL" slot="append" class="boton" icon="fa fa-clone" @click="loadMonedaL()"></el-button> 
                                     </el-input>
                                     </div>
@@ -99,7 +99,7 @@
                                     size ="small" 
                                     @blur="desactivar_MonedaC" 
                                     @focus="activar_MonedaC" 
-                                    v-model="strCurr_Funct">
+                                    v-model="strCurr_Funct" @keydown.native.enter="buscarMonedaCor">
                                         <el-button :disabled="visualizar" v-if="btnactivarMonedaC && !dialogMonedaC" slot="append" class="boton" icon="fa fa-clone" @click="loadMonedaC()"></el-button> 
                                     </el-input>
                                     </div>
@@ -115,7 +115,7 @@
                                     size ="small" 
                                     @blur="desactivar_MonedaG" 
                                     @focus="activar_MonedaG" 
-                                    v-model="strCurr_Grp">
+                                    v-model="strCurr_Grp" @keydown.native.enter="buscarMonedaGrupo">
                                         <el-button :disabled="visualizar" v-if="btnactivarMonedaG && !dialogMonedaG" slot="append" class="boton" icon="fa fa-clone" @click="loadMonedaG()"></el-button> 
                                     </el-input>
                                     </div>

@@ -69,7 +69,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrRUC"  
-                                            prop="strRUC" 
+                                            prop="strRUC" width="100"
                                             label="RUC">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strRUC }}</label>

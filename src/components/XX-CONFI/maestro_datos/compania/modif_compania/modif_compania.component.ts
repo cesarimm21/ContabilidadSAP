@@ -135,7 +135,9 @@ export default class ModificarCompaniaComponent extends Vue {
         })
     }
     guardarTodo(){
-      var user:any=localStorage.getItem('User_Usuario');
+      var modulo = this.$route.query.vista;
+      if(modulo=='modificar'){
+        var user:any=localStorage.getItem('User_Usuario');
         if(this.compania.strCompany_Cod==''){ this.$message('Complete los campos obligatorios'); return false;}
         if(this.compania.strCompany_Desc==''){ this.$message('Complete los campos obligatorios'); return false;}
         if(this.compania.strAddress==''){ this.$message('Complete los campos obligatorios'); return false;}
@@ -176,6 +178,15 @@ export default class ModificarCompaniaComponent extends Vue {
             })
         }
         
+      }
+      else{
+        this.$message({
+          showClose: true,
+          type: 'success',
+          message: 'Accion no permitida'
+        });
+      }
+     
     } 
     fnOcultar(){
 
@@ -227,6 +238,7 @@ export default class ModificarCompaniaComponent extends Vue {
         
       }
       desactivar_Pais(){
+        this.buscarPais();
         if(this.paisVisible){
           this.btnactivarpais=false;
         }
@@ -245,7 +257,63 @@ export default class ModificarCompaniaComponent extends Vue {
         this.departEnabled=false;
         this.paisVisible=false;
       }
-
+      buscarPais(){
+        var data=Global.like(this.gridPais,'strCountry_Cod',this.compania.strCountry)
+        if(data.length>0&&this.compania.strCountry!=""){
+          this.gridSelectPais=data[0];
+          this.departEnabled=false;
+          this.compania.strCountry=this.gridSelectPais.strCountry_Cod;
+          this.GetAllDepartamento(this.gridSelectPais.strCountry_Cod);
+        }
+        else{
+          this.gridSelectPais=new PaisModel();
+          this.compania.strCountry="";
+        }
+      }
+      buscarDepartamento(){
+        var data=Global.like(this.DepartamentoGrid,'strRegion_Cod',this.compania.strRegion)
+        if(data.length>0&&this.compania.strRegion!=""){
+          this.selectDepartamento=data[0];
+          this.compania.strRegion=this.selectDepartamento.strRegion_Cod
+        }
+        else{
+          this.selectDepartamento=new DepartamentoModel();
+          this.compania.strRegion="";
+        }
+      }
+      buscarMonedaLocal(){
+        var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Loc)
+        if(data.length>0&&this.strCurr_Loc!=""){
+          this.selectMonedaA=data[0];
+          this.strCurr_Loc=this.selectMonedaA.strCurrency_Cod
+        }
+        else{
+          this.selectMonedaA=new MonedaModel();
+          this.strCurr_Loc="";
+        }
+      }
+      buscarMonedaCor(){
+        var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Funct)
+        if(data.length>0&&this.strCurr_Funct!=""){
+          this.selectMonedaB=data[0];
+          this.strCurr_Funct=this.selectMonedaB.strCurrency_Cod
+        }
+        else{
+          this.selectMonedaB=new MonedaModel();
+          this.strCurr_Funct="";
+        }
+      }
+      buscarMonedaGrupo(){
+        var data=Global.like(this.dataMoneda,'strCurrency_Cod',this.strCurr_Grp)
+        if(data.length>0&&this.strCurr_Grp!=""){
+          this.selectMonedaC=data[0];
+          this.strCurr_Grp=this.selectMonedaC.strCurrency_Cod
+        }
+        else{
+          this.selectMonedaC=new MonedaModel();
+          this.strCurr_Grp="";
+        }
+      }
       GetAllDepartamento(val){
         departamentoService.GetAllDepartamentoByPais(val)
         .then(response=>{
@@ -370,6 +438,7 @@ export default class ModificarCompaniaComponent extends Vue {
     }, 120)
   }
   desactivar_MonedaL(){
+    this.buscarMonedaLocal();
     if(this.dialogMonedaL){
       this.btnactivarMonedaL=false;
     }
@@ -394,6 +463,7 @@ export default class ModificarCompaniaComponent extends Vue {
     }, 120)
   }
   desactivar_MonedaC(){
+    this.buscarMonedaCor();
     if(this.dialogMonedaC){
       this.btnactivarMonedaC=false;
     }
@@ -418,6 +488,7 @@ export default class ModificarCompaniaComponent extends Vue {
     }, 120)
   }
   desactivar_MonedaG(){
+    this.buscarMonedaGrupo();
     if(this.dialogMonedaG){
       this.btnactivarMonedaG=false;
     }

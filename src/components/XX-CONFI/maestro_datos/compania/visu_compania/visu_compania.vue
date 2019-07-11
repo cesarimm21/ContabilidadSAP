@@ -7,7 +7,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Compañia</span>
+            <span class="labelheadercard" >Visualizar Compañia</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -68,7 +68,7 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrRUC"  
-                                            prop="strRUC" 
+                                            prop="strRUC" width="100"
                                             label="RUC">
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strRUC }}</label>
@@ -96,13 +96,6 @@
                                                 </template>
                                             </el-table-column>
                                         <el-table-column :render-header="filterstrModified_User"
-                                            prop="strModified_User"   
-                                            label="Usuario" min-width="80">
-                                            <template scope="scope">
-                                                <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column :render-header="filterstrCreation_User"
                                             prop="strModified_User" 
                                             label="Usuario">
                                         </el-table-column>
