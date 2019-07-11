@@ -161,6 +161,7 @@ export default class ViewAndEditCompaniaComponent extends Vue {
         }
         else{
             this.textosave='Seleccione alguna salida. ';
+            this.warningMessage('Seleccione alguna salida. ')
         }
     }
     fnOcultar(){

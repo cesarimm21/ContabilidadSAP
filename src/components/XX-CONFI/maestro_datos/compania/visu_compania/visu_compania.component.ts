@@ -158,6 +158,7 @@ export default class VisuCompaniaComponent extends Vue {
         }
         else{
             this.textosave='Seleccione alguna salida. ';
+            this.warningMessage('Seleccione alguna salida. ')
         }
     }
     fnOcultar(){
