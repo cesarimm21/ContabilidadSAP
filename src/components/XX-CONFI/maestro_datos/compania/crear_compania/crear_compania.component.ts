@@ -97,15 +97,15 @@ export default class CrearCorrelativoComponent extends Vue {
         this.compania.strCountry_desc=this.strCountry_desc;
         this.compania.strRegion_desc=this.strRegion_desc;
 
-        if(this.compania.strCompany_Cod==''){ this.$message('Complete los campos obligatorios 1'); return false;}
-        if(this.compania.strCompany_Desc==''){ this.$message('Complete los campos obligatorios 2'); return false;}
-        if(this.compania.strAddress==''){ this.$message('Complete los campos obligatorios 3'); return false;}
-        if(this.compania.strCountry==''){ this.$message('Complete los campos obligatorios 4'); return false;}
-        if(this.compania.strRegion==''){ this.$message('Complete los campos obligatorios 5'); return false;}
-        if(this.compania.strRUC==''){ this.$message('Complete los campos obligatorios 6'); return false;}
-        if(this.strCurr_Funct==''){ this.$message('Complete los campos obligatorios 7'); return false;}
-        if(this.strCurr_Grp==''){ this.$message('Complete los campos obligatorios 8'); return false;}
-        if(this.strCurr_Loc==''){ this.$message('Complete los campos obligatorios 9'); return false;}
+        if(this.compania.strCompany_Cod==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strCompany_Desc==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strAddress==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strCountry==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strRegion==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.compania.strRUC==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.strCurr_Funct==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.strCurr_Grp==''){ this.$message('Complete los campos obligatorios '); return false;}
+        if(this.strCurr_Loc==''){ this.$message('Complete los campos obligatorios '); return false;}
         else{
 
             this.compania.strCurr_Loc=this.strCurr_Loc;

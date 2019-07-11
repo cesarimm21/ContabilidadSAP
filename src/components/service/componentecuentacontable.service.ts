@@ -10,5 +10,29 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllComponenteCuentaContableFiltro(data){  
+    return axios.get(CONFIG.API_URL+'componentecuenta/'+data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  CrearComponete(data){
+    return axios.post(CONFIG.API_URL+'componentecuenta',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateComponenteCuenta(data){
+    return axios.post(CONFIG.API_URL+'componentecuenta/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  EliminarComponente(data){
+    return axios.post(CONFIG.API_URL+'componentecuenta/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  }
 }
   
