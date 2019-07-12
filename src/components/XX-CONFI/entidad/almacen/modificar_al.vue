@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Codigo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="strWHS_Cod" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,60 +42,56 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Periodos</span>                    
+                    <span slot="label"><i class="el-icon-date"></i> Almacenes</span>                    
                     <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridAlmacen"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrWHS_Cod"
-                            prop="strWHS_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strWHS_Cod" label="Almacen" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrWHS_Desc"
-                             prop="strWHS_Desc" min-width="180" label="Descripcion">
+                             prop="strWHS_Desc" min-width="250" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterstrLocation"
-                            prop="strLocation" label="Ubicacion" width="100" align="center">                                
-                            </el-table-column>
-                            <el-table-column :render-header="filterstrCompany_Cod"
-                            prop="strCompany_Cod" label="Compania" width="100" align="center">                                
-                            </el-table-column>
-                            <el-table-column :render-header="filterstrPlant_Cod"
-                            prop="strPlant_Cod" label="Planta" width="100" align="center">                                
+                            prop="strLocation" label="Ubicacion" width="250" >                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrSubsidiary_Cod"
                             prop="strSubsidiary_Cod" label="Sucursal" width="100" align="center">                                
                             </el-table-column>
-                            <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
-                                label="Fecha Creada">
+                            <el-table-column :render-header="filterdtmModified_Date"
+                                prop="dtmModified_Date"   min-width="80"
+                                label="Fecha ">
                                 <template scope="scope">
-                                    <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>
+                                    <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column :render-header="filterstrCreation_User"
-                                prop="strCreation_User" 
+                            <el-table-column :render-header="filterstrModified_User"
+                                prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                label="Estato"
-                                width="100">
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
                                 <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
+                                <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  

@@ -102,12 +102,12 @@ export default class ViewAndEditAlmacenComponent extends Vue {
     handleClosePlanta(){
       this.plantaVisible=false;
     }
-    plantaSelect(val:PlantaModel){
-      this.planta=val;
-      this.almacen.intPlant_ID=this.planta.intPlant_ID;
-      this.almacen.strPlant_Cod=this.planta.strPlant_Cod;
-      this.plantaVisible=false;
-    }
+    // plantaSelect(val:PlantaModel){
+    //   this.planta=val;
+    //   this.almacen.intPlant_ID=this.planta.intPlant_ID;
+    //   this.almacen.strPlant_Cod=this.planta.strPlant_Cod;
+    //   this.plantaVisible=false;
+    // }
     //#endregion
     
     guardarAlmacen(){

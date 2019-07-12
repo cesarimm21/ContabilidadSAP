@@ -18,11 +18,11 @@
                                     <div class="input-group mb-3" >
                                     <el-input   :disabled="true"
                                         size ="small" 
-                                        v-model="companyCod">
+                                        v-model="sucursal.strCompany_Cod">
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{sucursal.strCompany_Desc}}</span>
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Sucursal</label>
@@ -35,17 +35,17 @@
                             </div>    
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
+                                <div class="col-md-6 grupolabel">
+                                    <div class="input-group mb-6" >
                                     <el-input class="validador" :disabled="visualizar" size ="small" v-model="sucursal.strSubsidiary_Desc"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>    
-                            <div  class="form-group row ">
+                            <div  class="form-group row " style="margin-top:10px;">
                                 <label class="el-form-item__label col-md-2" >Direccion</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
+                                <div class="col-md-6 grupolabel">
+                                    <div class="input-group mb-6" >
                                     <el-input class="validador" size ="small" :disabled="visualizar" v-model="sucursal.strSubsidiary_Address"  type="text">  
                                     </el-input>
                                     </div>

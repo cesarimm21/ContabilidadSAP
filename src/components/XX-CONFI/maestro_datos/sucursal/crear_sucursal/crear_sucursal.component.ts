@@ -46,8 +46,11 @@ export default class CrearSucursalComponent extends Vue {
         this.nameuser=localStorage.getItem('User_Usuario');
     }
     guardarTodo(){
+      this.sucursal.strCompany_Cod=this.companyCod;
+      this.sucursal.strCompany_Desc=this.companyName;
         if(this.sucursal.strSubsidiary_Cod==''){ this.$message('Complete los campos obligatorios');return false;}
         if(this.sucursal.strSubsidiary_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
+        if(this.sucursal.strSubsidiary_Address==''){ this.$message('Complete los campos obligatorios');return false;}
         
         else{
             let loadingInstance = Loading.service({

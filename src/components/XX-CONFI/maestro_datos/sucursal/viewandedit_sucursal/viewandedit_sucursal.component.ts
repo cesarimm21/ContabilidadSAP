@@ -36,6 +36,7 @@ export default class ViewAndEditSucursalComponent extends Vue {
     textosave:string='';
     public sucursal:SucursalModel=new SucursalModel();
     public tableData:Array<SucursalModel>=[]; 
+    public tableData1:Array<SucursalModel>=[]; 
     namepage:string;
     impDisabled:boolean=false;
     cod_criticidad:string='';
@@ -43,6 +44,19 @@ export default class ViewAndEditSucursalComponent extends Vue {
     currentRow:any;
     dialogEliminar:boolean=false;
     cod_sucursal:string='';
+    loading1:boolean=true;
+    pagina: number =1;
+      RegistersForPage: number = 100;
+    totalRegistros: number = 100;
+    clickColumn:string='';
+    txtbuscar:string='';
+    Column:string='';
+    dialogBusquedaFilter:boolean=false;
+    blnilterstrSubsidiary_Cod:boolean=false;
+    blnilterstrSubsidiary_Desc:boolean=false;
+    blnilterstrSubsidiary_Address:boolean=false;
+    blnilterdtmModified_Date:boolean=false;
+    blnilterdstrModified_User:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='viewandedit-sucursal';
@@ -57,44 +71,64 @@ export default class ViewAndEditSucursalComponent extends Vue {
     }
     
     handleCurrentChange(val) {
-        debugger;
         if(val!=null){
         this.selectrow=val;
         this.currentRow = val;
+        this.cod_sucursal=val.strSubsidiary_Cod;
         }
     }
     async cargarList(){
-        debugger;
         if(this.cod_sucursal!=''){
             await sucursalService.GetOnlyOnesucursal(this.cod_sucursal)
             .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
                 if(res!=undefined){
                     this.selectrow=res;
                     this.validarView();
                 }
             })
-            .catch(error=>{
-            
+            .catch(error=>{            
             })
         }
         else{
-            await sucursalService.GetAllsucursal()
+            await sucursalService.GetAllsucursal(this.companyCod)
             .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
                 this.tableData=res;
+                this.tableData1=res;
+                this.loading1=false;
             })
             .catch(error=>{
-            
+              this.loading1=false;
             })
         }
     }
+    async validad(){      
+      var data=Global.like(this.tableData1,'strSubsidiary_Cod',this.cod_sucursal)
+      if(data.length>0){
+        this.sucursal=data[0];
+        if(this.sucursal.strSubsidiary_Cod==this.cod_sucursal){
+          await setTimeout(() => {
+            if(this.sucursal.strSubsidiary_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/sucursal/modif_sucursal`, query: { vista: 'modificar',data:JSON.stringify(this.sucursal) }  })
+            }
+          }, 600)
+        }
+        else{
+          if(this.cod_sucursal==''){
+            this.textosave='Inserte Sucursal. ';
+            this.warningMessage('Inserte Sucursal. ');
+          }
+          else{
+            this.textosave='No existe Sucursal. ';
+            this.warningMessage('No existe Sucursal. ');
+          }        
+        }
+      }
+      else{
+        this.textosave='No existe Sucursal. ';
+        this.warningMessage('No existe Sucursal. ');
+      }
+    }
     async validarView(){
-        debugger;
         if(this.selectrow!=undefined && this.selectrow!=null ){
             debugger;
             if(this.selectrow!=undefined && this.selectrow!=null ){
@@ -103,33 +137,48 @@ export default class ViewAndEditSucursalComponent extends Vue {
         }
         else{
             this.textosave='Seleccione algun item. ';
+            this.warningMessage('Seleccione algun item. ');
         }
     }
     fnOcultar(){
-
     }
     handleChange(value) {
-        console.log(value);
+    }    
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
     }
-
-    
   EliminarItem(){
     if(this.selectrow!=undefined){
       this.dialogEliminar=true;
     }
     else{
-      alert('Debe de seleccionar una fila!!!');
+      this.warningMessage('Debe de seleccionar una fila!!!');
     }
   }
   async btnEliminar(){
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Guardando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
     await sucursalService.Eliminarsucursal(this.currentRow)
     .then(response=>{
-      debugger;
-      console.log('eliminar',response);
+      loadingInstance.close();
       if(response!=undefined){
          this.textosave='Se elimino correctamento.' + response.strSubsidiary_Cod;
          this.issave=true;
          this.iserror=false;
+         this.$message({
+          showClose: true,
+          type: 'success',
+          message: 'Se elimino correctamento '+response.strSubsidiary_Cod
+        });
       }
       else{
         this.issave=false;
@@ -138,9 +187,8 @@ export default class ViewAndEditSucursalComponent extends Vue {
       }
       this.cargarList();
       this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
     }).catch(error=>{
-      
+      loadingInstance.close();
       this.dialogEliminar=false;
       this.issave=false;
       this.iserror=true;
@@ -153,6 +201,111 @@ export default class ViewAndEditSucursalComponent extends Vue {
     })
     
   }
+  Limpiar(){
+    this.Column="";
+    this.tableData=[];
+    this.tableData = this.tableData1;
+    this.blnilterstrSubsidiary_Cod=false;
+        this.blnilterstrSubsidiary_Desc=false;
+        this.blnilterstrSubsidiary_Address=false;
+        this.blnilterdtmModified_Date=false;
+        this.blnilterdstrModified_User=false;
+  }
+  headerclick(val){    
+    this.Column=val.label;
+    Global.setColumna(this.Column);     
+    if(val.property=="strSubsidiary_Cod"){
+        this.clickColumn="strSubsidiary_Cod";
+        this.blnilterstrSubsidiary_Cod=true;
+        this.blnilterstrSubsidiary_Desc=false;
+        this.blnilterstrSubsidiary_Address=false;
+        this.blnilterdtmModified_Date=false;
+        this.blnilterdstrModified_User=false;
+    }
+    if(val.property=="strSubsidiary_Desc"){
+        this.clickColumn="strSubsidiary_Desc";
+        this.blnilterstrSubsidiary_Cod=false;
+        this.blnilterstrSubsidiary_Desc=true;
+        this.blnilterstrSubsidiary_Address=false;
+        this.blnilterdtmModified_Date=false;
+        this.blnilterdstrModified_User=false;
+    }
+    if(val.property=="strSubsidiary_Address"){
+        this.clickColumn="strSubsidiary_Address";
+        this.blnilterstrSubsidiary_Cod=false;
+        this.blnilterstrSubsidiary_Desc=false;
+        this.blnilterstrSubsidiary_Address=true;
+        this.blnilterdtmModified_Date=false;
+        this.blnilterdstrModified_User=false;
+    }
+    if(val.property=="dtmModified_Date"){
+        this.clickColumn="dtmModified_Date";
+        this.blnilterstrSubsidiary_Cod=false;
+        this.blnilterstrSubsidiary_Desc=false;
+        this.blnilterstrSubsidiary_Address=false;
+        this.blnilterdtmModified_Date=true;
+        this.blnilterdstrModified_User=false;
+    }
+    if(val.property=="strModified_User"){
+        this.clickColumn="strModified_User";
+        this.blnilterstrSubsidiary_Cod=false;
+        this.blnilterstrSubsidiary_Desc=false;
+        this.blnilterstrSubsidiary_Address=false;
+        this.blnilterdtmModified_Date=false;
+        this.blnilterdstrModified_User=true;
+    }
+    
+  }
+  filterstrSubsidiary_Cod(h,{column,$index}){
+    if(this.blnilterstrSubsidiary_Cod){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrSubsidiary_Desc(h,{column,$index}){
+    if(this.blnilterstrSubsidiary_Desc){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrSubsidiary_Address(h,{column,$index}){
+    if(this.blnilterstrSubsidiary_Address){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterdtmModified_Date(h,{column,$index}){
+    if(this.blnilterdtmModified_Date){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
+  filterstrModified_User(h,{column,$index}){
+    if(this.blnilterdstrModified_User){
+      return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+      [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+        , column.label)])
+    }
+    else{
+      return h('span',{style: 'padding-left: 5px;'}, column.label);
+    } 
+  }
   getDateStringView(fecha:string){
     var dateString = new Date(fecha);
     var dia = dateString.getDate();
@@ -162,11 +315,35 @@ export default class ViewAndEditSucursalComponent extends Vue {
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
 }
+Buscar(){
+  if(this.Column!=""){
+    this.dialogBusquedaFilter=true;
+    this.txtbuscar='';
+  }
+  else{
+    this.$message('Seleccione columna')
+  }
+}
+btnBuscar(){
+  var data=Global.like(this.tableData1,this.clickColumn,this.txtbuscar)
+  this.tableData=[];
+  this.tableData=data;
+  this.dialogBusquedaFilter=false;
+}
+backPage(){
+  window.history.back();
+}
+reloadpage(){
+  window.location.reload();
+}
     data(){
         return{     
             companyName:'',
             companyCod:'',
-            namepage:''
+            namepage:'',
+            loading1:true,
+            tableData:[],
+            tableData1:[],
         }
     }
   

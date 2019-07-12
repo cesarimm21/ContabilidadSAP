@@ -18,11 +18,11 @@
                                     <div class="input-group mb-3" >
                                     <el-input  :disabled="true"
                                     size ="small" 
-                                    v-model="companyCod">
+                                    v-model="almacen.strCompany_Cod">
                                       </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{almacen.strCompany_Name}}</span>
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Almacen</label>
@@ -55,14 +55,14 @@
                                 <label class="el-form-item__label col-md-2" >Sucursal</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod">                            
+                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod" @keydown.native.enter="buscarSucursal">                            
                                         <el-button v-if="btnactivarsucursal && !sucursalVisible" slot="append" class="boton" icon="fa fa-clone" @click="sucursalDialog()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="sinLinea el-form-item__label col-md-2">{{sucursal.strSubsidiary_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-2">{{almacen.strSubsidiary_Desc}}</label>
                             </div> 
-                            <div  class="form-group row ">
+                            <!-- <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Planta</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <label class="sinLinea el-form-item__label col-md-2">{{planta.strPlan_Desc}}</label>
-                            </div>   
+                            </div>    -->
                         </div>                         
                     </div>
                 </div>
@@ -102,11 +102,6 @@
                 </div>
             </div>            
         </div>   
-        <!--DIALOG BUSQUEDA PLANTA-->
-    <el-dialog title="Busqueda Planta"  :visible.sync="plantaVisible" @close="handleClosePlanta" size="small" >
-        <bplanta v-on:plantaselecionado="plantaSelect($event)" v-on:plantaClose="handleClosePlanta()">
-        </bplanta>
-    </el-dialog> 
         <!--DIALOG BUSQUEDA SUCURSAL-->
     <el-dialog title="Busqueda Sucursal"  :visible.sync="sucursalVisible" @close="handleCloseSucursal" size="small" >
         <bsucursal v-on:sucursalselecionado="sucursalSelect($event)" v-on:sucursalClose="handleCloseSucursal()">

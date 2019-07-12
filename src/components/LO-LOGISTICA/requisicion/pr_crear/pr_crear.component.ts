@@ -232,7 +232,7 @@ export default class CrearPRComponent extends Vue {
   visiblecolumna:boolean=false;
   strWHS_Cod:string='';
   strWHS_Desc:string='';
-
+  companyCod:any;
 
   constructor(){
     super();
@@ -256,6 +256,7 @@ export default class CrearPRComponent extends Vue {
     
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
+    this.companyCod=localStorage.getItem('compania_cod');
     this.requisicionModel.strCompany_Cod=cod;
     this.requisicionModel.strCompany_Desc=desc;
     tipoRequisicionService.GetAllTipoRequisicion()
@@ -900,7 +901,7 @@ export default class CrearPRComponent extends Vue {
     this.dialogCompania=false;
   }
   loadAlmacenTodo(){
-    almacenService.GetAllAlmacen()
+    almacenService.GetAllAlmacen(this.companyCod)
     .then(response=>{
       this.almacenModel=response;    
       this.almacenModel1=response;        

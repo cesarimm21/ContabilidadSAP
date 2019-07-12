@@ -39,12 +39,14 @@ export default class  BAlmacenComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  companyCod:any;
   constructor() {
     super();
     this.loadAlmacen();
   }
   loadAlmacen(){
-    almacenService.GetAllAlmacen()
+    this.companyCod=localStorage.getItem('compania_cod');
+    almacenService.GetAllAlmacen(this.companyCod)
     .then(response=>{
       this.almacenModel=[];       
       this.almacenModel1=[];       
@@ -183,6 +185,7 @@ export default class  BAlmacenComponent extends Vue {
       almacenModel1:[],
       inputAtributo:'',
       Column:'',
+      companyCod:''
 
     };
   }

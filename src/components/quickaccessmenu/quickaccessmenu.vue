@@ -1,17 +1,27 @@
 <template>
   <div >
-    <img src="../../images/icon_validar.png" style="width:17px; height:15px; cursor: pointer;" @click="ValidarItem()"/>
-    <el-tooltip class="itemTool" content="Guardar" placement="right" effect="dark">
-    <img src="../../images/guardar1.png" style="width:16px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="guardar()"/>
+    <el-tooltip class="itemTool" content="Ejecutar" placement="bottom-start" effect="light" v-model="visible">
+    <img src="../../images/icon_validar.png" style="width:17px; height:15px; cursor: pointer;" @click="ValidarItem()" @keypress="ValidarItem"/>
     </el-tooltip>
+    <el-tooltip class="itemTool" content="Guardar" placement="bottom-start" effect="light">
+    <img src="../../images/guardar1.png" style="width:16px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="guardar()" />
+    </el-tooltip>    
     <div class="v-separator" style="    margin-bottom: -1px;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.5rem;"></div>
+    <el-tooltip class="itemTool" content="Atras" placement="bottom-start" effect="light">
     <img src="../../images/icon_back.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="backPage()"/>
+    </el-tooltip>
+    <el-tooltip class="itemTool" content="Cancelar" placement="bottom-start" effect="light">
     <img src="../../images/cancelar.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkRoute()"/>
+     </el-tooltip>
+    <el-tooltip class="itemTool" content="Nuevo" placement="bottom-start" effect="light">
     <img src="../../images/nuevo.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="reloadpage()"/>
-    
+    </el-tooltip>
+    <el-tooltip class="itemTool" content="Nuevo Pantalla" placement="bottom-start" effect="light">
     <img src="../../images/acceso_directo.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkOpenInOther()"/>
+    </el-tooltip>
+    <el-tooltip class="itemTool" content="Ayuda" placement="bottom-start" effect="light">
     <img src="../../images/ayuda.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;" @click="linkHelp()"/>
-   
+   </el-tooltip>
     <b-modal ref="myModalRef" hide-footer title="Guardar" size="sm"  v-model="SendDocument" @keydown.native.enter="confirmaraceptar">
       <div style="height:85px">
         <img src="../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
@@ -88,44 +98,26 @@ export default QuickAccessMenuComponent
   line-height: 48px;
   padding: 0 15px 0 15px;
   margin-left: auto;
-  cursor: pointer;
-  /* border-left: solid 1px #2483ca; */
-}
-
-/* .user-container:hover {
-  background-color: #1D90E6;
-} */
+  cursor: pointer;}
 
 .icon-container {
   width: 48px;
   text-align: center;
   cursor: pointer;
 }
-
-/* .icon-container:hover {
-  background-color: #1D90E6;
-} */
-
-.red:hover {
-  background-color: #FF4949;
-}
-
 .user-container{
   text-align: center;
   line-height: 35px;
   padding: 0 15px 0px 15px;
   margin-left: auto;
   cursor: pointer;
-  /* border-left: solid 1px #2483ca; */
 }
-
 i{
   line-height: 35px;
   display: inline-block;
   font-family: FontAwesome !important;
   font-size: 13px;
   font-style: normal;
-  /* font: normal normal normal 14px/1 FontAwesome!important; */
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

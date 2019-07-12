@@ -2,6 +2,8 @@ export class PeriodoModel {
     intIdPayRun_Period: number;
     strPeriod_NO:string;
     strPeriod:string;
+    intMonth:number;
+    intYear:number;
     strPeriod_Desc:string;
     dtmPeriod_Start:Date;
     dtmPeriod_End:Date;

@@ -25,6 +25,7 @@ export default class ModificarAlmacenComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strWHS_Cod:string;
   public almacen:AlmacenModel=new AlmacenModel();
   gridAlmacen:AlmacenModel[];
   gridAlmacen1:AlmacenModel[];
@@ -42,11 +43,10 @@ export default class ModificarAlmacenComponent extends Vue {
   blnilterstrWHS_Cod:boolean=false;
   blnilterstrWHS_Desc:boolean=false;
   blnilterstrLocation:boolean=false;
-  blnilterstrCompany_Cod:boolean=false;
-  blnilterstrPlant_Cod:boolean=false;
   blnilterstrSubsidiary_Cod:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='modificar-almacen';
@@ -57,7 +57,7 @@ export default class ModificarAlmacenComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        almacenService.GetAllAlmacen()
+        almacenService.GetAllAlmacen(this.companyCod)
         .then(response=>{
           this.gridAlmacen=[];
           this.gridAlmacen1=[];
@@ -65,6 +65,7 @@ export default class ModificarAlmacenComponent extends Vue {
           this.gridAlmacen=response;
           this.gridAlmacen1=response;
           this.gridAlmacen2=response;
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -78,22 +79,13 @@ export default class ModificarAlmacenComponent extends Vue {
     }
     handleCurrentChange(val:AlmacenModel){
       this.almacen=val;
+      this.strWHS_Cod=this.almacen.strWHS_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridAlmacen1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridAlmacen1,this.clickColumn,this.txtbuscar)
       this.gridAlmacen=[];
       this.gridAlmacen=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -151,11 +143,9 @@ export default class ModificarAlmacenComponent extends Vue {
       this.blnilterstrWHS_Cod=false;
       this.blnilterstrWHS_Desc=false; 
       this.blnilterstrLocation=false; 
-      this.blnilterstrCompany_Cod=false; 
-      this.blnilterstrPlant_Cod=false; 
       this.blnilterstrSubsidiary_Cod=false; 
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;  
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;  
     }
     Print(){
       window.print();
@@ -199,26 +189,36 @@ export default class ModificarAlmacenComponent extends Vue {
       // }
   }
   async validad(){      
-    var data=this.like(this.gridAlmacen1,'strWHS_Cod',this.almacen.strWHS_Cod)
-    this.almacen=data[0];
-    if(this.almacen.intIdWHS_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.almacen.strWHS_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+    var data=Global.like(this.gridAlmacen1,'strWHS_Cod',this.strWHS_Cod)
+      if(data.length>0){
+        this.almacen=data[0];
+        if(this.almacen.strWHS_Cod==this.strWHS_Cod){
+          await setTimeout(() => {
+            if(this.almacen.strWHS_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+            }
+          }, 600)
         }
-      }, 600)
-    }
-    else{
-      this.textosave='No existe Almacen. ';
-      this.warningMessage('No existe Almacen. ');
-    }
+        else{
+          if(this.strWHS_Cod==''){
+            this.textosave='Inserte Almacen. ';
+            this.warningMessage('Inserte Almacen. ');
+          }
+          else{
+            this.textosave='No existe Almacen. ';
+            this.warningMessage('No existe Almacen. ');
+          }        
+        }
+      }
+      else{
+        this.textosave='No existe Almacen. ';
+        this.warningMessage('No existe Almacen. ');
+      }
   }
    async validarView(){
-      if(this.almacen.intIdWHS_ID!=undefined){
+      if(this.almacen.intIdWHS_ID!=-1){
           await setTimeout(() => {
-            debugger;
-            if(this.almacen.strWHS_Cod!=undefined){
+            if(this.almacen.strWHS_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
             }
           }, 600)
@@ -256,88 +256,55 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Cod=true;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strWHS_Desc"){
           this.clickColumn="strWHS_Desc";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=true; 
           this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strLocation"){
           this.clickColumn="strLocation";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=true; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCompany_Cod"){
-          this.clickColumn="strCompany_Cod";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=true; 
-          this.blnilterstrPlant_Cod=false; 
-          this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
-      }
-      if(val.property=="strPlant_Cod"){
-          this.clickColumn="strPlant_Cod";
-          this.blnilterstrWHS_Cod=false;
-          this.blnilterstrWHS_Desc=false; 
-          this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=true; 
-          this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
-      }
+      
       if(val.property=="strSubsidiary_Cod"){
           this.clickColumn="strSubsidiary_Cod";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=true;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=true;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
-          this.blnilterstrCompany_Cod=false; 
-          this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=true;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=true;
       }        
   }
   filterstrWHS_Cod(h,{column,$index}){
@@ -370,26 +337,6 @@ export default class ModificarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCompany_Cod(h,{column,$index}){        
-      if(this.blnilterstrCompany_Cod){
-        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-          , column.label)])
-      }
-      else{
-        return h('span',{style: 'padding-left: 5px;'}, column.label);
-      } 
-    }
-    filterstrPlant_Cod(h,{column,$index}){        
-      if(this.blnilterstrPlant_Cod){
-        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
-        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
-          , column.label)])
-      }
-      else{
-        return h('span',{style: 'padding-left: 5px;'}, column.label);
-      } 
-    }
     filterstrSubsidiary_Cod(h,{column,$index}){        
       if(this.blnilterstrSubsidiary_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
@@ -400,9 +347,9 @@ export default class ModificarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -411,8 +358,8 @@ export default class ModificarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -437,6 +384,8 @@ export default class ModificarAlmacenComponent extends Vue {
             gridAlmacen:[],
             gridAlmacen1:[],
             gridAlmacen2:[],
+            loading1:true,
+            strWHS_Cod:''
         }
     }
   

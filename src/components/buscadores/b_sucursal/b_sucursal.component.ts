@@ -36,12 +36,14 @@ export default class  BSucursalComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  companyCod:any;
   constructor() {
     super();
     this.load();
   }
   load(){
-    sucursalService.GetAllsucursal()
+    this.companyCod=localStorage.getItem('compania_cod');
+    sucursalService.GetAllsucursal(this.companyCod)
     .then(response=>{
         this.gridSucursal=[];
         this.gridSucursal1=[];

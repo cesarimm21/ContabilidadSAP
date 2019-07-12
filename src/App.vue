@@ -887,16 +887,6 @@ body {
 .validador input{
     border-color:#ff9da4;
 }
-.el-tooltip__popper {
-    position: absolute;
-    border-radius: 4px;
-    padding: 10px;
-    z-index: 2000;
-    font-size: 12px;
-    line-height: 1.2;
-    transform-origin: left top !important;
-}
-
 /* kaksd */
 .el-notification {
    
@@ -1021,5 +1011,16 @@ body {
     border-color: transparent transparent #111;
     border-style: solid;
     margin: -.25rem 0 0 -.4rem;
+}
+.el-tooltip__popper.is-light{  
+    background: #ffffff !important;
+    color: #48576a !important;
+    border-color:#48576a !important;
+}
+.el-tooltip__popper {
+    /* align-items: center; */
+    /* margin-top: 10px !important; */
+    padding:3px;
+    font-size: 10px !important;
 }
 </style>

@@ -45,8 +45,9 @@ export default class VisualizarAlmacenComponent extends Vue {
   blnilterstrCompany_Cod:boolean=false;
   blnilterstrPlant_Cod:boolean=false;
   blnilterstrSubsidiary_Cod:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='modificar-almacen';
@@ -57,7 +58,7 @@ export default class VisualizarAlmacenComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        almacenService.GetAllAlmacen()
+        almacenService.GetAllAlmacen(this.companyCod)
         .then(response=>{
           this.gridAlmacen=[];
           this.gridAlmacen1=[];
@@ -65,6 +66,7 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.gridAlmacen=response;
           this.gridAlmacen1=response;
           this.gridAlmacen2=response;
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -154,8 +156,8 @@ export default class VisualizarAlmacenComponent extends Vue {
       this.blnilterstrCompany_Cod=false; 
       this.blnilterstrPlant_Cod=false; 
       this.blnilterstrSubsidiary_Cod=false; 
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;  
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;  
     }
     Print(){
       window.print();
@@ -179,10 +181,10 @@ export default class VisualizarAlmacenComponent extends Vue {
     }
   }
    async validarView(){
-      if(this.almacen.intIdWHS_ID!=undefined){
+      if(this.almacen.intIdWHS_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.almacen.strWHS_Cod!=undefined){
+            if(this.almacen.strWHS_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'visualizar' ,data:JSON.stringify(this.almacen) }  })
             }
           }, 600)
@@ -223,8 +225,8 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strWHS_Desc"){
           this.clickColumn="strWHS_Desc";
@@ -234,8 +236,8 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strLocation"){
           this.clickColumn="strLocation";
@@ -245,8 +247,8 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strCompany_Cod"){
           this.clickColumn="strCompany_Cod";
@@ -256,8 +258,8 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.blnilterstrCompany_Cod=true; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strPlant_Cod"){
           this.clickColumn="strPlant_Cod";
@@ -267,8 +269,8 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=true; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
       if(val.property=="strSubsidiary_Cod"){
           this.clickColumn="strSubsidiary_Cod";
@@ -278,30 +280,30 @@ export default class VisualizarAlmacenComponent extends Vue {
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=true; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=true;
-          this.blnilterstrCreation_User=false;
+          this.blnilterdtmModified_Date=true;
+          this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrWHS_Cod=false;
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
           this.blnilterstrCompany_Cod=false; 
           this.blnilterstrPlant_Cod=false; 
           this.blnilterstrSubsidiary_Cod=false; 
-          this.blnilterdtmCreation_Date=false;
-          this.blnilterstrCreation_User=true;
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=true;
       }        
   }
   filterstrWHS_Cod(h,{column,$index}){
@@ -364,9 +366,9 @@ export default class VisualizarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -375,8 +377,8 @@ export default class VisualizarAlmacenComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -401,6 +403,7 @@ export default class VisualizarAlmacenComponent extends Vue {
             gridAlmacen:[],
             gridAlmacen1:[],
             gridAlmacen2:[],
+            loading1:true
         }
     }
   

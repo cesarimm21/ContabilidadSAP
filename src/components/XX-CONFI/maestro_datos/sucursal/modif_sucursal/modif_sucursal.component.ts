@@ -39,18 +39,14 @@ export default class ModificarSucursalComponent extends Vue {
     nameuser:any='';
     constructor(){    
         super();
-        Global.nameComponent='modificar-sucursal';
-        
+        Global.nameComponent='modificar-sucursal';        
         setTimeout(() => {
             this.load();
         }, 100)
     }
-
-    load(){
-        debugger;
-        
+    load(){        
         this.nameuser=localStorage.getItem('User_Usuario');
-        var object = JSON.parse(this.$route.query.data);
+        this.sucursal= JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         this.txtviewmodulo=modulo;
         if(modulo.toLowerCase()!='visualizar'){
@@ -61,58 +57,45 @@ export default class ModificarSucursalComponent extends Vue {
             this.txtmodulo='Visualizar Sucursal';
             this.visualizar=true;
         }
-        this.cargar(object.strSubsidiary_Cod);
-        this.companyName=localStorage.getItem('compania_name');
-        this.companyCod=localStorage.getItem('compania_cod');
-    }
-
-    cargar(code){
-
-        sucursalService.GetOnlyOnesucursal(code)
-        .then(resp=>{   
-            console.log('resultado',resp);
-            this.sucursal=resp;
-        })
-        .catch(error=>{
-            this.$message({
-                showClose: true,
-                type: 'error',
-                message: 'No se pudo cargar'
-              });
-            this.issave = false;
-            this.iserror = true;
-            this.textosave = 'Error al cargar.';
-        })
     }
     guardarTodo(){
-        if(this.sucursal.strSubsidiary_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
-        if(this.sucursal.strSubsidiary_Address==''){ this.$message('Complete los campos obligatorios');return false;}
-        else{
-           this.sucursal.strModified_User=this.nameuser;
-           
-            console.log('update',this.sucursal);
-            sucursalService.Updatesucursal(this.sucursal)
-            .then(resp=>{
-                this.$message({
-                    showClose: true,
-                    type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strSubsidiary_Cod
-                  });
-                this.issave = true;
-                this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strSubsidiary_Cod;
-                this.sucursal=new SucursalModel();
-            }).catch(error=>{
-                this.$message({
-                    showClose: true,
-                    type: 'error',
-                    message: 'No se pudo guardar'
-                  });
-                this.issave = false;
-                this.iserror = true;
-                this.textosave = 'Error al guardar.';
-            })
+        var modulo = this.$route.query.vista;
+        if(modulo=='modificar'){
+            if(this.sucursal.strSubsidiary_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
+            if(this.sucursal.strSubsidiary_Address==''){ this.$message('Complete los campos obligatorios');return false;}
+            else{
+               this.sucursal.strModified_User=this.nameuser;
+                sucursalService.Updatesucursal(this.sucursal)
+                .then(resp=>{
+                    this.$message({
+                        showClose: true,
+                        type: 'success',
+                        message: 'Se guardo Correctamente '+resp.strSubsidiary_Cod
+                      });
+                    this.issave = true;
+                    this.iserror = false;
+                    this.textosave = 'Se guardo correctamente. '+resp.strSubsidiary_Cod;
+                    // this.sucursal=new SucursalModel();
+                }).catch(error=>{
+                    this.$message({
+                        showClose: true,
+                        type: 'error',
+                        message: 'No se pudo guardar'
+                      });
+                    this.issave = false;
+                    this.iserror = true;
+                    this.textosave = 'Error al guardar.';
+                })
+            }
         }
+        else{
+            this.$message({
+                showClose: true,
+                type: 'warning',
+                message: 'Accion no permitida'
+              });
+        }
+        
         
     } 
     fnOcultar(){

@@ -34,6 +34,7 @@ export default class QuickAccessMenuComponent extends Vue {
   dialogVisible:boolean=false;
   SendDocument:boolean=false;
   myModalRef:boolean=false;
+  visible:boolean=false;
   constructor(){
     super();
    // this.ChechAccess();
@@ -115,7 +116,6 @@ export default class QuickAccessMenuComponent extends Vue {
     });
   }
   submit(){
-    alert("entro");
   }
   openMessageError(strMessage:string){
     this.$message({
@@ -131,7 +131,6 @@ export default class QuickAccessMenuComponent extends Vue {
     router.push('/')
   }
   confirmaraceptar(){
-    //alert("Excelente");
     this.SendDocument=false;
     if(GLOBAL.nameComponent==='crear-po'){
       this.$emit('guardarPO',GLOBAL.nameComponent);  
@@ -177,7 +176,6 @@ export default class QuickAccessMenuComponent extends Vue {
     router.push('/')
   }
   calcular(temp){
-    //alert(temp);
     if(temp < 600){
       return { rojo: true,}
     }
@@ -185,7 +183,7 @@ export default class QuickAccessMenuComponent extends Vue {
       return { verde: true, }
     }
   }
-  ValidarItem(){
+  ValidarItem(val){
     this.$emit('validarView');
     if(GLOBAL.nameComponent==='visualizar-proveedor'){
       this.$emit('visualizarProveedor',GLOBAL.nameComponent);
@@ -256,6 +254,7 @@ export default class QuickAccessMenuComponent extends Vue {
   data(){
     return{
       dialogTableVisible: false,
+      visible:true,
       user: {
         authenticated: false
       },
