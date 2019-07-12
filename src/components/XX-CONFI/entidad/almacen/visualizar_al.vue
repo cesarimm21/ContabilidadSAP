@@ -65,13 +65,16 @@
                             prop="strWHS_Cod" label="Almacen" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrWHS_Desc"
-                             prop="strWHS_Desc" min-width="250" label="Descripcion">
+                             prop="strWHS_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterstrLocation"
-                            prop="strLocation" label="Ubicacion" width="250">                                
+                            prop="strLocation" label="Ubicacion" width="200">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrSubsidiary_Cod"
                             prop="strSubsidiary_Cod" label="Sucursal" width="100" align="center">                                
+                            </el-table-column>
+                            <el-table-column :render-header="filterstrSubsidiary_Desc"
+                            prop="strSubsidiary_Desc" label="Sucursal" width="150" align="center">                                
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
