@@ -58,7 +58,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCategItem_Cod" width="100" label="Criticidad">
+                                        <el-table-column  sortable prop="strCategItem_Cod" width="100" label="Categoria Linea">
                                             <template scope="scope">
                                             <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCategItem_Cod }}</label>
                                             </template>
