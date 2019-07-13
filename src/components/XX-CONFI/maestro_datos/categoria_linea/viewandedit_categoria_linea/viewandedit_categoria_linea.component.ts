@@ -155,7 +155,7 @@ export default class ViewAndEditCategoriaLineaComponent extends Vue {
       debugger;
       console.log('eliminar',response);
       if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strCritical_Cod;
+         this.textosave='Se elimino correctamento.' + response.strCategItem_Cod;
          this.issave=true;
          this.iserror=false;
       }

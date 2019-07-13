@@ -22,6 +22,8 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 
 ///**Servicios */
 import ordencompraService from '@/components/service/ordencompra.service';
+import periodoService from '@/components/service/periodo.service';
+
 import diarioService from '@/components/service/diario.service'; 
 import correlativoService from '@/components/service/correlativo.service'; 
 import tipocambioService from '@/components/service/tipocambio.service';
@@ -52,6 +54,7 @@ import centrocostosService from '@/components/service/centrocostos.service';
 import diariogeneralService from '@/components/service/diariogeneral.service';
 import documentoTransaccionService from '@/components/service/documentotransaccion.service';
 import BCategoriaCuentaComponent from '@/components/buscadores/b_categoria_cuenta/b_categoria_cuenta.vue';
+import { PeriodoModel } from '@/modelo/maestro/periodo';
 
 @Component({
   name: 'crear-ingreso-comprobante',
@@ -101,6 +104,7 @@ export default class CrearContabilidadComponent extends Vue {
   dialogDocumentoTransaccion:boolean=false;
   dataCompania:any[];
   public companiaModel:CompaniaModel=new CompaniaModel();
+  public periodoModel:PeriodoModel=new PeriodoModel();
 
   dialogGrupoProceso:boolean=false;
   btnactivarGrupoProceso:boolean=false;
@@ -188,6 +192,8 @@ export default class CrearContabilidadComponent extends Vue {
   Doc_Trans_Cod_Desc:any;
   cell_ocultar:string='transparent';
   public selectrow:DiarioGeneralModel=new DiarioGeneralModel();
+  public selectrowPeriodo:PeriodoModel=new PeriodoModel();
+  
   selectcolumn:any;
   dialogCategoriaCuenta:boolean=false;
   bln_tbl_categoria_cuenta:boolean=false;
@@ -197,7 +203,7 @@ export default class CrearContabilidadComponent extends Vue {
   bln_tbl_descripcion:boolean=false;
   bln_tbl_cantidad_debe:boolean=false;
   bln_tbl_cantidad_haber:boolean=false;
-
+  
   editing:any= {
     row:'',
     column:''
@@ -217,6 +223,7 @@ export default class CrearContabilidadComponent extends Vue {
     }
     setTimeout(() => {
       this.loadTipocambio();
+      this.loadPeriodos();
     }, 200)
   }
   loadTipocambio(){
@@ -232,6 +239,18 @@ export default class CrearContabilidadComponent extends Vue {
       
     })
 
+  }
+  loadPeriodos(){
+    periodoService.GetAllPeriodo()
+    .then(response=>{
+        this.periodoModel=response;
+    }).catch(error=>{
+        this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'No se pudo cargar prioridad'
+          });
+    })
   }
 
   DateContabilizacionClick(){ 
@@ -277,6 +296,14 @@ loadDocumentoTransaccion(){
 }
 loadPeriodo(){
   this.dialogPeriodo=true;
+}
+closeDialogPeriodo(){
+  this.dialogPeriodo=false;
+  return false;
+}
+SeleccionarPeriodo(val){
+  this.strPeriodo=val.strPeriod;
+  this.dialogPeriodo=false;
 }
 
 SeleccionadoCategoriaCuenta(val){
@@ -790,6 +817,12 @@ closeCategoriaCuenta(){
       this.selectrow=val;
     }
   }
+  handleCurrentChangePeriod(val){
+    debugger;
+    if(val!=undefined){
+      this.selectrowPeriodo=val;
+    }
+  }
   checkSelectDiario(val:DiarioModel){
     this.diarioSelect=val;
   }
@@ -1032,7 +1065,15 @@ closeCategoriaCuenta(){
       TotalPagarD:'',
       voucher:'',
       habilitar:false,
-      habilitarPane:true
+      habilitarPane:true,
+      strDaily_Cod:'',
+      strPeriodo:'',
+      Doc_Trans_Cod_Desc:'',
+      Currency_Cod:'',
+      Currency_Cod_Desc:'',
+      OrigenDocum_NO:'',
+      Desc_Header:'',
+      strDaily_Cod_Desc:'',
      
     }
   }

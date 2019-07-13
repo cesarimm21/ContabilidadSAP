@@ -59,10 +59,11 @@
                                     <div class="input-group mb-3" >
                                     <el-input  
                                     size ="small" 
+                                    :disabled="true"
                                     @blur="desactivar_Periodo" 
                                     @focus="activar_Periodo" 
                                     v-model="strPeriodo">
-                                        <el-button v-if="btnactivarPeriodo && !dialogPeriodo" slot="append" class="boton" icon="fa fa-clone" @click="loadPeriodo()"></el-button> 
+                                        <el-button slot="append" class="boton" icon="fa fa-clone" @click="loadPeriodo()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -275,6 +276,57 @@
             <bimpuesto v-on:ImpuestoSeleccionado="ImpuestoSeleccionado($event)" v-on:companiaClose="closeImpuesto()">
             </bimpuesto>
         </el-dialog>
+
+        <el-dialog title="Busqueda Periodo"  :visible.sync="dialogPeriodo" @close="closeDialogPeriodo" size="small" >
+            <div>
+                <el-card class="box-card">
+                    <div slot="header" class="headercard">
+                        <span class="labelheadercard" ></span>
+                    </div>
+                    <div class="row bodycard">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-md-1" >Codigo</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input size ="small"   placeholder="">
+                                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
+                                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
+                                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
+                                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
+                                                > </el-button>
+                                    </el-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <el-table
+                    :data="periodoModel"
+                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
+                    style="width: 100%" class="ExcelTable2007"
+                    height="250"
+                    @row-dblclick="SeleccionarPeriodo"
+                    @current-change="handleCurrentChangePeriod">
+                    <el-table-column   prop="strPeriod_NO" label="Codigo" width="180">
+                    </el-table-column>  
+                    <el-table-column   prop="strPeriod" label="Nombre" width="180">
+                    </el-table-column>  
+                    <el-table-column  prop="strPeriod_Desc" label="Descripcion" style="width: 70% !important;">
+                    </el-table-column> 
+                    </el-table>
+                </el-card>
+                <br/>
+                <footer class="modal-footer">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="SeleccionarPeriodo()">
+                    <img class="imagenfilter" src="../../../../images/check.png" alt="" >
+                    </el-button>
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="modalPopup = false">
+                    <img class="imagenfilter" src="../../../../images/close.png" alt="" >
+                    </el-button>
+                </footer>
+            </div>    
+        </el-dialog>
     
          <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
             <div>
@@ -364,10 +416,10 @@
             </bcuentacontable>
         </el-dialog> 
         
-        <el-dialog title="Documento Transaccion"  :visible.sync="dialogDocumentoTransaccion" @close="documentotransaccionClose" size="small" >
+        <!-- <el-dialog title="Documento Transaccion"  :visible.sync="dialogDocumentoTransaccion" @close="documentotransaccionClose" size="small" >
             <bdocumentotransaccion v-on:documentotransaccionselecionado="documentotransaccionselecionado($event)" v-on:documentotransaccionClose="documentotransaccionClose()">
             </bdocumentotransaccion>
-        </el-dialog> 
+        </el-dialog>  -->
 
         <el-dialog title="Busqueda Diarios"  :visible.sync="dialogDiario" @close="closeDialogDiario" size="small" >
             <bdiario v-on:cuentacontableselecionado="checkSelectdbDiario($event)" v-on:cuentacontableClose="closeDialogDiario()">
