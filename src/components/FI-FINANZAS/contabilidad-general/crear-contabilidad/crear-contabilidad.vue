@@ -302,7 +302,7 @@
                         </div>
                     </div>
                     <el-table
-                    :data="periodoModel"
+                    :data="periodoModelArray"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%" class="ExcelTable2007"
                     height="250"

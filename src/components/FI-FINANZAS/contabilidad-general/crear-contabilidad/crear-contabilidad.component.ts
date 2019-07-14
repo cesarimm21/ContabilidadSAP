@@ -105,6 +105,7 @@ export default class CrearContabilidadComponent extends Vue {
   dataCompania:any[];
   public companiaModel:CompaniaModel=new CompaniaModel();
   public periodoModel:PeriodoModel=new PeriodoModel();
+  public periodoModelArray:Array<PeriodoModel>=[];
 
   dialogGrupoProceso:boolean=false;
   btnactivarGrupoProceso:boolean=false;
@@ -224,6 +225,7 @@ export default class CrearContabilidadComponent extends Vue {
     setTimeout(() => {
       this.loadTipocambio();
       this.loadPeriodos();
+      this.getLastPeriodo();
     }, 200)
   }
   loadTipocambio(){
@@ -243,7 +245,7 @@ export default class CrearContabilidadComponent extends Vue {
   loadPeriodos(){
     periodoService.GetAllPeriodo()
     .then(response=>{
-        this.periodoModel=response;
+        this.periodoModelArray=response;
     }).catch(error=>{
         this.$message({
             showClose: true,
@@ -252,7 +254,25 @@ export default class CrearContabilidadComponent extends Vue {
           });
     })
   }
-
+  getLastPeriodo(){
+    this.periodoModel.dtmModified_Date=new Date()
+    periodoService.GetAllPeriodoLast(this.periodoModel)
+    .then(response=>{
+      if(response!=undefined){
+        this.periodoModel=response;
+        if(this.periodoModel.chrStatus!='A'){
+          this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'Periodo Cerrado '
+          });
+        }
+        else{
+          this.strPeriodo=this.periodoModel.strPeriod
+        }
+      }
+    }) 
+  }
   DateContabilizacionClick(){ 
     var date1=Global.getDateVencida(this.factura.dtmDoc_Acc_Date,this.proveedor.intDayToPay);
     this.factura.dtmDue_Date=date1;
