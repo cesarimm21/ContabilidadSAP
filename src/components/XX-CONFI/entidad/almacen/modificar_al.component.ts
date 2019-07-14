@@ -44,9 +44,13 @@ export default class ModificarAlmacenComponent extends Vue {
   blnilterstrWHS_Desc:boolean=false;
   blnilterstrLocation:boolean=false;
   blnilterstrSubsidiary_Cod:boolean=false;
+  blnilterstrSubsidiary_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   loading1:boolean=true;
+  dialogEliminar:boolean=false;
+  dialogInactivar:boolean=false;
+  nameuser:any;
   constructor(){    
         super();
         Global.nameComponent='modificar-almacen';
@@ -144,49 +148,97 @@ export default class ModificarAlmacenComponent extends Vue {
       this.blnilterstrWHS_Desc=false; 
       this.blnilterstrLocation=false; 
       this.blnilterstrSubsidiary_Cod=false; 
+      this.blnilterstrSubsidiary_Desc=false; 
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;  
     }
     Print(){
       window.print();
     }
-  async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+  async EliminarItem(){
+    if(this.almacen.intIdWHS_ID!=-1 &&this.almacen.strWHS_Cod!=""){
+      this.dialogEliminar=true;
+    }
+    else{
+      this.warningMessage('Debe de seleccionar una fila!!!');
+    }
+  }
+  async btnEliminar(){
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Eliminando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
+    await almacenService.deleteAlmacen(this.almacen.intIdWHS_ID)
+    .then(response=>{
+      loadingInstance.close();
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.';
+         this.issave=true;
+         this.iserror=false;
+         this.$message({
+          showClose: true,
+          type: 'success',
+          message: 'Se elimino correctamento '
+        });
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.load();
+      this.dialogEliminar=false;
+    }).catch(error=>{
+      loadingInstance.close();
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo eliminar'
+      });
+    })
+    
+  }
+  async ActivarDesactivar(){
+    this.dialogInactivar=true;      
+  }
+  async btnInactivar(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.almacen.strModified_User=this.nameuser;
+    if(this.almacen.intIdWHS_ID!=-1&&this.almacen.strWHS_Cod!=""){
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Inactivando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );   
+      await almacenService.DesactivarAlmacen(this.almacen)
+      .then(respo=>{
+        loadingInstance.close();
+        this.successMessage('Se Inactivo el Almacen '+this.almacen.strWHS_Cod)
+        this.load();
+        this.issave=true;
+        this.iserror=false;
+        this.textosave='Se Inactivo el Almacen '+this.almacen.strWHS_Cod;
+        this.dialogInactivar=false;
+      }).catch(ee=>{
+        loadingInstance.close();
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Error en Inactivar '+this.almacen.strWHS_Cod;
+        this.errorMessage('Error en Inactivar '+this.almacen.strWHS_Cod)})
+        this.dialogInactivar=false;
+    }
+    else{
+      this.warningMessage('Debe de seleccionar una fila!!!');
+    }
   }
   async validad(){      
     var data=Global.like(this.gridAlmacen1,'strWHS_Cod',this.strWHS_Cod)
@@ -247,6 +299,20 @@ export default class ModificarAlmacenComponent extends Vue {
         type: 'warning'
       });
     }
+    successMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+      });
+    }
+    errorMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'error'
+      });
+    }
   //#region [CABECERA]
   headerclick(val){    
       this.Column=val.label;
@@ -257,6 +323,7 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
           this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrSubsidiary_Desc=false; 
           this.blnilterdtmModified_Date=false;
           this.blnilterstrModified_User=false;
       }
@@ -266,6 +333,7 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Desc=true; 
           this.blnilterstrLocation=false; 
           this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrSubsidiary_Desc=false; 
           this.blnilterdtmModified_Date=false;
           this.blnilterstrModified_User=false;
       }
@@ -275,6 +343,7 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=true; 
           this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrSubsidiary_Desc=false; 
           this.blnilterdtmModified_Date=false;
           this.blnilterstrModified_User=false;
       }
@@ -285,6 +354,17 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
           this.blnilterstrSubsidiary_Cod=true; 
+          this.blnilterstrSubsidiary_Desc=false; 
+          this.blnilterdtmModified_Date=false;
+          this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strSubsidiary_Desc"){
+          this.clickColumn="strSubsidiary_Desc";
+          this.blnilterstrWHS_Cod=false;
+          this.blnilterstrWHS_Desc=false; 
+          this.blnilterstrLocation=false; 
+          this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrSubsidiary_Desc=true; 
           this.blnilterdtmModified_Date=false;
           this.blnilterstrModified_User=false;
       }
@@ -294,6 +374,7 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
           this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrSubsidiary_Desc=false; 
           this.blnilterdtmModified_Date=true;
           this.blnilterstrModified_User=false;
       }
@@ -303,6 +384,7 @@ export default class ModificarAlmacenComponent extends Vue {
           this.blnilterstrWHS_Desc=false; 
           this.blnilterstrLocation=false; 
           this.blnilterstrSubsidiary_Cod=false; 
+          this.blnilterstrSubsidiary_Desc=false; 
           this.blnilterdtmModified_Date=false;
           this.blnilterstrModified_User=true;
       }        
@@ -339,6 +421,16 @@ export default class ModificarAlmacenComponent extends Vue {
     }
     filterstrSubsidiary_Cod(h,{column,$index}){        
       if(this.blnilterstrSubsidiary_Cod){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrSubsidiary_Desc(h,{column,$index}){        
+      if(this.blnilterstrSubsidiary_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])

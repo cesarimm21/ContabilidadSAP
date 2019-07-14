@@ -66,6 +66,9 @@ export default class ButtonsAccionsComponent extends Vue {
   EliminarItem(){
     this.$emit('EliminarItem');
   }
+  ActivarDesactivar(){
+    this.$emit('ActivarDesactivar');
+  }
   siguiente(){
     this.$emit('siguiente');
   }

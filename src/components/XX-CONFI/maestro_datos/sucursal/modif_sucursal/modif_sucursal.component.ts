@@ -64,9 +64,17 @@ export default class ModificarSucursalComponent extends Vue {
             if(this.sucursal.strSubsidiary_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
             if(this.sucursal.strSubsidiary_Address==''){ this.$message('Complete los campos obligatorios');return false;}
             else{
+                let loadingInstance = Loading.service({
+                    fullscreen: true,
+                    text: 'Actualizando...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.8)'
+                    }
+                  );   
                this.sucursal.strModified_User=this.nameuser;
                 sucursalService.Updatesucursal(this.sucursal)
                 .then(resp=>{
+                    loadingInstance.close();
                     this.$message({
                         showClose: true,
                         type: 'success',
@@ -77,6 +85,7 @@ export default class ModificarSucursalComponent extends Vue {
                     this.textosave = 'Se guardo correctamente. '+resp.strSubsidiary_Cod;
                     // this.sucursal=new SucursalModel();
                 }).catch(error=>{
+                    loadingInstance.close();
                     this.$message({
                         showClose: true,
                         type: 'error',

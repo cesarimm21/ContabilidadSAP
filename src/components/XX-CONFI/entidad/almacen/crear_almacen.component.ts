@@ -54,11 +54,13 @@ export default class CrearAlmacenComponent extends Vue {
       var data=Global.like(this.gridSucursal,'strSubsidiary_Cod',this.almacen.strSubsidiary_Cod)
       if(data.length>0&&this.almacen.strSubsidiary_Cod!=""){
         this.sucursal=data[0];
+        this.almacen.intIdSubsidiary_ID=this.sucursal.intIdSubsidiary_ID;
         this.almacen.strSubsidiary_Cod=this.sucursal.strSubsidiary_Cod;
         this.almacen.strSubsidiary_Desc=this.sucursal.strSubsidiary_Desc;
       }
       else{
         this.sucursal=new SucursalModel();
+        this.almacen.intIdSubsidiary_ID=-1;
         this.almacen.strSubsidiary_Cod="";
         this.almacen.strSubsidiary_Desc="";
       }
@@ -94,6 +96,7 @@ export default class CrearAlmacenComponent extends Vue {
       var id:any=localStorage.getItem('compania_ID');
       this.almacen.strCreation_User=user;
       this.almacen.intIdCompany_ID=id;
+
       let loadingInstance = Loading.service({
         fullscreen: true,
         text: 'Guardando...',

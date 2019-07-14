@@ -43,7 +43,7 @@
              <el-tabs type="border-card">
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Almacenes</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <buttons-accions v-on:validarView="validarView()" v-on:ActivarDesactivar="ActivarDesactivar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
@@ -65,13 +65,16 @@
                             prop="strWHS_Cod" label="Almacen" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrWHS_Desc"
-                             prop="strWHS_Desc" min-width="250" label="Descripcion">
+                             prop="strWHS_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterstrLocation"
-                            prop="strLocation" label="Ubicacion" width="250" >                                
+                            prop="strLocation" label="Ubicacion" width="200" >                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrSubsidiary_Cod"
                             prop="strSubsidiary_Cod" label="Sucursal" width="100" align="center">                                
+                            </el-table-column>
+                            <el-table-column :render-header="filterstrSubsidiary_Desc"
+                            prop="strSubsidiary_Desc" label="Sucursal" width="150" align="center">                                
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
@@ -157,7 +160,27 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal>  
+    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
+      <div style="height:85px"> 
+        <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Eliminar el almacen {{almacen.strWHS_Cod}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>  
+    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Inactivar el Almacen {{almacen.strWHS_Cod}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
+      </footer>
+    </b-modal>
     </div>  
 </template>
 <script>

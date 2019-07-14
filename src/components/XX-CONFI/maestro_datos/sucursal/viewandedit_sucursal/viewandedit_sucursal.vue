@@ -42,7 +42,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"  ></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:ActivarDesactivar="ActivarDesactivar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"  ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -174,11 +174,22 @@
     <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
       <div style="height:85px"> 
         <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
+        <span style="font-size:13px">¿Desea Eliminar el Sucursal {{this.sucursal.strSubsidiary_Cod}}?</span>
       </div>
       <footer class="modal-footer">
         <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
         <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
+
+    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Inactivar el Sucursal {{sucursal.strSubsidiary_Cod}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
       </footer>
     </b-modal>
 </div>  

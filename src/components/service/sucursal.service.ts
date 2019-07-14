@@ -34,5 +34,11 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  DesactivarSucursal(sucursal){
+    return axios.post(CONFIG.API_URL+'sucursal/desactivar',sucursal)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

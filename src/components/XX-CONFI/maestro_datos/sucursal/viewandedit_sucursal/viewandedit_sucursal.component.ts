@@ -57,6 +57,8 @@ export default class ViewAndEditSucursalComponent extends Vue {
     blnilterstrSubsidiary_Address:boolean=false;
     blnilterdtmModified_Date:boolean=false;
     blnilterdstrModified_User:boolean=false;
+    nameuser:any;
+    dialogInactivar:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='viewandedit-sucursal';
@@ -75,31 +77,54 @@ export default class ViewAndEditSucursalComponent extends Vue {
         this.selectrow=val;
         this.currentRow = val;
         this.cod_sucursal=val.strSubsidiary_Cod;
+        this.sucursal=val;
         }
     }
     async cargarList(){
-        if(this.cod_sucursal!=''){
-            await sucursalService.GetOnlyOnesucursal(this.cod_sucursal)
-            .then(res=>{
-                if(res!=undefined){
-                    this.selectrow=res;
-                    this.validarView();
-                }
-            })
-            .catch(error=>{            
-            })
-        }
-        else{
-            await sucursalService.GetAllsucursal(this.companyCod)
-            .then(res=>{
-                this.tableData=res;
-                this.tableData1=res;
-                this.loading1=false;
-            })
-            .catch(error=>{
-              this.loading1=false;
-            })
-        }
+      await sucursalService.GetAllsucursal(this.companyCod)
+      .then(res=>{
+          this.tableData=res;
+          this.tableData1=res;
+          this.loading1=false;
+      })
+      .catch(error=>{
+        this.loading1=false;
+      })
+    }
+    async ActivarDesactivar(){
+      this.dialogInactivar=true;      
+    }
+    async btnInactivar(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.sucursal.strModified_User=this.nameuser;
+      if(this.sucursal.intIdSubsidiary_ID!=-1&&this.sucursal.strSubsidiary_Cod!=""){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Inactivando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );   
+        await sucursalService.DesactivarSucursal(this.sucursal)
+        .then(respo=>{
+          loadingInstance.close();
+          this.successMessage('Se Inactivo el sucursal '+this.sucursal.strSubsidiary_Cod)
+          this.cargarList();
+          this.issave=true;
+          this.iserror=false;
+          this.textosave='Se Inactivo el sucursal '+this.sucursal.strSubsidiary_Cod;
+          this.dialogInactivar=false;
+        }).catch(ee=>{
+          loadingInstance.close();
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Error en Inactivar '+this.sucursal.strSubsidiary_Cod;
+          this.errorMessage('Error en Inactivar '+this.sucursal.strSubsidiary_Cod)})
+          this.dialogInactivar=false;
+      }
+      else{
+        this.warningMessage('Debe de seleccionar una fila!!!');
+      }
     }
     async validad(){      
       var data=Global.like(this.tableData1,'strSubsidiary_Cod',this.cod_sucursal)
@@ -151,6 +176,20 @@ export default class ViewAndEditSucursalComponent extends Vue {
         type: 'warning'
       });
     }
+    successMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+      });
+    }
+    errorMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'error'
+      });
+    }
   EliminarItem(){
     if(this.selectrow!=undefined){
       this.dialogEliminar=true;
@@ -162,7 +201,7 @@ export default class ViewAndEditSucursalComponent extends Vue {
   async btnEliminar(){
     let loadingInstance = Loading.service({
       fullscreen: true,
-      text: 'Guardando...',
+      text: 'Eliminando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }
@@ -202,6 +241,7 @@ export default class ViewAndEditSucursalComponent extends Vue {
     
   }
   Limpiar(){
+    this.selectrow=undefined;
     this.Column="";
     this.tableData=[];
     this.tableData = this.tableData1;
