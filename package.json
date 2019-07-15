@@ -5,10 +5,11 @@
   "author": "GADEL SOLUCIONES",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "dev": "node --max-old-space-size=4096 build/dev-server.js",
+    "start": "node --max-old-space-size=4096 build/dev-server.js",
+    "build": "node --max-old-space-size=4096 build/build.js",
+    "lint": "eslint --ext .js,.vue src",
+    "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit"
   },
   "dependencies": {
     "@handsontable-pro/vue": "^3.1.0",
@@ -27,6 +28,7 @@
     "handsontable": "^6.2.2",
     "handsontable-pro": "^6.2.2",
     "html2canvas": "^1.0.0-alpha.12",
+    "increase-memory-limit": "^1.0.7",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.2.1",
     "js-base64": "^2.5.1",
@@ -83,6 +85,8 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
     "chalk": "^2.1.0",
+    "increase-memory-limit": "^1.0.7",
+    "cross-env": "^5.0.5",
     "connect-history-api-fallback": "^1.3.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.7",
