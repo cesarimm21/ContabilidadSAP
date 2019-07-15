@@ -11,6 +11,7 @@ export default {
     })
   },
   GetOnlyOneControlPrecio(code){
+    alert(code);
     return axios.get(CONFIG.API_URL+'controlprecio/'+code)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));

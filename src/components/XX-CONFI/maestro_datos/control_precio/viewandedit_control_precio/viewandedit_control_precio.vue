@@ -56,7 +56,7 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCtlPrec_Cod" width="100" label="Tipo Renta">
+                                        <el-table-column  sortable prop="strCtlPrec_Cod" width="100" label="Control Precio">
                                             <template scope="scope">
                                             <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCtlPrec_Cod }}</label>
                                             </template>
@@ -69,14 +69,14 @@
                                             </template>
                                         </el-table-column>
                                        
-                                        <el-table-column :render-header="filterdtmCreation_Date"
+                                        <el-table-column 
                                             prop="dtmModified_Date"   min-width="80"
                                             label="Fecha">
                                             <template scope="scope">
                                                 <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column :render-header="filterstrCreation_User"
+                                        <el-table-column 
                                             prop="strModified_User" 
                                             label="Usuario">
                                         </el-table-column>
@@ -85,7 +85,7 @@
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
-                                                :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                                :type="scope.row.chrStatus === 'A' ? 'success': 'danger'"
                                                 disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
                                             </template>
                                         </el-table-column>

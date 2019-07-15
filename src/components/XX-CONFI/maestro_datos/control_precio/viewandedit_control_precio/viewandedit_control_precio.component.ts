@@ -35,7 +35,7 @@ export default class ViewAndEditControlPrecioComponent extends Vue {
     iserror:boolean=false;
     textosave:string='';
     public controlprecio:ControlPrecioModel=new ControlPrecioModel();
-    public tableData:Array<ControlPrecioModel>=[]; 
+    public tableData:Array<ControlPrecioModel>=[] ; 
     namepage:string;
     impDisabled:boolean=false;
     cod_criticidad:string='';
@@ -87,6 +87,7 @@ export default class ViewAndEditControlPrecioComponent extends Vue {
                 console.log('/****************Busqueda***************/')
                 console.log(res)
                 this.tableData=res;
+                
             })
             .catch(error=>{
             
@@ -166,7 +167,8 @@ export default class ViewAndEditControlPrecioComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            namepage:''
+            namepage:'',
+            tableData:[]
         }
     }
   
