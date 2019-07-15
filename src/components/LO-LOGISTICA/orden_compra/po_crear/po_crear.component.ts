@@ -234,8 +234,9 @@ export default class CrearPOComponent extends Vue {
                     strVendor_Desc:this.requiDetalle[i].strVendor_Desc,
                     strAcc_Local_Name:this.requiDetalle[i].strAcc_Local_Name,
                     intConv_Factor:this.requiDetalle[i].fltFactor,
-                    chrStatus:this.requiDetalle[i].chrStatus
+                    chrStatus:this.requiDetalle[i].chrStatus,
                 })
+                alert(this.requiDetalle1[0].strCateg_Line);
             }
             this.requiDetalle=[];
             this.requiDetalle=this.requiDetalle1;                       
@@ -439,6 +440,7 @@ export default class CrearPOComponent extends Vue {
                 item.intIdCostCenter_ID=this.multipleSelection[i].intIdCostCenter_ID
                 item.intPO_Item_NO=i+1;
                 item.strAcctCateg_Cod=this.valorSelectCodStock[i].intIdAcctCateg_ID.strAcctCateg_Cod
+                item.strCateg_Line=this.multipleSelection[i].strCateg_Line;
                 if(this.valorSelectCodStock[i].intIdCategLine_ID!=null){
                     item.strCategItem_Cod=this.valorSelectCodStock[i].strCateg_Line;    
                 }

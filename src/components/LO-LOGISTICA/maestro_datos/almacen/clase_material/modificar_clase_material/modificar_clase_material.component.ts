@@ -224,13 +224,16 @@ export default class ModificarClaseMaterialComponent extends Vue {
   cargar(code){
     clasematerialService.GetOnlyOneClaseMaterial(code)
     .then(respose=>{
-      this.clasematerial=respose[0];
-      this.tiporequisicion=respose[0].strStock_Type_Cod;
+      console.log("ÑÑÑÑÑÑÑÑÑÑ")
+      console.log(respose);
+      this.clasematerial=respose;
+      this.tiporequisicion=respose.strStock_Type_Cod;
+      console.log("ÑÑÑÑÑÑÑÑÑÑ")
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'no se pudo cargar orden compra detalle '+error
+        message: 'no se pudo cargar '+error
       });
     })
   }
@@ -317,43 +320,45 @@ export default class ModificarClaseMaterialComponent extends Vue {
     if(this.cuentacontable=="strAcct_Loc"){
       console.log(val);
       this.clasematerial.strAcct_Loc=val.strAcc_Local_NO;
-      this.clasematerial.strAcct_Loc_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strAcct_Loc_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strAcct_Corp"){
       this.clasematerial.strAcct_Corp=val.strAcc_Local_NO;
-      this.clasematerial.strAcct_Corp_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strAcct_Corp_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strExp_Cod_Loc"){
       this.clasematerial.strExp_Cod_Loc=val.strAcc_Local_NO;
-      this.clasematerial.strExp_Cod_Loc_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strExp_Cod_Loc_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strExp_Cod_Corp"){
       this.clasematerial.strExp_Cod_Corp=val.strAcc_Local_NO;
-      this.clasematerial.strExp_Cod_Corp_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strExp_Cod_Corp_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strRecep_Deb"){
       this.clasematerial.strRecep_Deb=val.strAcc_Local_NO;
-      this.clasematerial.strRecep_Deb_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strRecep_Deb_Desc=val.strAcc_Local_Name;
+      alert(this.clasematerial.strRecep_Deb_Desc);
     }
     if(this.cuentacontable=="strRecep_Cred"){
       this.clasematerial.strRecep_Cred=val.strAcc_Local_NO;
-      this.clasematerial.strRecep_Cred_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strRecep_Cred_Desc=val.strAcc_Local_Name;
+      alert(this.clasematerial.strRecep_Cred_Desc);
     }
     if(this.cuentacontable=="strInvoice_Deb"){
       this.clasematerial.strInvoice_Deb=val.strAcc_Local_NO;
-      this.clasematerial.strInvoice_Deb_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strInvoice_Deb_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strInvoice_Cred"){
       this.clasematerial.strInvoice_Cred=val.strAcc_Local_NO;
-      this.clasematerial.strInvoice_Cred_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strInvoice_Cred_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strIssue_Deb"){
       this.clasematerial.strIssue_Deb=val.strAcc_Local_NO;
-      this.clasematerial.strIssue_Deb_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strIssue_Deb_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strIssue_Cred"){
       this.clasematerial.strIssue_Cred=val.strAcc_Local_NO;
-      this.clasematerial.strIssue_Cred_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strIssue_Cred_Desc=val.strAcc_Local_Name;
     }
     
     this.dialogCuentaContableHaber=false;  

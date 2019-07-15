@@ -85,6 +85,7 @@ export class OrdenCompraDetalleModel {
     strAcc_Local_Name:string;
     fltRec_QYT1:number;
     strDocument_NO_Ref_desc:string;
+    strCateg_Line:string;
     constructor(){
         this.intIdPOD_ID=0;//
         this.intIdPurReqD_ID=-1;//
@@ -158,6 +159,7 @@ export class OrdenCompraDetalleModel {
         this.blnCheck=true; 
         this.strAcc_Local_Name='';  
         this.strDocument_NO_Ref_desc='';
+        this.strCateg_Line='';
     }
 }
 
