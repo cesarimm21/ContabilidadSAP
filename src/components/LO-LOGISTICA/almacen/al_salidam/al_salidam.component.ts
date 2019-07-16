@@ -551,11 +551,11 @@ export default class ModificarSalidaMaterialComponent extends Vue {
           this.salidaModel=res[0];
           var almacen=res[0].intIdWHS_ID;
           this.strTypeMov_Desc=this.salidaModel.strTypeMov_Desc;
-          if(almacen!=undefined){
-            var planta=almacen.intPlant_ID;
-            this.salidaModel.strPlant_Cod=planta.strPlant_Cod;
-            console.log('strPlant_Cod',this.salidaModel.strPlant_Cod)
-          }
+          // if(almacen!=undefined){
+          //   var planta=almacen.intPlant_ID;
+          //   //this.salidaModel.strPlant_Cod=planta.strPlant_Cod;
+          //   //console.log('strPlant_Cod',this.salidaModel.strPlant_Cod)
+          // }
           var data:Array<SalidaDetalleModel>=[];  
           for(var i=0;i<resd.length;i++){
             if(resd[i].intIdInvStock_ID!=undefined){
