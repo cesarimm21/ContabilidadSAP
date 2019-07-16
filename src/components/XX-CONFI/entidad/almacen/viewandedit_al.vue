@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Almacen</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text" :maxlength="3" :disabled="enabledtf">  
+                                    <el-input class="validador" size ="small" v-model="almacen.strWHS_Cod" style="text-transform: capitalize" type="text"  disabled>  
                                     </el-input>
                                     </div>
                                 </div>
@@ -55,14 +55,14 @@
                                 <label class="el-form-item__label col-md-2" >Sucursal</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod" :disabled="enabledtf">                            
+                                    <el-input class="validador" size ="small" @blur="desactivar_sucursal" @focus="activar_sucursal" v-model="almacen.strSubsidiary_Cod" :disabled="enabledtf" @keydown.native.enter="buscarSucursal">                            
                                         <el-button v-if="btnactivarsucursal && !sucursalVisible" slot="append" class="boton" icon="fa fa-clone" @click="sucursalDialog()" :disabled="enabledtf"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="sinLinea el-form-item__label col-md-2">{{sucursal.strSubsidiary_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-2">{{almacen.strSubsidiary_Desc}}</label>
                             </div> 
-                            <div  class="form-group row ">
+                            <!-- <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Planta</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <label class="sinLinea el-form-item__label col-md-2">{{planta.strPlan_Desc}}</label>
-                            </div>   
+                            </div>    -->
                         </div>                         
                     </div>
                 </div>

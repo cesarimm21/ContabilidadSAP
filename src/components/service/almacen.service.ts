@@ -48,7 +48,7 @@ export default {
     })
   },
   DesactivarAlmacen(almacen){
-    return axios.post(CONFIG.API_URL+'sucursal/desactivar',almacen)
+    return axios.post(CONFIG.API_URL+'almacen/desactivar',almacen)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
