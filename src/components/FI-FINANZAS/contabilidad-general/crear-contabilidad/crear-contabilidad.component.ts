@@ -429,8 +429,9 @@ closeCategoriaCuenta(){
     this.dialogCuentaContableHaber=false;
   }
   cuentacontableselecionadohaber(val,dialog:boolean){
-    this.centrocosto.strAcctDest_Credit=val.strAcc_Local_NO;
-    this.dialogCuentaContableHaber=false;  
+    debugger;
+    this.selectrow.strAcc_Local_NO=val.strAcc_Local_NO;
+    this.dialogCuentaContable=false;  
   }
 
   activar_CuentaContableDebe(){
@@ -485,8 +486,8 @@ closeCategoriaCuenta(){
     this.dialogCategoriaCentroCosto=false;
   }
   categoriacentrocostoseleccionado(val,dialog:boolean){
-    this.centrocosto.strCCCategory_Cod=val.strCCCategory_Cod;
-    this.centrocosto.intIdCCCategory_ID=val.intCCCategory_ID;
+    this.selectrow.strCenCosWBS_Cod=val.strCCCategory_Cod;
+    //this.selectrow.intIdCCCategory_ID=val.intCCCategory_ID;
     this.dialogCategoriaCentroCosto=false;  
   }
 
@@ -970,7 +971,8 @@ closeCategoriaCuenta(){
       );  
     correlativoService.GetCorrelativoId('PFI006').then(resp=>{
     for(var i=0;i<this.totalRegistros;i++){
-      if(this.CompleteData[i].strAcctCateg_Cod!=undefined){
+      debugger;
+      if(this.CompleteData[i].strAcctCateg_Cod!=undefined && this.CompleteData[i].strAcctCateg_Cod!=''){
         var nuevo:DiarioGeneralModel=new DiarioGeneralModel();
         nuevo.strCompany_Cod=this.strCompany_Cod;
         nuevo.strCompany_Desc=this.strCompany_Desc;
@@ -1001,7 +1003,7 @@ closeCategoriaCuenta(){
       
           debugger;
           if(resp!=undefined){
-            nuevo.strAccDocum_NO=resp;
+            nuevo.strAccDocum_NO=resp.fltOrigenDocum_NO;
             diariogeneralService.createDiarioGeneral(nuevo) .then(response=>{
               this.voucher=response;
               this.habilitarPane=false;
@@ -1015,6 +1017,10 @@ closeCategoriaCuenta(){
               this.Desc_Header='';
               this.Autoreverse=false;
               this.CompleteData=[];
+              for(var i=0;i<this.totalRegistros;i++){
+                var diario:DiarioGeneralModel=new DiarioGeneralModel();
+                this.CompleteData.push(diario);
+              }
             })
             .catch(e =>{
               debugger;
