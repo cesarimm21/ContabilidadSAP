@@ -3,6 +3,7 @@ import * as CONFIG from '../../Config';
 import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
+  ///cambios
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
   GetAllCuentaContable(){  
     return axios.get(CONFIG.API_URL+'cuentacontable')
