@@ -193,10 +193,10 @@ export default class ModificarElementoGastoComponent extends Vue {
       this.txtmodulo='Visualizar  Cuenta Contable';
       this.visualizar=true;
     }
-    this.cargar(object.strAcc_Local_NO);
+    this.cargar(object.strAcc_Local_NO,object.strCompany_Cod);
   }
-  cargar(code){
-    cuentaContableService.GetCuentaContableID(code)
+  cargar(code,compania){
+    cuentaContableService.GetCuentaContableID(code,compania)
     .then(res=>{
       if(res!=undefined){
         console.log('cargarData1',res)
@@ -235,7 +235,7 @@ export default class ModificarElementoGastoComponent extends Vue {
         // this.cuentacontable.strCurrency_Cod=res[0].tdi_strCurrency_Cod;
         // this.cuentacontable.strModified_User=res[0].tdi_strModified_User;
         // this.cuentacontable.strCompany_Cod=res[0].tblCompania_strCompany_Cod;
-        this.cuentacontable=res[0]
+        this.cuentacontable=res
         this.strlevelTipo= this.cuentacontable.strAcc_Level;
         
         // this.cuentacontable.strCompany_Name=res[0].tblCompania_strCompany_Name;

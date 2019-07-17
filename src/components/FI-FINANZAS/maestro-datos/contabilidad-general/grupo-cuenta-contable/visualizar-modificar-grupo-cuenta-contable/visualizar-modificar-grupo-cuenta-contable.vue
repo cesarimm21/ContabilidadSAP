@@ -45,7 +45,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:EliminarItem="EliminarItem()" v-on:validarView="validarView" ></buttons-accions>
+                                <buttons-accions v-on:EliminarItem="EliminarItem()" v-on:validarView="validarView"  v-on:ActivarDesactivar="ActivarDesactivar"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -54,10 +54,11 @@
                                         :max-height="sizeScreen"
                                         :data="tableData" 
                                          highlight-current-row
+                                         @row-dblclick="validarView"
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
                                         <el-table-column  sortable prop="strGrpAcctCont_Cod" width="100" label="Grupo">
                                             <template scope="scope">
@@ -70,35 +71,25 @@
                                             <template scope="scope">
                                                 <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strGrpAcctCont_Desc }}</label>
                                             </template>
-                                        </el-table-column>   
-                                        <el-table-column
-                                            prop="strCreation_User" sortable  width="120"
+                                        </el-table-column>  
+                                         <el-table-column :render-header="filterdtmCreation_Date"
+                                            prop="dtmModified_Date"   width="80"
+                                            label="Fecha">
+                                            <template scope="scope">
+                                                <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strModified_User"  width="100"
                                             label="Usuario">
+                                        </el-table-column>
+                                        <el-table-column 
+                                            prop="chrStatus" align="center"  width="100"
+                                            label="Estado">
                                             <template scope="scope">
-                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCreation_User }}</label>
-                                            </template>
-                                        </el-table-column>   
-                                        
-                                        <el-table-column
-                                            prop="dtmCreation_Date" sortable width="100"
-                                            label="Fecha">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmCreation_Date) }}</label>
-                                            </template>
-                                        </el-table-column>   
-                                        <el-table-column
-                                            prop="strModified_User" sortable  width="120"
-                                            label="Usuario Modificacion">
-                                            <template scope="scope">
-                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>
-                                            </template>
-                                        </el-table-column>   
-                                        
-                                        <el-table-column
-                                            prop="dtmModified_Date" sortable width="100"
-                                            label="Fecha">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmModified_Date) }}</label>
+                                                <el-tag
+                                                :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -141,6 +132,17 @@
       <footer class="modal-footer">
         <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
         <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
+    
+    <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Grupo Cuenta {{strCodigo}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
       </footer>
     </b-modal>
     <!--DIALOG BUSQUEDA COMPAÑIA-->

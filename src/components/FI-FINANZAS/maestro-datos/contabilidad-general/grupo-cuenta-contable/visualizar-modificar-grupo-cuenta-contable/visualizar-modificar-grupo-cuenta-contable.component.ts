@@ -94,6 +94,9 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
   strVendor_Desc:string='';
   vifprogress:boolean=true;
   dialogEliminar:boolean=false;
+
+  strCodigo:string='';
+  dialogInactivar:boolean=false;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -118,28 +121,24 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
     if(data.strGrpAcctCont_Cod==''){
       data.strGrpAcctCont_Cod='*';
     }
-
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-    }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await grupocuentacontableService.getBusqueda(data.strCompany_Cod,data.strGrpAcctCont_Cod)
     .then(res=>{
       debugger;
-      for(var i=0;i<50;i++){
-        this.valuem++; 
-      }
-      console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+        console.log('/****************Busqueda***************/')
+        console.log(res)
+        this.tableData=res;
+        this.vifprogress=false;
+        loading.close();
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   async Buscar(){
@@ -389,6 +388,78 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
       });
     })
     
+  }
+    
+  getDateStringView(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
+
+  async btnInactivar(){
+    var nameuser:any=localStorage.getItem('User_Usuario');
+    this.currentRow.strModified_User=this.nameuser;
+    if(this.currentRow.strGrpAcctCont_Cod!=""){
+      
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );   
+      await grupocuentacontableService.activar(this.currentRow)
+      .then(respo=>{
+        loadingInstance.close();
+        this.successMessage('Se Activo '+this.currentRow.strGrpAcctCont_Cod)
+        this.load();
+        this.issave=true;
+        this.iserror=false;
+        this.textosave='Se Activo  '+this.currentRow.strGrpAcctCont_Cod;
+        this.dialogInactivar=false;
+      }).catch(ee=>{
+        loadingInstance.close();
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Error en Activar '+this.currentRow.strGrpAcctCont_Cod;
+        this.errorMessage('Error en Activar '+this.currentRow.strGrpAcctCont_Cod)})
+        this.dialogInactivar=false;
+    }
+    else{
+      this.warningMessage('Debe de seleccionar una fila!!!');
+    }
+  }
+  
+  ActivarDesactivar(){
+    debugger;
+    this.strCodigo=this.currentRow.strGrpAcctCont_Cod;
+    this.dialogInactivar=true;      
+  }
+  
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
+  successMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'success'
+    });
+  }
+  errorMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'error'
+    });
   }
   data(){
     return{

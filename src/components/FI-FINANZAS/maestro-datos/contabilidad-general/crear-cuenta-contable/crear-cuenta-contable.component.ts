@@ -452,25 +452,69 @@ export default class CrearCuentaContableComponent extends Vue {
     this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
     this.cuentacontable.strAcc_Level=this.strlevelTipo;
     this.cuentacontable.blnAcc_Status_Open=this.strAcc_Status_Open=='A'?true:false;
-
+    var user:any=localStorage.getItem('User_Usuario');
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Guardando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     for(var i=0;i<this.tabletipo.length;i++){
       if(this.tabletipo[i].strType_Cod==this.strlevel){
         this.cuentacontable.strAcc_Categ_Desc=this.tabletipo[i].strType_Desc;
       }
     }
-
-    cuentaContableService.CreateCuentaContable(this.cuentacontable)
+    this.cuentacontable.strCreation_User=user;
+    cuentaContableService.GetCuentaContableID(this.cuentacontable.strAcc_Local_NO,this.cuentacontable.strCompany_Cod)
     .then(response=>{
-      
-      this.issave=true;
-      this.textosave='Se guardo correctamente.'
-    }).catch(error=>{
+      debugger;
+      if(response==""){
+        cuentaContableService.CreateCuentaContable(this.cuentacontable)
+        .then(response=>{
+          loading.close(); 
+          this.issave=true;
+          this.iserror = false;
+          this.textosave='Se guardo correctamente.'+this.cuentacontable.strAcc_Local_NO;
+        }).catch(error=>{
+          loading.close(); 
+          this.issave = false;
+          this.iserror = true;
+          this.textosave='No se pudo guardar Cuenta Contable '+this.cuentacontable.strAcc_Local_NO;
+     
+          this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'No se pudo guardar Cuenta Contable'
+          });
+        })
+      }
+      else{
+        loading.close(); 
+        this.issave = false;
+        this.iserror = true;
+        this.textosave='No se pudo guardar Cuenta Contable '+this.cuentacontable.strAcc_Local_NO;
+   
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'La cuenta ya existe'
+        });
+      }
+    })
+    .catch(error=>{
+      this.issave = false;
+      this.iserror = true;
+      this.textosave='No se pudo guardar Cuenta Contable '+this.cuentacontable.strAcc_Local_NO;
+ 
+      loading.close(); 
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo guardar producto'
+        message: 'No se pudo guardar cuenta contable'
       });
     })
+    
   }
   
   desactivar_Rubro(){

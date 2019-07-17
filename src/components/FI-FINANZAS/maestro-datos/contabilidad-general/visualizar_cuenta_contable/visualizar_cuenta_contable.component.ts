@@ -113,6 +113,7 @@ export default class VisualizarCuentaContableComponent extends Vue {
   load(){
     this.cargarList();
   }
+  
   async cargarList(){
     debugger;
     var data:any=this.formBusqueda;
@@ -142,7 +143,7 @@ export default class VisualizarCuentaContableComponent extends Vue {
     for(var i=0;i<50;i++){
       this.valuem++; 
     }
-    await cuentacontableService.GetBusquedaCuentaContable(data.strPO_NO,data.desde,data.hasta)
+    await cuentacontableService.GetBusquedaCuentaContable2(data.strPO_NO.trim(),data.desde,data.hasta)
     .then(res=>{
       debugger;
       for(var i=0;i<50;i++){
@@ -155,7 +156,11 @@ export default class VisualizarCuentaContableComponent extends Vue {
           console.log(res)
           this.tableData=res;
           this.vifprogress=false;
-        }, 600)
+          if(res.length>0 && data.strPO_NO.trim()!='*'){
+            this.selectrow=res[0]
+            this.validarView();
+          }
+        }, 10)
       }
     })
     .catch(error=>{
@@ -370,6 +375,18 @@ export default class VisualizarCuentaContableComponent extends Vue {
   LoadProveedor(){
     this.dialogProveedor=true;      
   }
+  
+  getDateStringView(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
+
+  
   data(){
     return{
       dialogTableVisible: false,

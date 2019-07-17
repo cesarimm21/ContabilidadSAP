@@ -50,8 +50,9 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
-                                         highlight-current-row
-                                         @current-change="handleCurrentChange"
+                                        highlight-current-row
+                                        @row-dblclick="validarView"
+                                        @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">

@@ -15,7 +15,7 @@
                                         <img class="imagenfilter" src="../../images/tacho.png" alt="">
                                     </el-button>
                                     </el-tooltip>   
-                                    <el-tooltip class="itemTool" content="Inactivar Item" placement="bottom-start" effect="light"> 
+                                    <el-tooltip class="itemTool" content="Activar Item" placement="bottom-start" effect="light"> 
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ActivarDesactivar()" >
                                         <img class="imagenfilter" src="../../images/active_desactive.png" alt="">
                                     </el-button>

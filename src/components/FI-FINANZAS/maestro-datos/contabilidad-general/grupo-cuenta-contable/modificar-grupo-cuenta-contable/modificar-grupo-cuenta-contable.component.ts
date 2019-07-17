@@ -50,6 +50,11 @@ export default class ModificarGrupoCuentaContableComponent extends Vue {
     var id:any=localStorage.getItem('compania_ID');
     this.grupoCuentaContableModel.strCompany_Desc=desc; 
     this.grupoCuentaContableModel.strCompany_Cod=cod;
+    this.grupoCuentaContableModel.strGrpAcctCont_Cod=='';
+    this.grupoCuentaContableModel.strGrpAcctCont_Desc=='';
+    this.grupoCuentaContableModel.strComp_Cod=='';
+    this.grupoCuentaContableModel.strGrpAcct_Pos=='';
+ 
     setTimeout(() => {
       this.load();
     }, 100)
@@ -102,14 +107,41 @@ export default class ModificarGrupoCuentaContableComponent extends Vue {
   //#endregion
   
   guardarTodo(){
+    this.issave=false;
+    this.iserror = false;
+    this.textosave='';
+    if(this.grupoCuentaContableModel.strGrpAcctCont_Cod==''){ this.$message('Complete los campos obligatorios');return false;}
+    if(this.grupoCuentaContableModel.strGrpAcctCont_Desc==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.grupoCuentaContableModel.strComp_Cod==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.grupoCuentaContableModel.strGrpAcct_Pos==''){ this.$message('Complete los campos obligatorios');return false;}  
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Guardando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+
+    var user:any=localStorage.getItem('User_Usuario');
+    this.grupoCuentaContableModel.strModified_User=user;
+
     grupocuentacontableService.UpdateGrupoCuenta(this.grupoCuentaContableModel)
     .then(response=>{
+      
+      loading.close(); 
       this.issave=true;
-      this.textosave='Se guardo correctamente.'
+      this.iserror = false;
+      this.textosave='Se guardo correctamente.'+this.grupoCuentaContableModel.strGrpAcctCont_Cod
       this.grupoCuentaContableModel.strGrpAcctCont_Cod='';
       this.grupoCuentaContableModel.strGrpAcctCont_Desc='';
+      this.grupoCuentaContableModel.strGrpAcct_Pos='';
       this.grupoCuentaContableModel.strComp_Cod='';
     }).catch(error=>{
+      this.issave=false;
+      this.iserror = true;
+      this.textosave='No se pudo guardar '+this.grupoCuentaContableModel.strGrpAcctCont_Cod
+     
+      loading.close(); 
       this.$message({
         showClose: true,
         type: 'error',

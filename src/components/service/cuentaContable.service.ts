@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'cuentacontable/activar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllCuentaContableLike(codigo){  
     return axios.get(CONFIG.API_URL+'busqueda/cuentacontablelike/'+codigo)
     .then(response =>{           
@@ -40,14 +46,20 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetBusquedaCuentaContable2(strCodigo:any,desde:any,hasta:any){
+    return axios.get(CONFIG.API_URL+'busqueda/cuentacontable2/'+strCodigo+'/'+desde+'/'+hasta)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetBusquedaElementoGasto(strCodigo:any,desde:any,hasta:any){
     return axios.get(CONFIG.API_URL+'busqueda/elementogasto/'+strCodigo+'/'+desde+'/'+hasta)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetCuentaContableID(code:any){
-    return axios.get(CONFIG.API_URL+'cuentacontable/'+code)
+  GetCuentaContableID(code:any,strCompany_Cod){
+    return axios.get(CONFIG.API_URL+'cuentacontable/'+code+'/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
