@@ -16,7 +16,9 @@ import {OrdenCompraDetalleModel} from '@/modelo/maestro/ordencompradetalle';
 import ordenCompraService from '@/components/service/ordencompra.service';
 import requisicionService from '@/components/service/requisicion.service';
 import proveedorService from '@/components/service/proveedor.service';
-import almacenService from '@/components/service/almacen.service';
+import almacenService from '@/components/service/almacen.service';  
+import monedaService from '@/components/service/moneda.service';  
+import impuestoService from '@/components/service/impuesto.service';  
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
 import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
@@ -97,14 +99,15 @@ export default class CrearPOComponent extends Vue {
     //#endregion
     //**[IMPUESTO] */
     public Impuesto: ImpuestoModel = new ImpuestoModel();
+    gridImpuesto:ImpuestoModel[];
     dialogImpuesto: boolean = false;
     btnactivarImpuesto: boolean = false;
 
     //**[MONEDA] */
     dialogMoneda: boolean = false;
     btnactivarMoneda: boolean = false;
-    dataMoneda: any[];
     public moneda: MonedaModel = new MonedaModel();
+    monedaGrid:MonedaModel[];
     //**[REQUISICION] */
     requisicionData: Array<RequisicionModel>[];
     requisicionData1: Array<RequisicionModel>[];
@@ -179,6 +182,8 @@ export default class CrearPOComponent extends Vue {
             this.tempGrid=this.gridProveedor;          
             this.tempGrid1=this.gridProveedor;          
         })
+        this.CargarMoneda();
+        this.CargarImpuesto();
     }
     loadRequisicion(){
       requisicionService.GetRequisicionCompany(this.codigoCompania)
@@ -236,7 +241,6 @@ export default class CrearPOComponent extends Vue {
                     intConv_Factor:this.requiDetalle[i].fltFactor,
                     chrStatus:this.requiDetalle[i].chrStatus,
                 })
-                alert(this.requiDetalle1[0].strCateg_Line);
             }
             this.requiDetalle=[];
             this.requiDetalle=this.requiDetalle1;                       
@@ -385,6 +389,37 @@ export default class CrearPOComponent extends Vue {
     }
     //#endregion
     //#region [IMPUESTO]
+    CargarImpuesto(){
+      impuestoService.GetAllImpuesto()
+      .then(respo=>{
+        this.gridImpuesto=respo;
+        
+      })
+    }
+    btnBuscarImpuesto(){
+      if(this.OrdenCompra.strWH_Cod!=""){
+        var data=Global.like(this.gridImpuesto,'strWH_Cod',this.OrdenCompra.strWH_Cod)
+        if(data.length>0){
+          this.Impuesto=data[0]; 
+          this.OrdenCompra.strWH_Cod=this.Impuesto.strWH_Cod;
+          this.OrdenCompra.strWH_Desc=this.Impuesto.strWH_Desc;
+          this.OrdenCompra.fltPorcent=this.Impuesto.fltPorcent;       
+        }
+        else{
+            this.OrdenCompra.strWH_Cod="";
+            this.OrdenCompra.strWH_Desc="";
+            this.OrdenCompra.fltPorcent=0;
+            this.moneda=new MonedaModel();
+        }
+      }
+      else{
+            this.OrdenCompra.strWH_Cod="";
+            this.OrdenCompra.strWH_Desc="";
+            this.OrdenCompra.fltPorcent=0;
+            this.moneda=new MonedaModel();
+      }
+      
+    }
   loadImpuesto(){
     this.dialogImpuesto=true;
   }
@@ -566,6 +601,44 @@ export default class CrearPOComponent extends Vue {
       }
     //#endregion
     //#region [MONEDA]
+    CargarMoneda(){
+      monedaService.GetAllMoneda()
+      .then(respo=>{
+        this.monedaGrid=respo;
+      })
+    }
+    buscarMoneda(){
+      var data=Global.like(this.monedaGrid,'strCurrency_Cod',this.OrdenCompra.strPO_Curr)
+      if(data.length>0){
+        this.moneda=data[0];
+        if(this.moneda.strCurrency_Cod.toLowerCase()==this.OrdenCompra.strPO_Curr.toLowerCase()){
+          this.OrdenCompra.strPO_Curr=this.moneda.strCurrency_Cod;
+          this.OrdenCompra.strCurrency_Cod=this.moneda.strCurrency_Cod;
+          this.OrdenCompra.strCurrency_Desc=this.moneda.strCurrency_Desc;
+          this.OrdenCompra.intIdAcctCont_ID=this.moneda.intIdAcctCont_ID;
+          this.OrdenCompra.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
+          this.OrdenCompra.strAcc_Corp_NO=this.moneda.strAcc_Corp_NO;
+        }
+        else{
+          this.OrdenCompra.strPO_Curr="";
+          this.OrdenCompra.strCurrency_Cod="";
+          this.OrdenCompra.strCurrency_Desc="";
+          this.OrdenCompra.intIdAcctCont_ID=-1;
+          this.OrdenCompra.strAcc_Local_NO="";
+          this.OrdenCompra.strAcc_Corp_NO="";
+          this.moneda=new MonedaModel();
+        }        
+      }
+      else{
+        this.OrdenCompra.strPO_Curr="";
+          this.OrdenCompra.strCurrency_Cod="";
+          this.OrdenCompra.strCurrency_Desc="";
+          this.OrdenCompra.intIdAcctCont_ID=-1;
+          this.OrdenCompra.strAcc_Local_NO="";
+          this.OrdenCompra.strAcc_Corp_NO="";
+          this.moneda=new MonedaModel();
+      }
+    }
     loadMoneda(){
         this.dialogMoneda=true;
       }
@@ -588,6 +661,7 @@ export default class CrearPOComponent extends Vue {
         this.dialogMoneda=false;
       }
       desactivar_Moneda(){
+        this.buscarMoneda();
         if(this.dialogMoneda){
           this.btnactivarMoneda=false;
         }
@@ -1026,6 +1100,8 @@ export default class CrearPOComponent extends Vue {
             gridProveedor:[],
             tempGrid:[],
             tempGrid1:[],
+            monedaGrid:[],
+            gridImpuesto:[]
 
         }
     }

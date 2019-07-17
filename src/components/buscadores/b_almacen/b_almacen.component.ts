@@ -40,9 +40,12 @@ export default class  BAlmacenComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   companyCod:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.loadAlmacen();
+    setTimeout(() => {
+      this.loadAlmacen();
+    }, 400)    
   }
   loadAlmacen(){
     this.companyCod=localStorage.getItem('compania_cod');
@@ -51,8 +54,10 @@ export default class  BAlmacenComponent extends Vue {
       this.almacenModel=[];       
       this.almacenModel1=[];       
       this.almacenModel=response;       
-      this.almacenModel1=response;       
+      this.almacenModel1=response;   
+      this.loading1=false;    
     }).catch(error=>{
+      this.loading1=false; 
       this.$message({
         showClose: true,
         type: 'error',
@@ -185,7 +190,8 @@ export default class  BAlmacenComponent extends Vue {
       almacenModel1:[],
       inputAtributo:'',
       Column:'',
-      companyCod:''
+      companyCod:'',
+      loading1:true
 
     };
   }

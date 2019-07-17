@@ -28,60 +28,12 @@
                                 <label class="el-form-item__label col-md-2" >Orden Compra</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
-                                        <el-input size ="small" type="text" v-model="opSelect.strPO_NO">
+                                        <el-input :autofocus="true" size ="small" type="text" v-model="strPO_NO" @keydown.native.enter="validad()">
                                         </el-input>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    <!-- <div class="col-sm-9" >
-                        <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"  v-model="strPO_NO"  placeholder="">
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >Proveedor</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                    <el-input size ="small" @blur="desactivar_proveedor" @focus="activar_proveedor" v-model="strVendor_NO"  placeholder="" @keyup.enter.native="enterProveedor(strVendor_NO)"  @keyup.delete.native="borrarProveedor()">
-                                        <el-button v-if="btnactivarproveedor && !dialogProveedor" slot="append" class="boton" icon="fa fa-clone" @click="LoadProveedor()"></el-button> 
-                                    </el-input>
-                                </div>
-                            </div>
-                            <span style="font-size: 11px;margin-top: 5px;">{{strVendor_Desc}}</span>
-                        </div>
-                        
-                        <div class="form-group row Second">
-                            <label class="el-form-item__label col-md-2" >Fecha Desde</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                    <el-date-picker
-                                        v-model="fechaDesde"
-                                        size="mini"
-                                        format="dd.MM.yyyy"
-                                        style="width:128px !important">
-                                    </el-date-picker>
-                                </div>
-                            </div>    
-                            <label class="el-form-item__label col-md-1" >Hasta</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                    <el-date-picker
-                                        v-model="fechaHasta"
-                                        size="mini"
-                                        format="dd.MM.yyyy"
-                                        style="width:128px !important"
-                                       >
-                                    </el-date-picker>
-                                </div>
-                            </div>                   
-                        </div>    
-                    </div> -->
                 </div>
                 <br/>
                 <div class="row">
@@ -99,6 +51,7 @@
                                         :data="tableData" 
                                          highlight-current-row
                                           @header-click="headerclick"
+                                          @row-dblclick="validarView"
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">

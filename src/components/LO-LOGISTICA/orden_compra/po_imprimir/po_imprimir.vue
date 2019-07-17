@@ -53,11 +53,11 @@
                                         <el-table-column type="index" label="Item" width="38">   </el-table-column>          
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="50" label="Orden Compra">
+                                         prop="strPO_NO" min-width="100" label="Orden Compra">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="50"
+                                            prop="strRequis_NO"   min-width="100"
                                             label="Requisicion">
                                         </el-table-column>
                                         <el-table-column

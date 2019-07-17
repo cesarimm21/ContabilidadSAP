@@ -24,9 +24,12 @@ export default class  BBancoComponent extends Vue {
     blnilterstrBank_Name:boolean=false;
     public banco:BancoModel=new BancoModel();
     public bancoSearch:BancoModel=new BancoModel();
+    loading1:boolean=true;
   constructor() {
     super();
-    this.loadBanco();
+    setTimeout(() => {
+      this.loadBanco();
+    }, 400)       
   }
   loadBanco(){
     bancoService.GetAllBanco()
@@ -35,6 +38,9 @@ export default class  BBancoComponent extends Vue {
         this.gridBanco1=[];
         this.gridBanco=resp;
         this.gridBanco1=resp;
+        this.loading1=false;
+    }).catch(eroor=>{
+      this.loading1=false;
     })
   }
   handleCurrentChange(val){
@@ -43,23 +49,10 @@ export default class  BBancoComponent extends Vue {
   seleccionar(val:BancoModel){
     this.banco=val;
     this.$emit('bancoselecionado',this.banco);
-    // if(Global.nameComponent=='pagos-individual'){
-    //   this.$emit('bancoselecionado',this.banco);
-    // }
-    // if(Global.nameComponent=='crear-proveedor'){
-    //   this.$emit('bancoselecionado',this.banco);
-    // }
   }
   checkBanco(){
     this.$emit('bancoselecionado',this.banco);
-    // if(Global.nameComponent=='pagos-individual'){
-    //     this.$emit('bancoselecionado',this.banco);
-    //   }
-    //   if(Global.nameComponent=='crear-proveedor'){
-    //     this.$emit('bancoselecionado',this.banco);
-    //   }
   }
-
   closeBanco(){
     this.$emit('closeBanco');
   }
@@ -86,7 +79,6 @@ export default class  BBancoComponent extends Vue {
     }
   }
   filterstrBank_Cod(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnilterstrBank_Cod){
       this.Column=column1;
@@ -103,8 +95,6 @@ export default class  BBancoComponent extends Vue {
     } 
   }
   filterstrBank_Name(h,{column,$index}){
-    debugger;
-    
     if(this.blnilterstrBank_Name){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -120,7 +110,8 @@ export default class  BBancoComponent extends Vue {
     return {
         gridBanco:[],
         gridBanco1:[],
-        inputAtributo:''
+        inputAtributo:'',
+        loading1:true
     };
   }
   

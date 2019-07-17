@@ -45,7 +45,7 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
 //   articuloService:ArticuloService=new ArticuloService()
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
-
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -53,17 +53,17 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
     }, 200)
   }
   load(){
-    debugger
     categoriacentrocostoService.GetAllCategoria()
     .then(response=>{
-      debugger
-      console.log('grupogastos',response);
-      this.cuentacontableModel=response;       
+      this.cuentacontableModel=response;   
+      this.cuentacontableModel1=response;   
+      this.loading1=false;    
     }).catch(error=>{
+      this.loading1=false;    
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo cargar los almacenes'
+        message: 'No se pudo cargar los Centro de Costos'
       });
     })
   }
@@ -177,7 +177,8 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

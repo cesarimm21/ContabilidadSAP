@@ -6,23 +6,9 @@ import ElementUI from 'element-ui';
 import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import { RequisicionModel } from '@/modelo/maestro/requisicion';
-import { RequisicionDetalleModel } from '@/modelo/maestro/requisiciondetalle';
-import { ProveedorModel } from '@/modelo/maestro/proveedor';
-import { MonedaModel } from '@/modelo/maestro/moneda';
-import { AlmacenModel } from '@/modelo/maestro/almacen';
 import { OrdenCompraModel } from '@/modelo/maestro/ordencompra';
 import { OrdenCompraDetalleModel } from '@/modelo/maestro/ordencompradetalle';
 import ordenCompraService from '@/components/service/ordencompra.service';
-import requisicionService from '@/components/service/requisicion.service';
-import proveedorService from '@/components/service/proveedor.service';
-import almacenService from '@/components/service/almacen.service';
-import impuestoService from '@/components/service/impuesto.service';
-import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
-import BImpuestoComponent from '@/components/buscadores/b_impuesto/b_impuesto.vue';
-import BPrioridadComponent from '@/components/buscadores/b_prioridad/b_prioridad.vue';
-import { CompaniaModel } from '@/modelo/maestro/compania';
-import companiaService from '@/components/service/compania.service';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { ImpuestoModel } from '@/modelo/maestro/impuesto';
 import { Loading } from 'element-ui';
@@ -49,6 +35,7 @@ export default class VisualizarPOComponent extends Vue {
     txtbuscar:string='';
     Column:string='';
     pagina: number =1;
+    strPO_NO:string;
     RegistersForPage: number = 100;
     totalRegistros: number = 100;
     vifprogress:boolean=false;
@@ -89,6 +76,7 @@ export default class VisualizarPOComponent extends Vue {
    }
    handleCurrentChange(val:OrdenCompraModel){
     this.opSelect=val;   
+    this.strPO_NO=this.opSelect.strPO_NO;
     this.textosave='Orden Compra '+this.opSelect.strPO_NO; 
    }
    getDateString(fecha:string){
@@ -123,8 +111,8 @@ export default class VisualizarPOComponent extends Vue {
         }
       }
       validad(){
-        if(this.opSelect.strPO_NO!=undefined){
-          ordenCompraService.getPOONEview(this.opSelect.strPO_NO)
+        if(this.strPO_NO!=""){
+          ordenCompraService.getPOONEview(this.strPO_NO)
           .then(respo=>{
             this.opSelect=respo;            
             if(this.opSelect.strPO_NO!=undefined){
@@ -168,18 +156,8 @@ export default class VisualizarPOComponent extends Vue {
           this.$message('Seleccione columna')
         }
       }
-      like(array, key,keyword) {
-    
-        var responsearr:any = []
-        for(var i=0;i<array.length;i++) {
-            if(array[i][key].toString().indexOf(keyword) > -1 ) {
-              responsearr.push(array[i])
-          }
-        }
-        return responsearr
-      }
       btnBuscar(){    
-        var data=this.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
+        var data=Global.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
         this.OrdenCompra=[];
         this.OrdenCompra=data;
         this.dialogBusquedaFilter=false;
@@ -323,7 +301,8 @@ export default class VisualizarPOComponent extends Vue {
             OrdenCompra1:[],
             OrdenCompra2:[],
             codigoCompania:'',
-            descripcionCompania:''
+            descripcionCompania:'',
+            strPO_NO:''
         }
     }
 }

@@ -7,7 +7,7 @@
             <div class="row bodycard">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="el-form-item__label col-md-3" >Codigo</label>
+                        <label class="el-form-item__label col-md-3" >{{Column}}</label>
                         <div class="col-md-2 grupolabel">
                             <div class="input-group mb-3" >
                             <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarCategoria()">
@@ -21,6 +21,10 @@
                 </div>
             </div>
             <el-table
+            v-loading="loading1"
+            element-loading-text="Cargando..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             :data="categoriacuentaModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"

@@ -25,7 +25,7 @@
                                 <label class="el-form-item__label col-md-2" >Orden Compra</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-2">
-                                        <el-input size ="small" type="text" v-model="opSelect.strPO_NO">
+                                        <el-input :autofocus="true" size ="small" type="text" v-model="strPO_NO" @keydown.native.enter="validad()">
                                         </el-input>
                                     </div>
                                 </div>
@@ -49,15 +49,16 @@
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007"
                                         @header-click="headerclick"
+                                        @row-dblclick="validarView"
                                         @current-change="handleCurrentChange" >
                                         <el-table-column type="index" label="Item" width="38">   </el-table-column>          
                                         <el-table-column  
                                         :render-header="filterstrPO_NO"
-                                         prop="strPO_NO" min-width="80" label="Orden Compra">
+                                         prop="strPO_NO" min-width="100" label="Orden Compra">
                                         </el-table-column>
                                         <el-table-column
                                             :render-header="filterstrRequis_NO"
-                                            prop="strRequis_NO"   min-width="80"
+                                            prop="strRequis_NO"   min-width="100"
                                             label="Requisicion">
                                         </el-table-column>
                                         <el-table-column

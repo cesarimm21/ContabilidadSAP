@@ -37,9 +37,12 @@ export default class  BCategoriaCuentaComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 400)       
   }
   load(){
     categoriacuentaService.GetAllCategoriaCuenta()
@@ -47,8 +50,10 @@ export default class  BCategoriaCuentaComponent extends Vue {
       this.categoriacuentaModel=[];       
       this.categoriacuentaModel1=[];       
       this.categoriacuentaModel=response;       
-      this.categoriacuentaModel1=response;       
+      this.categoriacuentaModel1=response; 
+      this.loading1=false;      
     }).catch(error=>{
+      this.loading1=false;    
       this.$message({
         showClose: true,
         type: 'error',
@@ -81,12 +86,9 @@ export default class  BCategoriaCuentaComponent extends Vue {
   }
 
   getProveedorSupplier(){
-
   }
-
   cambioCategoria(value){
     this.formularioBusqueda.proveedorSupplier=value;
-
   }
 
   seleccionar(row,index){
@@ -110,7 +112,6 @@ export default class  BCategoriaCuentaComponent extends Vue {
     this.categoriacuentaSelectModel=val;
   }
   checkPopup(){
-    debugger;
     this.$emit('categoriacuentaselecionado',this.categoriacuentaSelectModel);
   }
   closePopup(){
@@ -137,7 +138,6 @@ export default class  BCategoriaCuentaComponent extends Vue {
     }
   }
   filterstrAcctCateg_Cod(h,{column,$index}){
-    debugger;
     var column1 = column.label; 
     if(this.blnilterstrAcctCateg_Cod){
       this.Column=column1;
@@ -152,9 +152,7 @@ export default class  BCategoriaCuentaComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrAcctCateg_Desc(h,{column,$index}){
-    debugger;
-    
+  filterstrAcctCateg_Desc(h,{column,$index}){    
     if(this.blnilterstrAcctCateg_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -171,42 +169,7 @@ export default class  BCategoriaCuentaComponent extends Vue {
       categoriacuentaModel:[],
       categoriacuentaModel1:[],
       inputAtributo:'',
-      categorias: [{
-        id_categoria:0,
-        nombre: 'CODIGO',
-        label: 'CODIGO'
-      }, {
-        id_categoria:1,
-        nombre: 'ID',
-        label: 'ID'
-      },
-      {
-        id_categoria:2,
-        nombre: 'TITULO',
-        label: 'TITULO'
-      }
-    ],
-    dataTable:[{
-      CODIGO :'CC',
-      DESCRIPCION:'CENTRO DE COSTO',
-    },
-    {
-      CODIGO :'PY',
-      DESCRIPCION:'PROYECTO',
-    },
-    {
-      CODIGO :'FA',
-      DESCRIPCION:'ACTIVOS FIJO',
-    },
-    {
-      CODIGO :'ST',
-      DESCRIPCION:'ALMACEN',
-    },
-    {
-      CODIGO :'CB',
-      DESCRIPCION:'CUENTA DE BALANCE',
-    },
-    ]
-    };
+      loading1:true
+    }
   }
 }

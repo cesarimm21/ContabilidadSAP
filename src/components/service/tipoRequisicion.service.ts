@@ -15,6 +15,30 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  CrearTipoRequisicion(data){
+    return axios.post(CONFIG.API_URL+'tiporequisicion/create',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  UpdateTipoRequisicion(data){
+    return axios.post(CONFIG.API_URL+'tiporequisicion/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  EliminarTipoRequisicion(intIdTypeReq_ID){    
+    return axios.get(CONFIG.API_URL+'tiporequisicion/delete/'+intIdTypeReq_ID)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  DesactivarTipoRequisicion(data){
+    return axios.post(CONFIG.API_URL+'tiporequisicion/desactivar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

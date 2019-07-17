@@ -35,6 +35,7 @@ export default class ModificarPOComponent extends Vue {
     txtbuscar:string='';
     Column:string='';
     pagina: number =1;
+    strPO_NO:string;
     RegistersForPage: number = 100;
     totalRegistros: number = 100;
     vifprogress:boolean=false;
@@ -76,6 +77,7 @@ export default class ModificarPOComponent extends Vue {
    }
    handleCurrentChange(val:OrdenCompraModel){
     this.opSelect=val;    
+    this.strPO_NO=this.opSelect.strPO_NO;
     this.textosave='Orden Compra '+this.opSelect.strPO_NO;
    }
    getDateString(fecha:string){
@@ -111,8 +113,8 @@ export default class ModificarPOComponent extends Vue {
       }
       validad(){
         // alert(this.opSelect.strPO_NO)
-        if(this.opSelect.strPO_NO!=undefined){
-          ordenCompraService.getPOONE(this.opSelect.strPO_NO)
+        if(this.strPO_NO!=""){
+          ordenCompraService.getPOONE(this.strPO_NO)
           .then(respo=>{
             this.opSelect=respo;
             if(this.opSelect.strPO_NO!=undefined){
@@ -171,16 +173,14 @@ export default class ModificarPOComponent extends Vue {
         await loading.close();
       }
       DscItem(){        
-        console.log("desc",this.clickColumn)
         var data=this.sortByKeyDesc(this.OrdenCompra1,this.clickColumn) 
         this.OrdenCompra2=[];
         this.OrdenCompra2=data;
         this.OrdenCompra = this.OrdenCompra2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       
       }
-      btnBuscar(){
-        console.log(this.clickColumn);        
-        var data=this.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
+      btnBuscar(){     
+        var data=Global.like(this.OrdenCompra1,this.clickColumn,this.txtbuscar)
         this.OrdenCompra=[];
         this.OrdenCompra=data;
         this.dialogBusquedaFilter=false;
@@ -199,15 +199,6 @@ export default class ModificarPOComponent extends Vue {
       }
       EliminarItem(){
 
-      }
-      like(array, key,keyword) {    
-        var responsearr:any = []
-        for(var i=0;i<array.length;i++) {
-            if(array[i][key].toString().indexOf(keyword) > -1 ) {
-              responsearr.push(array[i])
-          }
-        }
-        return responsearr
       }
       sortByKeyDesc(array, key) {
         return array.sort(function (a, b) {
@@ -370,7 +361,8 @@ export default class ModificarPOComponent extends Vue {
             OrdenCompra1:[],
             OrdenCompra2:[],
             codigoCompania:'',
-            descripcionCompania:''
+            descripcionCompania:'',
+            strPO_NO:''
         }
     }
 }

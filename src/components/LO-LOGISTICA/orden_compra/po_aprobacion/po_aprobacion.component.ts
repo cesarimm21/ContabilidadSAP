@@ -208,8 +208,7 @@ export default class AprobarPOComponent extends Vue {
           this.dialogProveedor=false;
           this.btnactivarproveedor=false;
         }
-      }
-      //this.unidadmedidaModel=response;       
+      }     
     }).catch(error=>{
       this.$message({
         showClose: true,
@@ -260,6 +259,7 @@ export default class AprobarPOComponent extends Vue {
   }
   handleCurrentChange(val) {
     this.opSelect=val;
+    this.strPO_NO=this.opSelect.strPO_NO;
     if(val!=null){
       this.selectrow=val;      
       this.currentRow = val;
@@ -278,9 +278,6 @@ export default class AprobarPOComponent extends Vue {
       cell
     }
   }  
-  // getParseDate(fecha){
-  //   return Global.getParseDate(fecha);
-  // }
   getParseDate(fecha:string){
     var dateString = new Date(fecha);
     var dia = dateString.getDate();
@@ -316,8 +313,8 @@ export default class AprobarPOComponent extends Vue {
     }
   }
   validad(){
-    if(this.opSelect.strPO_NO!=undefined){
-      ordencompraService.getPOONEview(this.opSelect.strPO_NO)
+    if(this.strPO_NO!=""){
+      ordencompraService.getPOONEview(this.strPO_NO)
       .then(respo=>{
         this.opSelect=respo;            
         if(this.opSelect.strPO_NO!=undefined){
@@ -671,7 +668,8 @@ filterstrPO_NO(h,{column,$index}){
       accesosUser: [],
       hours: 0,
       minutos:0,
-      seconds:0
+      seconds:0,
+      strPO_NO:''
     }
   }
 }

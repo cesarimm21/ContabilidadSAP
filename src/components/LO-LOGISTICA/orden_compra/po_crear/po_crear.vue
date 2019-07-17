@@ -26,6 +26,7 @@
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input
+                                    :autofocus="true"
                                     class="validador"
                                     size ="small"
                                     @blur="desactivar_requisicion"
@@ -38,7 +39,7 @@
                                 <label class="el-form-item__label col-md-3" >Almacen</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" type="text" v-model="requiSelect.strWHS_Cod">
+                                    <el-input size ="small" type="text" v-model="requiSelect.strWHS_Cod" disabled>
                                     </el-input>
                                     </div>
                                 </div>
@@ -86,7 +87,7 @@
                                     <div class="input-group mb-3" >
                                         <el-input
                                         class="validador"
-                                         size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr">
+                                         size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="OrdenCompra.strPO_Curr" @keydown.native.enter="buscarMoneda()">
                                             <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button>
                                         </el-input>
                                     </div>
@@ -103,7 +104,7 @@
                                 <label class="el-form-item__label col-md-3" >Impuesto(IGV)</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="Impuesto.strWH_Cod" >
+                                        <el-input size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="OrdenCompra.strWH_Cod" @keydown.native.enter="btnBuscarImpuesto()">
                                             <el-button v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
                                         </el-input>
                                     </div>

@@ -39,9 +39,12 @@ export default class  BCategoriaLineaComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 400)  
   }
   load(){
     categorialineaService.GetAllCategoriaLinea()
@@ -49,8 +52,10 @@ export default class  BCategoriaLineaComponent extends Vue {
       this.categorialineaModel=[];       
       this.categorialineaModel1=[];       
       this.categorialineaModel=response;       
-      this.categorialineaModel1=response;       
+      this.categorialineaModel1=response; 
+      this.loading1=false;      
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
@@ -104,7 +109,6 @@ export default class  BCategoriaLineaComponent extends Vue {
     this.categorialineaSelectModel=val;
   }
   checkPopup(){
-    debugger;
     this.$emit('categorialineaselecionado',this.categorialineaSelectModel);
   }
   closePopup(){
@@ -162,6 +166,7 @@ export default class  BCategoriaLineaComponent extends Vue {
       categorialineaModel:[],
       categorialineaModel1:[],
       inputAtributo:'',     
+      loading1:true
   };
   }
 }

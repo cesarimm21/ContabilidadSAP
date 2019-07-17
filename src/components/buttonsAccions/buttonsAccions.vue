@@ -10,13 +10,13 @@
                                         <img class="imagenfilter" src="../../images/buscar.png" alt="" >
                                     </el-button>
                                     </el-tooltip>    
-                                    <el-tooltip class="itemTool" content="Eliminar" placement="bottom-start" effect="light"> 
+                                    <el-tooltip class="itemTool" content="Activar Item" placement="bottom-start" effect="light"> 
                                     <el-button class="buttonfilter btn btn-outline-secondary orange" @click="EliminarItem()" >
-                                        <img class="imagenfilter" src="../../images/tacho.png" alt="">
+                                        <img class="imagenfilter" src="../../images/desactive.png" alt="">
                                     </el-button>
                                     </el-tooltip>   
                                     <el-tooltip class="itemTool" content="Inactivar Item" placement="bottom-start" effect="light"> 
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="ActivarDesactivar()" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Activar()">
                                         <img class="imagenfilter" src="../../images/active_desactive.png" alt="">
                                     </el-button>
                                     </el-tooltip>   

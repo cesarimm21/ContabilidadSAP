@@ -194,6 +194,11 @@ import ModificarPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P02-
 import VisualizarPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/P03-Visualizar.vue'
 import ViewAndEditPaisComponent from '@/components/XX-CONFI/entidad/XA03-Pais/viewandedit_pais.vue'
 
+import CrearTipoRequisicionComponent from '@/components/XX-CONFI/logistica/tipo_requisicion/crear_tipo_requi.vue'
+import ModificarTipoRequisicionComponent from '@/components/XX-CONFI/logistica/tipo_requisicion/modificar_tipo_requi.vue'
+import VisualizarTipoRequisicionComponent from '@/components/XX-CONFI/logistica/tipo_requisicion/visualizar_tipo_requi.vue'
+import ViewAndEditTipoRequisicionComponent from '@/components/XX-CONFI/logistica/tipo_requisicion/viewandedit_tipo_requi.vue'
+
 
 
 import CrearCriticidadComponent from '@/components/XX-CONFI/maestro_datos/criticidad/crear_criticidad/crear_criticidad.vue'
@@ -1248,6 +1253,27 @@ export default [
         path:'XX-CONFI/entidad/XA03-Pais/viewandedit_pais',
         component:ViewAndEditPaisComponent,
         name:'viewandedit-pais'
+      }, 
+      //tipo requisicion
+      {
+        path:'XX-CONFI/logistica/tipo_requisicion/crear_tipo_requi',
+        component:CrearTipoRequisicionComponent,
+        name:'crear-tiporequisicion'
+      }, 
+      {
+        path:'XX-CONFI/logistica/tipo_requisicion/modificar_tipo_requi',
+        component:ModificarTipoRequisicionComponent,
+        name:'modificar-tiporequisicion'
+      }, 
+      {
+        path:'XX-CONFI/logistica/tipo_requisicion/visualizar_tipo_requi',
+        component:VisualizarTipoRequisicionComponent,
+        name:'visualizar-tiporequisicion'
+      }, 
+      {
+        path:'XX-CONFI/logistica/tipo_requisicion/viewandedit_tipo_requi',
+        component:ViewAndEditTipoRequisicionComponent,
+        name:'viewandedit-tiporequisicion'
       }, 
       {
         path:'XX-CONFI/maestro_datos/unidad_medida/crear_um',

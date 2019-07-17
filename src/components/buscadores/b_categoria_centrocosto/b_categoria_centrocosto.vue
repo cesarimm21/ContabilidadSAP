@@ -2,7 +2,7 @@
     <div>
        <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" >Hola Mundo</span>
+                <span class="labelheadercard" >Centro de Costos</span>
             </div>
             <div class="row bodycard">
                 <div class="col-md-12">
@@ -21,6 +21,10 @@
                 </div>
             </div>
             <el-table
+            v-loading="loading1"
+            element-loading-text="Cargando..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             :data="cuentacontableModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
