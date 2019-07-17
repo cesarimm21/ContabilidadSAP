@@ -206,7 +206,12 @@ export default class ModificarAlmacenComponent extends Vue {
     
   }
   async ActivarDesactivar(){
-    this.dialogInactivar=true;      
+    if(this.almacen.intIdWHS_ID!=-1 &&this.almacen.strWHS_Cod!=""){
+      this.dialogInactivar=true;  
+    }
+    else{
+      this.warningMessage('Debe de seleccionar una fila!!!');
+    }        
   }
   async btnInactivar(){
     this.nameuser=localStorage.getItem('User_Usuario');

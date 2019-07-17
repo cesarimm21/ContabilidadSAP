@@ -5,17 +5,15 @@ import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
 import {AlmacenModel} from '@/modelo/maestro/almacen';
-import {PlantaModel} from '@/modelo/maestro/planta';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import almacenService from '@/components/service/almacen.service';
-import BPlantaComponent from '@/components/buscadores/b_planta/b_planta.vue';
+import sucursalService from '@/components/service/sucursal.service';
 import BSucursalComponent from '@/components/buscadores/b_sucursal/b_sucursal.vue';
 import { SucursalModel } from '@/modelo/maestro/sucursal';
 @Component({
   name: 'viewandedit-almacen',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
-  'bplanta':BPlantaComponent,
   'bsucursal':BSucursalComponent,
   }
 })
@@ -28,8 +26,8 @@ export default class ViewAndEditAlmacenComponent extends Vue {
   textTitle:string='';
   enabledtf:boolean=false;
   public almacen:AlmacenModel=new AlmacenModel();
-  public planta:PlantaModel=new PlantaModel();
   public sucursal:SucursalModel=new SucursalModel();
+  public gridSucursal:SucursalModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -40,13 +38,14 @@ export default class ViewAndEditAlmacenComponent extends Vue {
   constructor(){    
         super();
         Global.nameComponent='viewandedit-almacen';
-        setTimeout(() => {
+        setTimeout(() => {  
             this.load();
           }, 200)
     }  
     load(){
-        this.companyName=localStorage.getItem('compania_name');
-        this.companyCod=localStorage.getItem('compania_cod'); 
+      this.companyName=localStorage.getItem('compania_name');
+      this.companyCod=localStorage.getItem('compania_cod'); 
+      this.loadSucursal();
         this.almacen= JSON.parse(this.$route.query.data); 
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
@@ -57,14 +56,45 @@ export default class ViewAndEditAlmacenComponent extends Vue {
             this.enabledtf=true;
             this.textTitle='Visualizar Almacen';
         }
+        if(this.almacen.strSubsidiary_Cod!=""){
+          var data=Global.like(this.gridSucursal,'strSubsidiary_Cod',this.almacen.strSubsidiary_Cod)
+            if(data.length>0&&this.almacen.strSubsidiary_Cod!=""){
+              this.sucursal=data[0];
+              this.almacen.intIdSubsidiary_ID=this.sucursal.intIdSubsidiary_ID;
+              this.almacen.strSubsidiary_Cod=this.sucursal.strSubsidiary_Cod;
+              this.almacen.strSubsidiary_Desc=this.sucursal.strSubsidiary_Desc;
+            }
+        }
 
     }  
+    buscarSucursal(){
+      var data=Global.like(this.gridSucursal,'strSubsidiary_Cod',this.almacen.strSubsidiary_Cod)
+      if(data.length>0&&this.almacen.strSubsidiary_Cod!=""){
+        this.sucursal=data[0];
+        this.almacen.intIdSubsidiary_ID=this.sucursal.intIdSubsidiary_ID;
+        this.almacen.strSubsidiary_Cod=this.sucursal.strSubsidiary_Cod;
+        this.almacen.strSubsidiary_Desc=this.sucursal.strSubsidiary_Desc;
+      }
+      else{
+        this.sucursal=new SucursalModel();
+        this.almacen.intIdSubsidiary_ID=-1;
+        this.almacen.strSubsidiary_Cod="";
+        this.almacen.strSubsidiary_Desc="";
+      }
+    }
     //#region [SUCURSAL]
     desactivar_sucursal(){
+      this.buscarSucursal();
       if(this.sucursalVisible){
         this.btnactivarsucursal=false;
       }
-  } 
+  }
+  loadSucursal(){
+    sucursalService.GetAllsucursal(this.companyCod)
+    .then(respo=>{
+      this.gridSucursal=respo;      
+    })
+  }
   activar_sucursal(){
       setTimeout(() => {
         this.btnactivarsucursal=true;
@@ -133,8 +163,6 @@ export default class ViewAndEditAlmacenComponent extends Vue {
                   message: 'Se actualizo Correctamente '+resp
                 });
                 this.almacen=new AlmacenModel();
-                this.planta=new PlantaModel();
-                this.sucursal=new SucursalModel();
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se actualizo correctamente. '+resp;
@@ -186,7 +214,8 @@ export default class ViewAndEditAlmacenComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            textTitle:''
+            textTitle:'',
+            gridSucursal:[]
           }
     }
   
