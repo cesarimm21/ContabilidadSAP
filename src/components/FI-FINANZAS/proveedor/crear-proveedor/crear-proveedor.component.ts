@@ -16,7 +16,7 @@ import departamentoService from '@/components/service/departamento.service';
 import monedaService from '@/components/service/moneda.service';
 import categoriaService from '@/components/service/categoria.service';
 import impuestoService from '@/components/service/impuesto.service';
-import cuentaContableService from '@/components/service/cuentacontable.service';
+import cuentacontableService from '@/components/service/cuentacontable.service';
 import paisService from '@/components/service/pais.service';
 import BDocumentoComponent from '@/components/buscadores/b_tipoDocumento/b_tipoDocumento.vue';
 import BBancoProveedor from '@/components/buscadores/b_banco/b_banco.vue';
@@ -195,7 +195,7 @@ export default class CrearProveedorComponent extends Vue {
   }
 // [Cuenta contable]
   GetAllCuentaContable(){
-    cuentaContableService.GetAllCuentaContable()
+    cuentacontableService.GetAllCuentaContable()
     .then(response=>{
       this.cuenta=response;
       this.Proveedor.strAcc_Local_NO=this.cuenta[0].strAcc_Local_NO;  
