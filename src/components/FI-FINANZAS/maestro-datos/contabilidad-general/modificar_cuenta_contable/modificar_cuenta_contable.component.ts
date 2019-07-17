@@ -207,10 +207,10 @@ export default class ModificarCuentaContableComponent extends Vue {
       this.txtmodulo='Visualizar  Cuenta Contable';
       this.visualizar=true;
     }
-    this.cargar(object.strAcc_Local_NO);
+    this.cargar(object.strAcc_Local_NO,object.strCompany_Cod);
   }
-  cargar(code){
-    cuentaContableService.GetCuentaContableID(code)
+  cargar(code,compania){
+    cuentaContableService.GetCuentaContableID(code,compania)
     .then(res=>{
       if(res!=undefined){
         console.log('cargarData1',res)
@@ -249,7 +249,7 @@ export default class ModificarCuentaContableComponent extends Vue {
         // this.cuentacontable.strCurrency_Cod=res[0].tdi_strCurrency_Cod;
         // this.cuentacontable.strModified_User=res[0].tdi_strModified_User;
         // this.cuentacontable.strCompany_Cod=res[0].tblCompania_strCompany_Cod;
-        this.cuentacontable=res[0]
+        this.cuentacontable=res
         this.strlevelTipo= this.cuentacontable.strAcc_Level;
         
         // this.cuentacontable.strCompany_Name=res[0].tblCompania_strCompany_Name;
@@ -528,12 +528,15 @@ export default class ModificarCuentaContableComponent extends Vue {
     this.cuentacontable.strAcc_Categ_Cod=this.strlevel;
     this.cuentacontable.strAcc_Level=this.strlevelTipo;
     this.cuentacontable.blnAcc_Status_Open=this.strAcc_Status_Open=='A'?true:false;
+    var user:any=localStorage.getItem('User_Usuario');
 
     for(var i=0;i<this.tabletipo.length;i++){
       if(this.tabletipo[i].strType_Cod==this.strlevel){
         this.cuentacontable.strAcc_Categ_Desc=this.tabletipo[i].strType_Desc;
       }
     }
+    this.cuentacontable.strCreation_User=user;
+    this.cuentacontable.strModified_User=user;
 
     cuentaContableService.UpdateCuentaContableID(this.cuentacontable)
     .then(response=>{

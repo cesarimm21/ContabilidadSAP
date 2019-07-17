@@ -113,32 +113,31 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
   async cargarList(){
     debugger;
     var data:any=this.formBusqueda;
-    
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     if(data.strGrpAcctCont_Cod==''){
       data.strGrpAcctCont_Cod='*';
     }
 
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-    }
     await grupocuentacontableService.getBusqueda(data.strCompany_Cod,data.strGrpAcctCont_Cod)
     .then(res=>{
       debugger;
-      for(var i=0;i<50;i++){
-        this.valuem++; 
-      }
+      
+      loading.close();
       console.log(res);
-      if(this.valuem>=100){
-        setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
-      }
+      console.log('/****************Busqueda***************/')
+      console.log(res)
+      this.tableData=res;
+      this.vifprogress=false;
+      
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   async Buscar(){
@@ -349,6 +348,17 @@ export default class VisualizarModificarGrupoCuentaContableComponent extends Vue
   LoadProveedor(){
     this.dialogProveedor=true;      
   }
+    
+  getDateStringView(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
+  }
+
   data(){
     return{
       dialogTableVisible: false,

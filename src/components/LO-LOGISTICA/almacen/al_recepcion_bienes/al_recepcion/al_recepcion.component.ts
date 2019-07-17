@@ -682,7 +682,7 @@ export default class RecepcionMaterialComponent extends Vue {
               var itemd:OrdenCompraDetalleModel=resd[0];
               this.dtmFechaGuiaTransportista=itemd.dtmGuiaTrans_Date;
               this.dtmFechaRecepcion=itemd.dtmGuiaRem_Date;
-              //this.requiDetalle1=resd;
+              //this.requiDetalle1=resd ;
               for(var i=0;i<resd.length;i++){
                 var item:any;
                 item=resd[i];

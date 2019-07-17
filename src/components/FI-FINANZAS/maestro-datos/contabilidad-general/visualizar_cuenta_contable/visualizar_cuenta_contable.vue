@@ -68,7 +68,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:ActivarDesactivar="ActivaDesactivar()"></buttons-accions>
                             </div>
                             
                             <div class="col-md-12" >
@@ -76,6 +76,7 @@
                                     <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
+                                        @row-dblclick="validarView"
                                         :data="tableData" 
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
@@ -89,7 +90,7 @@
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
-                                            prop="strAcc_Local_Name" sortable  
+                                            prop="strAcc_Local_Name" sortable  width="250"
                                             label="Descripcion">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" @click="clickcategorialinea(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strAcc_Local_Name }}</label>
@@ -114,6 +115,26 @@
                                             label="Grupo">
                                             <template scope="scope">
                                                 <label style="width:100%" @click="clickmaterialdescripcion(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strExpGroup_Cod }}</label>
+                                            </template>
+                                        </el-table-column>
+                                         <el-table-column :render-header="filterdtmCreation_Date"
+                                            prop="dtmModified_Date"   min-width="80"
+                                            label="Fecha">
+                                            <template scope="scope">
+                                                <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column :render-header="filterstrCreation_User"
+                                            prop="strModified_User" 
+                                            label="Usuario">
+                                        </el-table-column>
+                                        <el-table-column 
+                                            prop="chrStatus" align="center"  width="100"
+                                            label="Estado">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -154,6 +175,7 @@
       <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event);" v-on:companiaClose="companiaClose($event);" >
       </bcompania>
     </el-dialog>
+   
 </div>  
   
 </template>

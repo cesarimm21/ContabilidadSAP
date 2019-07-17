@@ -44,9 +44,9 @@
                                 </div>
                             </div>    
                             <div class="form-group row">
-                                <label class="el-form-item__label col-md-1" >Pais</label>
-                                <div class="col-md-1 grupolabel">
-                                    <div class="input-group mb-1" >
+                                <label class="el-form-item__label col-md-2" >Pais</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
                                         <el-input class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="region.strCountry_Cod">                            
                                             <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                         </el-input>

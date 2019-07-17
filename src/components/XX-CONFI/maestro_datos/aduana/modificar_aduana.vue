@@ -25,7 +25,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo</label>
+                                <label class="el-form-item__label col-md-2" >Cod Aduana</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="documento.strCustom_Cod" style="text-transform: capitalize" type="text" >  
@@ -53,17 +53,18 @@
                             class="ExcelTable2007"
                             @header-click="headerclick"
                             @current-change="handleCurrentChange"
+                            @row-dblclick="validarView"
                             >
-                            <el-table-column type="index" width="45">                                
+                            <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrCustom_Cod"
-                            prop="strCustom_Cod" label="Codigo" width="100" align="center">                                
+                            prop="strCustom_Cod" label="Cod Aduana" width="100" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrCustom_Desc"
                              prop="strCustom_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterdtmCreation_Date"
-                                prop="dtmCreation_Date"   min-width="80"
+                                prop="dtmCreation_Date"   width="80"
                                 label="Fecha Creada">
                                 <template scope="scope">
                                     <span>{{ getDateStringView(scope.row.dtmCreation_Date) }}</span>

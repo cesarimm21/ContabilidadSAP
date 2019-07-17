@@ -83,21 +83,81 @@ export default class CrearGrupoCuentaContableComponent extends Vue {
   //#endregion
   
   guardarTodo(){
-    grupocuentacontableService.CrearGrupoCuenta(this.grupoCuentaContableModel)
-    .then(response=>{
-      this.issave=true;
-      this.textosave='Se guardo correctamente.'
-      this.grupoCuentaContableModel.strGrpAcctCont_Cod='';
-      this.grupoCuentaContableModel.strGrpAcctCont_Desc='';
-      this.grupoCuentaContableModel.strComp_Cod='';
-      this.grupoCuentaContableModel.strComp_Desc='';
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo guardar producto'
-      });
-    })
+    debugger;
+    this.issave=false;
+    this.iserror = false;
+    this.textosave='';
+  
+    if(this.grupoCuentaContableModel.strGrpAcctCont_Cod==''){ this.$message('Complete los campos obligatorios');return false;}
+    if(this.grupoCuentaContableModel.strGrpAcctCont_Desc==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.grupoCuentaContableModel.strComp_Cod==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.grupoCuentaContableModel.strGrpAcct_Pos==''){ this.$message('Complete los campos obligatorios');return false;}  
+
+    else{
+      var user:any=localStorage.getItem('User_Usuario');
+      this.grupoCuentaContableModel.strCreation_User=user;
+      let loading = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );
+      grupocuentacontableService.getBusqueda(this.grupoCuentaContableModel.strGrpAcctCont_Cod,this.grupoCuentaContableModel.strCompany_Cod)
+      .then(response=>{
+        debugger;
+        if(response.length==0){
+          grupocuentacontableService.CrearGrupoCuenta(this.grupoCuentaContableModel)
+          .then(response=>{
+            
+              loading.close(); 
+              debugger;
+              
+              this.issave=true;
+              this.iserror = false;
+              this.textosave='Se guardo correctamente '+ this.grupoCuentaContableModel.strGrpAcctCont_Cod;
+              this.grupoCuentaContableModel.strGrpAcctCont_Cod='';
+              this.grupoCuentaContableModel.strGrpAcctCont_Desc='';
+              this.grupoCuentaContableModel.strGrpAcct_Pos='';
+              this.grupoCuentaContableModel.strComp_Cod='';
+            }).catch(error=>{
+              this.textosave='No se pudo guardar grupo cuenta';
+              this.issave=false;
+              this.iserror = true;
+              loading.close(); 
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: 'No se pudo guardar grupo cuenta'
+              });
+            })
+        }
+        else{
+          loading.close(); 
+      
+          this.textosave='El grupo ya existe';
+          this.issave=false;
+          this.iserror = true;
+          this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'El grupo ya existe'
+          });
+        }
+      
+      }).catch(error=>{
+        loading.close(); 
+        
+        this.textosave='No se pudo guardar grupo cuenta';
+        this.issave=false;
+        this.iserror = true;
+        this.$message({
+          showClose: true,
+          type: 'error',
+          message: 'No se pudo guardar grupo cuenta'
+        });
+      })
+    }
   }
 
   componenteselecionado(val){
