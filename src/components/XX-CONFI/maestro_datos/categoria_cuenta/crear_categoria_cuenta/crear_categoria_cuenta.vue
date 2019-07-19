@@ -35,8 +35,8 @@
                             </div>    
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
+                                <div class="col-md-6 grupolabel">
+                                    <div class="input-group mb-6" >
                                     <el-input class="validador" size ="small" v-model="categoriacuenta.strAcctCateg_Desc"  type="text">  
                                     </el-input>
                                     </div>

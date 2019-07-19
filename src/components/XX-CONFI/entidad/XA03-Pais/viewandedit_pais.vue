@@ -42,12 +42,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="el-form-item__label col-sm-2" >Idioma</label>
-                                <div class="col-sm-4 grupolabel">
+                            <div  class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Idioma</label>
+                                <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="pais.strLanguage" :disabled="enabledtf" >
-                                        </el-input>
+                                    <el-input size ="small" @blur="desactivar_idioma" @focus="activar_idioma" v-model="pais.strLanguage">                            
+                                        <el-button v-if="btnactivaridioma && !idiomaVisible" slot="append" class="boton" icon="fa fa-clone" @click="idiomaDialog()"></el-button> 
+                                    </el-input>
                                     </div>
                                 </div>
                             </div>       
@@ -96,7 +97,12 @@
     <el-dialog title="Busqueda moneda"  :visible.sync="monedaVisible" @close="handleCloseMoneda" size="small" >
         <bmoneda v-on:MonedaSeleccionado="monedaSelect($event)" v-on:closeMoneda="handleCloseMoneda()">
         </bmoneda>
-    </el-dialog>     
+    </el-dialog>   
+     <!--DIALOG BUSQUEDA Idioma-->
+    <el-dialog title="Busqueda idioma"  :visible.sync="idiomaVisible" @close="handleCloseIdioma" size="small" >
+        <bidioma v-on:idiomaseleccionado="idiomaSelect($event)" v-on:closeIdioma="handleCloseIdioma()">
+        </bidioma>
+    </el-dialog>   
     </div>  
 </template>
 <script>

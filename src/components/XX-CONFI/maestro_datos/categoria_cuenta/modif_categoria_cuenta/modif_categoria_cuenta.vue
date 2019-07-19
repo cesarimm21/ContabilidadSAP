@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Categoria Cuenta</span>
+                <span class="labelheadercard" > {{txtmodulo}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -35,8 +35,8 @@
                             </div>    
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
+                                <div class="col-md-6 grupolabel">
+                                    <div class="input-group mb-6" >
                                     <el-input class="validador" :disabled="visualizar" size ="small" v-model="categoriacuenta.strAcctCateg_Desc"  type="text">  
                                     </el-input>
                                     </div>

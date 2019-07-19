@@ -232,38 +232,8 @@ export default class VisuCompaniaComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-    this.dialogEliminar=true; 
+    this.warningMessage('Accion no permitida')
   }    
-  async btnEliminar(){
-    await companiaService.EliminarCompania(this.currentRow)
-    .then(response=>{
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strCompany_Cod;
-         this.issave=true;
-         this.iserror=false;
-      }
-      else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
-      }
-      this.cargarList();
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-    
-  }
   //#region [CABECERA]
   headerclick(val){    
     this.Column=val.label;

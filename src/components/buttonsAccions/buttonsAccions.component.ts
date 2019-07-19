@@ -18,16 +18,16 @@ import { Notification } from 'element-ui';
 })
 export default class ButtonsAccionsComponent extends Vue { 
   filter:boolean=false;
-  falseortrue:boolean;
-  falseortruePO:boolean;
+  falseortrue:boolean=false;
+  falseortruePO:boolean=false;
   constructor(){
-    super();
+    super();    
     switch(Global.nameComponent){
-      case 'imprimir-po': this.falseortruePO=true;
+      case 'imprimir-po': this.falseortruePO=true; 
       break;
       case 'factura':this.falseortrue=true;
       break;
-      default:
+      default:          
       this.falseortrue=false;
       this.falseortruePO=false;
     }
@@ -63,11 +63,11 @@ export default class ButtonsAccionsComponent extends Vue {
   ValidarItem(){
     this.$emit('validarView');
   }
-  EliminarItem(){
+  Inactivar(){
     this.$emit('EliminarItem');
   }
   Activar(){
-    this.$emit('ActivarDesactivar');
+    this.$emit('Activar');
   }
   siguiente(){
     this.$emit('siguiente');
@@ -111,7 +111,8 @@ export default class ButtonsAccionsComponent extends Vue {
       hours: 0,
       minutos:0,
       seconds:0,
-      falseortruePO:false
+      falseortruePO:false,
+      falseortrue:false
     }
   }
   

@@ -173,6 +173,16 @@ import ModificarPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/pla
 import VisualizarPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/visualizar_planlocal.vue'
 import ViewAndEditPlanLocalComponent from '@/components/XX-CONFI/maestro_datos/plan_con_local/viewandedit_planlocal.vue'
 
+import CrearPlanCoorporativoComponent from '@/components/XX-CONFI/maestro_datos/plan_con_coorp/crear_plancoorp.vue'
+import ModificarPlanCoorporativoComponent from '@/components/XX-CONFI/maestro_datos/plan_con_coorp/modificar_plancoorp.vue'
+import VisualizarPlanCoorporativoComponent from '@/components/XX-CONFI/maestro_datos/plan_con_coorp/visualizar_plancoorp.vue'
+import ViewAndEditPlanCoorporativoComponent from '@/components/XX-CONFI/maestro_datos/plan_con_coorp/viewandedit_plancoorp.vue'
+
+import CrearIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma/crear_idioma.vue'
+import ModificarIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma/modificar_idioma.vue'
+import VisualizarIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma/visualizar_idioma.vue'
+import ViewAndEditIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma/viewandedit_idioma.vue'
+
 
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
@@ -1321,6 +1331,48 @@ export default [
         component:ViewAndEditPlanLocalComponent,
         name:'viewandedit-planconlocal'
       }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_coorp/crear_plancoorp',
+        component:CrearPlanCoorporativoComponent,
+        name:'crear-planconcoorporativo'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_coorp/modificar_plancoorp',
+        component:ModificarPlanCoorporativoComponent,
+        name:'modificar-planconcoorporativo'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_coorp/visualizar_plancoorp',
+        component:VisualizarPlanCoorporativoComponent,
+        name:'visualizar-planconcoorporativo'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/plan_con_coorp/viewandedit_plancoorp',
+        component:ViewAndEditPlanCoorporativoComponent,
+        name:'viewandedit-planconcoorporativo'
+      }, 
+      //idioma
+      {
+        path:'XX-CONFI/maestro_datos/idioma/crear_idioma',
+        component:CrearIdiomaComponent,
+        name:'crear-idioma'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/idioma/modificar_idioma',
+        component:ModificarIdiomaComponent,
+        name:'modificar-idioma'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/idioma/visualizar_idioma',
+        component:VisualizarIdiomaComponent,
+        name:'visualizar-idioma'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/idioma/viewandedit_idioma',
+        component:ViewAndEditIdiomaComponent,
+        name:'viewandedit-idioma'
+      }, 
+
       //metodo de evaluacion
       {
         path:'XX-CONFI/logistica/metodo_eva/crear_metodo_eva',

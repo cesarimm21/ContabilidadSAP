@@ -74,8 +74,11 @@ export default class ModificarCategoriaLineaComponent extends Vue {
         })
     }
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){
         if(this.categorialinea.strCategItem_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
+            var user:any=localStorage.getItem('User_Usuario');
+            this.categorialinea.strModified_User=user;    
             let loadingInstance = Loading.service({
                 fullscreen: true,
                 text: 'Guardando...',
@@ -90,12 +93,11 @@ export default class ModificarCategoriaLineaComponent extends Vue {
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strCategItem_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strCategItem_Cod;
-                this.categorialinea=new CategoriaLineaModel();
+                this.textosave = 'Se guardo correctamente. '+resp;
             }).catch(error=>{
                 loadingInstance.close();
                 this.$message({
@@ -108,6 +110,14 @@ export default class ModificarCategoriaLineaComponent extends Vue {
                 this.textosave = 'Error al guardar.';
             })
         }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
         
     } 
     fnOcultar(){

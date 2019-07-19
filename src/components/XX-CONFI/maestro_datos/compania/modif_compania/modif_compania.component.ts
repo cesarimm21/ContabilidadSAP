@@ -120,8 +120,7 @@ export default class ModificarCompaniaComponent extends Vue {
             this.strCurr_Grp=this.compania.strCurr_Grp;
             this.strCurr_Funct=this.compania.strCurr_Funct;
             this.gridSelectPais.strCountry_Cod=this.compania.strCountry;
-            this.GetAllDepartamento(this.compania.strCountry)            
-                      
+            this.GetAllDepartamento(this.compania.strCountry)
         })
         .catch(error=>{
             this.$message({
@@ -153,8 +152,16 @@ export default class ModificarCompaniaComponent extends Vue {
             this.compania.strCurr_Grp=this.strCurr_Grp;
             this.compania.strCurr_Funct=this.strCurr_Funct;
             this.compania.strModified_User=user;
+            let loadingInstance = Loading.service({
+              fullscreen: true,
+              text: 'Actualizando...',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.8)'
+              }
+             );  
             companiaService.UpdateCompania(this.compania)
             .then(resp=>{
+              loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -163,10 +170,9 @@ export default class ModificarCompaniaComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strCompany_Cod;
-                this.strCurr_Loc="";
-                this.strCurr_Grp="";
-                this.strCurr_Funct="";
+
             }).catch(error=>{
+              loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',

@@ -7,10 +7,10 @@ import router from '@/router';
 import {TipoDocIdentidadModel} from '@/modelo/maestro/tipodocidentidad';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import tipodocService from '@/components/service/tipodocidentidad.service';
+import doctransService from '@/components/service/tipodocidentidad.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'visualizar-docidentidad',
+  name: 'visualizar-doc-identidad',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
@@ -25,8 +25,8 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
-  public documento:TipoDocIdentidadModel=new TipoDocIdentidadModel();
   strDocIdent_NO:string='';
+  public documento:TipoDocIdentidadModel=new TipoDocIdentidadModel();
   gridDocumento:TipoDocIdentidadModel[];
   gridDocumento1:TipoDocIdentidadModel[];
   gridDocumento2:TipoDocIdentidadModel[];
@@ -41,12 +41,14 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
   Column:string='';
   dialogBusquedaFilter:boolean=false;
   blnilterstrDocIdent_NO:boolean=false;
-  blnilterstrDocIdent_Name:boolean=false;
+  blnilterstrDocIdent_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='visualizar-docidentidad';
+        Global.nameComponent='visualizar-doc-identidad';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -54,7 +56,7 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        tipodocService.GetAllTipoDocumento()
+        doctransService.GetAllTipoDocumentoView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -62,6 +64,9 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -75,22 +80,13 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
     }
     handleCurrentChange(val:TipoDocIdentidadModel){
       this.documento=val;
+      this.strDocIdent_NO=this.documento.strDocIdent_NO;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -146,23 +142,25 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
     Limpiar(){
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrDocIdent_NO=false;
-      this.blnilterstrDocIdent_Name=false; 
+      this.blnilterstrDocIdent_Desc=false;
       this.blnilterdtmModified_Date=false;
-      this.blnilterstrModified_User=false;  
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-      this.warningMessage('Accion no permitida')
+    this.warningMessage("Accion no permitida")  
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida") 
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDocIdent_NO',this.strDocIdent_NO)
+    var data=Global.like(this.gridDocumento1,'strDocIdent_NO',this.strDocIdent_NO)
     if(data.length>0){
       this.documento=data[0];
       if(this.documento.strDocIdent_NO==this.strDocIdent_NO){
         await setTimeout(() => {
-          debugger;
           if(this.documento.strDocIdent_NO!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_docIndentidad/viewandedit_docIndentidad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -182,7 +180,7 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
     else{
       this.textosave='No existe Tipo Doc. Identidad. ';
       this.warningMessage('No existe Tipo Doc. Identidad. ');
-    }   
+    }
   }
    async validarView(){
       if(this.documento.intIdDocIdent_ID!=-1){
@@ -224,30 +222,30 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
       if(val.property=="strDocIdent_NO"){
           this.clickColumn="strDocIdent_NO";
           this.blnilterstrDocIdent_NO=true;
-          this.blnilterstrDocIdent_Name=false; 
-          this.blnilterdtmModified_Date=false;
-          this.blnilterstrModified_User=false;  
+      this.blnilterstrDocIdent_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strDocIdent_Name"){
-          this.clickColumn="strDocIdent_Name";
+      if(val.property=="strDocIdent_Desc"){
+          this.clickColumn="strDocIdent_Desc";
           this.blnilterstrDocIdent_NO=false;
-          this.blnilterstrDocIdent_Name=true; 
-          this.blnilterdtmModified_Date=false;
-          this.blnilterstrModified_User=false; 
+      this.blnilterstrDocIdent_Desc=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="dtmModified_Date"){
           this.clickColumn="dtmModified_Date";
           this.blnilterstrDocIdent_NO=false;
-          this.blnilterstrDocIdent_Name=false; 
-          this.blnilterdtmModified_Date=true;
-          this.blnilterstrModified_User=false; 
+      this.blnilterstrDocIdent_Desc=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strModified_User"){
           this.clickColumn="strModified_User";
           this.blnilterstrDocIdent_NO=false;
-          this.blnilterstrDocIdent_Name=false; 
-          this.blnilterdtmModified_Date=false;
-          this.blnilterstrModified_User=true; 
+      this.blnilterstrDocIdent_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrDocIdent_NO(h,{column,$index}){
@@ -260,8 +258,8 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrDocIdent_Name(h,{column,$index}){        
-      if(this.blnilterstrDocIdent_Name){
+    filterstrDocIdent_Desc(h,{column,$index}){        
+      if(this.blnilterstrDocIdent_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -305,10 +303,10 @@ export default class VisualizarTDocIdentidadComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            strDocIdent_NO:'',
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strDocIdent_NO:''
         }
     }
   

@@ -42,6 +42,8 @@ export default class CrearPlanLocalComponent extends Vue {
     guardarComprobante(){
       var user:any=localStorage.getItem('User_Usuario');
       this.planconlocal.strCreation_User=user;
+      this.planconlocal.strCompany_Cod=this.companyCod;
+      this.planconlocal.strCompany_Desc=this.companyName;
       let loadingInstance = Loading.service({
           fullscreen: true,
           text: 'Guardando...',

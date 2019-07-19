@@ -29,7 +29,7 @@
                                 <label class="el-form-item__label col-md-2" >Num Transaccion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador"  size ="small" v-model="documentotransaccion.strDoc_Trans_Num"  type="text">  
+                                    <el-input class="validador"  size ="small" v-model="documentotransaccion.strDoc_Trans_Num"  type="text" :disabled="visualizar">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="documentotransaccion.strDoc_Trans_Desc"  >
+                                        <el-input class="validador" size="small" v-model="documentotransaccion.strDoc_Trans_Desc" :disabled="visualizar" >
                                         </el-input>
                                     </div>
                                 </div>

@@ -55,7 +55,7 @@ export default class VisualizarPOComponent extends Vue {
     public opSelect: OrdenCompraModel=new OrdenCompraModel();
     constructor() {
         super();
-        Global.nameComponent = 'modificar-po';           
+        Global.nameComponent = 'visualizar-po';           
         setTimeout(() => {
             this.loadPO();
         }, 200)

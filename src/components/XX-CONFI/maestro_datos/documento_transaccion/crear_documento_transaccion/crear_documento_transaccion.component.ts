@@ -54,6 +54,7 @@ export default class CrearTipoMovimientoComponent extends Vue {
             this.documentotransaccion.strCreation_User=this.nameuser;
             documentotransaccionService.CrearDocumentoTransaccion(this.documentotransaccion)
             .then(resp=>{
+              this.documentotransaccion=new DocumentoTransacionModel();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -61,8 +62,7 @@ export default class CrearTipoMovimientoComponent extends Vue {
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strDoc_Trans_Cod;
-                this.documentotransaccion=new DocumentoTransacionModel();
+                this.textosave = 'Se guardo correctamente. '+resp.strDoc_Trans_Cod;                
                 loadingInstance.close();
             }).catch(error=>{
                 this.$message({

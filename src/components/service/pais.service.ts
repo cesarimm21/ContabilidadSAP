@@ -40,4 +40,16 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  inactivarPais(documento){
+    return axios.post(CONFIG.API_URL+'pais/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarPais(documento){
+    return axios.post(CONFIG.API_URL+'pais/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

@@ -54,6 +54,8 @@ export default class CrearCorrelativoComponent extends Vue {
             );   
             this.correlativo.chrStatus='A';
             this.correlativo.strCreation_User=this.nameuser;
+            this.correlativo.strCompany_Cod=this.companyCod;
+            this.correlativo.strCompany_Desc=this.companyName;
             correlativoService.CrearCorrelativo(this.correlativo)
             .then(resp=>{
                 this.$message({

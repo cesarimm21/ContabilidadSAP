@@ -65,7 +65,7 @@
                                 <label class="el-form-item__label col-sm-2" >Documento Origen</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.fltOrigenDocum_NO"  >
+                                        <el-input class="validador" size="small" v-model="correlativo.fltOrigenDocum_NO" type="number" >
                                         </el-input>
                                     </div>
                                 </div>

@@ -36,7 +36,7 @@
                             </div>    
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
+                                <div class="col-md-4 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="region.strRegion_Desc"  type="text">  
                                     </el-input>
@@ -52,6 +52,7 @@
                                         </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-2" >{{region.strCountry_Name}}</label>
                             </div>            
                         </div>
                     </div>
@@ -93,5 +94,8 @@ import CrearRegionComponent from '@/components/XX-CONFI/maestro_datos/region/cre
 export default CrearRegionComponent
 </script>
 <style scoped>
-    
+.sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+}
 </style>

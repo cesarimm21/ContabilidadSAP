@@ -46,6 +46,7 @@ export default class VisualizarPaisComponent extends Vue {
   blnilterstrCountry_Curr:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  loading1:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-pais';
@@ -64,6 +65,9 @@ export default class VisualizarPaisComponent extends Vue {
           this.gridPais=response;
           this.gridPais1=response;
           this.gridPais2=response;
+          this.loading1=false;
+        }).catch(er=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -149,6 +153,9 @@ export default class VisualizarPaisComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
+    this.warningMessage('Accion no permitida')
+  }
+  async  Activar(){
     this.warningMessage('Accion no permitida')
   }
   async validad(){      
@@ -348,7 +355,8 @@ export default class VisualizarPaisComponent extends Vue {
             gridPais:[],
             gridPais1:[],
             gridPais2:[],
-            strCountry_Cod:''
+            strCountry_Cod:'',
+            loading1:true
         }
     }
   

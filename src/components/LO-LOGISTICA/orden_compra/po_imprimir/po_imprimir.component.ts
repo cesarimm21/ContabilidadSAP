@@ -59,13 +59,14 @@ export default class ImprimirPOComponent extends Vue {
     public proveedor:ProveedorModel=new ProveedorModel();
     public opSelect: OrdenCompraModel=new OrdenCompraModel();
     constructor() {
-        super();
-        Global.nameComponent = 'imprimir-po';           
-        setTimeout(() => {
+        super();     
+        Global.nameComponent='imprimir-po';             
+        setTimeout(() => {          
             this.loadPO();
         }, 200)
     }
    loadPO(){
+    
     this.codigoCompania=localStorage.getItem('compania_cod');
     this.descripcionCompania=localStorage.getItem('compania_name');
     this.textTitle='Visualizar'

@@ -11,7 +11,6 @@ import { Notification } from 'element-ui';
 import departamentoService from '@/components/service/departamento.service';
 import {PaisModel} from '@/modelo/maestro/pais';
 import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
-
 @Component({
   name: 'crear-region',
   components:{
@@ -58,18 +57,17 @@ export default class CrearRegionComponent extends Vue {
                 background: 'rgba(0, 0, 0, 0.8)'
                 }
             );   
-            this.region.chrStatus='A';
             this.region.strCreation_User=this.nameuser;
             departamentoService.CreateDepartamento(this.region)
             .then(resp=>{
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strRegion_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strRegion_Cod;
+                this.textosave = 'Se guardo correctamente. '+resp;
                 this.region=new DepartamentoModel();
                 loadingInstance.close();
             }).catch(error=>{

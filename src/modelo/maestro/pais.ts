@@ -11,7 +11,7 @@ export class PaisModel {
     dtmModified_Date:Date;
     chrStatus:string;
     constructor(){
-        this.intIdCountry_ID=0;
+        this.intIdCountry_ID=-1;
         this.strCountry_Cod='';
         this.strCountry_Name='';
         this.strLanguage='';

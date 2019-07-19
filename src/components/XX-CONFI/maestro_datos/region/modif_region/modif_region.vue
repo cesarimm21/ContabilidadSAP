@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Region</span>
+                <span class="labelheadercard" > {{txtmodulo}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -38,7 +38,7 @@
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="region.strRegion_Desc"  type="text">  
+                                    <el-input class="validador" size ="small" v-model="region.strRegion_Desc"  type="text" :disabled="visualizar">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -47,11 +47,12 @@
                                 <label class="el-form-item__label col-md-2">Pais</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="region.strCountry_Cod">                            
+                                        <el-input class="validador" size ="small" @blur="desactivar_Pais" @focus="activar_Pais" v-model="region.strCountry_Cod" :disabled="visualizar">                            
                                             <el-button v-if="btnactivarpais && !paisVisible" slot="append" class="boton" icon="fa fa-clone" @click="paisDialog()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
+                                <label class="sinLinea el-form-item__label col-md-2" >{{region.strCountry_Name}}</label>
                             </div>            
                         </div>
                     </div>
@@ -92,5 +93,8 @@ import ModificarRegionComponent from '@/components/XX-CONFI/maestro_datos/region
 export default ModificarRegionComponent
 </script>
 <style scoped>
-    
+.sinLinea{
+  border-bottom: 1px solid #f6f7f9;
+  color: #1f2d3d; 
+}
 </style>

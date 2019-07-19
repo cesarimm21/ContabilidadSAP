@@ -29,13 +29,13 @@
                                 <label class="el-form-item__label col-md-2" >Num Transaccion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documentotransaccion.strDoc_Trans_Num"  type="text">  
+                                    <el-input :autofocus="true" class="validador" size ="small" v-model="documentotransaccion.strDoc_Trans_Num"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>    
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Tipo Documento</label>
+                                <label class="el-form-item__label col-md-2" >Transaccion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="documentotransaccion.strDoc_Trans_Cod"  type="text">  
@@ -46,7 +46,7 @@
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
                                 <div class="col-sm-6 grupolabel">
-                                    <div class="input-group mb-3" >
+                                    <div class="input-group mb-5" >
                                         <el-input class="validador" size="small" v-model="documentotransaccion.strDoc_Trans_Desc"  >
                                         </el-input>
                                     </div>

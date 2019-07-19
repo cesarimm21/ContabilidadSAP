@@ -11,6 +11,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCategoriaCuentaView(){      
+    return axios.get(CONFIG.API_URL+'categoriacuenta/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneCategoriaCuenta(code){
     return axios.get(CONFIG.API_URL+'categoriacuenta/'+code)
     .then(response =>{           
@@ -32,6 +38,18 @@ export default{
   },
   Eliminarcategoriacuenta(data){
     return axios.post(CONFIG.API_URL+'categoriacuenta/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  inactivarcategoriacuenta(documento){
+    return axios.post(CONFIG.API_URL+'categoriacuenta/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarcategoriacuenta(documento){
+    return axios.post(CONFIG.API_URL+'categoriacuenta/activar',documento)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
