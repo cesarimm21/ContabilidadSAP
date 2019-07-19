@@ -37,6 +37,7 @@ export default class ModificarControlPrecioComponent extends Vue {
     btnactivarpais:boolean=false;
     constructor(){    
         super();
+        debugger;
         Global.nameComponent='modificar-control-precio';
         
         setTimeout(() => {
@@ -63,9 +64,10 @@ export default class ModificarControlPrecioComponent extends Vue {
     }
 
     cargar(code){
-
+debugger;
         controlprecioService.GetOnlyOneControlPrecio(code)
         .then(resp=>{   
+            debugger;
             console.log('resultado',resp);
             this.controlprecio=resp;
         })

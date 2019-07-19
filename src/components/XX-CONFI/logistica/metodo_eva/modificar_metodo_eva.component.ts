@@ -45,6 +45,8 @@ export default class ModificarMetodoEvaComponent extends Vue {
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   servicioDialog:boolean=false;
+  item:string='';
+  dialogInactivar:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-metodo-eva';
@@ -157,7 +159,7 @@ export default class ModificarMetodoEvaComponent extends Vue {
           background: 'rgba(0, 0, 0, 0.8)'
           }
           ); 
-        metodoService.deletetblMetodoValuacion(this.documento.intIdValMeth_ID)
+        metodoService.eliminarMetoValuacion(this.documento)
         .then(resp=>{
           loadingInstance.close();
           this.servicioDialog=false;
@@ -187,6 +189,46 @@ export default class ModificarMetodoEvaComponent extends Vue {
             this.warningMessage('Seleccione. ');
         }
     }
+    activarServicio(){
+      if(this.documento.strValMeth_Cod!=''){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Activando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          ); 
+        metodoService.activarMetoValuacion(this.documento)
+        .then(resp=>{
+          loadingInstance.close();
+          this.servicioDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'Se Activo Correctamente '+resp.strValMeth_Cod,
+              type: 'success'
+            });
+  
+            this.documento=new MetodoValuacionModel();
+            this.load();
+            this.issave = true;
+            this.iserror = false;
+            this.textosave = 'Se Activo Correctamente '+resp.strValMeth_Cod;
+        })
+        .catch(error=>{
+          loadingInstance.close();
+          this.servicioDialog=false;
+          this.$message({
+              showClose: true,
+              message: 'No se Activo',
+              type: 'error'
+            });
+        })
+        }
+        else{
+            this.warningMessage('Seleccione. ');
+        }
+    }
+
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strValMeth_Cod',this.strValMeth_Cod)
     if(data.length>0){
@@ -331,6 +373,60 @@ export default class ModificarMetodoEvaComponent extends Vue {
     }
     reloadpage(){
       window.location.reload();
+    }
+
+    ActivaDesactivar(){
+      debugger;
+      this.item=this.documento.strValMeth_Cod;
+      this.dialogInactivar=true;      
+    }
+    
+    successMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+      });
+    }
+    errorMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'error'
+      });
+    }
+    async btnInactivar(){
+      var nameuser:any=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=nameuser;
+      if(this.documento.strValMeth_Cod!=""){
+        
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Activando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );   
+        await metodoService.activarMetoValuacion(this.documento)
+        .then(respo=>{
+          loadingInstance.close();
+          this.successMessage('Se Activo Metodo Evaluacion '+this.documento.strValMeth_Cod)
+          this.load();
+          this.issave=true;
+          this.iserror=false;
+          this.textosave='Se Activo Metodo Evaluacion '+this.documento.strValMeth_Cod;
+          this.dialogInactivar=false;
+        }).catch(ee=>{
+          loadingInstance.close();
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Error en Activar '+this.documento.strValMeth_Cod;
+          this.errorMessage('Error en Activar '+this.documento.strValMeth_Cod)})
+          this.dialogInactivar=false;
+      }
+      else{
+        this.warningMessage('Debe de seleccionar una fila!!!');
+      }
     }
     data(){
         return{     

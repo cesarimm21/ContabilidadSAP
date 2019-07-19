@@ -41,14 +41,14 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  deleteAlmacen(intIdWHS_ID){    
-    return axios.get(CONFIG.API_URL+'almacen/delete/'+intIdWHS_ID)
+  deleteAlmacen(almacen){    
+    return axios.post(CONFIG.API_URL+'almacen/delete',almacen)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
   },
   DesactivarAlmacen(almacen){
-    return axios.post(CONFIG.API_URL+'almacen/desactivar',almacen)
+    return axios.post(CONFIG.API_URL+'almacen/activar',almacen)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

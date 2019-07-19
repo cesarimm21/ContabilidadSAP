@@ -16,6 +16,18 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  eliminarMetoValuacion(data){
+    return axios.post(CONFIG.API_URL+'metodovaluacion/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarMetoValuacion(data){
+    return axios.post(CONFIG.API_URL+'metodovaluacion/activar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOnePais(code){
     return axios.get(CONFIG.API_URL+'pais/'+code)
     .then(response =>{           
@@ -37,6 +49,12 @@ export default{
   updatetblMetodoValuacion(data){
     return axios.post(CONFIG.API_URL+'metodovaluacion/update',data)
     .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  getMetodoValuacionsOne(company,strValMeth_Cod){    
+    return axios.get(CONFIG.API_URL+'metodovaluacion/'+company+'/'+strValMeth_Cod)
+    .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
   },

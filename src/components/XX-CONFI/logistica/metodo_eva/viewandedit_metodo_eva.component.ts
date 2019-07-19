@@ -67,6 +67,7 @@ export default class ViewAndEditMetodoEvaComponent extends Vue {
           }
         );     
         if(this.documento.strValMeth_Cod!=''&&this.documento.strValMeth_Desc!=''){
+        
           metodoService.updatetblMetodoValuacion(this.documento)
           .then(resp=>{
             loadingInstance.close();

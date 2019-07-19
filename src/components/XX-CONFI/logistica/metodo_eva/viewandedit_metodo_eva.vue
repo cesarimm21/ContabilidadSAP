@@ -18,11 +18,11 @@
                                     <div class="input-group mb-3" >
                                     <el-input  :disabled="true"
                                     size ="small" 
-                                    v-model="companyCod">
+                                    v-model="documento.strCompany_Cod">
                                       </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{documento.strCompany_Desc}}</span>
                             </div>
                            <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Metodo Valuacione</label>

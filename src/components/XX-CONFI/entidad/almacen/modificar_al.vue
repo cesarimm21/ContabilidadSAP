@@ -174,7 +174,7 @@
     <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
       <div style="height:85px"> 
         <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea Inactivar el Almacen {{almacen.strWHS_Cod}}?</span>
+        <span style="font-size:13px">¿Desea Activar el Almacen {{almacen.strWHS_Cod}}?</span>
       </div>
       <footer class="modal-footer">
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>

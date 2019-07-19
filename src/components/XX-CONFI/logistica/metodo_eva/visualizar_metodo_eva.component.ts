@@ -9,6 +9,7 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import metodoService from '@/components/service/metodo_eva.service';
 import { Loading } from 'element-ui';
+import metodo_evaService from '@/components/service/metodo_eva.service';
 @Component({
   name: 'visualizar-metodo-eva',
   components:{
@@ -45,6 +46,8 @@ export default class VisualizarMetodoEvaComponent extends Vue {
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   servicioDialog:boolean=false;
+  item:string='';
+  dialogInactivar:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='visualizar-metodo-eva';
@@ -167,7 +170,7 @@ export default class VisualizarMetodoEvaComponent extends Vue {
           background: 'rgba(0, 0, 0, 0.8)'
           }
           ); 
-        metodoService.deletetblMetodoValuacion(this.documento.intIdValMeth_ID)
+        metodoService.eliminarMetoValuacion(this.documento)
         .then(resp=>{
           loadingInstance.close();
           this.servicioDialog=false;
@@ -248,13 +251,6 @@ export default class VisualizarMetodoEvaComponent extends Vue {
       this.pagina--;
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
-    }
-    warningMessage(newMsg : string) {
-      this.$message({
-        showClose: true,
-        message: newMsg,
-        type: 'warning'
-      });
     }
   //#region [CABECERA]
   headerclick(val){    
@@ -339,6 +335,67 @@ export default class VisualizarMetodoEvaComponent extends Vue {
     }
     reloadpage(){
       window.location.reload();
+    }
+
+    ActivaDesactivar(){
+      debugger;
+      this.item=this.documento.strValMeth_Cod;
+      this.dialogInactivar=true;      
+    }
+    
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
+    }
+    successMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+      });
+    }
+    errorMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'error'
+      });
+    }
+    async btnInactivar(){
+      var nameuser:any=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=nameuser;
+      if(this.documento.strValMeth_Cod!=""){
+        
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Activando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );   
+        await metodo_evaService.activarMetoValuacion(this.documento)
+        .then(respo=>{
+          loadingInstance.close();
+          this.successMessage('Se Activo Metodo Evaluacion '+this.documento.strValMeth_Cod)
+          this.load();
+          this.issave=true;
+          this.iserror=false;
+          this.textosave='Se Activo Metodo Evaluacion '+this.documento.strValMeth_Cod;
+          this.dialogInactivar=false;
+        }).catch(ee=>{
+          loadingInstance.close();
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Error en Activar '+this.documento.strValMeth_Cod;
+          this.errorMessage('Error en Activar '+this.documento.strValMeth_Cod)})
+          this.dialogInactivar=false;
+      }
+      else{
+        this.warningMessage('Debe de seleccionar una fila!!!');
+      }
     }
     data(){
         return{     
