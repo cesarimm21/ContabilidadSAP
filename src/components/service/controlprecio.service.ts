@@ -11,7 +11,6 @@ export default {
     })
   },
   GetOnlyOneControlPrecio(code){
-    alert(code);
     return axios.get(CONFIG.API_URL+'controlprecio/'+code)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
@@ -32,6 +31,12 @@ export default {
   },
   Eliminarcontrolprecio(data){
     return axios.post(CONFIG.API_URL+'controlprecio/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  Activarcontrolprecio(data){
+    return axios.post(CONFIG.API_URL+'controlprecio/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

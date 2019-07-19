@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Control Precio</span>
+            <span class="labelheadercard" >Visualizar Control Precio</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -42,7 +42,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:EliminarItem="EliminarItem()"  v-on:validarView="validarView()" ></buttons-accions>
+                                <buttons-accions v-on:ActivarDesactivar="ActivarDesactivar" v-on:EliminarItem="EliminarItem()"  v-on:validarView="validarView()" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -50,8 +50,9 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
-                                         highlight-current-row
-                                         @current-change="handleCurrentChange"
+                                        @row-dblclick="validarView"
+                                        highlight-current-row
+                                        @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
@@ -85,7 +86,7 @@
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
-                                                :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                                :type="scope.row.chrStatus === 'A' ? 'success': 'danger'"
                                                 disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
                                             </template>
                                         </el-table-column>
@@ -122,7 +123,7 @@
         
     </div>
    
-    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
+    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
       <div style="height:85px"> 
         <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
         <span style="font-size:13px">¿Desea Eliminar el documento?</span>
@@ -130,6 +131,17 @@
       <footer class="modal-footer">
         <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
         <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
+    
+    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Control Precio {{item}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
       </footer>
     </b-modal>
 </div>  

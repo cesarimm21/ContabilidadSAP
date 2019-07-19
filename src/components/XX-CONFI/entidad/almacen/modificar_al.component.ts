@@ -171,7 +171,7 @@ export default class ModificarAlmacenComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
     );   
-    await almacenService.deleteAlmacen(this.almacen.intIdWHS_ID)
+    await almacenService.deleteAlmacen(this.almacen)
     .then(response=>{
       loadingInstance.close();
       if(response!=undefined){

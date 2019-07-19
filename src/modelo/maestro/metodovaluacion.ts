@@ -6,6 +6,9 @@ export class MetodoValuacionModel {
     dtmCreation_Date:Date;
     strModified_User:string;
     dtmModified_Date:Date;
+    strCompany_Cod:string;
+    strCompany_Desc:string;
+
     chrStatus:string;
     constructor(){
         this.intIdValMeth_ID=-1;
@@ -16,5 +19,7 @@ export class MetodoValuacionModel {
         this.strModified_User='';
         this.dtmModified_Date=new Date();
         this.chrStatus='';
+        this.strCompany_Cod='';
+        this.strCompany_Desc='';
     }
 }
