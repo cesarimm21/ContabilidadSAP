@@ -20,7 +20,7 @@
                                 <div class="input-group mb-3" >
                                 <el-input   
                                 size ="small" 
-                                v-model="companyCod">
+                                v-model="companyCod" @keydown.native.enter="validad()">
                                 </el-input>
                                 </div>
                             </div>
@@ -41,11 +41,15 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()" ></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
+                                        v-loading="loading1"
+                                        element-loading-text="Cargando..."
+                                        element-loading-spinner="el-icon-loading"
+                                        element-loading-background="rgba(0, 0, 0, 0.8)"
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
@@ -181,14 +185,24 @@
         <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal> 
-    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
+    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
       <div style="height:85px"> 
         <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
+        <span style="font-size:13px">¿Desea Inactivar la compania {{compania.strCompany_Cod}}?</span>
       </div>
       <footer class="modal-footer">
         <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
         <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
+    <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogActivar" @keydown.native.enter="tbnActivar">
+      <div style="height:85px"> 
+        <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar la compania {{compania.strCompany_Cod}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="tbnActivar"/>
+        <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogActivar = false"/>
       </footer>
     </b-modal>
 </div>  

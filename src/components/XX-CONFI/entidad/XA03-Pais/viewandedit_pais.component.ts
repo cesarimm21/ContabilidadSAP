@@ -5,16 +5,19 @@ import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
 import {PaisModel} from '@/modelo/maestro/pais';
+import {IdiomaModel} from '@/modelo/maestro/idioma';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import umService from '@/components/service/unidadmedida.service';
 import {MonedaModel} from '@/modelo/maestro/moneda';
 import paisService from '@/components/service/pais.service';
+import BIdiomaComponent from '@/components/buscadores/b_idioma/b_idioma.vue';
 import BMonedaComponent from '@/components/buscadores/b_moneda/b_moneda.vue';
 @Component({
   name: 'viewandedit-um',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'bmoneda':BMonedaComponent,
+  'bidioma':BIdiomaComponent,
   }
 })
 export default class ViewAndEditPaisComponent extends Vue {
@@ -25,6 +28,7 @@ export default class ViewAndEditPaisComponent extends Vue {
   companyCod:any;
   public pais:PaisModel=new PaisModel();
   public selectMoneda:MonedaModel=new MonedaModel();
+  public selectIdioma:IdiomaModel=new IdiomaModel();
   enabledtf:boolean=false;
   textTitle:string='';
   issave:boolean=false;
@@ -32,6 +36,8 @@ export default class ViewAndEditPaisComponent extends Vue {
   textosave:string='';
   monedaVisible:boolean=false;
   btnactivarmonedaA:boolean=false;
+  idiomaVisible:boolean=false;
+  btnactivaridioma:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='viewandedit-um';
@@ -121,6 +127,30 @@ export default class ViewAndEditPaisComponent extends Vue {
         this.pais.strCountry_Curr=this.selectMoneda.strCurrency_Cod;     
         this.monedaVisible=false;
       }
+      //#region [IDIOMA]
+    desactivar_idioma(){
+      if(this.idiomaVisible){
+        this.btnactivaridioma=false;
+      }
+  } 
+  activar_idioma(){
+      setTimeout(() => {
+        this.btnactivaridioma=true;
+        this.btnactivarmonedaA=false;
+      }, 120)
+    } 
+  idiomaDialog(){
+      this.idiomaVisible=true;  
+  }
+  handleCloseIdioma(){
+      this.idiomaVisible=false;
+    }
+  idiomaSelect(val:IdiomaModel){
+      this.selectIdioma=val;  
+      this.pais.strLanguage=this.selectIdioma.strLenguaje_Desc;     
+      this.idiomaVisible=false;
+    }
+    //#endregion
     fnOcultar(){
 
     }

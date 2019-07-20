@@ -43,7 +43,7 @@ export default class ModificarDocumentoTransaccionComponent extends Vue {
         var object = JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         this.txtviewmodulo=modulo;
-        if(modulo.toLowerCase()!='visualizar'){
+        if(this.txtviewmodulo=='modificar'){
             this.txtmodulo='Modificar Documento Transaccion';
             this.visualizar=false;
         }
@@ -74,12 +74,25 @@ export default class ModificarDocumentoTransaccionComponent extends Vue {
         })
     }
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){
         if(this.documentotransaccion.strDoc_Trans_Num==''){ this.$message('Complete los campos obligatorios')}
         if(this.documentotransaccion.strDoc_Trans_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
-            this.documentotransaccion.chrStatus='A';
+            var user:any=localStorage.getItem('User_Usuario');
+                var id:any=localStorage.getItem('compania_ID');
+
+                this.documentotransaccion.strModified_User=user;                
+                let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                );     
+
             documentotransaccionService.UpdateDocumentoTransaccion(this.documentotransaccion)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -88,8 +101,8 @@ export default class ModificarDocumentoTransaccionComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strDoc_Trans_Cod;
-                this.documentotransaccion=new DocumentoTransacionModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -100,6 +113,15 @@ export default class ModificarDocumentoTransaccionComponent extends Vue {
                 this.textosave = 'Error al guardar.';
             })
         }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
+        
         
     } 
     fnOcultar(){

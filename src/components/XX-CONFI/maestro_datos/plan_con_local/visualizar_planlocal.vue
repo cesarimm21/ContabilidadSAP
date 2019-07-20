@@ -29,7 +29,7 @@
                                 <label class="el-form-item__label col-md-2" >Plan Contable Local</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="strChartAcct_L_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="strChartAcct_L_Cod" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -48,11 +48,16 @@
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridDocumento"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
                             <el-table-column type="index" label="Item" width="45">                                
@@ -113,7 +118,7 @@
                 </div>
             </div>            
         </div>
-        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" >
       <div style="height:85px">
         <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
         <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->

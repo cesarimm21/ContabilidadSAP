@@ -45,6 +45,9 @@ export default class ModificarPlanLocalComponent extends Vue {
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='modificar-planconlocal';
@@ -55,7 +58,7 @@ export default class ModificarPlanLocalComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        planService.GetAllPlanConLocal()
+        planService.GetAllPlanConLocalView(this.companyCod)
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -63,6 +66,9 @@ export default class ModificarPlanLocalComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -146,46 +152,94 @@ export default class ModificarPlanLocalComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-    this.planDialog=true;
+    if(this.documento.intIdChartAcct_L_ID!=-1&&this.documento.strChartAcct_L_Cod!=""&&this.documento.strChartAcct_L_Desc!=""){
+      this.planDialog=true;
+    }
+    else{
+      this.warningMessage("Selecciona un plan contable")
+    }    
   }
-  deletePlan(){
-    if(this.documento.strChartAcct_L_Cod!=''){
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Eliminando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-        ); 
-      planService.deletePlanConLocal(this.documento.intIdChartAcct_L_ID)
-      .then(resp=>{
-        loadingInstance.close();
-        this.planDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'Se Elimino correctamente '+resp,
-            type: 'success'
-          });
-
-          this.documento=new PlanConLocalModel();
-          this.load();
-          this.issave = true;
-          this.iserror = false;
-          this.textosave = 'Se Elimino Correctamente '+resp;
-      })
-      .catch(error=>{
-        loadingInstance.close();
-        this.planDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'No se elimino',
-            type: 'error'
-          });
-      })
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
-      else{
-          this.warningMessage('Seleccione. ');
+      ); 
+    planService.inactivarPlanConLocal(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new PlanConLocalModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strChartAcct_L_Cod!="" && this.documento.strChartAcct_L_Desc!=""){
+      this.planActivarDialog=true;
+    }
+    else{
+      this.warningMessage('Selecciones plan contable local')
+    }
+  }
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
+      ); 
+    planService.activarPlanConLocal(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new PlanConLocalModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strChartAcct_L_Cod',this.strChartAcct_L_Cod)
@@ -258,8 +312,8 @@ export default class ModificarPlanLocalComponent extends Vue {
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCustom_Desc"){
-          this.clickColumn="strCustom_Desc";
+      if(val.property=="strChartAcct_L_Desc"){
+          this.clickColumn="strChartAcct_L_Desc";
           this.blnilterstrChartAcct_L_Cod=false;
       this.blnilterstrChartAcct_L_Desc=true;
       this.blnilterdtmModified_Date=false;

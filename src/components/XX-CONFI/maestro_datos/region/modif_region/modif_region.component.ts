@@ -45,16 +45,15 @@ export default class ModificarRegionComponent extends Vue {
     }
 
     load(){
-        debugger;
         var object = JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         this.txtviewmodulo=modulo;
         if(modulo.toLowerCase()!='visualizar'){
-            this.txtmodulo='Modificar Correlativo';
+            this.txtmodulo='Modificar Region';
             this.visualizar=false;
         }
         else{
-            this.txtmodulo='Visualizar Correlativo';
+            this.txtmodulo='Visualizar Region';
             this.visualizar=true;
         }
         this.cargar(object.strRegion_Cod);
@@ -67,6 +66,8 @@ export default class ModificarRegionComponent extends Vue {
         regionService.GetOnlyOneDepartamento(code)
         .then(resp=>{   
             this.region=resp;
+            console.log(this.region);
+            
         })
         .catch(error=>{
             this.$message({
@@ -80,23 +81,32 @@ export default class ModificarRegionComponent extends Vue {
         })
     }
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){
         if(this.region.strRegion_Desc==''){ this.$message('Complete los campos obligatorios')}
         if(this.region.strCountry_Cod==''){ this.$message('Complete los campos obligatorios')}
         else{
-            this.region.chrStatus='A';
-            console.log('update',this.region);
+            var user:any=localStorage.getItem('User_Usuario');
+            this.region.strModified_User=user;  
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Guardando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+            );   
             regionService.UpdateDepartamento(this.region)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strRegion_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strRegion_Cod;
-                this.region=new DepartamentoModel();
+                this.textosave = 'Se guardo correctamente. '+resp;
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -107,13 +117,19 @@ export default class ModificarRegionComponent extends Vue {
                 this.textosave = 'Error al guardar.';
             })
         }
-        
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
     } 
     fnOcultar(){
 
     }
     handleChange(value) {
-        console.log(value);
       }
       backPage(){
         window.history.back();

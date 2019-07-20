@@ -58,6 +58,9 @@ export default class ViewAndEditCompaniaComponent extends Vue {
     blnilterdtmModified_Date:boolean=false;
     blnilterstrModified_User:boolean=false;
     diarioDialog:boolean=false;
+    nameuser:any;
+    loading1:boolean=false;
+    dialogActivar:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-compania';
@@ -68,11 +71,13 @@ export default class ViewAndEditCompaniaComponent extends Vue {
     load(){
         // this.companyName=localStorage.getItem('compania_name');
         // this.companyCod=localStorage.getItem('compania_cod');
+        this.nameuser=localStorage.getItem('User_Usuario');
         this.cargarList();
     }
     
     handleCurrentChange(val) {
         if(val!=null){
+          this.compania=val;
         this.selectrow=val;
         this.currentRow = val;
         this.companyCod=val.strCompany_Cod;
@@ -88,6 +93,7 @@ export default class ViewAndEditCompaniaComponent extends Vue {
       return dd+'.'+mm+'.'+yyyy;
   }
     async cargarList(){
+      this.loading1=true;
         if(this.cod_modulo!=''){
             await companiaService.GetOnlyOneCompania(this.cod_modulo)
             .then(res=>{
@@ -105,9 +111,10 @@ export default class ViewAndEditCompaniaComponent extends Vue {
             .then(res=>{
                 this.tableData=res;
                 this.tableData1=res;
+                this.loading1=false;
             })
             .catch(error=>{
-            
+              this.loading1=false;
             })
         }
     }
@@ -145,13 +152,7 @@ export default class ViewAndEditCompaniaComponent extends Vue {
         this.warningMessage('No existe Compañia. ');
       }
     }
-    warningMessage(newMsg : string) {
-      this.$message({
-        showClose: true,
-        message: newMsg,
-        type: 'warning'
-      });
-    }
+    
     async validarView(){
         if(this.selectrow!=undefined && this.selectrow!=null ){
             debugger;
@@ -235,37 +236,78 @@ export default class ViewAndEditCompaniaComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-    this.dialogEliminar=true; 
+    if(this.compania.strCompany_Cod!="" && this.compania.strCompany_Desc!=""){
+      this.dialogEliminar=true; 
+    }
+    else{
+      this.warningMessage('Selecciones una compania')
+    }    
   }    
-  async btnEliminar(){
-    await companiaService.EliminarCompania(this.currentRow)
-    .then(response=>{
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strCompany_Cod;
-         this.issave=true;
-         this.iserror=false;
-      }
-      else{
+  async Activar(){
+    if(this.compania.strCompany_Cod!="" && this.compania.strCompany_Desc!=""){
+      this.dialogActivar=true;
+    }
+    else{
+      this.warningMessage('Selecciones una compania')
+    }
+  }
+  async tbnActivar(){   
+      this.compania.strModified_User=this.nameuser;
+      await companiaService.ActivarCompania(this.compania)
+      .then(response=>{
+        if(response!=undefined){
+           this.textosave='Se activo correctamento.' + response;
+           this.issave=true;
+           this.iserror=false;
+           this.succesMessage('Se activo correctamento. ' + response)
+           this.compania=new CompaniaModel();
+           this.dialogActivar=false;
+        }
+        else{
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Ocurrio un error al activar.';
+          this.errorMessage('Ocurrio un error al activar.');
+          this.dialogActivar=false;
+        }
+        this.cargarList();
+        //this.unidadmedidaModel=response;       
+      }).catch(error=>{
         this.issave=false;
         this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
-      }
-      this.cargarList();
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-    
+        this.textosave='Ocurrio un error al activar.';
+        this.errorMessage('No se pudo activar');
+        this.dialogActivar=false;
+      })
+  }
+  async btnEliminar(){
+    this.compania.strModified_User=this.nameuser;
+      await companiaService.InactivarCompania(this.compania)
+      .then(response=>{
+        if(response!=undefined){
+           this.textosave='Se Inactivo correctamento.' + response;
+           this.issave=true;
+           this.iserror=false;
+           this.succesMessage('Se Inactivo correctamento. ' + response)
+           this.compania=new CompaniaModel();
+           this.dialogEliminar=false; 
+        }
+        else{
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Ocurrio un error al Inactivo.';
+          this.errorMessage('Ocurrio un error al Inactivo.');
+          this.dialogEliminar=false; 
+        }
+        this.cargarList();
+        //this.unidadmedidaModel=response;       
+      }).catch(error=>{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al Inactivo.';
+        this.errorMessage('No se pudo Inactivo');
+        this.dialogEliminar=false; 
+      })
   }
   //#region [CABECERA]
   headerclick(val){    
@@ -424,6 +466,27 @@ filterstrCompany_Cod(h,{column,$index}){
   }
   reloadpage(){
     window.location.reload();
+  }
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
+  succesMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'success'
+    });
+  }
+  errorMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'error'
+    });
   }
     data(){
         return{     

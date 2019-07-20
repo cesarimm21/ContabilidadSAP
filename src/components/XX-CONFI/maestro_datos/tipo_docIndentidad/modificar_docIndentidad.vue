@@ -1,5 +1,5 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="docidentidad">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu  v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Tipo Doc. Identidad</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="strDocIdent_NO" style="text-transform: capitalize" type="text" :maxlength="5" :autofocus="true">  
+                                    <el-input :autofocus="true" class="validador" size ="small" v-model="strDocIdent_NO" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,8 +42,8 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Tipos Doc. Identidad</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <span slot="label"><i class="el-icon-date"></i>Modificar Tipo Doc. Identidades</span>                    
+                    <buttons-accions v-on:validarView="validarView()" v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
@@ -56,15 +56,16 @@
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrDocIdent_NO"
-                            prop="strDocIdent_NO" label="Tipo Doc. Identidad" width="120" align="center">                                
+                            prop="strDocIdent_NO" label="Tipo Doc. Identidad" width="130" align="center">                                
                             </el-table-column>
-                            <el-table-column  :render-header="filterstrDocIdent_Name"
-                             prop="strDocIdent_Name" min-width="180" label="Descripcion">
+                            <el-table-column  :render-header="filterstrDocIdent_Desc"
+                             prop="strDocIdent_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
@@ -74,6 +75,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column :render-header="filterstrModified_User"
+                            width="100" align="center"
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
@@ -115,7 +117,7 @@
                 </div>
             </div>            
         </div>
-        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" >
       <div style="height:85px">
         <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
         <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->
@@ -125,7 +127,7 @@
                     <label class="el-form-item__label col-md-2" >Columna</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="" :autofocus="true">
                             </el-input>
                         </div>
                     </div>
@@ -138,7 +140,7 @@
                     <label class="el-form-item__label col-md-2" >Buscar</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">  
+                            <el-input :autofocus="true" size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">  
                             </el-input>
                         </div>
                     </div>
@@ -151,20 +153,29 @@
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal>  
-    <b-modal ref="myModalRef" hide-footer title="Eliminar Tipo Doc. Identidad" size="sm"  v-model="tipodocDialog" @keydown.native.enter="deletetipodoc">
+    <b-modal ref="myModalRef" hide-footer title="Inactivar Tipo Doc. Identidad" size="sm"  v-model="planDialog" @keydown.native.enter="inactivarPlan">
       <div style="height:85px">
         <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea eliminar la tipo doc. identidad ? {{documento.strDocIdent_NO}}</span>
+        <span style="font-size:13px">¿Desea Inactivar Tipo Doc. Identidad {{documento.strDocIdent_NO}} ?</span>
       </div>
       <footer class="modal-footer">
-        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deletetipodoc()"/>
-        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="tipodocDialog = false"/>
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="inactivarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planDialog = false"/>
       </footer>
-    </b-modal>   
+    </b-modal>     
+    <b-modal ref="myModalRef" hide-footer title="Activar Tipo Doc. Identidad" size="sm"  v-model="planActivarDialog" @keydown.native.enter="activarPlan">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Tipo Doc. Identidad {{documento.strDocIdent_NO}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="activarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planActivarDialog = false"/>
+      </footer>
+    </b-modal>     
     </div>  
 </template>
 <script>
-
 import ModificarDocIdentidadComponent from '@/components/XX-CONFI/maestro_datos/tipo_docIndentidad/modificar_docIndentidad.component'
 export default ModificarDocIdentidadComponent
 </script>

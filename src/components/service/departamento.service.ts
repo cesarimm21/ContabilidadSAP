@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllDepartamentoView(){ 
+    return axios.get(CONFIG.API_URL+'departamento/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllDepartamentoByPais(cod){ 
     return axios.get(CONFIG.API_URL+'pais/departamento/'+cod)
     .then(response =>{            
@@ -29,7 +35,7 @@ export default{
     })
   },
   CreateDepartamento(data){
-    return axios.post(CONFIG.API_URL+'departamento',data)
+    return axios.post(CONFIG.API_URL+'departamento/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -42,6 +48,18 @@ export default{
   },
   EliminarDepartamento(data){
     return axios.post(CONFIG.API_URL+'departamento/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  inactivarDepartamento(documento){
+    return axios.post(CONFIG.API_URL+'departamento/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarDepartamento(documento){
+    return axios.post(CONFIG.API_URL+'departamento/activar',documento)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

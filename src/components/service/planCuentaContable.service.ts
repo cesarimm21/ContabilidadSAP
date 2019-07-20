@@ -16,8 +16,8 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllPlanConLocalView(){    
-    return axios.get(CONFIG.API_URL+'planconlocal/view')
+  GetAllPlanConLocalView(strCompany_Cod){    
+    return axios.get(CONFIG.API_URL+'planconlocal/view/'+strCompany_Cod)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -28,8 +28,14 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  deletePlanConLocal(intIdChartAcct_L_ID){
-    return axios.get(CONFIG.API_URL+'planconlocal/delete/'+intIdChartAcct_L_ID)
+  inactivarPlanConLocal(documento){
+    return axios.post(CONFIG.API_URL+'planconlocal/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarPlanConLocal(documento){
+    return axios.post(CONFIG.API_URL+'planconlocal/activar',documento)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

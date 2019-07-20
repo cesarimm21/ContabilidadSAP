@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllTipoDocumentoView(){  
+    return axios.get(CONFIG.API_URL+'tipodocidentidad/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneTipoDocumento(code){
     return axios.get(CONFIG.API_URL+'tipodocidentidad/'+code)
     .then(response =>{           
@@ -33,6 +39,18 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
-  }
+  },
+  inactivarTipoDocumentoa(documento){
+    return axios.post(CONFIG.API_URL+'tipodocidentidad/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarTipoDocumento(documento){
+    return axios.post(CONFIG.API_URL+'tipodocidentidad/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

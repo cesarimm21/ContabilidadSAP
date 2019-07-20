@@ -28,8 +28,14 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  EliminarCompania(data){
-    return axios.post(CONFIG.API_URL+'compania/eliminar',data)
+  InactivarCompania(data){
+    return axios.post(CONFIG.API_URL+'compania/inactivar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  ActivarCompania(data){
+    return axios.post(CONFIG.API_URL+'compania/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

@@ -81,21 +81,31 @@ export default class ModificarCategoriaCuentaComponent extends Vue {
         })
     }
     guardarTodo(){
+        var vista=this.$route.query.vista; 
+      if(vista=='modificar'){
         if(this.categoriacuenta.strAcctCateg_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
         else{
-            this.categoriacuenta.chrStatus='A';
-            console.log('update',this.categoriacuenta);
+
+            var user:any=localStorage.getItem('User_Usuario');
+            this.categoriacuenta.strModified_User=user;
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                ); 
             categoriacuentaService.Updatecategoriacuenta(this.categoriacuenta)
             .then(resp=>{
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strAcctCateg_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strAcctCateg_Cod;
-                this.categoriacuenta=new CategoriaCuentaModel();
+                this.textosave = 'Se guardo correctamente. '+resp;
+                loadingInstance.close();
             }).catch(error=>{
                 this.$message({
                     showClose: true,
@@ -105,8 +115,17 @@ export default class ModificarCategoriaCuentaComponent extends Vue {
                 this.issave = false;
                 this.iserror = true;
                 this.textosave = 'Error al guardar.';
+                loadingInstance.close();
             })
         }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });  
+    }
         
     } 
     fnOcultar(){

@@ -46,6 +46,18 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  inactivartblMoneda(documento){
+    return axios.post(CONFIG.API_URL+'moneda/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activartblMoneda(documento){
+    return axios.post(CONFIG.API_URL+'moneda/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 
 }
   

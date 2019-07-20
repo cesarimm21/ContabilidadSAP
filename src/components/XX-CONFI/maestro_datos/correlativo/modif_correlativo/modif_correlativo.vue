@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Correlativo</span>
+                <span class="labelheadercard" >{{txtmodulo}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -26,10 +26,10 @@
                             </div>
                             
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo Modulo</label>
+                                <label class="el-form-item__label col-md-2" > Modulo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="correlativo.strCorrel_Cod"  type="text">  
+                                    <el-input class="validador" size ="small" v-model="correlativo.strCorrel_Cod"  type="text" disabled>  
                                     </el-input>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                 <label class="el-form-item__label col-sm-2" >Nombre Proceso</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.strProccess_Name"  >
+                                        <el-input class="validador" size="small" v-model="correlativo.strProccess_Name" :disabled="visualizar" >
                                         </el-input>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                 <label class="el-form-item__label col-sm-2" >Transaccion</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.strTransaction_Name"  >
+                                        <el-input class="validador" size="small" v-model="correlativo.strTransaction_Name"  :disabled="visualizar" >
                                         </el-input>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                 <label class="el-form-item__label col-sm-2" >Documento Origen</label>
                                 <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input class="validador" size="small" v-model="correlativo.fltOrigenDocum_NO"  >
+                                        <el-input class="validador" size="small" v-model="correlativo.fltOrigenDocum_NO" :disabled="visualizar" type="number" >
                                         </el-input>
                                     </div>
                                 </div>

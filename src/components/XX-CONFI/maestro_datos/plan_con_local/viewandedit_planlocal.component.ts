@@ -57,7 +57,7 @@ export default class ViewAndEditPlanLocalComponent extends Vue {
         var user:any=localStorage.getItem('User_Usuario');
         var id:any=localStorage.getItem('compania_ID');
 
-        this.documento.strCreation_User=user;
+        this.documento.strModified_User=user;
         
         let loadingInstance = Loading.service({
           fullscreen: true,

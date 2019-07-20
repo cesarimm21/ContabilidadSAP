@@ -44,6 +44,7 @@ export default class VisualizarPlanLocalComponent extends Vue {
   blnilterstrChartAcct_L_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='visualizar-planconlocal';
@@ -54,7 +55,7 @@ export default class VisualizarPlanLocalComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        planService.GetAllPlanConLocal()
+        planService.GetAllPlanConLocalView(this.companyCod)
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -62,6 +63,9 @@ export default class VisualizarPlanLocalComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(res=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -218,8 +222,8 @@ export default class VisualizarPlanLocalComponent extends Vue {
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCustom_Desc"){
-          this.clickColumn="strCustom_Desc";
+      if(val.property=="strChartAcct_L_Desc"){
+          this.clickColumn="strChartAcct_L_Desc";
           this.blnilterstrChartAcct_L_Cod=false;
       this.blnilterstrChartAcct_L_Desc=true;
       this.blnilterdtmModified_Date=false;

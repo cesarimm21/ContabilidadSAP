@@ -47,6 +47,10 @@ export default class ModificarPaisComponent extends Vue {
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
   paisDialog:boolean=false;
+  loading1:boolean=true;
+  planDialog:boolean=false;
+  nameuser:any;
+  planActivarDialog:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-pais';
@@ -65,6 +69,9 @@ export default class ModificarPaisComponent extends Vue {
           this.gridPais=response;
           this.gridPais1=response;
           this.gridPais2=response;
+          this.loading1=false;
+        }).catch(rr=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -149,47 +156,95 @@ export default class ModificarPaisComponent extends Vue {
     Print(){
       window.print();
     }
-    async EliminarItem(){
-      this.paisDialog=true;    
+    async  EliminarItem(){
+      if(this.pais.intIdCountry_ID!=-1&&this.pais.strCountry_Cod!=""&&this.pais.strCountry_Name!=""){
+        this.planDialog=true;
+      }
+      else{
+        this.warningMessage("Selecciona un pais")
+      }    
     }
-    deletPais(){
-      if(this.pais.strCountry_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
-        paisService.deletePais(this.pais.intIdCountry_ID)
-        .then(resp=>{
-          loadingInstance.close();
-          this.paisDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente '+resp,
-              type: 'success'
-            });
-  
-            this.pais=new PaisModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente '+resp;
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.paisDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
+    inactivarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.pais.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Inactivando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
         }
-        else{
-            this.warningMessage('Seleccione Pais. ');
+        ); 
+      paisService.inactivarPais(this.pais)
+      .then(resp=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Inactivo correctamente '+resp,
+            type: 'success'
+          });
+          this.pais=new PaisModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Inactivo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Inactivo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
+    }
+    async Activar(){
+      if(this.pais.strCountry_Cod!="" && this.pais.strCountry_Name!=""){
+        this.planActivarDialog=true;
+      }
+      else{
+        this.warningMessage('Selecciones Pais')
+      }
+    }
+    activarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.pais.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
         }
+        ); 
+      paisService.activarPais(this.pais)
+      .then(resp=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Activo correctamente '+resp,
+            type: 'success'
+          });
+          this.pais=new PaisModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Activo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Activo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
     }
   async validad(){      
     var data=Global.like(this.gridPais1,'strCountry_Cod',this.strCountry_Cod)
@@ -388,7 +443,8 @@ export default class ModificarPaisComponent extends Vue {
             gridPais:[],
             gridPais1:[],
             gridPais2:[],
-            strCountry_Cod:''
+            strCountry_Cod:'',
+            loading1:true
         }
     }
   

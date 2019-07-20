@@ -19,7 +19,7 @@
                                 <div class="input-group mb-3" >
                                 <el-input   
                                 size ="small" 
-                                v-model="companyCod">
+                                v-model="companyCod" @keydown.native.enter="validad()">
                                 </el-input>
                                 </div>
                             </div>

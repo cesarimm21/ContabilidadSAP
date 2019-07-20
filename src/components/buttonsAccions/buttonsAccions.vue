@@ -11,7 +11,7 @@
                                     </el-button>
                                     </el-tooltip>    
                                     <el-tooltip class="itemTool" content="Inactivar Item" placement="bottom-start" effect="light"> 
-                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="EliminarItem()" >
+                                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="Inactivar()" >
                                         <img class="imagenfilter" src="../../images/desactive.png" alt="">
                                     </el-button>
                                     </el-tooltip>   
@@ -68,9 +68,11 @@
                                         <img class="imagenfilter" src="../../images/check.png" >
                                     </el-button> 
                                     </el-tooltip>
-                                    <el-button v-if="falseortruePO" class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
+                                    <el-tooltip class="itemTool" content="Imprimir PO" placement="bottom-start" effect="light">
+                                    <el-button :v-if="falseortruePO" class="buttonfilter btn btn-outline-secondary orange" @click="ExportarPDF()">
                                         <img class="imagenfilter" src="../../images/pdf1.png" >
                                     </el-button> 
+                                    </el-tooltip>
                                     <!-- <div class="v-separator"></div>    
                                                                          
                                          <el-button class="buttonfilter btn btn-outline-secondary orange" @click="anterior()">

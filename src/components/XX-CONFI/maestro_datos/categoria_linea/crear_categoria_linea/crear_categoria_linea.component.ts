@@ -10,7 +10,7 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import { Notification } from 'element-ui';
 import categoriaLineaService from '@/components/service/categorialinea.service';
 @Component({
-  name: 'crear-criticidad',
+  name: 'crear-categoria-linea',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   }
@@ -24,6 +24,7 @@ export default class CrearCategoriaLineaComponent extends Vue {
     issave:boolean=false;
     iserror:boolean=false;
     textosave:string='';
+    nameuser:any='';
     public categorialinea:CategoriaLineaModel=new CategoriaLineaModel();
   constructor(){    
         super();
@@ -35,7 +36,7 @@ export default class CrearCategoriaLineaComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-
+        this.nameuser=localStorage.getItem('User_Usuario');
     }
     guardarTodo(){
         if(this.categorialinea.strCategItem_Cod==''){ this.$message('Complete los campos obligatorios')}
@@ -48,17 +49,17 @@ export default class CrearCategoriaLineaComponent extends Vue {
                 background: 'rgba(0, 0, 0, 0.8)'
                 }
             );   
-            this.categorialinea.chrStatus='A';
+            this.categorialinea.strCreation_User=this.nameuser;
             categoriaLineaService.CrearCategoriaLinea(this.categorialinea)
             .then(resp=>{
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strCategItem_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strCategItem_Cod;
+                this.textosave = 'Se guardo correctamente. '+resp;
                 this.categorialinea=new CategoriaLineaModel();
                 loadingInstance.close();
             }).catch(error=>{

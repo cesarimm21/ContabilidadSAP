@@ -40,5 +40,17 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  inactivarDocumentoTransaccion(documento){
+    return axios.post(CONFIG.API_URL+'documentotransaccion/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarDocumentoTransaccion(documento){
+    return axios.post(CONFIG.API_URL+'documentotransaccion/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

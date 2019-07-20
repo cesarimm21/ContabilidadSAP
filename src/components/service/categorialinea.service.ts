@@ -11,6 +11,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCategoriaLineaView(){ 
+    return axios.get(CONFIG.API_URL+'categorialinea/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CrearCategoriaLinea(data){      
     debugger;
     return axios.post(CONFIG.API_URL+'categorialinea',data)
@@ -36,6 +42,18 @@ export default{
     debugger;
     return axios.post(CONFIG.API_URL+'categorialinea/eliminar',data)
     .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  inactivarCategoriaLinea(documento){
+    return axios.post(CONFIG.API_URL+'categorialinea/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarCategoriaLinea(documento){
+    return axios.post(CONFIG.API_URL+'categorialinea/activar',documento)
+    .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
