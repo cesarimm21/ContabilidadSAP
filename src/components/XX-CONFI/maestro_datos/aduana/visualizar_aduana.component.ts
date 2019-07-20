@@ -153,42 +153,7 @@ export default class VisualizarAduanaComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+    this.warningMessage('Accion no permitida');
   }
   async validad(){      
     var data=this.like(this.gridDocumento1,'strCustom_Cod',this.documento.strCustom_Cod)
@@ -322,6 +287,10 @@ export default class VisualizarAduanaComponent extends Vue {
     }
     reloadpage(){
       window.location.reload();
+    }
+
+    ActivarDesactivar(){
+      this.warningMessage('Accion no permitida');
     }
     data(){
         return{     

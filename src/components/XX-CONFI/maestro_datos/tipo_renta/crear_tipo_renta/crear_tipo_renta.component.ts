@@ -59,6 +59,10 @@ export default class CrearTipoRentaComponent extends Vue {
             );   
             this.tiporenta.chrStatus='A';
             this.tiporenta.strCreation_User=this.nameuser;
+            
+
+            this.tiporenta.strCompany_Cod = this.companyCod;
+            this.tiporenta.strCompany_Desc = this.companyName;
             tiporentaService.Creartiporenta(this.tiporenta)
             .then(resp=>{
                 this.$message({

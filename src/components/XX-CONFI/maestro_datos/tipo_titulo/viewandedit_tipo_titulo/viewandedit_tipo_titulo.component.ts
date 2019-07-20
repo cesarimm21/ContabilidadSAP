@@ -43,6 +43,10 @@ export default class ViewAndEditTipoTituloComponent extends Vue {
     currentRow:any;
     dialogEliminar:boolean=false;
     cod_tipotitulo:string='';
+    
+    dialogInactivar:boolean=false;
+    item:string='';
+
   constructor(){    
         super();
         Global.nameComponent='viewandedit-tipotitulo';
@@ -161,6 +165,69 @@ export default class ViewAndEditTipoTituloComponent extends Vue {
     var dd = (dia<10) ? '0'+dia : dd=dia;
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
+  }
+
+  
+ActivarDesactivar(){
+    debugger;
+    this.item=this.selectrow.strCtlPrec_Cod;
+    this.dialogInactivar=true;      
+  }
+  
+  successMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'success'
+    });
+  }
+  errorMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'error'
+    });
+  }
+  async btnInactivar(){
+    var nameuser:any=localStorage.getItem('User_Usuario');
+    this.selectrow.strModified_User=nameuser;
+    if(this.selectrow.strTitVal_Cod!=""){
+      
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );   
+      await tipotituloService.activar(this.selectrow)
+      .then(respo=>{
+        loadingInstance.close();
+        this.successMessage('Se Activo Tipo Titulo '+this.selectrow.strTitVal_Cod)
+        this.load();
+        this.issave=true;
+        this.iserror=false;
+        this.textosave='Se Activo Tipo Titulo '+this.selectrow.strTitVal_Cod;
+        this.dialogInactivar=false;
+      }).catch(ee=>{
+        loadingInstance.close();
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Error en Activar '+this.selectrow.strTitVal_Cod;
+        this.errorMessage('Error en Activar '+this.selectrow.strTitVal_Cod)})
+        this.dialogInactivar=false;
+    }
+    else{
+      this.warningMessage('Debe de seleccionar una fila!!!');
+    }
+  }
+  
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
   }
     data(){
         return{     

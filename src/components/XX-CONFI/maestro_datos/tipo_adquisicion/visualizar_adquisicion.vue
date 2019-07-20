@@ -43,12 +43,13 @@
              <el-tabs type="border-card">
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Tipos de Adquisicion</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <buttons-accions v-on:ActivarDesactivar="ActivarDesactivar()" v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
                             :max-height="sizeScreen"
                             :data="gridDocumento"
+                            @row-dblclick="validarView"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
@@ -74,17 +75,15 @@
                                 prop="strModify_User" 
                                 label="Usuario">
                             </el-table-column>
-                            <el-table-column
-                                align="center"
-                                label="Estato"
-                                width="100">
+                           
+                            <el-table-column 
+                                prop="chrStatus" align="center"  width="100"
+                                label="Estado">
                                 <template scope="scope">
-                                    <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
-                                    size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
-                                    </el-button>
-                                    </template>
+                                    <el-tag
+                                    :type="scope.row.chrStatus.trim() === 'A' ? 'success': 'danger'"
+                                    disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
+                                </template>
                             </el-table-column>
                         </el-table>
                         </div>  
@@ -150,7 +149,18 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal>
+    
+        <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+        <div style="height:85px"> 
+            <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+            <span style="font-size:13px">¿Desea Activar Tipo Adquisicion {{item}}?</span>
+        </div>
+        <footer class="modal-footer">
+            <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+            <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
+        </footer>
+        </b-modal>    
     </div>  
 </template>
 <script>

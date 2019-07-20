@@ -10,8 +10,14 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  deleteExoOperaciones(intIdNDExonIR_ID){   
-    return axios.get(CONFIG.API_URL+'exoneracionoperaciones/delete/'+intIdNDExonIR_ID)
+  deleteExoOperaciones(data){   
+    return axios.post(CONFIG.API_URL+'exoneracionoperaciones/eliminar',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'exoneracionoperaciones/activar',data)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

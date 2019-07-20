@@ -21,5 +21,17 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
-  }
+  },
+  eliminar(comprobante){
+    return axios.post(CONFIG.API_URL+'codigoaduana/eliminar', comprobante)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  activar(comprobante){
+    return axios.post(CONFIG.API_URL+'codigoaduana/activar', comprobante)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
 }

@@ -9,6 +9,7 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import exoService from '@/components/service/exooperaciones.service';
 import { Loading } from 'element-ui';
+import exooperacionesService from '@/components/service/exooperaciones.service';
 @Component({
   name: 'modificar-exooperaciones',
   components:{
@@ -45,6 +46,10 @@ export default class ModificarExoOperacionComponent extends Vue {
   blnilterstrNDExonIR_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+
+  dialogInactivar:boolean=false;
+  item:string='';
+
   constructor(){    
         super();
         Global.nameComponent='modificar-aduana';
@@ -146,7 +151,12 @@ export default class ModificarExoOperacionComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-    this.exoDialog=true; 
+    if(this.documento!=undefined){
+      this.exoDialog=true; 
+    }
+    else{
+      alert('Debe de seleccionar una fila!!!');
+    }
   }
   deleteExo(){
     if(this.documento.strNDExonIR_Cod!=''){
@@ -157,7 +167,7 @@ export default class ModificarExoOperacionComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
         ); 
-        exoService.deleteExoOperaciones(this.documento.intIdNDExonIR_ID)
+        exoService.deleteExoOperaciones(this.documento)
       .then(resp=>{
         loadingInstance.close();
         this.exoDialog=false;
@@ -332,6 +342,63 @@ export default class ModificarExoOperacionComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
+
+
+    ActivarDesactivar(){
+      debugger;
+      this.item=this.documento.strNDExonIR_Cod;
+      this.dialogInactivar=true;      
+    }
+    
+    successMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+      });
+    }
+    errorMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'error'
+      });
+    }
+    async btnInactivar(){
+      var nameuser:any=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=nameuser;
+      if(this.documento.strNDExonIR_Cod!=""){
+        
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Activando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );   
+        await exooperacionesService.activar(this.documento)
+        .then(respo=>{
+          loadingInstance.close();
+          this.successMessage('Se Activo la Exoneracion Operacion '+this.documento.strNDExonIR_Cod)
+          this.load();
+          this.issave=true;
+          this.iserror=false;
+          this.textosave='Se Activo la Exoneracion Operacion '+this.documento.strNDExonIR_Cod;
+          this.dialogInactivar=false;
+        }).catch(ee=>{
+          loadingInstance.close();
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Error en Activar '+this.documento.strNDExonIR_Cod;
+          this.errorMessage('Error en Activar '+this.documento.strNDExonIR_Cod)})
+          this.dialogInactivar=false;
+      }
+      else{
+        this.warningMessage('Debe de seleccionar una fila!!!');
+      }
+    }
+    
+
     data(){
         return{     
             companyName:'',

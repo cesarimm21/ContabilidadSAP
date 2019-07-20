@@ -34,5 +34,11 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'tiporenta/activar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

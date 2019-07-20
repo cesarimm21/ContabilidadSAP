@@ -42,7 +42,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:EliminarItem="EliminarItem()"  v-on:validarView="validarView()" ></buttons-accions>
+                                <buttons-accions v-on:ActivarDesactivar="ActivarDesactivar()"  v-on:EliminarItem="EliminarItem()"  v-on:validarView="validarView()" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -50,6 +50,7 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
+                                        @row-dblclick="validarView"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
@@ -139,6 +140,17 @@
       <footer class="modal-footer">
         <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
         <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
+    
+    <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Prioridad {{item}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
       </footer>
     </b-modal>
 </div>  

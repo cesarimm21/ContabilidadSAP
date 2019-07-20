@@ -44,6 +44,9 @@ export default class VisualizarMetodoDepComponent extends Vue {
   blnilterstrDeprMeth_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  dialogInactivar:boolean=false;
+  item:string='';
+
   constructor(){    
         super();
         Global.nameComponent='visualizar-metododep';
@@ -292,6 +295,21 @@ export default class VisualizarMetodoDepComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
+
+   
+  ActivarDesactivar(){
+    debugger;
+    this.warningMessage('Accion no permitida');  
+  }
+
+  successMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'success'
+    });
+  }
+
     data(){
         return{     
             companyName:'',

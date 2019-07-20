@@ -42,6 +42,9 @@ export default class ViewAndEditTipoOperacionComponent extends Vue {
     currentRow:any;
     dialogEliminar:boolean=false;
     cod_tipooperacion:string='';
+    dialogInactivar:boolean=false;
+    item:string='';
+
   constructor(){    
         super();
         Global.nameComponent='viewandedit-region';
@@ -162,6 +165,70 @@ export default class ViewAndEditTipoOperacionComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
+
+
+    ActivarDesactivar(){
+        debugger;
+        this.item=this.selectrow.strTypeOper_Cod;
+        this.dialogInactivar=true;      
+    }
+      
+      successMessage(newMsg : string) {
+        this.$message({
+          showClose: true,
+          message: newMsg,
+          type: 'success'
+        });
+      }
+      errorMessage(newMsg : string) {
+        this.$message({
+          showClose: true,
+          message: newMsg,
+          type: 'error'
+        });
+      }
+      async btnInactivar(){
+        var nameuser:any=localStorage.getItem('User_Usuario');
+        this.selectrow.strModified_User=nameuser;
+        if(this.selectrow.strTypeOper_Cod!=""){
+          
+          let loadingInstance = Loading.service({
+            fullscreen: true,
+            text: 'Activando...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.8)'
+            }
+          );   
+          await tipooperacionService.activar(this.selectrow)
+          .then(respo=>{
+            loadingInstance.close();
+            this.successMessage('Se Activo Tipo Operacion '+this.selectrow.strTypeOper_Cod)
+            this.load();
+            this.issave=true;
+            this.iserror=false;
+            this.textosave='Se Activo Tipo Operacion '+this.selectrow.strTypeOper_Cod;
+            this.dialogInactivar=false;
+          }).catch(ee=>{
+            loadingInstance.close();
+            this.issave=false;
+            this.iserror=true;
+            this.textosave='Error en Activar '+this.selectrow.strTypeOper_Cod;
+            this.errorMessage('Error en Activar '+this.selectrow.strTypeOper_Cod)})
+            this.dialogInactivar=false;
+        }
+        else{
+          this.warningMessage('Debe de seleccionar una fila!!!');
+        }
+      }
+      
+      warningMessage(newMsg : string) {
+        this.$message({
+          showClose: true,
+          message: newMsg,
+          type: 'warning'
+        });
+      }
+
     data(){
         return{     
             companyName:'',

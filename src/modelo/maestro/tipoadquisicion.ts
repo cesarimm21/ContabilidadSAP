@@ -8,6 +8,9 @@ export class TipoAdquisicionModel {
     strModify_User:string;
     dmModified_Date:Date;
     chrStatus:string;
+
+    strCompany_Cod:string;
+    strCompany_Desc:string;
     constructor(){
         this.intTypeAdq_PDB_Cod=-1;
         this.strTypeAdq_PDB_Cod='';

@@ -292,6 +292,10 @@ export default class VisualizarServicioComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
+    ActivarDesactivar(){
+      debugger;
+      this.warningMessage('Accion no permitida');
+    }
     data(){
         return{     
             companyName:'',

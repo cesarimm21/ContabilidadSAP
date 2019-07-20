@@ -43,12 +43,13 @@
              <el-tabs type="border-card">
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Exoneraciones Oper. ND</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <buttons-accions v-on:ActivarDesactivar="ActivarDesactivar()" v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
                             :max-height="sizeScreen"
                             :data="gridDocumento"
+                            @row-dblclick="validarView"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"

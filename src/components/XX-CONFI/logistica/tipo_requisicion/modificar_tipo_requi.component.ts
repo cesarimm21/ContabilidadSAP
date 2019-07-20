@@ -163,7 +163,7 @@ export default class ModificarTipoRequisicionComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
     );   
-    await tiporeService.EliminarTipoRequisicion(this.tipoRequi.intIdTypeReq_ID)
+    await tiporeService.DesactivarTipoRequisicion(this.tipoRequi)
     .then(response=>{
       loadingInstance.close();
       if(response!=undefined){
@@ -213,12 +213,12 @@ export default class ModificarTipoRequisicionComponent extends Vue {
     if(this.tipoRequi.intIdTypeReq_ID!=-1&&this.tipoRequi.strTypeReq_Cod!=""){
       let loadingInstance = Loading.service({
         fullscreen: true,
-        text: 'Inactivando...',
+        text: 'Activando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
       );   
-      await tiporeService.DesactivarTipoRequisicion(this.tipoRequi)
+      await tiporeService.activarRequisicion(this.tipoRequi)
       .then(respo=>{
         loadingInstance.close();
         this.successMessage('Se Inactivo el Tipo Requisicion '+this.tipoRequi.strTypeReq_Cod)

@@ -42,7 +42,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions   v-on:validarView="validarView()" ></buttons-accions>
+                                <buttons-accions v-on:ActivarDesactivar="ActivarDesactivar()"  v-on:validarView="validarView()" v-on:EliminarItem="EliminarItem()" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -51,6 +51,7 @@
                                         :max-height="sizeScreen"
                                         :data="tableData" 
                                          highlight-current-row
+                                         @row-dblclick="validarView"
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">

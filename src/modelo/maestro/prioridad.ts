@@ -5,6 +5,9 @@ export class PrioridadModel {
     strPriority_Desc:string;
     intPriority_Days:number;
     
+    strCompany_Cod:string;
+    strCompany_Desc:string;
+    
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;

@@ -53,7 +53,9 @@ export default class CrearAdquisicionComponent extends Vue {
         }
         );     
       if(this.adquisicion.strTypeAdq_PDB_Desc!=''&&this.adquisicion.strTypeAdq_PDB_Cod!=''){
-
+        this.adquisicion.strCompany_Cod=this.companyCod;
+        this.adquisicion.strCompany_Desc=this.companyName;
+        
         adquisicionService.CreateTipoAdquisicion(this.adquisicion)
         .then(resp=>{
           loadingInstance.close();

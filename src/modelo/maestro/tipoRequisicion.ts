@@ -7,6 +7,10 @@ export class TipoRequisicionModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+
+    strCompany_Cod:string;
+    strCompany_Desc:string;
+
     constructor(){
         this.intIdTypeReq_ID=-1;
         this.strTypeReq_Cod="";

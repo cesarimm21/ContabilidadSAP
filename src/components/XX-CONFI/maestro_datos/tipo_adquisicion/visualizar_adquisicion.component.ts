@@ -43,6 +43,9 @@ export default class VisualizarAdquisicionComponent extends Vue {
   blnilterstrTypeAdq_PDB_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  item:string='';
+  dialogInactivar:boolean=false;
+
   constructor(){    
         super();
         Global.nameComponent='visualizar-adquisicion';
@@ -153,42 +156,7 @@ export default class VisualizarAdquisicionComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      // if(this.Impuesto.strWH_Cod!=''){
-      //     this.vifprogress=true;
-      //     this.valuem=0;
-      //     await setTimeout(() => {
-      //       for(var i=0;i<100;i++){
-      //         this.valuem++; 
-      //       }
-      //     }, 200)
-      //     await setTimeout(() => {
-      //         debugger;
-      //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-      //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-      //           .then(resp=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'Se elimino correctamente',
-      //                 type: 'success'
-      //               });
-      //               this.Impuesto=new ImpuestoModel();
-      //               this.loadImpuesto();
-      //           })
-      //           .catch(error=>{
-      //             this.$message({
-      //                 showClose: true,
-      //                 message: 'No se elimino',
-      //                 type: 'error'
-      //               });
-      //           })
-      //         }
-      //       }, 600)
-      // }
-      // else{
-      //     this.vifprogress=false;
-      //     this.textosave='Error eliminar impuesto. ';
-      //     this.warningMessage('Error eliminar impuesto. ');
-      // }
+    this.warningMessage('Accion no permitida');   
   }
   async validad(){      
     var data=this.like(this.gridDocumento1,'strTypeAdq_PDB_Cod',this.documento.strTypeAdq_PDB_Cod)
@@ -323,6 +291,61 @@ export default class VisualizarAdquisicionComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
+
+  
+ActivarDesactivar(){
+  this.warningMessage('Accion no permitida');        
+}
+
+successMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'success'
+  });
+}
+errorMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'error'
+  });
+}
+async btnInactivar(){
+  var nameuser:any=localStorage.getItem('User_Usuario');
+  this.documento.strModify_User=nameuser;
+  if(this.documento.strTypeAdq_PDB_Cod!=""){
+    
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
+    await tipoadquisicionService.activar(this.documento)
+    .then(respo=>{
+      loadingInstance.close();
+      this.successMessage('Se Activo Tipo Adquisicion '+this.documento.strTypeAdq_PDB_Cod)
+      this.load();
+      this.issave=true;
+      this.iserror=false;
+      this.textosave='Se Activo Tipo Adquisicion '+this.documento.strTypeAdq_PDB_Cod;
+      this.dialogInactivar=false;
+    }).catch(ee=>{
+      loadingInstance.close();
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Error en Activar '+this.documento.strTypeAdq_PDB_Cod;
+      this.errorMessage('Error en Activar '+this.documento.strTypeAdq_PDB_Cod)})
+      this.dialogInactivar=false;
+  }
+  else{
+    this.warningMessage('Debe de seleccionar una fila!!!');
+  }
+}
+
+
     data(){
         return{     
             companyName:'',

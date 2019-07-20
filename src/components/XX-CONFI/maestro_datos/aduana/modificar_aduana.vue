@@ -43,7 +43,7 @@
              <el-tabs type="border-card">
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Aduanas</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <buttons-accions v-on:ActivarDesactivar="ActivarDesactivar()" v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
@@ -81,9 +81,9 @@
                                 width="100">
                                 <template scope="scope">
                                     <el-button
-                                    :type="scope.row.chrStatus === 'C' ? 'danger' : 'success'"
+                                    :type="scope.row.chrStatus === 'E' ? 'danger' : 'success'"
                                     size="small"
-                                    >{{scope.row.chrStatus=== 'C'?'Inactivo':'Activo'}}                                    
+                                    >{{scope.row.chrStatus=== 'E'?'Inactivo':'Activo'}}                                    
                                     </el-button>
                                     </template>
                             </el-table-column>
@@ -151,7 +151,28 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal> 
+    
+    <b-modal ref="myModalRef" hide-footer title="Eliminar Aduana" size="sm"  v-model="exoDialog" @keydown.native.enter="deleteExo">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea eliminar la Aduana {{documento.strCustom_Cod}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" styl    e="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteExo()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="exoDialog = false"/>
+      </footer>
+    </b-modal> 
+    <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar la Aduana {{item}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
+      </footer>
+    </b-modal>   
     </div>  
 </template>
 <script>

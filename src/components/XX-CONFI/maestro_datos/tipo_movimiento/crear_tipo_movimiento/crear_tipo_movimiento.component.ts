@@ -52,6 +52,9 @@ export default class CrearTipoMovimientoComponent extends Vue {
             );   
             this.tipomovimiento.chrStatus='A';
             this.tipomovimiento.strCreation_User=this.nameuser;
+            this.tipomovimiento.strCompany_Cod=this.companyCod;
+            this.tipomovimiento.strCompany_Desc=this.companyName;
+
             tipomovimientoService.CrearTipoMovimiento(this.tipomovimiento)
             .then(resp=>{
                 this.$message({

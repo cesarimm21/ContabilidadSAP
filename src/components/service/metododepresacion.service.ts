@@ -10,8 +10,14 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  DeleteMetodoDep(intIdDeprMeth_ID){ 
-    return axios.get(CONFIG.API_URL+'metododepreciacion/delete/'+intIdDeprMeth_ID)
+  DeleteMetodoDep(data){ 
+    return axios.post(CONFIG.API_URL+'metododepreciacion/eliminar',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'metododepreciacion/activar',data)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

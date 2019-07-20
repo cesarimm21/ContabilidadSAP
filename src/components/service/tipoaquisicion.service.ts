@@ -21,6 +21,18 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
+  },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'tipoadquisicion/activar', data)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
+  },
+  eliminar(data){
+    return axios.post(CONFIG.API_URL+'tipoadquisicion/eliminar', data)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
   }
   
 }

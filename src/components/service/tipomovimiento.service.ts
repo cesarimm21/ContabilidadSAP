@@ -16,6 +16,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'tipomovimiento/activar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CrearTipoMovimiento(data){
     return axios.post(CONFIG.API_URL+'tipomovimiento',data)
     .then(response =>{           

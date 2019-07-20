@@ -10,9 +10,15 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  DeleteServicioPrestado(intIdNDServ_ID){    
-    return axios.get(CONFIG.API_URL+'servicioprestado/delete/'+intIdNDServ_ID)
-    .then(response =>{            
+  DeleteServicioPrestado(data){    
+    return axios.post(CONFIG.API_URL+'servicioprestado/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarServicioPrestado(data){    
+    return axios.post(CONFIG.API_URL+'servicioprestado/activar',data)
+    .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },

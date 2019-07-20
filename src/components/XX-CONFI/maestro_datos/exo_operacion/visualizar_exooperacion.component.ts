@@ -292,6 +292,11 @@ export default class VisualizarExoOperacionComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
+
+    ActivarDesactivar(){
+      this.warningMessage('Accion no permitida');
+    }
+    
     data(){
         return{     
             companyName:'',

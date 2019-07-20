@@ -114,12 +114,7 @@ export default class VisuTipoTituloComponent extends Vue {
 
     
   EliminarItem(){
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
+    this.warningMessage('Accion no permitida');
   }
   async btnEliminar(){
     await tipotituloService.Eliminartipotitulo(this.currentRow)
@@ -161,6 +156,16 @@ export default class VisuTipoTituloComponent extends Vue {
     var dd = (dia<10) ? '0'+dia : dd=dia;
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
+  }
+  ActivarDesactivar(){
+    this.warningMessage('Accion no permitida');
+  }
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
   }
     data(){
         return{     

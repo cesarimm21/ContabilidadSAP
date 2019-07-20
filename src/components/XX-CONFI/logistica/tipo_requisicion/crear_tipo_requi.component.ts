@@ -46,18 +46,20 @@ export default class CrearTipoRequisicionComponent extends Vue {
         }
         );     
       if(this.tipoRequi.strTypeReq_Cod!=''&&this.tipoRequi.strTipReq_Desc!=''){
+        this.tipoRequi.strCompany_Cod=this.companyCod;
+        this.tipoRequi.strCompany_Desc=this.companyName;
         tiporeqService.CrearTipoRequisicion(this.tipoRequi)
         .then(resp=>{
           loadingInstance.close();
           this.$message({
               showClose: true,
                 type: 'success',
-                message: 'Se guardo Correctamente '+resp
+                message: 'Se guardo Correctamente '+this.tipoRequi.strTipReq_Desc
               });
               this.tipoRequi=new TipoRequisicionModel();
               this.issave = true;
               this.iserror = false;
-              this.textosave = 'Se guardo correctamente. '+resp;
+              this.textosave = 'Se guardo correctamente. '+this.tipoRequi.strTipReq_Desc;
           }).catch(errorss=>{
             loadingInstance.close();
             this.$message({
