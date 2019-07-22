@@ -476,6 +476,7 @@ export default class CrearCuentaContableComponent extends Vue {
           this.issave=true;
           this.iserror = false;
           this.textosave='Se guardo correctamente.'+this.cuentacontable.strAcc_Local_NO;
+          this.cuentacontable=new CuentaContableModel();
         }).catch(error=>{
           loading.close(); 
           this.issave = false;

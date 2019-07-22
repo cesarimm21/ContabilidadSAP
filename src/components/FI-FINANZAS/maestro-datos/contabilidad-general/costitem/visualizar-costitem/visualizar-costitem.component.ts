@@ -349,6 +349,23 @@ export default class VisualizarCostItemComponent extends Vue {
   LoadProveedor(){
     this.dialogProveedor=true;      
   }
+
+  
+warningMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'warning'
+  });
+}
+
+EliminarItem(){
+  this.warningMessage('Accion no permitida');
+}
+ActivarDesactivar(){
+  this.warningMessage('Accion no permitida');
+}
+
   data(){
     return{
       dialogTableVisible: false,

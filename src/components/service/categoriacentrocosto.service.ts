@@ -9,6 +9,38 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  
+  GetOnlyOneCategoriaCentroCosto(code){
+    return axios.get(CONFIG.API_URL+'categoriacentrocosto/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  CrearCategoriaCentroCosto(data){  
+    return axios.post(CONFIG.API_URL+'categoriacentrocosto',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  ModificarCategoriaCentroCosto(data){  
+    return axios.post(CONFIG.API_URL+'categoriacentrocosto/update',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  
+  EliminarCategoriaCentroCosto(data){  
+    return axios.post(CONFIG.API_URL+'categoriacentrocosto/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  ActivarCategoriaCentroCosto(data){  
+    return axios.post(CONFIG.API_URL+'categoriacentrocosto/activar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

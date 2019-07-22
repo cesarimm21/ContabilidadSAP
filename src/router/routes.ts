@@ -301,6 +301,21 @@ import CajaBancosComponent from '@/components/FI-FINANZAS/libros-balance/cajaban
 import RegistroInventarioUnidadFisicaComponent from '@/components/FI-FINANZAS/libros-balance/registro-inventario-unidad-fisica/registro-inventario-unidad-fisica.vue'
 import RegistroInventarioValorizadoComponent from '@/components/FI-FINANZAS/libros-balance/registro-inventario-valorizado/registro-inventario-valorizado.vue'
 
+import VisuRubroCuentaComponent from '@/components/XX-CONFI/maestro_datos/rubro_cuenta/visu_rubro_cuenta/visu_rubro_cuenta.vue'
+import ViewAndEditRubroCuentaComponent from '@/components/XX-CONFI/maestro_datos/rubro_cuenta/viewandedit_rubro_cuenta/viewandedit_rubro_cuenta.vue'
+import ModificarRubroCuentaComponent from '@/components/XX-CONFI/maestro_datos/rubro_cuenta/modif_rubro_cuenta/modif_rubro_cuenta.vue'
+import CrearRubroCuentaComponent from '@/components/XX-CONFI/maestro_datos/rubro_cuenta/crear_rubro_cuenta/crear_rubro_cuenta.vue'
+
+import VisuGrupoProcesoComponent from '@/components/XX-CONFI/maestro_datos/grupo_proceso/visu_grupo_proceso/visu_grupo_proceso.vue'
+import ViewAndEditGrupoProcesoComponent from '@/components/XX-CONFI/maestro_datos/grupo_proceso/viewandedit_grupo_proceso/viewandedit_grupo_proceso.vue'
+import ModificarGrupoProcesoComponent from '@/components/XX-CONFI/maestro_datos/grupo_proceso/modif_grupo_proceso/modif_grupo_proceso.vue'
+import CrearGrupoProcesoComponent from '@/components/XX-CONFI/maestro_datos/grupo_proceso/crear_grupo_proceso/crear_grupo_proceso.vue'
+
+import VisuCategoriaCentroCostoComponent from '@/components/XX-CONFI/maestro_datos/categoria_centro_costo/visu_categoria_centro_costo/visu_categoria_centro_costo.vue'
+import ViewAndEditCategoriaCentroCostoComponent from '@/components/XX-CONFI/maestro_datos/categoria_centro_costo/viewandedit_categoria_centro_costo/viewandedit_categoria_centro_costo.vue'
+import ModificarCategoriaCentroCostoComponent from '@/components/XX-CONFI/maestro_datos/categoria_centro_costo/modif_categoria_centro_costo/modif_categoria_centro_costo.vue'
+import CrearCategoriaCentroCostoComponent from '@/components/XX-CONFI/maestro_datos/categoria_centro_costo/crear_categoria_centro_costo/crear_categoria_centro_costo.vue'
+
 export default [
  
   {
@@ -353,6 +368,70 @@ export default [
         component:CrearContabilidadComponent,
         name:'crear-contabilidad'
       }, 
+      
+      {
+        path:'XX-CONFI/maestro_datos/categoria_centro_costo/visu_categoria_centro_costo',
+        component:VisuCategoriaCentroCostoComponent,
+        name:'VisuCategoriaCentroCostoComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/categoria_centro_costo/viewandedit_categoria_centro_costo',
+        component:ViewAndEditCategoriaCentroCostoComponent,
+        name:'ViewAndEditCategoriaCentroCostoComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/categoria_centro_costo/modif_categoria_centro_costo',
+        component:ModificarCategoriaCentroCostoComponent,
+        name:'ModificarCategoriaCentroCostoComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/categoria_centro_costo/crear_categoria_centro_costo',
+        component:CrearCategoriaCentroCostoComponent,
+        name:'CrearCategoriaCentroCostoComponent'
+      },
+
+      {
+        path:'XX-CONFI/maestro_datos/grupo_proceso/visu_grupo_proceso',
+        component:VisuGrupoProcesoComponent,
+        name:'VisuGrupoProcesoComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/grupo_proceso/viewandedit_grupo_proceso',
+        component:ViewAndEditGrupoProcesoComponent,
+        name:'ViewAndEditGrupoProcesoComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/grupo_proceso/modif_grupo_proceso',
+        component:ModificarGrupoProcesoComponent,
+        name:'ModificarGrupoProcesoComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/grupo_proceso/crear_grupo_proceso',
+        component:CrearGrupoProcesoComponent,
+        name:'CrearGrupoProcesoComponent'
+      },
+
+
+      {
+        path:'XX-CONFI/maestro_datos/rubro_cuenta/visu_rubro_cuenta',
+        component:VisuRubroCuentaComponent,
+        name:'VisuRubroCuentaComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/rubro_cuenta/viewandedit_rubro_cuenta',
+        component:ViewAndEditRubroCuentaComponent,
+        name:'ViewAndEditRubroCuentaComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/rubro_cuenta/modif_rubro_cuenta',
+        component:ModificarRubroCuentaComponent,
+        name:'ModificarRubroCuentaComponent'
+      },
+      {
+        path:'XX-CONFI/maestro_datos/rubro_cuenta/crear_rubro_cuenta',
+        component:CrearRubroCuentaComponent,
+        name:'CrearRubroCuentaComponent'
+      },
       {
         path:'FI-FINANZAS/contabilidad-general/modificar-contabilidad',
         component:ModificarContabilidadComponent,

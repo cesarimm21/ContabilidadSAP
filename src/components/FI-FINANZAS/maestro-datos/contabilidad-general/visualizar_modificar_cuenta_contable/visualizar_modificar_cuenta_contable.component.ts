@@ -84,6 +84,8 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
   }
   
   dialogEliminar:boolean=false;
+  dialogInactivar:boolean=false;
+  item:string='';
 
   public tableData:Array<OrdenCompraModel>=[]; 
   valuem=0;
@@ -98,7 +100,6 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
   vifprogress:boolean=true;
   strAcc_Local_NO:string='';
   
-  dialogInactivar:boolean=false;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -428,9 +429,7 @@ export default class VisualizarModificarCuentaContableComponent extends Vue {
     return dd+'.'+mm+'.'+yyyy;
   }
 
-  
-
-  ActivaDesactivar(){
+  ActivarDesactivar(){
     debugger;
     this.strAcc_Local_NO=this.currentRow.strAcc_Local_NO;
     this.dialogInactivar=true;      

@@ -30,7 +30,7 @@
                             <span style="font-size: 11px;margin-top: 5px;">{{formBusqueda.strCompany_Desc}}</span>
                         </div>    
                         <div class="form-group row ">
-                            <label class="el-form-item__label col-md-2" >CostItem</label>
+                            <label class="el-form-item__label col-md-2" >Grupo Elem. Gto</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
                                 <el-input size ="small"  v-model="formBusqueda.strCost_Item_Cod"  placeholder="">
@@ -45,7 +45,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView" ></buttons-accions>
+                                <buttons-accions v-on:EliminarItem="EliminarItem()" v-on:Activar="ActivarDesactivar()" v-on:validarView="validarView" ></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -53,87 +53,81 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
+                                        @row-dblclick="validarView"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">
-                                        <el-table-column type="index" width="38">
+                                        <el-table-column type="index" width="38" label="Item">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strCost_Item_Cod" width="100" label="">
+                                        <el-table-column  sortable  width="100" label="Grupo Elem. Gto">
                                             <template scope="scope">
                                             <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Cod }}</label>
                                             </template>
                                         </el-table-column>
                                         <el-table-column
                                             prop="strCost_Item_Pos1" sortable 
-                                            label="strCost_Item_Pos1">
+                                            label="Grupo">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Pos1 }}</label>
                                             </template>
                                         </el-table-column>   
                                         <el-table-column
                                             prop="strCost_Item_Desc1" sortable 
-                                            label="strCost_Item_Desc1">
+                                            label="Descripcion 1">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Desc1 }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strCost_Item_Pos2" sortable 
-                                            label="strCost_Item_Pos2">
+                                            label="Grupo 2">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Pos2 }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strCost_Item_Desc2" sortable 
-                                            label="strCost_Item_Desc2">
+                                            label="Descripcion 2">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Desc2 }}</label>
                                             </template>
                                         </el-table-column>  
                                         <el-table-column
                                             prop="strCost_Item_Pos3" sortable 
-                                            label="strCost_Item_Pos3">
+                                            label="Grupo 3">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Pos3 }}</label>
                                             </template>
                                         </el-table-column>   
                                         <el-table-column
                                             prop="strCost_Item_Desc3" sortable 
-                                            label="strCost_Item_Desc3">
+                                            label="Descripcion 3">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCost_Item_Desc3 }}</label>
                                             </template>
                                         </el-table-column>   
                                         <el-table-column
-                                            prop="strCreation_User" sortable  width="120"
-                                            label="Usuario">
-                                            <template scope="scope">
-                                                <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strCreation_User }}</label>
-                                            </template>
-                                        </el-table-column>   
-                                        
-                                        <el-table-column
-                                            prop="dtmCreation_Date" sortable width="100"
-                                            label="Fecha">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmCreation_Date) }}</label>
-                                            </template>
-                                        </el-table-column>   
-                                        <el-table-column
                                             prop="strModified_User" sortable  width="120"
-                                            label="Usuario Modificacion">
+                                            label="Usuario">
                                             <template scope="scope">
                                                 <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strModified_User }}</label>
                                             </template>
                                         </el-table-column>   
-                                        
                                         <el-table-column
                                             prop="dtmModified_Date" sortable width="100"
                                             label="Fecha">
                                             <template scope="scope">
                                                 <label style="width:100%"  >&nbsp;{{ getParseDate(scope.row.dtmModified_Date) }}</label>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column 
+                                            prop="chrStatus" align="center"  width="100"
+                                            label="Estado">
+                                            <template scope="scope">
+                                                <el-tag
+                                                :type="scope.row.chrStatus === 'A' ? 'success': 'danger'"
+                                                disable-transitions>{{scope.row.chrStatus=== 'A'?'Activo':'Inactivo'}}</el-tag>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -174,6 +168,28 @@
       <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event);" v-on:companiaClose="companiaClose($event);" >
       </bcompania>
     </el-dialog>
+    
+    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
+      <div style="height:85px"> 
+        <img src="../../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Eliminar el documento?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
+        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
+      </footer>
+    </b-modal>
+    
+    <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+      <div style="height:85px"> 
+        <img src="../../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Grupo Elemento {{item}}?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnInactivar"/>
+        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogInactivar = false"/>
+      </footer>
+    </b-modal>
 </div>  
   
 </template>

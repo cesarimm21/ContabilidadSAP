@@ -45,7 +45,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:EliminarItem="EliminarItem()" v-on:validarView="validarView"  v-on:ActivarDesactivar="ActivarDesactivar"></buttons-accions>
+                                <buttons-accions v-on:EliminarItem="EliminarItem()" v-on:validarView="validarView"  v-on:Activar="ActivarDesactivar"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">

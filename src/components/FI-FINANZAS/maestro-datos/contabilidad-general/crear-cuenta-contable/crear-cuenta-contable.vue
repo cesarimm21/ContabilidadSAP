@@ -31,14 +31,14 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Contable</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" @change="activarpadre(cuentacontable.strAcc_Local_NO)" v-model="cuentacontable.strAcc_Local_NO" type="text">  
+                                    <el-input size ="small" class="validador" @change="activarpadre(cuentacontable.strAcc_Local_NO)" v-model="cuentacontable.strAcc_Local_NO" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="cuentacontable.strAcc_Local_Name" type="text">  
+                                    <el-input size ="small" class="validador" v-model="cuentacontable.strAcc_Local_Name" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -47,15 +47,15 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Padre</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input size ="small" :disabled="ctaPadre" @blur="desactivar_CuentaContablePadre" @focus="activar_CuentaContablePadre" v-model="cuentacontable.strAccFth_Local"  placeholder="">
-                                            <el-button v-if="btnactivarCuentaContablePadre && !dialogCuentaContablePadre" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContablePadre()"></el-button> 
+                                        <el-input class="validador" size ="small" :disabled="ctaPadre" @blur="desactivar_CuentaContablePadre" @focus="activar_CuentaContablePadre" v-model="cuentacontable.strAccFth_Local"  placeholder="">
+                                            <el-button  v-if="btnactivarCuentaContablePadre && !dialogCuentaContablePadre" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContablePadre()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" :disabled="true" v-model="strAccFth_Local_Desc" type="text">  
+                                    <el-input class="validador" size ="small" :disabled="true" v-model="strAccFth_Local_Desc" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -64,14 +64,14 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Corporativa</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="cuentacontable.strAcc_Corp_NO" type="text">  
+                                    <el-input class="validador" size ="small" v-model="cuentacontable.strAcc_Corp_NO" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  v-model="cuentacontable.strAcc_Corp_Name" >                            
+                                    <el-input class="validador" size ="small"  v-model="cuentacontable.strAcc_Corp_Name" >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
                                 <label class="el-form-item__label col-sm-2" >Tipo</label>
                                 <div class="col-sm-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-select  v-model="strlevelTipo" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-select class="validador" v-model="strlevelTipo" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                             <el-option style="font-size:13px"
                                             v-for="item in tabletipo1"
                                             :key="item.strType_Cod"
@@ -93,7 +93,7 @@
                                 <label class="el-form-item__label col-sm-2" >Categoria</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-select :disabled="true" v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-select  :disabled="true" v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                             <el-option style="font-size:13px"
                                             v-for="item in tabletipo"
                                             :key="item.strType_Cod"

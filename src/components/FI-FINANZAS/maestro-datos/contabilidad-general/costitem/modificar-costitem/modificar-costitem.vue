@@ -27,7 +27,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{cositemModel.strCompany_Desc}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >COST_ITEM_COD</label>
+                                <label class="el-form-item__label col-md-2" >Grupo Elem. Gto.</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="true" size ="small" v-model="cositemModel.strCost_Item_Cod" type="text">  
@@ -37,14 +37,14 @@
                             </div>
                             
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >COST_IITEM_POS_1</label>
+                                <label class="el-form-item__label col-md-2" >Grupo 1</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" v-model="cositemModel.strCost_Item_Pos1" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-2" >COST_ITEM_1</label>
+                                <label class="el-form-item__label col-md-2" >Descripcion 1</label>
                                 <div class="col-md-4 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" v-model="cositemModel.strCost_Item_Desc1" type="text">  
@@ -54,14 +54,14 @@
                             </div>    
                             
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >COST_IITEM_POS_2</label>
+                                <label class="el-form-item__label col-md-2" >Grupo 2</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" v-model="cositemModel.strCost_Item_Pos2" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-2" >COST_ITEM_2</label>
+                                <label class="el-form-item__label col-md-2" >Descripcion 2</label>
                                 <div class="col-md-4 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" v-model="cositemModel.strCost_Item_Desc2" type="text">  
@@ -71,14 +71,14 @@
                             </div>  
                             
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >COST_IITEM_POS_3</label>
+                                <label class="el-form-item__label col-md-2" >Grupo 3</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" v-model="cositemModel.strCost_Item_Pos3" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="el-form-item__label col-md-2" >COST_ITEM_3</label>
+                                <label class="el-form-item__label col-md-2" >Descripcion 3</label>
                                 <div class="col-md-4 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled="visualizar" size ="small" v-model="cositemModel.strCost_Item_Desc3" type="text">  

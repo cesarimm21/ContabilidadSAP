@@ -93,6 +93,11 @@ export default class VisualizarModificarCostItemComponent extends Vue {
   strVendor_NO:string='';
   strVendor_Desc:string='';
   vifprogress:boolean=true;
+
+  dialogInactivar:boolean=false;
+  item:string='';
+
+  dialogEliminar:boolean=false;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -349,6 +354,111 @@ export default class VisualizarModificarCostItemComponent extends Vue {
   LoadProveedor(){
     this.dialogProveedor=true;      
   }
+
+  
+ActivarDesactivar(){
+  debugger;
+  this.item=this.selectrow.strCost_Item_Cod;
+  this.dialogInactivar=true;      
+}
+
+successMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'success'
+  });
+}
+errorMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'error'
+  });
+}
+async btnInactivar(){
+  var nameuser:any=localStorage.getItem('User_Usuario');
+  this.selectrow.strModified_User=nameuser;
+  if(this.selectrow.strCost_Item_Cod!=""){
+    
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
+    await costitemService.Activar(this.selectrow)
+    .then(respo=>{
+      loadingInstance.close();
+      this.successMessage('Se Activo Grupo Elemento Gasto '+this.selectrow.strCost_Item_Cod)
+      this.load();
+      this.issave=true;
+      this.iserror=false;
+      this.textosave='Se Activo Grupo Elemento Gasto '+this.selectrow.strCost_Item_Cod;
+      this.dialogInactivar=false;
+    }).catch(ee=>{
+      loadingInstance.close();
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Error en Activar '+this.selectrow.strCost_Item_Cod;
+      this.errorMessage('Error en Activar '+this.selectrow.strCost_Item_Cod)})
+      this.dialogInactivar=false;
+  }
+  else{
+    this.warningMessage('Debe de seleccionar una fila!!!');
+  }
+}
+
+warningMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'warning'
+  });
+}
+
+EliminarItem(){
+  if(this.selectrow!=undefined){
+    this.dialogEliminar=true;
+  }
+  else{
+    alert('Debe de seleccionar una fila!!!');
+  }
+}
+async btnEliminar(){
+  await costitemService.Eliminar(this.selectrow)
+  .then(response=>{
+    debugger;
+    console.log('eliminar',response);
+    if(response!=undefined){
+       this.textosave='Se elimino correctamento.' + response.strCost_Item_Cod;
+       this.issave=true;
+       this.iserror=false;
+    }
+    else{
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+    }
+    this.Buscar();
+    this.dialogEliminar=false;
+    //this.unidadmedidaModel=response;       
+  }).catch(error=>{
+    
+    this.dialogEliminar=false;
+    this.issave=false;
+    this.iserror=true;
+    this.textosave='Ocurrio un error al eliminar.';
+    this.$message({
+      showClose: true,
+      type: 'error',
+      message: 'No se pudo eliminar'
+    });
+  })
+  
+}
+
   data(){
     return{
       dialogTableVisible: false,

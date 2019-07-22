@@ -51,4 +51,58 @@ export class CuentaContableModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+
+    constructor(){
+    this.intIdAcctCont_ID=0;
+    this.intIdCompany_ID=0;
+    this.intAcc_NO_Local=0;
+    this.intIdChartAcct_L_ID=0;
+    this.strAcc_Local_NO='';
+    this.intIdChartAcct_C_ID=0;
+    this.strAcc_Corp_NO='';
+    this.strAcc_Local_Name='';
+    this.strAcc_Corp_Name='';
+    this.strCompany_Cod='';
+    this.strAcctItem_Cod='';
+    this.strCompany_Desc='';
+    this.strAcc_Level='';
+    this.strAcc_Type='';
+    this.intIdGrpCta_ID=0;
+    this.intIdAcctItem_ID=0;
+    this.intIdExpGroup_ID=0;
+    this.intIdCurrency_ID=0;
+    this.strCurrency_Cod='';
+    this.blnAcc_LO=false;
+    this.blnAcc_DI=false;
+    this.blnAcc_Destino=false;
+    this.fltDebit_AccDest=0;
+    this.fltCredit_AcctDest=0;
+    this.blnAcc_Status_Open=false;
+    this.strChartAcct_L_Cod='';
+    this.strChartAcct_C_Cod='';
+    this.strAcc_Categ_Cod='';
+    this.strAcc_Categ_Desc='';
+    this.strAccFth_Local='';
+    this.strAccFth_Corp='';
+    this.strTypeAdq_PDB='';
+    this.strCost_Item_Cod='';
+    this.intIdWH_ID=0;
+    this.blnAcc_cc=false;
+    this.blnAcc_GL=false;
+    this.blnAcc_CC=false;
+    this.blnAcc_AP=false;
+    this.blnAcc_AR=false;
+    this.blnAcc_ST=false;
+    this.blnAcc_FA=false;
+    this.blnAcc_PY=false;
+    this.strGrpAcctCont_Cod='';
+    this.strWH_Cod='';
+    this.strExpGroup_Cod='';
+    this.strCreation_User='';
+    this.dtmCreation_Date=new Date();
+    this.strModified_User='';
+    this.dtmModified_Date=new Date();
+    this.chrStatus='';
+
+    }
 }

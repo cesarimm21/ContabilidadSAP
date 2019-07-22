@@ -46,5 +46,18 @@ export default {
         return response.data;
       })
   },
+
+  Activar(data:any){
+    return axios.post(CONFIG.API_URL+'costitem/activar', data)
+    .then(response =>{
+        return response.data;
+      })
+  },
+  Eliminar(data:any){
+    return axios.post(CONFIG.API_URL+'costitem/eliminar', data)
+    .then(response =>{
+        return response.data;
+      })
+  },
 }
   

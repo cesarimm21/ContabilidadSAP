@@ -68,7 +68,7 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
-                                <buttons-accions v-on:validarView="validarView()" v-on:ActivarDesactivar="ActivaDesactivar()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:Activar="ActivaDesactivar()"></buttons-accions>
                             </div>
                             
                             <div class="col-md-12" >

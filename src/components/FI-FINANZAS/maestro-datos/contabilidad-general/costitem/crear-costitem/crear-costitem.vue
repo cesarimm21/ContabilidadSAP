@@ -5,7 +5,7 @@
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear CostItem</span>
+                <span class="labelheadercard" > Crear Grupo Elemento Gasto</span>
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -27,7 +27,7 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{cositemModel.strCompany_Desc}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Costo</label>
+                                <label class="el-form-item__label col-md-2" >Grupo Elem. Gto. </label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input size ="small" v-model="cositemModel.strCost_Item_Cod" type="text">  
