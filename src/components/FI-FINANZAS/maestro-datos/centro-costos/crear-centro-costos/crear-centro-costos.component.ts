@@ -147,12 +147,20 @@ export default class CrearCentroCostosComponent extends Vue {
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
+  companyName:any='';
+  companyCod:any='';
+  nameuser:any='';
   constructor(){    
     super();
     Global.nameComponent='crear-ingreso-comprobante';
     this.fecha_actual=Global.getDate(new Date().toDateString());   
     this.fecha_ejecucion=Global.getParseDate(new Date().toDateString());  
+
+    this.dtmEnd_Date.setFullYear(9999)
     this.loadTipocambio();
+    this.companyName=localStorage.getItem('compania_name');
+    this.companyCod=localStorage.getItem('compania_cod');
+    this.nameuser=localStorage.getItem('User_Usuario');
   }
   loadTipocambio(){
     tipocambioService.GetAllTipoCambio1()
@@ -706,6 +714,9 @@ export default class CrearCentroCostosComponent extends Vue {
     this.centrocosto.dtmStart_Date=this.dtmStart_Date;
     this.centrocosto.dtmEnd_Date=this.dtmEnd_Date;
     this.centrocosto.strlevel=this.strlevel;
+    this.centrocosto.strCompany_Cod=this.companyCod;
+    this.centrocosto.strCompany_Desc=this.companyName;
+
     centrocostosService.CreateCentroCosto(this.centrocosto)
     .then(response=>{
       this.issave=true;
@@ -731,6 +742,15 @@ export default class CrearCentroCostosComponent extends Vue {
         type: 'error',
         message: strMessage
       });
+  }
+  getDateStringView(fecha:string){
+    var dateString = new Date(fecha);
+    var dia = dateString.getDate();
+    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+    var yyyy = dateString.getFullYear();
+    var dd = (dia<10) ? '0'+dia : dd=dia;
+    var mm = (mes<10) ? '0'+mes : mm=mes;
+    return dd+'.'+mm+'.'+yyyy;
   }
   //#endregion
   data(){

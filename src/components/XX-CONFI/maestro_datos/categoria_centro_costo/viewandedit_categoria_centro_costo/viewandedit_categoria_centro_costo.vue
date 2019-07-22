@@ -70,14 +70,14 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmCreation_Date"
-                                            prop="dtmModified_Date"   min-width="80"
+                                            prop="dtmModified_Date"   width="100"
                                             label="Fecha">
                                             <template scope="scope">
                                                 <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrCreation_User"
-                                            prop="strModified_User" 
+                                            prop="strModified_User"  width="100"
                                             label="Usuario">
                                         </el-table-column>
                                         <el-table-column 

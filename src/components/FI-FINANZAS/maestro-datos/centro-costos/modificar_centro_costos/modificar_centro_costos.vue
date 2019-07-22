@@ -50,6 +50,7 @@
                                      <el-date-picker
                                         v-model="dtmStart_Date" :disabled="visualizar"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                     </div>
@@ -60,6 +61,7 @@
                                      <el-date-picker :disabled="visualizar"
                                         v-model="dtmEnd_Date"
                                         size="mini"
+                                        format="dd.MM.yyyy"
                                         style="width:128px !important">
                                     </el-date-picker>
                                     </div>
@@ -79,16 +81,16 @@
                                 <div class="row bodycard">
                                     <div class="container">
                                         <div class="row" style="margin-top: 3px;">
-                                            <div class="col-sm-6" style="margin-top: 10px;">
+                                            <div class="col-sm-8" style="margin-top: 10px;">
                                                 <div class="form-group row">
                                                     <label class="el-form-item__label col-sm-2" >Nombre</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input :disabled="visualizar"  size ="small" style="font-size:11px;" v-model="centrocosto.strCostCenter_Name"  @change="DateContabilizacionClick()"></el-input>
                                                         </div>
                                                     </div>
-                                                    <label class="el-form-item__label col-sm-3" >Descripcion</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <label class="el-form-item__label col-sm-2" >Descripcion</label>
+                                                    <div class="col-sm-5 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input :disabled="visualizar"  size ="small" style="font-size:11px;" v-model="centrocosto.strCostCenter_Desc" ></el-input>
                                                         </div>
@@ -96,7 +98,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="el-form-item__label col-sm-2" >Tipo</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                             <el-select  :disabled="visualizar" v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                                                 <el-option style="font-size:13px"
@@ -108,8 +110,8 @@
                                                             </el-select>
                                                         </div>
                                                     </div>
-                                                    <label class="el-form-item__label col-sm-3" >Grupo Proceso</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <label class="el-form-item__label col-sm-2" >Grupo Proceso</label>
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input :disabled="visualizar" size ="small" @blur="desactivar_GrupoProceso" @focus="activar_GrupoProceso" v-model="centrocosto.strCCGrpProc_Cod">                            
                                                             <el-button v-if="btnactivarGrupoProceso && !dialogGrupoProceso" slot="append" class="boton" icon="fa fa-clone" @click="loadGrupoProceso()"></el-button> 
@@ -118,35 +120,35 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="el-form-item__label col-sm-2" >Ctas. Haber</label>
-                                                    <div class="col-sm-3 grupolabel">
-                                                        <div class="input-group mb-3" >
-                                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber" v-model="centrocosto.strAcctDest_Credit"  placeholder="">
-                                                            <el-button v-if="btnactivarCuentaContableHaber && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber()"></el-button> 
-                                                        </el-input>
-                                                        </div>  
-                                                    </div>
-                                                    <label class="el-form-item__label col-sm-3" >Ctas. Debe</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <label class="el-form-item__label col-sm-2" >Ctas. Debe</label>
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                             <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableDebe" @focus="activar_CuentaContableDebe" v-model="centrocosto.strAcctDest_Debit"  placeholder="">
                                                                 <el-button v-if="btnactivarCuentaContableDebe && !dialogCuentaContableDebe" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableDebe()"></el-button> 
                                                             </el-input> 
                                                         </div>
                                                     </div>
+                                                    <label class="el-form-item__label col-sm-2" >Ctas. Haber</label>
+                                                    <div class="col-sm-2 grupolabel">
+                                                        <div class="input-group mb-3" >
+                                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_CuentaContableHaber" @focus="activar_CuentaContableHaber" v-model="centrocosto.strAcctDest_Credit"  placeholder="">
+                                                            <el-button v-if="btnactivarCuentaContableHaber && !dialogCuentaContableHaber" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContableHaber()"></el-button> 
+                                                        </el-input>
+                                                        </div>  
+                                                    </div>
                                                 </div>
                                                 
                                                 <div class="form-group row">
                                                     <label class="el-form-item__label col-sm-2" >Categoría</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input :disabled="visualizar" size ="small" @blur="desactivar_CategoriaCentroCosto" @focus="activar_CategoriaCentroCosto" v-model="centrocosto.strCCCategory_Cod"  placeholder="">
                                                             <el-button v-if="btnactivarCategoriaCentroCosto && !dialogCategoriaCentroCosto" slot="append" class="boton" icon="fa fa-clone" @click="loadCategoriaCentroCosto()"></el-button> 
                                                         </el-input>
                                                         </div>
                                                     </div>
-                                                    <label class="el-form-item__label col-sm-3" >Centro Beneficio</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <label class="el-form-item__label col-sm-2" >Centro Beneficio</label>
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input :disabled="visualizar" size ="small" @blur="desactivar_CentroCosto" @focus="activar_CentroCosto" v-model="centrocosto.strCostCen_Father_NO"  placeholder="">
                                                             <el-button v-if="btnactivarCentroCosto && !dialogCentroCosto" slot="append" class="boton" icon="fa fa-clone" @click="loadCentroCosto()"></el-button> 
@@ -156,7 +158,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="el-form-item__label col-sm-2" >Grupo Area</label>
-                                                    <div class="col-sm-3 grupolabel">
+                                                    <div class="col-sm-2 grupolabel">
                                                         <div class="input-group mb-3" >
                                                         <el-input :disabled="visualizar" size ="small" @blur="desactivar_GrupoArea" @focus="activar_GrupoArea" v-model="centrocosto.strCCGrpArea_Cod"  placeholder="">
                                                             <el-button v-if="btnactivarGrupoArea && !dialogGrupoArea" slot="append" class="boton" icon="fa fa-clone" @click="loadGrupoArea()"></el-button> 

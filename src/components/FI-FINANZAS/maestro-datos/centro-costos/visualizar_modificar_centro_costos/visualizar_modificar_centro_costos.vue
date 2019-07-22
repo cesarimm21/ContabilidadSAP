@@ -8,7 +8,7 @@
 
     <el-card class="box-card">
         <div slot="header" class="headercard">
-            <span class="labelheadercard" >Modificar Centro Costo</span>
+            <span class="labelheadercard" >Visualizar Centro Costo</span>
         </div>
         <div class="row bodycard">
            <div class="container">
@@ -29,6 +29,7 @@
                                 <div class="input-group mb-3" >
                                     <el-date-picker
                                         v-model="fechaDesde"
+                                        format="dd.MM.yyyy"
                                         size="mini"
                                         style="width:128px !important">
                                     </el-date-picker>
@@ -39,6 +40,7 @@
                                 <div class="input-group mb-3" >
                                     <el-date-picker
                                         v-model="fechaHasta"
+                                        format="dd.MM.yyyy"
                                         size="mini"
                                         style="width:128px !important"
                                        >
@@ -60,6 +62,7 @@
                                     <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
+                                        @row-dblclick="validarView"
                                         :data="tableData" 
                                          highlight-current-row
                                          @current-change="handleCurrentChange"

@@ -29,6 +29,7 @@
                                 <div class="input-group mb-3" >
                                     <el-date-picker
                                         v-model="fechaDesde"
+                                        format="dd.MM.yyyy"
                                         size="mini"
                                         style="width:128px !important">
                                     </el-date-picker>
@@ -39,6 +40,7 @@
                                 <div class="input-group mb-3" >
                                     <el-date-picker
                                         v-model="fechaHasta"
+                                        format="dd.MM.yyyy"
                                         size="mini"
                                         style="width:128px !important">
                                     </el-date-picker>
@@ -61,6 +63,8 @@
                                         :max-height="sizeScreen"
                                         :data="tableData" 
                                          highlight-current-row
+                                         
+                                        @row-dblclick="validarView"
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">

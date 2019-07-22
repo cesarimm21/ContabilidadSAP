@@ -66,6 +66,7 @@
                                         :max-height="sizeScreen"
                                         :data="tableData"
                                         @header-click="headerclick"
+                                        @row-dblclick="validarView"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
