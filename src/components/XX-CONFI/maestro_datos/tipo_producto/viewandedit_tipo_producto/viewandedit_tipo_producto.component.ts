@@ -6,11 +6,11 @@ import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
 //***Modelos */
-import {TipoProductoModel} from '@/modelo/maestro/tipoproducto';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import impuestoService from '@/components/service/impuesto.service';
-import tipoproductoService from '@/components/service/tipoproducto.service';
+import tipoproductoService from '@/components/service/tipoRequisicion.service';
 
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
@@ -34,8 +34,8 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     issave:boolean=false;
     iserror:boolean=false;
     textosave:string='';
-    public tipoproducto:TipoProductoModel=new TipoProductoModel();
-    public tableData:Array<TipoProductoModel>=[]; 
+    public tipoproducto:TipoRequisicionModel=new TipoRequisicionModel();
+    public tableData:Array<TipoRequisicionModel>=[]; 
     namepage:string;
     impDisabled:boolean=false;
     cod_criticidad:string='';
@@ -43,6 +43,9 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     currentRow:any;
     dialogEliminar:boolean=false;
     cod_tipo_producto:string='';
+    dialogInactivar:boolean=false;
+    item:string='';
+
   constructor(){    
         super();
         Global.nameComponent='viewandedit-tipo-producto';
@@ -66,7 +69,7 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     async cargarList(){
         debugger;
         if(this.cod_tipo_producto!=''){
-            await tipoproductoService.GetOnlyOnetipoproducto(this.cod_tipo_producto)
+            await tipoproductoService.GetOnlyOneTipoRequisicion(this.cod_tipo_producto)
             .then(res=>{
                 debugger;
                 console.log('/****************Busqueda***************/')
@@ -81,7 +84,7 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
             })
         }
         else{
-            await tipoproductoService.GetAlltipoproducto()
+            await tipoproductoService.GetAllTipoRequisicion2()
             .then(res=>{
                 debugger;
                 console.log('/****************Busqueda***************/')
@@ -122,12 +125,12 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     }
   }
   async btnEliminar(){
-    await tipoproductoService.Eliminartipoproducto(this.currentRow)
+    await tipoproductoService.DesactivarTipoRequisicion(this.currentRow)
     .then(response=>{
       debugger;
       console.log('eliminar',response);
       if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strTypeProd_Cod;
+         this.textosave='Se elimino correctamento.' + this.selectrow.strTypeReq_Cod;
          this.issave=true;
          this.iserror=false;
       }
@@ -161,6 +164,68 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
 }
+
+ActivarDesactivar(){
+    debugger;
+    this.item=this.selectrow.strTypeReq_Cod;
+    this.dialogInactivar=true;      
+  }
+  
+  successMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'success'
+    });
+  }
+  errorMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'error'
+    });
+  }
+  async btnInactivar(){
+    var nameuser:any=localStorage.getItem('User_Usuario');
+    this.selectrow.strModified_User=nameuser;
+    if(this.selectrow.strTypeReq_Cod!=""){
+      
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+      );   
+      await tipoproductoService.activarRequisicion(this.selectrow)
+      .then(respo=>{
+        loadingInstance.close();
+        this.successMessage('Se Activo Tipo Producto '+this.selectrow.strTypeReq_Cod)
+        this.load();
+        this.issave=true;
+        this.iserror=false;
+        this.textosave='Se Activo Tipo Producto '+this.selectrow.strTypeReq_Cod;
+        this.dialogInactivar=false;
+      }).catch(ee=>{
+        loadingInstance.close();
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Error en Activar '+this.selectrow.strTypeReq_Cod;
+        this.errorMessage('Error en Activar '+this.selectrow.strTypeReq_Cod)})
+        this.dialogInactivar=false;
+    }
+    else{
+      this.warningMessage('Debe de seleccionar una fila!!!');
+    }
+  }
+  
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
     data(){
         return{     
             companyName:'',

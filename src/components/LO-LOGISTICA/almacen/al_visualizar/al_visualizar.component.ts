@@ -179,11 +179,13 @@ export default class VisualizarMaterialComponent extends Vue {
       data.strWHS_Cod=this.strWHS_Cod;
     }
     
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-      this.per++;
-    }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await productoService.busquedaProducto(data)
     .then(res=>{
       debugger;
@@ -191,23 +193,21 @@ export default class VisualizarMaterialComponent extends Vue {
       console.log(res);
      // if(this.valuem>=100){
         // setTimeout(() => {
-          for(var i=0;i<50;i++){
-            setTimeout(
-              () => {this.percentage++;},1  
-            )
-          }
+          
           console.log('/****************Busqueda***************/')
           console.log(res)
          // }, 1200)
-        setTimeout(() => {    this.CompleteData=res;
+          this.CompleteData=res;
           this.CompleteData1=this.CompleteData;
           this.totalRegistros=this.CompleteData1.length;
           this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-      this.vifprogress=false;}, 600)
+          this.vifprogress=false;
+          loading.close();
       //}
     })
     .catch(error=>{
       
+      loading.close();
     })
   }
   async BuscarProducto(){
@@ -499,16 +499,21 @@ export default class VisualizarMaterialComponent extends Vue {
     this.desalmacen=val.strWHS_Desc;
     this.dialogAlmacen=false;
   }
-
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
   EliminarItem(){
     debugger;
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
+   
+    this.warningMessage('Accion no permitida');
     
+  }
+  ActivarDesactivar(){
+    this.warningMessage('Accion no permitida');
   }
   async btnEliminar(){
     await productoService.eliminarProducto(this.selectrow)

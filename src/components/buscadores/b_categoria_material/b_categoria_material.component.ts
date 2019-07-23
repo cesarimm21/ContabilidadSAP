@@ -40,7 +40,7 @@ export default class  BCategoriaMaterialComponent extends Vue {
     this.load();
   }
   load(){
-    categoriamaterialService.GetAllCategoriaMaterial()
+    categoriamaterialService.GetAllCategoriaMaterial2()
     .then(response=>{
       this.categoriamaterialModel=response;       
       this.categoriamaterialModel1=response;       

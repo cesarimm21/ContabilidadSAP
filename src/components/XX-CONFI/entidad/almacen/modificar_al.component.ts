@@ -61,7 +61,7 @@ export default class ModificarAlmacenComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        almacenService.GetAllAlmacen(this.companyCod)
+        almacenService.GetAllAlmacen2(this.companyCod)
         .then(response=>{
           this.gridAlmacen=[];
           this.gridAlmacen1=[];

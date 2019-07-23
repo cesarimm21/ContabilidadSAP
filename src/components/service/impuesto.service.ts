@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllImpuesto2(){    
+    return axios.get(CONFIG.API_URL+'impuesto2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneImpuesto(code){
     return axios.get(CONFIG.API_URL+'impuesto/'+code)
     .then(response =>{  
@@ -35,6 +41,12 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'impuesto/activar', data)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
   }
 }
   

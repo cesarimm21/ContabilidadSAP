@@ -46,6 +46,7 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
 //   //Servicios
 //   categoriaService:CategoriaService=new CategoriaService();
   loading1:boolean=true;
+  company_cod:any='';
   constructor() {
     super();
     setTimeout(() => {
@@ -53,7 +54,8 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
     }, 200)
   }
   load(){
-    categoriacentrocostoService.GetAllCategoria()
+    this.company_cod=localStorage.getItem('compania_cod');
+    categoriacentrocostoService.GetAllCategoria2(this.company_cod)
     .then(response=>{
       this.cuentacontableModel=response;   
       this.cuentacontableModel1=response;   

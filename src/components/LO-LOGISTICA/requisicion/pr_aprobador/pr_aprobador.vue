@@ -76,6 +76,7 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData"
+                                        @row-dblclick="validarView"
                                         @header-click="headerclick"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"

@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllBanco2(){      
+    return axios.get(CONFIG.API_URL+'banco2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllBancoType(){      
     return axios.get(CONFIG.API_URL+'bancotype')
     .then(response =>{            

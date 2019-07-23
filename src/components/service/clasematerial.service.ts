@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllClaseMaterial2(company_cod){  
+    return axios.get(CONFIG.API_URL+'clasematerial2/'+company_cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   busquedaProducto(strCodClaseMaterial,desde,hasta){
     return axios.get(CONFIG.API_URL+'busqueda/clasematerial/'+strCodClaseMaterial+'/'+desde+'/'+hasta)
     .then(response =>{           
@@ -35,8 +41,8 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  deleteClaseMaterial(intIdMatClass_ID,strModified_User){
-    return axios.get(CONFIG.API_URL+'clasematerial/delete/'+intIdMatClass_ID+'/'+strModified_User)
+  deleteClaseMaterial(data){
+    return axios.post(CONFIG.API_URL+'clasematerial/delete',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -50,6 +56,13 @@ export default {
   update(data)
   {
     return axios.post(CONFIG.API_URL+'update/clasematerial',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activar(data)
+  {
+    return axios.post(CONFIG.API_URL+'clasematerial/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

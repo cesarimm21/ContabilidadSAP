@@ -5,10 +5,10 @@ import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 //***Modelos */
-import {TipoProductoModel} from '@/modelo/maestro/tipoproducto';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
-import tipoproductoService from '@/components/service/tipoproducto.service';
+import tipoproductoService from '@/components/service/tipoRequisicion.service';
 import {PaisModel} from '@/modelo/maestro/pais';
 import BPaisComponent from '@/components/buscadores/b_pais/b_pais.vue';
 
@@ -31,7 +31,7 @@ export default class ModificarTipoProductoComponent extends Vue {
     txtviewmodulo:string='';
     txtmodulo:string='';
     visualizar:boolean=false;
-    public tipoproducto:TipoProductoModel=new TipoProductoModel();
+    public tipoproducto:TipoRequisicionModel=new TipoRequisicionModel();
     public gridSelectPais:PaisModel=new PaisModel();
     paisVisible:boolean=false;
     btnactivarpais:boolean=false;
@@ -64,7 +64,7 @@ export default class ModificarTipoProductoComponent extends Vue {
 
     cargar(code){
 
-        tipoproductoService.GetOnlyOnetipoproducto(code)
+        tipoproductoService.GetOnlyOneTipoRequisicion(code)
         .then(resp=>{   
             console.log('resultado',resp);
             this.tipoproducto=resp;
@@ -81,21 +81,21 @@ export default class ModificarTipoProductoComponent extends Vue {
         })
     }
     guardarTodo(){
-        if(this.tipoproducto.strTypeProd_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
+        if(this.tipoproducto.strTipReq_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
         else{
             this.tipoproducto.chrStatus='A';
             console.log('update',this.tipoproducto);
-            tipoproductoService.Updatetipoproducto(this.tipoproducto)
+            tipoproductoService.UpdateTipoRequisicion(this.tipoproducto)
             .then(resp=>{
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strTypeProd_Cod
+                    message: 'Se guardo Correctamente '+resp.strTypeReq_Cod
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strTypeProd_Cod;
-                this.tipoproducto=new TipoProductoModel();
+                this.textosave = 'Se guardo correctamente. '+resp.strTypeReq_Cod;
+                this.tipoproducto=new TipoRequisicionModel();
             }).catch(error=>{
                 this.$message({
                     showClose: true,

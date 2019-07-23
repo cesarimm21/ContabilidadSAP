@@ -11,6 +11,13 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCategoriaCuenta2(){      
+    debugger;
+    return axios.get(CONFIG.API_URL+'categoriacuenta2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllCategoriaCuentaView(){      
     return axios.get(CONFIG.API_URL+'categoriacuenta/view')
     .then(response =>{            

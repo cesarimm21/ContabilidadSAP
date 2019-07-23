@@ -45,7 +45,7 @@ export default class  BCategoriaCuentaComponent extends Vue {
     }, 400)       
   }
   load(){
-    categoriacuentaService.GetAllCategoriaCuenta()
+    categoriacuentaService.GetAllCategoriaCuenta2()
     .then(response=>{      
       this.categoriacuentaModel=[];       
       this.categoriacuentaModel1=[];       

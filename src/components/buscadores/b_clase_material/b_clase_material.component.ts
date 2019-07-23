@@ -37,13 +37,15 @@ export default class  BClaseMaterialComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  company_cod:any='';
   constructor() {
     super();
     this.load();
   }
   load(){
     debugger;
-    clasematerialService.GetAllClaseMaterial()
+    this.company_cod=localStorage.getItem('compania_cod');
+    clasematerialService.GetAllClaseMaterial2(this.company_cod)
     .then(response=>{
       this.clasematerialModel=response;       
       this.clasematerialModel1=response;       

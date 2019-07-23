@@ -68,7 +68,7 @@ export default class VisualizarImpuestoComponent extends Vue {
         this.loadImpuesto();
     }
     loadImpuesto(){
-        impuestoService.GetAllImpuesto()
+        impuestoService.GetAllImpuesto2()
         .then(resp=>{
             this.gridImpuesto=[];
             this.gridImpuesto1=[];
@@ -184,11 +184,10 @@ export default class VisualizarImpuestoComponent extends Vue {
         window.print();
       }
     async  EliminarItem(){
-        this.$message({
-            showClose: true,
-            message: 'Opcion no permitida',
-            type: 'info'
-          });
+      this.warningMessage('Accion no permitida');
+    }
+    ActivarDesactivar(){
+      this.warningMessage('Accion no permitida');
     }
     async validad(){
         

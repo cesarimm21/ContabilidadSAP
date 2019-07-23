@@ -78,5 +78,12 @@ export default{
       return response.data
     })
     
+  },
+  activar(data){
+    debugger;
+    return axios.post(CONFIG.API_URL+'producto/activar',data)
+    .then(response => {
+      return response.data
+    })
   }
 }

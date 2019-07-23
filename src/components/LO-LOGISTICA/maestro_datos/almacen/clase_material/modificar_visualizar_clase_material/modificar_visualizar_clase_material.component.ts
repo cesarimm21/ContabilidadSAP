@@ -130,7 +130,8 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
   pagina: number =1;
   RegistersForPage: number = 100;
   totalRegistros: number = 1000;
-  
+  dialogInactivar:boolean=false;
+  item:string='';
   //#endregion
   constructor(){
     super();
@@ -210,11 +211,11 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
           console.log('/****************Busqueda***************/')
           console.log(res)
          // }, 1200)
-        setTimeout(() => {    this.CompleteData=res;
+       this.CompleteData=res;
           this.CompleteData1=this.CompleteData;
           this.totalRegistros=this.CompleteData1.length;
           this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-      this.vifprogress=false;}, 600)
+      this.vifprogress=false;
       //}
     })
     .catch(error=>{
@@ -481,7 +482,7 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
 
   EliminarItem(){
     debugger;
-    if(this.selectrow!=undefined){
+    if(this.selectrow!=undefined){  
       this.dialogEliminar=true;
     }
     else{
@@ -489,37 +490,46 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
     }
     
   }
-//   async btnEliminar(){
-//     await productoService.eliminarProducto(this.selectrow)
-//     .then(response=>{
-//       debugger;
-//       console.log('eliminar',response);
-//       if(response!=undefined){
-//          this.textosave='Se elimino correctamento.' + response.strStock_Cod;
-//          this.issave=true;
-//          this.iserror=false;
-//       }
-//       else{
-//         this.issave=false;
-//         this.iserror=true;
-//         this.textosave='Ocurrio un error al eliminar.';
-//       }
-//       this.dialogEliminar=false;
-//       //this.unidadmedidaModel=response;       
-//     }).catch(error=>{
+  async btnEliminar(){
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
+    this.selectrow.strCreation_User=this.nameuser;
+    this.selectrow.strModified_User=this.nameuser;
+    await clasematerialService.deleteClaseMaterial(this.selectrow)
+    .then(response=>{
+      debugger;
+      console.log('eliminar',response);
+      if(response!=undefined){
+         this.textosave='Se elimino correctamento.' + response;
+         this.issave=true;
+         this.iserror=false;
+      }
+      else{
+        this.issave=false;
+        this.iserror=true;
+        this.textosave='Ocurrio un error al eliminar.';
+      }
+      this.dialogEliminar=false;
+      this.cargarList();
+      //this.unidadmedidaModel=response;       
+    }).catch(error=>{
       
-//       this.dialogEliminar=false;
-//       this.issave=false;
-//       this.iserror=true;
-//       this.textosave='Ocurrio un error al eliminar.';
-//       this.$message({
-//         showClose: true,
-//         type: 'error',
-//         message: 'No se pudo cargar almacen'
-//       });
-//     })
-//     await this.cargarList();
-//   }
+      this.dialogEliminar=false;
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Ocurrio un error al eliminar.';
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se pudo cargar almacen'
+      });
+    })
+  }
 
   ///#region  button accion
   filterstrWHS_Cod(h,{column,$index}){
@@ -814,6 +824,68 @@ export default class VisualizarModificarClaseMaterialComponent extends Vue {
   }
   //#endregion
   
+  
+ActivarDesactivar(){
+  debugger;
+  this.item=this.selectrow.strMatClass_Cod;
+  this.dialogInactivar=true;      
+}
+
+successMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'success'
+  });
+}
+errorMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'error'
+  });
+}
+async btnInactivar(){
+  var nameuser:any=localStorage.getItem('User_Usuario');
+  this.selectrow.strModified_User=nameuser;
+  if(this.selectrow.strMatClass_Cod!=""){
+    
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
+    await clasematerialService.activar(this.selectrow)
+    .then(respo=>{
+      loadingInstance.close();
+      this.successMessage('Se Activo Clase Material '+this.selectrow.strMatClass_Cod)
+      this.load();
+      this.issave=true;
+      this.iserror=false;
+      this.textosave='Se Activo Clase Material '+this.selectrow.strMatClass_Cod;
+      this.dialogInactivar=false;
+    }).catch(ee=>{
+      loadingInstance.close();
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Error en Activar '+this.selectrow.strMatClass_Cod;
+      this.errorMessage('Error en Activar '+this.selectrow.strMatClass_Cod)})
+      this.dialogInactivar=false;
+  }
+  else{
+    this.warningMessage('Debe de seleccionar una fila!!!');
+  }
+}
+
+warningMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'warning'
+  });
+}
   data(){
     return{
       percentage: '0',

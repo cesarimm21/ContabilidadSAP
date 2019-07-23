@@ -92,6 +92,9 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     'strWHS_Cod':'',
     'strVendor_NO':''
   }
+
+  dialogInactivar:boolean=false;
+  item:string='';
   public tableData:Array<ProductoModel>=[]; 
   valuem:number=50;
   striped=true;
@@ -128,8 +131,8 @@ export default class VisualizarModificarMaterialComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   pagina: number =1;
-  RegistersForPage: number = 100;
-  totalRegistros: number = 100;
+  RegistersForPage: number = 10000;
+  totalRegistros: number = 10000;
   
   //#endregion
   constructor(){
@@ -183,12 +186,13 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     else{
       data.strWHS_Cod=this.strWHS_Cod;
     }
-    
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-      this.percentage++;
-      this.per++;
-    }
+    let loading = Loading.service({
+      fullscreen: true,
+      text: 'Cargando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );
     await productoService.busquedaProducto(data)
     .then(res=>{
       debugger;
@@ -196,23 +200,20 @@ export default class VisualizarModificarMaterialComponent extends Vue {
       console.log(res);
      // if(this.valuem>=100){
         // setTimeout(() => {
-          for(var i=0;i<50;i++){
-            setTimeout(
-              () => {this.percentage++;},1  
-            )
-          }
+        
           console.log('/****************Busqueda***************/')
           console.log(res)
          // }, 1200)
-        setTimeout(() => {    this.CompleteData=res;
-          this.CompleteData1=this.CompleteData;
-          this.totalRegistros=this.CompleteData1.length;
-          this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-      this.vifprogress=false;}, 600)
+        this.CompleteData=res;
+        this.CompleteData1=this.CompleteData;
+        this.totalRegistros=this.CompleteData1.length;
+        this.tableData = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.vifprogress=false;
+        loading.close();
       //}
     })
     .catch(error=>{
-      
+      loading.close();
     })
   }
   async BuscarProducto(){
@@ -848,6 +849,70 @@ export default class VisualizarModificarMaterialComponent extends Vue {
     var mm = (mes<10) ? '0'+mes : mm=mes;
     return dd+'.'+mm+'.'+yyyy;
   }
+
+  
+ActivarDesactivar(){
+  debugger;
+  this.item=this.currentRow.strWHS_Cod;
+  this.dialogInactivar=true;      
+}
+
+successMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'success'
+  });
+}
+errorMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'error'
+  });
+}
+async btnInactivar(){
+  var nameuser:any=localStorage.getItem('User_Usuario');
+  this.selectrow.strModified_User=nameuser;
+  if(this.selectrow.strWHS_Cod!=""){
+    
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
+    await productoService.activar(this.selectrow)
+    .then(respo=>{
+      loadingInstance.close();
+      this.successMessage('Se Activo Material '+this.selectrow.strWHS_Cod)
+      this.load();
+      this.issave=true;
+      this.iserror=false;
+      this.textosave='Se Activo Material '+this.selectrow.strWHS_Cod;
+      this.dialogInactivar=false;
+    }).catch(ee=>{
+      loadingInstance.close();
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Error en Activar '+this.selectrow.strWHS_Cod;
+      this.errorMessage('Error en Activar '+this.selectrow.strWHS_Cod)})
+      this.dialogInactivar=false;
+  }
+  else{
+    this.warningMessage('Debe de seleccionar una fila!!!');
+  }
+}
+
+warningMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'warning'
+  });
+}
+
   data(){
     return{
       percentage: '0',
