@@ -25,7 +25,7 @@ export default class  BDocumentoComponent extends Vue {
     this.GetAllTipoDocumento()
   }
   GetAllTipoDocumento(){      
-    tipodocidentidadService.GetAllTipoDocumento()
+    tipodocidentidadService.GetAllTipoDocumento2()
     .then(response=>{
       this.TipoDoc=response;
       this.TipoDoc1=response;

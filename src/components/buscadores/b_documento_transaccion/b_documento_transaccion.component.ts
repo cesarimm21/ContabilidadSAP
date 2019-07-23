@@ -44,7 +44,7 @@ export default class  BDocumentoTransaccionComponent extends Vue {
     }, 200)
   }
   load(){
-    documentotransaccionService.GetAllDocumentoTransaccion()
+    documentotransaccionService.GetAllDocumentoTransaccion2()
     .then(response=>{
       this.documentotransaccionModel=response;       
       this.documentotransaccionModel1=response;       

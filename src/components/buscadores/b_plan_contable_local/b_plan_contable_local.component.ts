@@ -56,7 +56,7 @@ export default class  BPlanContableLocalComponent extends Vue {
     }, 200)
   }
   load(){
-    plancontableService.GetAllPlanCuenta()
+    plancontableService.GetAllPlanCuenta2()
     .then(response=>{
       this.cuentacontableModel=response;    
       this.cuentacontableModel1=response;    

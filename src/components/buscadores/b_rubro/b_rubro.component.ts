@@ -48,7 +48,7 @@ export default class  BRubroComponent extends Vue {
     }, 200)
   }
   load(){
-    rubroService.GetAllRubro()
+    rubroService.GetAllRubro2()
     .then(response=>{
       this.cuentacontableModel=response;       
       this.cuentacontableModel1=response;       

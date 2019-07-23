@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllTipoDocumento2(){  
+    return axios.get(CONFIG.API_URL+'tipodocidentidad2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllTipoDocumentoView(){  
     return axios.get(CONFIG.API_URL+'tipodocidentidad/view')
     .then(response =>{            

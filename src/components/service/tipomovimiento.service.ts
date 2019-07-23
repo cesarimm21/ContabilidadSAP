@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllTipoMovimiento2(){  
+    return axios.get(CONFIG.API_URL+'tipomovimiento2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneTipoMovimiento(code){
     return axios.get(CONFIG.API_URL+'tipomovimiento/'+code)
     .then(response =>{           

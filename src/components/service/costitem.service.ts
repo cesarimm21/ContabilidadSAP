@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCostItem2(company_cod){  
+    return axios.get(CONFIG.API_URL+'costitem2/'+company_cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllCostItemLike(codigo){  
     return axios.get(CONFIG.API_URL+'busqueda/costitemlike/'+codigo)
     .then(response =>{           

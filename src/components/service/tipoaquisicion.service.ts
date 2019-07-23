@@ -10,6 +10,12 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
+  busquedaTipoAquisicion2(){
+    return axios.get(CONFIG.API_URL+'tipoadquisicion2')
+    .then(response =>{
+      return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateTipoAdquisicion(adquisicion){
     return axios.post(CONFIG.API_URL+'tipoadquisicion/create', adquisicion)
     .then(response =>{

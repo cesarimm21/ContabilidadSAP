@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllDiarios2(){   
+    return axios.get(CONFIG.API_URL+'diario2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   deleteDiarios(intDaily_ID){   
     return axios.get(CONFIG.API_URL+'diario/delete/'+intDaily_ID)
     .then(response =>{            

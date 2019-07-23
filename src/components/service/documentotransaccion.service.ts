@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllDocumentoTransaccion2(){   
+    return axios.get(CONFIG.API_URL+'documentotransaccion2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneDocumentoTransaccion(code){
     return axios.get(CONFIG.API_URL+'documentotransaccion/'+code)
     .then(response =>{            

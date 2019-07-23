@@ -28,7 +28,7 @@ export default class  BTipoCuentaContableComponent extends Vue {
     this.GetAllTipoDocumento()
   }
   GetAllTipoDocumento(){      
-    tipocuentacontableService.GetAllTipoCuentaContable()
+    tipocuentacontableService.GetAllTipoCuentaContable2()
     .then(response=>{
       this.TipoCuentaContable=response;
       this.TipoCuentaContable1=response;

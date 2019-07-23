@@ -45,7 +45,7 @@ export default class  BCuentaContableComponent extends Vue {
   
   public search:CuentaContableModel=new CuentaContableModel();
   inputAtributo:any;
-
+  company_cod:any='';
   constructor() {
     super();
     setTimeout(() => {
@@ -53,7 +53,8 @@ export default class  BCuentaContableComponent extends Vue {
     }, 500)
   }
   load(){     
-    cuentacontableService.GetAllCuentaContable()
+    this.company_cod=localStorage.getItem('compania_cod');
+    cuentacontableService.GetAllCuentaContable2(this.company_cod)
     .then(response=>{      
       this.gridCuenta=[];
       this.gridCuenta1=[];

@@ -46,7 +46,7 @@ export default class  BDiarioComponent extends Vue {
     }, 200)
   }
   load(){
-    diarioService.GetAllDiarios()
+    diarioService.GetAllDiarios2()
     .then(response=>{
       this.gridModel=[];
       this.gridModel1=[];

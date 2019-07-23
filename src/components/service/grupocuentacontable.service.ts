@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllGrupoCuentaContable2(){  
+    return axios.get(CONFIG.API_URL+'grupocuentacontable2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   activar(data){
     return axios.post(CONFIG.API_URL+'grupocuentacontable/activar',data)
     .then(response =>{           

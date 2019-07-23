@@ -22,6 +22,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllUnidadMedida2(){  
+    return axios.get(CONFIG.API_URL+'unidadmedida2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneUnidadMedida(code){
     return axios.get(CONFIG.API_URL+'unidadmedida/'+code)
     .then(response =>{           

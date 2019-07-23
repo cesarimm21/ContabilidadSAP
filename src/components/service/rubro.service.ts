@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllRubro2(){  
+    return axios.get(CONFIG.API_URL+'rubro2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneRubroCuenta(codigo){
     return axios.get(CONFIG.API_URL+'rubro/'+codigo)
     .then(response =>{           
