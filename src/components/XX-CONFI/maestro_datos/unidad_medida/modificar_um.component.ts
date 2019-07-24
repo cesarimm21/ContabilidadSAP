@@ -7,7 +7,7 @@ import router from '@/router';
 import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import umService from '@/components/service/unidadmedida.service';
+import unidadService from '@/components/service/unidadmedida.service';
 import { Loading } from 'element-ui';
 import unidadmedidaService from '@/components/service/unidadmedida.service';
 @Component({
@@ -27,15 +27,13 @@ export default class ModificarUMComponent extends Vue {
   companyName:any;
   companyCod:any;
   strUM_Cod:string='';
-  unidadDialog:boolean=false;
-  public unidad:UnidadMedidaModel=new UnidadMedidaModel();
-  gridUnidad:UnidadMedidaModel[];
-  gridUnidad1:UnidadMedidaModel[];
-  gridUnidad2:UnidadMedidaModel[];
+  public documento:UnidadMedidaModel=new UnidadMedidaModel();
+  gridDocumento:UnidadMedidaModel[];
+  gridDocumento1:UnidadMedidaModel[];
+  gridDocumento2:UnidadMedidaModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-
   pagina: number =1;
   RegistersForPage: number = 100;
   totalRegistros: number = 100;
@@ -43,12 +41,14 @@ export default class ModificarUMComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blnilterstrUM_Desc:boolean=false;
   blnilterstrUM_Cod:boolean=false;
+  blnilterstrUM_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
-
-
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='modificar-um';
@@ -59,14 +59,17 @@ export default class ModificarUMComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        umService.GetAllUnidadMedida()
+        unidadService.GetAllUnidadMedidaView()
         .then(response=>{
-          this.gridUnidad=[];
-          this.gridUnidad1=[];
-          this.gridUnidad2=[];
-          this.gridUnidad=response;
-          this.gridUnidad1=response;
-          this.gridUnidad2=response;
+          this.gridDocumento=[];
+          this.gridDocumento1=[];
+          this.gridDocumento2=[];
+          this.gridDocumento=response;
+          this.gridDocumento1=response;
+          this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -79,13 +82,13 @@ export default class ModificarUMComponent extends Vue {
         return dd+'.'+mm+'.'+yyyy;
     }
     handleCurrentChange(val:UnidadMedidaModel){
-      this.unidad=val;
-      this.strUM_Cod=this.unidad.strUM_Cod;
+      this.documento=val;
+      this.strUM_Cod=this.documento.strUM_Cod;
      }
     btnBuscar(){
-      var data=Global.like(this.gridUnidad1,this.clickColumn,this.txtbuscar)
-      this.gridUnidad=[];
-      this.gridUnidad=data;
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      this.gridDocumento=[];
+      this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
     }
     sortByKeyDesc(array, key) {
@@ -126,80 +129,127 @@ export default class ModificarUMComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
       );
-      var data=await this.sortByKeyAsc(this.gridUnidad1,this.clickColumn) 
-      this.gridUnidad2=[];
-      this.gridUnidad2=data;
-      this.gridUnidad = await this.gridUnidad2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       await loading.close();
     }
     DscItem(){
-      var data=this.sortByKeyDesc(this.gridUnidad1,this.clickColumn) 
-      this.gridUnidad2=[];
-      this.gridUnidad2=data;
-      this.gridUnidad = this.gridUnidad2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     
     }
     Limpiar(){
-      this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrUM_Cod=false;
       this.blnilterstrUM_Desc=false;
       this.blnilterdtmModified_Date=false;
-      this.blnilterstrModified_User=false;       
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
-    async EliminarItem(){
-      this.unidadDialog=true;    
+  async  EliminarItem(){
+    if(this.documento.intUnit_Measure_ID!=-1&&this.documento.strUM_Cod!=""&&this.documento.strUM_Desc!=""){
+      this.planDialog=true;
     }
-    deleteUnidad(){
-      if(this.unidad.strUM_Cod!=''&&this.unidad.intUnit_Measure_ID!=-1){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
-        unidadmedidaService.deleteUnidadMedida(this.unidad.intUnit_Measure_ID)
-        .then(resp=>{
-          loadingInstance.close();
-          this.unidadDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente ',
-              type: 'success'
-            });
-  
-            this.unidad=new UnidadMedidaModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente ';
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.unidadDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
-        }
-        else{
-            this.warningMessage('Seleccione Unidad Medida. ');
-        }
+    else{
+      this.warningMessage("Selecciona un plan contable")
+    }    
+  }
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+      unidadService.inactivarUnidadMedida(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new UnidadMedidaModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strUM_Cod!="" && this.documento.strUM_Desc!=""){
+      this.planActivarDialog=true;
     }
-  async validad(){    
-     var data=Global.like(this.gridUnidad1,'strUM_Cod',this.strUM_Cod)
+    else{
+      this.warningMessage('Selecciones Unidad Medida')
+    }
+  }
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    unidadmedidaService.activarUnidadMedida(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new UnidadMedidaModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async validad(){      
+    var data=Global.like(this.gridDocumento1,'strUM_Cod',this.strUM_Cod)
     if(data.length>0){
-      this.unidad=data[0];
-      if(this.unidad.strUM_Cod==this.strUM_Cod){
+      this.documento=data[0];
+      if(this.documento.strUM_Cod==this.strUM_Cod){
         await setTimeout(() => {
-          debugger;
-          if(this.unidad.strUM_Cod!=''){
-            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.unidad) }  })
+          if(this.documento.strUM_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/documento_transaccion/modif_documento_transaccion`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
           }
         }, 600)
       }
@@ -220,29 +270,29 @@ export default class ModificarUMComponent extends Vue {
     }
   }
    async validarView(){
-      if(this.unidad.intUnit_Measure_ID!=-1){
+      if(this.documento.intUnit_Measure_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.unidad.strUM_Cod!=''){
-              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.unidad) }  })
+            if(this.documento.strUM_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/documento_transaccion/modif_documento_transaccion`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione unidad de medida. ';
-          this.warningMessage('Seleccione unidad de medida. ');
+          this.textosave='Seleccione Unidad Medida. ';
+          this.warningMessage('Seleccione Unidad Medida. ');
         }
       }
     siguiente(){
       if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
         this.pagina++;
-        this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     anterior(){
       if(this.pagina>1){
       this.pagina--;
-      this.gridUnidad = this.gridUnidad1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
     }
     warningMessage(newMsg : string) {
@@ -259,30 +309,30 @@ export default class ModificarUMComponent extends Vue {
       if(val.property=="strUM_Cod"){
           this.clickColumn="strUM_Cod";
           this.blnilterstrUM_Cod=true;
-          this.blnilterstrUM_Desc=false; 
-          this.blnilterdtmModified_Date=false;
-          this.blnilterstrModified_User=false;
+      this.blnilterstrUM_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strUM_Desc"){
           this.clickColumn="strUM_Desc";
           this.blnilterstrUM_Cod=false;
-          this.blnilterstrUM_Desc=true; 
-          this.blnilterdtmModified_Date=false;
-          this.blnilterstrModified_User=false;
+      this.blnilterstrUM_Desc=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="dtmModified_Date"){
           this.clickColumn="dtmModified_Date";
           this.blnilterstrUM_Cod=false;
-          this.blnilterstrUM_Desc=false; 
-          this.blnilterdtmModified_Date=true;
-          this.blnilterstrModified_User=false;
+      this.blnilterstrUM_Desc=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strModified_User"){
           this.clickColumn="strModified_User";
           this.blnilterstrUM_Cod=false;
-          this.blnilterstrUM_Desc=false; 
-          this.blnilterdtmModified_Date=false;
-          this.blnilterstrModified_User=true;
+      this.blnilterstrUM_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrUM_Cod(h,{column,$index}){
@@ -304,7 +354,8 @@ export default class ModificarUMComponent extends Vue {
       else{
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
-    }
+    }    
+   
     filterdtmModified_Date(h,{column,$index}){
       
       if(this.blnilterdtmModified_Date){
@@ -339,9 +390,9 @@ export default class ModificarUMComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            gridUnidad:[],
-            gridUnidad1:[],
-            gridUnidad2:[],
+            gridDocumento:[],
+            gridDocumento1:[],
+            gridDocumento2:[],
             strUM_Cod:''
         }
     }

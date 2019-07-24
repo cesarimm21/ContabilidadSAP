@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllComprobanteView(){    
+    return axios.get(CONFIG.API_URL+'tipocomprobantepago/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   deleteComprobante(intIdDocIdent_IDType_ID){    
     return axios.get(CONFIG.API_URL+'tipocomprobantepago/delete/'+intIdDocIdent_IDType_ID)
     .then(response =>{            
@@ -27,5 +33,17 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
-  }
+  },
+  inactivarTipoComprobante(documento){
+    return axios.post(CONFIG.API_URL+'tipocomprobantepago/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarTipoComprobante(documento){
+    return axios.post(CONFIG.API_URL+'tipocomprobantepago/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

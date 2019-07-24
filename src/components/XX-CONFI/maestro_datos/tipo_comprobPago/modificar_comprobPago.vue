@@ -1,11 +1,11 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="modificar-tipocomprobantepago">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu  v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Tipo de Comprobante Pago</span>
+                <span class="labelheadercard" >Modificar Tipo de Comprobante Pago</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Tipo Comp. Pago</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="strDocType_Cod" style="text-transform: capitalize" type="text" :autofocus="true">  
+                                    <el-input :autofocus="true" class="validador" size ="small" v-model="strDocType_Cod" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,22 +42,27 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Tipos de Comprobante Pago</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <span slot="label"><i class="el-icon-date"></i> Tipo Comp. Pagos</span>                    
+                    <buttons-accions v-on:validarView="validarView()" v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridDocumento"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrDocType_Cod"
-                            prop="strDocType_Cod" label="Tipo Comp. Pago" width="120" align="center">                                
+                            prop="strDocType_Cod" label="Tipo Comp. Pago" width="130" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrDocType_Desc"
                              prop="strDocType_Desc" min-width="200" label="Descripcion">
@@ -112,7 +117,7 @@
                 </div>
             </div>            
         </div>
-        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" >
       <div style="height:85px">
         <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
         <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->
@@ -122,7 +127,7 @@
                     <label class="el-form-item__label col-md-2" >Columna</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="" :autofocus="true">
                             </el-input>
                         </div>
                     </div>
@@ -147,21 +152,30 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal> 
-    <b-modal ref="myModalRef" hide-footer title="Eliminar Tipo de Comprobante Pago" size="sm"  v-model="comprobanteDialog" @keydown.native.enter="deleteComprobante">
+    </b-modal>  
+    <b-modal ref="myModalRef" hide-footer title="Inactivar Tipo Comp. Pago" size="sm"  v-model="planDialog" @keydown.native.enter="inactivarPlan">
       <div style="height:85px">
         <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea eliminar Tipo de Comprobante Pago {{documento.strDocType_Cod}} ?</span>
+        <span style="font-size:13px">¿Desea Inactivar Tipo Comp. Pago {{documento.strDocType_Cod}} ?</span>
       </div>
       <footer class="modal-footer">
-        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteComprobante()"/>
-        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="comprobanteDialog = false"/>
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="inactivarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planDialog = false"/>
       </footer>
-    </b-modal>         
+    </b-modal>     
+    <b-modal ref="myModalRef" hide-footer title="Activar Tipo Comp. Pago" size="sm"  v-model="planActivarDialog" @keydown.native.enter="activarPlan">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Tipo Comp. Pago {{documento.strDocType_Cod}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="activarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planActivarDialog = false"/>
+      </footer>
+    </b-modal>     
     </div>  
 </template>
 <script>
-
 import ModificarComprobPagoComponent from '@/components/XX-CONFI/maestro_datos/tipo_comprobPago/modificar_comprobPago.component'
 export default ModificarComprobPagoComponent
 </script>

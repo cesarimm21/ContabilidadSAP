@@ -9,6 +9,7 @@ import {CuentaContableModel} from '@/modelo/maestro/cuentacontable';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import BCuentaContableComponent from '@/components/buscadores/b_cuenta_contable/b_cuenta_contable.vue';
 import diarioService from '@/components/service/diario.service';
+import cueconService from '@/components/service/cuentacontable.service';
 @Component({
   name: 'crear-codigodiario',
   components:{
@@ -98,7 +99,7 @@ export default class CrearCodigoDiarioComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
         );     
-      if(this.diario.strDaily_Cod!=''&&this.diario.strDaily_Desc!=''){
+      if(this.diario.strDaily_Cod!=''&&this.diario.strDaily_Desc!=''&&this.diario.strDaily_AccLocal&&this.diario.strDaily_AccForen){
         diarioService.CreateDiarios(this.diario)
         .then(resp=>{
           loadingInstance.close();

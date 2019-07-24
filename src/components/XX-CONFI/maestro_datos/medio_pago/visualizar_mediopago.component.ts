@@ -40,13 +40,15 @@ export default class VisualizarMedioPagoComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blniltersstrPayWay_Cod:boolean=false;
+  blnilterstrPayWay_Cod:boolean=false;
   blnilterstrPayWay_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='visualizar-metododep';
+        Global.nameComponent='visualizar-mediopago';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -54,7 +56,7 @@ export default class VisualizarMedioPagoComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        mediopagoService.GetMedioPago()
+        mediopagoService.GetMedioPagoView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -62,6 +64,9 @@ export default class VisualizarMedioPagoComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -136,7 +141,7 @@ export default class VisualizarMedioPagoComponent extends Vue {
     }
     Limpiar(){
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blniltersstrPayWay_Cod=false;
+      this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
@@ -145,7 +150,10 @@ export default class VisualizarMedioPagoComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-      this.warningMessage('Accion no permitida');
+    this.warningMessage("Accion no permitida")   
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida") 
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strPayWay_Cod',this.strPayWay_Cod)
@@ -153,40 +161,39 @@ export default class VisualizarMedioPagoComponent extends Vue {
       this.documento=data[0];
       if(this.documento.strPayWay_Cod==this.strPayWay_Cod){
         await setTimeout(() => {
-          debugger;
-          if(this.documento.strPayWay_Cod!=undefined){
+          if(this.documento.strPayWay_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
           }
         }, 600)
       }
       else{
         if(this.strPayWay_Cod==''){
-          this.textosave='Inserte Medio Pago. ';
-          this.warningMessage('Inserte Medio Pago. ');
+          this.textosave='Inserte Medio de Pago. ';
+          this.warningMessage('Inserte Medio de Pago. ');
         }
         else{
-          this.textosave='No existe Medio Pago. ';
-          this.warningMessage('No existe Medio Pago. ');
+          this.textosave='No existe Medio de Pago. ';
+          this.warningMessage('No existe Medio de Pago. ');
         }        
       }
     }
     else{
-      this.textosave='No existe Medio Pago. ';
-      this.warningMessage('No existe Medio Pago. ');
+      this.textosave='No existe Medio de Pago. ';
+      this.warningMessage('No existe Medio de Pago. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdPayWay_ID!=undefined){
+      if(this.documento.intIdPayWay_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strPayWay_Cod!=undefined){
+            if(this.documento.strPayWay_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Medio Pago. ';
-          this.warningMessage('Seleccione Medio Pago. ');
+          this.textosave='Seleccione Medio de Pago. ';
+          this.warningMessage('Seleccione Medio de Pago. ');
         }
       }
     siguiente(){
@@ -214,35 +221,35 @@ export default class VisualizarMedioPagoComponent extends Vue {
       Global.setColumna(this.Column);     
       if(val.property=="strPayWay_Cod"){
           this.clickColumn="strPayWay_Cod";
-          this.blniltersstrPayWay_Cod=true;
+          this.blnilterstrPayWay_Cod=true;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="strPayWay_Desc"){
           this.clickColumn="strPayWay_Desc";
-          this.blniltersstrPayWay_Cod=false;
+          this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=true;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="dtmModified_Date"){
           this.clickColumn="dtmModified_Date";
-          this.blniltersstrPayWay_Cod=false;
+          this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=true;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="strModified_User"){
           this.clickColumn="strModified_User";
-          this.blniltersstrPayWay_Cod=false;
+          this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=true;
       }        
   }
-  filtersstrPayWay_Cod(h,{column,$index}){
-      if(this.blniltersstrPayWay_Cod){
+  filterstrPayWay_Cod(h,{column,$index}){
+      if(this.blnilterstrPayWay_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])

@@ -55,7 +55,7 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Contable PEN</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  
+                                    <el-input  class="validador"
                                     size ="small" 
                                     @blur="desactivar_documentoTransacionalA" 
                                     @focus="activar_documentoTransacionalA" 
@@ -70,7 +70,7 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Contable USD</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  
+                                    <el-input  class="validador"
                                     size ="small" 
                                     @blur="desactivar_documentoTransacionalB" 
                                     @focus="activar_documentoTransacionalB" 
