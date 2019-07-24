@@ -44,7 +44,7 @@ export default class  BGrupoProcesoComponent extends Vue {
     }, 200)
   }
   load(){
-    grupoprocesoService.GetAllGrupoProceso()
+    grupoprocesoService.GetAllGrupoProceso2()
     .then(response=>{
       this.cuentacontableModel=response;       
       this.cuentacontableModel1=response;       

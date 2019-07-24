@@ -46,7 +46,7 @@ export default class  BGrupoAreaComponent extends Vue {
     }, 200)
   }
   load(){
-    grupoareaService.GetAllGrupoArea()
+    grupoareaService.GetAllGrupoArea2()
     .then(response=>{
       this.cuentacontableModel=response;       
       this.cuentacontableModel1=response;       

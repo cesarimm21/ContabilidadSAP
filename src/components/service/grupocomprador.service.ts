@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllGrupoComprador2(company_cod){  
+    return axios.get(CONFIG.API_URL+'grupocomprador2/'+company_cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneGrupoComprador(code){
     return axios.get(CONFIG.API_URL+'grupocomprador/'+code)
     .then(response =>{           

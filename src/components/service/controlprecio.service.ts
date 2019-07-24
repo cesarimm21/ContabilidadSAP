@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllControlPrecio2(){  
+    return axios.get(CONFIG.API_URL+'controlprecio2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneControlPrecio(code){
     return axios.get(CONFIG.API_URL+'controlprecio/'+code)
     .then(response =>{           

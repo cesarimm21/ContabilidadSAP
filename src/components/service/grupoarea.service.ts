@@ -10,5 +10,11 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllGrupoArea2(){  
+    return axios.get(CONFIG.API_URL+'grupoarea2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

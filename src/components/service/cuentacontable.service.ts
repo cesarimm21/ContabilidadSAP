@@ -11,6 +11,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCuentaContable2(compania_cod){  
+    return axios.get(CONFIG.API_URL+'cuentacontable2/'+compania_cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   activar(data){
     return axios.post(CONFIG.API_URL+'cuentacontable/activar',data)
     .then(response =>{           

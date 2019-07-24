@@ -45,5 +45,11 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  activar(data){
+    return axios.post(CONFIG.API_URL+'tipocambio/activar', data)
+    .then(response =>{
+        return JSON.parse(JSON.stringify(response.data));
+      })
   }
 }

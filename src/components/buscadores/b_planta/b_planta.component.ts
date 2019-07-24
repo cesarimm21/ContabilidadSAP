@@ -43,7 +43,7 @@ export default class  BPlantaComponent extends Vue {
     this.load();
   }
   load(){
-    plantaService.GetAllPlanta()
+    plantaService.GetAllPlanta2()
     .then(response=>{
       this.plantaModel=response;       
       this.plantaModel1=response;       

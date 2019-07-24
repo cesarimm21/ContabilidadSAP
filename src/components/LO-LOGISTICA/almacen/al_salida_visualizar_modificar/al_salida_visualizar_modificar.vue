@@ -179,6 +179,7 @@
                                     <el-table
                                         ref="missionTable"
                                         :max-height="sizeScreen"
+                                        @row-dblclick="validarView"
                                         :data="tableData" 
                                          highlight-current-row
                                          @current-change="handleCurrentChange"

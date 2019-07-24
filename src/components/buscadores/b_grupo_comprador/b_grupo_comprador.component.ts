@@ -42,12 +42,14 @@ export default class  BGrupoCompradorComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  company_cod:any='';
   constructor() {
     super();
     this.load();
   }
   load(){
-    grupocompradorService.GetAllGrupoComprador()
+    this.company_cod=localStorage.getItem('compania_cod');
+    grupocompradorService.GetAllGrupoComprador2(this.company_cod)
     .then(response=>{
       this.grupocompradorModel=response;       
       this.grupocompradorModel1=response;       

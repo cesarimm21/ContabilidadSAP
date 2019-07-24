@@ -480,16 +480,21 @@ export default class VisualizarClaseMaterialComponent extends Vue {
     this.desalmacen=val.strWHS_Desc;
     this.dialogAlmacen=false;
   }
-
+  warningMessage(newMsg : string) {
+    this.$message({
+      showClose: true,
+      message: newMsg,
+      type: 'warning'
+    });
+  }
   EliminarItem(){
     debugger;
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
     
+			this.warningMessage('Accion no permitida');
+    
+  }
+  ActivarDesactivar(){
+    this.warningMessage('Accion no permitida');
   }
 //   async btnEliminar(){
 //     await productoService.eliminarProducto(this.selectrow)

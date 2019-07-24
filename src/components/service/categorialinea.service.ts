@@ -11,6 +11,13 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCategoriaLinea2(){      
+    debugger;
+    return axios.get(CONFIG.API_URL+'categorialinea2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllCategoriaLineaView(){ 
     return axios.get(CONFIG.API_URL+'categorialinea/view')
     .then(response =>{            

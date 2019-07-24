@@ -50,7 +50,7 @@ constructor() {
  this.load(); 
 }
 load(){
-  prioridadService.GetAllPrioridad()
+  prioridadService.GetAllPrioridad2()
   .then(response=>{
     this.prioridadModel=[];    
     this.prioridadModel1=[];    

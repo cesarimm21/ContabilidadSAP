@@ -3,8 +3,8 @@ import * as CONFIG from '../../Config';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllProducto(tipo){
-    return axios.get(CONFIG.API_URL+'producto/'+tipo)
+  GetAllProducto(tipo,compania){
+    return axios.get(CONFIG.API_URL+'producto/'+tipo+'/'+compania)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -78,5 +78,12 @@ export default{
       return response.data
     })
     
+  },
+  activar(data){
+    debugger;
+    return axios.post(CONFIG.API_URL+'producto/activar',data)
+    .then(response => {
+      return response.data
+    })
   }
 }

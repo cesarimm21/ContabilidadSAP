@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCategoriaMaterial2(){  
+    return axios.get(CONFIG.API_URL+'categoriamaterial2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneCategoriaMaterial(code){
     return axios.get(CONFIG.API_URL+'categoriamaterial/'+code)
     .then(response =>{           

@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Tipo Producto</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="tipoproducto.strTypeProd_Cod"  type="text">  
+                                    <el-input class="validador" size ="small" v-model="tipoproducto.strTypeReq_Cod"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -37,7 +37,7 @@
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="tipoproducto.strTypeProd_Desc"  type="text">  
+                                    <el-input class="validador" size ="small" v-model="tipoproducto.strTipReq_Desc"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>

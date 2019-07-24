@@ -10,7 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  
+  GetAllCategoria2(company_cod){ 
+    return axios.get(CONFIG.API_URL+'categoriacentrocosto/compania/'+company_cod)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneCategoriaCentroCosto(code){
     return axios.get(CONFIG.API_URL+'categoriacentrocosto/'+code)
     .then(response =>{           

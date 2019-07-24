@@ -41,7 +41,7 @@ export default class  BControlPrecioComponent extends Vue {
     this.load();
   }
   load(){
-    controlprecioService.GetAllControlPrecio()
+    controlprecioService.GetAllControlPrecio2()
     .then(response=>{
       this.controlprecioModel=response;       
       this.controlprecioModel1=response;       

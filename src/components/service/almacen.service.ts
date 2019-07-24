@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllAlmacen2(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'almacen2/'+strCompany_Cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneAlmacen(code){
     console.log(CONFIG.API_URL+'almacenid/'+code);
     return axios.get(CONFIG.API_URL+'almacenid/'+code)

@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllComponenteCuentaContable2(compania_cod){  
+    return axios.get(CONFIG.API_URL+'componentecuenta2/'+compania_cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllComponenteCuentaContableFiltro(data){  
     return axios.get(CONFIG.API_URL+'componentecuenta/'+data)
     .then(response =>{           

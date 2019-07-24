@@ -57,6 +57,8 @@ export default class ViewAndEditImpuestoComponent extends Vue {
         if(this.Impuesto.strWH_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
             this.Impuesto.chrStatus='A';
+            var name:any=localStorage.getItem('User_Usuario');
+            this.Impuesto.strModified_User=name;
             impuestoService.UpdateImpuesto(this.Impuesto)
             .then(resp=>{
                 this.$message({

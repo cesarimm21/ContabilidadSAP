@@ -54,6 +54,12 @@ export default class ModificarImpuestoComponent extends Vue {
     vifprogress:boolean=true;
     valuem:number=0;
     textosave:string='';
+    dialogInactivar:boolean=false;
+    item:string='';
+    
+    issave:boolean=false;
+    iserror:boolean=false;
+
     constructor() {
         super();
         Global.nameComponent = 'modificar-po';  
@@ -68,7 +74,7 @@ export default class ModificarImpuestoComponent extends Vue {
         this.loadImpuesto();
     }
     loadImpuesto(){
-        impuestoService.GetAllImpuesto()
+        impuestoService.GetAllImpuesto2()
         .then(resp=>{
             this.gridImpuesto=[];
             this.gridImpuesto1=[];
@@ -192,8 +198,10 @@ export default class ModificarImpuestoComponent extends Vue {
             }, 200)
             await setTimeout(() => {
                 debugger;
+                
+                var name:any=localStorage.getItem('User_Usuario');
                 if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-                  impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
+                  impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,name)
                   .then(resp=>{
                     this.$message({
                         showClose: true,
@@ -574,6 +582,63 @@ export default class ModificarImpuestoComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
+
+    
+ActivarDesactivar(){
+  debugger;
+  this.item=this.Impuesto.strWH_Cod;
+  this.dialogInactivar=true;      
+}
+
+successMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'success'
+  });
+}
+errorMessage(newMsg : string) {
+  this.$message({
+    showClose: true,
+    message: newMsg,
+    type: 'error'
+  });
+}
+async btnInactivar(){
+  var nameuser:any=localStorage.getItem('User_Usuario');
+  this.Impuesto.strModified_User=nameuser;
+  if(this.Impuesto.strWH_Cod!=""){
+    
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+    );   
+    await impuestoService.activar(this.Impuesto)
+    .then(respo=>{
+      loadingInstance.close();
+      this.successMessage('Se Activo Rubro '+this.Impuesto.strWH_Cod)
+      this.load();
+      this.issave=true;
+      this.iserror=false;
+      this.textosave='Se Activo Rubro '+this.Impuesto.strWH_Cod;
+      this.dialogInactivar=false;
+    }).catch(ee=>{
+      loadingInstance.close();
+      this.issave=false;
+      this.iserror=true;
+      this.textosave='Error en Activar '+this.Impuesto.strWH_Cod;
+      this.errorMessage('Error en Activar '+this.Impuesto.strWH_Cod)})
+      this.dialogInactivar=false;
+  }
+  else{
+    this.warningMessage('Debe de seleccionar una fila!!!');
+  }
+}
+
+
     data() {
         return {
             nameComponent: 'crear-po',

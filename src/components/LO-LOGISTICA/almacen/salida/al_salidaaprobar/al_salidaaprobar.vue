@@ -84,6 +84,7 @@
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
                                         ref="missionTable"
+                                        @row-dblclick="validarView"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
                                          highlight-current-row

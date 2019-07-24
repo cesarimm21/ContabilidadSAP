@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllTipoRequisicion2(){  
+    return axios.get(CONFIG.API_URL+'tiporequisicion2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneTipoRequisicion(code){
     return axios.get(CONFIG.API_URL+'tiporequisicion/'+code)
     .then(response =>{           
@@ -28,8 +34,8 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  EliminarTipoRequisicion(intIdTypeReq_ID){    
-    return axios.get(CONFIG.API_URL+'tiporequisicion/delete/'+intIdTypeReq_ID)
+  EliminarTipoRequisicion(data){    
+    return axios.get(CONFIG.API_URL+'tiporequisicion/desactivar',data)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

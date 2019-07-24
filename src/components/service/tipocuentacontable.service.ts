@@ -9,5 +9,11 @@ export default{
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
+  },
+  GetAllTipoCuentaContable2(){    
+    return axios.get(CONFIG.API_URL+'tipocuentacontable2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
   }
 }

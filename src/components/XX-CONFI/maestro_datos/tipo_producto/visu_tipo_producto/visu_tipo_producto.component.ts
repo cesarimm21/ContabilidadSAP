@@ -6,11 +6,11 @@ import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
 //***Modelos */
-import {TipoProductoModel} from '@/modelo/maestro/tipoproducto';
+import {TipoRequisicionModel} from '@/modelo/maestro/tipoRequisicion';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import impuestoService from '@/components/service/impuesto.service';
-import tipoproductoService from '@/components/service/tipoproducto.service';
+import tipoproductoService from '@/components/service/tipoRequisicion.service';
 
 
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
@@ -34,8 +34,8 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     issave:boolean=false;
     iserror:boolean=false;
     textosave:string='';
-    public tipoproducto:TipoProductoModel=new TipoProductoModel();
-    public tableData:Array<TipoProductoModel>=[]; 
+    public tipoproducto:TipoRequisicionModel=new TipoRequisicionModel();
+    public tableData:Array<TipoRequisicionModel>=[]; 
     namepage:string;
     impDisabled:boolean=false;
     cod_criticidad:string='';
@@ -66,7 +66,7 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     async cargarList(){
         debugger;
         if(this.cod_tipo_producto!=''){
-            await tipoproductoService.GetOnlyOnetipoproducto(this.cod_tipo_producto)
+            await tipoproductoService.GetOnlyOneTipoRequisicion(this.cod_tipo_producto)
             .then(res=>{
                 debugger;
                 console.log('/****************Busqueda***************/')
@@ -81,7 +81,7 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
             })
         }
         else{
-            await tipoproductoService.GetAlltipoproducto()
+            await tipoproductoService.GetAllTipoRequisicion2()
             .then(res=>{
                 debugger;
                 console.log('/****************Busqueda***************/')
@@ -122,12 +122,12 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
     }
   }
   async btnEliminar(){
-    await tipoproductoService.Eliminartipoproducto(this.currentRow)
+    await tipoproductoService.EliminarTipoRequisicion(this.currentRow)
     .then(response=>{
       debugger;
       console.log('eliminar',response);
       if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strTypeProd_Cod;
+         this.textosave='Se elimino correctamento.' + response.strTypeReq_Cod;
          this.issave=true;
          this.iserror=false;
       }

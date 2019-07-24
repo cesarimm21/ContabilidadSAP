@@ -27,7 +27,7 @@ export default class  BPaisComponent extends Vue {
     }, 600)    
   }
   load(){    
-    paisService.GetAllPais()
+    paisService.GetAllPais2()
     .then(response=>{
       this.paisModel=[];
       this.paisModel=response; 

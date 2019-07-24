@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllPrioridad2(){  
+    return axios.get(CONFIG.API_URL+'prioridad2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOnePrioridad(code){  
     return axios.get(CONFIG.API_URL+'prioridad/'+code)
     .then(response =>{           

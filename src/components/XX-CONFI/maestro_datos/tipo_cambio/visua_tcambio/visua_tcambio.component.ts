@@ -188,11 +188,12 @@ export default class VisualizarTipoCambioComponent extends Vue {
         window.print();
       }
     async  EliminarItem(){
-      this.$message({
-        showClose: true,
-        message: 'Opcion no permitida',
-        type: 'info'
-      });
+      
+			this.warningMessage('Accion no permitida');
+    }
+    ActivarDesactivar(){
+
+			this.warningMessage('Accion no permitida');
     }
     async validad(){
         

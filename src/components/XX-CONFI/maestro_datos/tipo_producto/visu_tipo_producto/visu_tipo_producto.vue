@@ -56,28 +56,28 @@
                                         class="ExcelTable2007">
                                         <el-table-column type="index" label="Item" width="38">
                                         </el-table-column>
-                                        <el-table-column  sortable prop="strTypeProd_Cod" width="100" label="Tipo Producto">
+                                        <el-table-column  sortable prop="strTypeReq_Cod" width="100" label="Tipo Producto">
                                             <template scope="scope">
-                                            <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strTypeProd_Cod }}</label>
+                                            <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strTypeReq_Cod }}</label>
                                             </template>
                                         </el-table-column> 
                                         <el-table-column
-                                            prop="strTypeProd_Desc" sortable  
+                                            prop="strTipReq_Desc" sortable  
                                             label="Descripcion">
                                             <template scope="scope">
-                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strTypeProd_Desc }}</label>
+                                                <label v-bind:style="{width:'100%',margin: '0rem'}" >&nbsp;{{ scope.row.strTipReq_Desc }}</label>
                                             </template>
                                         </el-table-column>
                                        
                                         <el-table-column :render-header="filterdtmCreation_Date"
-                                            prop="dtmModified_Date"   min-width="80"
+                                            prop="dtmModified_Date"   width="100"
                                             label="Fecha">
                                             <template scope="scope">
                                                 <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                             </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrCreation_User"
-                                            prop="strModified_User" 
+                                            prop="strModified_User" width="100"
                                             label="Usuario">
                                         </el-table-column>
                                         <el-table-column 

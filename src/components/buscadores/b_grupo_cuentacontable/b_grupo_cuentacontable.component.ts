@@ -48,7 +48,7 @@ inputAtributo:any;
     }, 200)
   }
   load(){
-    grupocuentacontableService.GetAllGrupoCuentaContable()
+    grupocuentacontableService.GetAllGrupoCuentaContable2()
     .then(response=>{
       this.cuentacontableModel=response;  
       this.cuentacontableModel1=response;  

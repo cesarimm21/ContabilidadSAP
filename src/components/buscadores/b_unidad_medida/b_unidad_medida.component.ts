@@ -51,7 +51,7 @@ export default class  BUnidadMedidaComponent extends Vue {
     this.load();
   }
   load(){
-    unidadmedidaService.GetAllUnidadMedida()
+    unidadmedidaService.GetAllUnidadMedida2()
     .then(response=>{
       this.gridUM=[];
       this.gridUM1=[];

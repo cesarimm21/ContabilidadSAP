@@ -11,6 +11,13 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllPlanta2(){      
+    debugger;
+    return axios.get(CONFIG.API_URL+'planta2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneplanta(code){  
     return axios.get(CONFIG.API_URL+'planta/'+code)
     .then(response =>{           

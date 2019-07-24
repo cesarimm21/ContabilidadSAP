@@ -55,6 +55,11 @@ export default class ModificarTipoCambioComponent extends Vue {
     vifprogress:boolean=true;
     valuem:number=0;
     textosave:string='';
+    dialogInactivar:boolean=false;
+    item:string='';
+    
+    issave:boolean=false;
+    iserror:boolean=false;
     constructor() {
         super();
         Global.nameComponent = 'modificar-tipo-cambio';  
@@ -188,42 +193,42 @@ export default class ModificarTipoCambioComponent extends Vue {
         window.print();
       }
     async  EliminarItem(){
-        // if(this.Impuesto.strWH_Cod!=''){
-        //     this.vifprogress=true;
-        //     this.valuem=0;
-        //     await setTimeout(() => {
-        //       for(var i=0;i<100;i++){
-        //         this.valuem++; 
-        //       }
-        //     }, 200)
-        //     await setTimeout(() => {
-        //         debugger;
-        //         if(this.Impuesto.strWH_Cod!=''&& this.Impuesto.intIdWH_ID!=-1){
-        //           impuestoService.DeleteImpuesto(this.Impuesto.intIdWH_ID,'egaona')
-        //           .then(resp=>{
-        //             this.$message({
-        //                 showClose: true,
-        //                 message: 'Se elimino correctamente',
-        //                 type: 'success'
-        //               });
-        //               this.Impuesto=new ImpuestoModel();
-        //               this.loadImpuesto();
-        //           })
-        //           .catch(error=>{
-        //             this.$message({
-        //                 showClose: true,
-        //                 message: 'No se elimino',
-        //                 type: 'error'
-        //               });
-        //           })
-        //         }
-        //       }, 600)
-        // }
-        // else{
-        //     this.vifprogress=false;
-        //     this.textosave='Error eliminar impuesto. ';
-        //     this.warningMessage('Error eliminar impuesto. ');
-        // }
+        if(this.TipoCambio.intExchRate_ID>0){
+            this.vifprogress=true;
+            this.valuem=0;
+            await setTimeout(() => {
+              for(var i=0;i<100;i++){
+                this.valuem++; 
+              }
+            }, 200)
+            await setTimeout(() => {
+                debugger;
+                
+                  var name:any=localStorage.getItem('User_Usuario');
+                  tipocambioService.DeleteTipoCambio(this.TipoCambio.intExchRate_ID,name)
+                  .then(resp=>{
+                    this.$message({
+                        showClose: true,
+                        message: 'Se elimino correctamente',
+                        type: 'success'
+                      });
+                      this.TipoCambio=new TipoCambioModel();
+                      this.loadTipoCambio();
+                  })
+                  .catch(error=>{
+                    this.$message({
+                        showClose: true,
+                        message: 'No se elimino',
+                        type: 'error'
+                      });
+                  })
+              }, 6)
+        }
+        else{
+            this.vifprogress=false;
+            this.textosave='Error eliminar impuesto. ';
+            this.warningMessage('Error eliminar impuesto. ');
+        }
     }
     async validad(){
         
@@ -487,6 +492,60 @@ export default class ModificarTipoCambioComponent extends Vue {
         return dd+'.'+mm+'.'+yyyy;
     }
 
+    ActivarDesactivar(){
+      debugger;
+      this.item=this.TipoCambio.strExchRate_OF;
+      this.dialogInactivar=true;      
+    }
+    
+    successMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'success'
+      });
+    }
+    errorMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'error'
+      });
+    }
+    async btnInactivar(){
+      var nameuser:any=localStorage.getItem('User_Usuario');
+      this.TipoCambio.strModified_User=nameuser;
+      if(this.TipoCambio.strExchRate_OF!=""){
+        
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Activando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+        );   
+        await tipocambioService.activar(this.TipoCambio)
+        .then(respo=>{
+          loadingInstance.close();
+          this.successMessage('Se Activo Tipo Cambio '+this.TipoCambio.strExchRate_OF)
+          this.load();
+          this.issave=true;
+          this.iserror=false;
+          this.textosave='Se Activo Tipo Cambio '+this.TipoCambio.strExchRate_OF;
+          this.dialogInactivar=false;
+        }).catch(ee=>{
+          loadingInstance.close();
+          this.issave=false;
+          this.iserror=true;
+          this.textosave='Error en Activar '+this.TipoCambio.strExchRate_OF;
+          this.errorMessage('Error en Activar '+this.TipoCambio.strExchRate_OF)})
+          this.dialogInactivar=false;
+      }
+      else{
+        this.warningMessage('Debe de seleccionar una fila!!!');
+      }
+    }
+    
     data() {
         return {
             nameComponent: 'crear-po',

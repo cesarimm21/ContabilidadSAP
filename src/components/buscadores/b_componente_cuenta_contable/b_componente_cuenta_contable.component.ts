@@ -39,6 +39,7 @@ export default class  BComponenteCuentaContableComponent extends Vue {
   Column:string='';
   public search:ComponenteCuentaContableModel=new ComponenteCuentaContableModel();
   inputAtributo:any;
+  company_cod:any='';
   constructor() {
     super();
     setTimeout(() => {
@@ -46,7 +47,8 @@ export default class  BComponenteCuentaContableComponent extends Vue {
     }, 200)
   }
   load(){
-    componentecuentacontableService.GetAllComponenteCuentaContable()
+    this.company_cod=localStorage.getItem('compania_cod');
+    componentecuentacontableService.GetAllComponenteCuentaContable2(this.company_cod)
     .then(response=>{
       this.tabla=response; 
       this.tabla1=response;       

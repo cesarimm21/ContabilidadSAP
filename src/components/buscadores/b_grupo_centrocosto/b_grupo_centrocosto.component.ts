@@ -45,7 +45,7 @@ export default class  BGrupoCentroCostoComponent extends Vue {
     }, 200)
   }
   load(){
-    grupogastosService.GetAllGrupoGastos()
+    grupogastosService.GetAllGrupoGastos2()
     .then(response=>{
       this.cuentacontableModel=response;       
       this.cuentacontableModel1=response;       

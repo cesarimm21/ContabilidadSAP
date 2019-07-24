@@ -927,7 +927,8 @@ closeCategoriaCuenta(){
       this.factura.strPeriod_NO=this.fecha_actual;
       this.factura.strExchange_Rate=this.tipocambio.fltExchRate_Buy.toString();
       this.factura.dtmDoc_Date=dateWithoutTime;
-      this.factura.strDoc_Status="egaona";//localStorage.getItem('User_Usuario');
+      var name:any=localStorage.getItem('User_Usuario');
+      this.factura.strDoc_Status=name;
       this.factura.strCreation_User=this.factura.strDoc_Status;    
       let loadingInstance = Loading.service({
         fullscreen: true,

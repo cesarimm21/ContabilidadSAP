@@ -42,6 +42,8 @@ export default class CrearImpuestoComponent extends Vue {
         if(this.Impuesto.strWH_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
             this.Impuesto.chrStatus='A';
+            var name:any=localStorage.getItem('User_Usuario');
+            this.Impuesto.strCreation_User=name;
             impuestoService.CreateImpuesto(this.Impuesto)
             .then(resp=>{
                 this.$message({

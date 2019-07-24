@@ -120,7 +120,7 @@
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">
                               
-                                <buttons-accions v-on:EliminarItem="EliminarItem" v-on:validarView="validarView"  v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
+                                <buttons-accions v-on:Activar="ActivarDesactivar()" v-on:EliminarItem="EliminarItem" v-on:validarView="validarView"  v-on:handleClickInParent="handleClickInParent()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
@@ -129,6 +129,7 @@
                                         @current-change="handleCurrentChange"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
+                                        @row-dblclick="validarView"
                                          highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                         class="ExcelTable2007">

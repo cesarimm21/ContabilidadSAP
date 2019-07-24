@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllGrupoProceso2(){  
+    return axios.get(CONFIG.API_URL+'grupoproceso2')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneGrupoProceso(code){
     return axios.get(CONFIG.API_URL+'grupoproceso/'+code)
     .then(response =>{           

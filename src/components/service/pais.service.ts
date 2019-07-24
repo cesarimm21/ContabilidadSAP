@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllPais2(){    
+    return axios.get(CONFIG.API_URL+'pais2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   deletePais(intIdCountry_ID){    
     return axios.get(CONFIG.API_URL+'pais/delete/'+intIdCountry_ID)
     .then(response =>{            

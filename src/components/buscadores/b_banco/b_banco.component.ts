@@ -32,7 +32,7 @@ export default class  BBancoComponent extends Vue {
     }, 400)       
   }
   loadBanco(){
-    bancoService.GetAllBanco()
+    bancoService.GetAllBanco2()
     .then(resp=>{
         this.gridBanco=[];
         this.gridBanco1=[];

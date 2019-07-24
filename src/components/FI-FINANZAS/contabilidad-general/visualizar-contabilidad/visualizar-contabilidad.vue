@@ -21,6 +21,7 @@
                                 <el-input  :disabled="true"
                                 size ="small" 
                                 @blur="desactivar_compania" 
+                                
                                 @focus="activar_compania" 
                                 v-model="productoModel.strCompany_Cod">
                                     <el-button :disabled="true" v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
@@ -76,6 +77,7 @@
                                         ref="missionTable"
                                         :max-height="sizeScreen"
                                         :data="tableData" 
+                                        @row-dblclick="validarView"
                                          highlight-current-row
                                          @current-change="handleCurrentChange"
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"

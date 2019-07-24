@@ -47,7 +47,7 @@ export default class  BCategoriaLineaComponent extends Vue {
     }, 400)  
   }
   load(){
-    categorialineaService.GetAllCategoriaLinea()
+    categorialineaService.GetAllCategoriaLinea2()
     .then(response=>{
       this.categorialineaModel=[];       
       this.categorialineaModel1=[];       

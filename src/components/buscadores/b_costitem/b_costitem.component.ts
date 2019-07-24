@@ -49,6 +49,7 @@ export default class  BCostItemComponent extends Vue {
 
   public search:CostItemModel=new CostItemModel();
   inputAtributo:any;
+  company_cod:any='';
   constructor() {
     super();
     setTimeout(() => {
@@ -56,7 +57,8 @@ export default class  BCostItemComponent extends Vue {
     }, 200)
   }
   load(){
-    costitemService.GetAllCostItem()
+    this.company_cod=localStorage.getItem('compania_cod');
+    costitemService.GetAllCostItem2(this.company_cod)
     .then(response=>{ 
       this.tabla=response; 
       this.tabla1=response;       

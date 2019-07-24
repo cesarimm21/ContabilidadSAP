@@ -47,7 +47,7 @@ export default class  BTipoMovimientoComponent extends Vue {
     this.load();
   }
   load(){
-    tipomovimientoService.GetAllTipoMovimiento()
+    tipomovimientoService.GetAllTipoMovimiento2()
     .then(response=>{
       this.tipomovimientoModel=response;       
       this.tipomovimientoModel1=response;       

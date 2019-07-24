@@ -37,12 +37,14 @@ export default class  BMaterialComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  company_cod:any='';
   constructor() {
     super();
     //this.load();
   }
   load(){
-    productoService.GetAllProducto(this.tipo)
+    this.company_cod=localStorage.getItem('compania_cod');
+    productoService.GetAllProducto(this.tipo,this.company_cod)
     .then(response=>{
       this.productoModel=[];
       this.productoModel1=[];

@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllPlanCuenta2(){ 
+    return axios.get(CONFIG.API_URL+'plancuentas2')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllPlanConLocal(){    
     return axios.get(CONFIG.API_URL+'planconlocal')
     .then(response =>{            

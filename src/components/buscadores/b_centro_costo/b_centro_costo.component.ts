@@ -37,12 +37,14 @@ export default class  BCentroCostoComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  codigoCompania:any='';
   constructor() {
     super();
     this.load();    
   }
   load(){
-    centrocostoService.GetAllCentroCostos()
+    this.codigoCompania=localStorage.getItem('compania_cod');
+    centrocostoService.GetAllCentroCostos2(this.codigoCompania)
     .then(response=>{
       this.centrocostosModel=[];       
       this.centrocostosModel1=[];       

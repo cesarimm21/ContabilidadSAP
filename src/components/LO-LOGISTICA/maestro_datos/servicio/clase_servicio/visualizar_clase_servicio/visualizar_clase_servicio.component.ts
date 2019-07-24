@@ -362,46 +362,46 @@ export default class VisualizarClaseServicioComponent extends Vue {
   async EliminarItem(){
     this.claseDialog=true;    
   }
-  deletClaseServico(){
-    var user:any=localStorage.getItem('User_Usuario');
-    if(this.clasematerialmodel.strMatClass_Cod!=''){
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Eliminando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-        ); 
-    clasematerialService.deleteClaseMaterial(this.clasematerialmodel.intIdMatClass_ID,user)
-      .then(resp=>{
-        loadingInstance.close();
-        this.claseDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'Se Elimino correctamente '+resp,
-            type: 'success'
-          });
+  // deletClaseServico(){
+  //   var user:any=localStorage.getItem('User_Usuario');
+  //   if(this.clasematerialmodel.strMatClass_Cod!=''){
+  //     let loadingInstance = Loading.service({
+  //       fullscreen: true,
+  //       text: 'Eliminando...',
+  //       spinner: 'el-icon-loading',
+  //       background: 'rgba(0, 0, 0, 0.8)'
+  //       }
+  //       ); 
+  //   clasematerialService.deleteClaseMaterial(this.clasematerialmodel.intIdMatClass_ID,user)
+  //     .then(resp=>{
+  //       loadingInstance.close();
+  //       this.claseDialog=false;
+  //       this.$message({
+  //           showClose: true,
+  //           message: 'Se Elimino correctamente '+resp,
+  //           type: 'success'
+  //         });
 
-          this.clasematerialmodel=new ClaseMaterialModel();
-          this.load();
-          this.issave = true;
-          this.iserror = false;
-          this.textosave = 'Se Elimino Correctamente '+resp;
-      })
-      .catch(error=>{
-        loadingInstance.close();
-        this.claseDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'No se elimino',
-            type: 'error'
-          });
-      })
-      }
-      else{
-          this.warningMessage('Seleccione Clase Servicio. ');
-      }
-  }
+  //         this.clasematerialmodel=new ClaseMaterialModel();
+  //         this.load();
+  //         this.issave = true;
+  //         this.iserror = false;
+  //         this.textosave = 'Se Elimino Correctamente '+resp;
+  //     })
+  //     .catch(error=>{
+  //       loadingInstance.close();
+  //       this.claseDialog=false;
+  //       this.$message({
+  //           showClose: true,
+  //           message: 'No se elimino',
+  //           type: 'error'
+  //         });
+  //     })
+  //     }
+  //     else{
+  //         this.warningMessage('Seleccione Clase Servicio. ');
+  //     }
+  // }
   warningMessage(newMsg : string) {
     this.$message({
       showClose: true,

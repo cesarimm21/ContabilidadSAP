@@ -28,7 +28,7 @@ export default class  BTipoAdquisicionComponent extends Vue {
     this.GetAllTipoDocumento()
   }
   GetAllTipoDocumento(){      
-    tipoadquisicionService.busquedaTipoAquisicion()
+    tipoadquisicionService.busquedaTipoAquisicion2()
     .then(response=>{
       this.TipoAdquisicion=response;
       this.TipoAdquisicion1=response;
