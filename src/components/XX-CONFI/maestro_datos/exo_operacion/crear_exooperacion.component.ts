@@ -7,10 +7,13 @@ import { Loading } from 'element-ui';
 import {ExoneracionOperacionesModel} from '@/modelo/maestro/exoneracionOperaciones';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import exoService from '@/components/service/exooperaciones.service';
+import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+
 @Component({
   name: 'crear-exooperacion',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
+  'bcompania':BCompaniaProveedor,
   }
 })
 export default class CrearExoOperacionComponent extends Vue {
@@ -27,6 +30,9 @@ export default class CrearExoOperacionComponent extends Vue {
   btnactivarplanta:boolean=false;
   plantaVisible:boolean=false;
   sucursalVisible:boolean=false;
+  btnactivarcompania:boolean=false;
+  dialogCompania:boolean=false;
+
   constructor(){    
         super();
         Global.nameComponent='crear-exooperacion';
@@ -62,6 +68,8 @@ export default class CrearExoOperacionComponent extends Vue {
               this.operaciones=new ExoneracionOperacionesModel();
               this.issave = true;
               this.iserror = false;
+              this.companyCod='';
+              this.companyName='';
               this.textosave = 'Se guardo correctamente. '+resp;
           }).catch(errorss=>{
             loadingInstance.close();
@@ -99,6 +107,32 @@ export default class CrearExoOperacionComponent extends Vue {
       reloadpage(){
         window.location.reload();
       }
+    desactivar_compania(){
+      if(this.dialogCompania){
+        this.btnactivarcompania=false;
+      }
+    }
+    activar_compania(){
+      setTimeout(() => {
+        this.btnactivarcompania=true;
+      }, 1)
+    }
+    loadCompania(){
+      this.dialogCompania=true;
+    }
+    companiaSeleccionado(val){
+      this.operaciones.strCompany_Cod=val.strCompany_Cod;
+      this.operaciones.strCompany_Desc=val.strCompany_Desc;
+      this.companyCod=val.strCompany_Cod;
+      this.companyName=val.strCompany_Desc;
+      this.dialogCompania=false;
+    }
+
+    closeCompania(){
+      this.btnactivarcompania=false;
+      return false;
+    }
+    
     data(){
         return{     
             companyName:'',

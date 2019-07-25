@@ -7,6 +7,9 @@ export class ExoneracionOperacionesModel {
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
+    strCompany_Cod:string;
+    strCompany_Desc:string;
+
     constructor(){
         this.intIdNDExonIR_ID=-1;
         this.strNDExonIR_Cod='';
@@ -16,5 +19,7 @@ export class ExoneracionOperacionesModel {
         this.dtmCreation_Date=new Date();
         this.dtmModified_Date=new Date();
         this.chrStatus='';
+        this.strCompany_Cod='';
+        this.strCompany_Desc='';
     }
 }

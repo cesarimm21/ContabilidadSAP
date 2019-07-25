@@ -9,11 +9,13 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import almacenService from '@/components/service/almacen.service';
 import { Loading } from 'element-ui';
+import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 @Component({
   name: 'modificar-almacen',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
+  'bcompania':BCompaniaProveedor,
   }
 })
 export default class VisualizarAlmacenComponent extends Vue {
@@ -48,6 +50,8 @@ export default class VisualizarAlmacenComponent extends Vue {
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   loading1:boolean=true;
+  btnactivarcompania:boolean=false;
+  dialogCompania:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-almacen';
@@ -90,11 +94,14 @@ export default class VisualizarAlmacenComponent extends Vue {
     like(array, key,keyword) {
   
       var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
+      if(keyword!=''){
+        for(var i=0;i<array.length;i++) {
           if(array[i][key].toString().indexOf(keyword) > -1 ) {
             responsearr.push(array[i])
+          }
         }
       }
+      
       return responsearr
     }
     sortByKeyDesc(array, key) {
@@ -164,10 +171,13 @@ export default class VisualizarAlmacenComponent extends Vue {
     }
   async  EliminarItem(){
   }
-  async validad(){      
+  async validad(){  
+    debugger    
     var data=this.like(this.gridAlmacen1,'strWHS_Cod',this.almacen.strWHS_Cod)
-    this.almacen=data[0];
-    if(this.almacen.intIdWHS_ID!=undefined){
+
+    this.gridAlmacen=[];
+    if(data.length>0){
+      this.almacen=data[0];
       await setTimeout(() => {
         debugger;
         if(this.almacen.strWHS_Cod!=undefined){
@@ -176,8 +186,20 @@ export default class VisualizarAlmacenComponent extends Vue {
       }, 600)
     }
     else{
-      this.textosave='No existe Almacen. ';
-      this.warningMessage('No existe Almacen. ');
+      // this.textosave='No existe Almacen. ';
+      // this.warningMessage('No existe Almacen. ');
+      almacenService.GetAllAlmacen(this.companyCod)
+      .then(resp=>{
+        if(resp!=undefined){
+          if(resp.length>0){
+            this.gridAlmacen=resp;
+          }
+        }
+      })
+      .catch(errorss=>{
+        this.textosave='Error al buscar almacen. ';
+        this.warningMessage('Error al buscar almacen. ');
+      })
     }
   }
    async validarView(){
@@ -395,6 +417,31 @@ export default class VisualizarAlmacenComponent extends Vue {
     }
     reloadpage(){
       window.location.reload();
+    }
+    
+    loadCompania(){
+      this.dialogCompania=true;
+    }
+
+    companiaSeleccionado(val){
+      this.companyCod=val.strCompany_Cod;
+      this.companyName=val.strCompany_Desc;
+      this.dialogCompania=false;
+    }
+
+    closeCompania(){
+      this.btnactivarcompania=false;
+      return false;
+    }
+    desactivar_compania(){
+      if(this.dialogCompania){
+        this.btnactivarcompania=false;
+      }
+    }
+    activar_compania(){
+      setTimeout(() => {
+        this.btnactivarcompania=true;
+      }, 120)
     }
     data(){
         return{     

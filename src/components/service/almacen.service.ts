@@ -11,7 +11,7 @@ export default {
     })
   },
   GetAllAlmacen2(strCompany_Cod){  
-    return axios.get(CONFIG.API_URL+'almacen2/'+strCompany_Cod)
+    return axios.get(CONFIG.API_URL+'almacen2')
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

@@ -13,16 +13,15 @@
                     <div class="row" style="margin-top: 3px;">
                         <div class="col-sm-9">
                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Compañia</label>
+                               <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input  :disabled="true"
-                                    size ="small" 
-                                    v-model="companyCod">
-                                      </el-input>
+                                    <el-input size ="small" :disabled="enabledtf"  @blur="desactivar_compania" @focus="activar_compania" v-model="almacen.strCompany_Cod"  placeholder="">
+                                        <el-button :disabled="enabledtf" v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                    </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{almacen.strCompany_Desc}}</span>
                             </div>
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Almacen</label>
@@ -111,6 +110,11 @@
     <el-dialog title="Busqueda Sucursal"  :visible.sync="sucursalVisible" @close="handleCloseSucursal" size="small" >
         <bsucursal v-on:sucursalselecionado="sucursalSelect($event)" v-on:sucursalClose="handleCloseSucursal()">
         </bsucursal>
+    </el-dialog>
+    <!--DIALOG BUSQUEDA COMPAÑIA-->
+    <el-dialog title="Busqueda compañia" :visible.sync="dialogCompania" @close="closeCompania" size="small" >
+    <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)">
+    </bcompania>
     </el-dialog> 
     </div>  
 </template>
