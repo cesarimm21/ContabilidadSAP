@@ -1,11 +1,11 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="modificar-um">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu  v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Modificar Unidad de Medida</span>
+                <span class="labelheadercard" > Modificar Unidad Medida</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,10 +25,10 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Unidad Med.</label>
+                                <label class="el-form-item__label col-md-2" >Unidad Medida</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="strUM_Cod" style="text-transform: capitalize" type="text">  
+                                    <el-input class="validador" size ="small" v-model="strUM_Cod" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,25 +42,30 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Unidades de Medida</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <span slot="label"><i class="el-icon-date"></i> Unidad Medidas</span>                    
+                    <buttons-accions v-on:validarView="validarView()" v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
-                            :data="gridUnidad"
+                            :data="gridDocumento"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrUM_Cod"
-                            prop="strUM_Cod" label="Unidad Med." width="100" align="center">                                
+                            prop="strUM_Cod" label="Unidad Medida" width="130" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrUM_Desc"
-                             prop="strUM_Desc" min-width="180" label="Descripcion">
+                             prop="strUM_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
@@ -70,6 +75,7 @@
                                 </template>
                             </el-table-column>
                             <el-table-column :render-header="filterstrModified_User"
+                            width="100" align="center"
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
@@ -111,7 +117,7 @@
                 </div>
             </div>            
         </div>
-        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" >
       <div style="height:85px">
         <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
         <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->
@@ -121,7 +127,7 @@
                     <label class="el-form-item__label col-md-2" >Columna</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="" :autofocus="true">
                             </el-input>
                         </div>
                     </div>
@@ -147,20 +153,29 @@
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal>  
-    <b-modal ref="myModalRef" hide-footer title="Eliminar Unidad Medida" size="sm"  v-model="unidadDialog" @keydown.native.enter="deleteUnidad">
+    <b-modal ref="myModalRef" hide-footer title="Inactivar Unidad Medida" size="sm"  v-model="planDialog" @keydown.native.enter="inactivarPlan">
       <div style="height:85px">
         <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea eliminar Unidad Medida {{unidad.strUM_Cod}} ?</span>
+        <span style="font-size:13px">¿Desea Inactivar Unidad Medida {{documento.strUM_Cod}} ?</span>
       </div>
       <footer class="modal-footer">
-        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteUnidad()"/>
-        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="unidadDialog = false"/>
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="inactivarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planDialog = false"/>
       </footer>
-    </b-modal>   
+    </b-modal>     
+    <b-modal ref="myModalRef" hide-footer title="Activar Unidad Medida" size="sm"  v-model="planActivarDialog" @keydown.native.enter="activarPlan">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Unidad Medida {{documento.strUM_Cod}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="activarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planActivarDialog = false"/>
+      </footer>
+    </b-modal>     
     </div>  
 </template>
 <script>
-
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.component'
 export default ModificarUMComponent
 </script>

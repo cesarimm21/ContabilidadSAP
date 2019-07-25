@@ -1,3 +1,4 @@
+
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
@@ -10,23 +11,23 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 import tipocomService from '@/components/service/tipocomprobantepago.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'modificar-comprobpago',
+  name: 'modificar-tipocomprobantepago',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
 export default class ModificarComprobPagoComponent extends Vue {
-  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
-  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
+    sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+    sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
   value3:string;
   companyName:any;
   companyCod:any;
-  public documento:TipoComprobantePagoModel=new TipoComprobantePagoModel();
   strDocType_Cod:string='';
+  public documento:TipoComprobantePagoModel=new TipoComprobantePagoModel();
   gridDocumento:TipoComprobantePagoModel[];
   gridDocumento1:TipoComprobantePagoModel[];
   gridDocumento2:TipoComprobantePagoModel[];
@@ -44,10 +45,13 @@ export default class ModificarComprobPagoComponent extends Vue {
   blnilterstrDocType_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
-  comprobanteDialog:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='modificar-comprobpago';
+        Global.nameComponent='modificar-tipocomprobantepago';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -55,7 +59,7 @@ export default class ModificarComprobPagoComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        tipocomService.GetAllComprobante()
+        tipocomService.GetAllComprobanteView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -63,6 +67,9 @@ export default class ModificarComprobPagoComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -136,59 +143,104 @@ export default class ModificarComprobPagoComponent extends Vue {
     
     }
     Limpiar(){
-      this.clickColumn='';
-      this.Column='';
-      this.txtbuscar='';
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrDocType_Cod=false;
       this.blnilterstrDocType_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
-      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
     }
     Print(){
       window.print();
     }
-  async EliminarItem(){
-    this.comprobanteDialog=true;    
+  async  EliminarItem(){
+    if(this.documento.intIdDocIdent_IDType_ID!=-1&&this.documento.strDocType_Cod!=""&&this.documento.strDocType_Desc!=""){
+      this.planDialog=true;
+    }
+    else{
+      this.warningMessage("Selecciona un Tipo Comp. Pago")
+    }    
   }
-  deleteComprobante(){
-    if(this.documento.strDocType_Cod!=''){
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Eliminando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-        ); 
-        tipocomService.deleteComprobante(this.documento.intIdDocIdent_IDType_ID)
-      .then(resp=>{
-        loadingInstance.close();
-        this.comprobanteDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'Se Elimino correctamente ',
-            type: 'success'
-          });
-
-          this.documento=new TipoComprobantePagoModel();
-          this.load();
-          this.issave = true;
-          this.iserror = false;
-          this.textosave = 'Se Elimino Correctamente ';
-      })
-      .catch(error=>{
-        loadingInstance.close();
-        this.comprobanteDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'No se elimino',
-            type: 'error'
-          });
-      })
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
-      else{
-          this.warningMessage('Seleccione Tipo de Comprobante Pago. ');
+      ); 
+    tipocomService.inactivarTipoComprobante(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new TipoComprobantePagoModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strDocType_Cod!="" && this.documento.strDocType_Desc!=""){
+      this.planActivarDialog=true;
+    }
+    else{
+      this.warningMessage('Selecciones Tipo Comp. Pago')
+    }
+  }
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
+      ); 
+    tipocomService.activarTipoComprobante(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new TipoComprobantePagoModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strDocType_Cod',this.strDocType_Cod)
@@ -196,7 +248,6 @@ export default class ModificarComprobPagoComponent extends Vue {
       this.documento=data[0];
       if(this.documento.strDocType_Cod==this.strDocType_Cod){
         await setTimeout(() => {
-          debugger;
           if(this.documento.strDocType_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -204,33 +255,32 @@ export default class ModificarComprobPagoComponent extends Vue {
       }
       else{
         if(this.strDocType_Cod==''){
-          this.textosave='Inserte Tipo de Comprobante Pago. ';
-          this.warningMessage('Inserte TiTipo de Comprobante Pago. ');
+          this.textosave='Inserte Tipo Comp. Pago. ';
+          this.warningMessage('Inserte Tipo Comp. Pago. ');
         }
         else{
-          this.textosave='No existe Tipo de Comprobante Pago. ';
-          this.warningMessage('No existe Tipo de Comprobante Pago.. ');
-        }   
+          this.textosave='No existe Tipo Comp. Pago. ';
+          this.warningMessage('No existe Tipo Comp. Pago. ');
+        }        
       }
     }
     else{
-      this.textosave='No existe Tipo de Comprobante Pago. ';
-      this.warningMessage('No existe Tipo de Comprobante Pago. ');
+      this.textosave='No existe Tipo Comp. Pago. ';
+      this.warningMessage('No existe Tipo Comp. Pago. ');
     }
-    
   }
    async validarView(){
-      if(this.documento.intIdDocIdent_IDType_ID!=undefined){
+      if(this.documento.intIdDocIdent_IDType_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strDocType_Cod!=undefined){
+            if(this.documento.strDocType_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_comprobPago/viewandedit_comprobPago`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Tipo de Comprobante Pago. ';
-          this.warningMessage('Seleccione Tipo de Comprobante Pago. ');
+          this.textosave='Seleccione Tipo Comp. Pago. ';
+          this.warningMessage('Seleccione Tipo Comp. Pago. ');
         }
       }
     siguiente(){
@@ -340,10 +390,10 @@ export default class ModificarComprobPagoComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            strDocType_Cod:'',
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strDocType_Cod:''
         }
     }
   

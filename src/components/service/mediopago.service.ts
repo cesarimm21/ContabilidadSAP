@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetMedioPagoView(){ 
+    return axios.get(CONFIG.API_URL+'mediopago/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   deleteMedioPago(intIdPayWay_ID){ 
     return axios.get(CONFIG.API_URL+'mediopago/delete/'+intIdPayWay_ID)
     .then(response =>{            
@@ -27,5 +33,17 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
-  }
+  },
+  inactivarMedioPago(documento){
+    return axios.post(CONFIG.API_URL+'mediopago/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarMedioPago(documento){
+    return axios.post(CONFIG.API_URL+'mediopago/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

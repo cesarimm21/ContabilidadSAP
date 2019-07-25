@@ -40,14 +40,17 @@ export default class ModificarMedioPagoComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blniltersstrPayWay_Cod:boolean=false;
+  blnilterstrPayWay_Cod:boolean=false;
   blnilterstrPayWay_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
-  medioDialog:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='modificar-metododep';
+        Global.nameComponent='modificar-mediopago';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -55,7 +58,7 @@ export default class ModificarMedioPagoComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        mediopagoService.GetMedioPago()
+        mediopagoService.GetMedioPagoView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -63,6 +66,9 @@ export default class ModificarMedioPagoComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -137,7 +143,7 @@ export default class ModificarMedioPagoComponent extends Vue {
     }
     Limpiar(){
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blniltersstrPayWay_Cod=false;
+      this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
@@ -145,74 +151,121 @@ export default class ModificarMedioPagoComponent extends Vue {
     Print(){
       window.print();
     }
-    async EliminarItem(){
-      this.medioDialog=true;    
+  async  EliminarItem(){
+    if(this.documento.intIdPayWay_ID!=-1&&this.documento.strPayWay_Cod!=""&&this.documento.strPayWay_Desc!=""){
+      this.planDialog=true;
     }
-    deleteMedioPago(){
-      if(this.documento.strPayWay_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
-        mediopagoService.deleteMedioPago(this.documento.intIdPayWay_ID)
-        .then(resp=>{
-          loadingInstance.close();
-          this.medioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente '+resp,
-              type: 'success'
-            });
-  
-            this.documento=new MedioPagoModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente '+resp;
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.medioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
-        }
-        else{
-            this.warningMessage('Seleccione moneda. ');
-        }
+    else{
+      this.warningMessage("Selecciona un Medio de Pago")
+    }    
+  }
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    mediopagoService.inactivarMedioPago(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new MedioPagoModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strPayWay_Cod!="" && this.documento.strPayWay_Desc!=""){
+      this.planActivarDialog=true;
     }
+    else{
+      this.warningMessage('Selecciones Medio de Pago')
+    }
+  }
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+      mediopagoService.activarMedioPago(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new MedioPagoModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strPayWay_Cod',this.strPayWay_Cod)
     if(data.length>0){
       this.documento=data[0];
       if(this.documento.strPayWay_Cod==this.strPayWay_Cod){
         await setTimeout(() => {
-          debugger;
-          if(this.documento.strPayWay_Cod!=undefined){
+          if(this.documento.strPayWay_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/medio_pago/viewandedit_mediopago`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
           }
         }, 600)
       }
       else{
         if(this.strPayWay_Cod==''){
-          this.textosave='Inserte Medio Pago. ';
-          this.warningMessage('Inserte Medio Pago. ');
+          this.textosave='Inserte Medio de Pago. ';
+          this.warningMessage('Inserte Medio de Pago. ');
         }
         else{
-          this.textosave='No existe Medio Pago. ';
-          this.warningMessage('No existe Medio Pago. ');
+          this.textosave='No existe Medio de Pago. ';
+          this.warningMessage('No existe Medio de Pago. ');
         }        
       }
     }
     else{
-      this.textosave='No existe Medio Pago. ';
-      this.warningMessage('No existe Medio Pago. ');
+      this.textosave='No existe Medio de Pago. ';
+      this.warningMessage('No existe Medio de Pago. ');
     }
   }
    async validarView(){
@@ -225,8 +278,8 @@ export default class ModificarMedioPagoComponent extends Vue {
           }, 600)
         }
         else{
-          this.textosave='Seleccione Tipo de Medio de Pago. ';
-          this.warningMessage('Seleccione Tipo de Medio de Pago. ');
+          this.textosave='Seleccione Medio de Pago. ';
+          this.warningMessage('Seleccione Medio de Pago. ');
         }
       }
     siguiente(){
@@ -254,35 +307,35 @@ export default class ModificarMedioPagoComponent extends Vue {
       Global.setColumna(this.Column);     
       if(val.property=="strPayWay_Cod"){
           this.clickColumn="strPayWay_Cod";
-          this.blniltersstrPayWay_Cod=true;
+          this.blnilterstrPayWay_Cod=true;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="strPayWay_Desc"){
           this.clickColumn="strPayWay_Desc";
-          this.blniltersstrPayWay_Cod=false;
+          this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=true;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="dtmModified_Date"){
           this.clickColumn="dtmModified_Date";
-          this.blniltersstrPayWay_Cod=false;
+          this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=true;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="strModified_User"){
           this.clickColumn="strModified_User";
-          this.blniltersstrPayWay_Cod=false;
+          this.blnilterstrPayWay_Cod=false;
       this.blnilterstrPayWay_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=true;
       }        
   }
-  filtersstrPayWay_Cod(h,{column,$index}){
-      if(this.blniltersstrPayWay_Cod){
+  filterstrPayWay_Cod(h,{column,$index}){
+      if(this.blnilterstrPayWay_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])

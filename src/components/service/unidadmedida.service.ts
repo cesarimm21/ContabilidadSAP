@@ -22,6 +22,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllUnidadMedidaView(){  
+    return axios.get(CONFIG.API_URL+'unidadmedida/view')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllUnidadMedida2(){  
     return axios.get(CONFIG.API_URL+'unidadmedida2')
     .then(response =>{           
@@ -36,6 +42,18 @@ export default {
   },
   deleteUnidadMedida(intUnit_Measure_ID){
     return axios.get(CONFIG.API_URL+'unidadmedida/delete/'+intUnit_Measure_ID)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  inactivarUnidadMedida(documento){
+    return axios.post(CONFIG.API_URL+'unidadmedida/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarUnidadMedida(documento){
+    return axios.post(CONFIG.API_URL+'unidadmedida/activar',documento)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
