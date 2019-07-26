@@ -36,16 +36,21 @@ export default class  BCriticidadComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 400)      
   }
   load(){
     criticidadService.GetAllCriticidad()
     .then(response=>{
       this.criticidadModel=response;       
-      this.criticidadModel1=response;       
+      this.criticidadModel1=response;   
+      this.loading1=false;    
     }).catch(error=>{
+      this.loading1=false;
       this.$message({
         showClose: true,
         type: 'error',
@@ -156,7 +161,8 @@ export default class  BCriticidadComponent extends Vue {
     return {
       criticidadModel:[],
       criticidadModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

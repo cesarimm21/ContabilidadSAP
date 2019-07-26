@@ -38,21 +38,26 @@ export default class  BPlantaComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 400)
   }
   load(){
     plantaService.GetAllPlanta2()
     .then(response=>{
       this.plantaModel=response;       
-      this.plantaModel1=response;       
+      this.plantaModel1=response;     
+      this.loading1=false;  
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar planta'
       });
+      this.loading1=false;
     })
   }
   redirectLogin(msg){
@@ -156,7 +161,8 @@ export default class  BPlantaComponent extends Vue {
     return {
       plantaModel:[],
       plantaModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

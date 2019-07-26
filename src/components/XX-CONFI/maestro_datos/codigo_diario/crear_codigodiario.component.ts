@@ -81,16 +81,17 @@ export default class CrearCodigoDiarioComponent extends Vue {
       if(this.flag=='A'){
         this.cuentaA=val;
         this.diario.strDaily_AccLocal=this.cuentaA.strAcc_Local_NO;
+        this.diario.strAcc_Local_Name=this.cuentaA.strAcc_Local_Name;
       }
       if(this.flag=='B'){
         this.cuentaB=val;
         this.diario.strDaily_AccForen=this.cuentaB.strAcc_Local_NO;
+        this.diario.strAcc_AccForen_Name=this.cuentaB.strAcc_Local_Name;
       }
       this.dialogDocumentoTransaccion=false;  
     }
     guardarComprobante(){
       var user:any=localStorage.getItem('User_Usuario');
-      var id:any=localStorage.getItem('compania_ID');
       this.diario.strCreation_User=user;
       let loadingInstance = Loading.service({
         fullscreen: true,

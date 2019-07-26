@@ -104,7 +104,6 @@ export default class ModificarServicioMateComponent extends Vue {
   SendDocument:boolean=false;
 
   /*dialog*/
-  dialogCompania:boolean=false;
   dialogProveedor:boolean=false;
   dialogAlmacen:boolean=false;
   dialogCategoriaCuenta:boolean=false;
@@ -123,7 +122,6 @@ export default class ModificarServicioMateComponent extends Vue {
   dialogImpuesto:boolean=false;
 
   /*input*/
-  btnactivarcompania:boolean=false;
   btnactivarproveedor:boolean=false;
   btnactivaralmacen:boolean=false;
   btnactivarmaterial:boolean=false;
@@ -206,12 +204,13 @@ export default class ModificarServicioMateComponent extends Vue {
   visualizar:boolean;
   public clasematerialSelectModel:ClaseMaterialModel=new ClaseMaterialModel();
   public tableClaseMaterial:Array<ClaseMaterialModel>=[]; 
+  public tableClaseMaterial1:Array<ClaseMaterialModel>=[]; 
   public tabletipoRequisicion:Array<TipoRequisicionModel>=[]; 
   
   tiporequisicionant:string='';
   vifprogress:boolean=true;
   percentage:number;
-
+  loading1:boolean=true;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -233,12 +232,13 @@ export default class ModificarServicioMateComponent extends Vue {
       }
       this.tableData1.push(item);
     }
-    console.log(this.tableData1);
     setTimeout(() => {
       this.Load();
     }, 200)
   }
   Load(){
+    var desc:any=localStorage.getItem('compania_name');
+    var cod:any=localStorage.getItem('compania_cod');
     var view = this.$route.query.vista;
     var object = JSON.parse(this.$route.query.data);
     if(view==="visualizar"){
@@ -253,7 +253,7 @@ export default class ModificarServicioMateComponent extends Vue {
       text:'Cargando...'
     });
     var id=object.strStock_Cod;
-    productoService.GetOnlyOneProducto(id)
+    productoService.GetOnlyOneProducto(id,cod)
     .then(response=>{
       if(response!=undefined){
         this.productoModel=response[0];
@@ -275,27 +275,19 @@ export default class ModificarServicioMateComponent extends Vue {
         tipoRequisicionService.GetAllTipoRequisicion()
         .then(res=>{
           this.tabletipoRequisicion=res;
-          clasematerialService.GetAllClaseMaterial()
-          .then(response=>{
-            this.tableClaseMaterial=response;    
-            this.tableClaseMaterial=[];
-              clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
-                .then(response=>{
-                  this.tableClaseMaterial=response;       
-                }).catch(error=>{
-                  this.$message({
-                    showClose: true,
-                    type: 'error',
-                    message: 'No se pudo cargar clase material'
-                  });
-                })   
-          }).catch(error=>{
-            this.$message({
-              showClose: true,
-              type: 'error',
-              message: 'No se pudo cargar clase material'
-            });
-          })
+          clasematerialService.GetClaseMaterialServicio(this.productoModel.strCompany_Cod)
+            .then(response=>{
+              this.tableClaseMaterial=response;       
+              this.tableClaseMaterial1=response;   
+              this.loading1=false;    
+            }).catch(error=>{
+              this.$message({
+                showClose: true,
+                type: 'error',
+                message: 'No se pudo cargar clase material'
+              });
+              this.loading1=false;    
+            })    
         })
         .catch(error=>{
           console.log('error',error)
@@ -360,10 +352,6 @@ export default class ModificarServicioMateComponent extends Vue {
       return { verde: true, }
     }
   }
-  loadCompania(){
-    this.dialogCompania=true;
-  }
-  
   loadAlmacen(){
     this.dialogAlmacen=true;
   }
@@ -385,7 +373,7 @@ export default class ModificarServicioMateComponent extends Vue {
     //   });
   }
   tableRowClassName(row, rowIndex) {
-      debugger;
+      
     // if (row === undefined || row.EstadoAprobacion === undefined) return '';
     // if (row.EstadoAprobacion === 'R'){
     //   return 'rechazado-row';
@@ -397,7 +385,7 @@ export default class ModificarServicioMateComponent extends Vue {
     // return '';
   }
   // handleCurrentChange(val) {
-  //   debugger;
+  //   
   //   if(val.date){
   //       return 'selected-row';
   //   }
@@ -406,12 +394,6 @@ export default class ModificarServicioMateComponent extends Vue {
     this.clasematerialSelectModel=val;
   }
   /*Compania imput*/
-  activar_compania(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarcompania=true;
-    }, 120)
-  }
   activar_control_precio(){
     setTimeout(() => {
       this.limpiarBotones();
@@ -424,66 +406,54 @@ export default class ModificarServicioMateComponent extends Vue {
       this.btnactivarcuentacontable=true;
     }, 120)
   }
-  desactivar_compania(){
-    debugger;
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;
-    }
-  }
   desactivar_unidad_medida(){
-    debugger;
+    
     if(this.dialogUnidadMedida){
       this.btnactivarunidadmedida=false;
     }
   }
   desactivar_impuesto(){
-    debugger;
+    
     if(this.dialogImpuesto){
       this.btnactivarimpuesto=false;
     }
   }
   desactivar_control_precio(){
-    debugger;
+    
     if(this.dialogControlPrecio){
       this.btnactivarcontrolprecio=false;
     }
   }
   desactivar_clase_material(){
-    debugger;
+    
     if(this.dialogClaseMaterial){
       this.btnactivarclasematerial=false;
     }
   }
   desactivar_criticidad(){
-    debugger;
+    
     if(this.dialogCriticidad){
       this.btnactivarcriticidad=false;
     }
   }
   desactivar_grupo_comprador(){
-    debugger;
+    
     if(this.dialogGrupoComprador){
       this.btnactivargrupocomprador=false;
     }
   }
   desactivar_categoria_material(){
-    debugger;
+    
     if(this.dialogCategoriaMaterial){
       this.btnactivarcategoriamaterial=false;
     }
   }
   desactivar_cuenta_contable(){
-    debugger;
+    
     if(this.dialogCuentaContable){
       this.btnactivarcuentacontable=false;
     }
   }
-  closeCompania(){
-    debugger;
-    this.btnactivarcompania=false;
-    return false;
-  }
-
   /*Proveedor imput*/
   activar_proveedor(){
     setTimeout(() => {
@@ -528,13 +498,13 @@ export default class ModificarServicioMateComponent extends Vue {
     }, 120)
   }
   desactivar_proveedor(){
-    debugger;
+    
     if(this.dialogProveedor){
       this.btnactivarproveedor=false;
     }
   }
   closeProveedor(){
-    debugger;
+    
     this.btnactivarproveedor=false;
     return false;
   }
@@ -547,13 +517,13 @@ export default class ModificarServicioMateComponent extends Vue {
     }, 120)
   }
   desactivar_almacen(){
-    debugger;
+    
     if(this.dialogAlmacen){
       this.btnactivaralmacen=false;
     }
   }
   closeAlmacen(){
-    debugger;
+    
     console.log("closeAlmacen");
     this.btnactivaralmacen=false;
     return false;
@@ -561,10 +531,9 @@ export default class ModificarServicioMateComponent extends Vue {
   activar_descripcion(){
     this.btnactivaralmacen=false;
     this.btnactivarproveedor=false;
-    this.btnactivarcompania=false
   }
   activar_tipo_requisicion(value){
-    debugger;
+    
     // console.log("activar_tipo_requisicion");
     // this.tiporequisicion=value;
     // if(value=='N'){
@@ -577,7 +546,6 @@ export default class ModificarServicioMateComponent extends Vue {
     // }
     // this.btnactivaralmacen=false;
     // this.btnactivarproveedor=false;
-    // this.btnactivarcompania=false
     setTimeout(() => {
       this.productoModel.strMaterial_Class="";
       this.productoModel.intIdMatClass_ID=-1;
@@ -590,7 +558,7 @@ export default class ModificarServicioMateComponent extends Vue {
 
   /*tabla metodos*/
   handleBlur(event) {
-    debugger;
+    
     this.bln_tbl_categoria_cuenta=false;
     event.edit=false;
     this.editing.row='';
@@ -601,7 +569,7 @@ export default class ModificarServicioMateComponent extends Vue {
     return this.editing !== null
   }
   onCellBlur(row, column, cell, event) {
-    debugger;
+    
     this.editing = null
     console.log('onCellBlur',row, column, cell, event);
   }
@@ -650,84 +618,84 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogCentroCostos=true;
   }
   alerta(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_cuenta=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcategorialinea(event,edit,column){
-    debugger;
+    
     this.bln_tbl_categoria_linea=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcuentacontable(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cuenta_contable=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterial(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmaterialdescripcion(event,edit,column){
-    debugger;
+    
     this.bln_tbl_material_descripcion=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcantidad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_cantidad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickunidadmedida(event,edit,column){
-    debugger;
+    
     this.bln_tbl_unidad_medida=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickproveedor(event,edit,column){
-    debugger;
+    
     this.bln_tbl_proveedor=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickmoneda(event,edit,column){
-    debugger;
+    
     this.bln_tbl_moneda=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickprioridad(event,edit,column){
-    debugger;
+    
     this.bln_tbl_prioridad=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickfechaestimada(event,edit,column){
-    debugger;
+    
     this.bln_tbl_fecha_estimada=true;
     event.edit=!edit;
     this.editing.row=event;
     this.editing.column=column;
   }
   clickcentrocosto(event,edit,column){
-    debugger;
+    
     this.bln_tbl_centro_costo=true;
     event.edit=!edit;
     this.editing.row=event;
@@ -735,17 +703,6 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   getParseDate(fecha){
     return Global.getParseDate(fecha);
-  }
-  companiaSeleccionado(val){
-    debugger;
-    console.log('traer',val);
-    this.productoModel.strCompany_Cod=val.strCompany_Cod
-    this.descompania=val.strCompany_Desc;
-   
-    this.dialogCompania=false;
-  }
-  companiaClose(val){
-    this.dialogCompania=false;
   }
   criticidadClose(val){
     this.dialogCriticidad=false;
@@ -757,7 +714,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoImpuesto(val){
-    debugger;
+    
     this.productoModel.strWH_Cod=val.strWH_Cod
     this.productoModel.strWH_Desc=val.strWH_Desc
     this.productoModel.intIdCommTax_ID=val.intIdWH_ID
@@ -766,7 +723,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogImpuesto=false;
   }
   SeleccionadoCategoriaMaterial(val){
-    debugger;
+    
     this.productoModel.strMaterial_Categ=val.strCategItem_Cod;
     this.productoModel.intIdCategMat_ID=val.intIdCategLine_ID;
     this.productoModel.strCategMat_Desc=val.strCategItem_Desc;
@@ -774,7 +731,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogCategoriaMaterial=false;
   }
   SeleccionadoControlPrecio(val){
-    debugger;
+    
     this.productoModel.fltPriceControl=val.strCtlPrec_Cod;
     this.productoModel.intIdCtlPrec_ID=val.intIdCtlPrec_ID;
     this.productoModel.strCtlPrec_Desc=val.strCtlPrec_Desc;
@@ -782,7 +739,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogControlPrecio=false;
   }
   grupocompradorSeleccionado(val){
-    debugger;
+    
     this.productoModel.strGrpPurch_Cod=val.strGrpPurch_Cod;
     this.productoModel.intIdGrpPurch_ID=val.intIdGrpPurch_ID;
     this.productoModel.strGrpPurch_Desc=val.strGrpPurch_Desc;
@@ -799,7 +756,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogUnidadMedida=false;
   }
   criticidadSeleccionado(val){
-    debugger;
+    
     this.productoModel.strCritical_Item=val.strCritical_Cod;
     this.productoModel.intIdCritical_ID=val.intIdCritical_ID;
     this.productoModel.strCritical_Desc=val.strCritical_Desc;
@@ -807,7 +764,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogCriticidad=false;
   }
   SeleccionadoAlmacen(val){
-    debugger;
+    
     console.log('traer',val);
     this.productoModel.strWHS_Cod=val.strWHS_Cod;
     this.desalmacen=val.strWHS_Desc;
@@ -815,7 +772,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogAlmacen=false;
   }
   SeleccionadoClaseMaterial(val){
-  debugger;
+  
     this.productoModel.strMaterial_Class=this.clasematerialSelectModel.strMatClass_Cod;
     this.productoModel.strMatClass_Desc=this.clasematerialSelectModel.strMatClass_Desc;
     this.productoModel.intIdMatClass_ID=this.clasematerialSelectModel.intIdMatClass_ID;
@@ -829,17 +786,17 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogCategoriaCuenta=false;
   }
   SeleccionadoCategoriaLinea(val){
-    debugger;
+    
     this.selectrow.categorialinea=val.CODIGO;
     this.dialogCategoriaLinea=false;
   }
   SeleccionadoCentroCosto(val){
-    debugger;
+    
     this.selectrow.centrocosto=val.CostCenter_NO;
     this.dialogCentroCostos=false;
   }
   SeleccionadoCuentaContable(val){
-    debugger;
+    
     this.productoModel.strExp_Acct=val.strAcc_NO_Corp;
     this.productoModel.intIdAcctCont_ID=val.intIdAcctCont_ID;
     this.productoModel.strAcc_Desc=val.strAcc_Desc;
@@ -847,12 +804,12 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogCuentaContable=false;
   }
   SeleccionadoMaterial(val){
-    debugger;
+    
     this.selectrow.material=val.Stock_Cod;
     this.dialogMaterial=false;
   }
   SeleccionadoUnidadMedida(val){
-    debugger;
+    
     this.productoModel.strUM_Cod=val.strUM_Cod;
     this.productoModel.intIdUnidadMedida=val.intUnit_Measure_ID;
     this.productoModel.strUM_Desc=val.strUM_Desc;
@@ -860,7 +817,7 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogUnidadMedida=false;
   }
   SeleccionadoProveedor(val){
-    debugger;
+    
     this.productoModel.strVendor_NO=val.strVendor_NO;
     this.productoModel.intIdVendor_ID=val.intIdVendor_ID;
     this.productoModel.strVendor_Desc=val.strVendor_Desc;
@@ -868,28 +825,17 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogProveedor=false;
   }
   SeleccionadoMoneda(val){
-    debugger;
+    
     this.selectrow.moneda=val.CODIGO;
     this.dialogMoneda=false;
   }
   SeleccionadoPrioridad(val){
-    debugger;
+    
     this.selectrow.prioridad=val.CODIGO;
     this.dialogPrioridad=false;
   }
   loadClaseMaterial(){
     this.dialogClaseMaterial=true;
-    this.tableClaseMaterial=[];
-    clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
-      .then(response=>{
-        this.tableClaseMaterial=response;       
-      }).catch(error=>{
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: 'No se pudo cargar clase material'
-        });
-      })
   }
   loadCategoriaMaterial(){
     this.dialogCategoriaMaterial=true;
@@ -913,10 +859,8 @@ export default class ModificarServicioMateComponent extends Vue {
     if(this.tiporequisicion!=selected){
       this.tiporequisicion=selected;
     }
-    console.log('select',selected);
   }
   limpiarBotones(){
-      this.btnactivarcompania=false;
       this.btnactivarcuentacontable=false;
       this.btnactivarproveedor=false;
       this.btnactivaralmacen=false;
@@ -934,7 +878,7 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   
   closeImpuesto(){
-    debugger;
+    
     this.btnactivarimpuesto=false;
     return false;
   }
@@ -951,87 +895,57 @@ export default class ModificarServicioMateComponent extends Vue {
     this.dialogGrupoComprador=false;
   }
   closeControlPrecio(){
-    debugger;
+    
     this.btnactivarcontrolprecio=false;
     return false;
   }
   closeGrupoComprador(){
-    debugger;
+    
     this.btnactivargrupocomprador=false;
     return false;
   }
   closeCriticidad(){
-    debugger;
+    
     this.btnactivarcriticidad=false;
     return false;
   }
   closeCategoriaMaterial(){
-    debugger;
+    
     this.btnactivarcategoriamaterial=false;
     return false;
   }
   closeClaseMaterial(){
-    debugger;
     this.btnactivarclasematerial=false;
+    this.dialogClaseMaterial=false;
     return false;
   }
   closeCentroCostos(){
-    debugger;
+    
     this.btnactivarcentrocosto=false;
     return false;
   }
   closePrioridad(){
-    debugger;
+    
     this.btnactivarprioridad=false;
     return false;
   }
   closeMoneda(){
-    debugger;
+    
     this.btnactivarmoneda=false;
     return false;
   }
   closeUnidadMedida(){
-    debugger;
+    
     this.btnactivarunidadmedida=false;
     return false;
   }
   closeMaterial(){
-    debugger;
     this.btnactivarmaterial=false;
     return false;
   }
   closeCuentaContable(){
-    debugger;
     this.btnactivarcuentacontable=false;
     return false;
-  }
-  borrarCompania(){
-    this.descompania='';
-    this.dialogCompania=false;
-    this.btnactivarcompania=false;
-  }
-  enterCompania(code){
-    //alert('Bien'+code);
-    debugger;
-    console.log('compania_enter_1',code);
-    companiaService.GetOnlyOneCompania(code)
-    .then(response=>{
-      if(response!=undefined){
-        if(response.length>0){
-          this.productoModel.strCompany_Cod=response[0].strCompany_Cod
-          this.descompania=response[0].strCompany_Desc;
-          this.dialogCompania=false;
-          this.btnactivarcompania=false;
-        }
-      }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar compañia'
-      });
-    })
   }
   borrarAlmacen(){
     this.desalmacen='';
@@ -1039,11 +953,9 @@ export default class ModificarServicioMateComponent extends Vue {
     this.btnactivaralmacen=false;
   }
   enterAlmacen(code){
-    //alert('Bien'+code);
-    debugger;
     almacenService.GetOnlyOneAlmacen(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strWHS_Cod=response[0].strWHS_Cod
@@ -1068,11 +980,8 @@ export default class ModificarServicioMateComponent extends Vue {
     this.btnactivarclasematerial=false;
   }
   enterClaseMaterial(code){
-    //alert('Bien'+code);
-    debugger;
     clasematerialService.GetOnlyOneClaseMaterial(code)
     .then(response=>{
-      debugger;
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strMaterial_Class=response[0].strMatClass_Cod;
@@ -1098,10 +1007,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterCriticidad(code){
     //alert('Bien'+code);
-    debugger;
+    
     criticidadService.GetOnlyOneCriticidad(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strCritical_Item=response[0].strCritical_Cod;
@@ -1127,10 +1036,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterProveedor(code){
     //alert('Bien'+code);
-    debugger;
+    
     proveedorService.GetOnlyOneProveedor(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strVendor_NO=response[0].strVendor_NO;
@@ -1156,10 +1065,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterCuentaGastos(code){
     //alert('Bien'+code);
-    debugger;
+    
     cuentacontableService.GetOnlyOneCuentaGastos(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strExp_Acct=response[0].strAcct_NO_Corp;
@@ -1186,10 +1095,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterCategoriaMaterial(code){
     //alert('Bien'+code);
-    debugger;
+    
     categoriamaterialService.GetOnlyOneCategoriaMaterial(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strMaterial_Categ=response[0].strCategMat_Cod;
@@ -1216,10 +1125,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterGrupoComprador(code){
     //alert('Bien'+code);
-    debugger;
+    
     grupocompradorService.GetOnlyOneGrupoComprador(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strGrpPurch_Cod=response[0].strGrpPurch_Cod;
@@ -1246,10 +1155,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterControlPrecio(code){
     //alert('Bien'+code);
-    debugger;
+    
     controlprecioService.GetOnlyOneControlPrecio(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.fltPriceControl=response[0].strCtlPrec_Cod;
@@ -1275,10 +1184,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterImpuesto(code){
     //alert('Bien'+code);
-    debugger;
+    
     impuestoService.GetOnlyOneImpuesto(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
 
@@ -1308,10 +1217,10 @@ export default class ModificarServicioMateComponent extends Vue {
   }
   enterUnidadMedida(code){
     //alert('Bien'+code);
-    debugger;
+    
     unidadmedidaService.GetOnlyOneUnidadMedida(code)
     .then(response=>{
-      debugger;
+      
       if(response!=undefined){
         if(response.length>0){
           this.productoModel.strUM_Cod=response[0].strUM_Cod;
@@ -1337,7 +1246,7 @@ export default class ModificarServicioMateComponent extends Vue {
 
 
   validador(){
-    debugger;
+    
     
     if(this.tiporequisicion==""){
       return true;
@@ -1359,17 +1268,13 @@ export default class ModificarServicioMateComponent extends Vue {
     }
     return false;
   }
-  async guardarTodo(val){
-    debugger;
+  async guardarTodo(val){    
     this.vifprogress=true;
     this.issave=false;
     this.iserror=false;
     this.textosave=''
-    this.percentage=0;   
-    var vista=this.$route.query.vista;    
+    var vista=this.$route.query.vista;  
     if(vista=='modificar'){
-
-      if(!this.validador()){
         let loading = Loading.service({
           fullscreen: true,
           text: 'Cargando...',
@@ -1379,6 +1284,8 @@ export default class ModificarServicioMateComponent extends Vue {
         );
         this.productoModel.intIdWHS_Stat_ID=1;
         this.productoModel.intIdCommTax_ID=1;
+        var user:any=localStorage.getItem('User_Usuario');
+        this.productoModel.strModified_User=user;
         productoService.UpdateProducto(this.productoModel)
         .then(res=>{ 
           setTimeout(() => {   
@@ -1400,12 +1307,6 @@ export default class ModificarServicioMateComponent extends Vue {
             message: 'No se pudo guardar servicio'
           });
         })
-      }
-      else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='No se pudo guardar. Revise los datos-Error'
-      }
       }else{
       this.$message({
           showClose: true,
@@ -1427,7 +1328,11 @@ export default class ModificarServicioMateComponent extends Vue {
     return{
       dialogTableVisible: false,
       dialogVisible:false,
+      visualizar:false,
       tableDataServicio:[{}],
+      tableClaseMaterial:[],
+      tableClaseMaterial1:[],
+      loading1:true,
       item:{
         date: '',
         categoriacuenta: '',
@@ -1443,162 +1348,6 @@ export default class ModificarServicioMateComponent extends Vue {
         fecha_estimada:'',
         centrocosto:'',
       },
-      tableData: [{
-        date: '0001',
-        categoriacuenta: 'Ferreyros',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0002',
-        categoriacuenta: 'Yura SAC',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0003',
-        categoriacuenta: 'Signal company',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0004',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }
-      , {
-        date: '0005',
-        categoriacuenta: 'Tisur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0006',
-        categoriacuenta: 'Seguro',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0007',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0008',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0009',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0010',
-        categoriacuenta: 'Linea',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0011',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }],
       user: {
         authenticated: false
       },

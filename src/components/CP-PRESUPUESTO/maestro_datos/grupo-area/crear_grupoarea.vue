@@ -1,11 +1,11 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="crear-grupo-area">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-            <quickaccessmenu v-on:guardarTodo="guardarComprobante($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
+            <quickaccessmenu v-on:guardarTodo="guardarDocumento($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Codigo Diario</span>
+                <span class="labelheadercard" > Crear Grupo Area</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -25,62 +25,23 @@
                                 <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                             <div  class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Codigo Diario</label>
+                                <label class="el-form-item__label col-md-2" >Grupo Area</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="diario.strDaily_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="documento.strCCGrpArea_Cod" style="text-transform: capitalize" type="text" :maxlength="5" :autofocus="true">  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
-                                <div class="col-sm-6 grupolabel">
-                                    <div class="input-group mb-6" >
-                                        <el-input  class="validador" size="small" v-model="diario.strDaily_Desc"  >
+                                <div class="col-sm-4 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input class="validador" size="small" v-model="documento.strCCGrpArea_Desc"  >
                                         </el-input>
                                     </div>
                                 </div>
                             </div>
-                            <div  class="form-group row " style="margin-top:10px;">
-                                <label class="el-form-item__label col-md-2" >Tipo</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="diario.strDaily_Type" style="text-transform: capitalize" type="text" >  
-                                    </el-input>
-                                    </div>
-                                </div>
-                            </div>   
-                            <div class="form-group row " >
-                                <label class="el-form-item__label col-md-2" >Cta. Contable PEN</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input  class="validador"
-                                    size ="small" 
-                                    @blur="desactivar_documentoTransacionalA" 
-                                    @focus="activar_documentoTransacionalA" 
-                                    v-model="diario.strDaily_AccLocal">
-                                        <el-button v-if="btndocumentotransaccionA && !dialogDocumentoTransaccion" slot="append" class="boton" icon="fa fa-clone" @click="loadDocumentoTransaccion('A')"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{diario.strAcc_Local_Name}}</span>
-                            </div>   
-                            <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Cta. Contable USD</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input  class="validador"
-                                    size ="small" 
-                                    @blur="desactivar_documentoTransacionalB" 
-                                    @focus="activar_documentoTransacionalB" 
-                                    v-model="diario.strDaily_AccForen">
-                                        <el-button v-if="btndocumentotransaccionB && !dialogDocumentoTransaccion" slot="append" class="boton" icon="fa fa-clone" @click="loadDocumentoTransaccion('B')"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{diario.strAcc_AccForen_Name}}</span>
-                            </div>     
                         </div>                         
                     </div>
                 </div>
@@ -109,17 +70,13 @@
                     </div>
                 </div>
             </div>            
-        </div>  
-        <el-dialog title="Cuenta Contable"  :visible.sync="dialogDocumentoTransaccion" @close="closeDialogCuentaContableHaber" size="small" >
-            <bcuentacontable v-on:cuentacontableselecionado="cuentacontableselecionadohaber($event)" v-on:cuentacontableClose="closeDialogCuentaContableHaber()">
-            </bcuentacontable>
-        </el-dialog>  
+        </div>   
     </div>  
 </template>
 <script>
 
-import CrearCodigoDiarioComponent from '@/components/XX-CONFI/maestro_datos/codigo_diario/crear_codigodiario.component'
-export default CrearCodigoDiarioComponent
+import CrearGrupoAreaComponent from '@/components/CP-PRESUPUESTO/maestro_datos/grupo-area/crear_grupoarea.component'
+export default CrearGrupoAreaComponent
 </script>
 <style scoped>
 .sinLinea{

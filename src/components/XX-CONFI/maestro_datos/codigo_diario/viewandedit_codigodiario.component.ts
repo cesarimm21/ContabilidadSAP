@@ -95,10 +95,12 @@ export default class ViewAndEditCodigoDiarioComponent extends Vue {
       if(this.flag=='A'){
         this.cuentaA=val;
         this.documento.strDaily_AccLocal=this.cuentaA.strAcc_Local_NO;
+        this.documento.strAcc_Local_Name=this.cuentaA.strAcc_Local_Name;
       }
       if(this.flag=='B'){
         this.cuentaB=val;
         this.documento.strDaily_AccForen=this.cuentaB.strAcc_Local_NO;
+        this.documento.strAcc_AccForen_Name=this.cuentaB.strAcc_Local_Name;
       }
       this.dialogDocumentoTransaccion=false;  
     }

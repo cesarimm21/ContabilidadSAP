@@ -22,8 +22,8 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  getClassProductoServicio(){ 
-    return axios.get(CONFIG.API_URL+'cmaterial/servicio')
+  getClassProductoServicio(strCompany_Cod){ 
+    return axios.get(CONFIG.API_URL+'cmaterial/servicio/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -37,6 +37,12 @@ export default {
 
   GetTypeClaseMaterial(code){
     return axios.get(CONFIG.API_URL+'clasematerial/type/'+code)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetClaseMaterialServicio(strCompany_Cod){
+    return axios.get(CONFIG.API_URL+'clasematerial/type/service/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -66,6 +72,18 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  inactivarClaseServicio(documento){
+    return axios.post(CONFIG.API_URL+'clasematerial/servicio/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarClaseServicio(documento){
+    return axios.post(CONFIG.API_URL+'clasematerial/servicio/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

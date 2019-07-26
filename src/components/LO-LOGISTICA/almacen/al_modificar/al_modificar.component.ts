@@ -241,7 +241,7 @@ export default class ModificarMaterialComponent extends Vue {
     }, 200)
   }
   Load(){
-    debugger;
+    var cod:any=localStorage.getItem('compania_cod');
     var view = this.$route.query.vista;
     var object = JSON.parse(this.$route.query.data);
     if(view==="visualizar"){
@@ -258,7 +258,7 @@ export default class ModificarMaterialComponent extends Vue {
       text:'Cargando...'
     });
     var id=object.strStock_Cod;
-    productoService.GetOnlyOneProducto(id)
+    productoService.GetOnlyOneProducto(id,cod)
     .then(response=>{
       debugger;
       if(response!=undefined){

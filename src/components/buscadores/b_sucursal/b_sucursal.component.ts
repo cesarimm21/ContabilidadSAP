@@ -37,9 +37,12 @@ export default class  BSucursalComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   companyCod:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 400)
   }
   load(){
     this.companyCod=localStorage.getItem('compania_cod');
@@ -48,13 +51,15 @@ export default class  BSucursalComponent extends Vue {
         this.gridSucursal=[];
         this.gridSucursal1=[];
       this.gridSucursal=response;       
-      this.gridSucursal1=response;       
+      this.gridSucursal1=response;   
+      this.loading1=false;    
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar planta'
       });
+      this.loading1=false;
     })
   }
 
@@ -184,7 +189,8 @@ export default class  BSucursalComponent extends Vue {
     return {
         gridSucursal:[],
         gridSucursal1:[],
-        inputAtributo:''
+        inputAtributo:'',
+        loading1:true
     };
   }
 }

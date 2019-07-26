@@ -16,8 +16,7 @@
                             <label class="el-form-item__label col-md-3" >Compañia</label>
                             <div class="col-md-3 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small" :disabled="visualizar" @blur="desactivar_compania" @focus="activar_compania" v-model="productoModel.strCompany_Cod"  @keyup.enter.native="enterCompania(productoModel.strCompany_Cod)"  @keyup.delete.native="borrarCompania()" placeholder="">
-                                    <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                <el-input size ="small" disabled v-model="productoModel.strCompany_Cod">
                                 </el-input>
                                 </div>
                             </div>
@@ -59,7 +58,7 @@
                     <div class="row bodycard">
                         <div class="container">
                             <div class="row">
-                                <div class="col-sm-3" >
+                                <!-- <div class="col-sm-3" > -->
                                     <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Código Antiguo</label>
                                         <div class="col-md-6 grupolabel">
@@ -69,7 +68,7 @@
                                             </div>
                                         </div>
                                     </div>  -->
-                                    <div class="form-group row ">
+                                    <!-- <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Numero Parte</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
@@ -77,11 +76,11 @@
                                             </el-input>
                                             </div>
                                         </div>
-                                    </div> 
-                                </div>
+                                    </div>  -->
+                                <!-- </div> -->
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Código Almacen</label>
+                                        <label class="el-form-item__label col-md-2" >Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input size ="small" class="validador" :disabled="visualizar" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
@@ -141,7 +140,7 @@
                                     </div> 
                                 </div>
                             </div>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Marca</label>
@@ -164,14 +163,14 @@
                                         </div>
                                     </div> 
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row">
                                 <div class="col-sm-3" >
                                     <div class="form-group row ">
                                         <label class="el-form-item__label col-md-6" >Cantidad Maxima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input class="validador" size ="small" :disabled="visualizar" v-model="productoModel.fltQtyLimit_Max" :min="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
+                                                <el-input class="validador inputAling" size ="small" disabled v-model="productoModel.fltQtyLimit_Max" :min="productoModel.fltQtyLimit_Min" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -207,7 +206,7 @@
                                         <label class="el-form-item__label col-md-6" >Cantidad Minima</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input class="validador" :disabled="visualizar" size ="small" v-model="productoModel.fltQtyLimit_Min" :max="productoModel.fltQtyLimit_Max" :min="0" @focus="limpiarBotones"  type="number">                            
+                                                <el-input class="validador inputAling" disabled size ="small" v-model="productoModel.fltQtyLimit_Min" :max="productoModel.fltQtyLimit_Max" :min="0" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -236,7 +235,7 @@
                                         <label class="el-form-item__label col-md-6" >Factor</label>
                                         <div class="col-md-6 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input class="validador" size ="small" :disabled="visualizar" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
+                                                <el-input class="validador inputAling" size ="small" :disabled="visualizar" v-model="productoModel.fltFactor" @focus="limpiarBotones"  type="number">                            
                                                 </el-input>
                                             </div>
                                         </div>
@@ -471,11 +470,6 @@
       <bcriticidad v-on:criticidadseleccionado="criticidadSeleccionado($event)" v-on:criticidadClose="criticidadClose($event);">
       </bcriticidad>
     </el-dialog>
-    <!--DIALOG BUSQUEDA COMPAÑIA-->
-    <el-dialog title="Busqueda Compañia" :visible.sync="dialogCompania" @close="closeCompania" size="small" >
-      <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event);" v-on:companiaClose="companiaClose($event);" >
-      </bcompania>
-    </el-dialog>
     <!--DIALOG BUSQUEDA CUENTA CONTABLE-->
     <el-dialog title="Busqueda Cuenta Contable"  :visible.sync="dialogCuentaContable" @close="closeCuentaContable" size="small" >
       <bcuentacontable v-on:cuentacontableselecionado="SeleccionadoCuentaContable($event)" v-on:cuentacontableClose="cuentacontableClose($event)">
@@ -483,7 +477,7 @@
     </el-dialog>
      <!--DIALOG BUSQUEDA ALMACEN-->
     <el-dialog title="Busqueda Almacen"  :visible.sync="dialogAlmacen" @close="closeAlmacen" size="small" >
-      <balmacen v-on:almacenseleccionado="SeleccionadoAlmacen($event)" v-on:companiaAlmacen="companiaAlmacen($event)">
+      <balmacen v-on:almacenseleccionado="SeleccionadoAlmacen($event)" v-on:closeAlmacen="companiaAlmacen($event)">
       </balmacen>
     </el-dialog>
      <!--DIALOG CLASE MATERIAL-->
@@ -514,6 +508,10 @@
                         </div>
                     </div>
                     <el-table
+                    v-loading="loading1"
+                    element-loading-text="Cargando..."
+                    element-loading-spinner="el-icon-loading"
+                    element-loading-background="rgba(0, 0, 0, 0.8)"
                     :data="tableClaseMaterial"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     class="ExcelTable2007"

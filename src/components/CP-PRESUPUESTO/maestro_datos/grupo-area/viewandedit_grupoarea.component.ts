@@ -4,30 +4,34 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import { Loading } from 'element-ui';
-import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
+import {GrupoAreaModel} from '@/modelo/maestro/grupoarea';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import umService from '@/components/service/unidadmedida.service';
+import grupoareaService from '@/components/service/grupoarea.service';
 @Component({
-  name: 'viewandedit-um',
+  name: 'viewandedit-grupoarea',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   }
 })
-export default class ViewAndEditUMComponent extends Vue {
+export default class ViewAndEditGrupoAreaComponent extends Vue {
   nameComponent:string;
   fecha_actual:string;
   fecha_ejecucion:string;
   companyName:any;
   companyCod:any;
-  public unidad:UnidadMedidaModel=new UnidadMedidaModel();
+  textTitle:string='';
+  enabledtf:boolean=false;
+  public documento:GrupoAreaModel=new GrupoAreaModel();
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-  textTitle:string='';
-  enabledtf:boolean=false;
+  btnactivarsucursal:boolean=false;
+  btnactivarplanta:boolean=false;
+  plantaVisible:boolean=false;
+  sucursalVisible:boolean=false;
   constructor(){    
         super();
-        Global.nameComponent='viewandedit-um';
+        Global.nameComponent='viewandedit-docidentidad';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -35,56 +39,56 @@ export default class ViewAndEditUMComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod'); 
-        this.unidad= JSON.parse(this.$route.query.data); 
+        this.documento= JSON.parse(this.$route.query.data); 
         var vista=this.$route.query.vista;
         if(vista=='modificar'){
-          this.enabledtf=false;
-          this.textTitle='Modificar Unidad Medida';
-      }
-      if(vista=='visualizar'){
-          this.enabledtf=true;
-          this.textTitle='Visualizar Unidad Medida';
-      }
-    }
-    guardarUM(){
+            this.enabledtf=false;
+            this.textTitle='Modificar Grupo Area';
+        }
+        if(vista=='visualizar'){
+            this.enabledtf=true;
+            this.textTitle='Visualizar Grupo Area';
+        }
+
+    }  
+    guardarTipoDocIdent(){
       var vista=this.$route.query.vista; 
       if(vista=='modificar'){
         var user:any=localStorage.getItem('User_Usuario');
-        this.unidad.strModified_User=user;
-        if(this.unidad.strUM_Cod!=''&&this.unidad.strUM_Desc!=''){              
-                let loadingInstance = Loading.service({
-                fullscreen: true,
-                text: 'Actualizando...',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.8)'
-                }
-                );     
-
-          umService.UpdateUM(this.unidad)
+        var id:any=localStorage.getItem('compania_ID');
+        this.documento.strModified_User=user;
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Actualizando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          );     
+        if(this.documento.strCCGrpArea_Cod!=''&&this.documento.strCCGrpArea_Desc!=''){
+          grupoareaService.UpdateGrupoArea(this.documento)
           .then(resp=>{
             loadingInstance.close();
             this.$message({
                 showClose: true,
                   type: 'success',
-                  message: 'Se guardo Correctamente '+resp
+                  message: 'Se actualizo Correctamente '+resp
                 });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp;
-            }).catch(ee=>{
+                this.textosave = 'Se actualizo correctamente. '+resp;
+            }).catch(errorss=>{
               loadingInstance.close();
               this.$message({
                 showClose: true,
-                type: 'error',
-                message: 'No se pudo guardar'
-              });
-            this.issave = false;
-            this.iserror = true;
-            this.textosave = 'Error al guardar.';
+                  type:'error',
+                  message: 'No se actualizo Correctamente '
+                });
+                this.issave = false;
+                this.iserror = true;
+                this.textosave = 'No se actualizo Correctamente ';
             })
         }
         else{
-          
           this.$message({
               showClose: true,
               type: 'error',
@@ -93,15 +97,16 @@ export default class ViewAndEditUMComponent extends Vue {
           this.issave = false;
           this.iserror = true;
           this.textosave = 'Complete datos.';
-        }    
-      }
-      else{
+        }     
+      }else{
         this.$message({
-          showClose: true,
-          type: 'info',
-          message: 'Accion no permitida'
-        });
+            showClose: true,
+            type: 'info',
+            message: 'Accion no permitida'
+          });
       }
+      
+        
     } 
     fnOcultar(){
 

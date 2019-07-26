@@ -23,21 +23,26 @@ export default class  BTipoAdquisicionComponent extends Vue {
   
     public search:TipoAdquisicionModel=new TipoAdquisicionModel();
     inputAtributo:any;
+    loading1:boolean=true;
   constructor() {
     super();
-    this.GetAllTipoDocumento()
+    setTimeout(() => {
+      this.GetAllTipoDocumento();
+    }, 400)
   }
   GetAllTipoDocumento(){      
     tipoadquisicionService.busquedaTipoAquisicion2()
     .then(response=>{
       this.TipoAdquisicion=response;
       this.TipoAdquisicion1=response;
+      this.loading1=false;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se puede cargar lista de tipo de documento'
       });
+      this.loading1=false;
     })
   } 
   checkTipo(){
@@ -116,7 +121,8 @@ export default class  BTipoAdquisicionComponent extends Vue {
     return {
       TipoAdquisicion:[],
       TipoAdquisicion1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

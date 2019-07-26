@@ -38,8 +38,12 @@ export default class  BMaterialComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   company_cod:any='';
+  loading1:boolean=true;
   constructor() {
     super();
+    setTimeout(() => {
+      this.load();
+    }, 400)   
     //this.load();
   }
   load(){
@@ -49,13 +53,15 @@ export default class  BMaterialComponent extends Vue {
       this.productoModel=[];
       this.productoModel1=[];
       this.productoModel=response;       
-      this.productoModel1=response;       
+      this.productoModel1=response;
+      this.loading1=false;       
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar producto'
       });
+      this.loading1=false;
     })
   }
 
@@ -171,6 +177,7 @@ export default class  BMaterialComponent extends Vue {
       productoModel:[],
       productoModel1:[],
       inputAtributo:'',
+      loading1:true
     };
   }
   mounted (){

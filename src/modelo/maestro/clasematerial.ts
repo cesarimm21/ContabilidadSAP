@@ -46,4 +46,41 @@ export class ClaseMaterialModel {
     strAcct_Loc_Desc:string;
     strAcct_Corp_Desc:string;
     strExp_Cod_Loc_Desc:string;
+    constructor(){
+        this.intIdMatClass_ID=-1;
+        this.chrStatus='';
+        this.dtmCreation_Date=new Date;
+        this.dtmModified_Date=new Date;
+        this.strAcct_Corp='';
+        this.strAcct_Exp='';
+        this.strAcct_Loc='';
+        this.strCreation_User='';
+        this.strMatClass_Cod='';
+        this.strMatClass_Desc='';
+        this.strMatClass_Name='';
+        this.strModified_User='';
+        this.strExp_Cod_Loc='';
+        this.strExp_Desc_Loc='';
+        this.strCompany_Cod='';
+        this.strCompany_Desc='';
+        this.strStock_Type_Cod='';
+        this.strStock_Type_Desc='';
+        this.strExp_Cod_Corp='';
+        this.strExp_Cod_Corp_Desc='';
+        this.strRecep_Deb='';
+        this.strRecep_Deb_Desc='';
+        this.strRecep_Cred='';
+        this.strRecep_Cred_Desc='';
+        this.strInvoice_Deb='';
+        this.strInvoice_Deb_Desc='';	
+        this.strInvoice_Cred='';
+        this.strInvoice_Cred_Desc='';
+        this.strIssue_Deb='';
+        this.strIssue_Deb_Desc='';
+        this.strIssue_Cred='';
+        this.strIssue_Cred_Desc='';
+        this.strAcct_Loc_Desc='';
+        this.strAcct_Corp_Desc='';
+        this.strExp_Cod_Loc_Desc='';
+    }
 }

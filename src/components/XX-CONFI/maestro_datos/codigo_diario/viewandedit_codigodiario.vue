@@ -63,7 +63,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{cuentaA.strAcc_Local_Name}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{documento.strAcc_Local_Name}}</span>
                             </div>   
                             <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Cta. Contable USD</label>
@@ -78,7 +78,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{cuentaB.strAcc_Local_Name}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{documento.strAcc_AccForen_Name}}</span>
                             </div>     
                         </div>                         
                     </div>

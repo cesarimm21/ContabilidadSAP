@@ -48,25 +48,26 @@ export default class  BPlanContableLocalComponent extends Vue {
 
   public search:PlanConLocalModel=new PlanConLocalModel();
   inputAtributo:any;
-
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
       this.load();
-    }, 200)
+    }, 400)
   }
   load(){
     plancontableService.GetAllPlanCuenta2()
     .then(response=>{
       this.cuentacontableModel=response;    
       this.cuentacontableModel1=response;    
-      
+      this.loading1=false;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar los almacenes'
       });
+      this.loading1=false;
     })
   }
 
@@ -184,7 +185,8 @@ export default class  BPlanContableLocalComponent extends Vue {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

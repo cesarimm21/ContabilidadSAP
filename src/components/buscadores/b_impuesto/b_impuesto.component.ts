@@ -37,9 +37,12 @@ export default class  BImpuestoComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
-    super();
-    this.load();
+    super();    
+    setTimeout(() => {
+      this.load();
+    }, 400)   
   }
   load(){
     impuestoService.GetAllImpuesto()
@@ -47,13 +50,15 @@ export default class  BImpuestoComponent extends Vue {
       this.impuestoModel=[];       
       this.impuestoModel1=[];       
       this.impuestoModel=response;       
-      this.impuestoModel1=response;       
+      this.impuestoModel1=response;  
+      this.loading1=false;     
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar impuesto'
       });
+      this.loading1=false;
     })
   }
 
@@ -194,7 +199,8 @@ export default class  BImpuestoComponent extends Vue {
     return {
       impuestoModel:[],
       impuestoModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     }
   }
 }

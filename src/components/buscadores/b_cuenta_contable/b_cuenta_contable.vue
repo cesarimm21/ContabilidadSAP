@@ -21,6 +21,10 @@
                 </div>
             </div>
             <el-table
+            v-loading="loading1"
+            element-loading-text="Cargando..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             :data="gridCuenta"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
@@ -29,9 +33,9 @@
             @header-click="headerclick"
             @row-dblclick="seleccionar"
             @current-change="handleCurrentChange">
-                <el-table-column :render-header="filterstrAcc_Local_NO"  prop="strAcc_Local_NO" label="Cuenta Local" width="180">
+                <el-table-column :render-header="filterstrAcc_Local_NO"  prop="strAcc_Local_NO" label="Cuenta Local" width="130">
                 </el-table-column>  
-                <el-table-column :render-header="filterstrAcc_Corp_NO" prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
+                <el-table-column :render-header="filterstrAcc_Corp_NO" prop="strAcc_Corp_NO" label="Cuenta Corporativa" width="130">
                 </el-table-column>  
                 <el-table-column :render-header="filterstrAcc_Local_Name" prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
                 </el-table-column> 

@@ -4,20 +4,19 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-import {UnidadMedidaModel} from '@/modelo/maestro/unidadmedida';
+import {GrupoAreaModel} from '@/modelo/maestro/grupoarea';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import unidadService from '@/components/service/unidadmedida.service';
+import grupoareaService from '@/components/service/grupoarea.service';
 import { Loading } from 'element-ui';
-import unidadmedidaService from '@/components/service/unidadmedida.service';
 @Component({
-  name: 'modificar-um',
+  name: 'modificar-grupoarea',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
-export default class ModificarUMComponent extends Vue {
+export default class ModificarGrupoAreaComponent extends Vue {
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
@@ -26,11 +25,11 @@ export default class ModificarUMComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
-  strUM_Cod:string='';
-  public documento:UnidadMedidaModel=new UnidadMedidaModel();
-  gridDocumento:UnidadMedidaModel[];
-  gridDocumento1:UnidadMedidaModel[];
-  gridDocumento2:UnidadMedidaModel[];
+  strCCGrpArea_Cod:string='';
+  public documento:GrupoAreaModel=new GrupoAreaModel();
+  gridDocumento:GrupoAreaModel[];
+  gridDocumento1:GrupoAreaModel[];
+  gridDocumento2:GrupoAreaModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -41,8 +40,8 @@ export default class ModificarUMComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blnilterstrUM_Cod:boolean=false;
-  blnilterstrUM_Desc:boolean=false;
+  blnilterstrCCGrpArea_Cod:boolean=false;
+  blnilterstrCCGrpArea_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   planDialog:boolean=false;
@@ -51,7 +50,7 @@ export default class ModificarUMComponent extends Vue {
   loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='modificar-um';
+        Global.nameComponent='modificar-grupoarea';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -59,7 +58,7 @@ export default class ModificarUMComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        unidadService.GetAllUnidadMedidaView()
+        grupoareaService.GetAllGrupoArea()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -81,9 +80,9 @@ export default class ModificarUMComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
-    handleCurrentChange(val:UnidadMedidaModel){
+    handleCurrentChange(val:GrupoAreaModel){
       this.documento=val;
-      this.strUM_Cod=this.documento.strUM_Cod;
+      this.strCCGrpArea_Cod=this.documento.strCCGrpArea_Cod;
      }
     btnBuscar(){
       var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
@@ -144,8 +143,8 @@ export default class ModificarUMComponent extends Vue {
     }
     Limpiar(){
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blnilterstrUM_Cod=false;
-      this.blnilterstrUM_Desc=false;
+      this.blnilterstrCCGrpArea_Cod=false;
+      this.blnilterstrCCGrpArea_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
     }
@@ -153,11 +152,11 @@ export default class ModificarUMComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-    if(this.documento.intUnit_Measure_ID!=-1&&this.documento.strUM_Cod!=""&&this.documento.strUM_Desc!=""){
+    if(this.documento.intIdCCGrpArea_ID!=-1&&this.documento.strCCGrpArea_Cod!=""&&this.documento.strCCGrpArea_Desc!=""){
       this.planDialog=true;
     }
     else{
-      this.warningMessage("Selecciona un Unidad Medida")
+      this.warningMessage("Selecciona un Grupo Area")
     }    
   }
   inactivarPlan(){
@@ -170,7 +169,7 @@ export default class ModificarUMComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
       ); 
-      unidadService.inactivarUnidadMedida(this.documento)
+    grupoareaService.inactivarGrupoArea(this.documento)
     .then(resp=>{
       loadingInstance.close();
       this.planDialog=false;
@@ -179,7 +178,7 @@ export default class ModificarUMComponent extends Vue {
           message: 'Se Inactivo correctamente '+resp,
           type: 'success'
         });
-        this.documento=new UnidadMedidaModel();
+        this.documento=new GrupoAreaModel();
         this.load();
         this.issave = true;
         this.iserror = false;
@@ -198,11 +197,11 @@ export default class ModificarUMComponent extends Vue {
     })
   }
   async Activar(){
-    if(this.documento.strUM_Cod!="" && this.documento.strUM_Desc!=""){
+    if(this.documento.strCCGrpArea_Cod!="" && this.documento.strCCGrpArea_Desc!=""){
       this.planActivarDialog=true;
     }
     else{
-      this.warningMessage('Selecciones Unidad Medida')
+      this.warningMessage('Selecciones Grupo Area')
     }
   }
   activarPlan(){
@@ -215,7 +214,7 @@ export default class ModificarUMComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
       ); 
-    unidadmedidaService.activarUnidadMedida(this.documento)
+    grupoareaService.activarGrupoArea(this.documento)
     .then(resp=>{
       loadingInstance.close();
       this.planActivarDialog=false;
@@ -224,7 +223,7 @@ export default class ModificarUMComponent extends Vue {
           message: 'Se Activo correctamente '+resp,
           type: 'success'
         });
-        this.documento=new UnidadMedidaModel();
+        this.documento=new GrupoAreaModel();
         this.load();
         this.issave = true;
         this.iserror = false;
@@ -243,44 +242,44 @@ export default class ModificarUMComponent extends Vue {
     })
   }
   async validad(){      
-    var data=Global.like(this.gridDocumento1,'strUM_Cod',this.strUM_Cod)
+    var data=Global.like(this.gridDocumento1,'strCCGrpArea_Cod',this.strCCGrpArea_Cod)
     if(data.length>0){
       this.documento=data[0];
-      if(this.documento.strUM_Cod==this.strUM_Cod){
+      if(this.documento.strCCGrpArea_Cod==this.strCCGrpArea_Cod){
         await setTimeout(() => {
-          if(this.documento.strUM_Cod!=''){
-            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          if(this.documento.strCCGrpArea_Cod!=''){
+            router.push({ path: `/barmenu/CP-PRESUPUESTO/maestro_datos/grupo-area/viewandedit_grupoarea`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
           }
         }, 600)
       }
       else{
-        if(this.strUM_Cod==''){
-          this.textosave='Inserte Unidad Medida. ';
-          this.warningMessage('Inserte Unidad Medida. ');
+        if(this.strCCGrpArea_Cod==''){
+          this.textosave='Inserte Grupo Area. ';
+          this.warningMessage('Inserte Grupo Area. ');
         }
         else{
-          this.textosave='No existe Unidad Medida. ';
-          this.warningMessage('No existe Unidad Medida. ');
+          this.textosave='No existe Grupo Area. ';
+          this.warningMessage('No existe Grupo Area. ');
         }        
       }
     }
     else{
-      this.textosave='No existe Unidad Medida. ';
-      this.warningMessage('No existe Unidad Medida. ');
+      this.textosave='No existe Grupo Area. ';
+      this.warningMessage('No existe Grupo Area. ');
     }
   }
    async validarView(){
-      if(this.documento.intUnit_Measure_ID!=-1){
+      if(this.documento.intIdCCGrpArea_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strUM_Cod!=''){
-              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/unidad_medida/viewandedit_um`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+            if(this.documento.strCCGrpArea_Cod!=''){
+              router.push({ path: `/barmenu/CP-PRESUPUESTO/maestro_datos/grupo-area/viewandedit_grupoarea`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Unidad Medida. ';
-          this.warningMessage('Seleccione Unidad Medida. ');
+          this.textosave='Seleccione Grupo Area. ';
+          this.warningMessage('Seleccione Grupo Area. ');
         }
       }
     siguiente(){
@@ -306,37 +305,37 @@ export default class ModificarUMComponent extends Vue {
   headerclick(val){    
       this.Column=val.label;
       Global.setColumna(this.Column);     
-      if(val.property=="strUM_Cod"){
-          this.clickColumn="strUM_Cod";
-          this.blnilterstrUM_Cod=true;
-      this.blnilterstrUM_Desc=false;
+      if(val.property=="strCCGrpArea_Cod"){
+          this.clickColumn="strCCGrpArea_Cod";
+          this.blnilterstrCCGrpArea_Cod=true;
+      this.blnilterstrCCGrpArea_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
-      if(val.property=="strUM_Desc"){
-          this.clickColumn="strUM_Desc";
-          this.blnilterstrUM_Cod=false;
-      this.blnilterstrUM_Desc=true;
+      if(val.property=="strCCGrpArea_Desc"){
+          this.clickColumn="strCCGrpArea_Desc";
+          this.blnilterstrCCGrpArea_Cod=false;
+      this.blnilterstrCCGrpArea_Desc=true;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="dtmModified_Date"){
           this.clickColumn="dtmModified_Date";
-          this.blnilterstrUM_Cod=false;
-      this.blnilterstrUM_Desc=false;
+          this.blnilterstrCCGrpArea_Cod=false;
+      this.blnilterstrCCGrpArea_Desc=false;
       this.blnilterdtmModified_Date=true;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="strModified_User"){
           this.clickColumn="strModified_User";
-          this.blnilterstrUM_Cod=false;
-      this.blnilterstrUM_Desc=false;
+          this.blnilterstrCCGrpArea_Cod=false;
+      this.blnilterstrCCGrpArea_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=true;
       }        
   }
-  filterstrUM_Cod(h,{column,$index}){
-      if(this.blnilterstrUM_Cod){
+  filterstrCCGrpArea_Cod(h,{column,$index}){
+      if(this.blnilterstrCCGrpArea_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -345,8 +344,8 @@ export default class ModificarUMComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrUM_Desc(h,{column,$index}){        
-      if(this.blnilterstrUM_Desc){
+    filterstrCCGrpArea_Desc(h,{column,$index}){        
+      if(this.blnilterstrCCGrpArea_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -393,7 +392,7 @@ export default class ModificarUMComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
-            strUM_Cod:''
+            strCCGrpArea_Cod:''
         }
     }
   

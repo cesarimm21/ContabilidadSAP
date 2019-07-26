@@ -46,7 +46,11 @@ export default class ModificarCodigoDiarioComponent extends Vue {
   blnilterstrDaily_AccForen:boolean=false;
   blnilterdmModified_Date:boolean=false;
   blnilterstrModify_User:boolean=false;
-  diarioDialog:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  loading1:boolean=true;
+  nameuser:any;
+  strDaily_Cod:string='';
   constructor(){    
         super();
         Global.nameComponent='modificar-codigodiario';
@@ -65,7 +69,15 @@ export default class ModificarCodigoDiarioComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
-          console.log(this.gridDocumento);
+          this.loading1=false;
+        })
+        .catch(error=>{
+          this.loading1=false;
+          this.$message({
+            showClose: true,
+              type: 'error',
+              message: 'No hay conexion '
+            });
         })
     }
     getDateStringView(fecha:string){
@@ -79,6 +91,7 @@ export default class ModificarCodigoDiarioComponent extends Vue {
     }
     handleCurrentChange(val:DiarioModel){
       this.documento=val;
+      this.strDaily_Cod=this.documento.strDaily_Cod;
      }
     btnBuscar(){
       var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
@@ -160,57 +173,117 @@ export default class ModificarCodigoDiarioComponent extends Vue {
     Print(){
       window.print();
     }
-    async EliminarItem(){
-      this.diarioDialog=true;    
+    async  EliminarItem(){
+      if(this.documento.intDaily_ID!=-1&&this.documento.strDaily_Cod!=""&&this.documento.strDaily_Desc!=""){
+        this.planDialog=true;
+      }
+      else{
+        this.warningMessage("Selecciona Codigo Diario")
+      }    
     }
-    deleteDiario(){
-      if(this.documento.strDaily_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
-        diarioService.deleteDiarios(this.documento.intDaily_ID)
-        .then(resp=>{
-          loadingInstance.close();
-          this.diarioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente ',
-              type: 'success'
-            });
-  
-            this.documento=new DiarioModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente ';
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.diarioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
+    inactivarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Inactivando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
         }
-        else{
-            this.warningMessage('Seleccione Codigo Diario. ');
+        ); 
+        diarioService.inactivarCodigoDiario(this.documento)
+      .then(resp=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Inactivo correctamente '+resp,
+            type: 'success'
+          });
+          this.documento=new DiarioModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Inactivo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Inactivo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
+    }
+    async Activar(){
+      if(this.documento.strDaily_Cod!="" && this.documento.strDaily_Desc!=""){
+        this.planActivarDialog=true;
+      }
+      else{
+        this.warningMessage('Selecciones Codigo Diario')
+      }
+    }
+    activarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
         }
+        ); 
+      diarioService.activarCodigoDiario(this.documento)
+      .then(resp=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Activo correctamente '+resp,
+            type: 'success'
+          });
+          this.documento=new DiarioModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Activo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Activo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
     }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDaily_Cod',this.documento.strDaily_Cod)
-    this.documento=data[0];
-    if(this.documento.intDaily_ID!=-1){
-      await setTimeout(() => {
-        if(this.documento.strDaily_Cod!=''){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strDaily_Cod',this.strDaily_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strDaily_Cod==this.strDaily_Cod){
+        await setTimeout(() => {
+          if(this.documento.strDaily_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strDaily_Cod==''){
+          this.textosave='Inserte Codigo Diario. ';
+          this.warningMessage('Inserte Codigo Diario. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Codigo Diario. ';
+          this.warningMessage('No existe Codigo Diario. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Codigo Diario. ';
@@ -414,6 +487,8 @@ export default class ModificarCodigoDiarioComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            loading1:true,
+            strDaily_Cod:''
         }
     }
   

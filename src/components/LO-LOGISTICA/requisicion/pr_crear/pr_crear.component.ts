@@ -432,7 +432,7 @@ export default class CrearPRComponent extends Vue {
     
     if(val.strDescription!='' && val.strDescription!=undefined)
     {
-      productoService.GetOnlyOneProducto(val.strMaterial_Cod)
+      productoService.GetOnlyOneProducto(val.strMaterial_Cod,this.companyCod)
       .then(res=>{
         this.productoModel=res[0];
         this.getTotals=this.productoModel.fltPrecUnit_Local*this.selectrow.fltQuantity;

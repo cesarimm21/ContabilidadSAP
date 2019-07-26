@@ -211,45 +211,44 @@ export default class CrearClaseServicioComponent extends Vue {
   }
   cuentacontableselecionadohaber(val,dialog:boolean){
     if(this.cuentacontable=="strAcct_Loc"){
-      console.log(val);
       this.clasematerial.strAcct_Loc=val.strAcc_Local_NO;
-      this.clasematerial.strAcct_Loc_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strAcct_Loc_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strAcct_Corp"){
       this.clasematerial.strAcct_Corp=val.strAcc_Local_NO;
-      this.clasematerial.strAcct_Corp_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strAcct_Corp_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strExp_Cod_Loc"){
       this.clasematerial.strExp_Cod_Loc=val.strAcc_Local_NO;
-      this.clasematerial.strExp_Cod_Loc_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strExp_Cod_Loc_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strExp_Cod_Corp"){
       this.clasematerial.strExp_Cod_Corp=val.strAcc_Local_NO;
-      this.clasematerial.strExp_Cod_Corp_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strExp_Cod_Corp_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strRecep_Deb"){
       this.clasematerial.strRecep_Deb=val.strAcc_Local_NO;
-      this.clasematerial.strRecep_Deb_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strRecep_Deb_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strRecep_Cred"){
       this.clasematerial.strRecep_Cred=val.strAcc_Local_NO;
-      this.clasematerial.strRecep_Cred_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strRecep_Cred_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strInvoice_Deb"){
       this.clasematerial.strInvoice_Deb=val.strAcc_Local_NO;
-      this.clasematerial.strInvoice_Deb_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strInvoice_Deb_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strInvoice_Cred"){
       this.clasematerial.strInvoice_Cred=val.strAcc_Local_NO;
-      this.clasematerial.strInvoice_Cred_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strInvoice_Cred_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strIssue_Deb"){
       this.clasematerial.strIssue_Deb=val.strAcc_Local_NO;
-      this.clasematerial.strIssue_Deb_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strIssue_Deb_Desc=val.strAcc_Local_Name;
     }
     if(this.cuentacontable=="strIssue_Cred"){
       this.clasematerial.strIssue_Cred=val.strAcc_Local_NO;
-      this.clasematerial.strIssue_Cred_Desc=val.strAcc_Corp_Name;
+      this.clasematerial.strIssue_Cred_Desc=val.strAcc_Local_Name;
     }
     
     this.dialogCuentaContableHaber=false;  
@@ -341,7 +340,6 @@ export default class CrearClaseServicioComponent extends Vue {
     
   }
   limpiar(){
-    debugger;
     this.clasematerial=new ClaseMaterialModel();
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
@@ -349,8 +347,9 @@ export default class CrearClaseServicioComponent extends Vue {
     this.clasematerial.strCompany_Desc=desc;
   }
   guardarTodo(){
-    this.clasematerial.strStock_Type_Cod=this.tiporequisicion;
-    
+    this.clasematerial.strStock_Type_Cod=this.tiporequisicion;  
+    var user:any=localStorage.getItem('User_Usuario'); 
+    this.clasematerial.strCreation_User=user;
     for(var i=0;i<this.tabletipoRequisicion.length;i++){
       if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
         this.clasematerial.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;

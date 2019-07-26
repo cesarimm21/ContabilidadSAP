@@ -46,7 +46,9 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
   blnilterstrDaily_AccForen:boolean=false;
   blnilterdmModified_Date:boolean=false;
   blnilterstrModify_User:boolean=false;
-  diarioDialog:boolean=false;
+  loading1:boolean=true;
+  nameuser:any;
+  strDaily_Cod:string='';
   constructor(){    
         super();
         Global.nameComponent='visualizar-codigodiario';
@@ -59,12 +61,21 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
         this.companyCod=localStorage.getItem('compania_cod');
         diarioService.GetAllDiarios()
         .then(response=>{
-          this.gridDocumento=[];
+          this.gridDocumento=[];   
           this.gridDocumento1=[];
           this.gridDocumento2=[];
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        })
+        .catch(error=>{
+          this.loading1=false;
+          this.$message({
+            showClose: true,
+              type: 'error',
+              message: 'No hay conexion '
+            });
         })
     }
     getDateStringView(fecha:string){
@@ -78,9 +89,10 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
     }
     handleCurrentChange(val:DiarioModel){
       this.documento=val;
+      this.strDaily_Cod=this.documento.strDaily_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
@@ -159,57 +171,33 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
     Print(){
       window.print();
     }
-    async EliminarItem(){
-      this.diarioDialog=true;    
+    async  EliminarItem(){
+      this.warningMessage("Accion no Permitida") 
     }
-    deleteDiario(){
-      if(this.documento.strDaily_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
-        diarioService.deleteDiarios(this.documento.intDaily_ID)
-        .then(resp=>{
-          loadingInstance.close();
-          this.diarioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente '+resp,
-              type: 'success'
-            });
-  
-            this.documento=new DiarioModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente '+resp;
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.diarioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
-        }
-        else{
-            this.warningMessage('Seleccione Codigo Diario. ');
-        }
+    async Activar(){
+      this.warningMessage("Accion no Permitida")
     }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strDaily_Cod',this.documento.strDaily_Cod)
-    this.documento=data[0];
-    if(this.documento.intDaily_ID!=-1){
-      await setTimeout(() => {
-        if(this.documento.strDaily_Cod!=''){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strDaily_Cod',this.strDaily_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strDaily_Cod==this.strDaily_Cod){
+        await setTimeout(() => {
+          if(this.documento.strDaily_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/codigo_diario/viewandedit_codigodiario`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strDaily_Cod==''){
+          this.textosave='Inserte Codigo Diario. ';
+          this.warningMessage('Inserte Codigo Diario. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Codigo Diario. ';
+          this.warningMessage('No existe Codigo Diario. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Codigo Diario. ';
@@ -387,7 +375,7 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrModify_User(h,{column,$index}){
+    filterstrModified_User(h,{column,$index}){
       if(this.blnilterstrModify_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
@@ -413,8 +401,9 @@ export default class VisualizarCodigoDiarioComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            loading1:true,
+            strDaily_Cod:''
         }
     }
   
 }
-

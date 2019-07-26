@@ -47,6 +47,10 @@
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                        v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridDocumento"
                             highlight-current-row

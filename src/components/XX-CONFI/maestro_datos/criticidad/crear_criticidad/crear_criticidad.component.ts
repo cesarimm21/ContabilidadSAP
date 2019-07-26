@@ -24,6 +24,7 @@ export default class CrearCriticidadComponent extends Vue {
     issave:boolean=false;
     iserror:boolean=false;
     textosave:string='';
+    nameuser:any;
     public criticidad:CriticidadModel=new CriticidadModel();
   constructor(){    
         super();
@@ -35,6 +36,7 @@ export default class CrearCriticidadComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
+        this.nameuser=localStorage.getItem('User_Usuario');
 
     }
     guardarTodo(){
@@ -49,6 +51,7 @@ export default class CrearCriticidadComponent extends Vue {
                 }
             );   
             this.criticidad.chrStatus='A';
+            this.criticidad.strCreation_User=this.nameuser;
             criticidadService.CrearCriticidad(this.criticidad)
             .then(resp=>{
                 this.$message({

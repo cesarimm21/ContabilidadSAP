@@ -23,21 +23,26 @@ export default class  BTipoCuentaContableComponent extends Vue {
   
     public search:TipoCuentaContableModel=new TipoCuentaContableModel();
     inputAtributo:any;
+    loading1:boolean=true;
   constructor() {
     super();
-    this.GetAllTipoDocumento()
+    setTimeout(() => {
+      this.GetAllTipoDocumento();
+    }, 400)
   }
   GetAllTipoDocumento(){      
     tipocuentacontableService.GetAllTipoCuentaContable2()
     .then(response=>{
       this.TipoCuentaContable=response;
       this.TipoCuentaContable1=response;
+      this.loading1=false;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se puede cargar lista de tipo de documento'
       });
+      this.loading1=false;
     })
   } 
   checkTipo(){
@@ -116,7 +121,8 @@ export default class  BTipoCuentaContableComponent extends Vue {
     return {
       TipoCuentaContable:[],
       TipoCuentaContable1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

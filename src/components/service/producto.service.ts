@@ -53,8 +53,8 @@ export default{
       return response.data
     })
   },
-  GetOnlyOneProducto(code){
-    return axios.get(CONFIG.API_URL+'producto/busqueda/'+code)
+  GetOnlyOneProducto(code,strCompany_Cod){
+    return axios.get(CONFIG.API_URL+'producto/busqueda/'+code+'/'+strCompany_Cod)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -65,8 +65,8 @@ export default{
       return JSON.parse(JSON.stringify(response.data));
     })
   },
-  getProductoService(){
-    return axios.get(CONFIG.API_URL+'service/producto')
+  getProductoService(strCompany_Cod){
+    return axios.get(CONFIG.API_URL+'service/producto/'+strCompany_Cod)
     .then(response =>{
       return JSON.parse(JSON.stringify(response.data));
     })
@@ -85,5 +85,6 @@ export default{
     .then(response => {
       return response.data
     })
-  }
+  },
+
 }

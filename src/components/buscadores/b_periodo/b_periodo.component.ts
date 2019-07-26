@@ -14,6 +14,7 @@ export default class  BPeriodoComponent extends Vue {
 
    public periodoModel:PeriodoModel=new PeriodoModel();
    public selectPeriodoData:PeriodoModel=new PeriodoModel();
+   loading1:boolean=true;
   constructor() {
     super();
     this.loadPeriodo();
@@ -22,12 +23,14 @@ export default class  BPeriodoComponent extends Vue {
     periodoService.GetAllPeriodo()
     .then(response=>{
         this.periodoModel=response;
+        this.loading1=false;
     }).catch(error=>{
         this.$message({
             showClose: true,
             type: 'error',
             message: 'No se pudo cargar prioridad'
           });
+          this.loading1=false;
     })
   }
   selectData(val:PeriodoModel){
@@ -38,7 +41,8 @@ export default class  BPeriodoComponent extends Vue {
   }
   data() {
     return {
-        value:''
+        value:'',
+        loading1:true
     };
   }
 }

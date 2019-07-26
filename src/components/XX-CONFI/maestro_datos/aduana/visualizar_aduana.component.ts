@@ -43,12 +43,13 @@ export default class VisualizarAduanaComponent extends Vue {
   blnilterstrCustom_Desc:boolean=false;
   blnilterdtmCreation_Date:boolean=false;
   blnilterstrCreation_User:boolean=false;
+  loading1:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='visualizar-aduana';
         setTimeout(() => {
             this.load();
-          }, 200)
+          }, 400)
     }  
     load(){
         this.companyName=localStorage.getItem('compania_name');
@@ -61,6 +62,9 @@ export default class VisualizarAduanaComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(error=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -299,6 +303,7 @@ export default class VisualizarAduanaComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            loading1:true
         }
     }
   

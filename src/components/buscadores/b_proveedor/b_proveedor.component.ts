@@ -46,11 +46,12 @@ export default class  BProveedorComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
       this.load();
-    }, 200)
+    }, 400)
   }
   load(){
     this.codigoCompania=localStorage.getItem('compania_cod');
@@ -59,13 +60,15 @@ export default class  BProveedorComponent extends Vue {
       this.proveedorModel=[];
       this.proveedorModel1=[];
       this.proveedorModel=response;       
-      this.proveedorModel1=response;       
+      this.proveedorModel1=response; 
+      this.loading1=false;      
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se pudo cargar proveedor'
       });
+      this.loading1=false;
     })
   }
 
@@ -198,7 +201,8 @@ export default class  BProveedorComponent extends Vue {
       codigoCompania:'',   
       proveedorModel:[],
       proveedorModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

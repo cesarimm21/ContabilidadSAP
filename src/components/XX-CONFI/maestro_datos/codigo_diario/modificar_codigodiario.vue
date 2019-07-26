@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Codigo Diario</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strDaily_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input :autofocus="true" class="validador" size ="small" v-model="strDaily_Cod" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -43,15 +43,20 @@
              <el-tabs type="border-card">
                 <el-tab-pane>
                     <span slot="label"><i class="el-icon-date"></i> Codigo Diarios</span>                    
-                    <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <buttons-accions v-on:validarView="validarView()"  v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridDocumento"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
                             <el-table-column type="index" label="Item" width="45">                                
@@ -144,7 +149,7 @@
                     <label class="el-form-item__label col-md-2" >Buscar</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">  
+                            <el-input :autofocus="true" size ="small" v-model="txtbuscar"  @keydown.native.enter="btnBuscar()">  
                             </el-input>
                         </div>
                     </div>
@@ -157,16 +162,26 @@
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal> 
-    <b-modal ref="myModalRef" hide-footer title="Eliminar Codigo Diario" size="sm"  v-model="diarioDialog" @keydown.native.enter="deleteDiario">
+    <b-modal ref="myModalRef" hide-footer title="Inactivar Codigo Diario" size="sm"  v-model="planDialog" @keydown.native.enter="inactivarPlan">
       <div style="height:85px">
         <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea eliminar Codigo Diario {{documento.strDaily_Cod}} ?</span>
+        <span style="font-size:13px">¿Desea Inactivar Codigo Diario {{documento.strDoc_Trans_Cod}} ?</span>
       </div>
       <footer class="modal-footer">
-        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deleteDiario()"/>
-        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="diarioDialog = false"/>
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="inactivarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planDialog = false"/>
       </footer>
-    </b-modal>      
+    </b-modal>     
+    <b-modal ref="myModalRef" hide-footer title="Activar Codigo Diario" size="sm"  v-model="planActivarDialog" @keydown.native.enter="activarPlan">
+      <div style="height:85px">
+        <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Codigo Diario {{documento.strDoc_Trans_Cod}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="activarPlan()"/>
+        <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planActivarDialog = false"/>
+      </footer>
+    </b-modal>       
     </div>  
 </template>
 <script>

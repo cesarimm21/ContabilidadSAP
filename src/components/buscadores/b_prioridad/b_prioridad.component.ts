@@ -44,10 +44,13 @@ public prioridadSelectModel:PrioridadModel=new PrioridadModel();
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
 constructor() {
  super();
 // this.loadCompania();
- this.load(); 
+setTimeout(() => {
+  this.load();
+}, 400)
 }
 load(){
   prioridadService.GetAllPrioridad2()
@@ -56,12 +59,14 @@ load(){
     this.prioridadModel1=[];    
     this.prioridadModel=response;    
     this.prioridadModel1=response; 
+    this.loading1=false;
   }).catch(error=>{
     this.$message({
       showClose: true,
       type: 'error',
       message: 'No se pudo cargar proveedores'
     });
+    this.loading1=false;
   })
  }
 handleCurrentChange(val:PrioridadModel){
@@ -178,6 +183,7 @@ data() {
    inputAtributo:'',
    prioridadModel:[],
    prioridadModel1:[],
+   loading1:true
  };
 
 }

@@ -74,11 +74,21 @@ export default class ModificarCriticidadComponent extends Vue {
         })
     }
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){
         if(this.criticidad.strCritical_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
-            this.criticidad.chrStatus='A';
+            var user:any=localStorage.getItem('User_Usuario');
+                this.criticidad.strModified_User=user;                
+                let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                );    
             criticidadService.UpdateCriticidad(this.criticidad)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -87,8 +97,8 @@ export default class ModificarCriticidadComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strCritical_Cod;
-                this.criticidad=new CriticidadModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -99,6 +109,14 @@ export default class ModificarCriticidadComponent extends Vue {
                 this.textosave = 'Error al guardar.';
             })
         }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
         
     } 
     fnOcultar(){

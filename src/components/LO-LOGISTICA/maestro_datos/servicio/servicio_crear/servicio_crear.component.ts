@@ -121,7 +121,6 @@ export default class CrearServicioMateComponent extends Vue {
   SendDocument:boolean=false;
 
   /*dialog*/
-  dialogCompania:boolean=false;
   dialogProveedor:boolean=false;
   dialogAlmacen:boolean=false;
   dialogCategoriaCuenta:boolean=false;
@@ -243,6 +242,7 @@ export default class CrearServicioMateComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -266,47 +266,35 @@ export default class CrearServicioMateComponent extends Vue {
       }
       this.tableData1.push(item);
     }
-    console.log(this.tableData1);
     setTimeout(() => {
       this.load();
     }, 200)
   }
-  load(){
-    
+  load(){    
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
     this.productoModel.strCompany_Cod=cod;
     this.productoModel.strCompany_Desc=desc;
-
+    this.productoModel.fltQtyLimit_Max=1;
+    this.productoModel.fltQtyLimit_Min=1;
+    this.productoModel.fltFactor=1;
     tipoRequisicionService.GetAllTipoRequisicion()
-    .then(res=>{
-      
+    .then(res=>{      
       this.tabletipoRequisicion=res;
-      this.tiporequisicion="S";     
-      
-      clasematerialService.GetAllClaseMaterial()
+      this.tiporequisicion="S";  
+      clasematerialService.GetClaseMaterialServicio(this.productoModel.strCompany_Cod)
       .then(response=>{
-        this.tableClaseMaterial=response;    
-        this.tableClaseMaterial=[];
-        this.tableClaseMaterial1=[];
-          clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
-            .then(response=>{
-              this.tableClaseMaterial=response;       
-              this.tableClaseMaterial1=response;       
-            }).catch(error=>{
-              this.$message({
-                showClose: true,
-                type: 'error',
-                message: 'No se pudo cargar clase material'
-              });
-            })   
+        this.tableClaseMaterial=response;       
+        this.tableClaseMaterial1=response;   
+        this.loading1=false;    
       }).catch(error=>{
         this.$message({
           showClose: true,
           type: 'error',
           message: 'No se pudo cargar clase material'
         });
-      })
+        this.loading1=false;    
+      })    
     })
     .catch(error=>{
       console.log('error',error)
@@ -362,10 +350,6 @@ export default class CrearServicioMateComponent extends Vue {
       return { verde: true, }
     }
   }
-  loadCompania(){
-    this.dialogCompania=true;
-  }
-  
   loadAlmacen(){
     this.dialogAlmacen=true;
   }
@@ -408,12 +392,6 @@ export default class CrearServicioMateComponent extends Vue {
     this.clasematerialSelectModel=val;
   }
   /*Compania imput*/
-  activar_compania(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarcompania=true;
-    }, 120)
-  }
   activar_control_precio(){
     setTimeout(() => {
       this.limpiarBotones();
@@ -425,12 +403,6 @@ export default class CrearServicioMateComponent extends Vue {
       this.limpiarBotones();
       this.btnactivarcuentacontable=true;
     }, 120)
-  }
-  desactivar_compania(){
-    
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;
-    }
   }
   desactivar_unidad_medida(){
     
@@ -480,12 +452,6 @@ export default class CrearServicioMateComponent extends Vue {
       this.btnactivarcuentacontable=false;
     }
   }
-  closeCompania(){
-    
-    this.btnactivarcompania=false;
-    return false;
-  }
-
   /*Proveedor imput*/
   activar_proveedor(){
     setTimeout(() => {
@@ -722,18 +688,6 @@ export default class CrearServicioMateComponent extends Vue {
   getParseDate(fecha){
     return Global.getParseDate(fecha);
   }
-  companiaSeleccionado(val){
-    
-    console.log('traer',val);
-    this.productoModel.strCompany_Cod=val.strCompany_Cod
-    this.productoModel.strCompany_Desc=val.strCompany_Desc
-    this.descompania=val.strCompany_Desc;
-   
-    this.dialogCompania=false;
-  }
-  companiaClose(val){
-    this.dialogCompania=false;
-  }
   criticidadClose(val){
     this.dialogCriticidad=false;
   }
@@ -793,8 +747,6 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogCriticidad=false;
   }
   SeleccionadoAlmacen(val){
-    
-    console.log('traer',val);
     this.productoModel.strWHS_Cod=val.strWHS_Cod;
     this.productoModel.intIdWHS_Stat_ID=val.intIdWHS_ID;
     this.productoModel.strWHS_Desc=val.strWHS_Desc;
@@ -866,20 +818,7 @@ export default class CrearServicioMateComponent extends Vue {
     this.dialogPrioridad=false;
   }
   loadClaseMaterial(){
-    this.dialogClaseMaterial=true;
-    this.tableClaseMaterial=[];
-    this.tableClaseMaterial1=[];
-    clasematerialService.GetTypeClaseMaterial(this.tiporequisicion)
-      .then(response=>{
-        this.tableClaseMaterial=response;       
-        this.tableClaseMaterial1=response;       
-      }).catch(error=>{
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: 'No se pudo cargar clase material'
-        });
-      })
+    this.dialogClaseMaterial=true;    
   }
   loadCategoriaMaterial(){
     this.dialogCategoriaMaterial=true;
@@ -990,36 +929,6 @@ export default class CrearServicioMateComponent extends Vue {
     
     this.btnactivarcuentacontable=false;
     return false;
-  }
-  borrarCompania(){
-    this.descompania='';
-    this.productoModel.strCompany_Desc='';
-    this.dialogCompania=false;
-    this.btnactivarcompania=false;
-  }
-  enterCompania(code){
-    //alert('Bien'+code);
-    
-    console.log('compania_enter_1',code);
-    companiaService.GetOnlyOneCompania(code)
-    .then(response=>{
-      if(response!=undefined){
-        if(response.length>0){
-          this.productoModel.strCompany_Cod=response[0].strCompany_Cod
-          this.productoModel.strCompany_Desc=response[0].strCompany_Desc
-          this.descompania=response[0].strCompany_Desc;
-          this.dialogCompania=false;
-          this.btnactivarcompania=false;
-        }
-      }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar compañia'
-      });
-    })
   }
   borrarAlmacen(){
     this.desalmacen='';
@@ -1344,17 +1253,13 @@ export default class CrearServicioMateComponent extends Vue {
     }
     console.log('select',selected);
   }
-  validador(){
-    
+  validador(){    
     if(this.productoModel.strUM_Cod==undefined){
       return true;
     }
     if(this.tiporequisicion==""){
       return true;
     }
-    // if(this.productoModel.fltQtyLimit_Max<=0 || this.productoModel.fltQtyLimit_Max<=this.productoModel.fltQtyLimit_Min){
-    //   return true;
-    // }
     if(this.productoModel.fltQtyLimit_Min<=0){
       return true;
     }
@@ -1370,20 +1275,16 @@ export default class CrearServicioMateComponent extends Vue {
     return false;
   }
 
-  guardarTodo(val){
-
-    this.vifprogress=true;
+  guardarTodo(){
     this.issave=false;
-    this.iserror=false;
-    this.textosave=''
-    this.percentage=0;    
+    this.iserror=false; 
     if(!this.validador()){
-      for(var i=0;i<50;i++){
-        this.percentage++;
-      }
       this.productoModel.intIdWHS_Stat_ID=1;
-      this.productoModel.intIdCommTax_ID=1;
+      this.productoModel.intIdCommTax_ID=1;      
+      this.productoModel.strWHS_Status='A';
       this.productoModel.strStock_Type=this.tiporequisicion;
+      var user:any=localStorage.getItem('User_Usuario');
+      this.productoModel.strCreation_User=user;
       for(var i=0;i<this.tabletipoRequisicion.length;i++){
         if(this.tabletipoRequisicion[i].strTypeReq_Cod==this.tiporequisicion){
           this.productoModel.strStock_Type_Desc=this.tabletipoRequisicion[i].strTipReq_Desc;
@@ -1398,13 +1299,9 @@ export default class CrearServicioMateComponent extends Vue {
         );
       productoService.saveProducto(this.productoModel)
       .then(res=>{ 
-        
-        for(var i=0;i<50;i++){
-          setTimeout(
-            () => {this.percentage++;},1  
-          )
-        } 
         loadingInstance.close();
+        this.productoModel=new ProductoModel();
+        this.load();
         setTimeout(() => {   
           this.issave=true;
           this.textosave='Se guardo correctamente. '+ res.strStock_Cod;
@@ -1413,15 +1310,15 @@ export default class CrearServicioMateComponent extends Vue {
             type: 'success',
             message: 'Se guardo correctamente.'
           });
-          this.vifprogress=false;
         }, 600)
        
       }).catch(error=>{
         loadingInstance.close();
+        this.iserror=true; 
         this.$message({
           showClose: true,
           type: 'error',
-          message: 'No se pudo guardar producto'
+          message: 'No se pudo guardar servicio'
         });
       })
     }
@@ -1431,18 +1328,8 @@ export default class CrearServicioMateComponent extends Vue {
       this.textosave='No se pudo guardar. Revise los datos'
     }
   }
-  like(array, key,keyword) {
-    
-    var responsearr:any = []
-    for(var i=0;i<array.length;i++) {
-        if(array[i][key].toString().indexOf(keyword) > -1 ) {
-          responsearr.push(array[i])
-      }
-    }
-    return responsearr
-  }
   buscarClaseMaterial(){
-    var data=this.like(this.tableClaseMaterial1,this.clickColumn,this.inputAtributo)
+    var data=Global.like(this.tableClaseMaterial1,this.clickColumn,this.inputAtributo)
     this.tableClaseMaterial=[];
     this.tableClaseMaterial=data;
   }
@@ -1537,162 +1424,6 @@ export default class CrearServicioMateComponent extends Vue {
         fecha_estimada:'',
         centrocosto:'',
       },
-      tableData: [{
-        date: '0001',
-        categoriacuenta: 'Ferreyros',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0002',
-        categoriacuenta: 'Yura SAC',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0003',
-        categoriacuenta: 'Signal company',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0004',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }
-      , {
-        date: '0005',
-        categoriacuenta: 'Tisur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0006',
-        categoriacuenta: 'Seguro',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0007',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0008',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0009',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0010',
-        categoriacuenta: 'Linea',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }, {
-        date: '0011',
-        categoriacuenta: 'Cruz del Sur',
-        categorialinea: 'Ferreyros',
-        cuentacontable: 'Ferreyros',
-        material:'piedra',
-        material_descripcion:'chancada',
-        cantidad:1,
-        unidad_medida:'Kg',
-        proveedor:'Juan Toledo',
-        moneda:'PEN',
-        prioridad:'urgente',
-        fecha_estimada:'12/02/2019',
-        centrocosto:'6302071000',
-      }],
       user: {
         authenticated: false
       },
@@ -1713,6 +1444,7 @@ export default class CrearServicioMateComponent extends Vue {
       minutos:0,
       seconds:0,
       percentage: '0',
+      loading1:true
     }
   }
   

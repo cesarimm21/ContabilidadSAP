@@ -47,12 +47,13 @@ export default class ModificarAduanaComponent extends Vue {
   item:string='';
 
   exoDialog:boolean=false;
+  loading1:boolean=false;
   constructor(){    
         super();
         Global.nameComponent='modificar-aduana';
         setTimeout(() => {
             this.load();
-          }, 200)
+          }, 400)
     }  
     load(){
         this.companyName=localStorage.getItem('compania_name');
@@ -65,6 +66,9 @@ export default class ModificarAduanaComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(errror=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){

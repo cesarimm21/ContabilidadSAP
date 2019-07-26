@@ -6,7 +6,6 @@
         <el-card class="box-card">
             <div slot="header" class="headercard">
                 <span class="labelheadercard" > Crear Banco</span>
-                <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -18,29 +17,11 @@
                                     <div class="input-group mb-3" >
                                     <el-input  :disabled="true"
                                     size ="small" 
-                                    @blur="desactivar_compania" 
-                                    @focus="activar_compania" 
-                                    v-model="strCompany_Cod">
-                                        <el-button :disabled="true" v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                    v-model="strCompany_Cod">                                       
                                     </el-input>
                                     </div>
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{strCompany_Desc}}</span>
-                            </div>
-                            <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Pais</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                    <el-input  
-                                        size ="small" 
-                                        @blur="desactivar_pais" 
-                                        @focus="activar_pais" 
-                                        v-model="strpais_Cod">
-                                        <el-button  v-if="btnactivarpais && !dialogPais" slot="append" class="boton" icon="fa fa-clone" @click="loadPais()"></el-button> 
-                                    </el-input>
-                                    </div>
-                                </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{strpais_Desc}}</span>
                             </div>
                             <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Banco</label>
@@ -62,6 +43,34 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Pais</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                    <el-input  
+                                        size ="small" 
+                                        @blur="desactivar_pais" 
+                                        @focus="activar_pais" 
+                                        v-model="strpais_Cod">
+                                        <el-button  v-if="btnactivarpais && !dialogPais" slot="append" class="boton" icon="fa fa-clone" @click="loadPais()"></el-button> 
+                                    </el-input>
+                                    </div>
+                                </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{strpais_Desc}}</span>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Region</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input size ="small" :disabled="departEnabled" @blur="desactivar_Departamento" @focus="activar_Departamento" 
+                                        v-model="bancoModel.strBank_Region" >                            
+                                            <el-button v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
+                                        </el-input>
+                                    </div>
+                                </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{Departamento_Desc}}</span>
+                                  
+                            </div>  
                             <!-- <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Moneda</label>
                                 <div class="col-md-2 grupolabel">
@@ -142,20 +151,7 @@
                                         </el-input>
                                     </div>
                                 </div>
-                            </div>      -->
-                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Region</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input size ="small" :disabled="departEnabled" @blur="desactivar_Departamento" @focus="activar_Departamento" 
-                                        v-model="bancoModel.strBank_Region" >                            
-                                            <el-button v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
-                                        </el-input>
-                                    </div>
-                                </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{Departamento_Desc}}</span>
-                                  
-                            </div>  
+                            </div>      -->                             
                              <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Direccion</label>
                                 <div class="col-md-6 grupolabel">
@@ -245,20 +241,6 @@
                                                     <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickswiftcode(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strSwift_Cod }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <!-- <el-table-column
-                                                prop="strBankAcct_IntBan" sortable width="150"
-                                                label="Ciudad">
-                                                <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
-                                                </template>
-                                            </el-table-column> -->
-                                            <!-- <el-table-column
-                                                prop="strBankAcct_IntBan" sortable width="150"
-                                                label="Direccion">
-                                                <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
-                                                </template>
-                                            </el-table-column> -->
                                         </el-table>
                                     </div>
                                 </div>
@@ -292,18 +274,6 @@
             </div>
             
         </div>
-        <el-dialog title="Busqueda compañia"  :visible.sync="dialogCompania" @close="dialogCompaniaClose" size="small" >
-            <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)" v-on:companiaClose="companiaClose()">
-            </bcompania>
-        </el-dialog>
-        <el-dialog title="Centro Costo"  :visible.sync="dialogCentroCosto" @close="closeDialogCentroCosto" size="small" >
-            <bcentrocosto v-on:centrocostoselecionado="centrocostoseleccionado($event)" v-on:centrocostosclose="closeDialogCentroCosto()">
-            </bcentrocosto>
-        </el-dialog>
-        <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeDialogImpuesto" size="small" >
-            <bimpuesto v-on:ImpuestoSeleccionado="ImpuestoSeleccionado($event)" v-on:companiaClose="closeImpuesto()">
-            </bimpuesto>
-        </el-dialog>
         <el-dialog
             title="Departamentos"
             :visible.sync="departVisible"
@@ -349,55 +319,6 @@
                 <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="departChosseClose()"/>
             </span>
         </el-dialog>
-         <el-dialog title="Busqueda Orden de compra"  :visible.sync="dialogOrdenCompra" size="small" >
-            <div>
-                <el-card class="box-card">
-                <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar orden de compra</span>
-                </div>
-                <div class="row bodycard">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-2" >Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <el-table
-                    :data="ordencompra"
-                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                    height="250"
-                    highlight-current-row
-                    @row-dblclick="selectOrdenCompra"
-                    @current-change="selectOrdenCompra">
-                    <el-table-column  prop="strPO_NO" label="Codigo" width="180">
-                    </el-table-column>  
-                    <el-table-column  prop="strPO_Desc" label="Descripcion" style="width: 70% !important;">
-                    </el-table-column> 
-                </el-table>
-            </el-card>
-            <br/>
-            <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenCompra()">
-                <img class="imagenfilter" src="../../../../../../images/check.png" alt="" >
-                </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenCompra()">
-                <img class="imagenfilter" src="../../../../../../images/close.png" alt="" >
-                </el-button>
-            </footer>
-            </div>
-        </el-dialog>
         <el-dialog title="Moneda"  :visible.sync="dialogMoneda" @close="closeDialogMoneda" size="small" >
             <bmoneda v-on:MonedaSeleccionado="MonedaSeleccionado($event)" v-on:closeMoneda="closeMoneda()">
             </bmoneda>
@@ -405,31 +326,7 @@
         <el-dialog title="Pais"  :visible.sync="dialogPais" @close="closePais" size="small" >
             <bpais v-on:PaisSeleccionado="PaisSeleccionado($event)" v-on:closePais="closePais()">
             </bpais>
-        </el-dialog> 
-        <el-dialog title="Grupo Proceso"  :visible.sync="dialogGrupoProceso" @close="closeDialogGrupoProceso" size="small" >
-            <bgrupoproceso v-on:grupoprocesoseleccionado="grupoprocesoseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoProceso()">
-            </bgrupoproceso>
-        </el-dialog> 
-        <el-dialog title="Grupo Proceso"  :visible.sync="dialogGrupoProceso" @close="closeDialogGrupoProceso" size="small" >
-            <bgrupoproceso v-on:grupoprocesoseleccionado="grupoprocesoseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoProceso()">
-            </bgrupoproceso>
-        </el-dialog>   
-        <el-dialog title="Grupo Area"  :visible.sync="dialogGrupoArea" @close="closeDialogGrupoArea" size="small" >
-            <bgrupoarea v-on:grupoareaseleccionado="grupoareaseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoArea()">
-            </bgrupoarea>
-        </el-dialog> 
-        
-        <el-dialog title="Categoria Centro Costos"  :visible.sync="dialogCategoriaCentroCosto" @close="closeDialogCategoriaCentroCosto" size="small" >
-            <bcategoriacentrocosto v-on:categoriacentrocostoseleccionado="categoriacentrocostoseleccionado($event)" v-on:closecategoriacentrocosto="closeDialogCategoriaCentroCosto()">
-            </bcategoriacentrocosto>
-        </el-dialog> 
-        
-
-        <!--DIALOG BUSQUEDA CATEGORIA CUENTA-->
-        <el-dialog title="Busqueda categoria cuenta"  :visible.sync="dialogCategoriaCuenta" @close="closeCategoriaCuenta" size="small" >
-        <bcategoriacuenta v-on:categoriacuentaselecionado="SeleccionadoCategoriaCuenta($event)">
-        </bcategoriacuenta>
-        </el-dialog>
+        </el-dialog>         
 
         <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContable" @close="closeDialogCuentaContableHaber" size="small" >
             <bcuentacontable v-on:cuentacontableselecionado="cuentacontableselecionadohaber($event)" v-on:cuentacontableClose="closeDialogCuentaContableHaber()">
@@ -439,65 +336,7 @@
         <el-dialog title="Cuenta Contable Debe"  :visible.sync="dialogCuentaContableDebe" @close="closeDialogCuentaContableDebe" size="small" >
             <bcuentacontable v-on:cuentacontableselecionado="cuentacontableselecionadodebe($event)" v-on:cuentacontableClose="closeDialogCuentaContableDebe()">
             </bcuentacontable>
-        </el-dialog> 
-        
-        <el-dialog title="Documento Transaccion"  :visible.sync="dialogDocumentoTransaccion" @close="documentotransaccionClose" size="small" >
-            <bdocumentotransaccion v-on:documentotransaccionselecionado="documentotransaccionselecionado($event)" v-on:documentotransaccionClose="documentotransaccionClose()">
-            </bdocumentotransaccion>
-        </el-dialog> 
-        
-
-        
-        <el-dialog title="Diarios" :visible.sync="dialogDiario" @close="closeDialogDiario" size="small" >
-            <div>
-                <el-card class="box-card">
-                <div slot="header" class="headercard">
-                    <span class="labelheadercard" >Buscar Diario</span>
-                </div>
-                <div class="row bodycard">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label class="el-form-item__label col-md-3" >Diario Codigo</label>
-                            <div class="col-md-2 grupolabel">
-                                <div class="input-group mb-3" >
-                                <el-input size ="small"   placeholder="">
-                                <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                            background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                            background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                            background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                            > </el-button>
-                                </el-input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <el-table
-                    :data="griddiarioModel"
-                    stripe  :default-sort = "{prop: 'date', order: 'descending'}"
-                    style="width: 100%;cursor: pointer;" class="ExcelTable2007"
-                    height="250"
-                    highlight-current-row
-                    @row-dblclick="checkSelectdbDiario"
-                    @current-change="checkSelectDiario">
-                    <el-table-column  prop="strDaily_Cod" label="Codigo" width="180">
-                    </el-table-column>  
-                    <el-table-column  prop="strDaily_Desc" label="Descripcion" style="width: 70% !important;">
-                    </el-table-column> 
-                </el-table>
-            </el-card>
-            <br/>
-            <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkSelectdbDiario()">
-                
-                <img class="imagenfilter" src="../../../../../../images/check.png" alt="" >
-                </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDiario()">
-                <img class="imagenfilter" src="../../../../../../images/close.png" alt="" >
-                </el-button>
-            </footer>
-            </div>
-        </el-dialog>
+        </el-dialog>            
     </div>  
 </template>
 <script>

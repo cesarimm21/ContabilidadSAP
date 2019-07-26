@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCriticidadView(){  
+    return axios.get(CONFIG.API_URL+'criticidad/view')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOneCriticidad(code){
     return axios.get(CONFIG.API_URL+'criticidad/'+code)
     .then(response =>{           
@@ -17,7 +23,7 @@ export default {
     })
   },
   CrearCriticidad(data){
-    return axios.post(CONFIG.API_URL+'criticidad',data)
+    return axios.post(CONFIG.API_URL+'criticidad/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -33,6 +39,18 @@ export default {
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  inactivarCriticidad(documento){
+    return axios.post(CONFIG.API_URL+'criticidad/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarCriticidad(documento){
+    return axios.post(CONFIG.API_URL+'criticidad/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }
   

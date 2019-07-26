@@ -2,7 +2,7 @@
     <div>
        <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" ></span>
+                <span class="labelheadercard" > Categoria Linea</span>
             </div>
             <div class="row bodycard">
                 <div class="col-md-12">

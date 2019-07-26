@@ -230,7 +230,7 @@ export default class ModificarPRComponent extends Vue {
   visiblecolumna:boolean=false;
   border_width:string='0px';
   strUM:string='';
-  
+  companyCod:any;
   constructor(){
     super();
     this.fecha_actual=Global.getParseDate(new Date().toDateString());
@@ -311,6 +311,7 @@ export default class ModificarPRComponent extends Vue {
     debugger;
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
+    this.companyCod=localStorage.getItem('compania_cod');
     this.requisicionModel.strCompany_Cod=cod;
     this.requisicionModel.strCompany_Desc=desc;
     await tipoRequisicionService.GetAllTipoRequisicion()
@@ -554,7 +555,7 @@ export default class ModificarPRComponent extends Vue {
     debugger;
     if(val.strDescription!='')
     {
-      productoService.GetOnlyOneProducto(val.strMaterial_Cod)
+      productoService.GetOnlyOneProducto(val.strMaterial_Cod,this.companyCod)
       .then(res=>{
         this.productoModel=res[0];
         console.log('producto--obtener',this.productoModel);

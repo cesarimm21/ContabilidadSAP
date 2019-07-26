@@ -20,21 +20,26 @@ export default class  BDocumentoComponent extends Vue {
     clickColumn:string='';
     Column:string='';
     inputAtributo:any;
+    loading1:boolean=true;
   constructor() {
     super();
-    this.GetAllTipoDocumento()
+    setTimeout(() => {
+      this.GetAllTipoDocumento();
+    }, 400)
   }
   GetAllTipoDocumento(){      
     tipodocidentidadService.GetAllTipoDocumento2()
     .then(response=>{
       this.TipoDoc=response;
       this.TipoDoc1=response;
+      this.loading1=false;
     }).catch(error=>{
       this.$message({
         showClose: true,
         type: 'error',
         message: 'No se puede cargar lista de tipo de documento'
       });
+      this.loading1=false;
     })
   } 
   checkTipo(){
@@ -101,7 +106,8 @@ export default class  BDocumentoComponent extends Vue {
     return {
         TipoDoc:[],
         TipoDoc1:[],
-        inputAtributo:''
+        inputAtributo:'',
+        loading1:true
     };
   }
 }

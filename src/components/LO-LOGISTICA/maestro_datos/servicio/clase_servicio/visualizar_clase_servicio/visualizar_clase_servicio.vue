@@ -1,6 +1,6 @@
 <template>
 
-  <div class="al-crear">
+  <div class="visualizar-clase-servicio">
     <ol style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
         <quickaccessmenu v-on:validarView="BuscarProducto" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
     </ol>
@@ -31,7 +31,7 @@
                             <label class="el-form-item__label col-md-2" >Clase Servicio</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-3" >
-                                <el-input size ="small"  v-model="clasematerialmodel.strMatClass_Cod"  placeholder="">
+                                <el-input :autofocus="true" size ="small"  v-model="strMatClass_Cod"  placeholder="" @keydown.native.enter="BuscarProducto()">
                                 </el-input>
                                 </div>
                             </div>
@@ -43,15 +43,20 @@
                     <div class="col-sm-12" >
                         <el-card class="box-card" style="margin-left: -10px;">
                             <div slot="header" class="headercard" style="margin-top: -4px;">                              
-                                <buttons-accions v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                                <buttons-accions v-on:validarView="validarView()" v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                             </div>
                             <div class="col-md-12" >
                                 <div class="row bodycard" style="background: white;margin-top: 0px;">
                                     <el-table
+                                        v-loading="loading1"
+                                        element-loading-text="Cargando..."
+                                        element-loading-spinner="el-icon-loading"
+                                        element-loading-background="rgba(0, 0, 0, 0.8)"
                                         ref="missionTable"
                                         :max-height="sizeScreen"
-                                        :data="tableData" 
+                                        :data="CompleteData" 
                                         @header-click="headerclick"
+                                        @row-dblclick="validarView"
                                         @current-change="handleCurrentChange"
                                          highlight-current-row
                                         stripe  :default-sort = "{prop: 'date', order: 'descending'}"
@@ -68,31 +73,18 @@
                                         </el-table-column>
                                         <el-table-column :render-header="filterstrMatClass_Desc"
                                             prop="strMatClass_Desc"  
-                                            label="Descripcion Clase Material" width="320">
-                                            <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strMatClass_Desc }}</label>
-                                            </template>
+                                            label="Descripcion" width="320">
                                         </el-table-column>
                                          <el-table-column :render-header="filterstrStock_Type_Desc"
                                           prop="strStock_Type_Desc" label="Descripcion Tipo" width="200">
-                                            <template scope="scope">
-                                            <label >&nbsp;{{ scope.row.strStock_Type_Desc }}</label>
-                                            </template>
-                                        </el-table-column>  
-                                          
+                                        </el-table-column>                                            
                                         <el-table-column :render-header="filterstrAcct_Loc"
                                             prop="strAcct_Loc"  
                                             label="Cuenta Contable" width="120">
-                                            <template scope="scope">
-                                                <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strAcct_Loc }}</label>
-                                            </template>
                                         </el-table-column>
                                         <el-table-column  :render-header="filterstrExp_Cod_Loc"
                                             prop="strExp_Cod_Loc"  
                                             label="Cuenta Gastos" width="120">
-                                            <template scope="scope">
-                                                <label style="width:100%"  >&nbsp;{{ scope.row.strExp_Cod_Loc }}</label>
-                                            </template>
                                         </el-table-column>
                                         <el-table-column :render-header="filterdtmModified_Date"
                                             prop="dtmModified_Date"   min-width="80"
@@ -106,7 +98,7 @@
                                             label="Usuario">
                                         </el-table-column>
                                         <el-table-column
-                                            prop="fltPrecUnit_Local" align="center"  width="70"
+                                            prop="chrStatus" align="center"  width="70"
                                             label="Estado">
                                             <template scope="scope">
                                                 <el-tag
@@ -181,22 +173,26 @@
         <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal>
-    <!--DIALOG BUSQUEDA ALMACEN-->
-    <el-dialog title="Busqueda Almacen"  :visible.sync="dialogAlmacen" @close="closeAlmacen" size="small" >
-      <balmacen v-on:almacenseleccionado="SeleccionadoAlmacen($event)" >
-      </balmacen>
-    </el-dialog>
- <b-modal ref="myModalRef" hide-footer title="Eliminar Clase Servicio" size="sm"  v-model="claseDialog" @keydown.native.enter="deletClaseServico">
+ <b-modal ref="myModalRef" hide-footer title="Inactivar Clase Servicio" size="sm"  v-model="planDialog" @keydown.native.enter="inactivarPlan">
       <div style="height:85px">
         <img src="../../../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea eliminar Clase Servicio {{clasematerialmodel.strMatClass_Cod}} ?</span>
+        <span style="font-size:13px">¿Desea Inactivar Clase Servicio {{clasematerialmodel.strMatClass_Cod}} ?</span>
       </div>
       <footer class="modal-footer">
-        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="deletClaseServico()"/>
-        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="claseDialog = false"/>
+        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="inactivarPlan()"/>
+        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planDialog = false"/>
       </footer>
-    </b-modal>    
-
+    </b-modal>     
+    <b-modal ref="myModalRef" hide-footer title="Activar Clase Servicio" size="sm"  v-model="planActivarDialog" @keydown.native.enter="activarPlan">
+      <div style="height:85px">
+        <img src="../../../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
+        <span style="font-size:13px">¿Desea Activar Clase Servicio {{clasematerialmodel.strMatClass_Cod}} ?</span>
+      </div>
+      <footer class="modal-footer">
+        <img src="../../../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="activarPlan()"/>
+        <img src="../../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="planActivarDialog = false"/>
+      </footer>
+    </b-modal>   
 </div>  
   
 </template>
@@ -205,4 +201,5 @@ import VisualizarClaseServicioComponent from '@/components/LO-LOGISTICA/maestro_
 export default VisualizarClaseServicioComponent
 </script>
 <style scoped>
+
 </style>

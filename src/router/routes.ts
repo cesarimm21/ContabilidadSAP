@@ -183,6 +183,11 @@ import ModificarIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma
 import VisualizarIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma/visualizar_idioma.vue'
 import ViewAndEditIdiomaComponent from '@/components/XX-CONFI/maestro_datos/idioma/viewandedit_idioma.vue'
 
+import CrearGrupoAreaComponent from '@/components/CP-PRESUPUESTO/maestro_datos/grupo-area/crear_grupoarea.vue'
+import ModificarGrupoAreaComponent from '@/components/CP-PRESUPUESTO/maestro_datos/grupo-area/modificar_grupoarea.vue'
+import VisualizarGrupoAreaComponent from '@/components/CP-PRESUPUESTO/maestro_datos/grupo-area/visualizar_grupoarea.vue'
+import ViewAndEditGrupoAreaComponent from '@/components/CP-PRESUPUESTO/maestro_datos/grupo-area/viewandedit_grupoarea.vue'
+
 
 import CrearUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/crear_um.vue'
 import ModificarUMComponent from '@/components/XX-CONFI/maestro_datos/unidad_medida/modificar_um.vue'
@@ -1450,6 +1455,27 @@ export default [
         path:'XX-CONFI/maestro_datos/idioma/viewandedit_idioma',
         component:ViewAndEditIdiomaComponent,
         name:'viewandedit-idioma'
+      }, 
+      //Grupo Area
+      {
+        path:'CP-PRESUPUESTO/maestro_datos/grupo-area/crear_grupoarea',
+        component:CrearGrupoAreaComponent,
+        name:'crear-grupoarea'
+      }, 
+      {
+        path:'CP-PRESUPUESTO/maestro_datos/grupo-area/modificar_grupoarea',
+        component:ModificarGrupoAreaComponent,
+        name:'modificar-grupoarea'
+      }, 
+      {
+        path:'CP-PRESUPUESTO/maestro_datos/grupo-area/visualizar_grupoarea',
+        component:VisualizarGrupoAreaComponent,
+        name:'visualizar-grupoarea'
+      }, 
+      {
+        path:'CP-PRESUPUESTO/maestro_datos/grupo-area/viewandedit_grupoarea',
+        component:ViewAndEditGrupoAreaComponent,
+        name:'viewandedit-grupoarea'
       }, 
 
       //metodo de evaluacion
