@@ -8,12 +8,14 @@ import {AlmacenModel} from '@/modelo/maestro/almacen';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import almacenService from '@/components/service/almacen.service';
+import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import { Loading } from 'element-ui';
 @Component({
   name: 'modificar-almacen',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
+  'bcompania':BCompaniaProveedor,
   }
 })
 export default class ModificarAlmacenComponent extends Vue {
@@ -51,6 +53,9 @@ export default class ModificarAlmacenComponent extends Vue {
   dialogEliminar:boolean=false;
   dialogInactivar:boolean=false;
   nameuser:any;
+  btnactivarcompania:boolean=false;
+  dialogCompania:boolean=false;
+
   constructor(){    
         super();
         Global.nameComponent='modificar-almacen';
@@ -246,6 +251,7 @@ export default class ModificarAlmacenComponent extends Vue {
     }
   }
   async validad(){      
+    debugger;
     var data=Global.like(this.gridAlmacen1,'strWHS_Cod',this.strWHS_Cod)
       if(data.length>0){
         this.almacen=data[0];
@@ -268,8 +274,21 @@ export default class ModificarAlmacenComponent extends Vue {
         }
       }
       else{
-        this.textosave='No existe Almacen. ';
-        this.warningMessage('No existe Almacen. ');
+        // this.textosave='No existe Almacen. ';
+        // this.warningMessage('No existe Almacen. ');
+        this.gridAlmacen=[];
+        almacenService.GetAllAlmacen(this.companyCod)
+        .then(resp=>{
+          if(resp!=undefined){
+            if(resp.length>0){
+              this.gridAlmacen=resp;
+            }
+          }
+        })
+        .catch(errorss=>{
+          this.textosave='Error al buscar almacen. ';
+          this.warningMessage('Error al buscar almacen. ');
+        })
       }
   }
    async validarView(){
@@ -474,6 +493,30 @@ export default class ModificarAlmacenComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
+  loadCompania(){
+    this.dialogCompania=true;
+  }
+
+  companiaSeleccionado(val){
+    this.companyCod=val.strCompany_Cod;
+    this.companyName=val.strCompany_Desc;
+    this.dialogCompania=false;
+  }
+
+  closeCompania(){
+    this.btnactivarcompania=false;
+    return false;
+  }
+  desactivar_compania(){
+    if(this.dialogCompania){
+      this.btnactivarcompania=false;
+    }
+  }
+  activar_compania(){
+    setTimeout(() => {
+      this.btnactivarcompania=true;
+    }, 120)
+  }
     data(){
         return{     
             companyName:'',

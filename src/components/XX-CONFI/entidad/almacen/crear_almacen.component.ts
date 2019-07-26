@@ -10,11 +10,14 @@ import almacenService from '@/components/service/almacen.service';
 import sucursalService from '@/components/service/sucursal.service';
 import BSucursalComponent from '@/components/buscadores/b_sucursal/b_sucursal.vue';
 import { SucursalModel } from '@/modelo/maestro/sucursal';
+import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
+
 @Component({
   name: 'crear-almacen',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'bsucursal':BSucursalComponent,
+  'bcompania':BCompaniaProveedor,
   }
 })
 export default class CrearAlmacenComponent extends Vue {
@@ -32,6 +35,10 @@ export default class CrearAlmacenComponent extends Vue {
   btnactivarsucursal:boolean=false;
   btnactivarplanta:boolean=false;
   sucursalVisible:boolean=false;
+  
+  btnactivarcompania:boolean=false;
+  dialogCompania:boolean=false;
+
   constructor(){    
         super();
         Global.nameComponent='crear-almacen';
@@ -43,7 +50,7 @@ export default class CrearAlmacenComponent extends Vue {
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');  
         this.almacen.strCompany_Cod=this.companyCod;
-        this.almacen.strCompany_Name=this.companyName;
+        this.almacen.strCompany_Desc=this.companyName;
         sucursalService.GetAllsucursal(this.almacen.strCompany_Cod)
         .then(respo=>{
           this.gridSucursal=respo;
@@ -154,6 +161,34 @@ export default class CrearAlmacenComponent extends Vue {
       reloadpage(){
         window.location.reload();
       }
+    
+      
+loadCompania(){
+	this.dialogCompania=true;
+}
+
+companiaSeleccionado(val){
+	this.almacen.strCompany_Cod=val.strCompany_Cod;
+	this.almacen.strCompany_Desc=val.strCompany_Desc;
+	this.dialogCompania=false;
+}
+
+closeCompania(){
+	this.btnactivarcompania=false;
+	return false;
+}
+desactivar_compania(){
+	if(this.dialogCompania){
+	  this.btnactivarcompania=false;
+	}
+}
+activar_compania(){
+	setTimeout(() => {
+	  this.btnactivarcompania=true;
+	}, 120)
+}
+
+    
     data(){
         return{     
             companyName:'',

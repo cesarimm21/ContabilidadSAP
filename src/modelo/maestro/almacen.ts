@@ -4,7 +4,7 @@ export class AlmacenModel {
     intIdSubsidiary_ID:number;
     // intPlant_ID:number;
     strCompany_Cod :string;
-    strCompany_Name :string;
+    strCompany_Desc :string;
     // strSubsComp_Cod :string;
     // strPlant_Cod:string;
     strSubsidiary_Cod:string;
@@ -26,7 +26,7 @@ export class AlmacenModel {
         this.intIdSubsidiary_ID=-1;
         // this.intPlant_ID=-1;
         this.strCompany_Cod='';
-        this.strCompany_Name='';
+        this.strCompany_Desc='';
         // this.strPlant_Cod='';
         this.strSubsidiary_Cod='';
         this.strSubsidiary_Desc='';

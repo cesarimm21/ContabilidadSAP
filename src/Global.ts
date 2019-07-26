@@ -131,11 +131,14 @@ export default {
     },
     like(array, key,keyword) {    
       var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
+      if(keyword!=''){
+        for(var i=0;i<array.length;i++) {
           if(array[i][key].toString().toLowerCase().indexOf(keyword.toLowerCase()) > -1 ) {
             responsearr.push(array[i])
+          }
         }
       }
+      
       return responsearr
     }
 }
