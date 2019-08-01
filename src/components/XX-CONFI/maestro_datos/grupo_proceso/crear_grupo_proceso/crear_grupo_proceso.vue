@@ -37,7 +37,7 @@
                               
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Nombre</label>
-                                <div class="col-sm-2 grupolabel">
+                                <div class="col-sm-4 grupolabel">
                                     <div class="input-group mb-3" >
                                         <el-input class="validador" size="small" v-model="grupoproceso.strCCGrpProc_Name"  >
                                         </el-input>

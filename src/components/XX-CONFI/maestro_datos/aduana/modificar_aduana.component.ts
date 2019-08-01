@@ -25,6 +25,7 @@ export default class ModificarAduanaComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strCustom_Cod:string='';
   public documento:AduanaModel=new AduanaModel();
   gridDocumento:AduanaModel[];
   gridDocumento1:AduanaModel[];
@@ -41,24 +42,23 @@ export default class ModificarAduanaComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrCustom_Cod:boolean=false;
   blnilterstrCustom_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
-  dialogInactivar:boolean=false;
-  item:string='';
-
-  exoDialog:boolean=false;
-  loading1:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='modificar-aduana';
         setTimeout(() => {
             this.load();
-          }, 400)
+          }, 200)
     }  
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        aduanaService.GetAllAduana()
+        aduanaService.GetAllAduanaView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -67,7 +67,7 @@ export default class ModificarAduanaComponent extends Vue {
           this.gridDocumento1=response;
           this.gridDocumento2=response;
           this.loading1=false;
-        }).catch(errror=>{
+        }).catch(err=>{
           this.loading1=false;
         })
     }
@@ -82,22 +82,13 @@ export default class ModificarAduanaComponent extends Vue {
     }
     handleCurrentChange(val:AduanaModel){
       this.documento=val;
+      this.strCustom_Cod=this.documento.strCustom_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -154,30 +145,123 @@ export default class ModificarAduanaComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-    if(this.documento!=undefined){
-      this.exoDialog=true; 
+    if(this.documento.intCustom_ID!=-1&&this.documento.strCustom_Cod!=""&&this.documento.strCustom_Desc!=""){
+      this.planDialog=true;
     }
     else{
-      alert('Debe de seleccionar una fila!!!');
+      this.warningMessage("Selecciona Aduana")
+    }    
+  }
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    aduanaService.inactivarAduana(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new AduanaModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strCustom_Cod!="" && this.documento.strCustom_Desc!=""){
+      this.planActivarDialog=true;
+    }
+    else{
+      this.warningMessage('Selecciones Aduana')
     }
   }
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    aduanaService.activarAduana(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new AduanaModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strCustom_Cod',this.documento.strCustom_Cod)
-    this.documento=data[0];
-    if(this.documento.intCustom_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strCustom_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/aduana/viewandedit_aduana`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strCustom_Cod',this.strCustom_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strCustom_Cod==this.strCustom_Cod){
+        await setTimeout(() => {
+          if(this.documento.strCustom_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/aduana/viewandedit_aduana`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strCustom_Cod==''){
+          this.textosave='Inserte Aduana. ';
+          this.warningMessage('Inserte Aduana. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Aduana. ';
+          this.warningMessage('No existe Aduana. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Aduana. ';
@@ -185,10 +269,10 @@ export default class ModificarAduanaComponent extends Vue {
     }
   }
    async validarView(){
-      if(this.documento.intCustom_ID!=undefined){
+      if(this.documento.intCustom_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strCustom_Cod!=undefined){
+            if(this.documento.strCustom_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/aduana/viewandedit_aduana`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
@@ -225,29 +309,29 @@ export default class ModificarAduanaComponent extends Vue {
           this.clickColumn="strCustom_Cod";
           this.blnilterstrCustom_Cod=true;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strCustom_Desc"){
           this.clickColumn="strCustom_Desc";
           this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrCustom_Cod(h,{column,$index}){
@@ -271,9 +355,9 @@ export default class ModificarAduanaComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -282,8 +366,8 @@ export default class ModificarAduanaComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -301,101 +385,6 @@ export default class ModificarAduanaComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
-
-  ActivarDesactivar(){
-    debugger;
-    this.item=this.documento.strCustom_Cod;
-    this.dialogInactivar=true;      
-  }
-
-  successMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-  errorMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'error'
-    });
-  }
-  async btnInactivar(){
-    var nameuser:any=localStorage.getItem('User_Usuario');
-    this.documento.strModified_User=nameuser;
-    if(this.documento.strCustom_Cod!=""){
-      
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Activando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-      );   
-      await aduanaService.activar(this.documento)
-      .then(respo=>{
-        loadingInstance.close();
-        this.successMessage('Se Activo Aduana '+this.documento.strCustom_Cod)
-        this.load();
-        this.issave=true;
-        this.iserror=false;
-        this.textosave='Se Activo Aduana'+this.documento.strCustom_Cod;
-        this.dialogInactivar=false;
-      }).catch(ee=>{
-        loadingInstance.close();
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Error en Activar '+this.documento.strCustom_Cod;
-        this.errorMessage('Error en Activar '+this.documento.strCustom_Cod)})
-        this.dialogInactivar=false;
-    }
-    else{
-      this.warningMessage('Debe de seleccionar una fila!!!');
-    }
-  }
-
-  
-  deleteExo(){
-    if(this.documento.strCustom_Cod!=''){
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Eliminando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-        ); 
-        aduanaService.eliminar(this.documento)
-      .then(resp=>{
-        loadingInstance.close();
-        this.exoDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'Se Elimino correctamente '+resp,
-            type: 'success'
-          });
-
-          this.documento=new AduanaModel();
-          this.load();
-          this.issave = true;
-          this.iserror = false;
-          this.textosave = 'Se Elimino Correctamente '+resp;
-      })
-      .catch(error=>{
-        loadingInstance.close();
-        this.exoDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'No se elimino',
-            type: 'error'
-          });
-      })
-      }
-      else{
-          this.warningMessage('Seleccione Exoneracion Operaciones ND. ');
-      }
-  }
     data(){
         return{     
             companyName:'',
@@ -403,6 +392,7 @@ export default class ModificarAduanaComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strCustom_Cod:''
         }
     }
   

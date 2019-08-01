@@ -63,7 +63,7 @@
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrRegion_Cod"
-                            prop="strRegion_Cod" label="Cat. Linea" width="130" align="center">                                
+                            prop="strRegion_Cod" label="Region" width="130" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrRegion_Desc"
                              prop="strRegion_Desc" min-width="200" label="Descripcion">

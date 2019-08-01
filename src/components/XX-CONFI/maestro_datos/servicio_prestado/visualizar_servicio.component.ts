@@ -7,10 +7,10 @@ import router from '@/router';
 import {ServicioPrestadoModel} from '@/modelo/maestro/servicioPrestado';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import servicioService from '@/components/service/servicioprestado.service';
+import servicioprestadoService from '@/components/service/servicioprestado.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'visualizar-servicio',
+  name: 'visualizar-servicioprestado',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
@@ -42,11 +42,13 @@ export default class VisualizarServicioComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrNDServ_Cod:boolean=false;
   blnilterstrNDServ_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='visualizar-servicio';
+        Global.nameComponent='visualizar-servicioprestado';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -54,7 +56,7 @@ export default class VisualizarServicioComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        servicioService.GetAllServicioPrestado()
+        servicioprestadoService.GetAllServicioPrestadoView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -62,6 +64,9 @@ export default class VisualizarServicioComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -138,14 +143,17 @@ export default class VisualizarServicioComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrNDServ_Cod=false;
       this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-      this.warningMessage('Accion no permitida');
+    this.warningMessage("Accion no permitida")    
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida")
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strNDServ_Cod',this.strNDServ_Cod)
@@ -153,7 +161,6 @@ export default class VisualizarServicioComponent extends Vue {
       this.documento=data[0];
       if(this.documento.strNDServ_Cod==this.strNDServ_Cod){
         await setTimeout(() => {
-          debugger;
           if(this.documento.strNDServ_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/servicio_prestado/viewandedit_servicio`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -185,8 +192,8 @@ export default class VisualizarServicioComponent extends Vue {
           }, 600)
         }
         else{
-          this.textosave='Seleccione Servicio Prestado. ';
-          this.warningMessage('Seleccione Servicio Prestado. ');
+          this.textosave='Seleccione Serv. Prestado ND. ';
+          this.warningMessage('Seleccione Serv. Prestado ND. ');
         }
       }
     siguiente(){
@@ -216,29 +223,29 @@ export default class VisualizarServicioComponent extends Vue {
           this.clickColumn="strNDServ_Cod";
           this.blnilterstrNDServ_Cod=true;
       this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strNDServ_Desc"){
           this.clickColumn="strNDServ_Desc";
           this.blnilterstrNDServ_Cod=false;
       this.blnilterstrNDServ_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrNDServ_Cod=false;
       this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrNDServ_Cod=false;
       this.blnilterstrNDServ_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrNDServ_Cod(h,{column,$index}){
@@ -262,9 +269,9 @@ export default class VisualizarServicioComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -273,8 +280,8 @@ export default class VisualizarServicioComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -291,10 +298,6 @@ export default class VisualizarServicioComponent extends Vue {
     }
     reloadpage(){
       window.location.reload();
-    }
-    ActivarDesactivar(){
-      debugger;
-      this.warningMessage('Accion no permitida');
     }
     data(){
         return{     

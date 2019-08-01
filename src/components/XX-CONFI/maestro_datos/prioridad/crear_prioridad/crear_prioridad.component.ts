@@ -60,8 +60,6 @@ export default class CrearPrioridadComponent extends Vue {
             );   
             this.prioridad.chrStatus='A';
             this.prioridad.strCreation_User=this.nameuser;
-            this.prioridad.strCompany_Cod=this.companyCod;
-            this.prioridad.strCompany_Desc=this.companyName;
             prioridadService.Crearprioridad(this.prioridad)
             .then(resp=>{
                 this.$message({

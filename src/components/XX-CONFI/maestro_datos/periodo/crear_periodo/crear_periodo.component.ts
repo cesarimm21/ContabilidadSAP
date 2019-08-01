@@ -23,6 +23,9 @@ export default class CrearPeriodoComponent extends Vue {
   companyName:any;
   companyCod:any;
   public periodo:PeriodoModel=new PeriodoModel();
+  public gridPeriodo:PeriodoModel[];
+  public gridData:any[];
+  total:number=0;
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -37,10 +40,30 @@ export default class CrearPeriodoComponent extends Vue {
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');  
         this.value3=(new Date()).toString(); 
+        this.loadYears();
+        
+    }
+    loadYears(){
+      periodoService.GetAllYears()
+      .then(respo=>{
+        this.gridPeriodo=[];
+        this.gridPeriodo=respo;
+        
+        if(this.gridPeriodo.length>0){
+          var data:any[]=[];
+          this.gridPeriodo.forEach(element => {
+            data.push(element.intYear)
+          });
+          this.gridData = data.filter((x, i, a) => a.indexOf(x) == i)  
+          this.total=this.gridData.length;           
+          console.log(this.gridData);          
+        }
+      })
     }
     changeyear(){
       
     }
+
     guardarPeriodo(){
       var dateString = new Date(this.value3);
       var yyyy=dateString.getFullYear();
@@ -76,6 +99,7 @@ export default class CrearPeriodoComponent extends Vue {
                 this.iserror = false;
                 this.value3=(new Date()).toString(); 
                 this.textosave = 'Se guardo correctamente Año Fiscal Contable. '+yyyy;
+                this.loadYears();
             }).catch(error=>{
               loadingInstance.close();
                 this.$message({
@@ -107,8 +131,11 @@ export default class CrearPeriodoComponent extends Vue {
         return{     
             companyName:'',
             companyCod:'',
-            value3:''
-        }
+            value3:'',
+            gridPeriodo:[],
+            gridData:[],
+            total:0
+          }
     }
   
 }

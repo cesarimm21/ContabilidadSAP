@@ -10,8 +10,14 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  DeleteServicioPrestado(data){    
-    return axios.post(CONFIG.API_URL+'servicioprestado/eliminar',data)
+  GetAllServicioPrestadoView(){    
+    return axios.get(CONFIG.API_URL+'servicioprestado/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  inactivarServicioPrestado(data){    
+    return axios.post(CONFIG.API_URL+'servicioprestado/inactivar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

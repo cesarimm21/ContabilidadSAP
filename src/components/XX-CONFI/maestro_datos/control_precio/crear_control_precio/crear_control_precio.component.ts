@@ -64,11 +64,11 @@ export default class CrearControlPrecioComponent extends Vue {
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strCtlPrec_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strCtlPrec_Cod;
+                this.textosave = 'Se guardo correctamente. '+resp;
                 this.controlprecio=new ControlPrecioModel();
                 loadingInstance.close();
             }).catch(error=>{

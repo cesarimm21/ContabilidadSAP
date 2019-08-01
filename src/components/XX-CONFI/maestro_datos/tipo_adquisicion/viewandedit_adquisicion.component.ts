@@ -57,7 +57,7 @@ export default class ViewAndEditAdquisicionComponent extends Vue {
         var user:any=localStorage.getItem('User_Usuario');
         var id:any=localStorage.getItem('compania_ID');
 
-        this.documento.strModify_User=user;
+        this.documento.strModified_User=user;
         
         let loadingInstance = Loading.service({
           fullscreen: true,

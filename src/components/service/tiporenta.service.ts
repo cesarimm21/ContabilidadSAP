@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAlltiporentaView(){  
+    return axios.get(CONFIG.API_URL+'tiporenta/view')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOnetiporenta(code){
     return axios.get(CONFIG.API_URL+'tiporenta/'+code)
     .then(response =>{           
@@ -17,7 +23,7 @@ export default {
     })
   },
   Creartiporenta(data){
-    return axios.post(CONFIG.API_URL+'tiporenta',data)
+    return axios.post(CONFIG.API_URL+'tiporenta/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -28,13 +34,13 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  Eliminartiporenta(data){
-    return axios.post(CONFIG.API_URL+'tiporenta/eliminar',data)
+  inactivarTiporenta(data){
+    return axios.post(CONFIG.API_URL+'tiporenta/inactivar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  activar(data){
+  activarTiporenta(data){
     return axios.post(CONFIG.API_URL+'tiporenta/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));

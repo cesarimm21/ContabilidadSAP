@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllAduanaView(){    
+    return axios.get(CONFIG.API_URL+'codigoaduana/view')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   CreateAduana(comprobante){
     return axios.post(CONFIG.API_URL+'codigoaduana/create', comprobante)
     .then(response =>{
@@ -22,13 +28,13 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
       })
   },
-  eliminar(comprobante){
-    return axios.post(CONFIG.API_URL+'codigoaduana/eliminar', comprobante)
+  inactivarAduana(comprobante){
+    return axios.post(CONFIG.API_URL+'codigoaduana/inactivar', comprobante)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
       })
   },
-  activar(comprobante){
+  activarAduana(comprobante){
     return axios.post(CONFIG.API_URL+'codigoaduana/activar', comprobante)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));

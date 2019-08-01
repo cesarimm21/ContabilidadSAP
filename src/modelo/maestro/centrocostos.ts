@@ -19,15 +19,14 @@ export class CentroCostosModel {
     dtmStart_Date:Date;
     dtmEnd_Date:Date;
     strAcctDest_Debit:string;
-    strCateg_Cod:string;
-    strCateg_Desc:string;
+    strCCCategory_Cod:string;
+    strCCCategory_Desc:string;
     strProcGrp_Cod:string;
     strProcGrp_Desc:string;
     strAreaGrp_Cod:string;
     strAreaGrp_Desc:string;
     strAcctDest_Credit:string;
     strCCGrpProc_Cod:string;
-    strCCCategory_Cod:string;
     strCCGrpArea_Cod:string;
 
     strCreation_User:string;

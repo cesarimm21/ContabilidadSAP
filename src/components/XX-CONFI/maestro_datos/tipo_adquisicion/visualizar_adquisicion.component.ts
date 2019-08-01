@@ -10,7 +10,7 @@ import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.
 import tipoadquisicionService from '@/components/service/tipoaquisicion.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'visualizar-adquisicion',
+  name: 'visualizar-tipoadquisicion',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
@@ -25,6 +25,7 @@ export default class VisualizarAdquisicionComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strTypeAdq_PDB_Cod:string='';
   public documento:TipoAdquisicionModel=new TipoAdquisicionModel();
   gridDocumento:TipoAdquisicionModel[];
   gridDocumento1:TipoAdquisicionModel[];
@@ -41,14 +42,13 @@ export default class VisualizarAdquisicionComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrTypeAdq_PDB_Cod:boolean=false;
   blnilterstrTypeAdq_PDB_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
-  item:string='';
-  dialogInactivar:boolean=false;
-
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='visualizar-adquisicion';
+        Global.nameComponent='visualizar-tipoadquisicion';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -64,6 +64,9 @@ export default class VisualizarAdquisicionComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -77,22 +80,13 @@ export default class VisualizarAdquisicionComponent extends Vue {
     }
     handleCurrentChange(val:TipoAdquisicionModel){
       this.documento=val;
+      this.strTypeAdq_PDB_Cod=this.documento.strTypeAdq_PDB_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -149,43 +143,57 @@ export default class VisualizarAdquisicionComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrTypeAdq_PDB_Cod=false;
       this.blnilterstrTypeAdq_PDB_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-    this.warningMessage('Accion no permitida');   
+    this.warningMessage("Accion no permitida")
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida")
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strTypeAdq_PDB_Cod',this.documento.strTypeAdq_PDB_Cod)
-    this.documento=data[0];
-    if(this.documento.intTypeAdq_PDB_Cod!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strTypeAdq_PDB_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_adquisicion/viewandedit_adquisicion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strTypeAdq_PDB_Cod',this.strTypeAdq_PDB_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strTypeAdq_PDB_Cod==this.strTypeAdq_PDB_Cod){
+        await setTimeout(() => {
+          if(this.documento.strTypeAdq_PDB_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_adquisicion/viewandedit_adquisicion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strTypeAdq_PDB_Cod==''){
+          this.textosave='Inserte Tipo Adquisicion. ';
+          this.warningMessage('Inserte Tipo Adquisicion. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Tipo Adquisicion. ';
+          this.warningMessage('No existe Tipo Adquisicion. ');
+        }        
+      }
     }
     else{
-      this.textosave='No existe Tipo de Adquisicion. ';
-      this.warningMessage('No existe Tipo de Adquisicion. ');
+      this.textosave='No existe Tipo Adquisicion. ';
+      this.warningMessage('No existe Tipo Adquisicion. ');
     }
   }
    async validarView(){
-      if(this.documento.intTypeAdq_PDB_Cod!=undefined){
+      if(this.documento.intTypeAdq_PDB_Cod!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strTypeAdq_PDB_Cod!=undefined){
+            if(this.documento.strTypeAdq_PDB_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/tipo_adquisicion/viewandedit_adquisicion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Tipo de Adquisicion. ';
-          this.warningMessage('Seleccione Tipo de Adquisicion. ');
+          this.textosave='Seleccione Tipo Adquisicion. ';
+          this.warningMessage('Seleccione Tipo Adquisicion. ');
         }
       }
     siguiente(){
@@ -215,29 +223,29 @@ export default class VisualizarAdquisicionComponent extends Vue {
           this.clickColumn="strTypeAdq_PDB_Cod";
           this.blnilterstrTypeAdq_PDB_Cod=true;
       this.blnilterstrTypeAdq_PDB_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strTypeAdq_PDB_Desc"){
           this.clickColumn="strTypeAdq_PDB_Desc";
           this.blnilterstrTypeAdq_PDB_Cod=false;
       this.blnilterstrTypeAdq_PDB_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrTypeAdq_PDB_Cod=false;
       this.blnilterstrTypeAdq_PDB_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrTypeAdq_PDB_Cod=false;
       this.blnilterstrTypeAdq_PDB_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrTypeAdq_PDB_Cod(h,{column,$index}){
@@ -261,9 +269,9 @@ export default class VisualizarAdquisicionComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -272,8 +280,8 @@ export default class VisualizarAdquisicionComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -291,61 +299,6 @@ export default class VisualizarAdquisicionComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
-
-  
-ActivarDesactivar(){
-  this.warningMessage('Accion no permitida');        
-}
-
-successMessage(newMsg : string) {
-  this.$message({
-    showClose: true,
-    message: newMsg,
-    type: 'success'
-  });
-}
-errorMessage(newMsg : string) {
-  this.$message({
-    showClose: true,
-    message: newMsg,
-    type: 'error'
-  });
-}
-async btnInactivar(){
-  var nameuser:any=localStorage.getItem('User_Usuario');
-  this.documento.strModify_User=nameuser;
-  if(this.documento.strTypeAdq_PDB_Cod!=""){
-    
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Activando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-    );   
-    await tipoadquisicionService.activar(this.documento)
-    .then(respo=>{
-      loadingInstance.close();
-      this.successMessage('Se Activo Tipo Adquisicion '+this.documento.strTypeAdq_PDB_Cod)
-      this.load();
-      this.issave=true;
-      this.iserror=false;
-      this.textosave='Se Activo Tipo Adquisicion '+this.documento.strTypeAdq_PDB_Cod;
-      this.dialogInactivar=false;
-    }).catch(ee=>{
-      loadingInstance.close();
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Error en Activar '+this.documento.strTypeAdq_PDB_Cod;
-      this.errorMessage('Error en Activar '+this.documento.strTypeAdq_PDB_Cod)})
-      this.dialogInactivar=false;
-  }
-  else{
-    this.warningMessage('Debe de seleccionar una fila!!!');
-  }
-}
-
-
     data(){
         return{     
             companyName:'',
@@ -353,6 +306,7 @@ async btnInactivar(){
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
+            strTypeAdq_PDB_Cod:''
         }
     }
   

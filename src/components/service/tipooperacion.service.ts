@@ -10,6 +10,12 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAlltipooperacionView(){  
+    return axios.get(CONFIG.API_URL+'tipooperacion/view')
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetOnlyOnetipooperacion(code){
     return axios.get(CONFIG.API_URL+'tipooperacion/'+code)
     .then(response =>{           
@@ -17,7 +23,7 @@ export default {
     })
   },
   Creartipooperacion(data){
-    return axios.post(CONFIG.API_URL+'tipooperacion',data)
+    return axios.post(CONFIG.API_URL+'tipooperacion/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -28,13 +34,13 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  Eliminartipooperacion(data){
-    return axios.post(CONFIG.API_URL+'tipooperacion/eliminar',data)
+  inactivarTipooperacion(data){
+    return axios.post(CONFIG.API_URL+'tipooperacion/inactivar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  activar(data){
+  activarTipooperacion(data){
     return axios.post(CONFIG.API_URL+'tipooperacion/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));

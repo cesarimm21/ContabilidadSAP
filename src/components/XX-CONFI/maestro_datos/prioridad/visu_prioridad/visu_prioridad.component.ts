@@ -1,54 +1,55 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-//***Modelos */
 import {PrioridadModel} from '@/modelo/maestro/prioridad';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import { Notification } from 'element-ui';
-import impuestoService from '@/components/service/impuesto.service';
-import prioridadService from '@/components/service/prioridad.service';
-
-
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-
+import prioridadService from '@/components/service/prioridad.service';
+import { Loading } from 'element-ui';
 @Component({
-  name: 'viewandedit-prioridad',
+  name: 'visualizar-prioridad',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
-  'buttons-accions':ButtonsAccionsComponent,
+  'buttons-accions': ButtonsAccionsComponent,
   }
 })
 export default class VisuPrioridadComponent extends Vue {
-     nameComponent:string;
-    fecha_actual:string;
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
- 
-    fecha_ejecucion:string;
-    companyName:any;
-    companyCod:any;
-    issave:boolean=false;
-    iserror:boolean=false;
-    textosave:string='';
-    public prioridad:PrioridadModel=new PrioridadModel();
-    public tableData:Array<PrioridadModel>=[]; 
-    namepage:string;
-    impDisabled:boolean=false;
-    cod_criticidad:string='';
-    selectrow:any;
-    currentRow:any;
-    dialogEliminar:boolean=false;
-    cod_prioridad:string='';
-    item:string='';
-    dialogInactivar:boolean=false;
-
+  nameComponent:string;
+  fecha_actual:string;
+  fecha_ejecucion:string;
+  value3:string;
+  companyName:any;
+  companyCod:any;
+  strPriority_Cod:string='';
+  public documento:PrioridadModel=new PrioridadModel();
+  gridDocumento:PrioridadModel[];
+  gridDocumento1:PrioridadModel[];
+  gridDocumento2:PrioridadModel[];
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
+  pagina: number =1;
+  RegistersForPage: number = 100;
+  totalRegistros: number = 100;
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  dialogBusquedaFilter:boolean=false;
+  blnilterstrPriority_Cod:boolean=false;
+  blnilterstrPriority_Desc:boolean=false;
+  blnilterintPriority_Days:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='viewandedit-prioridad';
+        Global.nameComponent='visualizar-prioridad';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -56,183 +57,281 @@ export default class VisuPrioridadComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        this.cargarList();
+        prioridadService.GetAllPrioridad()
+        .then(response=>{
+          this.gridDocumento=[];
+          this.gridDocumento1=[];
+          this.gridDocumento2=[];
+          this.gridDocumento=response;
+          this.gridDocumento1=response;
+          this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
+        })
     }
-    
-    handleCurrentChange(val) {
-        debugger;
-        if(val!=null){
-        this.selectrow=val;
-        this.currentRow = val;
-        }
+    getDateStringView(fecha:string){
+        var dateString = new Date(fecha);
+        var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
     }
-    async cargarList(){
-        debugger;
-        if(this.cod_prioridad!=''){
-            await prioridadService.GetOnlyOnePrioridad(this.cod_prioridad)
-            .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
-                if(res!=undefined){
-                    this.selectrow=res;
-                    this.validarView();
-                }
-            })
-            .catch(error=>{
-            
-            })
-        }
-        else{
-            await prioridadService.GetAllPrioridad()
-            .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
-                this.tableData=res;
-            })
-            .catch(error=>{
-            
-            })
-        }
+    handleCurrentChange(val:PrioridadModel){
+      this.documento=val;
+      this.strPriority_Cod=this.documento.strPriority_Cod;
+     }
+    btnBuscar(){
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      this.gridDocumento=[];
+      this.gridDocumento=data;
+      this.dialogBusquedaFilter=false;
     }
-    async validarView(){
-        debugger;
-        if(this.selectrow!=undefined && this.selectrow!=null ){
-            debugger;
-            if(this.selectrow!=undefined && this.selectrow!=null ){
-                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/prioridad/modif_prioridad`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
-            }
-        }
-        else{
-            this.textosave='Seleccione algun item. ';
-        }
+    sortByKeyDesc(array, key) {
+      return array.sort(function (a, b) {
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+         
+      });
     }
-    fnOcultar(){
-
+    sortByKeyAsc(array, key) {
+      return array.sort(function (a, b) {
+          debugger;
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          
+      });
     }
-    handleChange(value) {
-        console.log(value);
-    }
-
-    
-  EliminarItem(){
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
-  }
-  async btnEliminar(){
-    await prioridadService.Eliminarprioridad(this.currentRow)
-    .then(response=>{
-      debugger;
-      console.log('eliminar',response);
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strPriority_Cod;
-         this.issave=true;
-         this.iserror=false;
+    Buscar(){
+      if(this.Column!=""){
+        this.dialogBusquedaFilter=true;
+        this.txtbuscar='';
       }
       else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
+        this.$message('Seleccione columna')
       }
-      this.cargarList();
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-    
-  }
-  
-  getDateStringView(fecha:string){
-    var dateString = new Date(fecha);
-    var dia = dateString.getDate();
-    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
-    var yyyy = dateString.getFullYear();
-    var dd = (dia<10) ? '0'+dia : dd=dia;
-    var mm = (mes<10) ? '0'+mes : mm=mes;
-    return dd+'.'+mm+'.'+yyyy;
-}
-ActivarDesactivar(){
-    debugger;
-    this.item=this.selectrow.strPriority_Cod;
-    this.dialogInactivar=true;      
-  }
-  
-  successMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-  errorMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'error'
-    });
-  }
-  async btnInactivar(){
-    var nameuser:any=localStorage.getItem('User_Usuario');
-    this.selectrow.strModified_User=nameuser;
-    if(this.selectrow.strCtlPrec_Cod!=""){
-      
-      let loadingInstance = Loading.service({
+    }
+    async AscItem(){
+      let loading = Loading.service({
         fullscreen: true,
-        text: 'Activando...',
+        text: 'Cargando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
-      );   
-      await prioridadService.activar(this.selectrow)
-      .then(respo=>{
-        loadingInstance.close();
-        this.successMessage('Se Activo Prioridad '+this.selectrow.strPriority_Cod)
-        this.load();
-        this.issave=true;
-        this.iserror=false;
-        this.textosave='Se Activo Prioridad '+this.selectrow.strPriority_Cod;
-        this.dialogInactivar=false;
-      }).catch(ee=>{
-        loadingInstance.close();
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Error en Activar '+this.selectrow.strPriority_Cod;
-        this.errorMessage('Error en Activar '+this.selectrow.strPriority_Cod)})
-        this.dialogInactivar=false;
+      );
+      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      await loading.close();
+    }
+    DscItem(){
+      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    
+    }
+    Limpiar(){
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrPriority_Cod=false;
+      this.blnilterstrPriority_Desc=false;
+      this.blnilterintPriority_Days=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+    }
+    Print(){
+      window.print();
+    }
+  async  EliminarItem(){
+    this.warningMessage("Accion no permitida")   
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida")  
+  }
+  async validad(){      
+    var data=Global.like(this.gridDocumento1,'strPriority_Cod',this.strPriority_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strPriority_Cod==this.strPriority_Cod){
+        await setTimeout(() => {
+          if(this.documento.strPriority_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/prioridad/modif_prioridad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strPriority_Cod==''){
+          this.textosave='Inserte Prioridad. ';
+          this.warningMessage('Inserte Prioridad. ');
+        }
+        else{
+          this.textosave='No existe Prioridad. ';
+          this.warningMessage('No existe Prioridad. ');
+        }        
+      }
     }
     else{
-      this.warningMessage('Debe de seleccionar una fila!!!');
+      this.textosave='No existe Prioridad. ';
+      this.warningMessage('No existe Prioridad. ');
     }
   }
-  
-  warningMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'warning'
-    });
+   async validarView(){
+      if(this.documento.intIdPriority_ID!=-1){
+          await setTimeout(() => {
+            debugger;
+            if(this.documento.strPriority_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/prioridad/modif_prioridad`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+            }
+          }, 600)
+        }
+        else{
+          this.textosave='Seleccione Prioridad. ';
+          this.warningMessage('Seleccione Prioridad. ');
+        }
+      }
+    siguiente(){
+      if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+        this.pagina++;
+        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    anterior(){
+      if(this.pagina>1){
+      this.pagina--;
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
+    }
+  //#region [CABECERA]
+  headerclick(val){    
+      this.Column=val.label;
+      Global.setColumna(this.Column);     
+      if(val.property=="strPriority_Cod"){
+          this.clickColumn="strPriority_Cod";
+          this.blnilterstrPriority_Cod=true;
+      this.blnilterstrPriority_Desc=false;
+      this.blnilterintPriority_Days=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strPriority_Desc"){
+          this.clickColumn="strPriority_Desc";
+          this.blnilterstrPriority_Cod=false;
+      this.blnilterstrPriority_Desc=true;
+      this.blnilterintPriority_Days=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
+          this.blnilterstrPriority_Cod=false;
+      this.blnilterstrPriority_Desc=false;
+      this.blnilterintPriority_Days=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="intPriority_Days"){
+          this.clickColumn="intPriority_Days";
+          this.blnilterstrPriority_Cod=false;
+      this.blnilterstrPriority_Desc=false;
+      this.blnilterintPriority_Days=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
+          this.blnilterstrPriority_Cod=false;
+      this.blnilterstrPriority_Desc=false;
+      this.blnilterintPriority_Days=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
+      }        
   }
+  filterstrPriority_Cod(h,{column,$index}){
+      if(this.blnilterstrPriority_Cod){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrPriority_Desc(h,{column,$index}){        
+      if(this.blnilterstrPriority_Desc){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+   
+    filterintPriority_Days(h,{column,$index}){        
+      if(this.blnilterintPriority_Days){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+   
+    filterdtmModified_Date(h,{column,$index}){
+      
+      if(this.blnilterdtmModified_Date){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+ 
 
+    //#endregion
+  backPage(){
+      window.history.back();
+    }
+    reloadpage(){
+      window.location.reload();
+    }
     data(){
         return{     
             companyName:'',
             companyCod:'',
-            namepage:''
+            gridDocumento:[],
+            gridDocumento1:[],
+            gridDocumento2:[],
+            strPriority_Cod:''
         }
     }
   

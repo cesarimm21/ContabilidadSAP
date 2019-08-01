@@ -25,6 +25,7 @@ export default class VisualizarAduanaComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
+  strCustom_Cod:string='';
   public documento:AduanaModel=new AduanaModel();
   gridDocumento:AduanaModel[];
   gridDocumento1:AduanaModel[];
@@ -41,20 +42,21 @@ export default class VisualizarAduanaComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrCustom_Cod:boolean=false;
   blnilterstrCustom_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
-  loading1:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
         Global.nameComponent='visualizar-aduana';
         setTimeout(() => {
             this.load();
-          }, 400)
+          }, 200)
     }  
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        aduanaService.GetAllAduana()
+        aduanaService.GetAllAduanaView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -63,7 +65,7 @@ export default class VisualizarAduanaComponent extends Vue {
           this.gridDocumento1=response;
           this.gridDocumento2=response;
           this.loading1=false;
-        }).catch(error=>{
+        }).catch(err=>{
           this.loading1=false;
         })
     }
@@ -78,22 +80,13 @@ export default class VisualizarAduanaComponent extends Vue {
     }
     handleCurrentChange(val:AduanaModel){
       this.documento=val;
+      this.strCustom_Cod=this.documento.strCustom_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -150,25 +143,39 @@ export default class VisualizarAduanaComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-    this.warningMessage('Accion no permitida');
+    this.warningMessage("Accion no permitida")  
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida")  
   }
   async validad(){      
-    var data=this.like(this.gridDocumento1,'strCustom_Cod',this.documento.strCustom_Cod)
-    this.documento=data[0];
-    if(this.documento.intCustom_ID!=undefined){
-      await setTimeout(() => {
-        debugger;
-        if(this.documento.strCustom_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/maestro_datos/aduana/viewandedit_aduana`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+    var data=Global.like(this.gridDocumento1,'strCustom_Cod',this.strCustom_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strCustom_Cod==this.strCustom_Cod){
+        await setTimeout(() => {
+          if(this.documento.strCustom_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/aduana/viewandedit_aduana`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strCustom_Cod==''){
+          this.textosave='Inserte Aduana. ';
+          this.warningMessage('Inserte Aduana. ');
         }
-      }, 600)
+        else{
+          this.textosave='No existe Aduana. ';
+          this.warningMessage('No existe Aduana. ');
+        }        
+      }
     }
     else{
       this.textosave='No existe Aduana. ';
@@ -176,10 +183,10 @@ export default class VisualizarAduanaComponent extends Vue {
     }
   }
    async validarView(){
-      if(this.documento.intCustom_ID!=undefined){
+      if(this.documento.intCustom_ID!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strCustom_Cod!=undefined){
+            if(this.documento.strCustom_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/maestro_datos/aduana/viewandedit_aduana`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
@@ -216,29 +223,29 @@ export default class VisualizarAduanaComponent extends Vue {
           this.clickColumn="strCustom_Cod";
           this.blnilterstrCustom_Cod=true;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strCustom_Desc"){
           this.clickColumn="strCustom_Desc";
           this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrCustom_Cod=false;
       this.blnilterstrCustom_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrCustom_Cod(h,{column,$index}){
@@ -262,9 +269,9 @@ export default class VisualizarAduanaComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -273,8 +280,8 @@ export default class VisualizarAduanaComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -292,10 +299,6 @@ export default class VisualizarAduanaComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
-
-    ActivarDesactivar(){
-      this.warningMessage('Accion no permitida');
-    }
     data(){
         return{     
             companyName:'',
@@ -303,7 +306,7 @@ export default class VisualizarAduanaComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
-            loading1:true
+            strCustom_Cod:''
         }
     }
   

@@ -1,52 +1,56 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-//***Modelos */
 import {CategoriaCentroCostoModel} from '@/modelo/maestro/categoriacentrocosto';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import { Notification } from 'element-ui';
-import impuestoService from '@/components/service/impuesto.service';
-import categoriacentrocostoService from '@/components/service/categoriacentrocosto.service';
-
-
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
+import categoriaService from '@/components/service/categoriacentrocosto.service';
+import { Loading } from 'element-ui';
 @Component({
-  name: 'view-categoria-centro-costo',
+  name: 'modificar-categoria-centro-costos',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
-  'buttons-accions':ButtonsAccionsComponent,
+  'buttons-accions': ButtonsAccionsComponent,
   }
 })
 export default class ViewAndEditCategoriaCentroCostoComponent extends Vue {
-     nameComponent:string;
-    fecha_actual:string;
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
- 
-    fecha_ejecucion:string;
-    companyName:any;
-    companyCod:any;
-    issave:boolean=false;
-    iserror:boolean=false;
-    textosave:string='';
-    public categoria:CategoriaCentroCostoModel=new CategoriaCentroCostoModel();
-    public tableData:Array<CategoriaCentroCostoModel>=[]; 
-    namepage:string;
-    impDisabled:boolean=false;
-    cod_criticidad:string='';
-    selectrow:any;
-    currentRow:any;
-    dialogEliminar:boolean=false;
-    codigo:string='';
-    item:string='';
-    dialogInactivar:boolean=false;
-    
+  nameComponent:string;
+  fecha_actual:string;
+  fecha_ejecucion:string;
+  value3:string;
+  companyName:any;
+  companyCod:any;
+  strCCCategory_Cod:string='';
+  public documento:CategoriaCentroCostoModel=new CategoriaCentroCostoModel();
+  gridDocumento:CategoriaCentroCostoModel[];
+  gridDocumento1:CategoriaCentroCostoModel[];
+  gridDocumento2:CategoriaCentroCostoModel[];
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
+  pagina: number =1;
+  RegistersForPage: number = 100;
+  totalRegistros: number = 100;
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  dialogBusquedaFilter:boolean=false;
+  blnilterstrCCCategory_Cod:boolean=false;
+  blnilterstrCCCategory_Desc:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
+        Global.nameComponent='modificar-categoria-centro-costos';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -54,185 +58,341 @@ export default class ViewAndEditCategoriaCentroCostoComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        this.cargarList();
+        categoriaService.GetAllCategoriaView(this.companyCod)
+        .then(response=>{
+          this.gridDocumento=[];
+          this.gridDocumento1=[];
+          this.gridDocumento2=[];
+          this.gridDocumento=response;
+          this.gridDocumento1=response;
+          this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
+        })
     }
-    
-    handleCurrentChange(val) {
-        debugger;
-        if(val!=null){
-        this.selectrow=val;
-        this.currentRow = val;
-        }
+    getDateStringView(fecha:string){
+        var dateString = new Date(fecha);
+        var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
     }
-    async cargarList(){
-        debugger;
-        if(this.codigo!=''){
-            await categoriacentrocostoService.GetOnlyOneCategoriaCentroCosto(this.codigo)
-            .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
-                if(res!=undefined){
-                    this.selectrow=res;
-                    this.validarView();
-                }
-            })
-            .catch(error=>{
-            
-            })
-        }
-        else{
-            await categoriacentrocostoService.GetAllCategoria()
-            .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
-                this.tableData=res;
-            })
-            .catch(error=>{
-            
-            })
-        }
+    handleCurrentChange(val:CategoriaCentroCostoModel){
+      this.documento=val;
+      this.strCCCategory_Cod=this.documento.strCCCategory_Cod;
+     }
+    btnBuscar(){
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      this.gridDocumento=[];
+      this.gridDocumento=data;
+      this.dialogBusquedaFilter=false;
     }
-    async validarView(){
-        debugger;
-        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
-            debugger;
-            if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.strAcc_Local_NO!=''){
-                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/categoria_centro_costo/modif_categoria_centro_costo`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
-            }
-        }
-        else{
-            this.textosave='Seleccione alguna salida. ';
-        }
+    sortByKeyDesc(array, key) {
+      return array.sort(function (a, b) {
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+         
+      });
     }
-    fnOcultar(){
-
+    sortByKeyAsc(array, key) {
+      return array.sort(function (a, b) {
+          debugger;
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          
+      });
     }
-    handleChange(value) {
-        console.log(value);
-    }
-
-    
-  EliminarItem(){
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
-  }
-  async btnEliminar(){
-    await categoriacentrocostoService.EliminarCategoriaCentroCosto(this.selectrow)
-    .then(response=>{
-      debugger;
-      console.log('eliminar',response);
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strCCCategory_Cod;
-         this.issave=true;
-         this.iserror=false;
+    Buscar(){
+      if(this.Column!=""){
+        this.dialogBusquedaFilter=true;
+        this.txtbuscar='';
       }
       else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
+        this.$message('Seleccione columna')
       }
-      this.cargarList();
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-    
-  }
-  getDateStringView(fecha:string){
-    var dateString = new Date(fecha);
-    var dia = dateString.getDate();
-    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
-    var yyyy = dateString.getFullYear();
-    var dd = (dia<10) ? '0'+dia : dd=dia;
-    var mm = (mes<10) ? '0'+mes : mm=mes;
-    return dd+'.'+mm+'.'+yyyy;
-}
-
-
-ActivarDesactivar(){
-    debugger;
-    this.item=this.selectrow.strCCGrpProc_Cod;
-    this.dialogInactivar=true;      
-  }
-  
-  successMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-  errorMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'error'
-    });
-  }
-  async btnInactivar(){
-    var nameuser:any=localStorage.getItem('User_Usuario');
-    this.selectrow.strModified_User=nameuser;
-    if(this.selectrow.strCCGrpProc_Cod!=""){
-      
-      let loadingInstance = Loading.service({
+    }
+    async AscItem(){
+      let loading = Loading.service({
         fullscreen: true,
-        text: 'Activando...',
+        text: 'Cargando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
-      );   
-      await categoriacentrocostoService.ActivarCategoriaCentroCosto(this.selectrow)
-      .then(respo=>{
-        loadingInstance.close();
-        this.successMessage('Se Activo Categoria Centro Costo '+this.selectrow.strCCCategory_Cod)
-        this.load();
-        this.issave=true;
-        this.iserror=false;
-        this.textosave='Se Activo Categoria Centro Costo'+this.selectrow.strCCCategory_Cod;
-        this.dialogInactivar=false;
-      }).catch(ee=>{
-        loadingInstance.close();
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Error en Activar '+this.selectrow.strCCCategory_Cod;
-        this.errorMessage('Error en Activar '+this.selectrow.strCCCategory_Cod)})
-        this.dialogInactivar=false;
+      );
+      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      await loading.close();
+    }
+    DscItem(){
+      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    
+    }
+    Limpiar(){
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrCCCategory_Cod=false;
+      this.blnilterstrCCCategory_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+    }
+    Print(){
+      window.print();
+    }
+  async  EliminarItem(){
+    if(this.documento.intCCCategory_ID!=-1&&this.documento.strCCCategory_Cod!=""&&this.documento.strCCCategory_Desc!=""){
+      this.planDialog=true;
     }
     else{
-      this.warningMessage('Debe de seleccionar una fila!!!');
+      this.warningMessage("Selecciona un Categoria Centro Costo")
+    }    
+  }
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    categoriaService.EliminarCategoriaCentroCosto(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new CategoriaCentroCostoModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strCCCategory_Cod!="" && this.documento.strCCCategory_Desc!=""){
+      this.planActivarDialog=true;
+    }
+    else{
+      this.warningMessage('Selecciones Categoria Centro Costo')
     }
   }
-  
-  warningMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'warning'
-    });
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    categoriaService.ActivarCategoriaCentroCosto(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new CategoriaCentroCostoModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
   }
+  async validad(){      
+    var data=Global.like(this.gridDocumento1,'strCCCategory_Cod',this.strCCCategory_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strCCCategory_Cod==this.strCCCategory_Cod){
+        await setTimeout(() => {
+          if(this.documento.strCCCategory_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/categoria_centro_costo/modif_categoria_centro_costo`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strCCCategory_Cod==''){
+          this.textosave='Inserte Categoria Centro Costo. ';
+          this.warningMessage('Inserte Categoria Centro Costo. ');
+        }
+        else{
+          this.textosave='No existe Categoria Centro Costo. ';
+          this.warningMessage('No existe Categoria Centro Costo. ');
+        }        
+      }
+    }
+    else{
+      this.textosave='No existe Categoria Centro Costo. ';
+      this.warningMessage('No existe Categoria Centro Costo. ');
+    }
+  }
+   async validarView(){
+      if(this.documento.intCCCategory_ID!=-1){
+          await setTimeout(() => {
+            debugger;
+            if(this.documento.strCCCategory_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/categoria_centro_costo/modif_categoria_centro_costo`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+            }
+          }, 600)
+        }
+        else{
+          this.textosave='Seleccione Categoria Centro Costo. ';
+          this.warningMessage('Seleccione Categoria Centro Costo. ');
+        }
+      }
+    siguiente(){
+      if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+        this.pagina++;
+        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    anterior(){
+      if(this.pagina>1){
+      this.pagina--;
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
+    }
+  //#region [CABECERA]
+  headerclick(val){    
+      this.Column=val.label;
+      Global.setColumna(this.Column);     
+      if(val.property=="strCCCategory_Cod"){
+          this.clickColumn="strCCCategory_Cod";
+          this.blnilterstrCCCategory_Cod=true;
+      this.blnilterstrCCCategory_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCCCategory_Desc"){
+          this.clickColumn="strCCCategory_Desc";
+          this.blnilterstrCCCategory_Cod=false;
+      this.blnilterstrCCCategory_Desc=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
+          this.blnilterstrCCCategory_Cod=false;
+      this.blnilterstrCCCategory_Desc=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
+          this.blnilterstrCCCategory_Cod=false;
+      this.blnilterstrCCCategory_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
+      }        
+  }
+  filterstrCCCategory_Cod(h,{column,$index}){
+      if(this.blnilterstrCCCategory_Cod){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrCCCategory_Desc(h,{column,$index}){        
+      if(this.blnilterstrCCCategory_Desc){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+   
+    filterdtmModified_Date(h,{column,$index}){
+      
+      if(this.blnilterdtmModified_Date){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+ 
 
-
+    //#endregion
+  backPage(){
+      window.history.back();
+    }
+    reloadpage(){
+      window.location.reload();
+    }
     data(){
         return{     
             companyName:'',
             companyCod:'',
-            namepage:''
+            gridDocumento:[],
+            gridDocumento1:[],
+            gridDocumento2:[],
+            strCCCategory_Cod:''
         }
     }
   

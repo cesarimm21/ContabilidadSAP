@@ -273,12 +273,8 @@
             <bgrupoproceso v-on:grupoprocesoseleccionado="grupoprocesoseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoProceso()">
             </bgrupoproceso>
         </el-dialog> 
-        <el-dialog title="Grupo Proceso"  :visible.sync="dialogGrupoProceso" @close="closeDialogGrupoProceso" size="small" >
-            <bgrupoproceso v-on:grupoprocesoseleccionado="grupoprocesoseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoProceso()">
-            </bgrupoproceso>
-        </el-dialog>   
         <el-dialog title="Grupo Area"  :visible.sync="dialogGrupoArea" @close="closeDialogGrupoArea" size="small" >
-            <bgrupoarea v-on:grupoareaseleccionado="grupoareaseleccionado($event)" v-on:closegrupoproceso="closeDialogGrupoArea()">
+            <bgrupoarea v-on:grupoareaseleccionado="grupoareaseleccionado($event)" v-on:grupoareaClose="closeDialogGrupoArea()">
             </bgrupoarea>
         </el-dialog> 
         

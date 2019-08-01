@@ -1,7 +1,7 @@
 <template>
     <div class="crear-ingreso-comprobante">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
-            <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"/>
+            <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
@@ -43,6 +43,19 @@
                                 </div>
                                 <span style="font-size: 11px;margin-top: 5px;">{{strpais_Desc}}</span>
                             </div>
+                             <div class="form-group row ">
+                                <label class="el-form-item__label col-md-2" >Region</label>
+                                <div class="col-md-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input :disabled="visualizar" size ="small"  @blur="desactivar_Departamento" @focus="activar_Departamento" 
+                                        v-model="bancoModel.strBank_Region" >                            
+                                            <el-button :disabled="visualizar" v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
+                                        </el-input>
+                                    </div>
+                                </div>
+                                <span style="font-size: 11px;margin-top: 5px;">{{Departamento_Desc}}</span>
+                                  
+                            </div>  
                             <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Banco</label>
                                 <div class="col-md-2 grupolabel">
@@ -67,7 +80,7 @@
                                 <label class="el-form-item__label col-md-2" >Tipo</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-select :disabled="visualizar"  v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-select  @change="cambiarTipoBanco" :disabled="visualizar"  v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                             <el-option style="font-size:13px"
                                             v-for="item in tabletipo"
                                             :key="item.strType_Cod"
@@ -128,19 +141,7 @@
                                     </div>
                                 </div>
                             </div>      -->
-                             <div class="form-group row ">
-                                <label class="el-form-item__label col-md-2" >Region</label>
-                                <div class="col-md-2 grupolabel">
-                                    <div class="input-group mb-3" >
-                                        <el-input :disabled="visualizar" size ="small"  @blur="desactivar_Departamento" @focus="activar_Departamento" 
-                                        v-model="bancoModel.strBank_Region" >                            
-                                            <el-button :disabled="visualizar" v-if="btnactivardepartamento && !departVisible" slot="append" class="boton" icon="fa fa-clone" @click="departDialog()"></el-button> 
-                                        </el-input>
-                                    </div>
-                                </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{Departamento_Desc}}</span>
-                                  
-                            </div>  
+                            
                              <div class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Direccion</label>
                                 <div class="col-md-6 grupolabel">
@@ -155,17 +156,17 @@
                     </div>
                     <br/>
                     <div class="row" v-if="bln_tipobanco">
-                        <div class="col-sm-10" >
+                         <div class="col-sm-10" >
                             <el-card class="box-card" style="margin-left: -10px;">
                                 <div slot="header" class="headercard" style="margin-top: -4px;">
                                     <buttons-accions v-on:validarView="validarView()"></buttons-accions>
                                 </div>
                                 <div class="col-md-12" >
                                     <div class="row bodycard" style="background: white;margin-top: 0px;">
-                                        <el-table
+                                        <el-table 
                                             ref="missionTable"
                                             :max-height="sizeScreen"
-                                            :data="gridCuentaBancaria" 
+                                            :data="tableCuentaBancaria" 
                                             highlight-current-row
                                             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                                             class="ExcelTable2007">
@@ -184,7 +185,7 @@
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
-                                                prop="strBank_Account" sortable  width="120"
+                                                prop="strBank_Account"   width="120"
                                                 label="Cta. Bancaria">
                                                 <template scope="scope">
                                                     <el-input  v-if=" bln_tbl_cuenta_bancaria  && (scope.row === editing.row) 
@@ -192,9 +193,9 @@
                                                     </el-input>
                                                     <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickBankAccount(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account }}</label>
                                                 </template>
-                                            </el-table-column> 
+                                            </el-table-column>   
                                             <el-table-column
-                                                prop="strBank_Account_CCI" sortable  width="120"
+                                                prop="strBank_Account_CCI"   width="120"
                                                 label="Cta. CCI">
                                                 <template scope="scope">
                                                     <el-input  v-if="bln_tbl_cuenta_cci  && (scope.row === editing.row) 
@@ -203,22 +204,15 @@
                                                     <label v-bind:style="{background:cell_ocultar,width:'100%',margin: '0rem'}" v-else @click="clickcci(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBank_Account_CCI }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <!-- <el-table-column
-                                                prop="strBankAcct_IntBan" sortable width="150"
-                                                label="Moneda">
-                                                <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
-                                                </template>
-                                            </el-table-column> -->
                                             <el-table-column
-                                                prop="strCurrency_Cod" sortable width="150"
+                                                prop="strCurrency_Cod"  width="150"
                                                 label="Moneda">
                                                 <template scope="scope">
                                                     <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  >&nbsp;{{ scope.row.strCurrency_Cod }}</label>
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
-                                                prop="strBranch_Cod" sortable width="150"
+                                                prop="strBranch_Cod"  width="150"
                                                 label="Branch Code">
                                                 <template scope="scope">
                                                     <el-input  v-if="bln_tbl_cuenta_branch  && (scope.row === editing.row) 
@@ -228,7 +222,7 @@
                                                 </template>
                                             </el-table-column>
                                             <el-table-column
-                                                prop="strSwift_Cod" sortable 
+                                                prop="strSwift_Cod"  
                                                 label="Swift Code">
                                                 <template scope="scope">
                                                     <el-input  v-if="bln_tbl_swift_cod  && (scope.row === editing.row) 
@@ -237,20 +231,6 @@
                                                     <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}" v-else @click="clickswiftcode(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strSwift_Cod }}</label>
                                                 </template>
                                             </el-table-column>
-                                            <!-- <el-table-column
-                                                prop="strBankAcct_IntBan" sortable width="150"
-                                                label="Ciudad">
-                                                <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
-                                                </template>
-                                            </el-table-column> -->
-                                            <!-- <el-table-column
-                                                prop="strBankAcct_IntBan" sortable width="150"
-                                                label="Direccion">
-                                                <template scope="scope">
-                                                    <label style="width:100%" v-bind:style="{width:'100%',margin: '0rem'}"  @click="clickcuentacontable(scope.row,scope.row.edit,scope.column.property)">&nbsp;{{ scope.row.strBankAcct_IntBan }}</label>
-                                                </template>
-                                            </el-table-column> -->
                                         </el-table>
                                     </div>
                                 </div>

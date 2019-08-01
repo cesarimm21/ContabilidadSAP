@@ -18,8 +18,6 @@
                                     <div class="input-group mb-3" >
                                     <el-input   :disabled="true"
                                         size ="small" 
-                                        @blur="desactivar_compania" 
-                                        @focus="activar_compania" 
                                         v-model="companyCod">
                                     </el-input>
                                     </div>

@@ -23,7 +23,7 @@ export default {
     })
   },
   Crearprioridad(data){
-    return axios.post(CONFIG.API_URL+'prioridad',data)
+    return axios.post(CONFIG.API_URL+'prioridad/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -34,8 +34,8 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  Eliminarprioridad(data){
-    return axios.post(CONFIG.API_URL+'prioridad/eliminar',data)
+  desactivarprioridad(data){
+    return axios.post(CONFIG.API_URL+'prioridad/desactivar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

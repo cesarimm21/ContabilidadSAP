@@ -2,7 +2,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import axios from 'axios';
 import { Loading } from 'element-ui';
 
-import {GrupoCentroCostoModel} from '@/modelo/maestro/grupocentrocosto';
+import {GrupoProcesoModel} from '@/modelo/maestro/grupoproceso';
 import grupoprocesoService from '@/components/service/grupoproceso.service';
 import { Notification } from 'element-ui';
 import router from '@/router';
@@ -29,14 +29,15 @@ export default class  BGrupoProcesoComponent extends Vue {
   valueCombo:string="";
   //Modelos
   articulos:any =[];
-  public cuentacontableModel:Array<GrupoCentroCostoModel>=[];
-  public cuentacontableModel1:Array<GrupoCentroCostoModel>=[];
-  public cuentacontableSelectModel:GrupoCentroCostoModel=new GrupoCentroCostoModel();
+  public cuentacontableModel:Array<GrupoProcesoModel>=[];
+  public cuentacontableModel1:Array<GrupoProcesoModel>=[];
+  public cuentacontableSelectModel:GrupoProcesoModel=new GrupoProcesoModel();
   blnilterstrCCGrpProc_Cod:boolean=true;
   blnilterstrCCGrpProc_Desc:boolean=false;
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  companyCod:any;
   constructor() {
     super();
     setTimeout(() => {
@@ -44,7 +45,8 @@ export default class  BGrupoProcesoComponent extends Vue {
     }, 200)
   }
   load(){
-    grupoprocesoService.GetAllGrupoProceso2()
+    this.companyCod=localStorage.getItem('compania_cod');
+    grupoprocesoService.GetAllGrupoProceso2(this.companyCod)
     .then(response=>{
       this.cuentacontableModel=response;       
       this.cuentacontableModel1=response;       

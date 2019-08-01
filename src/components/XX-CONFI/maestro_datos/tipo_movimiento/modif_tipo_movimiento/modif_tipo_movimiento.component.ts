@@ -40,7 +40,7 @@ export default class ModificarTipoMovimientoComponent extends Vue {
 
     load(){
         debugger;
-        var object = JSON.parse(this.$route.query.data);
+        this.tipomovimiento= JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         this.txtviewmodulo=modulo;
         if(modulo.toLowerCase()!='visualizar'){
@@ -51,7 +51,7 @@ export default class ModificarTipoMovimientoComponent extends Vue {
             this.txtmodulo='Visualizar Tipo Movimiento';
             this.visualizar=true;
         }
-        this.cargar(object.strTypeMov_Cod);
+        // this.cargar(object.strTypeMov_Cod);
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
     }
@@ -74,12 +74,23 @@ export default class ModificarTipoMovimientoComponent extends Vue {
         })
     }
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){
         if(this.tipomovimiento.strDoc_Trans_Num==''){ this.$message('Complete los campos obligatorios')}
         if(this.tipomovimiento.strTypeMov_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
-            this.tipomovimiento.chrStatus='A';
+            var user:any=localStorage.getItem('User_Usuario');
+
+            this.tipomovimiento.strModified_User=user; 
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                );    
             tipomovimientoService.UpdateTipoMovimiento(this.tipomovimiento)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -88,8 +99,8 @@ export default class ModificarTipoMovimientoComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strTypeMov_Cod;
-                this.tipomovimiento=new TipoMovimientoModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -101,6 +112,14 @@ export default class ModificarTipoMovimientoComponent extends Vue {
             })
         }
         
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
     } 
     fnOcultar(){
 

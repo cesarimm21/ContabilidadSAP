@@ -60,13 +60,23 @@ export default class ModificarCategoriaCentroCostoComponent extends Vue {
     }
 
     guardarTodo(){
+    
+    if(this.txtviewmodulo=='modificar'){
         if(this.categoria.strCCCategory_Cod==''){ this.$message('Complete los campos obligatorios')}
         if(this.categoria.strCCCategory_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
             this.categoria.chrStatus='A';
-            this.categoria.strCreation_User=this.nameuser;
+            this.categoria.strModified_User=this.nameuser;
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                );   
             categoriacentrocostoService.ModificarCategoriaCentroCosto(this.categoria)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -75,8 +85,8 @@ export default class ModificarCategoriaCentroCostoComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strCCCategory_Cod;
-                this.categoria=new CategoriaCentroCostoModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -87,6 +97,14 @@ export default class ModificarCategoriaCentroCostoComponent extends Vue {
                 this.textosave = 'Error al guardar.';
             })
         }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
         
     } 
     fnOcultar(){

@@ -83,22 +83,31 @@ debugger;
         })
     }
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){
         if(this.controlprecio.strCtlPrec_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
         else{
-            this.controlprecio.chrStatus='A';
-            console.log('update',this.controlprecio);
+            var user:any=localStorage.getItem('User_Usuario');
+            this.controlprecio.strModified_User=user; 
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                );     
             controlprecioService.Updatecontrolprecio(this.controlprecio)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
-                    message: 'Se guardo Correctamente '+resp.strCtlPrec_Cod
+                    message: 'Se guardo Correctamente '+resp
                   });
                 this.issave = true;
                 this.iserror = false;
-                this.textosave = 'Se guardo correctamente. '+resp.strCtlPrec_Cod;
-                this.controlprecio=new ControlPrecioModel();
+                this.textosave = 'Se guardo correctamente. '+resp;
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -109,6 +118,14 @@ debugger;
                 this.textosave = 'Error al guardar.';
             })
         }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
         
     } 
     fnOcultar(){

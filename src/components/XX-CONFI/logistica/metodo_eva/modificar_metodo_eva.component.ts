@@ -44,6 +44,9 @@ export default class ModificarMetodoEvaComponent extends Vue {
   blnilterstrValMeth_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
   servicioDialog:boolean=false;
   item:string='';
   dialogInactivar:boolean=false;
@@ -147,86 +150,95 @@ export default class ModificarMetodoEvaComponent extends Vue {
     Print(){
       window.print();
     }
-    async  EliminarItem(){
-      this.servicioDialog=true;
+    async EliminarItem(){
+      if(this.documento.intIdValMeth_ID!=-1&&this.documento.strValMeth_Cod!=""&&this.documento.strValMeth_Desc!=""){
+        this.planDialog=true;
+      }
+      else{
+        this.warningMessage("Selecciona un Metodo Valuacion")
+      }    
     }
-    deleteServicio(){
-      if(this.documento.strValMeth_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
+    inactivarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Inactivando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        ); 
         metodoService.eliminarMetoValuacion(this.documento)
-        .then(resp=>{
-          loadingInstance.close();
-          this.servicioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente '+resp,
-              type: 'success'
-            });
-  
-            this.documento=new MetodoValuacionModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente '+resp;
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.servicioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
-        }
-        else{
-            this.warningMessage('Seleccione. ');
-        }
+      .then(resp=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Inactivo correctamente '+resp,
+            type: 'success'
+          });
+          this.documento=new MetodoValuacionModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Inactivo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Inactivo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
     }
-    activarServicio(){
-      if(this.documento.strValMeth_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Activando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
+    async Activar(){
+      if(this.documento.strValMeth_Cod!="" && this.documento.strValMeth_Desc!=""){
+        this.planActivarDialog=true;
+      }
+      else{
+        this.warningMessage('Selecciones Metodo Valuacion')
+      }
+    }
+    activarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        ); 
         metodoService.activarMetoValuacion(this.documento)
-        .then(resp=>{
-          loadingInstance.close();
-          this.servicioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Activo Correctamente '+resp.strValMeth_Cod,
-              type: 'success'
-            });
-  
-            this.documento=new MetodoValuacionModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Activo Correctamente '+resp.strValMeth_Cod;
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.servicioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se Activo',
-              type: 'error'
-            });
-        })
-        }
-        else{
-            this.warningMessage('Seleccione. ');
-        }
+      .then(resp=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Activo correctamente '+resp,
+            type: 'success'
+          });
+          this.documento=new MetodoValuacionModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Activo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Activo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
     }
 
   async validad(){      

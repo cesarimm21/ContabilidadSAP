@@ -150,86 +150,35 @@ export default class VisualizarTipoRequisicionComponent extends Vue {
   async EliminarItem(){
     this.warningMessage('Accion no permitida');
   }
-  async btnEliminar(){
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Eliminando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-    );   
-    await tiporeService.EliminarTipoRequisicion(this.tipoRequi.intIdTypeReq_ID)
-    .then(response=>{
-      loadingInstance.close();
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.';
-         this.issave=true;
-         this.iserror=false;
-         this.$message({
-          showClose: true,
-          type: 'success',
-          message: 'Se elimino correctamento '
-        });
-        setTimeout(() => {
-          this.load();
-        }, 200)
-      }
-      else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
-      }
-      this.dialogEliminar=false;
-    }).catch(error=>{
-      loadingInstance.close();
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-    
-  }
   async ActivarDesactivar(){
     this.warningMessage('Accion no permitida');      
   }
-  async btnInactivar(){
-    this.nameuser=localStorage.getItem('User_Usuario');
-    this.tipoRequi.strModified_User=this.nameuser;
-    if(this.tipoRequi.intIdTypeReq_ID!=-1&&this.tipoRequi.strTypeReq_Cod!=""){
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Inactivando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
+  async validad(){      
+    var data=Global.like(this.gridTipo1,'strTypeReq_Cod',this.strTypeReq_Cod)
+      if(data.length>0){
+        this.tipoRequi=data[0];
+        if(this.tipoRequi.strTypeReq_Cod==this.strTypeReq_Cod){
+          await setTimeout(() => {
+            if(this.tipoRequi.strTypeReq_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/logistica/tipo_requisicion/viewandedit_tipo_requi`, query: { vista:'modificar' ,data:JSON.stringify(this.tipoRequi) }  })
+            }
+          }, 600)
         }
-      );   
-      await tiporeService.DesactivarTipoRequisicion(this.tipoRequi)
-      .then(respo=>{
-        loadingInstance.close();
-        this.successMessage('Se Inactivo el Tipo Requisicion '+this.tipoRequi.strTypeReq_Cod)
-        setTimeout(() => {
-          this.load();
-        }, 200)
-        this.issave=true;
-        this.iserror=false;
-        this.textosave='Se Inactivo el Tipo Requisicion '+this.tipoRequi.strTypeReq_Cod;
-        this.dialogInactivar=false;
-      }).catch(ee=>{
-        loadingInstance.close();
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Error en Inactivar '+this.tipoRequi.strTypeReq_Cod;
-        this.errorMessage('Error en Inactivar '+this.tipoRequi.strTypeReq_Cod)})
-        this.dialogInactivar=false;
-    }
-    else{
-      this.warningMessage('Debe de seleccionar una fila!!!');
-    }
+        else{
+          if(this.strTypeReq_Cod==''){
+            this.textosave='Inserte Tipo Requisicion. ';
+            this.warningMessage('Inserte Tipo Requisicion. ');
+          }
+          else{
+            this.textosave='No existe Tipo Requisicion. ';
+            this.warningMessage('No existe Tipo Requisicion. ');
+          }        
+        }
+      }
+      else{
+        this.textosave='No existe Tipo Requisicion. ';
+        this.warningMessage('No existe Tipo Requisicion. ');
+      }
   }
    async validarView(){
       if(this.tipoRequi.intIdTypeReq_ID!=-1){

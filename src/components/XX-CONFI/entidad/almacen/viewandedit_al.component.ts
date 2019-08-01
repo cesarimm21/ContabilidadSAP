@@ -116,6 +116,7 @@ export default class ViewAndEditAlmacenComponent extends Vue {
       this.sucursal=val;  
       this.almacen.intIdSubsidiary_ID=this.sucursal.intIdSubsidiary_ID;
       this.almacen.strSubsidiary_Cod=this.sucursal.strSubsidiary_Cod;     
+      this.almacen.strSubsidiary_Desc=this.sucursal.strSubsidiary_Desc;     
       this.sucursalVisible=false;
     }
     //#endregion
@@ -149,7 +150,6 @@ export default class ViewAndEditAlmacenComponent extends Vue {
       var vista=this.$route.query.vista; 
       if(vista=='modificar'){
         var user:any=localStorage.getItem('User_Usuario');
-        var id:any=localStorage.getItem('compania_ID');
         this.almacen.strModified_User=user;
         let loadingInstance = Loading.service({
           fullscreen: true,
@@ -167,7 +167,6 @@ export default class ViewAndEditAlmacenComponent extends Vue {
                   type: 'success',
                   message: 'Se actualizo Correctamente '+resp
                 });
-                this.almacen=new AlmacenModel();
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se actualizo correctamente. '+resp;

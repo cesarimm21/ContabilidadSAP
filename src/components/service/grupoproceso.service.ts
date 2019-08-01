@@ -10,8 +10,14 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllGrupoProceso2(){  
-    return axios.get(CONFIG.API_URL+'grupoproceso2')
+  GetAllGrupoProcesoView(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'grupoproceso/view/'+strCompany_Cod)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  GetAllGrupoProceso2(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'grupoproceso2/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -23,7 +29,7 @@ export default {
     })
   },
   CrearGrupoProceso(data){  
-    return axios.post(CONFIG.API_URL+'grupoproceso',data)
+    return axios.post(CONFIG.API_URL+'grupoproceso/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

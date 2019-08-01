@@ -7,7 +7,7 @@ import router from '@/router';
 import {ExoneracionOperacionesModel} from '@/modelo/maestro/exoneracionOperaciones';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import exoService from '@/components/service/exooperaciones.service';
+import exooperacionesService from '@/components/service/exooperaciones.service';
 import { Loading } from 'element-ui';
 @Component({
   name: 'visualizar-exooperaciones',
@@ -42,11 +42,13 @@ export default class VisualizarExoOperacionComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrNDExonIR_Cod:boolean=false;
   blnilterstrNDExonIR_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='visualizar-aduana';
+        Global.nameComponent='visualizar-exooperaciones';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -54,7 +56,7 @@ export default class VisualizarExoOperacionComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        exoService.GetAllExoOperaciones()
+        exooperacionesService.GetAllExoOperacionesView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -62,6 +64,9 @@ export default class VisualizarExoOperacionComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -138,14 +143,17 @@ export default class VisualizarExoOperacionComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-     this.warningMessage('Accion no permitida');
+    this.warningMessage("Accion no permitida")   
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida")  
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strNDExonIR_Cod',this.strNDExonIR_Cod)
@@ -153,7 +161,6 @@ export default class VisualizarExoOperacionComponent extends Vue {
       this.documento=data[0];
       if(this.documento.strNDExonIR_Cod==this.strNDExonIR_Cod){
         await setTimeout(() => {
-          debugger;
           if(this.documento.strNDExonIR_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -216,29 +223,29 @@ export default class VisualizarExoOperacionComponent extends Vue {
           this.clickColumn="strNDExonIR_Cod";
           this.blnilterstrNDExonIR_Cod=true;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strNDExonIR_Desc"){
           this.clickColumn="strNDExonIR_Desc";
           this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrNDExonIR_Cod(h,{column,$index}){
@@ -262,9 +269,9 @@ export default class VisualizarExoOperacionComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -273,8 +280,8 @@ export default class VisualizarExoOperacionComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -292,11 +299,6 @@ export default class VisualizarExoOperacionComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
-
-    ActivarDesactivar(){
-      this.warningMessage('Accion no permitida');
-    }
-    
     data(){
         return{     
             companyName:'',

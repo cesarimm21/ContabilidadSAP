@@ -16,6 +16,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllBancoView(strCompany_Cod){      
+    return axios.get(CONFIG.API_URL+'banco/view/'+strCompany_Cod)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllBancoType(){      
     return axios.get(CONFIG.API_URL+'bancotype')
     .then(response =>{            
@@ -47,7 +53,7 @@ export default{
     })
   },
   crearBanco(data){
-    return axios.post(CONFIG.API_URL+'banco',data)
+    return axios.post(CONFIG.API_URL+'banco/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -57,7 +63,20 @@ export default{
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  inactivarBanco(documento){
+    return axios.post(CONFIG.API_URL+'banco/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarBanco(documento){
+    return axios.post(CONFIG.API_URL+'banco/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+
   
 }
   

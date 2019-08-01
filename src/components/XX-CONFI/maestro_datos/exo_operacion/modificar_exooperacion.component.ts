@@ -7,9 +7,8 @@ import router from '@/router';
 import {ExoneracionOperacionesModel} from '@/modelo/maestro/exoneracionOperaciones';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import exoService from '@/components/service/exooperaciones.service';
-import { Loading } from 'element-ui';
 import exooperacionesService from '@/components/service/exooperaciones.service';
+import { Loading } from 'element-ui';
 @Component({
   name: 'modificar-exooperaciones',
   components:{
@@ -27,7 +26,6 @@ export default class ModificarExoOperacionComponent extends Vue {
   companyName:any;
   companyCod:any;
   strNDExonIR_Cod:string='';
-  exoDialog:boolean=false;
   public documento:ExoneracionOperacionesModel=new ExoneracionOperacionesModel();
   gridDocumento:ExoneracionOperacionesModel[];
   gridDocumento1:ExoneracionOperacionesModel[];
@@ -44,15 +42,15 @@ export default class ModificarExoOperacionComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrNDExonIR_Cod:boolean=false;
   blnilterstrNDExonIR_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
-
-  dialogInactivar:boolean=false;
-  item:string='';
-
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='modificar-aduana';
+        Global.nameComponent='modificar-exooperaciones';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -60,7 +58,7 @@ export default class ModificarExoOperacionComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        exoService.GetAllExoOperaciones()
+        exooperacionesService.GetAllExoOperacionesView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -68,6 +66,9 @@ export default class ModificarExoOperacionComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -144,58 +145,101 @@ export default class ModificarExoOperacionComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-    if(this.documento!=undefined){
-      this.exoDialog=true; 
+    if(this.documento.intIdNDExonIR_ID!=-1&&this.documento.strNDExonIR_Cod!=""&&this.documento.strNDExonIR_Desc!=""){
+      this.planDialog=true;
     }
     else{
-      alert('Debe de seleccionar una fila!!!');
+      this.warningMessage("Selecciona Exoneracion Operaciones ND")
+    }    
+  }
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
+      }
+      ); 
+    exooperacionesService.inactivarExoOperaciones(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new ExoneracionOperacionesModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
+  }
+  async Activar(){
+    if(this.documento.strNDExonIR_Cod!="" && this.documento.strNDExonIR_Desc!=""){
+      this.planActivarDialog=true;
+    }
+    else{
+      this.warningMessage('Selecciones Exoneracion Operaciones ND')
     }
   }
-  deleteExo(){
-    if(this.documento.strNDExonIR_Cod!=''){
-      let loadingInstance = Loading.service({
-        fullscreen: true,
-        text: 'Eliminando...',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.8)'
-        }
-        ); 
-        exoService.deleteExoOperaciones(this.documento)
-      .then(resp=>{
-        loadingInstance.close();
-        this.exoDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'Se Elimino correctamente '+resp,
-            type: 'success'
-          });
-
-          this.documento=new ExoneracionOperacionesModel();
-          this.load();
-          this.issave = true;
-          this.iserror = false;
-          this.textosave = 'Se Elimino Correctamente '+resp;
-      })
-      .catch(error=>{
-        loadingInstance.close();
-        this.exoDialog=false;
-        this.$message({
-            showClose: true,
-            message: 'No se elimino',
-            type: 'error'
-          });
-      })
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Activando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
-      else{
-          this.warningMessage('Seleccione Exoneracion Operaciones ND. ');
-      }
+      ); 
+    exooperacionesService.activarExoOperaciones(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new ExoneracionOperacionesModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strNDExonIR_Cod',this.strNDExonIR_Cod)
@@ -203,7 +247,6 @@ export default class ModificarExoOperacionComponent extends Vue {
       this.documento=data[0];
       if(this.documento.strNDExonIR_Cod==this.strNDExonIR_Cod){
         await setTimeout(() => {
-          debugger;
           if(this.documento.strNDExonIR_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/exo_operacion/viewandedit_exooperacion`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -235,8 +278,8 @@ export default class ModificarExoOperacionComponent extends Vue {
           }, 600)
         }
         else{
-          this.textosave='Seleccione Aduana. ';
-          this.warningMessage('Seleccione Aduana. ');
+          this.textosave='Seleccione Exoneracion Operaciones ND. ';
+          this.warningMessage('Seleccione Exoneracion Operaciones ND. ');
         }
       }
     siguiente(){
@@ -266,29 +309,29 @@ export default class ModificarExoOperacionComponent extends Vue {
           this.clickColumn="strNDExonIR_Cod";
           this.blnilterstrNDExonIR_Cod=true;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strNDExonIR_Desc"){
           this.clickColumn="strNDExonIR_Desc";
           this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrNDExonIR_Cod=false;
       this.blnilterstrNDExonIR_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrNDExonIR_Cod(h,{column,$index}){
@@ -312,9 +355,9 @@ export default class ModificarExoOperacionComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -323,8 +366,8 @@ export default class ModificarExoOperacionComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -342,63 +385,6 @@ export default class ModificarExoOperacionComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
-
-
-    ActivarDesactivar(){
-      debugger;
-      this.item=this.documento.strNDExonIR_Cod;
-      this.dialogInactivar=true;      
-    }
-    
-    successMessage(newMsg : string) {
-      this.$message({
-        showClose: true,
-        message: newMsg,
-        type: 'success'
-      });
-    }
-    errorMessage(newMsg : string) {
-      this.$message({
-        showClose: true,
-        message: newMsg,
-        type: 'error'
-      });
-    }
-    async btnInactivar(){
-      var nameuser:any=localStorage.getItem('User_Usuario');
-      this.documento.strModified_User=nameuser;
-      if(this.documento.strNDExonIR_Cod!=""){
-        
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Activando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-        );   
-        await exooperacionesService.activar(this.documento)
-        .then(respo=>{
-          loadingInstance.close();
-          this.successMessage('Se Activo la Exoneracion Operacion '+this.documento.strNDExonIR_Cod)
-          this.load();
-          this.issave=true;
-          this.iserror=false;
-          this.textosave='Se Activo la Exoneracion Operacion '+this.documento.strNDExonIR_Cod;
-          this.dialogInactivar=false;
-        }).catch(ee=>{
-          loadingInstance.close();
-          this.issave=false;
-          this.iserror=true;
-          this.textosave='Error en Activar '+this.documento.strNDExonIR_Cod;
-          this.errorMessage('Error en Activar '+this.documento.strNDExonIR_Cod)})
-          this.dialogInactivar=false;
-      }
-      else{
-        this.warningMessage('Debe de seleccionar una fila!!!');
-      }
-    }
-    
-
     data(){
         return{     
             companyName:'',

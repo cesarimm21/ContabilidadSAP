@@ -52,6 +52,24 @@
                                     </div>
                                 </div>
                             </div>           
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-sm-2" >Indicador Movimiento</label>
+                                <div class="col-sm-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input class="validador" size="small" v-model="tipomovimiento.chrTypeMov_Ind" :maxlength="1" >
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>           
+                            <div class="form-group row">
+                                <label class="el-form-item__label col-sm-2" >Tipo Operacion</label>
+                                <div class="col-sm-2 grupolabel">
+                                    <div class="input-group mb-3" >
+                                        <el-input class="validador" size="small" v-model="tipomovimiento.strTypeOper_Cod"  >
+                                        </el-input>
+                                    </div>
+                                </div>
+                            </div>           
                         </div>
                     </div>
                 </div>

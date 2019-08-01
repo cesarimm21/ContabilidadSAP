@@ -154,7 +154,7 @@ export default class CrearBancoComponent extends Vue {
   bln_tbl_cuenta_cci:boolean=false;
   bln_tbl_cuenta_branch:boolean=false;
   bln_tbl_swift_cod:boolean=false;
-
+  nameuser:any;
   constructor(){    
     super();
     
@@ -163,6 +163,7 @@ export default class CrearBancoComponent extends Vue {
     this.strCompany_Desc=localStorage.getItem('compania_name'); 
     this.tableCuentaBancaria=[];
     setTimeout(() => {
+      
       for(var i=0;i<this.totalRegistros;i++){
         var item:CuentaBancariaModel=new CuentaBancariaModel();
         this.tableCuentaBancaria.push(item);
@@ -469,46 +470,53 @@ closeCategoriaCuenta(){
     
   }  
   guardarTodo(){
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guardando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );  
-    this.bancoModel.strCountry=this.strpais_Cod;
-    this.bancoModel.strCountry_Desc=this.strpais_Desc;
-    this.bancoModel.strBank_Region_Desc=this.Departamento_Desc;
-    this.bancoModel.strBank_Curr_Desc=this.Currency_Cod_Desc;
-    this.bancoModel.strCompany_Cod=this.strCompany_Cod;
-    this.bancoModel.strCompany_Desc=this.strCompany_Desc;
-    this.bancoModel.strBank_Type=this.strlevel;
-    this.bancoModel.strBank_Curr=this.Currency_Cod;
-    debugger;
-    for(var i=0;i<this.tableCuentaBancaria.length;i++){
-      if(this.tableCuentaBancaria[i].strAcc_Local_NO!=''){
-        var item=this.tableCuentaBancaria[i];
-        this.bancoModel.listaCuentaBancaria.push(item);
-      }
-    }
-    console.log(this.bancoModel);
+    if(this.bancoModel.strBank_Cod==''){ this.$message('Complete los campos obligatorios')}
+    if(this.bancoModel.strBank_Name==''){ this.$message('Complete los campos obligatorios')}
+    if(this.strlevel==''){ this.$message('Complete los campos obligatorios')}
+    else{
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Guardando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        );  
 
-    bancoService.crearBanco(this.bancoModel)
-    .then(response=>{
-      loadingInstance.close();
-      this.openMessageSuccess('Se guardo correctamente ');
-      this.textosave = 'Se guardo correctamente '+response.strBank_Cod;
-      this.issave=true;
-      this.iserror=false;
-      this.limpiar();
-    })
-    .catch(e =>{      
-      this.openMessageError('Error guardar cliente');
-      loadingInstance.close();
-      this.textosave = 'No se guardo el banco.';
-      this.issave=false;
-      this.iserror=true;
-    })    
+      this.bancoModel.strCountry=this.strpais_Cod;
+      this.bancoModel.strCountry_Desc=this.strpais_Desc;
+      this.bancoModel.strBank_Region_Desc=this.Departamento_Desc;
+      this.bancoModel.strBank_Curr_Desc=this.Currency_Cod_Desc;
+      this.bancoModel.strCompany_Cod=this.strCompany_Cod;
+      this.bancoModel.strCompany_Desc=this.strCompany_Desc;
+      this.bancoModel.strBank_Type=this.strlevel;
+      this.bancoModel.strBank_Curr=this.Currency_Cod;
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.bancoModel.strCreation_User=this.nameuser;
+      debugger;
+      for(var i=0;i<this.tableCuentaBancaria.length;i++){
+        if(this.tableCuentaBancaria[i].strAcc_Local_NO!=''){
+          var item=this.tableCuentaBancaria[i];
+          this.bancoModel.listaCuentaBancaria.push(item);
+        }
+      }
+      bancoService.crearBanco(this.bancoModel)
+      .then(response=>{
+        loadingInstance.close();
+        this.openMessageSuccess('Se guardo correctamente ');
+        this.textosave = 'Se guardo correctamente '+response.strBank_Cod;
+        this.issave=true;
+        this.iserror=false;
+        this.limpiar();
+      })
+      .catch(e =>{      
+        this.openMessageError('Error guardar cliente');
+        loadingInstance.close();
+        this.textosave = 'No se guardo el banco.';
+        this.issave=false;
+        this.iserror=true;
+      })    
+    }
+      
   }
   limpiar(){
     this.bancoModel=new BancoModel();
@@ -633,6 +641,12 @@ closeCategoriaCuenta(){
     else{
       this.bln_tipobanco=false;
     }
+  }
+  backPage(){
+    window.history.back();
+  }
+  reloadpage(){
+    window.location.reload();
   }
   data(){
     return{

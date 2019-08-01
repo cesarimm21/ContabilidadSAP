@@ -52,6 +52,7 @@ export default class VisualizarAlmacenComponent extends Vue {
   loading1:boolean=true;
   btnactivarcompania:boolean=false;
   dialogCompania:boolean=false;
+  strWHS_Cod:string;
   constructor(){    
         super();
         Global.nameComponent='modificar-almacen';
@@ -84,6 +85,7 @@ export default class VisualizarAlmacenComponent extends Vue {
     }
     handleCurrentChange(val:AlmacenModel){
       this.almacen=val;
+      this.strWHS_Cod=this.almacen.strWHS_Cod;
      }
     btnBuscar(){
       var data=this.like(this.gridAlmacen1,this.clickColumn,this.txtbuscar)
@@ -172,35 +174,44 @@ export default class VisualizarAlmacenComponent extends Vue {
   async  EliminarItem(){
   }
   async validad(){  
-    debugger    
-    var data=this.like(this.gridAlmacen1,'strWHS_Cod',this.almacen.strWHS_Cod)
-
-    this.gridAlmacen=[];
-    if(data.length>0){
-      this.almacen=data[0];
-      await setTimeout(() => {
-        debugger;
-        if(this.almacen.strWHS_Cod!=undefined){
-          router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'visualizar' ,data:JSON.stringify(this.almacen) }  })
+    var data=Global.like(this.gridAlmacen1,'strWHS_Cod',this.strWHS_Cod)
+      if(data.length>0){
+        this.almacen=data[0];
+        if(this.almacen.strWHS_Cod==this.strWHS_Cod){
+          await setTimeout(() => {
+            if(this.almacen.strWHS_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/entidad/almacen/viewandedit_al`, query: { vista:'modificar' ,data:JSON.stringify(this.almacen) }  })
+            }
+          }, 600)
         }
-      }, 600)
-    }
-    else{
-      // this.textosave='No existe Almacen. ';
-      // this.warningMessage('No existe Almacen. ');
-      almacenService.GetAllAlmacen(this.companyCod)
-      .then(resp=>{
-        if(resp!=undefined){
-          if(resp.length>0){
-            this.gridAlmacen=resp;
+        else{
+          if(this.strWHS_Cod==''){
+            this.textosave='Inserte Almacen. ';
+            this.warningMessage('Inserte Almacen. ');
           }
+          else{
+            this.textosave='No existe Almacen. ';
+            this.warningMessage('No existe Almacen. ');
+          }        
         }
-      })
-      .catch(errorss=>{
-        this.textosave='Error al buscar almacen. ';
-        this.warningMessage('Error al buscar almacen. ');
-      })
-    }
+      }
+      else{
+        this.textosave='No existe Almacen. ';
+        this.warningMessage('No existe Almacen. ');
+        // this.gridAlmacen=[];
+        // almacenService.GetAllAlmacen(this.companyCod)
+        // .then(resp=>{
+        //   if(resp!=undefined){
+        //     if(resp.length>0){
+        //       this.gridAlmacen=resp;
+        //     }
+        //   }
+        // })
+        // .catch(errorss=>{
+        //   this.textosave='Error al buscar almacen. ';
+        //   this.warningMessage('Error al buscar almacen. ');
+        // })
+      }
   }
    async validarView(){
       if(this.almacen.intIdWHS_ID!=-1){
@@ -450,7 +461,8 @@ export default class VisualizarAlmacenComponent extends Vue {
             gridAlmacen:[],
             gridAlmacen1:[],
             gridAlmacen2:[],
-            loading1:true
+            loading1:true,
+            strWHS_Cod:''
         }
     }
   

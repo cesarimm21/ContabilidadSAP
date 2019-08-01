@@ -7,10 +7,10 @@ import router from '@/router';
 import {MetodoDepreciacionModel} from '@/modelo/maestro/metodoDepraciacion';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import metodoService from '@/components/service/metododepresacion.service';
+import metododepresacionService from '@/components/service/metododepresacion.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'visualizar-metododep',
+  name: 'visualizar-metododepreciacion',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
@@ -42,14 +42,13 @@ export default class VisualizarMetodoDepComponent extends Vue {
   dialogBusquedaFilter:boolean=false;
   blnilterstrDeprMeth_Cod:boolean=false;
   blnilterstrDeprMeth_Desc:boolean=false;
-  blnilterdtmCreation_Date:boolean=false;
-  blnilterstrCreation_User:boolean=false;
-  dialogInactivar:boolean=false;
-  item:string='';
-
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='visualizar-metododep';
+        Global.nameComponent='visualizar-metododepreciacion';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -57,7 +56,7 @@ export default class VisualizarMetodoDepComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        metodoService.GetAllMetodoDep()
+        metododepresacionService.GetAllMetodoDepView()
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -65,6 +64,9 @@ export default class VisualizarMetodoDepComponent extends Vue {
           this.gridDocumento=response;
           this.gridDocumento1=response;
           this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
         })
     }
     getDateStringView(fecha:string){
@@ -141,14 +143,17 @@ export default class VisualizarMetodoDepComponent extends Vue {
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
       this.blnilterstrDeprMeth_Cod=false;
       this.blnilterstrDeprMeth_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
     }
     Print(){
       window.print();
     }
   async  EliminarItem(){
-      this.warningMessage('Accion no permitida');
+    this.warningMessage("Accion no permitida")  
+  }
+  async Activar(){
+    this.warningMessage("Accion no permitida")  
   }
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strDeprMeth_Cod',this.strDeprMeth_Cod)
@@ -156,7 +161,6 @@ export default class VisualizarMetodoDepComponent extends Vue {
       this.documento=data[0];
       if(this.documento.strDeprMeth_Cod==this.strDeprMeth_Cod){
         await setTimeout(() => {
-          debugger;
           if(this.documento.strDeprMeth_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/maestro_datos/meto_depresacion/viewandedit_metododep`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -178,7 +182,7 @@ export default class VisualizarMetodoDepComponent extends Vue {
       this.warningMessage('No existe Metodo Depreciacion. ');
     }
   }
-   async validarView(){     
+   async validarView(){
       if(this.documento.intIdDeprMeth_ID!=-1){
           await setTimeout(() => {
             debugger;
@@ -188,8 +192,8 @@ export default class VisualizarMetodoDepComponent extends Vue {
           }, 600)
         }
         else{
-          this.textosave='Seleccione Metodo Depresacion. ';
-          this.warningMessage('Seleccione Metodo Depresacion. ');
+          this.textosave='Seleccione Metodo Depreciacion. ';
+          this.warningMessage('Seleccione Metodo Depreciacion. ');
         }
       }
     siguiente(){
@@ -219,29 +223,29 @@ export default class VisualizarMetodoDepComponent extends Vue {
           this.clickColumn="strDeprMeth_Cod";
           this.blnilterstrDeprMeth_Cod=true;
       this.blnilterstrDeprMeth_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
       if(val.property=="strDeprMeth_Desc"){
           this.clickColumn="strDeprMeth_Desc";
           this.blnilterstrDeprMeth_Cod=false;
       this.blnilterstrDeprMeth_Desc=true;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="dtmCreation_Date"){
-          this.clickColumn="dtmCreation_Date";
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
           this.blnilterstrDeprMeth_Cod=false;
       this.blnilterstrDeprMeth_Desc=false;
-      this.blnilterdtmCreation_Date=true;
-      this.blnilterstrCreation_User=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
       }
-      if(val.property=="strCreation_User"){
-          this.clickColumn="strCreation_User";
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
           this.blnilterstrDeprMeth_Cod=false;
       this.blnilterstrDeprMeth_Desc=false;
-      this.blnilterdtmCreation_Date=false;
-      this.blnilterstrCreation_User=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
       }        
   }
   filterstrDeprMeth_Cod(h,{column,$index}){
@@ -265,9 +269,9 @@ export default class VisualizarMetodoDepComponent extends Vue {
       } 
     }    
    
-    filterdtmCreation_Date(h,{column,$index}){
+    filterdtmModified_Date(h,{column,$index}){
       
-      if(this.blnilterdtmCreation_Date){
+      if(this.blnilterdtmModified_Date){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -276,8 +280,8 @@ export default class VisualizarMetodoDepComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrCreation_User(h,{column,$index}){
-      if(this.blnilterstrCreation_User){
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -295,21 +299,6 @@ export default class VisualizarMetodoDepComponent extends Vue {
     reloadpage(){
       window.location.reload();
     }
-
-   
-  ActivarDesactivar(){
-    debugger;
-    this.warningMessage('Accion no permitida');  
-  }
-
-  successMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-
     data(){
         return{     
             companyName:'',

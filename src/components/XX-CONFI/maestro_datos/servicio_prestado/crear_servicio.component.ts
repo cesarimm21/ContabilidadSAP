@@ -50,8 +50,7 @@ export default class CrearServicioComponent extends Vue {
         background: 'rgba(0, 0, 0, 0.8)'
         }
         );     
-      if(this.servicio.strNDServ_Cod!=''&&this.servicio.strNDServ_Desc!=''){
-        
+      if(this.servicio.strNDServ_Cod!=''&&this.servicio.strNDServ_Desc!=''){        
         servicioService.CreateServicioPrestado(this.servicio)
         .then(resp=>{
           loadingInstance.close();

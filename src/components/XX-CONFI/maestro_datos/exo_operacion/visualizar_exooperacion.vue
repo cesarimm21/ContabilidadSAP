@@ -1,5 +1,5 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="visualizar-servicioprestado">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu  v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
@@ -28,7 +28,7 @@
                                 <label class="el-form-item__label col-md-2" >Exoneracion Oper. ND</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="strNDExonIR_Cod" style="text-transform: capitalize" type="text" >  
+                                    <el-input class="validador" size ="small" v-model="strNDExonIR_Cod" style="text-transform: capitalize" type="text" @keydown.native.enter="validad()">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -42,36 +42,40 @@
             <br/>
              <el-tabs type="border-card">
                 <el-tab-pane>
-                    <span slot="label"><i class="el-icon-date"></i> Exoneraciones Oper. ND</span>                    
-                    <buttons-accions v-on:Activar="ActivarDesactivar()" v-on:validarView="validarView()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
+                    <span slot="label"><i class="el-icon-date"></i> Exoneracion Oper. ND</span>                    
+                    <buttons-accions v-on:validarView="validarView()" v-on:Activar="Activar()" v-on:Limpiar="Limpiar" v-on:Print="Print" v-on:Buscar="Buscar" v-on:AscItem="AscItem" v-on:DscItem="DscItem" v-on:EliminarItem="EliminarItem()" v-on:siguiente="siguiente()" v-on:anterior="anterior()"></buttons-accions>
                     <div class="col-md-12" >
                         <div class="row " style="background: white;margin-top: 0px;">
                         <el-table
+                            v-loading="loading1"
+                            element-loading-text="Cargando..."
+                            element-loading-spinner="el-icon-loading"
+                            element-loading-background="rgba(0, 0, 0, 0.8)"
                             :max-height="sizeScreen"
                             :data="gridDocumento"
-                            @row-dblclick="validarView"
                             highlight-current-row
                             class="ExcelTable2007"
                             @header-click="headerclick"
+                            @row-dblclick="validarView"
                             @current-change="handleCurrentChange"
                             >
                             <el-table-column type="index" label="Item" width="45">                                
                             </el-table-column>
                             <el-table-column :render-header="filterstrNDExonIR_Cod"
-                            prop="strNDExonIR_Cod" label="Exoneracion Oper. ND" width="120" align="center">                                
+                            prop="strNDExonIR_Cod" label="Exoneracion Oper. ND" width="130" align="center">                                
                             </el-table-column>
                             <el-table-column  :render-header="filterstrNDExonIR_Desc"
                              prop="strNDExonIR_Desc" min-width="200" label="Descripcion">
                             </el-table-column>
                             <el-table-column :render-header="filterdtmModified_Date"
                                 prop="dtmModified_Date"   min-width="80"
-                                label="Fecha ">
+                                label="Fecha">
                                 <template scope="scope">
                                     <span>{{ getDateStringView(scope.row.dtmModified_Date) }}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column :render-header="filterstrModified_User"
-                                width="100" align="center"
+                            width="100" align="center"
                                 prop="strModified_User" 
                                 label="Usuario">
                             </el-table-column>
@@ -113,7 +117,7 @@
                 </div>
             </div>            
         </div>
-        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" @keydown.native.enter="confirmaraceptar">
+        <b-modal ref="myModalRef" hide-footer title="Buscar" size="sm"  v-model="dialogBusquedaFilter" >
       <div style="height:85px">
         <!-- <img src="../../../../images/informacion.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/> -->
         <!-- <span style="font-size:13px">¿Desea grabar el documento?</span> -->
@@ -123,7 +127,7 @@
                     <label class="el-form-item__label col-md-2" >Columna</label>
                     <div class="col-md-7 grupolabel">
                         <div class="input-group mb-3" >
-                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="">
+                            <el-input size ="small" :disabled="true" v-model="Column"  placeholder="" :autofocus="true">
                             </el-input>
                         </div>
                     </div>
@@ -148,14 +152,14 @@
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnBuscar()"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
-    </b-modal>    
+    </b-modal>   
     </div>  
 </template>
 <script>
-
 import VisualizarExoOperacionComponent from '@/components/XX-CONFI/maestro_datos/exo_operacion/visualizar_exooperacion.component'
 export default VisualizarExoOperacionComponent
 </script>
 <style scoped>
     
 </style>
+

@@ -5,7 +5,7 @@ import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 //***Modelos */
-import {GrupoCentroCostoModel} from '@/modelo/maestro/grupocentrocosto';
+import {GrupoProcesoModel} from '@/modelo/maestro/grupoproceso';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import rubroService from '@/components/service/rubro.service';
@@ -31,7 +31,7 @@ export default class ModificarGrupoProcesoComponent extends Vue {
     visualizar:boolean=false;
     nameuser:any='';
 
-    public grupoproceso:GrupoCentroCostoModel=new GrupoCentroCostoModel();
+    public grupoproceso:GrupoProcesoModel=new GrupoProcesoModel();
     constructor(){    
         super();
         
@@ -48,11 +48,11 @@ export default class ModificarGrupoProcesoComponent extends Vue {
         this.nameuser=localStorage.getItem('User_Usuario');
 
         if(modulo.toLowerCase()!='visualizar'){
-            this.txtmodulo='Modificar Rubro Cuenta';
+            this.txtmodulo='Modificar Grupo Proceso';
             this.visualizar=false;
         }
         else{
-            this.txtmodulo='Visualizar Rubro Cuenta';
+            this.txtmodulo='Visualizar Grupo Proceso';
             this.visualizar=true;
         }
         this.grupoproceso=object
@@ -61,14 +61,22 @@ export default class ModificarGrupoProcesoComponent extends Vue {
     }
 
     guardarTodo(){
+    if(this.txtviewmodulo=='modificar'){  
         if(this.grupoproceso.strCCGrpProc_Cod==''){ this.$message('Complete los campos obligatorios')}
         if(this.grupoproceso.strCCGrpProc_Name==''){ this.$message('Complete los campos obligatorios')}
         if(this.grupoproceso.strCCGrpProc_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
-            this.grupoproceso.chrStatus='A';
-            this.grupoproceso.strCreation_User=this.nameuser;
+            this.grupoproceso.strModified_User=this.nameuser;
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Actualizando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+                );     
             grupoprocesoService.ModificarGrupoProceso(this.grupoproceso)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -77,8 +85,8 @@ export default class ModificarGrupoProcesoComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strCCGrpProc_Cod;
-                this.grupoproceso=new GrupoCentroCostoModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -89,6 +97,13 @@ export default class ModificarGrupoProcesoComponent extends Vue {
                 this.textosave = 'Error al guardar.';
             })
         }
+     } else{
+            this.$message({
+                showClose: true,
+                type: 'warning',
+                message: 'Accion no permitida'
+              });
+        } 
         
     } 
     fnOcultar(){

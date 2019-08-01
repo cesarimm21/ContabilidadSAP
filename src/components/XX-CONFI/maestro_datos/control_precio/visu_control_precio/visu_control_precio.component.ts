@@ -1,55 +1,54 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-//***Modelos */
 import {ControlPrecioModel} from '@/modelo/maestro/controlprecio';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import { Notification } from 'element-ui';
-import impuestoService from '@/components/service/impuesto.service';
-import controlprecioService from '@/components/service/controlprecio.service';
-
-
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-
+import controlprecioService from '@/components/service/controlprecio.service';
+import { Loading } from 'element-ui';
 @Component({
-  name: 'visu-control-precio',
+  name: 'visualizar-controlprecio',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
-  'buttons-accions':ButtonsAccionsComponent,
+  'buttons-accions': ButtonsAccionsComponent,
   }
 })
 export default class VisuControlPrecioComponent extends Vue {
-     nameComponent:string;
-    fecha_actual:string;
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
- 
-    fecha_ejecucion:string;
-    companyName:any;
-    companyCod:any;
-    issave:boolean=false;
-    iserror:boolean=false;
-    textosave:string='';
-    public controlprecio:ControlPrecioModel=new ControlPrecioModel();
-    public tableData:Array<ControlPrecioModel>=[]; 
-    namepage:string;
-    impDisabled:boolean=false;
-    cod_criticidad:string='';
-    selectrow:any;
-    currentRow:any;
-    dialogEliminar:boolean=false;
-    cod_control_precio:string='';
-
-    item:string='';
-    dialogInactivar:boolean=false;
-
+  nameComponent:string;
+  fecha_actual:string;
+  fecha_ejecucion:string;
+  value3:string;
+  companyName:any;
+  companyCod:any;
+  strCtlPrec_Cod:string='';
+  public documento:ControlPrecioModel=new ControlPrecioModel();
+  gridDocumento:ControlPrecioModel[];
+  gridDocumento1:ControlPrecioModel[];
+  gridDocumento2:ControlPrecioModel[];
+  issave:boolean=false;
+  iserror:boolean=false;
+  textosave:string='';
+  pagina: number =1;
+  RegistersForPage: number = 100;
+  totalRegistros: number = 100;
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
+  dialogBusquedaFilter:boolean=false;
+  blnilterstrCtlPrec_Cod:boolean=false;
+  blnilterstrCtlPrec_Desc:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='viewandedit-categoriacuenta';
+        Global.nameComponent='visualizar-controlprecio';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -57,183 +56,257 @@ export default class VisuControlPrecioComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        this.cargarList();
+        controlprecioService.GetAllControlPrecio()
+        .then(response=>{
+          this.gridDocumento=[];
+          this.gridDocumento1=[];
+          this.gridDocumento2=[];
+          this.gridDocumento=response;
+          this.gridDocumento1=response;
+          this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
+        })
     }
-    
-    handleCurrentChange(val) {
-        debugger;
-        if(val!=null){
-        this.selectrow=val;
-        this.currentRow = val;
-        }
+    getDateStringView(fecha:string){
+        var dateString = new Date(fecha);
+        var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
     }
-    async cargarList(){
-        debugger;
-        if(this.cod_control_precio!=''){
-            await controlprecioService.GetOnlyOneControlPrecio(this.cod_control_precio)
-            .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
-                if(res!=undefined){
-                    this.selectrow=res;
-                    this.validarView();
-                }
-            })
-            .catch(error=>{
-            
-            })
-        }
-        else{
-            await controlprecioService.GetAllControlPrecio()
-            .then(res=>{
-                debugger;
-                console.log('/****************Busqueda***************/')
-                console.log(res)
-                this.tableData=res;
-            })
-            .catch(error=>{
-            
-            })
-        }
+    handleCurrentChange(val:ControlPrecioModel){
+      this.documento=val;
+      this.strCtlPrec_Cod=this.documento.strCtlPrec_Cod;
+     }
+    btnBuscar(){
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      this.gridDocumento=[];
+      this.gridDocumento=data;
+      this.dialogBusquedaFilter=false;
     }
-    async validarView(){
-        debugger;
-        if(this.selectrow!=undefined && this.selectrow!=null ){
-            debugger;
-            if(this.selectrow!=undefined && this.selectrow!=null ){
-                router.push({ path: `/barmenu/XX-CONFI/maestro_datos/control_precio/modif_control_precio`, query: { vista: 'visualizar',data:JSON.stringify(this.selectrow) }  })
-            }
-        }
-        else{
-            this.textosave='Seleccione algun item. ';
-        }
+    sortByKeyDesc(array, key) {
+      return array.sort(function (a, b) {
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+         
+      });
     }
-    fnOcultar(){
-
+    sortByKeyAsc(array, key) {
+      return array.sort(function (a, b) {
+          debugger;
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          
+      });
     }
-    handleChange(value) {
-        console.log(value);
-    }
-
-    
-  EliminarItem(){
-    if(this.selectrow!=undefined){
-      this.dialogEliminar=true;
-    }
-    else{
-      alert('Debe de seleccionar una fila!!!');
-    }
-  }
-  async btnEliminar(){
-    await controlprecioService.Eliminarcontrolprecio(this.currentRow)
-    .then(response=>{
-      debugger;
-      console.log('eliminar',response);
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + response.strCtlPrec_Cod;
-         this.issave=true;
-         this.iserror=false;
+    Buscar(){
+      if(this.Column!=""){
+        this.dialogBusquedaFilter=true;
+        this.txtbuscar='';
       }
       else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
+        this.$message('Seleccione columna')
       }
-      this.cargarList();
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-    
-  }
-  getDateStringView(fecha:string){
-    var dateString = new Date(fecha);
-    var dia = dateString.getDate();
-    var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
-    var yyyy = dateString.getFullYear();
-    var dd = (dia<10) ? '0'+dia : dd=dia;
-    var mm = (mes<10) ? '0'+mes : mm=mes;
-    return dd+'.'+mm+'.'+yyyy;
-}
-
-
-ActivarDesactivar(){
-    debugger;
-    this.item=this.selectrow.strCtlPrec_Cod;
-    this.dialogInactivar=true;      
-  }
-  
-  successMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-  errorMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'error'
-    });
-  }
-  async btnInactivar(){
-    var nameuser:any=localStorage.getItem('User_Usuario');
-    this.selectrow.strModified_User=nameuser;
-    if(this.selectrow.strCtlPrec_Cod!=""){
-      
-      let loadingInstance = Loading.service({
+    }
+    async AscItem(){
+      let loading = Loading.service({
         fullscreen: true,
-        text: 'Activando...',
+        text: 'Cargando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
-      );   
-      await controlprecioService.Activarcontrolprecio(this.selectrow)
-      .then(respo=>{
-        loadingInstance.close();
-        this.successMessage('Se Activo Control Precio '+this.selectrow.strCtlPrec_Cod)
-        this.load();
-        this.issave=true;
-        this.iserror=false;
-        this.textosave='Se Activo Control Precio '+this.selectrow.strCtlPrec_Cod;
-        this.dialogInactivar=false;
-      }).catch(ee=>{
-        loadingInstance.close();
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Error en Activar '+this.selectrow.strCtlPrec_Cod;
-        this.errorMessage('Error en Activar '+this.selectrow.strCtlPrec_Cod)})
-        this.dialogInactivar=false;
+      );
+      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      await loading.close();
+    }
+    DscItem(){
+      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    
+    }
+    Limpiar(){
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrCtlPrec_Cod=false;
+      this.blnilterstrCtlPrec_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+    }
+    Print(){
+      window.print();
+    }
+  async  EliminarItem(){
+    this.warningMessage("Accion no Permitida")   
+  }
+  async Activar(){
+    this.warningMessage("Accion no Permitida") 
+  }
+  async validad(){      
+    var data=Global.like(this.gridDocumento1,'strCtlPrec_Cod',this.strCtlPrec_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strCtlPrec_Cod==this.strCtlPrec_Cod){
+        await setTimeout(() => {
+          if(this.documento.strCtlPrec_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/control_precio/modif_control_precio`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strCtlPrec_Cod==''){
+          this.textosave='Inserte Control Precio. ';
+          this.warningMessage('Inserte Control Precio. ');
+        }
+        else{
+          this.textosave='No existe Control Precio. ';
+          this.warningMessage('No existe Control Precio. ');
+        }        
+      }
     }
     else{
-      this.warningMessage('Debe de seleccionar una fila!!!');
+      this.textosave='No existe Control Precio. ';
+      this.warningMessage('No existe Control Precio. ');
     }
   }
-  
-  warningMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'warning'
-    });
+   async validarView(){
+      if(this.documento.intIdCtlPrec_ID!=-1){
+          await setTimeout(() => {
+            debugger;
+            if(this.documento.strCtlPrec_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/control_precio/modif_control_precio`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
+            }
+          }, 600)
+        }
+        else{
+          this.textosave='Seleccione Control Precio. ';
+          this.warningMessage('Seleccione Control Precio. ');
+        }
+      }
+    siguiente(){
+      if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+        this.pagina++;
+        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    anterior(){
+      if(this.pagina>1){
+      this.pagina--;
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
+    }
+  //#region [CABECERA]
+  headerclick(val){    
+      this.Column=val.label;
+      Global.setColumna(this.Column);     
+      if(val.property=="strCtlPrec_Cod"){
+          this.clickColumn="strCtlPrec_Cod";
+          this.blnilterstrCtlPrec_Cod=true;
+      this.blnilterstrCtlPrec_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCtlPrec_Desc"){
+          this.clickColumn="strCtlPrec_Desc";
+          this.blnilterstrCtlPrec_Cod=false;
+      this.blnilterstrCtlPrec_Desc=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
+          this.blnilterstrCtlPrec_Cod=false;
+      this.blnilterstrCtlPrec_Desc=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
+          this.blnilterstrCtlPrec_Cod=false;
+      this.blnilterstrCtlPrec_Desc=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
+      }        
   }
+  filterstrCtlPrec_Cod(h,{column,$index}){
+      if(this.blnilterstrCtlPrec_Cod){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrCtlPrec_Desc(h,{column,$index}){        
+      if(this.blnilterstrCtlPrec_Desc){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+   
+    filterdtmModified_Date(h,{column,$index}){
+      
+      if(this.blnilterdtmModified_Date){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+ 
+
+    //#endregion
+  backPage(){
+      window.history.back();
+    }
+    reloadpage(){
+      window.location.reload();
+    }
     data(){
         return{     
             companyName:'',
             companyCod:'',
-            namepage:''
+            gridDocumento:[],
+            gridDocumento1:[],
+            gridDocumento2:[],
+            strCtlPrec_Cod:''
         }
     }
   

@@ -81,12 +81,25 @@ export default class ModificarTipoRentaComponent extends Vue {
         })
     }
     guardarTodo(){
+        var vista=this.$route.query.vista; 
+      if(vista=='modificar'){
         if(this.tiporenta.strReveType_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
         else{
-            this.tiporenta.chrStatus='A';
-            console.log('update',this.tiporenta);
+            var user:any=localStorage.getItem('User_Usuario');
+        var id:any=localStorage.getItem('compania_ID');
+
+        this.tiporenta.strModified_User=user;
+        
+            let loadingInstance = Loading.service({
+            fullscreen: true,
+            text: 'Guardando...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.8)'
+            }
+            );     
             tiporentaService.Updatetiporenta(this.tiporenta)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -97,6 +110,7 @@ export default class ModificarTipoRentaComponent extends Vue {
                 this.textosave = 'Se guardo correctamente. '+resp.strReveType_Cod;
                 this.tiporenta=new TipoRentaModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -108,6 +122,13 @@ export default class ModificarTipoRentaComponent extends Vue {
             })
         }
         
+        }else{
+            this.$message({
+                showClose: true,
+                type: 'info',
+                message: 'Accion no permitida'
+            });
+        }
     } 
     fnOcultar(){
 

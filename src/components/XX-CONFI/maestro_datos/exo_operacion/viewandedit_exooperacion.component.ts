@@ -134,25 +134,11 @@ export default class ViewAndEditExoOperacionComponent extends Vue {
     }
     
     companiaSeleccionado(val){
-      this.documento.strCompany_Cod=val.strCompany_Cod;
-      this.documento.strCompany_Desc=val.strCompany_Desc;
+      // this.documento.strCompany_Cod=val.strCompany_Cod;
+      // this.documento.strCompany_Desc=val.strCompany_Desc;
       this.dialogCompania=false;
-    }
-    
-    closeCompania(){
-      this.btnactivarcompania=false;
-      return false;
-    }
-    desactivar_compania(){
-      if(this.dialogCompania){
-        this.btnactivarcompania=false;
-      }
-    }
-    activar_compania(){
-      setTimeout(() => {
-        this.btnactivarcompania=true;
-      }, 120)
-    }
+    }   
+   
     data(){
         return{     
             companyName:'',

@@ -9,7 +9,6 @@ import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessme
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import metodoService from '@/components/service/metodo_eva.service';
 import { Loading } from 'element-ui';
-import metodo_evaService from '@/components/service/metodo_eva.service';
 @Component({
   name: 'visualizar-metodo-eva',
   components:{
@@ -45,6 +44,9 @@ export default class VisualizarMetodoEvaComponent extends Vue {
   blnilterstrValMeth_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
   servicioDialog:boolean=false;
   item:string='';
   dialogInactivar:boolean=false;
@@ -82,20 +84,10 @@ export default class VisualizarMetodoEvaComponent extends Vue {
       this.strValMeth_Cod=this.documento.strValMeth_Cod;
      }
     btnBuscar(){
-      var data=this.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+      var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
       this.gridDocumento=[];
       this.gridDocumento=data;
       this.dialogBusquedaFilter=false;
-    }
-    like(array, key,keyword) {
-  
-      var responsearr:any = []
-      for(var i=0;i<array.length;i++) {
-          if(array[i][key].toString().indexOf(keyword) > -1 ) {
-            responsearr.push(array[i])
-        }
-      }
-      return responsearr
     }
     sortByKeyDesc(array, key) {
       return array.sort(function (a, b) {
@@ -158,54 +150,104 @@ export default class VisualizarMetodoEvaComponent extends Vue {
     Print(){
       window.print();
     }
-    async  EliminarItem(){
-      this.servicioDialog=true;
+    async EliminarItem(){
+      if(this.documento.intIdValMeth_ID!=-1&&this.documento.strValMeth_Cod!=""&&this.documento.strValMeth_Desc!=""){
+        this.planDialog=true;
+      }
+      else{
+        this.warningMessage("Selecciona un Metodo Valuacion")
+      }    
     }
-    deleteServicio(){
-      if(this.documento.strValMeth_Cod!=''){
-        let loadingInstance = Loading.service({
-          fullscreen: true,
-          text: 'Eliminando...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.8)'
-          }
-          ); 
+    inactivarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Inactivando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        ); 
         metodoService.eliminarMetoValuacion(this.documento)
-        .then(resp=>{
-          loadingInstance.close();
-          this.servicioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'Se Elimino correctamente '+resp,
-              type: 'success'
-            });
-  
-            this.documento=new MetodoValuacionModel();
-            this.load();
-            this.issave = true;
-            this.iserror = false;
-            this.textosave = 'Se Elimino Correctamente '+resp;
-        })
-        .catch(error=>{
-          loadingInstance.close();
-          this.servicioDialog=false;
-          this.$message({
-              showClose: true,
-              message: 'No se elimino',
-              type: 'error'
-            });
-        })
-        }
-        else{
-            this.warningMessage('Seleccione. ');
-        }
+      .then(resp=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Inactivo correctamente '+resp,
+            type: 'success'
+          });
+          this.documento=new MetodoValuacionModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Inactivo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Inactivo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
     }
+    async Activar(){
+      if(this.documento.strValMeth_Cod!="" && this.documento.strValMeth_Desc!=""){
+        this.planActivarDialog=true;
+      }
+      else{
+        this.warningMessage('Selecciones Metodo Valuacion')
+      }
+    }
+    activarPlan(){
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.documento.strModified_User=this.nameuser;
+      let loadingInstance = Loading.service({
+        fullscreen: true,
+        text: 'Activando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
+        }
+        ); 
+        metodoService.activarMetoValuacion(this.documento)
+      .then(resp=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'Se Activo correctamente '+resp,
+            type: 'success'
+          });
+          this.documento=new MetodoValuacionModel();
+          this.load();
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se Activo Correctamente '+resp;
+      })
+      .catch(error=>{
+        loadingInstance.close();
+        this.planActivarDialog=false;
+        this.$message({
+            showClose: true,
+            message: 'No se Activo',
+            type: 'error'
+          });
+          this.issave = false;
+          this.iserror = true;
+      })
+    }
+
   async validad(){      
     var data=Global.like(this.gridDocumento1,'strValMeth_Cod',this.strValMeth_Cod)
     if(data.length>0){
       this.documento=data[0];
       if(this.documento.strValMeth_Cod==this.strValMeth_Cod){
         await setTimeout(() => {
+          debugger;
           if(this.documento.strValMeth_Cod!=''){
             router.push({ path: `/barmenu/XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
           }
@@ -230,6 +272,7 @@ export default class VisualizarMetodoEvaComponent extends Vue {
    async validarView(){
       if(this.documento.intIdValMeth_ID!=-1){
           await setTimeout(() => {
+            debugger;
             if(this.documento.strValMeth_Cod!=''){
               router.push({ path: `/barmenu/XX-CONFI/logistica/metodo_eva/viewandedit_metodo_eva`, query: { vista:'visualizar' ,data:JSON.stringify(this.documento) }  })
             }
@@ -251,6 +294,13 @@ export default class VisualizarMetodoEvaComponent extends Vue {
       this.pagina--;
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
       }
+    }
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
     }
   //#region [CABECERA]
   headerclick(val){    
@@ -343,13 +393,6 @@ export default class VisualizarMetodoEvaComponent extends Vue {
       this.dialogInactivar=true;      
     }
     
-    warningMessage(newMsg : string) {
-      this.$message({
-        showClose: true,
-        message: newMsg,
-        type: 'warning'
-      });
-    }
     successMessage(newMsg : string) {
       this.$message({
         showClose: true,
@@ -376,7 +419,7 @@ export default class VisualizarMetodoEvaComponent extends Vue {
           background: 'rgba(0, 0, 0, 0.8)'
           }
         );   
-        await metodo_evaService.activarMetoValuacion(this.documento)
+        await metodoService.activarMetoValuacion(this.documento)
         .then(respo=>{
           loadingInstance.close();
           this.successMessage('Se Activo Metodo Evaluacion '+this.documento.strValMeth_Cod)

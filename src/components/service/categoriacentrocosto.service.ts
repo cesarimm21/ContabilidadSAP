@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllCategoriaView(strCompany_Cod){ 
+    return axios.get(CONFIG.API_URL+'categoriacentrocosto/view/'+strCompany_Cod)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllCategoria2(company_cod){ 
     return axios.get(CONFIG.API_URL+'categoriacentrocosto/compania/'+company_cod)
     .then(response =>{            
@@ -23,7 +29,7 @@ export default{
     })
   },
   CrearCategoriaCentroCosto(data){  
-    return axios.post(CONFIG.API_URL+'categoriacentrocosto',data)
+    return axios.post(CONFIG.API_URL+'categoriacentrocosto/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

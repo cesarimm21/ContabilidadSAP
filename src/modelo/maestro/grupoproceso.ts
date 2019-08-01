@@ -1,18 +1,20 @@
-export class CategoriaCentroCostoModel {
-    intCCCategory_ID:number;
-    strCCCategory_Cod: string;
-    strCCCategory_Desc:string;
+export class GrupoProcesoModel {    
+    intIdProccGrp_ID:number;
+    strCCGrpProc_Cod:string;
+    strCCGrpProc_Name:string;
+    strCCGrpProc_Desc:string;  
     strCompany_Cod:string;
-    strCompany_Desc:string;    
+    strCompany_Desc:string;
     strCreation_User:string;
     dtmCreation_Date:Date;
     strModified_User:string;
     dtmModified_Date:Date;
     chrStatus:string;
     constructor(){
-        this.intCCCategory_ID=-1;
-        this.strCCCategory_Cod='';
-        this.strCCCategory_Desc='';
+        this.intIdProccGrp_ID=-1;
+        this.strCCGrpProc_Cod='';
+        this.strCCGrpProc_Desc='';
+        this.strCCGrpProc_Name='';
         this.strCompany_Cod='';
         this.strCompany_Desc='';
         this.strCreation_User='';

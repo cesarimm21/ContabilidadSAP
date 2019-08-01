@@ -124,37 +124,37 @@ export default class ViewAndEditTipoProductoComponent extends Vue {
       alert('Debe de seleccionar una fila!!!');
     }
   }
-  async btnEliminar(){
-    await tipoproductoService.DesactivarTipoRequisicion(this.currentRow)
-    .then(response=>{
-      debugger;
-      console.log('eliminar',response);
-      if(response!=undefined){
-         this.textosave='Se elimino correctamento.' + this.selectrow.strTypeReq_Cod;
-         this.issave=true;
-         this.iserror=false;
-      }
-      else{
-        this.issave=false;
-        this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
-      }
-      this.cargarList();
-      this.dialogEliminar=false;
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
+  // async btnEliminar(){
+  //   await tipoproductoService.DesactivarTipoRequisicion(this.currentRow)
+  //   .then(response=>{
+  //     debugger;
+  //     console.log('eliminar',response);
+  //     if(response!=undefined){
+  //        this.textosave='Se elimino correctamento.' + this.selectrow.strTypeReq_Cod;
+  //        this.issave=true;
+  //        this.iserror=false;
+  //     }
+  //     else{
+  //       this.issave=false;
+  //       this.iserror=true;
+  //       this.textosave='Ocurrio un error al eliminar.';
+  //     }
+  //     this.cargarList();
+  //     this.dialogEliminar=false;
+  //     //this.unidadmedidaModel=response;       
+  //   }).catch(error=>{
       
-      this.dialogEliminar=false;
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo eliminar'
-      });
-    })
-  }
+  //     this.dialogEliminar=false;
+  //     this.issave=false;
+  //     this.iserror=true;
+  //     this.textosave='Ocurrio un error al eliminar.';
+  //     this.$message({
+  //       showClose: true,
+  //       type: 'error',
+  //       message: 'No se pudo eliminar'
+  //     });
+  //   })
+  // }
   getDateStringView(fecha:string){
     var dateString = new Date(fecha);
     var dia = dateString.getDate();

@@ -29,7 +29,7 @@ export default {
     })
   },
   CrearTipoMovimiento(data){
-    return axios.post(CONFIG.API_URL+'tipomovimiento',data)
+    return axios.post(CONFIG.API_URL+'tipomovimiento/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -40,8 +40,8 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  EliminarTipoMovimiento(data){
-    return axios.post(CONFIG.API_URL+'tipomovimiento/eliminar',data)
+  inactivarTipoMovimiento(data){
+    return axios.post(CONFIG.API_URL+'tipomovimiento/inactivar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

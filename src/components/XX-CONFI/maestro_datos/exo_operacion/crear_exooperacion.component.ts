@@ -121,8 +121,6 @@ export default class CrearExoOperacionComponent extends Vue {
       this.dialogCompania=true;
     }
     companiaSeleccionado(val){
-      this.operaciones.strCompany_Cod=val.strCompany_Cod;
-      this.operaciones.strCompany_Desc=val.strCompany_Desc;
       this.companyCod=val.strCompany_Cod;
       this.companyName=val.strCompany_Desc;
       this.dialogCompania=false;

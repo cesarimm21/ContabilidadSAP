@@ -10,13 +10,19 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  deleteExoOperaciones(data){   
-    return axios.post(CONFIG.API_URL+'exoneracionoperaciones/eliminar',data)
+  GetAllExoOperacionesView(){    
+    return axios.get(CONFIG.API_URL+'exoneracionoperaciones/view')
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  activar(data){
+  inactivarExoOperaciones(data){   
+    return axios.post(CONFIG.API_URL+'exoneracionoperaciones/inactivar',data)
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarExoOperaciones(data){
     return axios.post(CONFIG.API_URL+'exoneracionoperaciones/activar',data)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));

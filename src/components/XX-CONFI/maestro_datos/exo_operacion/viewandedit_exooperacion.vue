@@ -16,18 +16,17 @@
                                 <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  @blur="desactivar_compania" @focus="activar_compania" v-model="documento.strCompany_Cod"  placeholder="">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                    <el-input disabled size ="small"  v-model="companyCod"  placeholder="">
                                     </el-input>
                                     </div>
                                 </div>
-                                <span style="font-size: 11px;margin-top: 5px;">{{documento.strCompany_Desc}}</span>
+                                <span style="font-size: 11px;margin-top: 5px;">{{companyName}}</span>
                             </div>
                            <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Exoneracion Oper. ND</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" v-model="documento.strNDExonIR_Cod" style="text-transform: capitalize" type="text" :maxlength="1" :disabled="enabledtf">  
+                                    <el-input class="validador" size ="small" v-model="documento.strNDExonIR_Cod" style="text-transform: capitalize" type="text" :maxlength="1" disabled>  
                                     </el-input>
                                     </div>
                                 </div>

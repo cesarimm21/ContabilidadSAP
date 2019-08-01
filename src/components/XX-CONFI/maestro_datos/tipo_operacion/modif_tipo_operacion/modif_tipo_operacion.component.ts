@@ -37,16 +37,14 @@ export default class ModificarTipoOperacionComponent extends Vue {
     btnactivarpais:boolean=false;
     constructor(){    
         super();
-        Global.nameComponent='modificar-tipooperacion';
-        
+        Global.nameComponent='modificar-tipooperacion';        
         setTimeout(() => {
             this.load();
         }, 100)
     }
 
     load(){
-        debugger;
-        var object = JSON.parse(this.$route.query.data);
+        this.tipooperacion= JSON.parse(this.$route.query.data);
         var modulo = this.$route.query.vista;
         this.txtviewmodulo=modulo;
         if(modulo.toLowerCase()!='visualizar'){
@@ -57,7 +55,7 @@ export default class ModificarTipoOperacionComponent extends Vue {
             this.txtmodulo='Visualizar Tipo Operacion';
             this.visualizar=true;
         }
-        this.cargar(object.strTypeOper_Cod);
+        // this.cargar(object.strTypeOper_Cod);
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
     }
@@ -81,13 +79,23 @@ export default class ModificarTipoOperacionComponent extends Vue {
         })
     }
     guardarTodo(){
+        var vista=this.$route.query.vista; 
+      if(vista=='modificar'){
         if(this.tipooperacion.strTypeOper_Cod==''){ this.$message('Complete los campos obligatorios')}
         if(this.tipooperacion.strTypeOper_Desc==''){ this.$message('Complete los campos obligatorios')}
         else{
-            this.tipooperacion.chrStatus='A';
-            console.log('update',this.tipooperacion);
+            var user:any=localStorage.getItem('User_Usuario');    
+            this.tipooperacion.strModified_User=user;
+            let loadingInstance = Loading.service({
+                fullscreen: true,
+                text: 'Guardando...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.8)'
+                }
+              );    
             tipooperacionService.Updatetipooperacion(this.tipooperacion)
             .then(resp=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'success',
@@ -96,8 +104,8 @@ export default class ModificarTipoOperacionComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strTypeOper_Cod;
-                this.tipooperacion=new TipoOperacionModel();
             }).catch(error=>{
+                loadingInstance.close();
                 this.$message({
                     showClose: true,
                     type: 'error',
@@ -107,7 +115,14 @@ export default class ModificarTipoOperacionComponent extends Vue {
                 this.iserror = true;
                 this.textosave = 'Error al guardar.';
             })
-        }
+            }
+        }else{
+        this.$message({
+            showClose: true,
+            type: 'info',
+            message: 'Accion no permitida'
+          });
+      }
         
     } 
     fnOcultar(){

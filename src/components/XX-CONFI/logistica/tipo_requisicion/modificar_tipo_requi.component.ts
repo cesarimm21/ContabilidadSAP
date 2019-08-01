@@ -158,22 +158,22 @@ export default class ModificarTipoRequisicionComponent extends Vue {
   async btnEliminar(){
     let loadingInstance = Loading.service({
       fullscreen: true,
-      text: 'Eliminando...',
+      text: 'Inactivando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }
     );   
-    await tiporeService.DesactivarTipoRequisicion(this.tipoRequi)
+    await tiporeService.desactivarTipoRequisicion(this.tipoRequi)
     .then(response=>{
       loadingInstance.close();
       if(response!=undefined){
-         this.textosave='Se elimino correctamento.';
+         this.textosave='Se inactivo correctamento. '+response ;
          this.issave=true;
          this.iserror=false;
          this.$message({
           showClose: true,
           type: 'success',
-          message: 'Se elimino correctamento '
+          message: 'Se inactivo correctamento '+response
         });
         setTimeout(() => {
           this.load();
@@ -182,7 +182,7 @@ export default class ModificarTipoRequisicionComponent extends Vue {
       else{
         this.issave=false;
         this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
+        this.textosave='Ocurrio un error al inactivar.';
       }
       this.dialogEliminar=false;
     }).catch(error=>{
@@ -190,11 +190,11 @@ export default class ModificarTipoRequisicionComponent extends Vue {
       this.dialogEliminar=false;
       this.issave=false;
       this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
+      this.textosave='Ocurrio un error al inactivar.';
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo eliminar'
+        message: 'No se pudo inactivar'
       });
     })
     

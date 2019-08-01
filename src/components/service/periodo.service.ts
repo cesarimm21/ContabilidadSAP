@@ -10,6 +10,12 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
+  GetAllYears(){ 
+    return axios.get(CONFIG.API_URL+'periodo/years')
+    .then(response =>{            
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
   GetAllPeriodoLast(periodo){ 
     return axios.post(CONFIG.API_URL+'periodolast',periodo)
     .then(response =>{            

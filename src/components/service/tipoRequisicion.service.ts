@@ -34,13 +34,13 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  EliminarTipoRequisicion(data){    
-    return axios.get(CONFIG.API_URL+'tiporequisicion/desactivar',data)
-    .then(response =>{            
-        return JSON.parse(JSON.stringify(response.data));
-    })
-  },
-  DesactivarTipoRequisicion(data){
+  // EliminarTipoRequisicion(data){    
+  //   return axios.get(CONFIG.API_URL+'tiporequisicion/desactivar',data)
+  //   .then(response =>{            
+  //       return JSON.parse(JSON.stringify(response.data));
+  //   })
+  // },
+  desactivarTipoRequisicion(data){
     return axios.post(CONFIG.API_URL+'tiporequisicion/desactivar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));

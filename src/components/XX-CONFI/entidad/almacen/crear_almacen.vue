@@ -16,8 +16,7 @@
                                 <label class="el-form-item__label col-md-2" >Compañia</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"  @blur="desactivar_compania" @focus="activar_compania" v-model="almacen.strCompany_Cod"  placeholder="">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
+                                    <el-input disabled size ="small" v-model="almacen.strCompany_Cod"  placeholder="">
                                     </el-input>
                                     </div>
                                 </div>
@@ -59,7 +58,7 @@
                                     </el-input>
                                     </div>
                                 </div>
-                                <label class="sinLinea el-form-item__label col-md-2">{{almacen.strSubsidiary_Desc}}</label>
+                                <label class="sinLinea el-form-item__label col-md-4">{{almacen.strSubsidiary_Desc}}</label>
                             </div> 
                             <!-- <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Planta</label>

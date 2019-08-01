@@ -5,7 +5,7 @@ import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 //***Modelos */
-import {GrupoCentroCostoModel} from '@/modelo/maestro/grupocentrocosto';
+import {GrupoProcesoModel} from '@/modelo/maestro/grupoproceso';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import { Notification } from 'element-ui';
 import grupoprocesoService from '@/components/service/grupoproceso.service';
@@ -25,7 +25,7 @@ export default class CrearGrupoProcesoComponent extends Vue {
     iserror:boolean=false;
     textosave:string='';
     nameuser:any='';
-    public grupoproceso:GrupoCentroCostoModel=new GrupoCentroCostoModel();
+    public grupoproceso:GrupoProcesoModel=new GrupoProcesoModel();
   constructor(){    
         super();
         setTimeout(() => {
@@ -51,9 +51,8 @@ export default class CrearGrupoProcesoComponent extends Vue {
             );   
             this.grupoproceso.chrStatus='A';
             this.grupoproceso.strCreation_User=this.nameuser;
-            // this.rubrocuenta.strCompany_Cod=this.companyCod;
-            // this.rubrocuenta.strCompany_Desc=this.companyName;
-
+            this.grupoproceso.strCompany_Cod=this.companyCod;
+            this.grupoproceso.strCompany_Desc=this.companyName;
             grupoprocesoService.CrearGrupoProceso(this.grupoproceso)
             .then(resp=>{
                 this.$message({
@@ -64,7 +63,7 @@ export default class CrearGrupoProcesoComponent extends Vue {
                 this.issave = true;
                 this.iserror = false;
                 this.textosave = 'Se guardo correctamente. '+resp.strCCGrpProc_Cod;
-                this.grupoproceso=new GrupoCentroCostoModel();
+                this.grupoproceso=new GrupoProcesoModel();
                 loadingInstance.close();
             }).catch(error=>{
                 this.$message({
