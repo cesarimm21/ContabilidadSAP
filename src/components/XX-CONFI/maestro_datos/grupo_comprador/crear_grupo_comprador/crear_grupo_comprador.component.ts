@@ -48,6 +48,10 @@ export default class CrearGrupoCompradorComponent extends Vue {
                 background: 'rgba(0, 0, 0, 0.8)'
                 }
             );   
+            var user:any=localStorage.getItem('User_Usuario');
+            this.grupocomprador.strCreation_User=user;
+            this.grupocomprador.strCompany_Cod=this.companyCod;
+            this.grupocomprador.strCompany_Desc=this.companyName;
             this.grupocomprador.chrStatus='A';
             grupocompradorService.CrearGrupoComprador(this.grupocomprador)
             .then(resp=>{

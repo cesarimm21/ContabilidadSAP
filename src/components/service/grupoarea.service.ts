@@ -4,14 +4,14 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllGrupoArea(){  
-    return axios.get(CONFIG.API_URL+'grupoarea')
+  GetAllGrupoArea(companyCod){  
+    return axios.get(CONFIG.API_URL+'grupoarea/view/'+companyCod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllGrupoArea2(){  
-    return axios.get(CONFIG.API_URL+'grupoarea2')
+  GetAllGrupoArea2(companyCod){  
+    return axios.get(CONFIG.API_URL+'grupoarea2/'+companyCod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

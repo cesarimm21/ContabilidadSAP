@@ -4,14 +4,14 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllCostItem(){  
-    return axios.get(CONFIG.API_URL+'costitem')
+  GetAllCostItem(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'costitem/view/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllCostItem2(company_cod){  
-    return axios.get(CONFIG.API_URL+'costitem2/'+company_cod)
+  GetAllCostItem2(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'costitem2/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -23,7 +23,7 @@ export default {
     })
   },
   CreateCostItem(data:any){
-    return axios.post(CONFIG.API_URL+'costitem',data)
+    return axios.post(CONFIG.API_URL+'costitem/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -47,20 +47,20 @@ export default {
     })
   },
   UpdateCostItemID(data:any){
-    return axios.post(CONFIG.API_URL+'update/costitem', data)
+    return axios.post(CONFIG.API_URL+'costitem/update', data)
     .then(response =>{
         return response.data;
       })
   },
 
-  Activar(data:any){
+  activarCostItem(data:any){
     return axios.post(CONFIG.API_URL+'costitem/activar', data)
     .then(response =>{
         return response.data;
       })
   },
-  Eliminar(data:any){
-    return axios.post(CONFIG.API_URL+'costitem/eliminar', data)
+  inactivarCostItem(data:any){
+    return axios.post(CONFIG.API_URL+'costitem/inactivar', data)
     .then(response =>{
         return response.data;
       })

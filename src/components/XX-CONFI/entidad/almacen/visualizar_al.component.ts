@@ -63,7 +63,7 @@ export default class VisualizarAlmacenComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        almacenService.GetAllAlmacen2(this.companyCod)
+        almacenService.GetAllAlmacen(this.companyCod)
         .then(response=>{
           this.gridAlmacen=[];
           this.gridAlmacen1=[];

@@ -8,11 +8,11 @@
                 <div class="col-md-12">
                     <div class="form-group row">
                         <label class="el-form-item__label col-md-3" >{{Column}}</label>
-                        <div class="col-md-2 grupolabel">
+                        <div class="col-md-3 grupolabel">
                             <div class="input-group mb-3" >
-                            <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarDocumento()">
+                            <el-input size ="small" v-model="inputAtributo" :autofocus="true" @keydown.native.enter="buscarfilter()">
                              <el-button slot="append" class="boton" icon="fa fa-search" 
-                                    @click="buscarDocumento()"
+                                    @click="buscarfilter()"
                                 > </el-button>
                             </el-input>
                             </div>
@@ -24,19 +24,19 @@
             v-loading="loading1"
             element-loading-text="Cargando..."
             element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.8)"
-            :data="documentotransaccionModel"
+            element-loading-background="rgba(0,0,0, 0.8)"
+            :data="cuentacontableModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
             height="250"
             highlight-current-row
-            @header-click="headerclick"
             @row-dblclick="seleccionar"
-            @current-change="handleCurrentChange">
-                <el-table-column :render-header="filterstrDoc_Trans_Cod"  prop="strDoc_Trans_Cod" label="Codigo" width="180">
-                </el-table-column>  
-                <el-table-column :render-header="filterstrDoc_Trans_Desc" prop="strDoc_Trans_Desc" label="Descripcion" >
-                </el-table-column>  
+            @current-change="handleCurrentChange"
+            @header-click="headerclick">
+            <el-table-column :render-header="filterstrChartAcct_L_Cod"  prop="strChartAcct_L_Cod" label="Codigo" width="180">
+            </el-table-column>  
+            <el-table-column :render-header="filterstrChartAcct_L_Desc"  prop="strChartAcct_L_Desc" label="Nombre" style="width: 70% !important;">
+            </el-table-column>  
             </el-table>
         </el-card>
         <br/>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
-    import BDocumentoTransaccionComponent from '@/components/buscadores/b_documento_transaccion/b_documento_transaccion.component'
-    export default BDocumentoTransaccionComponent
+    import BPlanContableLocalComponent from '@/components/buscadores/b_plan_contable_local/b_plan_contable_local.component'
+    export default BPlanContableLocalComponent
 </script>
+
+

@@ -118,9 +118,15 @@ export default class  BCategoriaCuentaComponent extends Vue {
     this.$emit('categoriacuentaclose');
   }
   buscarCategoria(){
-    var data=Global.like(this.categoriacuentaModel1,this.clickColumn,this.inputAtributo)
-    this.categoriacuentaModel=[];
-    this.categoriacuentaModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.categoriacuentaModel1,this.clickColumn,this.inputAtributo)
+      this.categoriacuentaModel=[];
+      this.categoriacuentaModel=data;
+    }
+    else{
+      this.categoriacuentaModel=[];
+      this.categoriacuentaModel=this.categoriacuentaModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

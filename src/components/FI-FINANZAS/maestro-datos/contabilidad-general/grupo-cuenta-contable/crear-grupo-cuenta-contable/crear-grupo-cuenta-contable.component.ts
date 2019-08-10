@@ -9,15 +9,11 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import {CompaniaModel} from '@/modelo/maestro/compania';
 import {GrupoCuentaContableModel} from '@/modelo/maestro/grupocuentacontable';
-import { Notification } from 'element-ui';
-import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
 import BComponenteCuentaContable from '@/components/buscadores/b_componente_cuenta_contable/b_componente_cuenta_contable.vue';
 @Component({
   name: 'crear-grupo-cuenta-contable',
   components:{
-    'bcompania':BCompaniaProveedor,
     'quickaccessmenu':QuickAccessMenuComponent,
     'bcomponentecuentacontable':BComponenteCuentaContable
   }
@@ -32,7 +28,6 @@ export default class CrearGrupoCuentaContableComponent extends Vue {
   
   btnactivarcompania:boolean=false;
   dataCompania:any[];
-  public companiaModel:CompaniaModel=new CompaniaModel();
   public grupoCuentaContableModel:GrupoCuentaContableModel=new GrupoCuentaContableModel();
   btnactivarCuentaContablePadre:boolean=false;
   dialogTipoCuentaContable:boolean=false;
@@ -40,50 +35,19 @@ export default class CrearGrupoCuentaContableComponent extends Vue {
   btnactivarComponente:boolean=false;
   constructor(){    
     super();
-    Global.nameComponent='crear-ingreso-comprobante';
+    Global.nameComponent='crear-grupo-cuenta-contable';
+    setTimeout(() => {
+      this.load();
+    }, 200) 
+  }  
+  load(){
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
     var id:any=localStorage.getItem('compania_ID');
     this.grupoCuentaContableModel.strCompany_Desc=desc; 
     this.grupoCuentaContableModel.strCompany_Cod=cod;
-  
   }
-
-  //#region [COMPANIA]
-  loadCompania(){
-    this.dialogCompania=true;
-  }
-  companiaSeleccionado(val:CompaniaModel,dialog:boolean){
-    this.companiaModel=val;
-    this.grupoCuentaContableModel.strCompany_Cod=this.companiaModel.strCompany_Cod;
-    this.grupoCuentaContableModel.strCompany_Desc=this.companiaModel.strCompany_Desc;
-    this.dialogCompania=false;    
-  }
-  companiaClose(){
-    this.companiaModel=new CompaniaModel();
-    this.dialogCompania=false;
-  }
-  
-  activar_compania(){
-    setTimeout(() => {
-      this.btnactivarcompania=true;
-    }, 120)
-  }
-  desactivar_compania(){
-    debugger;
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;      
-    }
-  }
-  closeCompania(){
-    this.btnactivarcompania=false;
-    this.dialogCompania=false;
-    return false;
-  }
-  //#endregion
-  
   guardarTodo(){
-    debugger;
     this.issave=false;
     this.iserror = false;
     this.textosave='';
@@ -96,72 +60,41 @@ export default class CrearGrupoCuentaContableComponent extends Vue {
     else{
       var user:any=localStorage.getItem('User_Usuario');
       this.grupoCuentaContableModel.strCreation_User=user;
-      let loading = Loading.service({
+      let loadingInstance = Loading.service({
         fullscreen: true,
         text: 'Guardando...',
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.8)'
         }
       );
-      grupocuentacontableService.getBusqueda(this.grupoCuentaContableModel.strGrpAcctCont_Cod,this.grupoCuentaContableModel.strCompany_Cod)
-      .then(response=>{
-        debugger;
-        if(response.length==0){
-          grupocuentacontableService.CrearGrupoCuenta(this.grupoCuentaContableModel)
-          .then(response=>{
-            
-              loading.close(); 
-              debugger;
-              
-              this.issave=true;
-              this.iserror = false;
-              this.textosave='Se guardo correctamente '+ this.grupoCuentaContableModel.strGrpAcctCont_Cod;
-              this.grupoCuentaContableModel.strGrpAcctCont_Cod='';
-              this.grupoCuentaContableModel.strGrpAcctCont_Desc='';
-              this.grupoCuentaContableModel.strGrpAcct_Pos='';
-              this.grupoCuentaContableModel.strComp_Cod='';
-            }).catch(error=>{
-              this.textosave='No se pudo guardar grupo cuenta';
-              this.issave=false;
-              this.iserror = true;
-              loading.close(); 
-              this.$message({
-                showClose: true,
-                type: 'error',
-                message: 'No se pudo guardar grupo cuenta'
-              });
-            })
-        }
-        else{
-          loading.close(); 
-      
-          this.textosave='El grupo ya existe';
-          this.issave=false;
-          this.iserror = true;
+      grupocuentacontableService.CrearGrupoCuenta(this.grupoCuentaContableModel)
+        .then(resp=>{
+          loadingInstance.close();
           this.$message({
-            showClose: true,
-            type: 'error',
-            message: 'El grupo ya existe'
-          });
-        }
+              showClose: true,
+                type: 'success',
+                message: 'Se guardo Correctamente '+resp.strGrpAcctCont_Cod
+              });
+              this.grupoCuentaContableModel=new GrupoCuentaContableModel();
+              this.issave = true;
+              this.iserror = false;
+              this.textosave = 'Se guardo correctamente. '+resp.strGrpAcctCont_Cod;
+          }).catch(errorss=>{
+            loadingInstance.close();
+            this.$message({
+              showClose: true,
+                type:'error',
+                message: 'No se guardo Correctamente '
+              });
+              this.issave = false;
+              this.iserror = true;
+              this.textosave = 'No se guardo Correctamente ';
+          })
       
-      }).catch(error=>{
-        loading.close(); 
-        
-        this.textosave='No se pudo guardar grupo cuenta';
-        this.issave=false;
-        this.iserror = true;
-        this.$message({
-          showClose: true,
-          type: 'error',
-          message: 'No se pudo guardar grupo cuenta'
-        });
-      })
     }
   }
 
   componenteselecionado(val){
-    debugger;
     this.grupoCuentaContableModel.strComp_Cod=val.strComp_Cod;
     this.grupoCuentaContableModel.strComp_Desc=val.strComp_Desc;
     

@@ -275,6 +275,11 @@ import ViewAndEditCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_d
 import ModificarCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_datos/categoria_cuenta/modif_categoria_cuenta/modif_categoria_cuenta.vue'
 import CrearCategoriaCuentaComponent from '@/components/XX-CONFI/maestro_datos/categoria_cuenta/crear_categoria_cuenta/crear_categoria_cuenta.vue'
 
+import VisuComponenteCuentasComponent from '@/components/XX-CONFI/maestro_datos/componente_cuentas/visu_componente_cuentas/visu_componente_cuentas.vue'
+import ViewAndEditComponenteCuentasComponent from '@/components/XX-CONFI/maestro_datos/componente_cuentas/viewandedit_componente_cuentas/viewandedit_componente_cuentas.vue'
+import ModificarComponenteCuentasComponent from '@/components/XX-CONFI/maestro_datos/componente_cuentas/modif_componente_cuentas/modif_componente_cuentas.vue'
+import CrearComponenteCuentasComponent from '@/components/XX-CONFI/maestro_datos/componente_cuentas/crear_componente_cuentas/crear_componente_cuentas.vue'
+
 import VisuControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/visu_control_precio/visu_control_precio.vue'
 import ViewAndEditControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/viewandedit_control_precio/viewandedit_control_precio.vue'
 import ModificarControlPrecioComponent from '@/components/XX-CONFI/maestro_datos/control_precio/modif_control_precio/modif_control_precio.vue'
@@ -1033,6 +1038,27 @@ export default [
         component:CrearTipoTituloComponent,
         name:'CrearTipoTituloComponent'
       }, 
+      //COMPONENTE CUENTA
+      {
+        path:'XX-CONFI/maestro_datos/componente_cuentas/visu_componente_cuentas',
+        component:VisuComponenteCuentasComponent,
+        name:'visualizar-componente-cuenta'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/componente_cuentas/viewandedit_componente_cuentas',
+        component:ViewAndEditComponenteCuentasComponent,
+        name:'viewandedit-componente-cuenta'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/componente_cuentas/modif_componente_cuentas',
+        component:ModificarComponenteCuentasComponent,
+        name:'modificar-componente-cuenta'
+      }, 
+      {
+        path:'XX-CONFI/maestro_datos/componente_cuentas/crear_componente_cuentas',
+        component:CrearComponenteCuentasComponent,
+        name:'crear-componente-cuenta'
+      }, 
       {
         path:'XX-CONFI/maestro_datos/categoria_cuenta/visu_categoria_cuenta',
         component:VisuCategoriaCuentaComponent,
@@ -1053,6 +1079,7 @@ export default [
         component:CrearCategoriaCuentaComponent,
         name:'CrearCategoriaCuentaComponent'
       }, 
+
       {
         path:'XX-CONFI/maestro_datos/control_precio/visu_control_precio',
         component:VisuControlPrecioComponent,

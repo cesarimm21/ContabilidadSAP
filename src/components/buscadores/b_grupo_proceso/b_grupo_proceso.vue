@@ -21,6 +21,10 @@
                 </div>
             </div>
             <el-table
+            v-loading="loading1"
+            element-loading-text="Cargando..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
             :data="cuentacontableModel"
             stripe  :default-sort = "{prop: 'date', order: 'descending'}"
             style="width: 100%" class="ExcelTable2007"
@@ -31,7 +35,7 @@
             @current-change="handleCurrentChange">
             <el-table-column :render-header="filterstrCCGrpProc_Cod"  prop="strCCGrpProc_Cod" label="Codigo" width="180">
             </el-table-column>  
-            <el-table-column :render-header="filterstrCCGrpProc_Desc" prop="strCCGrpProc_Desc" label="Nombre" style="width: 70% !important;">
+            <el-table-column :render-header="filterstrCCGrpProc_Desc" prop="strCCGrpProc_Desc" label="Descripcion" style="width: 70% !important;">
             </el-table-column>  
             </el-table>
         </el-card>

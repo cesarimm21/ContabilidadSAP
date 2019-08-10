@@ -4,6 +4,7 @@ export class FacturaModel{
     strCompany_Cod:string;//*
     strCompany_Desc:string;//*
     strPO_NO:string;//*
+    strHES_NO:string;//*
     strVoucher_NO:string;//autogenerado*
     strPeriod_NO:string;//*
     dtmPeriod:Date;//*
@@ -82,6 +83,7 @@ export class FacturaModel{
         this.strCompany_Cod='';
         this.strCompany_Desc='';
         this.strPO_NO='';
+        this.strHES_NO='';
         this.strVoucher_NO='';
         this.strPeriod_NO='';
         this.dtmPeriod=new Date;

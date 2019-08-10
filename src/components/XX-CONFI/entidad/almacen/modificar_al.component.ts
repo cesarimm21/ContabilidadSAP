@@ -65,7 +65,7 @@ export default class ModificarAlmacenComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        almacenService.GetAllAlmacen2(this.companyCod)
+        almacenService.GetAllAlmacen(this.companyCod)
         .then(response=>{
           this.gridAlmacen=[];
           this.gridAlmacen1=[];
@@ -170,7 +170,7 @@ export default class ModificarAlmacenComponent extends Vue {
   async btnEliminar(){
     let loadingInstance = Loading.service({
       fullscreen: true,
-      text: 'Eliminando...',
+      text: 'Inactivando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }
@@ -179,19 +179,19 @@ export default class ModificarAlmacenComponent extends Vue {
     .then(response=>{
       loadingInstance.close();
       if(response!=undefined){
-         this.textosave='Se elimino correctamento.';
+         this.textosave='Se Inactivo correctamento.'+this.almacen.strWHS_Cod;
          this.issave=true;
          this.iserror=false;
          this.$message({
           showClose: true,
           type: 'success',
-          message: 'Se elimino correctamento '
+          message: 'Se Inactivo correctamento '+this.almacen.strWHS_Cod
         });
       }
       else{
         this.issave=false;
         this.iserror=true;
-        this.textosave='Ocurrio un error al eliminar.';
+        this.textosave='Ocurrio un error al Inactivar.';
       }
       this.load();
       this.dialogEliminar=false;
@@ -200,11 +200,11 @@ export default class ModificarAlmacenComponent extends Vue {
       this.dialogEliminar=false;
       this.issave=false;
       this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
+      this.textosave='Ocurrio un error al Inactivar.';
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo eliminar'
+        message: 'No se pudo Inactivar'
       });
     })
     

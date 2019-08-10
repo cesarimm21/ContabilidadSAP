@@ -36,10 +36,10 @@ export default class ModificarCostItemComponent extends Vue {
   dialogTipoCuentaContable:boolean=false;
   txtmodulo:string='';
   visualizar:boolean=false;
-
+  txtviewmodulo:any;
   constructor(){    
     super();
-    Global.nameComponent='crear-ingreso-comprobante';
+    Global.nameComponent='modificar-cositem';
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
     var id:any=localStorage.getItem('compania_ID');
@@ -52,7 +52,7 @@ export default class ModificarCostItemComponent extends Vue {
   load(){
     var object = JSON.parse(this.$route.query.data);
     var modulo = this.$route.query.vista;
-    
+    this.txtviewmodulo=this.$route.query.vista;
     if(modulo.toLowerCase()!='visualizar'){
       this.txtmodulo='Modificar CostItem';
       this.visualizar=false;
@@ -96,29 +96,66 @@ export default class ModificarCostItemComponent extends Vue {
     return false;
   }
   //#endregion
-  limpiar(){
-    this.cositemModel.strCost_Item_Cod='';
-    this.cositemModel.strCost_Item_Pos1='';
-    this.cositemModel.strCost_Item_Desc1='';
-    this.cositemModel.strCost_Item_Pos2='';
-    this.cositemModel.strCost_Item_Desc2='';
-    this.cositemModel.strCost_Item_Pos3='';
-    this.cositemModel.strCost_Item_Desc3='';
-  }
+  // limpiar(){
+  //   this.cositemModel.strCost_Item_Cod='';
+  //   this.cositemModel.strCost_Item_Pos1='';
+  //   this.cositemModel.strCost_Item_Desc1='';
+  //   this.cositemModel.strCost_Item_Pos2='';
+  //   this.cositemModel.strCost_Item_Desc2='';
+  //   this.cositemModel.strCost_Item_Pos3='';
+  //   this.cositemModel.strCost_Item_Desc3='';
+  // }
   guardarTodo(){
-    console.log(this.cositemModel);
-    costitemService.UpdateCostItemID(this.cositemModel)
-    .then(response=>{
-      this.issave=true;
-      this.textosave='Se guardo correctamente.'
-      this.limpiar();
+
+  if(this.txtviewmodulo=='modificar'){
+    if(this.cositemModel.strCost_Item_Cod==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Pos1==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Desc1==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Pos2==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Desc2==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Pos3==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Desc3==''){ this.$message('Complete los campos obligatorios')}
+    else{
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Guardando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+      );   
+      var user:any=localStorage.getItem('User_Usuario');
+      this.cositemModel.strCreation_User=user;
+      costitemService.UpdateCostItemID(this.cositemModel)
+      .then(resp=>{
+        loadingInstance.close();
+        this.$message({
+            showClose: true,
+            type: 'success',
+            message: 'Se guardo Correctamente '+resp.strCost_Item_Cod
+          });
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se guardo correctamente. '+resp.strCost_Item_Cod;
     }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo guardar producto'
-      });
+        loadingInstance.close();
+        this.$message({
+            showClose: true,
+            type: 'error',
+            message: 'No se pudo guardar'
+          });
+        this.issave = false;
+        this.iserror = true;
+        this.textosave = 'Error al guardar.';
     })
+    }
+    }
+    else{
+        this.$message({
+            showClose: true,
+            type: 'warning',
+            message: 'Accion no permitida'
+          });
+    }
   }
 
 

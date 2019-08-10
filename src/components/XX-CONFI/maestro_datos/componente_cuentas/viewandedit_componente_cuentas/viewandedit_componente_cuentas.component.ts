@@ -4,19 +4,19 @@ import 'font-awesome/css/font-awesome.css';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import router from '@/router';
-import {GrupoCompradorModel} from '@/modelo/maestro/grupocomprador';
+import {ComponenteCuentaContableModel} from '@/modelo/maestro/componentecuentacontable';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
 import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import grupocompradorService from '@/components/service/grupocomprador.service';
+import comService from '@/components/service/componentecuentacontable.service';
 import { Loading } from 'element-ui';
 @Component({
-  name: 'modificar-grupocomprador',
+  name: 'modificar-componente-cuentas',
   components:{
   'quickaccessmenu':QuickAccessMenuComponent,
   'buttons-accions': ButtonsAccionsComponent,
   }
 })
-export default class ViewAndEditGrupoCompradorComponent extends Vue {
+export default class ViewAndEditComponenteCuentasComponent extends Vue {
     sizeScreen:string = (window.innerHeight - 420).toString();//'0';
     sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
   nameComponent:string;
@@ -25,11 +25,11 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
   value3:string;
   companyName:any;
   companyCod:any;
-  strGrpPurch_Cod:string='';
-  public documento:GrupoCompradorModel=new GrupoCompradorModel();
-  gridDocumento:GrupoCompradorModel[];
-  gridDocumento1:GrupoCompradorModel[];
-  gridDocumento2:GrupoCompradorModel[];
+  strComp_Cod:string='';
+  public documento:ComponenteCuentaContableModel=new ComponenteCuentaContableModel();
+  gridDocumento:ComponenteCuentaContableModel[];
+  gridDocumento1:ComponenteCuentaContableModel[];
+  gridDocumento2:ComponenteCuentaContableModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
@@ -40,8 +40,8 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
   txtbuscar:string='';
   Column:string='';
   dialogBusquedaFilter:boolean=false;
-  blnilterstrGrpPurch_Cod:boolean=false;
-  blnilterstrGrpPurch_Desc:boolean=false;
+  blnilterstrComp_Cod:boolean=false;
+  blnilterstrComp_Desc:boolean=false;
   blnilterdtmModified_Date:boolean=false;
   blnilterstrModified_User:boolean=false;
   planDialog:boolean=false;
@@ -50,7 +50,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
   loading1:boolean=true;
   constructor(){    
         super();
-        Global.nameComponent='modificar-grupocomprador';
+        Global.nameComponent='modificar-componente-cuentas';
         setTimeout(() => {
             this.load();
           }, 200)
@@ -58,7 +58,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        grupocompradorService.GetAllGrupoComprador(this.companyCod)
+        comService.GetAllComponenteCuentaContable(this.companyCod)
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];
@@ -80,9 +80,9 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
         var mm = (mes<10) ? '0'+mes : mm=mes;
         return dd+'.'+mm+'.'+yyyy;
     }
-    handleCurrentChange(val:GrupoCompradorModel){
+    handleCurrentChange(val:ComponenteCuentaContableModel){
       this.documento=val;
-      this.strGrpPurch_Cod=this.documento.strGrpPurch_Cod;
+      this.strComp_Cod=this.documento.strComp_Cod;
      }
     btnBuscar(){
       var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
@@ -143,8 +143,8 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
     }
     Limpiar(){
       this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
-      this.blnilterstrGrpPurch_Cod=false;
-      this.blnilterstrGrpPurch_Desc=false;
+      this.blnilterstrComp_Cod=false;
+      this.blnilterstrComp_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
     }
@@ -152,11 +152,11 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
       window.print();
     }
   async  EliminarItem(){
-    if(this.documento.intIdGrpPurch_ID!=-1&&this.documento.strGrpPurch_Cod!=""&&this.documento.strGrpPurch_Desc!=""){
+    if(this.documento.intComp_Cod!=-1&&this.documento.strComp_Cod!=""&&this.documento.strComp_Desc!=""){
       this.planDialog=true;
     }
     else{
-      this.warningMessage("Selecciona Grupo Comprador")
+      this.warningMessage("Selecciona Componente Cuenta")
     }    
   }
   inactivarPlan(){
@@ -169,7 +169,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
       ); 
-    grupocompradorService.inactivarGrupoComprador(this.documento)
+    comService.inactivarComponente(this.documento)
     .then(resp=>{
       loadingInstance.close();
       this.planDialog=false;
@@ -178,7 +178,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
           message: 'Se Inactivo correctamente '+resp,
           type: 'success'
         });
-        this.documento=new GrupoCompradorModel();
+        this.documento=new ComponenteCuentaContableModel();
         this.load();
         this.issave = true;
         this.iserror = false;
@@ -197,11 +197,11 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
     })
   }
   async Activar(){
-    if(this.documento.strGrpPurch_Cod!="" && this.documento.strGrpPurch_Desc!=""){
+    if(this.documento.strComp_Cod!="" && this.documento.strComp_Desc!=""){
       this.planActivarDialog=true;
     }
     else{
-      this.warningMessage('Selecciones Grupo Comprador')
+      this.warningMessage('Selecciones Componente Cuenta')
     }
   }
   activarPlan(){
@@ -214,7 +214,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
       background: 'rgba(0, 0, 0, 0.8)'
       }
       ); 
-    grupocompradorService.activarGrupoComprador(this.documento)
+    comService.activarComponente(this.documento)
     .then(resp=>{
       loadingInstance.close();
       this.planActivarDialog=false;
@@ -223,7 +223,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
           message: 'Se Activo correctamente '+resp,
           type: 'success'
         });
-        this.documento=new GrupoCompradorModel();
+        this.documento=new ComponenteCuentaContableModel();
         this.load();
         this.issave = true;
         this.iserror = false;
@@ -242,44 +242,44 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
     })
   }
   async validad(){      
-    var data=Global.like(this.gridDocumento1,'strGrpPurch_Cod',this.strGrpPurch_Cod)
+    var data=Global.like(this.gridDocumento1,'strComp_Cod',this.strComp_Cod)
     if(data.length>0){
       this.documento=data[0];
-      if(this.documento.strGrpPurch_Cod==this.strGrpPurch_Cod){
+      if(this.documento.strComp_Cod==this.strComp_Cod){
         await setTimeout(() => {
-          if(this.documento.strGrpPurch_Cod!=''){
-            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/grupo_comprador/modif_grupo_comprador`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          if(this.documento.strComp_Cod!=''){
+            router.push({ path: `/barmenu/XX-CONFI/maestro_datos/componente_cuentas/modif_componente_cuentas`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
           }
         }, 600)
       }
       else{
-        if(this.strGrpPurch_Cod==''){
-          this.textosave='Inserte Grupo Comprador. ';
-          this.warningMessage('Inserte Grupo Comprador. ');
+        if(this.strComp_Cod==''){
+          this.textosave='Inserte Componente Cuenta. ';
+          this.warningMessage('Inserte Componente Cuenta. ');
         }
         else{
-          this.textosave='No existe Grupo Comprador. ';
-          this.warningMessage('No existe Grupo Comprador. ');
+          this.textosave='No existe Componente Cuenta. ';
+          this.warningMessage('No existe Componente Cuenta. ');
         }        
       }
     }
     else{
-      this.textosave='No existe Grupo Comprador. ';
-      this.warningMessage('No existe Grupo Comprador. ');
+      this.textosave='No existe Componente Cuenta. ';
+      this.warningMessage('No existe Componente Cuenta. ');
     }
   }
    async validarView(){
-      if(this.documento.intIdGrpPurch_ID!=-1){
+      if(this.documento.intComp_Cod!=-1){
           await setTimeout(() => {
             debugger;
-            if(this.documento.strGrpPurch_Cod!=''){
-              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/grupo_comprador/modif_grupo_comprador`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+            if(this.documento.strComp_Cod!=''){
+              router.push({ path: `/barmenu/XX-CONFI/maestro_datos/componente_cuentas/modif_componente_cuentas`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
             }
           }, 600)
         }
         else{
-          this.textosave='Seleccione Grupo Comprador. ';
-          this.warningMessage('Seleccione Grupo Comprador. ');
+          this.textosave='Seleccione Componente Cuenta. ';
+          this.warningMessage('Seleccione Componente Cuenta. ');
         }
       }
     siguiente(){
@@ -305,37 +305,37 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
   headerclick(val){    
       this.Column=val.label;
       Global.setColumna(this.Column);     
-      if(val.property=="strGrpPurch_Cod"){
-          this.clickColumn="strGrpPurch_Cod";
-          this.blnilterstrGrpPurch_Cod=true;
-      this.blnilterstrGrpPurch_Desc=false;
+      if(val.property=="strComp_Cod"){
+          this.clickColumn="strComp_Cod";
+          this.blnilterstrComp_Cod=true;
+      this.blnilterstrComp_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
-      if(val.property=="strGrpPurch_Desc"){
-          this.clickColumn="strGrpPurch_Desc";
-          this.blnilterstrGrpPurch_Cod=false;
-      this.blnilterstrGrpPurch_Desc=true;
+      if(val.property=="strComp_Desc"){
+          this.clickColumn="strComp_Desc";
+          this.blnilterstrComp_Cod=false;
+      this.blnilterstrComp_Desc=true;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="dtmModified_Date"){
           this.clickColumn="dtmModified_Date";
-          this.blnilterstrGrpPurch_Cod=false;
-      this.blnilterstrGrpPurch_Desc=false;
+          this.blnilterstrComp_Cod=false;
+      this.blnilterstrComp_Desc=false;
       this.blnilterdtmModified_Date=true;
       this.blnilterstrModified_User=false;
       }
       if(val.property=="strModified_User"){
           this.clickColumn="strModified_User";
-          this.blnilterstrGrpPurch_Cod=false;
-      this.blnilterstrGrpPurch_Desc=false;
+          this.blnilterstrComp_Cod=false;
+      this.blnilterstrComp_Desc=false;
       this.blnilterdtmModified_Date=false;
       this.blnilterstrModified_User=true;
       }        
   }
-  filterstrGrpPurch_Cod(h,{column,$index}){
-      if(this.blnilterstrGrpPurch_Cod){
+  filterstrComp_Cod(h,{column,$index}){
+      if(this.blnilterstrComp_Cod){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -344,8 +344,8 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
         return h('span',{style: 'padding-left: 5px;'}, column.label);
       } 
     }
-    filterstrGrpPurch_Desc(h,{column,$index}){        
-      if(this.blnilterstrGrpPurch_Desc){
+    filterstrComp_Desc(h,{column,$index}){        
+      if(this.blnilterstrComp_Desc){
         return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
         [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
           , column.label)])
@@ -392,7 +392,7 @@ export default class ViewAndEditGrupoCompradorComponent extends Vue {
             gridDocumento:[],
             gridDocumento1:[],
             gridDocumento2:[],
-            strGrpPurch_Cod:''
+            strComp_Cod:''
         }
     }
   

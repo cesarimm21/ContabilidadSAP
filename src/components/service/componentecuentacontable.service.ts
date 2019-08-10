@@ -4,14 +4,14 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllComponenteCuentaContable(){  
-    return axios.get(CONFIG.API_URL+'componentecuenta')
+  GetAllComponenteCuentaContable(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'componentecuenta/view/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllComponenteCuentaContable2(compania_cod){  
-    return axios.get(CONFIG.API_URL+'componentecuenta2/'+compania_cod)
+  GetAllComponenteCuentaContable2(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'componentecuenta2/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -23,7 +23,7 @@ export default {
     })
   },
   CrearComponete(data){
-    return axios.post(CONFIG.API_URL+'componentecuenta',data)
+    return axios.post(CONFIG.API_URL+'componentecuenta/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -36,6 +36,18 @@ export default {
   },
   EliminarComponente(data){
     return axios.post(CONFIG.API_URL+'componentecuenta/eliminar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  inactivarComponente(data){
+    return axios.post(CONFIG.API_URL+'componentecuenta/inactivar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarComponente(data){
+    return axios.post(CONFIG.API_URL+'componentecuenta/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

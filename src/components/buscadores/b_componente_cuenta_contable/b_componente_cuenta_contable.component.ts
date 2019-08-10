@@ -40,6 +40,7 @@ export default class  BComponenteCuentaContableComponent extends Vue {
   public search:ComponenteCuentaContableModel=new ComponenteCuentaContableModel();
   inputAtributo:any;
   company_cod:any='';
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -51,8 +52,10 @@ export default class  BComponenteCuentaContableComponent extends Vue {
     componentecuentacontableService.GetAllComponenteCuentaContable2(this.company_cod)
     .then(response=>{
       this.tabla=response; 
-      this.tabla1=response;       
+      this.tabla1=response;    
+      this.loading1=false;   
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
@@ -187,16 +190,23 @@ export default class  BComponenteCuentaContableComponent extends Vue {
     }
   }
   buscarfilterCuenta(){
-    var data=Global.like(this.tabla1,this.clickColumn,this.inputAtributo)
-    this.tabla=[];
-    this.tabla=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.tabla1,this.clickColumn,this.inputAtributo)
+      this.tabla=[];
+      this.tabla=data;
+    }
+    else{
+      this.tabla=[];
+      this.tabla=this.tabla1;
+    }
+    
   }
   data() {
     return {
       cuentacontableModel:[],
       tabla:[],
       tabla1:[],
-      
+      loading1:true
     };
   }
 }

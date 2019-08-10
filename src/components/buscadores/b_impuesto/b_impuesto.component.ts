@@ -128,9 +128,15 @@ export default class  BImpuestoComponent extends Vue {
     return responsearr
   }
   buscarImpuesto(){
-    var data=Global.like(this.impuestoModel1,this.clickColumn,this.inputAtributo)
-    this.impuestoModel=[];
-    this.impuestoModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.impuestoModel1,this.clickColumn,this.inputAtributo)
+      this.impuestoModel=[];
+      this.impuestoModel=data;
+    }
+    else{
+      this.impuestoModel=[];
+      this.impuestoModel=this.impuestoModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

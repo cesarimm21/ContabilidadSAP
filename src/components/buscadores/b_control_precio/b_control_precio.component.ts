@@ -36,16 +36,21 @@ export default class  BControlPrecioComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();
+    setTimeout(() => {
+      this.load();
+    }, 400)  
   }
   load(){
     controlprecioService.GetAllControlPrecio2()
     .then(response=>{
       this.controlprecioModel=response;       
-      this.controlprecioModel1=response;       
+      this.controlprecioModel1=response;  
+      this.loading1=false;     
     }).catch(error=>{
+      this.loading1=false;     
       this.$message({
         showClose: true,
         type: 'error',
@@ -103,9 +108,15 @@ export default class  BControlPrecioComponent extends Vue {
     this.$emit('controlprecioClose');
   }
   buscarControlPrecio(){
-    var data=Global.like(this.controlprecioModel1,this.clickColumn,this.inputAtributo)
-    this.controlprecioModel=[];
-    this.controlprecioModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.controlprecioModel1,this.clickColumn,this.inputAtributo)
+      this.controlprecioModel=[];
+      this.controlprecioModel=data;
+    }
+    else{
+      this.controlprecioModel=[];
+      this.controlprecioModel=this.controlprecioModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;
@@ -153,7 +164,8 @@ export default class  BControlPrecioComponent extends Vue {
     return {
       controlprecioModel:[],
       controlprecioModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
   };
   }
 }

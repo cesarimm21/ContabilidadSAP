@@ -607,29 +607,13 @@ export default class ModificarPRComponent extends Vue {
  
   }
   /*Compania imput*/
-  activar_compania(){
-    setTimeout(() => {
-      this.btnactivarcompania=true;
-      this.btnactivaralmacen=false;
-      this.btnactivarproveedor=false;
-    }, 120)
-  }
-  desactivar_compania(){
-    debugger;
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;
-    }
-  }
-  closeCompania(){
-    debugger;
-    this.btnactivarcompania=false;
-    return false;
-  }
   closePrioridad(){
+    this.dialogPrioridad=false;
     this.btnactivarprioridad=false;
     return false;
   }
   closeUnidadMedida(){
+    this.dialogUnidadMedida=false;
     this.btnactivarunidadmedida=false;
     return false;
   }
@@ -649,29 +633,33 @@ export default class ModificarPRComponent extends Vue {
     }
   }
   closeProveedor(){
-    debugger;
+    this.dialogProveedor=false;
     this.btnactivarproveedor=false;
     return false;
   }
   closeMaterial(){
-    debugger;
+    this.dialogMaterial=false;
     this.btnactivarmaterial=false;
     return false;
   }
   closeCuentaContable(){
-    
+    this.dialogCuentaContable=false;
     return false;
   }
   closeCategoriaLinea(){
+    this.dialogCategoriaLinea=false;
     return false;
   }
   closeCentroCostos(){
+    this.dialogCentroCostos=false;
     return false;
   }
   closeCategoriaCuenta(){
+    this.dialogCategoriaCuenta=false;
     return false;
   }
   closeMoneda(){
+    this.dialogMoneda=false;
     return false;
   }
 
@@ -691,8 +679,7 @@ export default class ModificarPRComponent extends Vue {
     }
   }
   closeAlmacen(){
-    debugger;
-    console.log("closeAlmacen");
+    this.dialogAlmacen=false;
     this.btnactivaralmacen=false;
     return false;
   }
@@ -701,8 +688,6 @@ export default class ModificarPRComponent extends Vue {
     this.btnactivarproveedor=false;
     this.btnactivarcompania=false
   }
-  
-
   activar_tipo_requisicion(value){
     this.tiporequisicion=value;
     

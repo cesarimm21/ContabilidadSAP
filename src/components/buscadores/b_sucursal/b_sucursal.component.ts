@@ -118,9 +118,15 @@ export default class  BSucursalComponent extends Vue {
     this.$emit('sucursalClose');
   }
   buscarSucursal(){
-    var data=Global.like(this.gridSucursal1,this.clickColumn,this.inputAtributo)
-    this.gridSucursal=[];
-    this.gridSucursal=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.gridSucursal1,this.clickColumn,this.inputAtributo)
+      this.gridSucursal=[];
+      this.gridSucursal=data;
+    }
+    else{
+      this.gridSucursal=[];
+      this.gridSucursal=this.gridSucursal1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

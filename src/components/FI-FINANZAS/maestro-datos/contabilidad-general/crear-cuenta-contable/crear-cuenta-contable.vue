@@ -18,10 +18,7 @@
                                     <div class="input-group mb-3" >
                                     <el-input   :disabled="true"
                                     size ="small" 
-                                    @blur="desactivar_compania" 
-                                    @focus="activar_compania" 
                                     v-model="cuentacontable.strCompany_Cod">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -55,7 +52,7 @@
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input class="validador" size ="small" :disabled="true" v-model="strAccFth_Local_Desc" type="text">  
+                                    <el-input class="validador" size ="small" :disabled="true" v-model="cuentacontable.strAccFth_Local_name" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -171,7 +168,7 @@
                                                     <label class="el-form-item__label col-sm-3" >Tipo PDB</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input size ="small" @blur="desactivar_TipoAdquisicion" @focus="activar_TipoAdquisicion" v-model="cuentacontable.strTypeAdq_PDB"  placeholder="">
+                                                            <el-input size ="small" @blur="desactivar_TipoAdquisicion" @focus="activar_TipoAdquisicion" v-model="cuentacontable.strTypeAdq_PDB_Cod"  placeholder="">
                                                                 <el-button v-if="btntipoadquisicion && !dialogTipoAquisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoAdquisicion()"></el-button> 
                                                             </el-input>
                                                         </div>
@@ -335,13 +332,27 @@
                                     <label class="el-form-item__label col-sm-3" >Fecha Creacion</label>
                                     <div class="col-sm-3 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input type="text" :disabled="true" size ="small" style="font-size:11px;" v-model="cuentacontable.dtmCreation_Date"></el-input>
+                                                <el-date-picker
+                                                disabled
+                                                    class="validador"
+                                                    type="date"
+                                                    style="width:128px !important"
+                                                    format="dd.MM.yyyy"
+                                                    size="small" v-model="fecha_actual" >
+                                                </el-date-picker>
                                             </div>
                                         </div>
                                     <label class="el-form-item__label col-sm-3" >Fecha Modificacion</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                        <el-input type="text" :disabled="true"  size ="small" style="font-size:11px;" v-model="cuentacontable.dtmModified_Date"></el-input>
+                                            <el-date-picker
+                                            disabled
+                                                    class="validador"
+                                                    type="date"
+                                                    style="width:128px !important"
+                                                    format="dd.MM.yyyy"
+                                                    size="small" v-model="fecha_actual" >
+                                                </el-date-picker>
                                         </div>
                                     </div>
                                 </div>
@@ -432,14 +443,14 @@
             </div>
         </el-dialog> 
 
-        <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContablePadreCorp" @close="closeDialogCuentaContablePadreCorp" size="small" >
+        <!-- <el-dialog title="Plan Cuenta Contable"  :visible.sync="dialogCuentaContablePadreCorp" @close="closeDialogCuentaContablePadreCorp" size="small" >
             <bcuentacontable v-on:cuentacontableselecionado="cuentacontableselecionadoPadreCorp($event)" v-on:cuentacontableClose="closeDialogCuentaContablePadreCorp()">
             </bcuentacontable>
-        </el-dialog> 
-        <el-dialog title="Plan Contable Corporativo"  :visible.sync="dialogplancontablecorporativo" @close="dialogplancontablecorporativoClose" size="small" >
-            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontablecorpselecionado($event)" v-on:companiaClose="dialogplancontablelocalClose()">
+        </el-dialog>  -->
+        <!-- <el-dialog title="Plan Contable Local"  :visible.sync="dialogCuentaContablePadreCorp" @close="dialogplancontablelocalClose" size="small" >
+            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontablecorpselecionado($event)" v-on:close="dialogplancontablelocalClose()">
             </bplancontablelocal>
-        </el-dialog>
+        </el-dialog> -->
         <el-dialog title="Rubro"  :visible.sync="dialogRubro" @close="dialogRubroClose" size="small" >
             <brubro v-on:rubroselecionado="rubroselecionado($event)" v-on:companiaClose="dialogRubroClose()">
             </brubro>
@@ -451,15 +462,6 @@
         <el-dialog title="Grupo Gastos"  :visible.sync="dialogGrupoGastos" @close="dialogGrupoGastosClose" size="small" >
             <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:close="dialogGrupoGastosClose()">
             </bgrupogastos>
-        </el-dialog>
-        
-        <el-dialog title="Busqueda Compañia"  :visible.sync="dialogCompania" @close="dialogCompaniaClose" size="small" >
-            <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)" v-on:companiaClose="companiaClose()">
-            </bcompania>
-        </el-dialog>
-        <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeDialogImpuesto" size="small" >
-            <bimpuesto v-on:impuestoseleccionado="ImpuestoSeleccionado($event)" v-on:companiaClose="closeImpuesto()">
-            </bimpuesto>
         </el-dialog>
     
         <el-dialog title="Moneda"  :visible.sync="dialogMoneda" @close="closeDialogMoneda" size="small" >
@@ -474,12 +476,12 @@
          
         
         <el-dialog title="Reporte"  :visible.sync="dialogTipoCuentaContable" @close="closeDialogTipoCuentaContable" size="small" >
-            <btipocuentacontable v-on:tipoSeleccionado="tipocuentacontableSeleccionado($event)" v-on:close="closeDialogTipoCuentaContable()">
+            <btipocuentacontable v-on:tipocuentacontableSeleccionado="tipocuentacontableSeleccionado($event)" v-on:close="closeDialogTipoCuentaContable()">
             </btipocuentacontable>
         </el-dialog>  
 
         <el-dialog title="Tipo PDB"  :visible.sync="dialogTipoAquisicion" @close="closeDialogTipoAdquisicion" size="small" >
-            <btipoadquisicion v-on:seleccionar="tipoadquisicionSeleccionado($event)" v-on:close="closeDialogTipoAdquisicion()">
+            <btipoadquisicion v-on:tipoadquisicionSeleccionado="tipoadquisicionSeleccionado($event)" v-on:close="closeDialogTipoAdquisicion()">
             </btipoadquisicion>
         </el-dialog>  
         

@@ -17,10 +17,7 @@
                                     <div class="input-group mb-3" >
                                     <el-input   :disabled="true"
                                     size ="small" 
-                                    @blur="desactivar_compania" 
-                                    @focus="activar_compania" 
                                     v-model="grupoCuentaContableModel.strCompany_Cod">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -53,6 +50,7 @@
                                     </el-input>
                                     </div>
                                 </div>
+                                 <span style="font-size: 11px;margin-top: 5px;">{{grupoCuentaContableModel.strComp_Desc}}</span>
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Posicion</label>

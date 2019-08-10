@@ -22,7 +22,7 @@
                             <label class="sinLinea el-form-item__label col-md-4" >{{companiaDesc}}</label>
                         </div>
                         <div class="form-group row " style="margin-top:6px;">
-                            <label class="el-form-item__label col-md-2" >Codigo Proveedor</label>
+                            <label class="el-form-item__label col-md-2" >Proveedor</label>
                             <div class="col-md-2 grupolabel">
                                 <div class="input-group mb-2" >
                                     <el-input size ="small" v-model="Proveedor.strVendor_NO" placeholder="" disabled>
@@ -133,7 +133,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>
-                                            <label class="el-form-item__label col-md-1" style="color:#1f2d3d;">{{gridSelectPais.strCountry_Name}}</label>
+                                            <label class="el-form-item__label col-md-1" style="color:#1f2d3d;">{{Proveedor.strCountry_Name}}</label>
                                             <div class="col-md-1 grupolabel"></div>
                                             <label class="el-form-item__label col-md-1" >Region</label>
                                             <div class="col-md-1 grupolabel">

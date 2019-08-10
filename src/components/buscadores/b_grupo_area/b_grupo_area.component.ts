@@ -30,7 +30,8 @@ export default class  BGrupoAreaComponent extends Vue {
   valueCombo:string="";
   //Modelos
   articulos:any =[];
-
+  companyName:any;
+  companyCod:any;
   public cuentacontableModel:Array<GrupoAreaModel>=[];
   public cuentacontableModel1:Array<GrupoAreaModel>=[];
   public cuentacontableSelectModel:GrupoAreaModel=new GrupoAreaModel();
@@ -39,6 +40,7 @@ export default class  BGrupoAreaComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -46,11 +48,15 @@ export default class  BGrupoAreaComponent extends Vue {
     }, 200)
   }
   load(){
-    grupoareaService.GetAllGrupoArea2()
+    this.companyName=localStorage.getItem('compania_name');
+    this.companyCod=localStorage.getItem('compania_cod');
+    grupoareaService.GetAllGrupoArea2(this.companyCod)
     .then(response=>{
       this.cuentacontableModel=response;       
-      this.cuentacontableModel1=response;       
+      this.cuentacontableModel1=response;  
+      this.loading1=false;        
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
@@ -118,9 +124,16 @@ export default class  BGrupoAreaComponent extends Vue {
     this.$emit('grupoareaClose');
   }
   buscarGrupo(){
-    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
-    this.cuentacontableModel=[];
-    this.cuentacontableModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=data;
+    }
+    else{
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=this.cuentacontableModel1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;
@@ -137,7 +150,7 @@ export default class  BGrupoAreaComponent extends Vue {
       this.blnilterstrCCGrpArea_Desc=true;
     }
   }
-  filterstrWHS_Cod(h,{column,$index}){
+  filterstrCCGrpArea_Cod(h,{column,$index}){
     var column1 = column.label; 
     if(this.blnilterstrCCGrpArea_Cod){
       this.Column=column1;
@@ -152,7 +165,7 @@ export default class  BGrupoAreaComponent extends Vue {
       return h('span',{style: 'padding-left: 5px;'}, column.label);
     } 
   }
-  filterstrWHS_Name(h,{column,$index}){
+  filterstrCCGrpArea_Desc(h,{column,$index}){
     if(this.blnilterstrCCGrpArea_Desc){
       return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
       [  h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),
@@ -168,7 +181,8 @@ export default class  BGrupoAreaComponent extends Vue {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

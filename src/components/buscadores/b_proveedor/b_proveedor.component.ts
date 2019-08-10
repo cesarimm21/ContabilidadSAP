@@ -55,7 +55,7 @@ export default class  BProveedorComponent extends Vue {
   }
   load(){
     this.codigoCompania=localStorage.getItem('compania_cod');
-    proveedorService.GetProveedoresCompany(this.codigoCompania)
+    proveedorService.GetAllProveedor(this.codigoCompania)
     .then(response=>{
       this.proveedorModel=[];
       this.proveedorModel1=[];
@@ -129,9 +129,15 @@ export default class  BProveedorComponent extends Vue {
     this.$emit('proveedorClose');
   }
   buscarProveedor(){
-    var data=Global.like(this.proveedorModel1,this.clickColumn,this.inputAtributo)
-    this.proveedorModel=[];
-    this.proveedorModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.proveedorModel1,this.clickColumn,this.inputAtributo)
+      this.proveedorModel=[];
+      this.proveedorModel=data;
+    }
+    else{
+      this.proveedorModel=[];
+      this.proveedorModel=this.proveedorModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

@@ -38,9 +38,12 @@ export default class  BCentroCostoComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   codigoCompania:any='';
+  loading1:boolean=true;
   constructor() {
     super();
-    this.load();    
+    setTimeout(() => {
+      this.load();
+    }, 200)  
   }
   load(){
     this.codigoCompania=localStorage.getItem('compania_cod');
@@ -49,8 +52,10 @@ export default class  BCentroCostoComponent extends Vue {
       this.centrocostosModel=[];       
       this.centrocostosModel1=[];       
       this.centrocostosModel=response;       
-      this.centrocostosModel1=response;       
+      this.centrocostosModel1=response;  
+      this.loading1=false;     
     }).catch(error=>{
+      this.loading1=false;     
       this.$message({
         showClose: true,
         type: 'error',
@@ -110,9 +115,16 @@ export default class  BCentroCostoComponent extends Vue {
     this.$emit('centrocostosclose');
   }
   buscarCentro(){
-    var data=Global.like(this.centrocostosModel1,this.clickColumn,this.inputAtributo)
-    this.centrocostosModel=[];
-    this.centrocostosModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.centrocostosModel1,this.clickColumn,this.inputAtributo)
+      this.centrocostosModel=[];
+      this.centrocostosModel=data;
+    }
+    else{
+      this.centrocostosModel=[];
+      this.centrocostosModel=this.centrocostosModel1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;
@@ -161,6 +173,7 @@ export default class  BCentroCostoComponent extends Vue {
       centrocostosModel:[],
       centrocostosModel1:[],
       inputAtributo:'',
+      loading1:true
   };
   }
 }

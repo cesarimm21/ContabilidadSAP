@@ -1,5 +1,5 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="crear-costitem">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"/>
         </ol>
@@ -17,10 +17,7 @@
                                     <div class="input-group mb-3" >
                                     <el-input   :disabled="true"
                                     size ="small" 
-                                    @blur="desactivar_compania" 
-                                    @focus="activar_compania" 
                                     v-model="cositemModel.strCompany_Cod">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -30,7 +27,7 @@
                                 <label class="el-form-item__label col-md-2" >Grupo Elem. Gto. </label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="cositemModel.strCost_Item_Cod" type="text">  
+                                    <el-input class="validador" size ="small" v-model="cositemModel.strCost_Item_Cod" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -40,14 +37,14 @@
                                 <label class="el-form-item__label col-md-2" >Grupo 1</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="cositemModel.strCost_Item_Pos1" type="text">  
+                                    <el-input class="validador" size ="small" v-model="cositemModel.strCost_Item_Pos1" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion 1</label>
                                 <div class="col-md-4 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" v-model="cositemModel.strCost_Item_Desc1" type="text">  
+                                    <el-input class="validador" size ="small" v-model="cositemModel.strCost_Item_Desc1" type="text">  
                                     </el-input>
                                     </div>
                                 </div>

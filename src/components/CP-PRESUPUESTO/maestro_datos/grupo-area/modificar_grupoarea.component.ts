@@ -58,7 +58,7 @@ export default class ModificarGrupoAreaComponent extends Vue {
     load(){
         this.companyName=localStorage.getItem('compania_name');
         this.companyCod=localStorage.getItem('compania_cod');
-        grupoareaService.GetAllGrupoArea()
+        grupoareaService.GetAllGrupoArea(this.companyCod)
         .then(response=>{
           this.gridDocumento=[];
           this.gridDocumento1=[];

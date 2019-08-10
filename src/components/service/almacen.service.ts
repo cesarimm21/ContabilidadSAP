@@ -5,13 +5,13 @@ import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
   GetAllAlmacen(strCompany_Cod){  
-    return axios.get(CONFIG.API_URL+'almacen/'+strCompany_Cod)
+    return axios.get(CONFIG.API_URL+'almacen/view/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
   GetAllAlmacen2(strCompany_Cod){  
-    return axios.get(CONFIG.API_URL+'almacen2')
+    return axios.get(CONFIG.API_URL+'almacen2/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

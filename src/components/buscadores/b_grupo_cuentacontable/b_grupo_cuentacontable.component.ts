@@ -41,6 +41,8 @@ clickColumn:string='';
 Column:string='';
 public search:GrupoCuentaContableModel=new GrupoCuentaContableModel();
 inputAtributo:any;
+loading1:boolean=true;
+companyCod:any;
   constructor() {
     super();
     setTimeout(() => {
@@ -48,11 +50,14 @@ inputAtributo:any;
     }, 200)
   }
   load(){
-    grupocuentacontableService.GetAllGrupoCuentaContable2()
+    this.companyCod=localStorage.getItem('compania_cod');
+    grupocuentacontableService.GetAllGrupoCuentaContable2(this.companyCod)
     .then(response=>{
       this.cuentacontableModel=response;  
-      this.cuentacontableModel1=response;  
+      this.cuentacontableModel1=response;
+      this.loading1=false;  
     }).catch(error=>{
+      this.loading1=false;
       this.$message({
         showClose: true,
         type: 'error',
@@ -197,15 +202,22 @@ inputAtributo:any;
     }
   }
   buscarfilter(){
-    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
-    this.cuentacontableModel=[];
-    this.cuentacontableModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=data;
+    }
+    else{
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=this.cuentacontableModel1;
+    }
   }
   data() {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

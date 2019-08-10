@@ -9,6 +9,13 @@ export class HesDetalleModel {
     intQuantity:number;
     intIdPOD_ID:number;
     intPO_Item_NO:number; //agregar
+
+    //nuevos
+    strStock_Cod:string;
+    strAccount_Cod:string;
+    strAcctCateg_Cod:string;
+    strTax_Cod:string;
+    //end
     strUM:string;
     strCurrency:string;
     intIdCostCenter_ID:number;
@@ -32,6 +39,10 @@ export class HesDetalleModel {
         this.strHES_NO='';
         this.intHES_Item_NO=0;
         this.intPO_Item_NO=0;
+        this.strStock_Cod='';
+        this.strAcctCateg_Cod='';
+        this.strTax_Cod='';
+        this.strAccount_Cod='';
         this.strService_NO='';
         this.strDesc_Detail='';
         this.strHES_Status='';

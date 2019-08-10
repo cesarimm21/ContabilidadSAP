@@ -458,7 +458,7 @@ closeCategoriaCuenta(){
     this.dialogCuentaContableDebe=false;
   }
   cuentacontableselecionadodebe(val,dialog:boolean){
-    this.centrocosto.strAcctDest_Debit=val.strAcc_Local_NO;
+    this.centrocosto.strCodAcctDest_Debit=val.strAcc_Local_NO;
     this.dialogCuentaContableDebe=false;  
   }
 

@@ -17,8 +17,9 @@
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input   
+                                    disabled
                                         size ="small" 
-                                        v-model="compania.strCompany_Cod">
+                                        v-model="companyCod">
                                     </el-input>
                                     </div>
                                 </div>
@@ -27,7 +28,7 @@
                             
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Componente Cuenta</label>
-                                <div class="col-md-6 grupolabel">
+                                <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="componente.strComp_Cod"  type="text">  
                                     </el-input>
@@ -36,7 +37,7 @@
                             </div>    
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
+                                <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input class="validador" size ="small" v-model="componente.strComp_Desc"  type="text">  
                                     </el-input>

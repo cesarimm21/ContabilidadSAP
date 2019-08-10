@@ -153,6 +153,7 @@ export default class CrearProveedorComponent extends Vue {
 
   //**cuenta contable */
   cuenta:CuentaContableModel[];
+  loading1:boolean=false;
   constructor(){
     super();
     Global.nameComponent='crear-proveedor';
@@ -195,7 +196,7 @@ export default class CrearProveedorComponent extends Vue {
   }
 // [Cuenta contable]
   GetAllCuentaContable(){
-    cuentacontableService.GetAllCuentaContable()
+    cuentacontableService.GetAllCuentaContable2(this.codigoCompania)
     .then(response=>{
       this.cuenta=response;
       this.Proveedor.strAcc_Local_NO=this.cuenta[0].strAcc_Local_NO;  
@@ -239,6 +240,7 @@ export default class CrearProveedorComponent extends Vue {
     this.gridSelectPais=val;
     this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
+    this.Proveedor.strCountry_Name=this.gridSelectPais.strCountry_Name;
     this.departEnabled=false;
     this.paisVisible=false;
   }
@@ -438,6 +440,7 @@ export default class CrearProveedorComponent extends Vue {
       this.gridProveedor1=[];
       this.gridProveedor=response;
       this.gridProveedor1=response;
+      this.loading1=false;         
       if(response.length>0){
         this.proDisabled=false;
       }          
@@ -450,6 +453,7 @@ export default class CrearProveedorComponent extends Vue {
         this.proDisabled=true;
       }
     }).catch(error=>{
+      this.loading1=false;
       this.$message({
         showClose: true,
         type: 'error',
@@ -480,26 +484,29 @@ export default class CrearProveedorComponent extends Vue {
     }
   }
   loadProveedores(){
+    this.loading1=true;
     this.GetProveedoresCompany(this.Proveedor.strCompany_Cod)
     this.dialogVisible=true;
   }
   proveedorSelect(val){
     this.gridSelectedProveedor=val;     
+    this.gridSelectedProveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;  
+    this.gridSelectedProveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
+    this.gridSelectedProveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
   }
   proveedorClose(){
     this.dialogVisible=false;
   }
   proveedorCheck(){
     this.dialogVisible=false;   
-    this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID.intIdCompany_ID;
-    this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
-    this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
-    // this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
-    this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
-    this.gridSelectPais.strCountry_Name=this.gridSelectedProveedor.intIdCountry_ID.strCountry_Name;
+    this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;  
+    this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID;  
+    this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID;  
+    this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID;  
     this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
     this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
     this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
+    this.Proveedor.strCountry_Name=this.gridSelectedProveedor.strCountry_Name;
     this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
     this.FLAGDOC='B'
     this.selectCategoria(this.Proveedor.strCat_Person);
@@ -653,7 +660,7 @@ export default class CrearProveedorComponent extends Vue {
     this.selectDepartamento=new DepartamentoModel();
   }
   departDialog(){
-    this.GetAllDepartamento(this.gridSelectPais.intIdCountry_ID);
+    this.GetAllDepartamento(this.gridSelectPais.strCountry_Cod);
   }
   headerclick(val){
     this.Column=val.label;
@@ -1052,46 +1059,55 @@ export default class CrearProveedorComponent extends Vue {
   SaveProveedor(val){
     var idCompany:any=localStorage.getItem('compania_ID');
     var USERLOGIN:any=localStorage.getItem('User_Usuario');
-    this.Proveedor.intIdCompany_ID=parseInt(idCompany);
-    this.Proveedor.strCreation_User=USERLOGIN;  
-    let loadingInstance = Loading.service({
-      fullscreen: true,
-      text: 'Guardando...',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.8)'
-      }
-      );     
-    proveedorService.putProveedor(this.Proveedor)
-    .then(response=>{
-      loadingInstance.close();
-      this.openMessageSuccess('Se guardo correctamente '+response);
-      this.textosave = 'Se guardo correctamente '+response;
-      this.issave=true;
-      this.iserror=false;
-      this.Proveedor=new ProveedorModel();
-      this.gridSelectPais=new PaisModel();
-      this.selectDepartamento=new DepartamentoModel();
-      this.selectTipoDoc=new TipoDocIdentidadModel();
-      this.selectMonedaA=new MonedaModel();
-      this.selectMonedaB=new MonedaModel();
-      this.selectMonedaC=new MonedaModel();
-      this.selectMonedaD=new MonedaModel();
-      this.selectBancoA=new BancoModel();
-      this.selectBancoB=new BancoModel();
-      this.selectBancoC=new BancoModel();
-      this.selectBancoD=new BancoModel();
-      this.codigoCompania=localStorage.getItem('compania_cod');
-      this.descripcionCompania=localStorage.getItem('compania_name');
-      this.Proveedor.strCompany_Cod=this.codigoCompania;
-    })
-    .catch(e =>{      
-      this.openMessageError('Error guardar proveedor');
-      loadingInstance.close();
-      this.textosave = 'No se guardo proveedor.';
-      this.issave=false;
-      this.iserror=true;
-    })    
-      
+    if(this.Proveedor.strVendor_Desc==''){ this.$message('Complete los campos obligatorios');return false;}
+    if(this.Proveedor.strTax_ID==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.Proveedor.strDocIdent_NO==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.Proveedor.strCountry==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.Proveedor.strAddress==''){ this.$message('Complete los campos obligatorios');return false;}  
+    if(this.Proveedor.strBank_Cod==''){ this.$message('Complete los campos obligatorios');return false;} 
+    else {
+        // this.Proveedor.intIdCompany_ID=parseInt(idCompany);
+        this.Proveedor.strCreation_User=USERLOGIN;  
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Guardando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+          );     
+        proveedorService.putProveedor(this.Proveedor)
+        .then(response=>{
+          loadingInstance.close();
+          this.openMessageSuccess('Se guardo correctamente '+response);
+          this.textosave = 'Se guardo correctamente '+response;
+          this.issave=true;
+          this.iserror=false;
+          this.Proveedor=new ProveedorModel();
+          this.gridSelectPais=new PaisModel();
+          this.selectDepartamento=new DepartamentoModel();
+          this.selectTipoDoc=new TipoDocIdentidadModel();
+          this.selectMonedaA=new MonedaModel();
+          this.selectMonedaB=new MonedaModel();
+          this.selectMonedaC=new MonedaModel();
+          this.selectMonedaD=new MonedaModel();
+          this.selectBancoA=new BancoModel();
+          this.selectBancoB=new BancoModel();
+          this.selectBancoC=new BancoModel();
+          this.selectBancoD=new BancoModel();
+          this.codigoCompania=localStorage.getItem('compania_cod');
+          this.descripcionCompania=localStorage.getItem('compania_name');
+          this.Proveedor.strCompany_Cod=this.codigoCompania;
+        })
+        .catch(e =>{      
+          this.openMessageError('Error guardar proveedor');
+          loadingInstance.close();
+          this.textosave = 'No se guardo proveedor.';
+          this.issave=false;
+          this.iserror=true;
+        })    
+          
+    }
+    
   }
   openMessageError(strMessage:string){
     this.$message({

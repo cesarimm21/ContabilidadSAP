@@ -36,7 +36,7 @@
                                 <label class="el-form-item__label col-md-3" >Servicio</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                     <el-input class="validador" size ="small" @blur="desactivar_hes" @focus="activar_hes" v-model="factura.strPO_NO" type="text" :disabled="tipoRequiDisabled">  
+                                     <el-input class="validador" size ="small" @blur="desactivar_hes" @focus="activar_hes" v-model="factura.strHES_NO" type="text" :disabled="tipoRequiDisabled">  
                                         <el-button v-if="btnactivarHes && !dialogHes" slot="append" class="boton" icon="fa fa-clone" @click="loadHes()" :disabled="tipoRequiDisabled"></el-button>                           
                                     </el-input>
                                     </div>
@@ -437,7 +437,7 @@
                                                     </el-table-column>
                                                     <el-table-column width="100"
                                                         prop="fltValue_Local"  
-                                                        label="Total S/ + IVG"
+                                                        label="Total S/"
                                                         align="right">
                                                     </el-table-column>
                                                     <el-table-column
@@ -560,6 +560,10 @@
                     </div>
                 </div>
                 <el-table
+                v-loading="loadingOrden"
+                    element-loading-text="Cargando..."
+                    element-loading-spinner="el-icon-loading"
+                    element-loading-background="rgba(0,0,0, 0.8)"
                     :data="ordencompra"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
@@ -616,6 +620,10 @@
                     </div>
                 </div>
                 <el-table
+                v-loading="loading1"
+                    element-loading-text="Cargando..."
+                    element-loading-spinner="el-icon-loading"
+                    element-loading-background="rgba(0,0,0, 0.8)"
                     :data="gridHes"
                     stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                     style="width: 100%;cursor: pointer;" class="ExcelTable2007"
@@ -639,10 +647,10 @@
             </el-card>
             <br/>
             <footer class="modal-footer">
-                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkOrdenCompra()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkHes()">
                 <img class="imagenfilter" src="../../../../images/check.png" alt="" >
                 </el-button>
-                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeOrdenCompra()">
+                <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeHes()">
                 <img class="imagenfilter" src="../../../../images/close.png" alt="" >
                 </el-button>
             </footer>

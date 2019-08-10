@@ -40,6 +40,7 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
   Column:string='';
   public search:GrupoGastosModel=new GrupoGastosModel();
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -50,8 +51,10 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
     grupogastosService.GetAllGrupoGastos2()
     .then(response=>{
       this.cuentacontableModel=response;   
-      this.cuentacontableModel1=response;       
+      this.cuentacontableModel1=response;    
+      this.loading1=false;      
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
@@ -191,16 +194,24 @@ export default class  BGrupoCuentaGastosComponent extends Vue {
     }
   }
   buscarfilter(){
-    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
-    this.cuentacontableModel=[];
-    this.cuentacontableModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=data;
+    }
+    else{
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=this.cuentacontableModel1;
+    }
+    
   }
 
   data() {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

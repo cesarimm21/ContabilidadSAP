@@ -166,7 +166,7 @@ export default class CrearClienteComponent extends Vue {
   }
 // [Cuenta contable]
   GetAllCuentaContable(){
-    cuentaContableService.GetAllCuentaContable()
+    cuentaContableService.GetAllCuentaContable(this.codigoCompania)
     .then(response=>{
       this.cuenta=response;
       this.Cliente.strAcc_Local_NO=this.cuenta[0].strAcc_Local_NO;  

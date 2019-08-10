@@ -38,6 +38,7 @@ export default class  BGrupoProcesoComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   companyCod:any;
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -49,8 +50,10 @@ export default class  BGrupoProcesoComponent extends Vue {
     grupoprocesoService.GetAllGrupoProceso2(this.companyCod)
     .then(response=>{
       this.cuentacontableModel=response;       
-      this.cuentacontableModel1=response;       
+      this.cuentacontableModel1=response;   
+      this.loading1=false;       
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
@@ -111,9 +114,16 @@ export default class  BGrupoProcesoComponent extends Vue {
     this.$emit('grupoprocesoClose');
   }
   buscarGrupoP(){
-    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
-    this.cuentacontableModel=[];
-    this.cuentacontableModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=data;
+    }
+    else{
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=this.cuentacontableModel1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;
@@ -161,7 +171,9 @@ export default class  BGrupoProcesoComponent extends Vue {
     return {
       cuentacontableModel:[],
       cuentacontableModel1:[],
-      inputAtributo:''  
+      inputAtributo:''  ,
+      Column:'',
+      loading1:true
     };
   }
 }

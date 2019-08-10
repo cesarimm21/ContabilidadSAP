@@ -572,11 +572,6 @@
         </div>
         
     </div>
-    <!--DIALOG BUSQUEDA COMPAÑIA-->
-    <el-dialog title="Busqueda compañia" :visible.sync="dialogCompania" @close="closeCompania" size="small" >
-      <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)">
-      </bcompania>
-    </el-dialog>
 
    <!--DIALOG BUSQUEDA CENTRO COSTOS-->
     <el-dialog title="Busqueda centro de costos"  :visible.sync="dialogCentroCostos" @close="closeCentroCostos" size="small" >

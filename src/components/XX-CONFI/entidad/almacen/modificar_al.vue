@@ -1,5 +1,5 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="modificar-almacen">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu  v-on:validarView="validad()" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
@@ -159,17 +159,17 @@
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal>  
-    <b-modal ref="myModalRef" hide-footer title="Eliminar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
+    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
       <div style="height:85px"> 
         <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
-        <span style="font-size:13px">¿Desea Eliminar el almacen {{almacen.strWHS_Cod}}?</span>
+        <span style="font-size:13px">¿Desea Inactivar el almacen {{almacen.strWHS_Cod}}?</span>
       </div>
       <footer class="modal-footer">
         <img src="../../../../images/check.png" style="width:13px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="btnEliminar"/>
         <img src="../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogEliminar = false"/>
       </footer>
     </b-modal>  
-    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
+    <b-modal ref="myModalRef" hide-footer title="Activar" size="sm"  v-model="dialogInactivar" @keydown.native.enter="btnInactivar">
       <div style="height:85px"> 
         <img src="../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
         <span style="font-size:13px">¿Desea Activar el Almacen {{almacen.strWHS_Cod}}?</span>

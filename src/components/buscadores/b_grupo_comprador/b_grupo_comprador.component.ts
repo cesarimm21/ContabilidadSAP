@@ -43,6 +43,7 @@ export default class  BGrupoCompradorComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   company_cod:any='';
+  loading1:boolean=true;
   constructor() {
     super();
     this.load();
@@ -52,8 +53,10 @@ export default class  BGrupoCompradorComponent extends Vue {
     grupocompradorService.GetAllGrupoComprador2(this.company_cod)
     .then(response=>{
       this.grupocompradorModel=response;       
-      this.grupocompradorModel1=response;       
+      this.grupocompradorModel1=response; 
+      this.loading1=false;      
     }).catch(error=>{
+      this.loading1=false;
       this.$message({
         showClose: true,
         type: 'error',
@@ -115,9 +118,15 @@ export default class  BGrupoCompradorComponent extends Vue {
     this.$emit('grupocompradorClose');
   }
   buscarComprador(){
-    var data=Global.like(this.grupocompradorModel1,this.clickColumn,this.inputAtributo)
-    this.grupocompradorModel=[];
-    this.grupocompradorModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.grupocompradorModel1,this.clickColumn,this.inputAtributo)
+      this.grupocompradorModel=[];
+      this.grupocompradorModel=data;
+    }
+    else{
+      this.grupocompradorModel=[];
+      this.grupocompradorModel=this.grupocompradorModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

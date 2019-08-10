@@ -4,26 +4,32 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllGrupoCuentaContable(){  
-    return axios.get(CONFIG.API_URL+'grupocuentacontable')
+  GetAllGrupoCuentaContable(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'grupocuentacontable/view/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllGrupoCuentaContable2(){  
-    return axios.get(CONFIG.API_URL+'grupocuentacontable2')
+  GetAllGrupoCuentaContable2(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'grupocuentacontable2/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  activar(data){
+  inactivarGrupoCuentaContable(data){
+    return axios.post(CONFIG.API_URL+'grupocuentacontable/inactivar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarGrupoCuentaContable(data){
     return axios.post(CONFIG.API_URL+'grupocuentacontable/activar',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
   CrearGrupoCuenta(data){
-    return axios.post(CONFIG.API_URL+'grupocuentacontable',data)
+    return axios.post(CONFIG.API_URL+'grupocuentacontable/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })

@@ -35,7 +35,7 @@
                             </div>    
                             <div class="form-group row">
                                 <label class="el-form-item__label col-sm-2" >Descripcion</label>
-                                <div class="col-sm-2 grupolabel">
+                                <div class="col-sm-6 grupolabel">
                                     <div class="input-group mb-3" >
                                         <el-input class="validador"  size="small" :disabled="visualizar" v-model="grupocomprador.strGrpPurch_Desc" >
                                         </el-input>

@@ -39,7 +39,7 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
   inputAtributo:string='';
   clickColumn:string='';
   Column:string='';
-  blnilterstrCCCategory_Cod:boolean=false;
+  blnilterstrCCCategory_Cod:boolean=true;
   blnilterstrCCCategory_Desc:boolean=false;
   public cuentacontableSelectModel:CategoriaCentroCostoModel=new CategoriaCentroCostoModel();
 //   articuloService:ArticuloService=new ArticuloService()
@@ -86,9 +86,15 @@ export default class  BCategoriaCentroCostoComponent extends Vue {
     this.$emit('cartaSelecionado',rows[index]);
   }
   buscarCentroCostos(){
-    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
-    this.cuentacontableModel=[];
-    this.cuentacontableModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=data;
+    }
+    else{
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=this.cuentacontableModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

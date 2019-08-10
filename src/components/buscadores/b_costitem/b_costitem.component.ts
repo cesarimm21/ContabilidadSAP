@@ -50,6 +50,7 @@ export default class  BCostItemComponent extends Vue {
   public search:CostItemModel=new CostItemModel();
   inputAtributo:any;
   company_cod:any='';
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -61,12 +62,14 @@ export default class  BCostItemComponent extends Vue {
     costitemService.GetAllCostItem2(this.company_cod)
     .then(response=>{ 
       this.tabla=response; 
-      this.tabla1=response;       
+      this.tabla1=response;    
+      this.loading1=false;   
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
-        message: 'No se pudo cargar los almacenes'
+        message: 'No se pudo cargar Cost Item'
       });
     })
   }
@@ -114,7 +117,7 @@ export default class  BCostItemComponent extends Vue {
     this.costitemSelectModel=val;
   }
   checkPopup(){
-    debugger;
+    
     this.$emit('costitemselecionado',this.costitemSelectModel);
   }
   closePopup(){
@@ -122,7 +125,7 @@ export default class  BCostItemComponent extends Vue {
   }
   
   filterstrCost_Item_Cod(h,{column,$index}){
-    debugger;
+    
     var column1 = column.label; 
     if(this.blnfilterstrCost_Item_Cod){
       this.Column=column1;
@@ -139,7 +142,7 @@ export default class  BCostItemComponent extends Vue {
     } 
   }
   filterstrCost_Item_Pos1(h,{column,$index}){
-    debugger;
+    
     var column1 = column.label; 
     if(this.blnfilterstrCost_Item_Pos1){
       this.Column=column1;
@@ -156,7 +159,7 @@ export default class  BCostItemComponent extends Vue {
     } 
   }
   filterstrCost_Item_Desc1(h,{column,$index}){
-    debugger;
+    
     var column1 = column.label; 
     if(this.blnfilterstrCost_Item_Desc1){
       this.Column=column1;
@@ -200,16 +203,23 @@ export default class  BCostItemComponent extends Vue {
     }
   }
   buscarfilterCuenta(){
-    var data=Global.like(this.tabla1,this.clickColumn,this.inputAtributo)   
-    this.tabla=[];
-    this.tabla=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.tabla1,this.clickColumn,this.inputAtributo)   
+      this.tabla=[];
+      this.tabla=data;
+    }
+    else{
+      this.tabla=[];
+      this.tabla=this.tabla1;
+    }    
   }
   data() {
     return {
       cuentacontableModel:[],
       tabla:[],
       tabla1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

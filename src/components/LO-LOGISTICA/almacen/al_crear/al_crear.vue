@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="col-sm-9" >
                                     <div class="form-group row ">
-                                        <label class="el-form-item__label col-md-2" >Codigo Almacen</label>
+                                        <label class="el-form-item__label col-md-2" >Almacen</label>
                                         <div class="col-md-2 grupolabel">
                                             <div class="input-group mb-3" >
                                             <el-input class="validador" size ="small" @blur="desactivar_almacen" @focus="activar_almacen" v-model="productoModel.strWHS_Cod"  placeholder=""  @keyup.enter.native="enterAlmacen(productoModel.strWHS_Cod)"  @keyup.delete.native="borrarAlmacen()">
@@ -523,7 +523,7 @@
                     @row-dblclick="SeleccionadoClaseMaterial"
                     @current-change="handleCurrentChange">
                     <!-- @current-change="handleCurrentChange"> -->
-                    <el-table-column :render-header="filterstrMatClass_Cod"  prop="strMatClass_Cod" label="Codigo" width="100" >
+                    <el-table-column :render-header="filterstrMatClass_Cod"  prop="strMatClass_Cod" label="Clase Material" width="100" >
                     </el-table-column>  
                     <el-table-column :render-header="filterstrExp_Cod_Loc" prop="strExp_Cod_Loc" label="Cuenta" width="120"  >
                     </el-table-column> 

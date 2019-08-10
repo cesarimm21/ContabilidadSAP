@@ -1,11 +1,12 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="modificar-elemento-gasto">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu v-on:guardarTodo="guardarTodo($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
                 <span class="labelheadercard" > {{txtmodulo}}</span>
+                <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
                 <div class="container">
@@ -17,10 +18,7 @@
                                     <div class="input-group mb-3" >
                                     <el-input   :disabled="true"
                                     size ="small" 
-                                    @blur="desactivar_compania" 
-                                    @focus="activar_compania" 
                                     v-model="cuentacontable.strCompany_Cod">
-                                        <el-button v-if="btnactivarcompania && !dialogCompania" slot="append" class="boton" icon="fa fa-clone" @click="loadCompania()"></el-button> 
                                     </el-input>
                                     </div>
                                 </div>
@@ -30,14 +28,14 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Contable</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" @change="activarpadre(cuentacontable.strAcc_Local_NO)" v-model="cuentacontable.strAcc_Local_NO" type="text">  
+                                    <el-input size ="small" class="validador" @change="activarpadre(cuentacontable.strAcc_Local_NO)" v-model="cuentacontable.strAcc_Local_NO" type="text" disabled>  
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small" :disabled="visualizar" v-model="cuentacontable.strAcc_Local_Name" type="text">  
+                                    <el-input size ="small" class="validador" v-model="cuentacontable.strAcc_Local_Name" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -46,15 +44,15 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Padre</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-input size ="small" :disabled="visualizar" @blur="desactivar_CuentaContablePadre" @focus="activar_CuentaContablePadre" v-model="cuentacontable.strAccFth_Local"  placeholder="">
-                                            <el-button :disabled="visualizar" v-if="btnactivarCuentaContablePadre && !dialogCuentaContablePadre" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContablePadre()"></el-button> 
+                                        <el-input class="validador" size ="small" :disabled="ctaPadre" @blur="desactivar_CuentaContablePadre" @focus="activar_CuentaContablePadre" v-model="cuentacontable.strAccFth_Local"  placeholder="">
+                                            <el-button  v-if="btnactivarCuentaContablePadre && !dialogCuentaContablePadre" slot="append" class="boton" icon="fa fa-clone" @click="loadCuentaContablePadre()"></el-button> 
                                         </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small"  v-model="strAccFth_Local_Desc" type="text">  
+                                    <el-input class="validador" size ="small" :disabled="true" v-model="cuentacontable.strAccFth_Local_name" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
@@ -63,14 +61,14 @@
                                 <label class="el-form-item__label col-md-2" >Cta. Corporativa</label>
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small" v-model="cuentacontable.strAcc_Corp_NO" type="text">  
+                                    <el-input class="validador" size ="small" v-model="cuentacontable.strAcc_Corp_NO" type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
                                 <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled="visualizar" size ="small"  v-model="cuentacontable.strAcc_Corp_Name" >                            
+                                    <el-input class="validador" size ="small"  v-model="cuentacontable.strAcc_Corp_Name" >                            
                                     </el-input>
                                     </div>
                                 </div>
@@ -79,7 +77,7 @@
                                 <label class="el-form-item__label col-sm-2" >Tipo</label>
                                 <div class="col-sm-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-select  :disabled="visualizar" v-model="strlevelTipo" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-select class="validador" v-model="cuentacontable.strAcc_Level" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                             <el-option style="font-size:13px"
                                             v-for="item in tabletipo1"
                                             :key="item.strType_Cod"
@@ -92,7 +90,7 @@
                                 <label class="el-form-item__label col-sm-2" >Categoria</label>
                                 <div class="col-sm-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                        <el-select :disabled="true" v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                        <el-select  :disabled="true" v-model="strlevel" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                             <el-option style="font-size:13px"
                                             v-for="item in tabletipo"
                                             :key="item.strType_Cod"
@@ -122,8 +120,8 @@
                                                     <label class="el-form-item__label col-sm-3" >Plan Contable Local</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_PlanCuentaLocal" @focus="activar_PlanCuentaLocal" v-model="cuentacontable.strChartAcct_L_Cod">                            
-                                                                <el-button :disabled="visualizar" v-if="btnactivarPlanCuentaLocal && !dialogplancontablelocal" slot="append" class="boton" icon="fa fa-clone" @click="loadPlanCuentaLocal()"></el-button> 
+                                                            <el-input size ="small" @blur="desactivar_PlanCuentaLocal" @focus="activar_PlanCuentaLocal" v-model="cuentacontable.strChartAcct_L_Cod">                            
+                                                                <el-button v-if="btnactivarPlanCuentaLocal && !dialogplancontablelocal" slot="append" class="boton" icon="fa fa-clone" @click="loadPlanCuentaLocal()"></el-button> 
                                                             </el-input>
                                                             <!-- <el-input type="text"  size ="small" style="font-size:11px;" v-model="cuentacontable.strChartAcct_L_Cod"></el-input> -->
                                                         </div>
@@ -131,8 +129,8 @@
                                                     <label class="el-form-item__label col-sm-3" >Reporte</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_TipoCuentaContable" @focus="activar_TipoCuentaContable" v-model="cuentacontable.strAcc_Type">                            
-                                                                <el-button :disabled="visualizar" v-if="btnactivarTipoCuentaContable && !dialogTipoCuentaContable" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoCuentaContable()"></el-button> 
+                                                            <el-input size ="small" @blur="desactivar_TipoCuentaContable" @focus="activar_TipoCuentaContable" v-model="cuentacontable.strAcc_Type">                            
+                                                                <el-button v-if="btnactivarTipoCuentaContable && !dialogTipoCuentaContable" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoCuentaContable()"></el-button> 
                                                             </el-input>
                                                             <!-- <el-input type="text"  size ="small" style="font-size:11px;" v-model="cuentacontable.strChartAcct_L_Cod"></el-input> -->
                                                         </div>
@@ -142,16 +140,16 @@
                                                     <label class="el-form-item__label col-sm-3" >Rubro Cta.</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_Grupo" @focus="activar_Grupo" v-model="cuentacontable.strGrpAcctCont_Cod">                            
-                                                                <el-button :disabled="visualizar" v-if="btnactivarGrupo && !dialogGrupoCuentaContable" slot="append" class="boton" icon="fa fa-clone" @click="loadGrupo()"></el-button> 
+                                                            <el-input size ="small" @blur="desactivar_Grupo" @focus="activar_Grupo" v-model="cuentacontable.strGrpAcctCont_Cod">                            
+                                                                <el-button v-if="btnactivarGrupo && !dialogGrupoCuentaContable" slot="append" class="boton" icon="fa fa-clone" @click="loadGrupo()"></el-button> 
                                                             </el-input>
                                                         </div>
                                                     </div>
                                                     <label class="el-form-item__label col-sm-3" >Rubro Costos</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input size ="small" :disabled="visualizar" @blur="desactivar_CostItem" @focus="activar_CostItem" v-model="cuentacontable.strCost_Item_Cod">                            
-                                                                <el-button :disabled="visualizar" v-if="btnactivarCostItem && !dialogCostItem" slot="append" class="boton" icon="fa fa-clone" @click="loadCostItem()"></el-button> 
+                                                            <el-input size ="small" @blur="desactivar_CostItem" @focus="activar_CostItem" v-model="cuentacontable.strCost_Item_Cod">                            
+                                                                <el-button v-if="btnactivarCostItem && !dialogCostItem" slot="append" class="boton" icon="fa fa-clone" @click="loadCostItem()"></el-button> 
                                                             </el-input>
                                                             <!-- <el-input type="text"  size ="small" style="font-size:11px;" v-model="cuentacontable.strChartAcct_L_Cod"></el-input> -->
                                                         </div>
@@ -162,16 +160,16 @@
                                                     <label class="el-form-item__label col-sm-3" >Grupo Gastos</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                        <el-input :disabled="visualizar" size ="small" @blur="desactivar_GrupoGastos" @focus="activar_GrupoGastos" v-model="cuentacontable.strExpGroup_Cod">                            
-                                                            <el-button :disabled="visualizar" v-if="btnactivarGrupoGastos && !dialogGrupoGastos" slot="append" class="boton" icon="fa fa-clone" @click="loadGrupoGastos()"></el-button> 
+                                                        <el-input size ="small" @blur="desactivar_GrupoGastos" @focus="activar_GrupoGastos" v-model="cuentacontable.strExpGroup_Cod">                            
+                                                            <el-button v-if="btnactivarGrupoGastos && !dialogGrupoGastos" slot="append" class="boton" icon="fa fa-clone" @click="loadGrupoGastos()"></el-button> 
                                                         </el-input>
                                                         </div>
                                                     </div>
                                                     <label class="el-form-item__label col-sm-3" >Tipo PDB</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_Impuesto" @focus="activar_Impuesto" v-model="cuentacontable.strWH_Cod"  placeholder="">
-                                                                <el-button :disabled="visualizar" v-if="btnactivarImpuesto && !dialogImpuesto" slot="append" class="boton" icon="fa fa-clone" @click="loadImpuesto()"></el-button> 
+                                                            <el-input size ="small" @blur="desactivar_TipoAdquisicion" @focus="activar_TipoAdquisicion" v-model="cuentacontable.strTypeAdq_PDB_Cod"  placeholder="">
+                                                                <el-button v-if="btntipoadquisicion && !dialogTipoAquisicion" slot="append" class="boton" icon="fa fa-clone" @click="loadTipoAdquisicion()"></el-button> 
                                                             </el-input>
                                                         </div>
                                                     </div>
@@ -181,15 +179,15 @@
                                                     <label class="el-form-item__label col-sm-3" >Moneda</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-input :disabled="visualizar" size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="cuentacontable.strCurrency_Cod">                            
-                                                                <el-button :disabled="visualizar" v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
+                                                            <el-input size ="small" @blur="desactivar_Moneda" @focus="activar_Moneda" v-model="cuentacontable.strCurrency_Cod">                            
+                                                                <el-button v-if="btnactivarMoneda && !dialogMoneda" slot="append" class="boton" icon="fa fa-clone" @click="loadMoneda()"></el-button> 
                                                             </el-input>
                                                         </div>
                                                     </div>
                                                     <label class="el-form-item__label col-sm-3" >Abierta</label>
                                                     <div class="col-sm-3 grupolabel">
                                                         <div class="input-group mb-3" >
-                                                            <el-select :disabled="visualizar" v-model="strAcc_Status_Open" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
+                                                            <el-select  v-model="strAcc_Status_Open" style="font-size:13px"  allow-create clearable placeholder="" size="mini" filterable>
                                                                 <el-option style="font-size:13px"
                                                                 v-for="item in tableAbierto"
                                                                 :key="item.strType_Cod"
@@ -212,7 +210,7 @@
                                 <div class="form-group row">
                                     <div class="col-sm-5 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox :disabled="visualizar" class="col-sm-6"  v-model="cuentacontable.blnAcc_LO" >
+                                            <el-checkbox class="col-sm-6"  v-model="cuentacontable.blnAcc_LO" >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Logistica
                                                 </span>  
@@ -221,7 +219,7 @@
                                     </div>
                                     <div class="col-sm-4 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox class="col-sm-6" :disabled="visualizar" v-model="cuentacontable.blnAcc_DI"  >
+                                            <el-checkbox class="col-sm-6" v-model="cuentacontable.blnAcc_DI"  >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Combustible
                                                 </span>  
@@ -234,7 +232,7 @@
                                 <div class="form-group row" style="margin-top: -30px;">
                                     <div class="col-sm-5 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox class="col-sm-6" :disabled="visualizar" v-model="cuentacontable.blnAcc_cc"  >
+                                            <el-checkbox class="col-sm-6" v-model="cuentacontable.blnAcc_cc"  >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Costos
                                                 </span>  
@@ -243,7 +241,7 @@
                                     </div>
                                     <div class="col-sm-4 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox :disabled="visualizar" class="col-sm-6"  v-model="cuentacontable.blnAcc_ST" >
+                                            <el-checkbox class="col-sm-6"  v-model="cuentacontable.blnAcc_ST" >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Estadistica Produccion
                                                 </span>  
@@ -256,7 +254,7 @@
                                 <div class="form-group row" style="margin-top: -30px;">
                                     <div class="col-sm-5 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox :disabled="visualizar" class="col-sm-6"  v-model="cuentacontable.blnAcc_AP" >
+                                            <el-checkbox class="col-sm-6"  v-model="cuentacontable.blnAcc_AP" >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Ctas. Pagar
                                                 </span>  
@@ -265,7 +263,7 @@
                                     </div>
                                     <div class="col-sm-4 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox :disabled="visualizar" class="col-sm-6"  v-model="cuentacontable.blnAcc_FA"  >
+                                            <el-checkbox class="col-sm-6"  v-model="cuentacontable.blnAcc_FA"  >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Activos-Fijos
                                                 </span>  
@@ -278,7 +276,7 @@
                                 <div class="form-group row" style="margin-top: -30px;">
                                     <div class="col-sm-5 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox :disabled="visualizar" class="col-sm-6" v-model="cuentacontable.blnAcc_AR"  >
+                                            <el-checkbox class="col-sm-6" v-model="cuentacontable.blnAcc_AR"  >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Ctas. Cobrar
                                                 </span>  
@@ -287,7 +285,7 @@
                                     </div>
                                     <div class="col-sm-4 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox :disabled="visualizar" class="col-sm-6" v-model="cuentacontable.blnAcc_PY"   >
+                                            <el-checkbox class="col-sm-6" v-model="cuentacontable.blnAcc_PY"   >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Plantillas
                                                 </span>  
@@ -300,7 +298,7 @@
                                 <div class="form-group row" style="margin-top: -30px;">
                                     <div class="col-sm-5 grupolabel">
                                         <div class="input-group mb-3" >
-                                            <el-checkbox class="col-sm-6" :disabled="visualizar" v-model="cuentacontable.blnAcc_GL"  >
+                                            <el-checkbox class="col-sm-6" v-model="cuentacontable.blnAcc_GL"  >
                                                 <span  style="font-size: 12px !important;color: #48576a;" >
                                                     Contabilidad
                                                 </span>  
@@ -334,13 +332,27 @@
                                     <label class="el-form-item__label col-sm-3" >Fecha Creacion</label>
                                     <div class="col-sm-3 grupolabel">
                                             <div class="input-group mb-3" >
-                                                <el-input type="text" :disabled="true" size ="small" style="font-size:11px;" v-model="cuentacontable.dtmCreation_Date"></el-input>
+                                                <el-date-picker
+                                                disabled
+                                                    class="validador"
+                                                    type="date"
+                                                    style="width:128px !important"
+                                                    format="dd.MM.yyyy"
+                                                    size="small" v-model="fecha_actual" >
+                                                </el-date-picker>
                                             </div>
                                         </div>
                                     <label class="el-form-item__label col-sm-3" >Fecha Modificacion</label>
                                     <div class="col-sm-3 grupolabel">
                                         <div class="input-group mb-3" >
-                                        <el-input type="text" :disabled="true"  size ="small" style="font-size:11px;" v-model="cuentacontable.dtmModified_Date"></el-input>
+                                            <el-date-picker
+                                            disabled
+                                                    class="validador"
+                                                    type="date"
+                                                    style="width:128px !important"
+                                                    format="dd.MM.yyyy"
+                                                    size="small" v-model="fecha_ejecucion" >
+                                                </el-date-picker>
                                         </div>
                                     </div>
                                 </div>
@@ -376,8 +388,8 @@
             </div>
             
         </div>
-        <el-dialog title="Plan contable local"  :visible.sync="dialogplancontablelocal" @close="dialogplancontablelocalClose" size="small" >
-            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontableselecionado($event)" v-on:companiaClose="dialogplancontablelocalClose()">
+        <el-dialog title="Plan Contable Local"  :visible.sync="dialogplancontablelocal" @close="dialogplancontablelocalClose" size="small" >
+            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontableselecionado($event)" v-on:close="dialogplancontablelocalClose()">
             </bplancontablelocal>
         </el-dialog>
         <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContablePadre" @close="closeDialogCuentaContablePadre" size="small" >
@@ -389,15 +401,13 @@
                     <div class="row bodycard">
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="el-form-item__label col-md-3" >Codigo</label>
-                                <div class="col-md-2 grupolabel">
+                                <label class="el-form-item__label col-md-3" >{{Column}}</label>
+                                <div class="col-md-3 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input size ="small"   placeholder="">
-                                    <el-button slot="append" style="padding: 3px 3px !important;background: #fff5c4;
-                                background: -webkit-gradient(left top, left bottom, color-stop(0%, #fff5c4), color-stop(100%, #ffee9f));
-                                background: -webkit-gradient(linear, left top, left bottom, from(#fff5c4), to(#ffee9f));
-                                background: linear-gradient(to bottom, #fff5c4 0%, #ffee9f 100%);" icon="fa fa-search"
-                                                > </el-button>
+                                    <el-input size ="small" v-model="inputAtributo">
+                                    <el-button slot="append" class="boton" icon="fa fa-search" 
+                                            @click="buscarfilterCuenta()"
+                                        > </el-button>
                                     </el-input>
                                     </div>
                                 </div>
@@ -410,56 +420,48 @@
                     style="width: 100%" class="ExcelTable2007"
                     height="250"
                     highlight-current-row
+                    @header-click="headerclick"
                     @row-dblclick="cuentacontableselecionadoPadre"
                     @current-change="handleCurrentChangeCCPadre">
-                        <el-table-column   prop="strAcc_Local_NO" label="Cuenta Local" width="180">
+                        <el-table-column :render-header="filterstrAcc_Local_NO"  prop="strAcc_Local_NO" label="Cuenta Local" width="180">
                         </el-table-column>  
-                        <el-table-column  prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
+                        <el-table-column :render-header="filterstrAcc_Corp_NO" prop="strAcc_Corp_NO" label="Cuenta Corporativa" style="width: 70% !important;">
                         </el-table-column>  
-                        <el-table-column  prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
+                        <el-table-column :render-header="filterstrAcc_Local_Name" prop="strAcc_Local_Name" label="Nombre" style="width: 70% !important;">
                         </el-table-column> 
                     </el-table>
                 </el-card>
                 <br/>
                 <footer class="modal-footer">
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" @click="cuentacontableselecionadoPadre()">
                     <img class="imagenfilter" src="../../../../../../images/check.png" alt="" >
                     </el-button>
-                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">
+                    <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closeDialogCuentaContablePadre()">
                     <img class="imagenfilter" src="../../../../../../images/close.png" alt="" >
                     </el-button>
                 </footer>
             </div>
         </el-dialog> 
 
-        <el-dialog title="Cuenta Contable"  :visible.sync="dialogCuentaContablePadreCorp" @close="closeDialogCuentaContablePadreCorp" size="small" >
+        <!-- <el-dialog title="Plan Cuenta Contable"  :visible.sync="dialogCuentaContablePadreCorp" @close="closeDialogCuentaContablePadreCorp" size="small" >
             <bcuentacontable v-on:cuentacontableselecionado="cuentacontableselecionadoPadreCorp($event)" v-on:cuentacontableClose="closeDialogCuentaContablePadreCorp()">
             </bcuentacontable>
-        </el-dialog> 
-        <el-dialog title="Plan contable corporativo"  :visible.sync="dialogplancontablecorporativo" @close="dialogplancontablecorporativoClose" size="small" >
-            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontablecorpselecionado($event)" v-on:companiaClose="dialogplancontablelocalClose()">
+        </el-dialog>  -->
+        <!-- <el-dialog title="Plan Contable Local"  :visible.sync="dialogCuentaContablePadreCorp" @close="dialogplancontablelocalClose" size="small" >
+            <bplancontablelocal v-on:plancuentacontableselecionado="plancuentacontablecorpselecionado($event)" v-on:close="dialogplancontablelocalClose()">
             </bplancontablelocal>
-        </el-dialog>
+        </el-dialog> -->
         <el-dialog title="Rubro"  :visible.sync="dialogRubro" @close="dialogRubroClose" size="small" >
             <brubro v-on:rubroselecionado="rubroselecionado($event)" v-on:companiaClose="dialogRubroClose()">
             </brubro>
         </el-dialog>
-        <el-dialog title="Grupo cuenta contable"  :visible.sync="dialogGrupoCuentaContable" @close="dialogGrupoCuentaContableClose" size="small" >
-            <bgrupocuentacontable v-on:grupocuentacontableselecionado="grupocuentacontableselecionado($event)" v-on:companiaClose="dialogGrupoCuentaContableClose()">
+        <el-dialog title="Rubro Cuenta Contable"  :visible.sync="dialogGrupoCuentaContable" @close="dialogGrupoCuentaContableClose" size="small" >
+            <bgrupocuentacontable v-on:grupocuentacontableselecionado="grupocuentacontableselecionado($event)" v-on:close="dialogGrupoCuentaContableClose()">
             </bgrupocuentacontable>
         </el-dialog>
-        <el-dialog title="Grupo gastos"  :visible.sync="dialogGrupoGastos" @close="dialogGrupoGastosClose" size="small" >
-            <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:companiaClose="dialogGrupoGastosClose()">
+        <el-dialog title="Grupo Gastos"  :visible.sync="dialogGrupoGastos" @close="dialogGrupoGastosClose" size="small" >
+            <bgrupogastos v-on:grupogastosselecionado="grupogastosselecionado($event)" v-on:close="dialogGrupoGastosClose()">
             </bgrupogastos>
-        </el-dialog>
-        
-        <el-dialog title="Busqueda compañia"  :visible.sync="dialogCompania" @close="dialogCompaniaClose" size="small" >
-            <bcompania v-on:companiaSeleccionado="companiaSeleccionado($event)" v-on:companiaClose="companiaClose()">
-            </bcompania>
-        </el-dialog>
-        <el-dialog title="Busqueda Impuesto"  :visible.sync="dialogImpuesto" @close="closeDialogImpuesto" size="small" >
-            <bimpuesto v-on:impuestoseleccionado="ImpuestoSeleccionado($event)" v-on:companiaClose="closeImpuesto()">
-            </bimpuesto>
         </el-dialog>
     
         <el-dialog title="Moneda"  :visible.sync="dialogMoneda" @close="closeDialogMoneda" size="small" >
@@ -467,18 +469,22 @@
             </bmoneda>
         </el-dialog> 
         
-        <el-dialog title="CostItem"  :visible.sync="dialogCostItem" @close="closeDialogCostItem" size="small" >
-            <bcostitem v-on:costitemselecionado="costitemselecionado($event)" v-on:closeMoneda="closeDialogCostItem()">
+        <el-dialog title="Rubro Costos"  :visible.sync="dialogCostItem" @close="closeDialogCostItem" size="small" >
+            <bcostitem v-on:costitemselecionado="costitemselecionado($event)" v-on:close="closeDialogCostItem()">
             </bcostitem>
         </el-dialog> 
          
         
-        <el-dialog title="Tipo Cuenta Contable"  :visible.sync="dialogTipoCuentaContable" @close="closeDialogTipoCuentaContable" size="small" >
-            <btipocuentacontable v-on:tipocuentacontableSeleccionado="tipocuentacontableSeleccionado($event)" v-on:closeMoneda="closeDialogTipoCuentaContable()">
+        <el-dialog title="Reporte"  :visible.sync="dialogTipoCuentaContable" @close="closeDialogTipoCuentaContable" size="small" >
+            <btipocuentacontable v-on:tipocuentacontableSeleccionado="tipocuentacontableSeleccionado($event)" v-on:close="closeDialogTipoCuentaContable()">
             </btipocuentacontable>
         </el-dialog>  
-        
 
+        <el-dialog title="Tipo PDB"  :visible.sync="dialogTipoAquisicion" @close="closeDialogTipoAdquisicion" size="small" >
+            <btipoadquisicion v-on:tipoadquisicionSeleccionado="tipoadquisicionSeleccionado($event)" v-on:close="closeDialogTipoAdquisicion()">
+            </btipoadquisicion>
+        </el-dialog>  
+        
     </div>  
 </template>
 <script>

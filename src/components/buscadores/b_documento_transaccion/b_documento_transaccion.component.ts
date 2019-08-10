@@ -37,6 +37,7 @@ export default class  BDocumentoTransaccionComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -47,8 +48,10 @@ export default class  BDocumentoTransaccionComponent extends Vue {
     documentotransaccionService.GetAllDocumentoTransaccion2()
     .then(response=>{
       this.documentotransaccionModel=response;       
-      this.documentotransaccionModel1=response;       
+      this.documentotransaccionModel1=response;   
+      this.loading1=false;    
     }).catch(error=>{
+      this.loading1=false;    
       this.$message({
         showClose: true,
         type: 'error',
@@ -106,9 +109,16 @@ export default class  BDocumentoTransaccionComponent extends Vue {
     this.$emit('documentotransaccionClose');
   }
   buscarDocumento(){
-    var data=Global.like(this.documentotransaccionModel1,this.clickColumn,this.inputAtributo)
-    this.documentotransaccionModel=[];
-    this.documentotransaccionModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.documentotransaccionModel1,this.clickColumn,this.inputAtributo)
+      this.documentotransaccionModel=[];
+      this.documentotransaccionModel=data;
+    }
+    else{
+      this.documentotransaccionModel=[];
+      this.documentotransaccionModel=this.documentotransaccionModel1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;
@@ -157,7 +167,8 @@ export default class  BDocumentoTransaccionComponent extends Vue {
       cuentacontableModel:[],
       documentotransaccionModel:[],
       documentotransaccionModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

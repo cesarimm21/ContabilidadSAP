@@ -117,9 +117,15 @@ export default class  BIdiomaComponent extends Vue {
     this.idiomaSelectModel=val;
   }
   buscarIdioma(){
-    var data=Global.like(this.idiomaModel1,this.clickColumn,this.inputAtributo)
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.idiomaModel1,this.clickColumn,this.inputAtributo)
+      this.idiomaModel=[];
+      this.idiomaModel=data;
+    }
+   else{
     this.idiomaModel=[];
-    this.idiomaModel=data;
+    this.idiomaModel=this.idiomaModel1;
+   }
   }
   headerclick(val){
     this.Column=val.label;

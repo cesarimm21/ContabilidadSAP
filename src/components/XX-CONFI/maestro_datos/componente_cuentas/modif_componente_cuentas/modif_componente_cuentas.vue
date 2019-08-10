@@ -1,11 +1,11 @@
 <template>
-    <div class="crear-ingreso-comprobante">
+    <div class="modificar-componente-cuentas">
         <ol  style="margin-left: -1.5rem;background: linear-gradient(rgb(229, 241, 247) 0%, rgb(255, 255, 255) 100%);    margin-bottom: 0rem !important;">
             <quickaccessmenu v-on:guardarTodo="guardarTodo($event)" v-on:backPage="backPage($event)"  v-on:reloadpage="reloadpage($event)"/>
         </ol>
         <el-card class="box-card">
             <div slot="header" class="headercard">
-                <span class="labelheadercard" > Crear Componente Cuenta</span>
+                <span class="labelheadercard" > {{txtmodulo}}</span>
                 <!-- <el-button slot="append" class="boton" icon="fa fa-clone" @click="saveFactura()" :disabled="habilitar">Guardar</el-button>  -->
             </div>
             <div class="row bodycard">
@@ -17,8 +17,9 @@
                                 <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input   
+                                    disabled
                                         size ="small" 
-                                        v-model="compania.strCompany_Cod">
+                                        v-model="companyCod">
                                     </el-input>
                                     </div>
                                 </div>
@@ -27,16 +28,16 @@
                             
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Componente Cuenta</label>
-                                <div class="col-md-6 grupolabel">
+                                <div class="col-md-2 grupolabel">
                                     <div class="input-group mb-3" >
-                                    <el-input :disabled='visualizar' class="validador" size ="small" v-model="componente.strComp_Cod"  type="text">  
+                                    <el-input  class="validador" size ="small" v-model="componente.strComp_Cod"  type="text">  
                                     </el-input>
                                     </div>
                                 </div>
                             </div>    
                             <div  class="form-group row ">
                                 <label class="el-form-item__label col-md-2" >Descripcion</label>
-                                <div class="col-md-2 grupolabel">
+                                <div class="col-md-6 grupolabel">
                                     <div class="input-group mb-3" >
                                     <el-input :disabled='visualizar' class="validador" size ="small" v-model="componente.strComp_Desc"  type="text">  
                                     </el-input>

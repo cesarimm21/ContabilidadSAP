@@ -138,9 +138,16 @@ export default class  BUnidadMedidaComponent extends Vue {
     this.$emit('unidadmedidaClose');
   }
   buscarUnidadMedida(){
-    var data=Global.like(this.gridUM1,this.clickColumn,this.inputAtributo)
-    this.gridUM=[];
-    this.gridUM=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.gridUM1,this.clickColumn,this.inputAtributo)
+      this.gridUM=[];
+      this.gridUM=data;
+    }
+    else{
+      this.gridUM=[];
+      this.gridUM=this.gridUM1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;

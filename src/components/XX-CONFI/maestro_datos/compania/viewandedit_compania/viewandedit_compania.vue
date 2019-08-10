@@ -185,7 +185,7 @@
         <img src="../../../../../images/close.png" style="width:17px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.6rem;" @click="dialogBusquedaFilter = false"/>
       </footer>
     </b-modal> 
-    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="confirmaraceptar">
+    <b-modal ref="myModalRef" hide-footer title="Inactivar" size="sm"  v-model="dialogEliminar" @keydown.native.enter="btnEliminar">
       <div style="height:85px"> 
         <img src="../../../../../images/tacho.png" style="width:14px; height:15px; cursor: pointer;font: 0px/100% Arial, Helvetica, sans-serif;margin-left: 0.3rem;"/>
         <span style="font-size:13px">¿Desea Inactivar la compania {{compania.strCompany_Cod}}?</span>

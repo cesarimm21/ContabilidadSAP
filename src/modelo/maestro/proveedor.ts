@@ -3,10 +3,11 @@ export class ProveedorModel {
     intIdVendor_ID:number;//*
     intIdRegion_ID:number ;//*
     intIdDocIdent_ID:number;//*
-    intIdCompany_ID:number;//
+    // intIdCompany_ID:number;//
     intIdVenCateg_ID:number;//
     intIdCountry_ID:number;
     strDocIdent_Name:string;
+    strCountry_Name:string;
     strRegion_Cod:string;
     strCompany_Cod:string;//
     strVendor_NO:string ;//*
@@ -51,10 +52,11 @@ export class ProveedorModel {
         this.intIdVendor_ID=-1;
         this.intIdRegion_ID=-1;
         this.intIdDocIdent_ID=-1;
-        this.intIdCompany_ID=-1;
+        // this.intIdCompany_ID=-1;
         this.intIdVenCateg_ID=-1;
         this.intIdCountry_ID=-1;
         this.strDocIdent_Name='';
+        this.strCountry_Name='';
         this.strCompany_Cod='';
         this.strRegion_Cod='';
         this.strVendor_NO='';

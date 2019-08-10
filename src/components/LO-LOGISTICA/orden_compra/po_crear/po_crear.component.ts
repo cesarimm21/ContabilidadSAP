@@ -163,7 +163,7 @@ export default class CrearPOComponent extends Vue {
         Global.nameComponent = 'crear-po';
         this.OrdenCompra.chrPO_Status = '00';
         this.OrdenCompra.strRequis_Item_NO="0";
-        this.fecha_ejecucion = Global.getParseDate(new Date().toDateString());
+        this.fecha_ejecucion = (new Date()).toString();
         setTimeout(() => {
             this.load();
           }, 200)

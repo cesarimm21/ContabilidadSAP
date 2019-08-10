@@ -37,11 +37,12 @@
             </el-table-column>  
             <el-table-column :render-header="filterstrChartAcct_L_Desc"  prop="strChartAcct_L_Desc" label="Nombre" style="width: 70% !important;">
             </el-table-column>  
+            
             </el-table>
         </el-card>
         <br/>
         <footer class="modal-footer">
-            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="checkPopup()">
+            <el-button class="buttonfilter btn btn-outline-secondary orange" @click="seleccionar()">
             <img class="imagenfilter" src="../../../images/check.png" alt="" >
             </el-button>
             <el-button class="buttonfilter btn btn-outline-secondary orange" style="margin-left: 0px;"  @click="closePopup()">

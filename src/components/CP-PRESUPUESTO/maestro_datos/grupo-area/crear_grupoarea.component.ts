@@ -42,6 +42,8 @@ export default class CrearGrupoAreaComponent extends Vue {
     guardarDocumento(){
       var user:any=localStorage.getItem('User_Usuario');
       this.documento.strCreation_User=user;        
+      this.documento.strCompany_Cod=this.companyCod;        
+      this.documento.strCompany_Desc=this.companyName;        
       if(this.documento.strCCGrpArea_Cod!=''&&this.documento.strCCGrpArea_Desc!=''){
         let loadingInstance = Loading.service({
           fullscreen: true,

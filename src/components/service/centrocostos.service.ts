@@ -4,8 +4,8 @@ import * as APIConstant from '../../core/api.constant';
 import GLOBAL from '../../Global';
 export default {
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllCentroCostos(){  
-    return axios.get(CONFIG.API_URL+'centrocosto')
+  GetAllCentroCostos(strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'centrocosto/view/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -16,14 +16,14 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetOnlyOneCentroCostos(code){  
-    return axios.get(CONFIG.API_URL+'centrocosto/'+code)
+  GetOnlyOneCentroCostos(strCostCenter_NO,strCompany_Cod){  
+    return axios.get(CONFIG.API_URL+'centrocosto/'+strCostCenter_NO+'/'+strCompany_Cod)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
   },
   CreateCentroCosto(data){
-    return axios.post(CONFIG.API_URL+'centrocosto',data)
+    return axios.post(CONFIG.API_URL+'centrocosto/create',data)
     .then(response =>{           
         return JSON.parse(JSON.stringify(response.data));
     })
@@ -40,11 +40,23 @@ export default {
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  UpdateCentroCostosID(data:any){
-    return axios.put(CONFIG.API_URL+'centrocosto/'+data.intIdCostCenter_ID, data)
+  UpdateCentroCostos(data){
+    return axios.put(CONFIG.API_URL+'centrocosto/update', data)
     .then(response =>{
         return response.data;
       })
+  },
+  inactivarCentroCosto(documento){
+    return axios.post(CONFIG.API_URL+'centrocosto/inactivar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarCentroCosto(documento){
+    return axios.post(CONFIG.API_URL+'centrocosto/activar',documento)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
   },
 }
   

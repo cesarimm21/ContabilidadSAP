@@ -35,16 +35,21 @@ export default class  BCategoriaMaterialComponent extends Vue {
   inputAtributo:any;
   blnilterstrCategMat_Cod:boolean=true;
   blnilterstrCategMat_Desc:boolean=false;
+  loading1:boolean=true;
   constructor() {
-    super();
-    this.load();
+    super();    
+    setTimeout(() => {
+      this.load();
+    }, 400) 
   }
   load(){
     categoriamaterialService.GetAllCategoriaMaterial2()
     .then(response=>{
       this.categoriamaterialModel=response;       
-      this.categoriamaterialModel1=response;       
+      this.categoriamaterialModel1=response;   
+      this.loading1=false;    
     }).catch(error=>{
+      this.loading1=false;    
       this.$message({
         showClose: true,
         type: 'error',
@@ -64,9 +69,16 @@ export default class  BCategoriaMaterialComponent extends Vue {
     this.articulos = this.CompleteData.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
   }
   buscarCategoria(){
-    var data=Global.like(this.categoriamaterialModel1,this.clickColumn,this.inputAtributo)
-    this.categoriamaterialModel=[];
-    this.categoriamaterialModel1=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.categoriamaterialModel1,this.clickColumn,this.inputAtributo)
+      this.categoriamaterialModel=[];
+      this.categoriamaterialModel1=data;
+    }
+    else{
+      this.categoriamaterialModel=[];
+      this.categoriamaterialModel=this.categoriamaterialModel1;
+    }
+    
   }
   seleccionarProveedor(index, rows){
     this.$emit('clasematerialseleccionado',rows[index]);
@@ -154,7 +166,8 @@ export default class  BCategoriaMaterialComponent extends Vue {
     return {
       categoriamaterialModel:[],
       categoriamaterialModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

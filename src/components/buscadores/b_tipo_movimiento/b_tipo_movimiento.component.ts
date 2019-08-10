@@ -119,9 +119,15 @@ export default class  BTipoMovimientoComponent extends Vue {
     this.$emit('tipomovimientoclose');
   }
   buscarTipoM(){
-    var data=Global.like(this.tipomovimientoModel1,this.clickColumn,this.inputAtributo)
-    this.tipomovimientoModel=[];
-    this.tipomovimientoModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.tipomovimientoModel1,this.clickColumn,this.inputAtributo)
+      this.tipomovimientoModel=[];
+      this.tipomovimientoModel=data;
+    }
+    else{
+      this.tipomovimientoModel=[];
+      this.tipomovimientoModel=this.tipomovimientoModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

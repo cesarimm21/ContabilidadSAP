@@ -222,9 +222,15 @@ export default class  BCuentaContableComponent extends Vue {
     return responsearr
   }
   buscarfilterCuenta(){
-    var data=Global.like(this.gridCuenta1,this.clickColumn,this.inputAtributo)  
-    this.gridCuenta=[];
-    this.gridCuenta=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.gridCuenta1,this.clickColumn,this.inputAtributo)  
+      this.gridCuenta=[];
+      this.gridCuenta=data;
+    }
+    else{
+      this.gridCuenta=[];
+      this.gridCuenta=this.gridCuenta1;
+    }
   }
 
   data() {

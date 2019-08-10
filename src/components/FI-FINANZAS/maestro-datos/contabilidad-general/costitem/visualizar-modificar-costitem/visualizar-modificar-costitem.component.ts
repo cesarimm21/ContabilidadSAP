@@ -1,473 +1,547 @@
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import 'font-awesome/css/font-awesome.css';
-import router from '@/router';
-import ElementUI from 'element-ui';
-import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
-import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
-import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-
-import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import axios from 'axios';
-import { Loading } from 'element-ui';
-
-
-//***Modelos */
-import {CostItemModel} from '@/modelo/maestro/costitem';
-
-import { Notification } from 'element-ui';
 import Global from '@/Global';
-import companiaService from '@/components/service/compania.service';
+import router from '@/router';
+import {CostItemModel} from '@/modelo/maestro/costitem';
+import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
+import ButtonsAccionsComponent from '@/components/buttonsAccions/buttonsAccions.vue';
 import costitemService from '@/components/service/costitem.service';
-import proveedorService from '@/components/service/proveedor.service';
-import BProveedorComponent from '@/components/buscadores/b_proveedor/b_proveedor.vue';
-import {OrdenCompraModel } from '@/modelo/maestro/ordencompra';
-import ordencompraService from '@/components/service/ordencompra.service';
-import grupocuentacontableService from '@/components/service/grupocuentacontable.service';
-import {GrupoCuentaContableModel} from '@/modelo/maestro/grupocuentacontable';
-Vue.directive('focus', {
-  inserted: function(el) {
-    el.focus()
+import { Loading } from 'element-ui';
+@Component({
+  name: 'modificar-costitem',
+  components:{
+  'quickaccessmenu':QuickAccessMenuComponent,
+  'buttons-accions': ButtonsAccionsComponent,
   }
 })
-var EditableColumn = {
-  template: '#editable-column-content',
-  props: ['is-editing', 'scope', 'editing', 'on-blur', 'on-enter', 'property']
-}
-@Component({
-  name: 'al-crear',
-  components:{
-    'buttons-accions':ButtonsAccionsComponent,
-    'bcompania':BCompaniaProveedor,
-    'quickaccessmenu':QuickAccessMenuComponent,
-    'bproveedor':BProveedorComponent,
-  } ,
- 
-})
 export default class VisualizarModificarCostItemComponent extends Vue {
-  sizeScreen:string = (window.innerHeight - 420).toString();//'0';
-  sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
-  
-  nameuser:string;
-  namecomplete:string;
-  SendDocument:boolean=false;
-  vmaterial:string='';
-  /*dialog*/
-  dialogCompania:boolean=false;
- 
-  /*input*/
-  btnactivarcompania:boolean=false;
-   
-  /*Model*/  
-  public cositemModel:CostItemModel=new CostItemModel();
-
-  descompania:string='';
-  code_compania:string='';
-
+    sizeScreen:string = (window.innerHeight - 420).toString();//'0';
+    sizeScreenwidth:string = (window.innerWidth-288 ).toString();//'0';
+  nameComponent:string;
   fecha_actual:string;
-  selectrow:any;
-  currentRow:any;
-  selectcolumn:any;
-  blntiporequisicion:boolean=true;
-  tiporequisicion:string='';
+  fecha_ejecucion:string;
+  value3:string;
+  companyName:any;
+  companyCod:any;
+  strCost_Item_Cod:string='';
+  public documento:CostItemModel=new CostItemModel();
+  gridDocumento:CostItemModel[];
+  gridDocumento1:CostItemModel[];
+  gridDocumento2:CostItemModel[];
   issave:boolean=false;
   iserror:boolean=false;
   textosave:string='';
-  
-  formBusqueda:any={
-    'strCost_Item_Cod':'',
-    'strCompany_Desc':'',
-    'strCompany_Cod':''
-  }
-  public tableData:Array<CostItemModel>=[]; 
-  valuem=0;
-  btnbuscarb:boolean=false;
+  pagina: number =1;
+  RegistersForPage: number = 100;
+  totalRegistros: number = 100;
+  clickColumn:string='';
+  txtbuscar:string='';
+  Column:string='';
   fechaHasta:any=new Date();
   fechaDesde:any=new Date();
-  strPO_NO:string='';
-  btnactivarproveedor:boolean=false;
-  dialogProveedor:boolean=false;
-  strVendor_NO:string='';
-  strVendor_Desc:string='';
-  vifprogress:boolean=true;
-
-  dialogInactivar:boolean=false;
-  item:string='';
-
-  dialogEliminar:boolean=false;
-  constructor(){
-    super();
-    this.fecha_actual=Global.getParseDate(new Date().toDateString());
-    debugger;
-    this.tiporequisicion="A";
-    setTimeout(() => {
-      this.load();
-    }, 200)
-    var desc:any=localStorage.getItem('compania_name');
-    var cod:any=localStorage.getItem('compania_cod');
-    var id:any=localStorage.getItem('compania_ID');
-    this.formBusqueda.strCompany_Desc=desc; 
-    this.formBusqueda.strCompany_Cod=cod;
-  }
-  load(){
-    this.cargarList();
-  }
-  async cargarList(){
-    debugger;
-    var data:any=this.formBusqueda;
-    
-    if(data.strCost_Item_Cod==''){
-      data.strCost_Item_Cod='*';
-    }
-
-    for(var i=0;i<50;i++){
-      this.valuem++; 
-    }
-    await costitemService.GetBusquedaCostItem(data.strCompany_Cod,data.strCost_Item_Cod)
-    .then(res=>{
-      debugger;
-      for(var i=0;i<50;i++){
-        this.valuem++; 
-      }
-      console.log(res);
-      if(this.valuem>=100){
+  dialogBusquedaFilter:boolean=false;
+  blnilterstrCost_Item_Cod:boolean=false;
+  blnilterstrCost_Item_Pos1:boolean=false;
+  blnilterstrCost_Item_Desc1:boolean=false;
+  blnilterstrCost_Item_Pos2:boolean=false;
+  blnilterstrCost_Item_Desc2:boolean=false;
+  blnilterstrCost_Item_Pos3:boolean=false;
+  blnilterstrCost_Item_Desc3:boolean=false;
+  blnilterdtmModified_Date:boolean=false;
+  blnilterstrModified_User:boolean=false;
+  planDialog:boolean=false;
+  planActivarDialog:boolean=false;
+  nameuser:any;
+  loading1:boolean=true;
+  constructor(){    
+        super();
+        Global.nameComponent='modificar-costitem';
         setTimeout(() => {
-          console.log('/****************Busqueda***************/')
-          console.log(res)
-          this.tableData=res;
-          this.vifprogress=false;
-        }, 600)
+            this.load();
+          }, 200)
+    }  
+    load(){
+        this.companyName=localStorage.getItem('compania_name');
+        this.companyCod=localStorage.getItem('compania_cod');
+        costitemService.GetAllCostItem(this.companyCod)
+        .then(response=>{
+          this.gridDocumento=[];
+          this.gridDocumento1=[];
+          this.gridDocumento2=[];
+          this.gridDocumento=response;
+          this.gridDocumento1=response;
+          this.gridDocumento2=response;
+          this.loading1=false;
+        }).catch(err=>{
+          this.loading1=false;
+        })
+    }
+    getDateStringView(fecha:string){
+        var dateString = new Date(fecha);
+        var dia = dateString.getDate();
+        var mes = (dateString.getMonth()<12) ? dateString.getMonth()+1 : mes = dateString.getMonth();
+        var yyyy = dateString.getFullYear();
+        var dd = (dia<10) ? '0'+dia : dd=dia;
+        var mm = (mes<10) ? '0'+mes : mm=mes;
+        return dd+'.'+mm+'.'+yyyy;
+    }
+    handleCurrentChange(val:CostItemModel){
+      this.documento=val;
+      this.strCost_Item_Cod=this.documento.strCost_Item_Cod;
+     }
+    btnBuscar(){
+      if(this.txtbuscar!=''){
+        var data=Global.like(this.gridDocumento1,this.clickColumn,this.txtbuscar)
+        this.gridDocumento=[];
+        this.gridDocumento=data;
+        this.dialogBusquedaFilter=false;
       }
-    })
-    .catch(error=>{
+      else{
+        this.gridDocumento=[];
+        this.gridDocumento=this.gridDocumento1;
+      }
       
-    })
-  }
-  async Buscar(){
-    debugger;
-    this.btnbuscarb=true;
-    this.cargarList();
-  }
-  openMessage(newMsg : string) {
-    this.$message({
-      showClose: true,
-      message: newMsg,
-      type: 'success'
-    });
-  }
-  openMessageError(strMessage:string){
-    this.$message({
-        showClose: true,
-        type: 'error',
-        message: strMessage
+    }
+    sortByKeyDesc(array, key) {
+      return array.sort(function (a, b) {
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+         
       });
-  }
-  linkLogout(){
-   localStorage.clear();
-   window.sessionStorage.clear();
-    router.push('/')
-  }
-  confirmaraceptar(){
-    this.SendDocument=false;
-  }
-  linksUser(comand){
-    router.push('/barmenu/'+comand)
-  }
-  linksLogin(){
-    router.push('/inicio')
-  }
-  linkRoute(route){
-    router.push(route)
-  }
-  redirectLogin(msg){
-    Notification.warning(msg)
-    localStorage.clear();
-    router.push('/')
-  }
-  loadCompania(){
-    this.dialogCompania=true;
-  }
-  handleCurrentChange(val) {
-    debugger;
-    if(val!=null){
-      this.selectrow=val;
-      this.currentRow = val;
     }
-  }
-  /*Compania imput*/
-  activar_compania(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarcompania=true;
-    }, 120)
-  }
-  desactivar_compania(){
-    debugger;
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;
+    sortByKeyAsc(array, key) {
+      return array.sort(function (a, b) {
+          debugger;
+          var x = a[key]; var y = b[key];
+          if(x === "" || y === null) return 1;
+          if(x === "" || y === null) return -1;
+          if(x === y) return 0;
+           return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+          
+      });
     }
-  }
-  closeCompania(){
-    debugger;
-    this.btnactivarcompania=false;
-    return false;
-  }
- 
-  
-  getParseDate(fecha){
-    return Global.getParseDate(fecha);
-  }
-  companiaSeleccionado(val){
-    debugger;
-    console.log('traer',val);
-    this.cositemModel.strCompany_Cod=val.strCompany_Cod
-    this.descompania=val.strCompany_Desc;
-   
-    this.dialogCompania=false;
-  }
-  companiaClose(val){
-    this.dialogCompania=false;
-  }
-  borrarCompania(){
-    this.descompania='';
-    this.dialogCompania=false;
-    this.btnactivarcompania=false;
-  }
-  enterCompania(code){
-    //alert('Bien'+code);
-    debugger;
-    console.log('compania_enter_1',code);
-    companiaService.GetOnlyOneCompania(code)
-    .then(response=>{
-      if(response!=undefined){
-        if(response.length>0){
-          this.cositemModel.strCompany_Cod=response[0].strCompany_Cod
-          this.descompania=response[0].strCompany_Desc;
-          this.dialogCompania=false;
-          this.btnactivarcompania=false;
-        }
+    Buscar(){
+      if(this.Column!=""){
+        this.dialogBusquedaFilter=true;
+        this.txtbuscar='';
       }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar compañia'
-      });
-    })
-  }
-  // validarView(){
-  //   debugger;
-  //   Global.codematerial=this.productoModel.strStock_Cod;
-  //   router.push({ path: `/barmenu/LO-LOGISTICA/almacen/al_salida_modificar`, query: { vista: 'modificar' }  })
-  
-  // }
-  created() {
-    debugger;
-    if(typeof window != 'undefined') {
-      // this.getAccesos();
-      debugger;
-      this.vmaterial=Global.vmmaterial;
+      else{
+        this.$message('Seleccione columna')
+      }
     }
-  }
-  async validarView(){
-    debugger;
-    if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.intIdInvStock_ID!=-1){
-      this.vifprogress=true;
-      this.valuem=0;
-      await setTimeout(() => {
-        for(var i=0;i<100;i++){
-          this.valuem++; 
+    async AscItem(){
+      let loading = Loading.service({
+        fullscreen: true,
+        text: 'Cargando...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.8)'
         }
-      }, 200)
-      await setTimeout(() => {
-        debugger;
-        console.log('----,,,',this.selectrow);
-        if(this.selectrow!=undefined && this.selectrow!=null && this.selectrow.strAcc_Local_NO!=''){
-          router.push({ path: `/barmenu/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/modificar-costitem`, query: { vista: 'modificar',data:JSON.stringify(this.selectrow) }  })
-        }
-      }, 600)
+      );
+      var data=await this.sortByKeyAsc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      await loading.close();
+    }
+    DscItem(){
+      var data=this.sortByKeyDesc(this.gridDocumento1,this.clickColumn) 
+      this.gridDocumento2=[];
+      this.gridDocumento2=data;
+      this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+    
+    }
+    Limpiar(){
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));    
+      this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+    }
+    Print(){
+      window.print();
+    }
+  async  EliminarItem(){
+    if(this.documento.intCost_Item_Cod!=-1&&this.documento.strCost_Item_Cod!=""&&this.documento.strCost_Item_Pos1!=""){
+      this.planDialog=true;
     }
     else{
-      this.vifprogress=false;
-      this.textosave='Seleccione alguna salida. ';
-    }
+      this.warningMessage("Selecciona un Grupo Elem. Gtos")
+    }    
   }
-  desactivar_proveedor(){
-    debugger;
-    if(this.dialogProveedor){
-      this.btnactivarproveedor=false;
-    }
-  }
-  activar_proveedor(){
-    setTimeout(() => {
-      this.limpiarBotones();
-      this.btnactivarproveedor=true;
-    }, 120)
-  }
-  limpiarBotones(){
-    this.btnactivarproveedor=false;
-  }
-  closeProveedor(){
-    debugger;
-    this.btnactivarproveedor=false;
-    return false;
-  }
-  SeleccionadoProveedor(val){
-    debugger;
-
-    this.strVendor_NO=val.strVendor_NO;
-    this.strVendor_Desc=val.strVendor_Desc;
-    this.dialogProveedor=false;
-  }
-  enterProveedor(code){
-    //alert('Bien'+code);
-    debugger;
-    proveedorService.GetOnlyOneProveedor(code)
-    .then(response=>{
-      debugger;
-      if(response!=undefined){
-        if(response.length>0){
-          this.strVendor_NO=response[0].strVendor_NO;
-          this.strVendor_Desc=response[0].strVendor_Desc;
-          this.dialogProveedor=false;
-          this.btnactivarproveedor=false;
-        }
+  inactivarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
+    let loadingInstance = Loading.service({
+      fullscreen: true,
+      text: 'Inactivando...',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.8)'
       }
-      //this.unidadmedidaModel=response;       
-    }).catch(error=>{
+      ); 
+    costitemService.inactivarCostItem(this.documento)
+    .then(resp=>{
+      loadingInstance.close();
+      this.planDialog=false;
       this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo cargar proveedor'
-      });
+          showClose: true,
+          message: 'Se Inactivo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new CostItemModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Inactivo Correctamente '+resp;
+    })
+    .catch(error=>{
+      loadingInstance.close();
+      this.planDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Inactivo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
     })
   }
-  borrarProveedor(){
-    this.strVendor_Desc='';
-    this.dialogProveedor=false;
-    this.btnactivarproveedor=false;
+  async Activar(){
+    if(this.documento.strCost_Item_Cod!="" && this.documento.strCost_Item_Pos1!=""){
+      this.planActivarDialog=true;
+    }
+    else{
+      this.warningMessage('Selecciones Grupo Elem. Gtos')
+    }
   }
-  LoadProveedor(){
-    this.dialogProveedor=true;      
-  }
-
-  
-ActivarDesactivar(){
-  debugger;
-  this.item=this.selectrow.strCost_Item_Cod;
-  this.dialogInactivar=true;      
-}
-
-successMessage(newMsg : string) {
-  this.$message({
-    showClose: true,
-    message: newMsg,
-    type: 'success'
-  });
-}
-errorMessage(newMsg : string) {
-  this.$message({
-    showClose: true,
-    message: newMsg,
-    type: 'error'
-  });
-}
-async btnInactivar(){
-  var nameuser:any=localStorage.getItem('User_Usuario');
-  this.selectrow.strModified_User=nameuser;
-  if(this.selectrow.strCost_Item_Cod!=""){
-    
+  activarPlan(){
+    this.nameuser=localStorage.getItem('User_Usuario');
+    this.documento.strModified_User=this.nameuser;
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Activando...',
       spinner: 'el-icon-loading',
       background: 'rgba(0, 0, 0, 0.8)'
       }
-    );   
-    await costitemService.Activar(this.selectrow)
-    .then(respo=>{
+      ); 
+    costitemService.activarCostItem(this.documento)
+    .then(resp=>{
       loadingInstance.close();
-      this.successMessage('Se Activo Grupo Elemento Gasto '+this.selectrow.strCost_Item_Cod)
-      this.load();
-      this.issave=true;
-      this.iserror=false;
-      this.textosave='Se Activo Grupo Elemento Gasto '+this.selectrow.strCost_Item_Cod;
-      this.dialogInactivar=false;
-    }).catch(ee=>{
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'Se Activo correctamente '+resp,
+          type: 'success'
+        });
+        this.documento=new CostItemModel();
+        this.load();
+        this.issave = true;
+        this.iserror = false;
+        this.textosave = 'Se Activo Correctamente '+resp;
+    })
+    .catch(error=>{
       loadingInstance.close();
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Error en Activar '+this.selectrow.strCost_Item_Cod;
-      this.errorMessage('Error en Activar '+this.selectrow.strCost_Item_Cod)})
-      this.dialogInactivar=false;
+      this.planActivarDialog=false;
+      this.$message({
+          showClose: true,
+          message: 'No se Activo',
+          type: 'error'
+        });
+        this.issave = false;
+        this.iserror = true;
+    })
   }
-  else{
-    this.warningMessage('Debe de seleccionar una fila!!!');
-  }
-}
-
-warningMessage(newMsg : string) {
-  this.$message({
-    showClose: true,
-    message: newMsg,
-    type: 'warning'
-  });
-}
-
-EliminarItem(){
-  if(this.selectrow!=undefined){
-    this.dialogEliminar=true;
-  }
-  else{
-    alert('Debe de seleccionar una fila!!!');
-  }
-}
-async btnEliminar(){
-  await costitemService.Eliminar(this.selectrow)
-  .then(response=>{
-    debugger;
-    console.log('eliminar',response);
-    if(response!=undefined){
-       this.textosave='Se elimino correctamento.' + response.strCost_Item_Cod;
-       this.issave=true;
-       this.iserror=false;
+  async validad(){      
+    var data=Global.like(this.gridDocumento1,'strCost_Item_Cod',this.strCost_Item_Cod)
+    if(data.length>0){
+      this.documento=data[0];
+      if(this.documento.strCost_Item_Cod==this.strCost_Item_Cod){
+        await setTimeout(() => {
+          if(this.documento.strCost_Item_Cod!=''){
+            router.push({ path: `/barmenu/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/modificar-costitem`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+          }
+        }, 600)
+      }
+      else{
+        if(this.strCost_Item_Cod==''){
+          this.textosave='Inserte Grupo Elem. Gtos. ';
+          this.warningMessage('Inserte Grupo Elem. Gtos. ');
+        }
+        else{
+          this.textosave='No existe Grupo Elem. Gtos. ';
+          this.warningMessage('No existe Grupo Elem. Gtos. ');
+        }        
+      }
     }
     else{
-      this.issave=false;
-      this.iserror=true;
-      this.textosave='Ocurrio un error al eliminar.';
-    }
-    this.Buscar();
-    this.dialogEliminar=false;
-    //this.unidadmedidaModel=response;       
-  }).catch(error=>{
-    
-    this.dialogEliminar=false;
-    this.issave=false;
-    this.iserror=true;
-    this.textosave='Ocurrio un error al eliminar.';
-    this.$message({
-      showClose: true,
-      type: 'error',
-      message: 'No se pudo eliminar'
-    });
-  })
-  
-}
-
-  data(){
-    return{
-      dialogTableVisible: false,
-      dialogVisible:false,
-      tableDataServicio:[{}],
-      user: {
-        authenticated: false
-      },
+      this.textosave='No existe Grupo Elem. Gtos. ';
+      this.warningMessage('No existe Grupo Elem. Gtos. ');
     }
   }
+   async validarView(){
+      if(this.documento.intCost_Item_Cod!=-1){
+          await setTimeout(() => {
+            debugger;
+            if(this.documento.strCost_Item_Cod!=''){
+              router.push({ path: `/barmenu/FI-FINANZAS/maestro-datos/contabilidad-general/costitem/modificar-costitem`, query: { vista:'modificar' ,data:JSON.stringify(this.documento) }  })
+            }
+          }, 600)
+        }
+        else{
+          this.textosave='Seleccione Grupo Elem. Gtos. ';
+          this.warningMessage('Seleccione Grupo Elem. Gtos. ');
+        }
+      }
+    siguiente(){
+      if(this.pagina<(this.totalRegistros/this.RegistersForPage)){
+        this.pagina++;
+        this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    anterior(){
+      if(this.pagina>1){
+      this.pagina--;
+      this.gridDocumento = this.gridDocumento1.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      }
+    }
+    warningMessage(newMsg : string) {
+      this.$message({
+        showClose: true,
+        message: newMsg,
+        type: 'warning'
+      });
+    }
+  //#region [CABECERA]
+  headerclick(val){    
+      this.Column=val.label;
+      Global.setColumna(this.Column);     
+      if(val.property=="strCost_Item_Cod"){
+          this.clickColumn="strCost_Item_Cod";
+          this.blnilterstrCost_Item_Cod=true;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCost_Item_Pos1"){
+          this.clickColumn="strCost_Item_Pos1";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=true;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCost_Item_Desc1"){
+          this.clickColumn="strCost_Item_Desc1";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=true;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCost_Item_Pos2"){
+          this.clickColumn="strCost_Item_Pos2";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=true;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCost_Item_Desc2"){
+          this.clickColumn="strCost_Item_Desc2";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=true;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCost_Item_Pos3"){
+          this.clickColumn="strCost_Item_Pos3";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=true;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strCost_Item_Desc3"){
+          this.clickColumn="strCost_Item_Desc3";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=true;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="dtmModified_Date"){
+          this.clickColumn="dtmModified_Date";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=true;
+      this.blnilterstrModified_User=false;
+      }
+      if(val.property=="strModified_User"){
+          this.clickColumn="strModified_User";
+          this.blnilterstrCost_Item_Cod=false;
+      this.blnilterstrCost_Item_Pos1=false;
+      this.blnilterstrCost_Item_Desc1=false;
+      this.blnilterstrCost_Item_Pos2=false;
+      this.blnilterstrCost_Item_Desc2=false;
+      this.blnilterstrCost_Item_Pos3=false;
+      this.blnilterstrCost_Item_Desc3=false;
+      this.blnilterdtmModified_Date=false;
+      this.blnilterstrModified_User=true;
+      }        
+  }
+  filterstrCost_Item_Cod(h,{column,$index}){
+      if(this.blnilterstrCost_Item_Cod){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrCost_Item_Pos1(h,{column,$index}){        
+      if(this.blnilterstrCost_Item_Pos1){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+    filterstrCost_Item_Desc1(h,{column,$index}){        
+      if(this.blnilterstrCost_Item_Desc1){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+    filterstrCost_Item_Pos2(h,{column,$index}){        
+      if(this.blnilterstrCost_Item_Pos2){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+    filterstrCost_Item_Desc2(h,{column,$index}){        
+      if(this.blnilterstrCost_Item_Desc2){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+    filterstrCost_Item_Pos3(h,{column,$index}){        
+      if(this.blnilterstrCost_Item_Pos3){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }    
+    filterstrCost_Item_Desc3(h,{column,$index}){        
+      if(this.blnilterstrCost_Item_Desc3){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }   
+    filterdtmModified_Date(h,{column,$index}){
+      
+      if(this.blnilterdtmModified_Date){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+    filterstrModified_User(h,{column,$index}){
+      if(this.blnilterstrModified_User){
+        return h('th',{style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); width: 100vw;'},
+        [ h('i', {'class': 'fa fa-filter' ,style: 'padding-left: 5px;'}),h('span',  {style: 'background: linear-gradient(rgb(255, 245, 196) 0%, rgb(255, 238, 159) 100%); !important;padding-left: 5px;'}
+          , column.label)])
+      }
+      else{
+        return h('span',{style: 'padding-left: 5px;'}, column.label);
+      } 
+    }
+ 
+
+    //#endregion
+  backPage(){
+      window.history.back();
+    }
+    reloadpage(){
+      window.location.reload();
+    }
+    data(){
+        return{     
+            companyName:'',
+            companyCod:'',
+            gridDocumento:[],
+            gridDocumento1:[],
+            gridDocumento2:[],
+            strCost_Item_Cod:''
+        }
+    }
   
 }

@@ -154,6 +154,8 @@ export default class CrearIngresoComprobanteComponent extends Vue {
   columnView:boolean=true;
   ImpuestoDisabled:boolean=true;
   PeriodoAC:string;
+  loading1:boolean=false;
+  loadingOrden:boolean=false;
   constructor(){    
     super();
     this.cell_ocultar='#349025'; 
@@ -378,14 +380,17 @@ getNumber(num){
 //#endregion
   //#region [ORDEN COMPRA]
   loadOrdenCompra(){
+    this.dialogOrdenCompra=true; 
+    this.loadingOrden=true;
     ordencompraService.getOCForFactura(this.codigoCompania)
     .then(respose=>{
       this.ordencompra=[];
       this.ordencompra=respose;
       this.ordencompra1=[];
-      this.ordencompra1=respose;      
-      this.dialogOrdenCompra=true;      
+      this.ordencompra1=respose; 
+      this.loadingOrden=false; 
     }).catch(error=>{
+      this.loadingOrden=false; 
       this.$message({
         showClose: true,
         type: 'error',
@@ -511,6 +516,8 @@ getNumber(num){
     }
   }
   loadHes(){
+    this.dialogHes=true;
+    this.loading1=true;
     let loadingInstance = Loading.service({
       fullscreen: true,
       text: 'Cargando...',
@@ -523,8 +530,9 @@ getNumber(num){
       this.gridHes=respo;
       this.gridHes1=respo;
       loadingInstance.close();
-      this.dialogHes=true;
+      this.loading1=false;
     }).catch(error=>{
+      this.loading1=false;
       loadingInstance.close();
       this.openMessageError('No hay Servicios');
     })
@@ -535,13 +543,16 @@ getNumber(num){
   }
   selectHes(val){
     this.hesSelect=val;
-    console.log(val);    
+  }
+  closeHes(){
+    this.dialogHes=false;
   }
   checkHes(){
     var user:any=localStorage.getItem('User_Usuario');
+    this.factura.strHES_NO=this.hesSelect.strHES_NO;
     hesService.GetHesDetalle(this.hesSelect.intIdHESH_ID)
-    .then(response=>{
-      this.gridHesDetalle=response;
+    .then(response=>{     
+      this.gridHesDetalle=response;      
       this.factura.intQuantity_Doc=0;
       this.factura.fltValue_Doc=0;
       this.facturadetalle=[];
@@ -555,19 +566,19 @@ getNumber(num){
           item.strUM=this.gridHesDetalle[i].strUM;
           item.intQuantity=this.gridHesDetalle[i].intQuantity;
           item.fltRec_QYT=this.gridHesDetalle[i].fltRec_Value;
-          // item.fltRec_Pend_QTY=this.ordencompraDetalle[i].fltRec_Pend_QTY;
-          item.fltPay_Factura=Number(this.ordencompraDetalle[i].fltRec_QYT)-Number(this.ordencompraDetalle[i].fltPay_Factura)
-          item.fltFacture_Net_PR_I=Math.round((Number(item.fltPay_Factura)*Number(this.ordencompraDetalle[i].fltPO_Net_PR_I))*100)/100;
+          item.fltRec_Pend_QTY=this.gridHesDetalle[i].fltRecTemp_Value;
+          item.fltPay_Factura=this.gridHesDetalle[i].intQuantity;
+          item.fltFacture_Net_PR_I=Math.round((1*Number(this.gridHesDetalle[i].fltFacture_Net_PR_I))*100)/100;
           item.intUnit_Price=this.gridHesDetalle[i].fltGross_Price;
-          item.strStock_Cod=this.ordencompraDetalle[i].strStock_Cod;
+          item.strStock_Cod=this.gridHesDetalle[i].strStock_Cod;
           item.strDesc_Item=this.gridHesDetalle[i].strDesc_Detail;
-          item.strAccount_Cod=this.ordencompraDetalle[i].strAccount_Cod;//aqui esta la cuenta contable
+          item.strAccount_Cod=this.gridHesDetalle[i].strAccount_Cod;//aqui esta la cuenta contable
           item.strCostCenter_NO=this.gridHesDetalle[i].strCostCenter_NO;
           item.strCostCenter_Desc=this.gridHesDetalle[i].strCostCenter_Desc;
-          item.strAcctCateg_Cod=this.ordencompraDetalle[i].strAcctCateg_Cod;
-          item.strTax_Cod=this.ordencompraDetalle[i].strTax_Cod;
-          item.fltValue_Tax=this.ordencompraDetalle[i].fltTax_Percent;
-          item.fltValue_Doc=this.ordencompraDetalle[i].fltCurr_Net_PR_P;
+          item.strAcctCateg_Cod=this.gridHesDetalle[i].strAcctCateg_Cod;
+          item.strTax_Cod=this.gridHesDetalle[i].strTax_Cod;
+          item.fltValue_Tax=1;
+          item.fltValue_Doc=this.gridHesDetalle[i].fltFacture_Net_PR_I;
           item.fltValue_Local=Math.round((Number(item.fltValue_Doc)+Number(item.fltValue_Doc)*Number(item.fltValue_Tax/100))*100)/100;
           item.fltValue_Corp=Math.round((Number(item.fltValue_Local)/Number(this.factura.fltExchange_Rate))*100)/100;
           item.blnCheck=true;
@@ -575,9 +586,13 @@ getNumber(num){
           item.dtmCreation_Date=new Date();
           item.chrStatus='A';
           this.facturadetalle.push(item);
-          this.factura.fltValue_Doc+=Number(this.ordencompraDetalle[i].fltCurr_Net_PR_P);
-          this.factura.intQuantity_Doc+=Number(this.ordencompraDetalle[i].fltPO_QTY_I);
+          this.factura.fltValue_Doc=this.hesSelect.fltTot_QTY;
+          this.factura.intQuantity_Doc+=Number(this.gridHesDetalle[i].intQuantity);
       }
+      this.dialogHes=false;
+    }).catch(error=>{
+      this.dialogHes=false;
+      this.openMessageError('No hay Servicio Detalle')
     })
 }
   filterstrHES_NO(h,{column,$index}){
@@ -849,7 +864,7 @@ getNumber(num){
     {
       if(this.PeriodoAC=='A'){
         this.factura.strCompany_Cod=this.codigoCompania;
-        this.factura.strCompany_Desc=this.descripcionCompania;
+        this.factura.strCompany_Desc=this.descripcionCompania;        
         diariogeneralService.GetLastCodCorrelativo()
         .then(res=>{
           this.CodigoGeneral=res;
@@ -862,7 +877,7 @@ getNumber(num){
           this.factura.strCreation_User=user;    
           var date=this.factura.dtmPeriod;
           var anio:any=this.factura.dtmDoc_Acc_Date.getFullYear();
-          var mes=this.factura.dtmDoc_Acc_Date.getMonth();    
+          var mes=this.factura.dtmDoc_Acc_Date.getMonth(); 
           for(let i=0;i<this.multipleSelection.length;i++){
             var item:FacturaDetalleModel=new FacturaDetalleModel();
             item.intIdPOD_ID=this.multipleSelection[i].intIdPOD_ID;
@@ -928,22 +943,25 @@ getNumber(num){
             itemDG_60.strPO_NO=this.factura.strPO_NO;
             itemDG_60.intPO_Item_NO=this.multipleSelection[i].intPO_Item_NO;
             itemDG_60.dtmPO_Date=this.ordencompraSelect.dtmProcess_Date;
-            itemDG_60.fltQuantity=this.multipleSelection[i].fltPay_Factura;
+            itemDG_60.fltQuantity=this.multipleSelection[i].fltPay_Factura;            
             //VOUCHER SE ESTA INGRESANDO EN ABAJO
             itemDG_60.strType_Doc=this.factura.strType_Doc;
             itemDG_60.strSerie_Doc=this.factura.strSerie_Doc;    
             itemDG_60.strDocument_NO=this.factura.strDocument_NO;   
-            itemDG_60.dtmDoc_Date=this.factura.dtmDoc_Date;   
+            itemDG_60.dtmDoc_Date=this.factura.dtmDoc_Date;  
             itemDG_60.strTax_Cod=this.multipleSelection[i].strTax_Cod;
             itemDG_60.strDoc_Status='30';
             itemDG_60.strApproved_Status='A';
             itemDG_60.strApproved_User=user;
             itemDG_60.dtmApproved_Date=new Date();
-            itemDG_60.strStock_Cod=this.ordencompraDetalle[i].strStock_Cod;
-            itemDG_60.strStock_Desc=this.ordencompraDetalle[i].strPO_Item_Desc;
+            console.log('A121');
+            // itemDG_60.strStock_Cod=this.ordencompraDetalle[i].strStock_Cod;
+            // itemDG_60.strStock_Desc=this.ordencompraDetalle[i].strPO_Item_Desc;
             itemDG_60.fltExchange_Rate=this.factura.fltExchange_Rate;
             itemDG_60.strAcc_Local_NO=this.multipleSelection[i].strAccount_Cod;
             //jalar de la tblCuentaContable descripcion
+            console.log('w');
+            
             itemDG_60.strCurrency_Cod=this.factura.strCurrency_Doc;
             if(this.factura.strCurrency_Doc=='PEN'){
               itemDG_60.fltAmount_Orig=this.multipleSelection[i].fltFacture_Net_PR_I;
@@ -951,6 +969,7 @@ getNumber(num){
             if(this.factura.strCurrency_Doc=='USD'){
               itemDG_60.fltAmount_Orig=this.multipleSelection[i].fltValue_Corp;
             }
+            console.log('w1');
             itemDG_60.fltAmount_Local=this.multipleSelection[i].fltFacture_Net_PR_I;
             itemDG_60.fltAmount_Corp=this.multipleSelection[i].fltValue_Corp;
             itemDG_60.intDoc_No=1;
@@ -970,7 +989,8 @@ getNumber(num){
             balc.fltDebit_Acc=this.multipleSelection[i].fltValue_Local;            
             this.balanceclist.push(balc);
             this.diarioInput.push(itemDG_60);
-          }            
+          }      
+          console.log('B');      
             var itemDG_40:DiarioGeneralModel=new DiarioGeneralModel();
             itemDG_40.strCompany_Cod=this.factura.strCompany_Cod;
             itemDG_40.strCompany_Desc=this.factura.strCompany_Desc;
@@ -1009,10 +1029,8 @@ getNumber(num){
             itemDG_40.intDoc_No=1;
             itemDG_40.strCreation_User=user;
             itemDG_40.dtmCreation_Date=new Date();
-            itemDG_40.chrStatus='A';
-            
-            var balc40:BalanceCuentaModel =new BalanceCuentaModel();
-            
+            itemDG_40.chrStatus='A';            
+            var balc40:BalanceCuentaModel =new BalanceCuentaModel();            
             balc40.strCompany_Cod=this.factura.strCompany_Cod;
             balc40.strCompany_Desc=this.factura.strCompany_Desc;
             balc40.intYear=anio;
@@ -1058,10 +1076,8 @@ getNumber(num){
             itemDG_42.intDoc_No=1;
             itemDG_42.strCreation_User=user;
             itemDG_42.dtmCreation_Date=new Date();
-            itemDG_42.chrStatus='A';
-            
-            var balc42:BalanceCuentaModel =new BalanceCuentaModel();
-            
+            itemDG_42.chrStatus='A';            
+            var balc42:BalanceCuentaModel =new BalanceCuentaModel();            
             balc42.strCompany_Cod=this.factura.strCompany_Cod;
             balc42.strCompany_Desc=this.factura.strCompany_Desc;
             balc42.intYear=anio;
@@ -1070,12 +1086,10 @@ getNumber(num){
             balc42.strAcc_Local_NO=this.moneda.strAcc_Local_NO;
             balc42.fltOpening_Balance=0;
             balc42.fltDebit_Acc=0;
-            balc42.fltCredit_Acc=-this.factura.fltOperation_NoTax_Local;
-            
-            this.balanceclist.push(balc42);
-            
+            balc42.fltCredit_Acc=-this.factura.fltOperation_NoTax_Local;            
+            this.balanceclist.push(balc42);            
             this.diarioInput.push(itemDG_42);
-          let loadingInstance = Loading.service({
+            let loadingInstance = Loading.service({
             fullscreen: true,
             text: 'Guardando...',
             spinner: 'el-icon-loading',
@@ -1121,6 +1135,11 @@ getNumber(num){
               this.textosave = 'Error guardar factura. ';
               loadingInstance.close();
             })   
+          }).catch(error=>{
+            this.issave = false;
+              this.iserror = true;
+              this.openMessageError('Error de Servicio');
+              this.textosave = 'Error de Servicio. ';
           }) 
       }
       else{
@@ -1286,7 +1305,9 @@ getNumber(num){
       tipoRequiDisabled:true,
       gridHes:[],
       gridHes1:[],
-      inputAtributoHes:''
+      inputAtributoHes:'',
+      loading1:false,
+      loadingOrden:false
     }
   }
   

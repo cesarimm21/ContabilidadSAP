@@ -119,9 +119,15 @@ export default class  BMaterialComponent extends Vue {
     this.productoSelectModel=val;
   }
   buscarMaterial(){
-    var data=Global.like(this.productoModel1,this.clickColumn,this.inputAtributo)    
-    this.productoModel=[];
-    this.productoModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.productoModel1,this.clickColumn,this.inputAtributo)    
+      this.productoModel=[];
+      this.productoModel=data;
+    }
+    else{
+      this.productoModel=[];
+      this.productoModel=this.productoModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

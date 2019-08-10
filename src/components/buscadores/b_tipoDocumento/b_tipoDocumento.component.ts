@@ -56,9 +56,16 @@ export default class  BDocumentoComponent extends Vue {
     this.TipoSelect=val;
   }
   buscarTipod(){
-    var data=Global.like(this.TipoDoc1,this.clickColumn,this.inputAtributo)
-    this.TipoDoc=[];
-    this.TipoDoc=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.TipoDoc1,this.clickColumn,this.inputAtributo)
+      this.TipoDoc=[];
+      this.TipoDoc=data;
+    }
+    else{
+      this.TipoDoc=[];
+      this.TipoDoc=this.TipoDoc1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;

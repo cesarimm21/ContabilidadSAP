@@ -57,9 +57,16 @@ export default class  BBancoComponent extends Vue {
     this.$emit('closeBanco');
   }
   searchBanco(){
-    var data=Global.like(this.gridBanco1,this.clickColumn,this.inputAtributo)
-    this.gridBanco=[];
-    this.gridBanco=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.gridBanco1,this.clickColumn,this.inputAtributo)
+      this.gridBanco=[];
+      this.gridBanco=data;
+    }
+    else{
+      this.gridBanco=[];
+      this.gridBanco=this.gridBanco;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;

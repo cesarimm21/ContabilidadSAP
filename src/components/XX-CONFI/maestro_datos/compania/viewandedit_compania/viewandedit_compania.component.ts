@@ -36,6 +36,7 @@ export default class ViewAndEditCompaniaComponent extends Vue {
     public compania:CompaniaModel=new CompaniaModel();
     public tableData:Array<CompaniaModel>=[]; 
     public tableData1:Array<CompaniaModel>=[]; 
+    public tableData2:Array<CompaniaModel>=[]; 
     namepage:string;
     impDisabled:boolean=false;
     cod_criticidad:string='';
@@ -210,16 +211,16 @@ export default class ViewAndEditCompaniaComponent extends Vue {
         }
       );
       var data=await this.sortByKeyAsc(this.tableData1,this.clickColumn) 
-      // this.gridDocumento2=[];
-      // this.gridDocumento2=data;
-      // this.gridDocumento = await this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
-      // await loading.close();
+      this.tableData2=[];
+      this.tableData2=data;
+      this.tableData = await this.tableData2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      await loading.close();
     }
     DscItem(){
       var data=this.sortByKeyDesc(this.tableData1,this.clickColumn) 
-      // this.gridDocumento2=[];
-      // this.gridDocumento2=data;
-      // this.gridDocumento = this.gridDocumento2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
+      this.tableData2=[];
+      this.tableData2=data;
+      this.tableData = this.tableData2.slice(this.RegistersForPage*(this.pagina-1), this.RegistersForPage*(this.pagina));
     
     }
     Limpiar(){

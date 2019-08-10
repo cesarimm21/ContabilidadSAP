@@ -182,7 +182,7 @@
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
                                                 <!-- <el-input type="number"  size ="small" style="font-size:11px;" v-model="ordencompraDetalleSelect.fltCurr_Net_PR_P"></el-input> -->
-                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="hesModel.fltTot_QTY" :disabled="impDisabled"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="hesModel.fltTot_QTY" :disabled="impDisabled" class="inputAling"></el-input>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,7 +191,7 @@
                                             <label class="el-form-item__label col-sm-3"  >Aceptado</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="number"  size ="small" style="font-size:11px;" @change="changeAcepte" v-model="hesModel.fltTot_Value" :precision="2" :step="0.01" :disabled="impDisabled"></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" @change="changeAcepte" v-model="hesModel.fltTot_Value" :precision="2" :step="0.01" :disabled="impDisabled" class="inputAling"></el-input>
                                                 </div>
                                             </div>
                                             
@@ -200,7 +200,7 @@
                                             <label class="el-form-item__label col-sm-3" >Pendiente</label>
                                             <div class="col-sm-3 grupolabel">
                                                 <div class="input-group mb-3" >
-                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="hesModel.fltTot_Peding_Value" :precision="2" :step="0.01" disabled></el-input>
+                                                <el-input type="number"  size ="small" style="font-size:11px;" v-model="hesModel.fltTot_Peding_Value" :precision="2" :step="0.01" disabled class="inputAling"></el-input>
                                                 </div>
                                             </div>
                                         </div>

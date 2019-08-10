@@ -130,9 +130,15 @@ closePopup(){
   this.$emit('prioridadclose');
 }
 buscarPrioridad(){
-  var data=Global.like(this.prioridadModel1,this.clickColumn,this.inputAtributo)
-  this.prioridadModel=[];
-  this.prioridadModel=data;
+  if(this.inputAtributo){
+    var data=Global.like(this.prioridadModel1,this.clickColumn,this.inputAtributo)
+    this.prioridadModel=[];
+    this.prioridadModel=data;
+  }
+  else{
+    this.prioridadModel=[];
+    this.prioridadModel=this.prioridadModel1;
+  }
 }
 headerclick(val){
   this.Column=val.label;

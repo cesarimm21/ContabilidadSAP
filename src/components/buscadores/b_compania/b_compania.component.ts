@@ -36,7 +36,9 @@ export default class  BCompaniaProveedor extends Vue {
   public companiaSelectModel:CompaniaModel=new CompaniaModel();
   constructor() {
     super();
-    this.loadCompania();
+    setTimeout(() => {
+      this.loadCompania();
+    }, 400)   
     
   }
   loadCompania(){

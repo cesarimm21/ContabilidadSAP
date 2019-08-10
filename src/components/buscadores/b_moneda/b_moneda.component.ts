@@ -89,9 +89,16 @@ export default class  BMonedaComponent extends Vue {
   }
 
   buscarProveedor(){
-    var data=Global.like(this.monedaData1,this.clickColumn,this.inputAtributo)
-    this.monedaData=[];
-    this.monedaData=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.monedaData1,this.clickColumn,this.inputAtributo)
+      this.monedaData=[];
+      this.monedaData=data;
+    }
+    else{
+      this.monedaData=[];
+      this.monedaData=this.monedaData1;
+    }
+    
   }
   headerclick(val){
     this.Column=val.label;

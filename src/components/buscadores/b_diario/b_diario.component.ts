@@ -39,6 +39,7 @@ export default class  BDiarioComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
     setTimeout(() => {
@@ -51,8 +52,10 @@ export default class  BDiarioComponent extends Vue {
       this.gridModel=[];
       this.gridModel1=[];
       this.gridModel=response;       
-      this.gridModel1=response;       
+      this.gridModel1=response;    
+      this.loading1=false;   
     }).catch(error=>{
+      this.loading1=false;   
       this.$message({
         showClose: true,
         type: 'error',
@@ -112,9 +115,15 @@ export default class  BDiarioComponent extends Vue {
     this.$emit('cuentacontableClose');
   }
   buscarDiario(){
-    var data=Global.like(this.gridModel1,this.clickColumn,this.inputAtributo)
-    this.gridModel=[];
-    this.gridModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.gridModel1,this.clickColumn,this.inputAtributo)
+      this.gridModel=[];
+      this.gridModel=data;
+    }
+    else{
+      this.gridModel=[];
+      this.gridModel=this.gridModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;
@@ -163,7 +172,8 @@ export default class  BDiarioComponent extends Vue {
       cuentacontableModel:[],
       gridModel:[],
       gridModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
     };
   }
 }

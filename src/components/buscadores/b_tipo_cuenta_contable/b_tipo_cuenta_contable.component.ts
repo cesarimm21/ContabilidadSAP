@@ -46,7 +46,7 @@ export default class  BTipoCuentaContableComponent extends Vue {
     })
   } 
   checkTipo(){
-    this.$emit('tipoSeleccionado',this.TipoSelect);
+    this.$emit('tipocuentacontableSeleccionado',this.TipoSelect);
   }
   closeTipo(){
     this.$emit('close');
@@ -112,9 +112,15 @@ export default class  BTipoCuentaContableComponent extends Vue {
     }
   }
   buscarfilter(){
-    var data=Global.like(this.TipoCuentaContable1,this.clickColumn,this.inputAtributo)
-    this.TipoCuentaContable=[];
-    this.TipoCuentaContable=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.TipoCuentaContable1,this.clickColumn,this.inputAtributo)
+      this.TipoCuentaContable=[];
+      this.TipoCuentaContable=data;
+    }
+    else{
+      this.TipoCuentaContable=[];
+      this.TipoCuentaContable=this.TipoCuentaContable1;
+    }
   }
 
   data() {

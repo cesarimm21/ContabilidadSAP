@@ -115,9 +115,15 @@ export default class  BCategoriaLineaComponent extends Vue {
     this.$emit('categorialineaclose');
   }
   buscarCategoria(){
-    var data=Global.like(this.categorialineaModel1,this.clickColumn,this.inputAtributo)
-    this.categorialineaModel=[];
-    this.categorialineaModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.categorialineaModel1,this.clickColumn,this.inputAtributo)
+      this.categorialineaModel=[];
+      this.categorialineaModel=data;
+    }
+    else{
+      this.categorialineaModel=[];
+      this.categorialineaModel=this.categorialineaModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

@@ -93,7 +93,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   btnactivarbancoC:boolean=false;
   btnactivarbancoD:boolean=false;
   //**Proveedor */
-  gridSelectedProveedor:any;
+  public gridSelectedProveedor:any;
   //***Tipo documento */
   tipodocVisible:boolean=false;
   public selectTipoDoc:TipoDocIdentidadModel=new TipoDocIdentidadModel();
@@ -138,7 +138,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
   load(){    
     this.companiaCod=localStorage.getItem('compania_cod');
     this.companiaDesc=localStorage.getItem('compania_name');
-    var codigPr = this.$route.query.data;
+    this.gridSelectedProveedor= JSON.parse(this.$route.query.data); 
     var vista=this.$route.query.vista;
     if(vista=='modificar'){
       this.namepage='Modificar Proveedor';
@@ -148,30 +148,46 @@ export default class ViewAndEditProveedorComponent extends Vue {
       this.namepage='Visualizar Proveedor';
       this.proDisabled=true;
     }
-    proveedorService.getProveedorOne(codigPr)
-    .then(response=>{
-      this.gridSelectedProveedor=response; 
-      if(this.gridSelectedProveedor.strVendor_NO!=''){        
-        setTimeout(() => {
-          this.proveedorCheck();
-        }, 200)
-      }
-      else{
-        this.$message('No existe proveedor')
-      router.push({ path: `/barmenu/FI-FINANZAS/proveedor/modificar-proveedor`})
-      }
-      // this.proveedorCheck();
-    }).catch(error=>{
-      this.$message('No se cargaron los datos')
-      router.push({ path: `/barmenu/FI-FINANZAS/proveedor/modificar-proveedor`})
-    })
+    // proveedorService.getProveedorOne(codigPr)
+    // .then(response=>{
+    //   this.gridSelectedProveedor=response; 
+    //   if(this.gridSelectedProveedor.strVendor_NO!=''){        
+    //     setTimeout(() => {
+    //       this.proveedorCheck();
+    //     }, 200)
+    //   }
+    //   else{
+    //     this.$message('No existe proveedor')
+    //   }
+    // }).catch(error=>{
+    //   this.$message('No se cargaron los datos')
+    // })
     this.GetAllCategoria();
+    this.GetAllTipoDocumento();
+    // this.loadBanco();
+    // this.GetAllMoneda();
+    setTimeout(() => {
+      this.proveedorCheck();
+    }, 120)
+    
     // this.GetAllCuentaContable();
     // this.GetProveedoresCompany(localStorage.getItem('compania_cod'));
   }
   // [Cuenta contable]
+  GetAllTipoDocumento(){      
+    tipodocidentidadService.GetAllTipoDocumento()
+    .then(response=>{        
+      this.TipoDoc=response;
+    }).catch(error=>{
+      this.$message({
+        showClose: true,
+        type: 'error',
+        message: 'No se puede cargar lista de tipo de documento'
+      });
+    })
+  } 
   GetAllCuentaContable(){
-    cuentaContableService.GetAllCuentaContable()
+    cuentaContableService.GetAllCuentaContable(this.companiaCod)
     .then(response=>{
       this.cuenta=response;
       this.Proveedor.strAcc_Local_NO=this.cuenta[0].strAcc_Local_NO;      
@@ -213,6 +229,7 @@ export default class ViewAndEditProveedorComponent extends Vue {
     this.gridSelectPais=val;
     this.Proveedor.intIdCountry_ID=this.gridSelectPais.intIdCountry_ID;
     this.Proveedor.strCountry=this.gridSelectPais.strCountry_Cod;
+    this.Proveedor.strCountry_Name=this.gridSelectPais.strCountry_Name;
     this.paisVisible=false;
   }
   paisChosseCheck(){
@@ -405,18 +422,19 @@ export default class ViewAndEditProveedorComponent extends Vue {
 
     })
   }
-  proveedorCheck(){  
+  proveedorCheck(){      
     this.Proveedor.intIdVendor_ID=this.gridSelectedProveedor.intIdVendor_ID;
-    this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID;
+    // this.Proveedor.intIdCompany_ID=this.gridSelectedProveedor.intIdCompany_ID;
     this.Proveedor.intIdRegion_ID=this.gridSelectedProveedor.intIdRegion_ID;
-    this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID.intIdDocIdent_ID;
-    this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID.intIdVenCateg_ID;
-    this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID.intIdCountry_ID;
+    this.Proveedor.intIdDocIdent_ID=this.gridSelectedProveedor.intIdDocIdent_ID;
+    this.Proveedor.intIdVenCateg_ID=this.gridSelectedProveedor.intIdVenCateg_ID;
+    this.Proveedor.intIdCountry_ID=this.gridSelectedProveedor.intIdCountry_ID;
     this.Proveedor.strCompany_Cod=this.gridSelectedProveedor.strCompany_Cod;
     this.Proveedor.strVendor_NO=this.gridSelectedProveedor.strVendor_NO;
+    this.Proveedor.strCountry_Name=this.gridSelectedProveedor.strCountry_Name;
     this.Proveedor.strCountry=this.gridSelectedProveedor.strCountry;
     this.Proveedor.strCat_Person=this.gridSelectedProveedor.strCat_Person;
-    this.FLAGDOC='B'
+    this.FLAGDOC='B';    
     this.selectCategoria(this.Proveedor.strCat_Person);
     this.value1=this.Proveedor.strCat_Person;
     this.Proveedor.strTax_ID=this.gridSelectedProveedor.strTax_ID;

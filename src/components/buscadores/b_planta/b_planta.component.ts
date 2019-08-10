@@ -111,9 +111,15 @@ export default class  BPlantaComponent extends Vue {
     this.$emit('plantaClose');
   }
   buscarPlanta(){
-    var data=Global.like(this.plantaModel1,this.clickColumn,this.inputAtributo)
-    this.plantaModel=[];
-    this.plantaModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.plantaModel1,this.clickColumn,this.inputAtributo)
+      this.plantaModel=[];
+      this.plantaModel=data;
+    }
+    else{
+      this.plantaModel=[];
+      this.plantaModel=this.plantaModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

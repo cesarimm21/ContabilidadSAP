@@ -9,7 +9,6 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import 'element-ui/lib/theme-default/index.css';
 import Global from '@/Global';
 import QuickAccessMenuComponent from '@/components/quickaccessmenu/quickaccessmenu.vue';
-import {CompaniaModel} from '@/modelo/maestro/compania';
 import {CostItemModel} from '@/modelo/maestro/costitem';
 import { Notification } from 'element-ui';
 import BCompaniaProveedor from '@/components/buscadores/b_compania/b_compania.vue';
@@ -26,81 +25,71 @@ export default class CrearCostItemComponent extends Vue {
   iserror:boolean=false;
   textosave:string='';
   ctaPadre:boolean=true;
-  dialogCompania:boolean=true;
-  
+  dialogCompania:boolean=true;  
   btnactivarcompania:boolean=false;
   dataCompania:any[];
-  public companiaModel:CompaniaModel=new CompaniaModel();
   public cositemModel:CostItemModel=new CostItemModel();
   btnactivarCuentaContablePadre:boolean=false;
   dialogTipoCuentaContable:boolean=false;
-
+  nameuser:any;
   constructor(){    
     super();
-    Global.nameComponent='crear-ingreso-comprobante';
+    Global.nameComponent='crear-costitem';
+    setTimeout(() => {
+      this.load();
+    }, 200) 
+  }
+  load(){
     var desc:any=localStorage.getItem('compania_name');
     var cod:any=localStorage.getItem('compania_cod');
     var id:any=localStorage.getItem('compania_ID');
     this.cositemModel.strCompany_Desc=desc; 
     this.cositemModel.strCompany_Cod=cod;
-  
-  }
-
-  //#region [COMPANIA]
-  loadCompania(){
-    this.dialogCompania=true;
-  }
-  companiaSeleccionado(val:CompaniaModel,dialog:boolean){
-    this.companiaModel=val;
-    this.cositemModel.strCompany_Cod=this.companiaModel.strCompany_Cod;
-    this.cositemModel.strCompany_Desc=this.companiaModel.strCompany_Desc;
-    this.dialogCompania=false;    
-  }
-  companiaClose(){
-    this.companiaModel=new CompaniaModel();
-    this.dialogCompania=false;
-  }
-  
-  activar_compania(){
-    setTimeout(() => {
-      this.btnactivarcompania=true;
-    }, 120)
-  }
-  desactivar_compania(){
-    debugger;
-    if(this.dialogCompania){
-      this.btnactivarcompania=false;      
-    }
-  }
-  closeCompania(){
-    this.btnactivarcompania=false;
-    this.dialogCompania=false;
-    return false;
-  }
-  //#endregion
-  limpiar(){
-    this.cositemModel.strCost_Item_Cod='';
-    this.cositemModel.strCost_Item_Pos1='';
-    this.cositemModel.strCost_Item_Desc1='';
-    this.cositemModel.strCost_Item_Pos2='';
-    this.cositemModel.strCost_Item_Desc2='';
-    this.cositemModel.strCost_Item_Pos3='';
-    this.cositemModel.strCost_Item_Desc3='';
-  }
+  }  
   guardarTodo(){
-    console.log(this.cositemModel);
-    costitemService.CreateCostItem(this.cositemModel)
-    .then(response=>{
-      this.issave=true;
-      this.textosave='Se guardo correctamente.'
-      this.limpiar();
-    }).catch(error=>{
-      this.$message({
-        showClose: true,
-        type: 'error',
-        message: 'No se pudo guardar producto'
-      });
-    })
+    if(this.cositemModel.strCost_Item_Cod==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Pos1==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Desc1==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Pos2==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Desc2==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Pos3==''){ this.$message('Complete los campos obligatorios')}
+    if(this.cositemModel.strCost_Item_Desc3==''){ this.$message('Complete los campos obligatorios')}
+    else{
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Guardando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+          }
+      );   
+      this.nameuser=localStorage.getItem('User_Usuario');
+      this.cositemModel.strCreation_User=this.nameuser;
+      costitemService.CreateCostItem(this.cositemModel)
+      .then(resp=>{
+        this.cositemModel=new CostItemModel();
+        this.load();
+          this.$message({
+              showClose: true,
+              type: 'success',
+              message: 'Se guardo Correctamente '+resp.strCost_Item_Cod
+            });
+          this.issave = true;
+          this.iserror = false;
+          this.textosave = 'Se guardo correctamente. '+resp.strCost_Item_Cod;                
+          loadingInstance.close();
+          }).catch(error=>{
+              this.$message({
+                  showClose: true,
+                  type: 'error',
+                  message: 'No se pudo guardar'
+                });
+              this.issave = false;
+              this.iserror = true;
+              this.textosave = 'Error al guardar.';
+              loadingInstance.close();
+          })
+    }
+    
   }
 
 

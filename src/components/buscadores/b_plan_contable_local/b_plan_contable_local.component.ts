@@ -49,6 +49,7 @@ export default class  BPlanContableLocalComponent extends Vue {
   public search:PlanConLocalModel=new PlanConLocalModel();
   inputAtributo:any;
   loading1:boolean=true;
+  companyCod:any;
   constructor() {
     super();
     setTimeout(() => {
@@ -56,7 +57,8 @@ export default class  BPlanContableLocalComponent extends Vue {
     }, 400)
   }
   load(){
-    plancontableService.GetAllPlanCuenta2()
+    this.companyCod=localStorage.getItem('compania_cod');
+    plancontableService.GetAllPlanCuenta2(this.companyCod)
     .then(response=>{
       this.cuentacontableModel=response;    
       this.cuentacontableModel1=response;    
@@ -177,9 +179,15 @@ export default class  BPlanContableLocalComponent extends Vue {
     }
   }
   buscarfilter(){
-    var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
-    this.cuentacontableModel=[];
-    this.cuentacontableModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.cuentacontableModel1,this.clickColumn,this.inputAtributo)
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=data;
+    }
+    else{
+      this.cuentacontableModel=[];
+      this.cuentacontableModel=this.cuentacontableModel1;
+    }
   }
   data() {
     return {

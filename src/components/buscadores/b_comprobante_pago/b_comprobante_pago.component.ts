@@ -19,18 +19,21 @@ export default class  BComprobantepagoComponent extends Vue {
   clickColumn:string='';
   Column:string='';
   inputAtributo:any;
+  loading1:boolean=true;
   constructor() {
     super();
-    this.loadComprobante();
-    
+    setTimeout(() => {
+      this.loadComprobante();
+    }, 400)   
   }
   loadComprobante(){
     comprobantepagoService.GetAllComprobante2()
     .then(response=>{
       this.ComprobantePagoModel=response;      
       this.ComprobantePagoModel1=response;      
-      
+      this.loading1=false;
     }).catch(error=>{
+      this.loading1=false;
       this.$message({
         showClose: true,
         type: 'error',
@@ -50,9 +53,15 @@ export default class  BComprobantepagoComponent extends Vue {
     this.$emit('ComprobantePagoClose');
   }
   buscarComprobante(){
-    var data=Global.like(this.ComprobantePagoModel1,this.clickColumn,this.inputAtributo)
-    this.ComprobantePagoModel=[];
-    this.ComprobantePagoModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.ComprobantePagoModel1,this.clickColumn,this.inputAtributo)
+      this.ComprobantePagoModel=[];
+      this.ComprobantePagoModel=data;
+    }
+    else{
+      this.ComprobantePagoModel=[];
+      this.ComprobantePagoModel=this.ComprobantePagoModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;
@@ -103,6 +112,7 @@ export default class  BComprobantepagoComponent extends Vue {
         ComprobantePagoModel1:[],
         inputAtributo:'',
         Column:'',
+        loading1:true
     };
 
   }

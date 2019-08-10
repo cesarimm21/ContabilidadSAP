@@ -49,7 +49,7 @@ export default class  BAlmacenComponent extends Vue {
   }
   loadAlmacen(){
     this.companyCod=localStorage.getItem('compania_cod');
-    almacenService.GetAllAlmacen(this.companyCod)
+    almacenService.GetAllAlmacen2(this.companyCod)
     .then(response=>{
       this.almacenModel=[];       
       this.almacenModel1=[];       
@@ -117,9 +117,15 @@ export default class  BAlmacenComponent extends Vue {
     this.almacenSelectModel=val;
   }
   buscarAlmacen(){
-    var data=Global.like(this.almacenModel1,this.clickColumn,this.inputAtributo)
-    this.almacenModel=[];
-    this.almacenModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.almacenModel1,this.clickColumn,this.inputAtributo)
+      this.almacenModel=[];
+      this.almacenModel=data;
+    }
+    else{
+      this.almacenModel=[];
+      this.almacenModel=this.almacenModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

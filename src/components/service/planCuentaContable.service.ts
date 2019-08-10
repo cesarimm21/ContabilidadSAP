@@ -10,8 +10,8 @@ export default{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
-  GetAllPlanCuenta2(){ 
-    return axios.get(CONFIG.API_URL+'plancuentas2')
+  GetAllPlanCuenta2(strCompany_Cod){ 
+    return axios.get(CONFIG.API_URL+'planconlocal/'+strCompany_Cod)
     .then(response =>{            
         return JSON.parse(JSON.stringify(response.data));
     })

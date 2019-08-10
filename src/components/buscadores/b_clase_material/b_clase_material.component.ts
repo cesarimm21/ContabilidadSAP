@@ -38,18 +38,22 @@ export default class  BClaseMaterialComponent extends Vue {
   Column:string='';
   inputAtributo:any;
   company_cod:any='';
+  loading1:boolean=true;
   constructor() {
-    super();
-    this.load();
+    super();    
+    setTimeout(() => {
+      this.load();
+    }, 400)   
   }
   load(){
-    debugger;
     this.company_cod=localStorage.getItem('compania_cod');
     clasematerialService.GetAllClaseMaterial2(this.company_cod)
     .then(response=>{
       this.clasematerialModel=response;       
-      this.clasematerialModel1=response;       
+      this.clasematerialModel1=response;  
+      this.loading1=false;     
     }).catch(error=>{
+      this.loading1=false;     
       this.$message({
         showClose: true,
         type: 'error',
@@ -106,10 +110,15 @@ export default class  BClaseMaterialComponent extends Vue {
       });
   }
   buscarClaseMaterial(){
-    alert('aqui')
-    var data=Global.like(this.clasematerialModel1,this.clickColumn,this.inputAtributo)
-    this.clasematerialModel=[];
-    this.clasematerialModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.clasematerialModel1,this.clickColumn,this.inputAtributo)
+      this.clasematerialModel=[];
+      this.clasematerialModel=data;
+    }
+    else{
+      this.clasematerialModel=[];
+      this.clasematerialModel=this.clasematerialModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;
@@ -179,7 +188,8 @@ export default class  BClaseMaterialComponent extends Vue {
     return {
       clasematerialModel:[],
       clasematerialModel1:[],
-      inputAtributo:''
+      inputAtributo:'',
+      loading1:true
       };
   }
 }

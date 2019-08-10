@@ -111,9 +111,15 @@ export default class  BCriticidadComponent extends Vue {
     this.$emit('criticidadClose');
   }
   buscarCriticidad(){
-    var data=Global.like(this.criticidadModel1,this.clickColumn,this.inputAtributo)
-    this.criticidadModel=[];
-    this.criticidadModel=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.criticidadModel1,this.clickColumn,this.inputAtributo)
+      this.criticidadModel=[];
+      this.criticidadModel=data;
+    }
+    else{
+      this.criticidadModel=[];
+      this.criticidadModel=this.criticidadModel1;
+    }
   }
   headerclick(val){
     this.Column=val.label;

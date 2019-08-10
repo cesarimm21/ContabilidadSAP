@@ -115,7 +115,7 @@
                                                     </el-input>
                                                 </div>
                                             </div>
-                                            <label class="sinLinea el-form-item__label col-md-1" style="color:#1f2d3d;">{{gridSelectPais.strCountry_Name}}</label>
+                                            <label class="sinLinea el-form-item__label col-md-1" style="color:#1f2d3d;">{{Proveedor.strCountry_Name}}</label>
                                             <div class="col-md-1 grupolabel"></div>
                                             <label class="el-form-item__label col-md-1" >Region</label>
                                             <div class="col-md-1 grupolabel">
@@ -491,6 +491,10 @@
                   </div>
               </div>
               <el-table
+                v-loading="loading1"
+                element-loading-text="Cargando..."
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0,0,0, 0.8)"
                 :data="gridProveedor"
                 stripe  :default-sort = "{prop: 'date', order: 'descending'}"
                 style="width: 100%; cursor: pointer;" class="ExcelTable2007"

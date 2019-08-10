@@ -46,7 +46,7 @@ export default class  BTipoAdquisicionComponent extends Vue {
     })
   } 
   checkTipo(){
-    this.$emit('seleccionar',this.TipoSelect);
+    this.$emit('tipoadquisicionSeleccionado',this.TipoSelect);
   }
   closeTipo(){
     this.$emit('close');
@@ -112,9 +112,15 @@ export default class  BTipoAdquisicionComponent extends Vue {
     }
   }
   buscarfilter(){
-    var data=Global.like(this.TipoAdquisicion1,this.clickColumn,this.inputAtributo)
-    this.TipoAdquisicion=[];
-    this.TipoAdquisicion=data;
+    if(this.inputAtributo!=''){
+      var data=Global.like(this.TipoAdquisicion1,this.clickColumn,this.inputAtributo)
+      this.TipoAdquisicion=[];
+      this.TipoAdquisicion=data;
+    }
+    else{
+      this.TipoAdquisicion=[];
+      this.TipoAdquisicion=this.TipoAdquisicion1;
+    }
   }
 
   data() {

@@ -344,6 +344,13 @@ export default class ImprimirPOComponent extends Vue {
         });
       }
       ExportarPDF(){
+        let loadingInstance = Loading.service({
+          fullscreen: true,
+          text: 'Guardando...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.8)'
+      }
+      );
         if(this.opSelect.strPO_NO!=undefined){
           let doc = new jsPDF();
           doc.page = 1; 
@@ -390,7 +397,7 @@ export default class ImprimirPOComponent extends Vue {
           doc.text(this.proveedor.strCountry+" "+this.proveedor.strProvince, 25, 58);        
           doc.text(localStorage.getItem('User_Usuario'), 25, 62);   
           //[TEXTO 1 INPUT]  FIGUR 2
-          doc.text("Camilo Espinoza", ancho/2+43,43 );  
+          doc.text("", ancho/2+43,43 );  
           //[TEXTO 1 INPUT]  FIGURA 3
           doc.text("RANSA COMERCIAL CALLAO ", 35, 70);        
           doc.text("AVENIDA NESTOR GAMBETTA KM 11.5", 30, 75);        
@@ -717,8 +724,10 @@ export default class ImprimirPOComponent extends Vue {
           }
           
           doc.save("Orden Compra_"+this.opSelect.strPO_NO+".pdf");
+          loadingInstance.close();
         }
         else{
+          loadingInstance.close();
           this.$message({
             showClose: true,
             message: 'Seleccione Orden Compra',

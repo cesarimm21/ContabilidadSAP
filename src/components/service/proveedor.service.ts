@@ -3,14 +3,14 @@ import * as CONFIG from '../../Config';
 import GLOBAL from '../../Global';
 export default{
   headers : {'Authorization': 'Bearer '+GLOBAL.getToken()},
-  GetAllProveedor(){
-    return axios.get(CONFIG.API_URL+'proveedor')
+  GetAllProveedor(strCompany_cod){
+    return axios.get(CONFIG.API_URL+'proveedor/'+strCompany_cod)
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
   },
   putProveedor(Proveedor){
-    return axios.post(CONFIG.API_URL+'proveedor', Proveedor)
+    return axios.post(CONFIG.API_URL+'proveedor/create', Proveedor)
     .then(response =>{
         return response.data;
       })
@@ -50,5 +50,17 @@ export default{
     .then(response =>{
         return JSON.parse(JSON.stringify(response.data));
     })
-  }
+  },
+  inactivarProveedore(data){
+    return axios.post(CONFIG.API_URL+'proveedor/inactivar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
+  activarProveedore(data){
+    return axios.post(CONFIG.API_URL+'proveedor/activar',data)
+    .then(response =>{           
+        return JSON.parse(JSON.stringify(response.data));
+    })
+  },
 }

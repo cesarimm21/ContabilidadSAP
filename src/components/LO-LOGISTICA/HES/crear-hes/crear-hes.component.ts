@@ -113,7 +113,7 @@ export default class CrearHesComponent extends Vue {
     super();
     Global.nameComponent='crear-hes';
     // this.cell_ocultar='#e4e2e2';  
-    this.fecha_ejecucion=Global.getParseDate(new Date().toDateString()); 
+    this.fecha_ejecucion=(new Date()).toString();
     // this.TableIngreso=[];
     setTimeout(() => {
        
