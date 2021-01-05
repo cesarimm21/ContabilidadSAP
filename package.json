@@ -14,7 +14,7 @@
   "dependencies": {
     "@handsontable-pro/vue": "^3.1.0",
     "@handsontable/vue": "^3.1.0",
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
