@@ -70,7 +70,7 @@
     "vue-tinymce": "^1.0.5",
     "vue-trumbowyg": "^1.0.3",
     "whatwg-fetch": "^2.0.3",
-    "xlsx": "^0.14.3",
+    "xlsx": "^0.17.0",
     "xlsx-populate": "^1.19.1",
     "xlsx-style": "^0.8.13"
   },
