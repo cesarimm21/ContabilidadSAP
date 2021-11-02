@@ -39,7 +39,7 @@
     "splitpanes": "^1.14.2",
     "string-format": "^0.5.0",
     "sweetalert": "^2.0.3",
-    "tinymce": "^4.6.7",
+    "tinymce": "^5.10.0",
     "tinymce-vue-2": "0.0.4",
     "trumbowyg": "^2.10.0",
     "ts-loader": "^2.3.7",
